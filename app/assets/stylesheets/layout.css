@@ -1,0 +1,27 @@
+body {
+  background-color: #111155;
+}
+
+div#wrapper {
+  width: 600px;
+  margin: 10px auto;
+  background-color: #fff;
+}
+
+div#header, div#footer {
+  color: #666;
+  margin: 5px;
+  padding: 5px;
+}
+
+div#footer {
+  text-align: center;
+}
+
+div#contents {
+  background-color: #fff;
+  color: #000;
+  margin: 5px;
+  padding: 5px;
+  border: solid 1px #ccc;
+}
