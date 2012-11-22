@@ -1,5 +1,11 @@
 #!/usr/local/ngseq/bin/ruby
 
+# TODO:
+# create a function authenticate(login, password) that returns an array of groups
+# if the array is empty => cannot authenticate
+# else use the groups to list available projects, samples, extracts...
+
+
 require 'net/ldap'
 
 
