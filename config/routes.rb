@@ -7,8 +7,11 @@ SushiFabric::Application.routes.draw do
 
   resources :run_script do
     collection do
+			post :run_fastqc
       post :run_sample
       post :run_sample2
+			post :index
+			post :confirm
     end
   end
 

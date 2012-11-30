@@ -1,4 +1,39 @@
-<h1>Project XXX</h1>
-<%= button_to('sample.sh', :action => 'run_sample') %>
-<%= button_to('sample2.sh', :action => 'run_sample2') %>
+<h1>Project 948</h1>
+<hr />
+<h3>Jobs</h3>
+(Under construction. This part would show the running job list.)
+<p>Example</p>
+<table border=1>
+	<tr><th>Job ID</th><th>Command</th><th>Status</th><th>Log</th><th>Result</th></tr>
+	<tr><td align=center>54321</td><td>Cutadapt Trimming</td><td>Running</td><td>Link</td><td></td></tr>
+	<tr><td align=center>54322</td><td>Bowtie2 Mapping</td><td>Fail</td><td>Link</td><td></td></tr>
+	<tr><td align=center>54323</td><td>FastQC</td><td>Success</td><td>Link</td><td><a href='http://fgcz-s-034:3000/fastqc_report.html'>fastqc_report.html</a></td></tr>
+</table>
+
+<hr />
+<h3>Data</h3>
+
+<!--
+<% form_tag :action => "confirm" %>
+<%= check_box_tag "hoge", "1" %>
+<%= submit_tag "submit", :action => 'confirm' %>
+</form>
+-->
+
+<hr />
+
+<table border=1>
+  <tr><th>select</th><th>data</th></tr>
+  <tr><td align=center><%= check_box('page', 'freezeflag', {}, true, false) %></td><td>Illumina_20120921.A/20120921-hir_hay1_800_R1.fastq.gz</td></tr>
+  <tr><td align=center><%= check_box('page', 'freezeflag', {}, true, false) %></td><td>Illumina_20120921.A/20120921-hir_hay1_800_R2.fastq.gz</td></tr>
+</table>
+<hr />
+<h3>Application</h3>
+<%= select :page, :name, [["FastQC", "run_fastqc"], ["Count Readds", "run_count_reads"], ["Cutadapt Trim", "run_cutadapt"], ["Bowte2 Map", "run_bowtie2"]] %>
+<hr />
+<h3>Parameters</h3>
+(Under construction. This should be dynamically changed depending on selected application.)
+<br />
+<br />
+<%= button_to('Next', :action => 'confirm') %>
 

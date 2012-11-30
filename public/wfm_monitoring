@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+# 20121112 masa workflow manager client
+Version = '20121130-084110'
+
+require 'drb/drb' 
+
+unless command = ARGV[0]
+	puts "Usage:\n #{__FILE__} [command]"
+	exit
+end
+unless script_file = command.match(/([\w\/]+\.sh)/) and script_file = script_file[0]
+	warn "Job script file should *.sh"
+	exit
+end
+
+uri = ARGV[1]||'druby://localhost:12345'
+job_script = File.read(script_file)
+workflow_manager = DRbObject.new_with_uri(uri)
+puts workflow_manager.start_monitoring(command, 0, job_script)

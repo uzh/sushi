@@ -1,6 +1,6 @@
 #!/bin/sh
 
 echo "sample.sh start"
-echo "sleep 3"
-sleep 3
+echo "sleep 10"
+sleep 10
 echo "sample.sh end"

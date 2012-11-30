@@ -1,0 +1,11 @@
+PASS	Basic Statistics	20120921-hir_hay1_800_R1.fastq.gz
+FAIL	Per base sequence quality	20120921-hir_hay1_800_R1.fastq.gz
+PASS	Per sequence quality scores	20120921-hir_hay1_800_R1.fastq.gz
+FAIL	Per base sequence content	20120921-hir_hay1_800_R1.fastq.gz
+PASS	Per base GC content	20120921-hir_hay1_800_R1.fastq.gz
+PASS	Per sequence GC content	20120921-hir_hay1_800_R1.fastq.gz
+PASS	Per base N content	20120921-hir_hay1_800_R1.fastq.gz
+PASS	Sequence Length Distribution	20120921-hir_hay1_800_R1.fastq.gz
+PASS	Sequence Duplication Levels	20120921-hir_hay1_800_R1.fastq.gz
+PASS	Overrepresented sequences	20120921-hir_hay1_800_R1.fastq.gz
+FAIL	Kmer Content	20120921-hir_hay1_800_R1.fastq.gz
