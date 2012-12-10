@@ -3,3 +3,9 @@ tmp/cache/assets/*
 tmp/pids/*
 tmp/sessions/*
 tmp/sockets/*
+log/development.log
+db/development.sqlite3
+tmp/cache/assets
+log/development.log
+db/development.sqlite3
+tmp/cache/assets
