@@ -1,5 +1,11 @@
+$:.push '/srv/SushiFabric/plugins/bfabric/lib/'
+
+require 'bfabric'
+
 class RunScriptController < ApplicationController
   def index
+    @ext_job_id = 3506
+    @status = Bfabric.get_external_job_status @ext_job_id
   end
 	def confirm
     render "run_script/confirm"
