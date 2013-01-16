@@ -22,8 +22,8 @@ class DataSetController < ApplicationController
     render 'data_set/edit'
   end
   def delete
-    id = DataList.all.last.id
-    DataList.delete(id)
+    data_list = DataList.find_by_data_set_id_and_sample_id(params[:data_set_id].to_i,params[:sample_id].to_i)
+    DataList.delete(data_list.id)
     @data_sets = DataSet.all
     @data_lists = DataList.all
     @samples = Sample.all

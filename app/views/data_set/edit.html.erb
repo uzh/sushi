@@ -30,10 +30,11 @@ Test Field: <%= text_field_tag :test %> <%= @params.inspect.to_s %>
 -->
 <hr />
 <h3>Delete DataSet</h3>
-<!--
-<form>
-  DataSet ID: <input type=text size=3 /> Sample ID: <input type=text size=3 /> 
+<form method="post" action="/data_set/delete">
+  DataSet ID: <input type=text name=data_set_id size=3 /> Sample ID: <input type=text name=sample_id size=3 /> 
+ <input type="submit" value="Delete" />
 </form>
--->
+<!--
 <%= button_to('Delete Last One', :action => 'delete') %><br />
+-->
 
