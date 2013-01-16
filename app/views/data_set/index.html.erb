@@ -1,0 +1,49 @@
+<h1>Data Structure</h1>
+<hr />
+<br />
+<pre>
+  DataSet *---1 DataList 1---* Sample
+</pre>
+<br />
+
+<hr />
+<h3>DataSet</h3>
+<p>
+<% @data_sets.each do |data_set| %>
+  [id] <%= data_set.id %>, [note] <%= data_set.note %>:<br />
+<% end %>
+</p>
+
+<hr />
+<h3>DataList</h3>
+<p>
+<% @data_lists.each do |data_list| %>
+  [id] <%= data_list.id %>, [data_set_id] <%= data_list.data_set_id %>, [sample_id] <%= data_list.sample_id %><br />
+<% end %>
+</p>
+
+<hr />
+<h3>Sample</h3>
+<p>
+<% @samples.each do |sample| %>
+  [id] <%= sample.id %>, [name] <%= sample.name %>, [path] <%= sample.path %><br />
+<% end %>
+</p>
+
+
+<hr />
+<h1>DataSets (Combined)</h1>
+<p>
+<% @data_sets.each do |data_set| %>
+  [id] <%= data_set.id %>, [note] <%= data_set.note %>:<br />
+  <ul>
+  <% data_set.data_lists.each do |data_list| %>
+    <li>[data_list_id] <%= data_list.id %>, [sample] <%= data_list.sample.name %>, [path] <%= data_list.sample.path %></li>
+  <% end %>
+  </ul>
+  <br />
+<% end %>
+</p>
+
+
+

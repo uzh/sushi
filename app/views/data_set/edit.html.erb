@@ -1,0 +1,39 @@
+<h3>DataSets Edit</h3>
+<p>
+<% @data_sets.each do |data_set| %>
+  [id] <%= data_set.id %>, [note] <%= data_set.note %>:<br />
+  <ul>
+  <% data_set.data_lists.each do |data_list| %>
+    <li>[data_list_id] <%= data_list.id %>, [sample] <%= data_list.sample.name %>, [path] <%= data_list.sample.path %></li>
+  <% end %>
+  </ul>
+<% end %>
+</p>
+
+<hr />
+<h3>Samples</h3>
+<p>
+<% @samples.each do |sample| %>
+  [id] <%= sample.id %>, [name] <%= sample.name %>, [path] <%= sample.path %><br />
+<% end %>
+</p>
+
+<hr />
+<h3>Add DataSet</h3>
+<form method="post" action="/data_set/add">
+  DataSet ID: <input type=text name=data_set_id size=3 /> Sample ID: <input type=text name=sample_id size=3 />
+ <input type="submit" value="Add" />
+</form>
+<!--
+Test Field: <%= text_field_tag :test %> <%= @params.inspect.to_s %>
+<%= button_to('Add', :action => 'add') %><br />
+-->
+<hr />
+<h3>Delete DataSet</h3>
+<!--
+<form>
+  DataSet ID: <input type=text size=3 /> Sample ID: <input type=text size=3 /> 
+</form>
+-->
+<%= button_to('Delete Last One', :action => 'delete') %><br />
+

@@ -15,6 +15,27 @@ SushiFabric::Application.routes.draw do
     end
   end
 
+  resources :data_list do
+    collection do
+      post :index
+      get :add
+      get :delete
+    end
+  end
+  resources :data_set do
+    collection do
+      post :index
+      get :edit
+      post :add
+      post :delete
+    end
+  end
+  resources :sample do
+    collection do
+      post :index
+    end
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
