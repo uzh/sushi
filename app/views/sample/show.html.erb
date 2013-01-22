@@ -1,0 +1,16 @@
+<h1>Sample <%= @sample[:@id] %></h1>
+<p>Here are listed all the extracts for the sample.</p>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Actions</th>
+  </tr>
+  <% @extracts.each do |e| %>
+  <tr>
+    <td><%= e[:@id] %></td>
+    <td><%= e[:name] %></td>
+    <td>-</td>
+  </tr>
+  <% end %>
+</table>

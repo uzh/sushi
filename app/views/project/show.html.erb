@@ -1,0 +1,16 @@
+<h1>Project <%= @project_id %></h1>
+<p>Here are listed all the samples for the project.</p>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Actions</th>
+  </tr>
+  <% @samples.each do |s| %>
+  <tr>
+    <td><%= s[:@id] %></td>
+    <td><%= s[:name] %></td>
+    <td><%= link_to "list extracts", sample_path(s[:@id]) %></td>
+  </tr>
+  <% end %>
+</table>

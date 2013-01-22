@@ -1,4 +1,8 @@
 SushiFabric::Application.routes.draw do
+  get "project/show"
+
+  get "project/index"
+
   get "run_script/run_sample"
 
   devise_for :users
@@ -33,6 +37,11 @@ SushiFabric::Application.routes.draw do
   resources :sample do
     collection do
       post :index
+    end
+  end
+  resources :project do
+    collection do
+      get :index
     end
   end
 
