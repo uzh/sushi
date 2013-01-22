@@ -1,27 +1,177 @@
 body {
-  background-color: #111155;
+  height: 100%;
+  font-family: museo300, Arial, sans-serif;
+  background-color: #082a4c;
+  background-image: url(/assets/background.png);
+  background-repeat: x-repeat;
 }
 
 div#wrapper {
-  width: 1000px;
-  margin: 10px auto;
-  background-color: #fff;
+  width: 1500px;
+  min-height: 800px;
+  margin: 0px auto;
+  background-color: transparent;
+  background-image: url(/assets/xplosion.png);
+  background-repeat: no-repeat;
+  background-position: 85px 5px;
+}
+
+div#header {
+  height: 90px;
+  padding: 0px;
+}
+
+div#header h1 {
+  padding: 25px 0 0 0;
+  margin: 0px;
+  font-size: 4em;
+  font-family: italic;
+  color: transparent;
+  background-image: url(/assets/sushifabric.png);
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+
+div#header nav {
+  float: right;
+  margin-top: 55px;
+  padding: 4px;
+  background-color: white;
+  border: 1px solid white;
+}
+
+div#header nav a {
+  color: gray;
+  text-decoration: none;
+}
+
+div#header nav a:hover {
+  color: red;
 }
 
 div#header, div#footer {
+  width: 860px;
   color: #666;
-  margin: 5px;
-  padding: 5px;
+  margin: 0px auto;
 }
 
 div#footer {
   text-align: center;
+  margin: 5px auto;
 }
 
 div#contents {
+  width: 830px;
+  min-height: 360px;
   background-color: #fff;
   color: #000;
-  margin: 5px;
-  padding: 5px;
+  margin: 0px auto;
+  padding: 15px;
   border: solid 1px #ccc;
+}
+
+table {
+  width: 100%;
+  border: none;
+}
+
+table tr td, table tr th {
+  text-align: left;
+  border: none;
+}
+
+table tr th {
+  border-bottom: 2px solid black;
+}
+
+table tr:nth-child(even) {
+	background: #bed2df;
+}
+
+#login_form_wrapper {
+  width: 800px;
+  height: 300px;
+  background-image: url(/assets/makisushi.png);
+  background-position: 80px 50px;
+  background-repeat: no-repeat;
+}
+
+#login_form {
+  width: 400px;
+  float: right;
+  margin-right: 60px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+#login_form #info {
+  margin-bottom: 1em;
+  border:1px solid lightgray;
+  background-color: #ededed;
+  border-radius: 10px;
+  -moz-box-shadow: 0 0 5px #888;
+  -webkit-box-shadow: 0 0 5px#888;
+  box-shadow: 0 0 5px #888;
+  opacity: 0.85;
+}
+
+#login_form #info h1 {
+  font-size: 1em;
+  font-weight: normal;
+}
+
+#login_form #info h1 em {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+#login_form input {
+  font-size: 1.2em;
+  padding: 0.2em;
+}
+
+#login_form input[type=submit] {
+	-moz-box-shadow:inset 0px 1px 5px 0px #bbdaf7;
+	-webkit-box-shadow:inset 0px 1px 5px 0px #bbdaf7;
+	box-shadow:inset 0px 1px 5px 0px #bbdaf7;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #378de5) );
+	background:-moz-linear-gradient( center top, #79bbff 5%, #378de5 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#378de5');
+	background-color:#79bbff;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #84bbf3;
+	display:inline-block;
+	color:#ffffff;
+	font-family:arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 10px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #528ecc;
+}
+#login_form input[type=submit]:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #378de5), color-stop(1, #79bbff) );
+	background:-moz-linear-gradient( center top, #378de5 5%, #79bbff 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#378de5', endColorstr='#79bbff');
+	background-color:#378de5;
+}
+#login_form input[type=submit]:active {
+	position:relative;
+	top:1px;
+}
+
+#login_form #links p {
+  font-size: small;
+  margin: 0em;
+}
+
+#login_form #links p a, #login_form #links p a:visited {
+  text-decoration: none;
+  color: blue;
+}
+
+#login_form #links p a:hover {
+  color: red;
 }
