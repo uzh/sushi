@@ -1,3 +1,4 @@
+<%= stylesheet_link_tag "data_set" %>
 <h1>Data Structure</h1>
 <hr />
 <br />
@@ -8,42 +9,82 @@
 
 <hr />
 <h3>DataSet</h3>
-<p>
+<table>
+	<tr>
+		<th>ID</th>
+		<th>Note</th>
+		<th>Creation</th>
+		<th>Modification</th>
+	</tr>
 <% @data_sets.each do |data_set| %>
-  [id] <%= data_set.id %>, [note] <%= data_set.note %>:<br />
+	<tr>
+		<td><%= data_set.id %></td>
+		<td><%= data_set.note %></td>
+		<td><%= data_set.created_at.to_s[0..9] %></td>
+		<td><%= data_set.updated_at.to_s[0..9] %></td>
+	</tr>
 <% end %>
-</p>
+</table>
 
 <hr />
 <h3>DataList</h3>
-<p>
+<table>
+	<tr>
+		<th>ID</th>
+		<th>DataSet ID</th>
+		<th>Sample ID</th>
+		<th>Creation</th>
+		<th>Modification</th>
+	</tr>
 <% @data_lists.each do |data_list| %>
-  [id] <%= data_list.id %>, [data_set_id] <%= data_list.data_set_id %>, [sample_id] <%= data_list.sample_id %><br />
+    <tr>
+        <td><%= data_list.id %></td>
+        <td><%= data_list.data_set_id %></td>
+        <td><%= data_list.sample_id %></td>
+        <td><%= data_list.created_at.to_s[0..9] %></td>
+        <td><%= data_list.updated_at.to_s[0..9] %></td>
+    </tr>
 <% end %>
-</p>
+</table>
 
 <hr />
 <h3>Sample</h3>
-<p>
+<table>
+	<tr>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Path</th>
+		<th>Creation</th>
+		<th>Modification</th>
+	</tr>
 <% @samples.each do |sample| %>
-  [id] <%= sample.id %>, [name] <%= sample.name %>, [path] <%= sample.path %><br />
+    <tr>
+        <td><%= sample.id %></td>
+        <td><%= sample.name %></td>
+        <td><%= sample.path %></td>
+        <td><%= sample.created_at.to_s[0..9] %></td>
+        <td><%= sample.updated_at.to_s[0..9] %></td>
+    </tr>
 <% end %>
-</p>
+</table>
 
 
 <hr />
 <h1>DataSets (Combined)</h1>
-<p>
 <% @data_sets.each do |data_set| %>
-  [id] <%= data_set.id %>, [note] <%= data_set.note %>:<br />
-  <ul>
-  <% data_set.data_lists.each do |data_list| %>
-    <li>[data_list_id] <%= data_list.id %>, [sample] <%= data_list.sample.name %>, [path] <%= data_list.sample.path %></li>
+    <p>[<%= data_set.id %>] <%= data_set.note %></p>
+    <table>
+        <tr>
+            <th>Sample ID</th>
+            <th>Sample Name</th>
+            <th>Sample Path</th>
+        </tr>
+    <% data_set.data_lists.each do |data_list| %>
+	    <tr>
+            <td><%= data_list.sample.id %></td>
+            <td><%= data_list.sample.name %></td>
+            <td><%= data_list.sample.path %></td>
+        </tr>
   <% end %>
-  </ul>
-  <br />
+    </table>
 <% end %>
-</p>
-
-
-
