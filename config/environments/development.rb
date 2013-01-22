@@ -34,4 +34,8 @@ SushiFabric::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # To connect to BFabric API
+  config.bfabric_user = ""
+  config.bfabric_password = ""
 end
