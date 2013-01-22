@@ -1,6 +1,8 @@
 <div id="header">
-  <%= image_tag 'sushi.png', :size => '980x80', :alt => 'logo' %>
+  <nav id="login">
   <% if user_signed_in? %>
     <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
   <% end %>
+  </nav>
+  <h1>SushiFabric</h1>
 </div>
