@@ -3,7 +3,7 @@ body {
   font-family: museo300, Arial, sans-serif;
   background-color: #082a4c;
   background-image: url(/assets/background.png);
-  background-repeat: x-repeat;
+  background-repeat: repeat-x;
 }
 
 div#wrapper {
