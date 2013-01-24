@@ -32,6 +32,7 @@ SushiFabric::Application.routes.draw do
       get :edit
       post :add
       post :delete
+      post :add_or_delete
     end
   end
   resources :sample do
