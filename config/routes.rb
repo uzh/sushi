@@ -16,6 +16,8 @@ SushiFabric::Application.routes.draw do
       post :run_sample2
 			post :index
 			post :confirm
+      post :set_parameters
+      post :run_application
     end
   end
 
