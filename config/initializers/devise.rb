@@ -1,6 +1,16 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
+  # ==> LDAP Configuration 
+  # config.ldap_logger = true
+   config.ldap_create_user = true
+   config.ldap_update_password = false
+  # config.ldap_config = "#{Rails.root}/config/ldap.yml"
+  # config.ldap_check_group_membership = false
+  # config.ldap_check_attributes = false
+  # config.ldap_use_admin_to_bind = false
+  # config.ldap_ad_group_check = false
+  
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.
@@ -23,7 +33,7 @@ Devise.setup do |config|
   # session. If you need permissions, you should implement that in a before filter.
   # You can also supply a hash where the value is a boolean determining whether
   # or not authentication should be aborted when the value is not present.
-  # config.authentication_keys = [ :email ]
+  config.authentication_keys = [ :login ]
 
   # Configure parameters from the request object used for authentication. Each entry
   # given should be a request method and it will automatically be passed to the
@@ -82,7 +92,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 10
 
   # Setup a pepper to generate the encrypted password.
-  # config.pepper = "74784092c160ea4b3d1e1b1a36d79b16d6a9d1cc7e8580eb6210840bc5161f280087f817f0c8e5bfa5a2334f0d94581f060b1fd9f6563cc43eb72ed554f566f5"
+  # config.pepper = "75836f527a178119c0a523254331c5e79c056fd23ab8d86a1067b1f61b5e4ac7fc65ae5c18926b95244d01fd8a7f30203ff7947880672baebfb89e7f20b18574"
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
