@@ -38,4 +38,6 @@ SushiFabric::Application.configure do
   # To connect to BFabric API
   config.bfabric_user = ""
   config.bfabric_password = ""
+  
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 end
