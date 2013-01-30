@@ -5,6 +5,8 @@ SushiFabric::Application.routes.draw do
 
   get "run_script/run_sample"
 
+  match "/sample/add_to_basket/:id" => "sample#add_to_basket"
+
   devise_for :users
   get 'run_script', :to => 'run_script#index', :as => :user_root
   root :to => "home#index"
