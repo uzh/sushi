@@ -3,9 +3,16 @@
 params <%= @params.inspect.to_s %><br /> <br />
 <%= form_tag(:action => 'run_application') do %>
   <%= hidden_field :job_script, :path, :value => @job_script %>
+  <%= hidden_field :dataset, :id, :value => @data_set.id %>
   <h3>Parameters</h3>
     <table>
-      <% @parameters.each do |para|%>
+      <tr><td>INPUT</td><td></td></tr>
+      <% @data_set.data_lists.each do |data_list| %>
+        <tr>
+          <td><%= check_box_tag "sample_id[]", data_list.sample.id, true %></td><td><%= data_list.sample.path %></td>
+        </tr>
+      <% end %>
+      <% @parameters.select{|pa| pa != 'INPUT'}.each do |para|%>
         <tr><td><%= para %></td><td><%= text_field :parameter, para.to_sym, :value => "#{@default_parameters[para]}" %></td></tr>
       <% end %>
     </table>

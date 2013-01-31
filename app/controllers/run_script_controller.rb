@@ -13,8 +13,11 @@ class RunScriptController < ApplicationController
     @data_sets = DataSet.all 
   end
   def set_parameters
+    @data_sets = DataSet.all 
     @params = params
     @job_script = params[:script][:path]
+    data_set_id = params[:dataset][:id]
+    @data_set = @data_sets[data_set_id.to_i-1]
     @parameters = []
     File.readlines(@job_script).each do |line|
       if line =~ /#PARAMETER/
@@ -34,8 +37,16 @@ class RunScriptController < ApplicationController
     render "run_script/set_parameters"
   end
   def run_application
+    @data_sets = DataSet.all 
+    @params = params
+    data_set_id = params[:dataset][:id]
+    @data_set = @data_sets[data_set_id.to_i-1]
+    @sample_ids = params[:sample_id].map{|i| i.to_i}.sort
+    inputs = @data_set.data_lists.select{|data_list| @sample_ids.include?(data_list.sample.id)}
+    @inputs_string = inputs.map{|data_list| data_list.sample.path}
     @job_script = params[:job_script][:path]
     parameters = params[:parameter]
+    parameters['INPUT']="'"+@inputs_string.join(' ')+"'" unless @inputs_string.empty?
     script = Tempfile.open(['job_script','.sh'], 'public')
     File.readlines(@job_script).each do |line|
       flag = true
