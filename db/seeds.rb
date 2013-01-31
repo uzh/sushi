@@ -7,8 +7,8 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-Sample.create(name: 'sample_name1', path:'/srv/projects/p948/sample_name1.fastq.gz')
-Sample.create(name: 'sample_name2', path:'/srv/projects/p948/sample_name2.fastq.gz')
+Sample.create(name: 'sample_name1', path:'/srv/GT/analysis/masaomi/sushi/work/SushiFabric/public/20120905-I8_970_20081205_R1_sample.fastq.gz')
+Sample.create(name: 'sample_name2', path:'/srv/GT/analysis/masaomi/sushi/work/SushiFabric/public/20120905-I8_970_20081205_R2_sample.fastq.gz')
 DataList.create(data_set_id: 1, sample_id: 1)
 DataList.create(data_set_id: 2, sample_id: 2)
 DataList.create(data_set_id: 1, sample_id: 2)
