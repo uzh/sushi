@@ -1,13 +1,62 @@
 $:.push '/srv/SushiFabric/plugins/bfabric/lib/'
 
 require 'bfabric'
+require 'tempfile'
 
 class RunScriptController < ApplicationController
   def index
     @ext_job_id = 3506
 #    @status = Bfabric.get_external_job_status @ext_job_id
-   @data_sets = DataSet.all 
+
+    # search job_scripts
+    @job_scripts = Dir['public/*.sh'].sort.to_a
+    @data_sets = DataSet.all 
   end
+  def set_parameters
+    @params = params
+    @job_script = params[:script][:path]
+    @parameters = []
+    File.readlines(@job_script).each do |line|
+      if line =~ /#PARAMETER/
+        x = line.split
+        parameter = x[1]
+        @parameters << parameter
+      end
+    end
+    @default_parameters = {}
+    File.readlines(@job_script).each do |line|
+      @parameters.each do |parameter|
+        if line =~ /#{parameter}=(.+)/
+          @default_parameters[parameter]=$1
+        end
+      end
+    end
+    render "run_script/set_parameters"
+  end
+  def run_application
+    @job_script = params[:job_script][:path]
+    parameters = params[:parameter]
+    script = Tempfile.open(['job_script','.sh'], 'public')
+    File.readlines(@job_script).each do |line|
+      flag = true
+      parameters.keys.each do |parameter|
+        if line =~ /#{parameter}=/
+          script.print parameter, '=', parameters[parameter], "\n"
+          flag = false
+          break
+        end
+      end
+      script.print line if flag
+    end
+    script.close
+    sleep 1
+    @job_id = `public/wfm_monitoring public/#{File.basename(script.path)}`
+    render :text => @job_id.to_s + ' ' + script.path
+  end
+
+
+
+
 	def confirm
     render "run_script/confirm"
 	end
