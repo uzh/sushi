@@ -51,7 +51,8 @@ class RunScriptController < ApplicationController
     script.close
     sleep 1
     @job_id = `public/wfm_monitoring public/#{File.basename(script.path)}`
-    render :text => @job_id.to_s + ' ' + script.path
+    script.delete
+    render "run_script/submit_job"
   end
 
 
