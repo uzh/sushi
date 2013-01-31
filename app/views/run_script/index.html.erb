@@ -1,5 +1,32 @@
 <h1>Project 948</h1>
 <hr />
+<h3>New Design</h3>
+<h3>Application & DataSet Selection</h3>
+<br />
+<%= form_tag(:action => 'set_parameters') do %>
+  <table>
+    <tr><th>Application</th><th>Data Set</th></tr
+    <tr><td>
+    <%= select :script, :path, @job_scripts.map{|script| [File.basename(script).gsub(/\.sh/,''), script]} %>
+    </td><td>
+    <%= select :dataset, :note, @data_sets.map{|data_set| [data_set.note, data_set.note]} %>
+    </td></tr>
+  </table>
+  <br />
+  <%= submit_tag "Next" %>
+<% end %>
+
+
+
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<hr />
+<h3>Old Design</h3>
 <h3>Jobs</h3>
 (Under construction. This part would show the running job list.)
 <p>Example</p>

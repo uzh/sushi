@@ -1,0 +1,16 @@
+<h1>Project 948</h1>
+<hr />
+params <%= @params.inspect.to_s %><br /> <br />
+<%= form_tag(:action => 'run_application') do %>
+  <%= hidden_field :job_script, :path, :value => @job_script %>
+  <h3>Parameters</h3>
+    <table>
+      <% @parameters.each do |para|%>
+        <tr><td><%= para %></td><td><%= text_field :parameter, para.to_sym, :value => "#{@default_parameters[para]}" %></td></tr>
+      <% end %>
+    </table>
+  <br />
+  <br />
+  <%= submit_tag 'Run Application' %>
+<% end %>
+

@@ -1,4 +1,32 @@
-<h3>DataSets Edit</h3>
+<h3>DataSets Edit (New)</h3>
+
+params <%= @params.inspect.to_s %><br /> <br />
+
+<form method="post" action="/data_set/add_or_delete">
+<table>
+  <tr><th>Data Set 1</th><td></td><th>All Samples</th></tr>
+  <tr><td>
+      <select name='data_sets[]' size=10 multiple>
+        <% @data_sets.select{|ds| ds.id==1}.each do |data_set| %>
+          <% data_set.data_lists.each do |data_list| %>
+            <option value='<%= data_set.id %>,<%= data_list.sample.id%>'><%= data_list.sample.name %></option>
+          <% end %>
+        <% end %>
+      </select>
+  </td><td align=center>
+      <input type=submit name='method' value='   add    ' /><br />
+      <input type=submit name='method' value='  delete  ' /><br />
+  </td><td>
+      <select name='samples[]' size=10 multiple>
+        <% @samples.each do |sample| %>
+          <option value='1,<%= sample.id%>'><%= sample.name %></option>
+        <% end %>
+      </select>
+</td></tr></table>
+</form>
+
+<hr />
+<h3>DataSets Edit (Old)</h3>
 <p>
 <% @data_sets.each do |data_set| %>
   [id] <%= data_set.id %>, [note] <%= data_set.note %>:<br />
@@ -37,4 +65,5 @@ Test Field: <%= text_field_tag :test %> <%= @params.inspect.to_s %>
 <!--
 <%= button_to('Delete Last One', :action => 'delete') %><br />
 -->
+
 

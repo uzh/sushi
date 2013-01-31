@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 # 20121112 masa workflow manager client
-Version = '20121130-084110'
+Version = '20130125-135800'
 
 require 'drb/drb' 
 
@@ -9,7 +9,7 @@ unless command = ARGV[0]
 	puts "Usage:\n #{__FILE__} [command]"
 	exit
 end
-unless script_file = command.match(/([\w\/]+\.sh)/) and script_file = script_file[0]
+unless script_file = command.match(/([\w\/\-\_]+\.sh)/) and script_file = script_file[0]
 	warn "Job script file should *.sh"
 	exit
 end
