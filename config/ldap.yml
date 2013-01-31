@@ -1,0 +1,60 @@
+## Authorizations
+# Uncomment out the merging for each enviornment that you'd like to include.
+# You can also just copy and paste the tree (do not include the "authorizations") to each
+# enviornment if you need something different per enviornment.
+authorizations: &AUTHORIZATIONS
+  group_base: OU=OU_Users,OU=OU_Accounts,DC=FGCZ-NET,DC=unizh,DC=ch
+  ## Requires config.ldap_check_group_membership in devise.rb be true
+  # Can have multiple values, must match all to be authorized
+  required_groups:
+    # If only a group name is given, membership will be checked against "uniqueMember"
+    - cn=admins,ou=groups,dc=test,dc=com
+    - cn=users,ou=groups,dc=test,dc=com
+    # If an array is given, the first element will be the attribute to check against, the second the group name
+    - ["moreMembers", "cn=users,ou=groups,dc=test,dc=com"]
+  ## Requires config.ldap_check_attributes in devise.rb to be true
+  ## Can have multiple attributes and values, must match all to be authorized
+  require_attribute:
+    objectClass: inetOrgPerson
+    authorizationRole: postsAdmin
+
+## Enviornments
+
+development:
+  #host: localhost
+  #port: 389
+  #attribute: cn
+  #base: ou=people,dc=test,dc=com
+  #admin_user: cn=admin,dc=test,dc=com
+  #admin_password: admin_password
+  ssl: false
+  
+  host: fgcz-ldap.fgcz-net.unizh.ch
+  port: 389
+  attribute: CN
+  group_base: OU=OU_Employees,OU=OU_Accounts,DC=FGCZ-NET,DC=unizh,DC=ch
+  required_groups: OU=OU_Employees,OU=OU_Accounts,DC=FGCZ-NET,DC=unizh,DC=ch
+  base: OU=OU_Employees,OU=OU_Accounts,DC=FGCZ-NET,DC=unizh,DC=ch
+  admin_user: CN=trxcopy,OU=OU_Applications,OU=OU_Accounts,DC=FGCZ-NET,DC=unizh,DC=ch
+  admin_password: fXSC7o8g
+  # <<: *AUTHORIZATIONS
+
+test:
+  host: localhost
+  port: 3389
+  attribute: cn
+  base: ou=people,dc=test,dc=com
+  admin_user: cn=admin,dc=test,dc=com
+  admin_password: admin_password
+  ssl: simple_tls
+  # <<: *AUTHORIZATIONS
+
+production:
+  host: localhost
+  port: 636
+  attribute: cn
+  base: ou=people,dc=test,dc=com
+  admin_user: cn=admin,dc=test,dc=com
+  admin_password: admin_password
+  ssl: start_tls
+  # <<: *AUTHORIZATIONS

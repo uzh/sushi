@@ -37,4 +37,8 @@ gem 'jquery-rails'
 # To use debugger
 # gem 'debugger'
 gem 'devise'
+gem 'devise_ldap_authenticatable'
+gem 'hpricot'
+gem 'ruby_parser'
+
 gem 'bfabric'
