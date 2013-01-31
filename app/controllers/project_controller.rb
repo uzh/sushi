@@ -14,12 +14,12 @@ end
 
 class ProjectController < ApplicationController
   def index
-    user_id = 1954
     bf = Bfabric.new(SushiFabric::Application.config.bfabric_user, 
                      SushiFabric::Application.config.bfabric_password)
     
     @projects = []
-    p_ids = bf.get_project_ids_for_user(user_id) 
+    u_id = get_user_id
+    p_ids = bf.get_project_ids_for_user(u_id) 
     p_ids.each do |p_id|
       p = bf.get_project(p_id)
       if p != nil
