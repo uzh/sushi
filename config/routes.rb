@@ -5,7 +5,9 @@ SushiFabric::Application.routes.draw do
 
   get "run_script/run_sample"
 
-  match "/sample/add_to_basket/:id" => "sample#add_to_basket"
+  match "/resource/add_to_basket/:id" => "resource#add_to_basket"
+  
+  match "/data_set/create" => "data_set#create"
 
   devise_for :users
   get 'run_script', :to => 'run_script#index', :as => :user_root
@@ -37,6 +39,11 @@ SushiFabric::Application.routes.draw do
       post :add
       post :delete
       post :add_or_delete
+    end
+  end
+  resources :extract do
+    collection do
+      post :index
     end
   end
   resources :sample do

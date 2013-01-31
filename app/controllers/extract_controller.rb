@@ -13,23 +13,19 @@ module Savon
 end
 
 
-class SampleController < ApplicationController
-  def index
-    @samples = Sample.all
-  end
-
+class ExtractController < ApplicationController
   def show
     bf = Bfabric.new(SushiFabric::Application.config.bfabric_user, 
                      SushiFabric::Application.config.bfabric_password)
     
-    @sample_id = params[:id]
-    @sample = bf.get_sample(@sample_id)
+    @extract_id = params[:id]
+    @extract = bf.get_extract(@extract_id)
     
-    @extracts = []
-    e_ids = bf.get_extract_ids_for_sample(@sample_id.to_i)
-    e_ids.each do |e_id|
-      e = bf.get_extract(e_id)
-      @extracts << e
+    @resources = []
+    r_ids = bf.get_resource_ids_for_extract(@extract_id.to_i)
+    r_ids.each do |r_id|
+      r = bf.get_resource(r_id)
+      @resources << r
     end
   end
 end

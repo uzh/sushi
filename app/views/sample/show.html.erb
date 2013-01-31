@@ -10,7 +10,7 @@
   <tr>
     <td><%= e[:@id] %></td>
     <td><%= e[:name] %></td>
-    <td><%= link_to "add to basket", "/sample/add_to_basket/"+e[:@id] %></td>
+    <td><%= link_to "list resources", "/extract/"+e[:@id].to_s %></td>
   </tr>
   <% end %>
 </table>
