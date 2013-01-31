@@ -1,12 +1,12 @@
 <div id="header">
   <nav id="login">
-  <% if session.include? :basket
+  <% if ! session.include? :basket
        session[:basket] = Array.new()
      end
-     if session.empty? %>
+     if session[:basket].empty? %>
        <%= "Basket is empty!" %><%
      else %>
-       <%= session.count.to_s+" item(s) in the basket." %><%
+       <%= session[:basket].count.to_s+" item(s) in the basket." %><%
      end
   %>
   <% if user_signed_in? %>
