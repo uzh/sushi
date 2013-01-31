@@ -9,7 +9,7 @@
     <tr><td>
     <%= select :script, :path, @job_scripts.map{|script| [File.basename(script).gsub(/\.sh/,''), script]} %>
     </td><td>
-    <%= select :dataset, :note, @data_sets.map{|data_set| [data_set.note, data_set.note]} %>
+    <%= select :dataset, :id, @data_sets.map{|data_set| [data_set.note, data_set.id]} %>
     </td></tr>
   </table>
   <br />
