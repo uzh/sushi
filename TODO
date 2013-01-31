@@ -1,1 +1,5 @@
 Remove the hack-code from project_controller once the savon problem is solved.
+
+create a sign_in controller that does the auth job
+	how to have a Session user containing information?
+    app/views/shared/_header.html.erb
