@@ -1,12 +1,12 @@
 #!/bin/sh
-#PARAMETER TEST_PARAMETER1
-#PARAMETER TEST_PARAMETER2
+#PARAMETER INPUT
+#PARAMETER OUTPUT_DIR
+#PARAMETER THREAD
 
-TEST_PARAMETER1=123
-TEST_PARAMETER2=test_parameter
+INPUT=/srv/GT/analysis/masaomi/sushi/work/SushiFabric/public/20120905-I8_970_20081205_R1_sample.fastq.gz
+OUTPUT_DIR=/srv/GT/analysis/masaomi/sushi/work/fastqc_out
+THREAD=4
 
-INPUT=/srv/GT/analysis/masaomi/sushi/20120921-hir_hay1_800_R1.fastq.gz
-OUTPUT=/srv/GT/analysis/masaomi/sushi/SushiFabric/public/fastqc_out.zip
-EXDIR=/srv/GT/analysis/masaomi/sushi/SushiFabric/public
-fastqc_wrapper $INPUT $OUTPUT
-unzip -o $OUTPUT -d $EXDIR
+mkdir -p $OUTPUT_DIR
+fastqc -t $THREAD -o $OUTPUT_DIR $INPUT
+
