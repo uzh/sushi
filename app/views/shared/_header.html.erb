@@ -4,9 +4,9 @@
        session[:basket] = Array.new()
      end
      if session[:basket].empty? %>
-       <%= "Basket is empty!" %><%
+       <%= "Plate is empty!" %><%
      else %>
-       <%= session[:basket].count.to_s+" item(s) in the basket." %><%
+       <%= session[:basket].count.to_s+" sushi(s) on your plate." %><%
      end
   %>
   <% if user_signed_in? %>
