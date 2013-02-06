@@ -1,0 +1,9 @@
+<h1>Project 948</h1>
+<hr />
+<h3>Job List</h3>
+
+<table><tr><th>Job ID</th><th>Status</th></tr>
+<% @job_list.each do |job| %>
+  <tr><td><%= job[0] %></td><td><%= job[1] %></td></tr>
+<% end %>
+</table>
