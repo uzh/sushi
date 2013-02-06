@@ -61,9 +61,21 @@ class DataSetController < ApplicationController
   end
   
   def create
-    bf = Bfabric.new(SushiFabric::Application.config.bfabric_user, 
-                     SushiFabric::Application.config.bfabric_password)
-    
+    if params.include? :data_set_name
+      if params.include? :sample_ids
+        ds = DataSet.new
+        ds.note = params[:data_set_name]
+        ds.save
+        
+        params[:sample_ids].each do |s_id|
+          dl = DataList.new
+          dl.data_set_id = ds.id
+          dl.sample_id = s_id.to_i
+          dl.save
+        end
+      end
+    end
+
     @sushis = Array.new
     if session.include? :basket
       session[:basket].each do |r_id|
