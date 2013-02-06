@@ -35,8 +35,8 @@ class ResourceController < ApplicationController
   
   def remove_from_basket
     if session[:basket]
-      params[:resource_ids].each do |r_id|
-        session[:basket].delete_if { |x| x.to_i == r_id.to_i }
+      if params[:id]
+        session[:basket].delete_if { |x| x.to_i == params[:id].to_i }
       end
     end
     redirect_to request.referer
