@@ -1,7 +1,12 @@
 <h3>Samples</h3>
-<p>
-<% @samples.each do |sample| %>
-  [id] <%= sample.id %>, [name] <%= sample.name %>, [path] <%= sample.path %><br />
-<% end %>
-</p>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Path</th>
+  </tr>
+  <% @samples.each do |sample| %>
+  <tr><td><%= sample.id %></td><td><%= sample.name %></td><td><%= sample.path %></td></tr>
+  <% end %>
+</table>
 
