@@ -59,4 +59,18 @@ class DataSetController < ApplicationController
     @params = params
     render 'data_set/edit'
   end
+  
+  def create
+    bf = Bfabric.new(SushiFabric::Application.config.bfabric_user, 
+                     SushiFabric::Application.config.bfabric_password)
+    
+    @sushis = Array.new
+    session[:basket].each do |r_id|
+      @sushis << Sample.find_by_resource_id(r_id)
+    end 
+
+    @data_sets = DataSet.all
+    #@data_lists = DataList.all
+    #@samples = Sample.all
+  end
 end
