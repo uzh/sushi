@@ -1,16 +1,17 @@
 <h1>Create a new Data Set</h1>
 
 <h3>Sushi(s) in your plate:</h3>
+<form method="GET" action="/resource/remove_from_basket">
 <table>
 	<tr>
-        <th><input type="checkbox" /></th>
+        <th><input type="checkbox" onClick="alert('Not yet implemented');" /></th>
 		<th>Sample</th>
 		<th>Path</th>
 		<th>Resource ID</th>
 	</tr>
 <% @sushis.each do |s| %>
     <tr>
-        <td><input type="checkbox" /></td>
+        <td><input type="checkbox" name="resource_ids[]" value="<%= s.resource_id %>" /></td>
         <td><%= s.name %></td>
         <td><%= s.path %></td>
         <td><%= s.resource_id %></td>
@@ -19,12 +20,13 @@
 </table>
 
 <p>
-  <input type="submit" class="button" value="Remove Selected" onClick="alert('Not yet implemented');" />
+  <input type="submit" class="button" value="Remove Selected" />
   <strong>-OR-</strong>
   <input type="submit" class="button" value="Create Data Set" onClick="alert('Not yet implemented');" />
   <label for="">with name</label>
   <input type="text" />
 </p>
+</form>
 
 <h3>Available Data Sets</h3>
 <% @data_sets.each do |data_set| %>

@@ -6,6 +6,7 @@ SushiFabric::Application.routes.draw do
   get "run_script/run_sample"
 
   match "/resource/add_to_basket/:id" => "resource#add_to_basket"
+  match "/resource/remove_from_basket" => "resource#remove_from_basket"
   
   match "/data_set/create" => "data_set#create"
 
