@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130206132500) do
+ActiveRecord::Schema.define(:version => 20130128091013) do
 
   create_table "data_lists", :force => true do |t|
     t.integer  "data_set_id"
@@ -29,9 +29,8 @@ ActiveRecord::Schema.define(:version => 20130206132500) do
   create_table "samples", :force => true do |t|
     t.string   "name"
     t.string   "path"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
-    t.integer  "resource_id", :default => 0, :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|
@@ -42,8 +41,8 @@ ActiveRecord::Schema.define(:version => 20130206132500) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
+    t.datetime "remember_created_at"
     t.string   "login",               :default => "", :null => false
-    t.datetime "remember_created_at",                 :null => false
   end
 
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true

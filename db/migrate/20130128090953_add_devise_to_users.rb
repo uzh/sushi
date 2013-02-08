@@ -10,7 +10,7 @@ class AddDeviseToUsers < ActiveRecord::Migration
       #t.datetime :reset_password_sent_at
 
       ## Rememberable
-      #t.datetime :remember_created_at
+      t.datetime :remember_created_at
 
       ## Trackable
       #t.integer  :sign_in_count, :default => 0
