@@ -1,6 +1,6 @@
 <h1>Project 948</h1>
 <hr />
-params <%= @params.inspect.to_s %><br /> <br />
+<!-- params <%= @params.inspect.to_s %><br /> <br />-->
 <%= form_tag(:action => 'run_application') do %>
   <%= hidden_field :job_script, :path, :value => @job_script %>
   <%= hidden_field :dataset, :id, :value => @data_set.id %>

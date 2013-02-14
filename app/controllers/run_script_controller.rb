@@ -47,7 +47,7 @@ class RunScriptController < ApplicationController
     @job_script = params[:job_script][:path]
     parameters = params[:parameter]
     parameters['INPUT']="'"+@inputs_string.join(' ')+"'" unless @inputs_string.empty?
-    script = Tempfile.open(['job_script','.sh'], 'public')
+    script = Tempfile.open([File.basename(@job_script).split(/\./).first+'-','.sh'], 'public')
     File.readlines(@job_script).each do |line|
       flag = true
       parameters.keys.each do |parameter|
