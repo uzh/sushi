@@ -6,7 +6,7 @@
 <% @job_list.each do |job| %>
   <tr>
     <td><%= job[0] %></td><td><%= job[1] %></td>
-    <td><a href='<%= @results[job[0]] %>'><%= @results[job[0]] %></a></td>
+    <td><%= link_to @results[job[0]], @results[job[0]] %></a></td>
   </tr>
 <% end %>
 </table>
