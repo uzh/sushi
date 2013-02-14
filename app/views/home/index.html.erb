@@ -1,2 +1,33 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<h1>Today's Menu</h1>
+<table class="pages_presentation">
+  <tr>
+    <td class="page">
+      <%= link_to image_tag('sushi_icons/tamago.png'), project_index_path %>
+      <h1><%= link_to 'Projects', project_index_path %></h1>
+      <p>
+        List all the available projects.<br />
+        Allows to access samples, extracts and resources in cascade..
+      </p>
+    </td>
+    <td class="page">
+      <%= link_to image_tag('sushi_icons/kappamaki.png'), '/data_set/create' %>
+      <h1><%= link_to 'Your Plate', '/data_set/create' %></h1>
+      <p>
+        List all the sushis in your plate.<br />
+        You can assemble them to create data sets.
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td class="page">
+      <%= link_to image_tag('sushi_icons/temaki.png'), '/run_script' %>
+      <h1><%= link_to 'Run Applications', '/run_script' %></h1>
+      <p>
+        Run an application on a data set.
+      </p>
+    </td>
+    <td class="page">
+      &nbsp;
+    </td>
+  </tr>
+</table>
