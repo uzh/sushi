@@ -47,7 +47,7 @@ class RunScriptController < ApplicationController
     @job_script = params[:job_script][:path]
     parameters = params[:parameter]
     parameters['INPUT']="'"+@inputs_string.join(' ')+"'" unless @inputs_string.empty?
-    script = Tempfile.open(['job_script','.sh'], 'public')
+    script = Tempfile.open([File.basename(@job_script).split(/\./).first+'-','.sh'], 'public')
     File.readlines(@job_script).each do |line|
       flag = true
       parameters.keys.each do |parameter|
@@ -56,18 +56,24 @@ class RunScriptController < ApplicationController
           flag = false
           break
         end
+        if line =~ /RESULT_LINK/
+          x = line.split(/=/)
+          @result_link=x[1].to_s.strip
+        end
       end
       script.print line if flag
     end
     script.close
     sleep 1
-    @job_id = `public/wfm_monitoring public/#{File.basename(script.path)}`
+    if @job_id = `public/wfm_monitoring public/#{File.basename(script.path)}`
+      job_log = JobLog.new
+      job_log.job_id = @job_id.to_i
+      job_log.result_link = @result_link
+      job_log.save
+    end
     script.delete
     render "run_script/submit_job"
   end
-
-
-
 
 	def confirm
     render "run_script/confirm"

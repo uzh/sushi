@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130206132500) do
+ActiveRecord::Schema.define(:version => 20130214125457) do
 
   create_table "data_lists", :force => true do |t|
     t.integer  "data_set_id"
@@ -26,12 +26,18 @@ ActiveRecord::Schema.define(:version => 20130206132500) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "job_logs", :force => true do |t|
+    t.integer  "job_id"
+    t.string   "result_link"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "samples", :force => true do |t|
     t.string   "name"
     t.string   "path"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
-    t.integer  "resource_id", :default => 0, :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

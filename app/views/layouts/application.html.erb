@@ -12,8 +12,11 @@
     <%= render 'shared/header' %>
     <div id="contents">
 
-       <p class="notice"><%= notice %></p>
-       <p class="alert"><%= alert %></p>
+       <% if alert %>
+       <p class="alert" onClick="$('.alert').slideUp()"><%= alert %></p>
+       <% elsif notice %>
+       <p class="notice" onClick="$('.notice').slideUp()"><%= notice %></p>
+       <% end %>
 
        <%= yield %>
 
