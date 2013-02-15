@@ -4,12 +4,14 @@
        session[:basket] = Array.new()
      end
      if session[:basket].empty? %>
-       <%= "Basket is empty!" %><%
+       <%= "Plate is empty!" %><%
      else %>
-       <%= session[:basket].count.to_s+" item(s) in the basket." %><%
+       <%= link_to session[:basket].count.to_s+" sushi(s)", "/data_set/create" %>
+       <%= " on your plate." %><%
      end
   %>
   <% if user_signed_in? %>
+    -
     <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
   <% end %>
   </nav>

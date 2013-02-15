@@ -1,0 +1,49 @@
+<h1>Create a new Data Set</h1>
+
+<h3>Sushi(s) in your plate:</h3>
+<p>This form uses <strong>GET</strong> but should use <strong>POST</strong>! Problem with the config/routes.rb
+<form method="GET" action="">
+<table>
+	<tr>
+        <th><input type="checkbox" onClick="alert('Not yet implemented');" /></th>
+		<th>Sample</th>
+		<th>Path</th>
+		<th>Resource ID</th>
+		<th>Actions</th>
+	</tr>
+<% @sushis.each do |s| %>
+    <tr>
+        <td><input type="checkbox" name="sample_ids[]" value="<%= s.id %>" /></td>
+        <td><%= s.name %></td>
+        <td><%= s.path %></td>
+        <td><%= s.resource_id %></td>
+        <td><a href="/resource/remove_from_basket/<%= s.resource_id %>">Remove</a></td>
+    </tr>
+<% end %>
+</table>
+
+<p>
+  <input type="submit" class="button" value="Create Data Set" />
+  <label for="data_set_name">with name</label>
+  <input name="data_set_name" type="text" />
+</p>
+</form>
+
+<h3>Available Data Sets</h3>
+<% @data_sets.each do |data_set| %>
+    <h4><%= data_set.id %>) <%= data_set.note %></h4>
+    <table>
+        <tr>
+            <th>Sample ID</th>
+            <th>Sample Name</th>
+            <th>Sample Path</th>
+        </tr>
+    <% data_set.data_lists.each do |data_list| %>
+	    <tr>
+            <td><%= data_list.sample.id %></td>
+            <td><%= data_list.sample.name %></td>
+            <td><%= data_list.sample.path %></td>
+        </tr>
+  <% end %>
+    </table>
+<% end %>

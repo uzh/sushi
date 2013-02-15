@@ -1,26 +1,26 @@
 SushiFabric::Application.routes.draw do
   root :to => "home#index"
-
+  
   get "run_script/run_sample"
   
   match "/data_set/create" => "data_set#create"
-
+  
   devise_for :users
   get 'run_script', :to => 'run_script#index', :as => :user_root
-
+  
   resources :run_script do
     collection do
-			post :run_fastqc
+      post :run_fastqc
       post :run_sample
       post :run_sample2
-			post :index
-			post :confirm
+      post :index
+      post :confirm
       post :set_parameters
       post :run_application
       post :submit_job
     end
   end
-
+  
   resources :job_monitoring do
     collection do
       post :index
@@ -28,7 +28,7 @@ SushiFabric::Application.routes.draw do
       get :print_script
     end
   end
-
+  
   resources :data_list do
     collection do
       post :index
@@ -36,6 +36,7 @@ SushiFabric::Application.routes.draw do
       get :delete
     end
   end
+  
   resources :data_set do
     collection do
       post :index
@@ -45,13 +46,14 @@ SushiFabric::Application.routes.draw do
       post :add_or_delete
     end
   end
-
+  
   resources :project, :only => [:index, :show]
   resources :sample, :only => [:show]
   resources :extract, :only => [:show]
-
+  
   match "/resource/add_to_basket/:id" => "resource#add_to_basket"
-
+  match "/resource/remove_from_basket/:id" => "resource#remove_from_basket"
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
