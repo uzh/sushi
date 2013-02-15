@@ -11,4 +11,8 @@ class JobMonitoringController < ApplicationController
       end
     end
   end
+  def print_log
+    text = `public/wfm_getlog #{params[:job_id]} :with_err`
+    render :text => text.gsub(/\n/,'<br />')
+  end
 end

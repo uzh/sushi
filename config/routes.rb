@@ -29,6 +29,7 @@ SushiFabric::Application.routes.draw do
   resources :job_monitoring do
     collection do
       post :index
+      get :print_log
     end
   end
 

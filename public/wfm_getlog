@@ -1,14 +1,15 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 # 20121112 masa workflow manager client
-Version = '20121130-085547'
+Version = '20130215-090559'
 
 require 'drb/drb' 
 
 unless job_id = ARGV[0]
-	puts "Usage:\n #{__FILE__} [job_id]"
+	puts "Usage:\n #{__FILE__} [job_id] (:with_err)"
 	exit
 end
-uri = ARGV[1]||'druby://localhost:12345'
+with_err = ARGV[1]
+uri = ARGV[2]||'druby://localhost:12345'
 workflow_manager = DRbObject.new_with_uri(uri)
-puts workflow_manager.getlog(job_id)
+puts workflow_manager.getlog(job_id, with_err)
