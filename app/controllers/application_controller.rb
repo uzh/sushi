@@ -18,6 +18,8 @@ class ApplicationController < ActionController::Base
   end
   protect_from_forgery
   
+  before_filter :authenticate_user!  
+  
   def get_user_id
     if !session[:bf_user_id]
       if !current_user

@@ -1,3 +1,53 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+a, a:visited {
+  text-decoration: none;
+  color: blue; 
+}
+
+a:hover {
+  text-decoration: none;
+  color: red; 
+}
+
+table.pages_presentation, table.pages_presentation h1, table.pages_presentation p {
+  text-align: left;
+}
+table.pages_presentation {
+  border: none;
+}
+table.pages_presentation td { 
+  margin: 1em;
+  padding: 0.5em;
+  padding-left: 75px;
+  min-height: 50px; 
+  border: 1px solid transparent;
+  width: 50%;
+  background-color: white;
+  vertical-align: text-top;
+  -webkit-border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
+}
+table.pages_presentation tr:hover {
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+table.pages_presentation .page:hover {
+  background-color: WhiteSmoke;
+  border: 1px solid #F0F0F0;
+}
+table.pages_presentation img {
+  float: left;
+  margin-left: -60px;
+  width: 48px; height: 48px;
+}
+table.pages_presentation p {
+  margin: 0;
+}
+table.pages_presentation h1 {
+  font-size: medium;
+  margin: 0;
+  text-align: left;
+}
