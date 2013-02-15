@@ -30,6 +30,7 @@ SushiFabric::Application.routes.draw do
     collection do
       post :index
       get :print_log
+      get :print_script
     end
   end
 
