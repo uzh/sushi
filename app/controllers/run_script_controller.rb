@@ -56,21 +56,12 @@ class RunScriptController < ApplicationController
           flag = false
           break
         end
-        if line =~ /RESULT_LINK/
-          x = line.split(/=/)
-          @result_link=x[1].to_s.strip
-        end
       end
       script.print line if flag
     end
     script.close
     sleep 1
-    if @job_id = `public/wfm_monitoring public/#{File.basename(script.path)}`
-      job_log = JobLog.new
-      job_log.job_id = @job_id.to_i
-      job_log.result_link = @result_link
-      job_log.save
-    end
+    @job_id = `public/wfm_monitoring public/#{File.basename(script.path)}`
     script.delete
     render "run_script/submit_job"
   end
