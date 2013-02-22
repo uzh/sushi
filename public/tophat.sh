@@ -12,4 +12,5 @@ RESULT_LINK=file:///srv/GT/analysis/masaomi/sushi/work/tophat_out
 
 echo tophat -p $THREAD -o $OUTPUT_DIR $BOWTIE_INDEX $INPUT
 tophat -p $THREAD -o $OUTPUT_DIR $BOWTIE_INDEX $INPUT
+echo RESULT_LINK=$RESULT_LINK
 
