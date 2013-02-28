@@ -4,7 +4,7 @@ class JobMonitoringController < ApplicationController
     @job_list = @job_list.split(/\n/).map{|job| job.split(/,/)}
     @results  = {}
     @job_list.each do |job|
-      if job[1] =~ /success/ and result_link = `public/wfm_getresult #{job[0]}` 
+      if job[1] =~ /success/ and result_link = `public/wfm_get_result_link #{job[0]}` 
         @results[job[0]]=result_link 
       else
         @results[job[0]]=''
