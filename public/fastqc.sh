@@ -13,5 +13,3 @@ mkdir -p $OUTPUT_DIR
 fastqc -t $THREAD -o $OUTPUT_DIR $INPUT
 
 echo RESULT_LINK=$RESULT_LINK
-echo RESULT_FILES
-
