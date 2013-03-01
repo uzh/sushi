@@ -2,10 +2,10 @@
 <hr />
 <h3>Job List</h3>
 
-<table><tr><th>Job ID</th><th>Status</th><th>Log</th><th>Application</th><th>Time (Start/End)</th><th>Result</th></tr>
+<table><tr><th>Job ID</th><th>Status</th><th>User</th><th>Log</th><th>Application</th><th>Time (Start/End)</th><th>Result</th></tr>
 <% @job_list.each do |job| %>
   <tr>
-    <td><%= job[0] %></td><td><%= job[1] %></td>
+    <td><%= job[0] %></td><td><%= job[1] %></td><td><%= job[4] %></td>
     <td><%= link_to 'Log', :action => 'print_log', :job_id => job[0] %></td>
     <td><%= link_to job[2], :action => 'print_script', :job_id => job[0] %></td><td><%= job[3].to_s %></td>
     <td><%= link_to @results[job[0]], @results[job[0]] %></a></td>
