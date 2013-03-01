@@ -1,12 +1,16 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 # 20121112 masa workflow manager client
-Version = '20130125-135800'
+Version = '20130301-094025'
 
 require 'drb/drb' 
 
-unless command = ARGV[0]
-	puts "Usage:\n #{__FILE__} [command]"
+unless command = ARGV[0] 
+	puts "Usage:\n #{__FILE__} [job_script] [user] [server]"
+  puts
+  pust " job_script: resuired (.sh)"
+  puts " user(default): sushi lover"
+  puts " server(default): druby://localhost:12345"
 	exit
 end
 unless script_file = command.match(/([\w\/\-\_]+\.sh)/) and script_file = script_file[0]
@@ -14,7 +18,8 @@ unless script_file = command.match(/([\w\/\-\_]+\.sh)/) and script_file = script
 	exit
 end
 
-uri = ARGV[1]||'druby://localhost:12345'
+uri = ARGV[2]||'druby://localhost:12345'
+user = ARGV[1]||'sushi lover'
 job_script = File.read(script_file)
 workflow_manager = DRbObject.new_with_uri(uri)
-puts workflow_manager.start_monitoring(command, 0, job_script)
+puts workflow_manager.start_monitoring(command, user, 0, job_script)
