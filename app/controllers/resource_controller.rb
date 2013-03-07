@@ -3,8 +3,8 @@ class ResourceController < ApplicationController
     bf = Bfabric.new(SushiFabric::Application.config.bfabric_user,
                      SushiFabric::Application.config.bfabric_password)
     
-    if ! session.include? :basket
-      session[:basket] = Array.new()
+    unless session.include? :basket
+      session[:basket] = []
     end
     
     if session[:basket].include? params[:id]
@@ -12,8 +12,7 @@ class ResourceController < ApplicationController
       return
     end
 
-    sample = Sample.find_by_resource_id params[:id]
-    if sample
+    if Sample.find_by_resource_id params[:id]
       redirect_to request.referer
       return
     end
@@ -34,10 +33,8 @@ class ResourceController < ApplicationController
   end
   
   def remove_from_basket
-    if session[:basket]
-      if params[:id]
-        session[:basket].delete_if { |x| x.to_i == params[:id].to_i }
-      end
+    if session[:basket] and params[:id]
+      session[:basket].delete_if { |x| x.to_i == params[:id].to_i }
     end
     # TODO: tentatively solution below not to create again DataList and DataSet objects
     #redirect_to request.referer
