@@ -1,6 +1,27 @@
+<h3>Sample Delete (Test)</h3>
+<hr />
+params <%= @params.inspect.to_s %><br /> <br />
+<hr />
+<%= form_tag({:action => :edit}, {:method => :get}) do %>
+  <table>
+    <tr><th>ID</th><th>Name</th><th>Path</th></tr>
+    <% @samples.each do |sample| %>
+      <tr>
+        <td><%= check_box_tag "sample_id[]", sample.id, false %></td>
+        <td><%= sample.name %></td>
+        <td><%= sample.path %></td>
+      </tr>
+    <% end %>
+  </table>
+  <br />
+  <br />
+  <%= submit_tag 'Run Application' %>
+<% end %>
+
+
+<hr />
 <h3>DataSets Edit (New)</h3>
 
-params <%= @params.inspect.to_s %><br /> <br />
 
 <form method="post" action="/data_set/add_or_delete">
 <table>
