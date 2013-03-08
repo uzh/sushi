@@ -2,7 +2,7 @@
 
 <h3>Sushi(s) in your plate:</h3>
 <p>This form uses <strong>GET</strong> but should use <strong>POST</strong>! Problem with the config/routes.rb
-<form method="GET" action="">
+<%= form_tag(:action => :create) do %>
 <table>
 	<tr>
         <th><input type="checkbox" onClick="alert('Not yet implemented');" /></th>
@@ -27,7 +27,7 @@
   <label for="data_set_name">with name</label>
   <input name="data_set_name" type="text" />
 </p>
-</form>
+<% end %>
 
 <h3>Available Data Sets</h3>
 <% @data_sets.each do |data_set| %>

@@ -42,13 +42,6 @@ class DataSetController < ApplicationController
     @samples = Sample.all
     @params = params
   end
-  def show
-    @data_sets = DataSet.all
-    @data_lists = DataList.all
-    @samples = Sample.all
-    @params = params
-    render 'delete'
-  end
   def add_or_delete
     params[:method] = params[:method].strip
     data_set_id = nil
