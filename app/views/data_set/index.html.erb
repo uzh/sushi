@@ -54,6 +54,7 @@
 		<th>ID</th>
 		<th>Name</th>
 		<th>Path</th>
+    <th>ResourceID</th>
 		<th>Creation</th>
 		<th>Modification</th>
 	</tr>
@@ -62,6 +63,7 @@
         <td><%= sample.id %></td>
         <td><%= sample.name %></td>
         <td><%= sample.path %></td>
+        <td><%= sample.resource_id %></td>
         <td><%= sample.created_at.to_s[0..9] %></td>
         <td><%= sample.updated_at.to_s[0..9] %></td>
     </tr>
