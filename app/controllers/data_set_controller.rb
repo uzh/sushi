@@ -73,27 +73,24 @@ class DataSetController < ApplicationController
   end
   
   def create
-    if params.include? :data_set_name
-      if params.include? :sample_ids
-        ds = DataSet.new
-        ds.note = params[:data_set_name]
-        ds.save
-        
-        params[:sample_ids].each do |s_id|
-          dl = DataList.new
-          dl.data_set_id = ds.id
-          dl.sample_id = s_id.to_i
-          dl.save
-        end
+    if data_set_name = params[:data_set_name] and sample_resource_ids = params[:sample_resource_ids].map{|i| i.to_i}
+      samples = session[:basket].select{|sample| sample_resource_ids.include?(sample.resource_id)}
+      samples.each do |sample|
+        sample.save unless sample.id
+      end
+      ds = DataSet.new
+      ds.note = data_set_name
+      ds.save
+      
+      samples.each do |sample|
+        dl = DataList.new
+        dl.data_set_id = ds.id
+        dl.sample_id = sample.id.to_i
+        dl.save
       end
     end
 
-    @sushis = Array.new
-    if session.include? :basket
-      session[:basket].each do |r_id|
-        @sushis << Sample.find_by_resource_id(r_id)
-      end 
-    end
+    @sushis = session[:basket]
 
     @data_sets = DataSet.all
   end
