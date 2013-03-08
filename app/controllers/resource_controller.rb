@@ -36,8 +36,6 @@ class ResourceController < ApplicationController
     if session[:basket] and params[:id]
       session[:basket].delete_if { |x| x.to_i == params[:id].to_i }
     end
-    # TODO: tentatively solution below not to create again DataList and DataSet objects
-    #redirect_to request.referer
-    redirect_to "/data_set/create"
+    redirect_to request.referer
   end
 end
