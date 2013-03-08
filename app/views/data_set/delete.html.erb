@@ -4,8 +4,9 @@ params <%= @params.inspect.to_s %><br /> <br />
 
 <hr />
 <h3>Sample Delete (Test)</h3>
+<b>TODO</b>:I have done this with <b>POST</b> method but why show method is still needed?<br />
 <hr />
-<%= form_tag({:action => :edit}, {:method => :get}) do %>
+<%= form_tag(:action => :delete) do %>
   <table>
     <tr><th>ID</th><th>Name</th><th>Path</th></tr>
     <% @samples.each do |sample| %>
@@ -23,7 +24,7 @@ params <%= @params.inspect.to_s %><br /> <br />
 <hr />
 <h3>DataList Delete (Test)</h3>
 <hr />
-<%= form_tag({:action => :edit}, {:method => :get}) do %>
+<%= form_tag(:action => :delete) do %>
   <table>
     <tr><th>ID</th><th>DataSet ID</th><th>Sample ID</th></tr>
     <% @data_lists.each do |data_list| %>
@@ -41,7 +42,7 @@ params <%= @params.inspect.to_s %><br /> <br />
 <hr />
 <h3>DataSet Delete (Test)</h3>
 <hr />
-<%= form_tag({:action => :edit}, {:method => :get}) do %>
+<%= form_tag(:action => :delete) do %>
   <table>
     <tr><th>ID</th><th>Note</th></tr>
     <% @data_sets.each do |data_set| %>
