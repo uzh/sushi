@@ -10,19 +10,20 @@ class ResourceController < ApplicationController
       return
     end
 
-    if Sample.find_by_resource_id params[:id]
-      redirect_to request.referer
-      return
-    end
 
     r = bf.get_resource params[:id].to_i
     e = bf.get_extract r[:extract][:@id].to_i
     s = bf.get_sample e[:sample][:@id].to_i
     
-    sample = Sample.new
-    sample.name = s[:name]+" [e"+e[:@id]+"]"
-    sample.path = "/srv/gstore/projects/"+r[:relativepath]
-    sample.resource_id = params[:id].to_i
+    sample = if hit = Sample.find_by_resource_id(params[:id])
+               hit
+             else
+               new_sample = Sample.new
+               new_sample.name = s[:name]+" [e"+e[:@id]+"]"
+               new_sample.path = "/srv/gstore/projects/"+r[:relativepath]
+               new_sample.resource_id = params[:id].to_i
+               new_sample
+             end
     
     session[:basket] << sample
     
