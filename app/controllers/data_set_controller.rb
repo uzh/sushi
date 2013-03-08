@@ -22,13 +22,25 @@ class DataSetController < ApplicationController
     render 'data_set/edit'
   end
   def delete
-    data_list = DataList.find_by_data_set_id_and_sample_id(params[:data_set_id].to_i,params[:sample_id].to_i)
-    DataList.delete(data_list.id)
+    if sample_ids = params[:sample_ids]
+      sample_ids.each do |id|
+        Sample.find(id.to_i).destroy
+      end
+    end
+    if data_list_ids = params[:data_list_ids]
+      data_list_ids.each do |id|
+        DataList.find(id.to_i).destroy
+      end
+    end
+    if data_set_ids = params[:data_set_ids]
+      data_set_ids.each do |id|
+        DataSet.find(id.to_i).destroy
+      end
+    end
     @data_sets = DataSet.all
     @data_lists = DataList.all
     @samples = Sample.all
     @params = params
-    render 'data_set/edit'
   end
   def add_or_delete
     params[:method] = params[:method].strip
