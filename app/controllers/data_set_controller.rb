@@ -5,9 +5,19 @@ class DataSetController < ApplicationController
     @samples = Sample.all
   end
   def edit
-    if sample_ids = params[:sample_id]
+    if sample_ids = params[:sample_ids]
       sample_ids.each do |id|
         Sample.find(id.to_i).destroy
+      end
+    end
+    if data_list_ids = params[:data_list_ids]
+      data_list_ids.each do |id|
+        DataList.find(id.to_i).destroy
+      end
+    end
+    if data_set_ids = params[:data_set_ids]
+      data_set_ids.each do |id|
+        DataSet.find(id.to_i).destroy
       end
     end
     @data_sets = DataSet.all
