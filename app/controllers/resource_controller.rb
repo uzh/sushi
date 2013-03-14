@@ -12,15 +12,27 @@ class ResourceController < ApplicationController
 
 
     r = bf.get_resource params[:id].to_i
-    e = bf.get_extract r[:extract][:@id].to_i
-    s = bf.get_sample e[:sample][:@id].to_i
+    e = if r and extract = r[:extract]
+          bf.get_extract extract[:@id].to_i
+        end
+    s = if e and sample = e[:sample]
+          bf.get_sample sample[:@id].to_i
+        end
     
     sample = if hit = Sample.find_by_resource_id(params[:id])
                hit
              else
                new_sample = Sample.new
-               new_sample.name = s[:name]+" [e"+e[:@id]+"]"
-               new_sample.path = "/srv/gstore/projects/"+r[:relativepath]
+               new_sample.path = if r and relativepath = r[:relativepath]
+                                   "/srv/gstore/projects/"+r[:relativepath]
+                                 else
+                                   `public/wfm_get_result_paths #{params[:id].gsub(/^9999/,'')}`
+                                 end
+               new_sample.name = if s
+                                   s[:name]+" [e"+e[:@id]+"]"
+                                 else
+                                   File.basename(new_sample.path)
+                                 end
                new_sample.resource_id = params[:id].to_i
                new_sample
              end
