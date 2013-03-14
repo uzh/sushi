@@ -2,6 +2,7 @@
 
 <%= @sushis.inspect.to_s %><br />
 <%= session[:basket].inspect.to_s %><br />
+<%= params.inspect.to_s %><br />
 
 <hr />
 <h3>Sushi(s) in your plate:</h3>
@@ -17,7 +18,11 @@
 <% @sushis.each do |s| %>
     <tr>
         <td><input type="checkbox" name="sample_resource_ids[]" value="<%= s.resource_id %>" /></td>
-        <td><%= s.name %></td>
+        <% if s.id %>
+          <td><%= text_field_tag "sample_names[]", s.name, :disabled=>true %></td>
+        <% else %>
+          <td><%= text_field_tag "sample_names[]", s.name %></td>
+        <% end %>
         <td><%= s.path %></td>
         <td><%= s.resource_id %></td>
         <td><a href="/resource/remove_from_basket/<%= s.resource_id %>">Remove</a></td>
