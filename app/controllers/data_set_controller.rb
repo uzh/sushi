@@ -75,8 +75,11 @@ class DataSetController < ApplicationController
   def create
     if data_set_name = params[:data_set_name] and sample_resource_ids = params[:sample_resource_ids].map{|i| i.to_i}
       samples = session[:basket].select{|sample| sample_resource_ids.include?(sample.resource_id)}
-      samples.each do |sample|
-        sample.save unless sample.id
+      samples.each_with_index do |sample,i|
+        unless sample.id
+          sample.name = params[:sample_names][i]
+          sample.save
+        end
       end
       ds = DataSet.new
       ds.note = data_set_name
