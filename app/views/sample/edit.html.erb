@@ -1,0 +1,14 @@
+<h3>Samples (Edit)</h3>
+<%= params.inspect.to_s %><br />
+<hr />
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Path</th>
+  </tr>
+  <% @samples.each do |sample| %>
+  <tr><td><%= sample.id %></td><td><%= sample.name %></td><td><%= sample.path %></td></tr>
+  <% end %>
+</table>
+

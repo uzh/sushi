@@ -50,7 +50,7 @@ SushiFabric::Application.routes.draw do
   end
   
   resources :project, :only => [:index, :show]
-  resources :sample, :only => [:show]
+  resources :sample, :only => [:index, :edit, :show]
   resources :extract, :only => [:show]
   
   match "/resource/add_to_basket/:id" => "resource#add_to_basket"
