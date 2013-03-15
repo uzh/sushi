@@ -18,7 +18,7 @@
   <% end %>
     <td><%= job[6,job.length].to_a.map{|file| File.basename(file)}.join("\n") %></td>
   <% if job[6] and job[6].to_s != 'no result' %>
-    <td><%= link_to 'add to plate', "/resource/add_to_basket/9999#{job[0]}" %></td>
+    <td><%= link_to 'add to plate', "/resource/add_to_basket/JobID#{job[0]}" %></td>
   <% else %>
     <td></td>
   <% end %>

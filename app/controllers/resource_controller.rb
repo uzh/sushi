@@ -18,26 +18,52 @@ class ResourceController < ApplicationController
     s = if e and sample = e[:sample]
           bf.get_sample sample[:@id].to_i
         end
-    
-    sample = if hit = Sample.find_by_resource_id(params[:id])
-               hit
-             else
-               new_sample = Sample.new
-               new_sample.path = if r and relativepath = r[:relativepath]
-                                   "/srv/gstore/projects/"+r[:relativepath]
-                                 else
-                                   `public/wfm_get_result_paths #{params[:id].gsub(/^9999/,'')}`
-                                 end
-               new_sample.name = if s
-                                   s[:name]+" [e"+e[:@id]+"]"
-                                 else
-                                   File.basename(new_sample.path)
-                                 end
-               new_sample.resource_id = params[:id].to_s
-               new_sample
-             end
-    
-    session[:basket] << sample
+
+    new_samples = []
+    if r and relativepath = r[:relativepath]
+      sample = if hit = Sample.find_by_resource_id(params[:id])
+                 hit
+               else
+                 new_sample = Sample.new
+                 new_sample.path = "/srv/gstore/projects/"+r[:relativepath]
+                 new_sample.name = if s
+                                 s[:name]+" [e"+e[:@id]+"]"
+                               else
+                                 File.basename(sample.path)
+                               end
+                 new_sample.resource_id = params[:id].to_s
+                 new_sample
+               end
+      new_samples << sample
+    else
+      result_paths = `public/wfm_get_result_paths #{params[:id].gsub(/^JobID/,'')}`
+      result_paths = result_paths.split(/,/)
+      result_paths.each_with_index do |path, i|
+        search_id = if result_paths.length < 2
+                      params[:id].to_s
+                    else
+                      params[:id].to_s + '_' + (i+1).to_s
+                    end
+        sample = if hit = Sample.find_by_resource_id(search_id)
+                   hit
+                 else
+                   new_sample = Sample.new
+                   new_sample.path = path
+                   new_sample.name = File.basename(path)
+                   new_sample.resource_id = if result_paths.length < 2
+                                              params[:id].to_s
+                                            else
+                                              params[:id].to_s + '_' + (i+1).to_s
+                                            end
+                   new_sample
+                 end
+        new_samples << sample
+      end
+    end
+
+    new_samples.each do |sample|
+      session[:basket] << sample
+    end
     
     redirect_to request.referer
   end
