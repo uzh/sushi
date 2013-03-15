@@ -32,4 +32,8 @@ class SampleController < ApplicationController
       @extracts << e
     end
   end
+
+  def edit
+    @samples = Sample.all
+  end
 end
