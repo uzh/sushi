@@ -29,9 +29,9 @@ ActiveRecord::Schema.define(:version => 20130206132500) do
   create_table "samples", :force => true do |t|
     t.string   "name"
     t.string   "path"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
-    t.integer  "resource_id", :default => 0, :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+    t.string   "resource_id", :default => "0", :null => false
   end
 
   create_table "users", :force => true do |t|

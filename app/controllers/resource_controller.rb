@@ -33,7 +33,7 @@ class ResourceController < ApplicationController
                                  else
                                    File.basename(new_sample.path)
                                  end
-               new_sample.resource_id = params[:id].to_i
+               new_sample.resource_id = params[:id].to_s
                new_sample
              end
     
@@ -44,7 +44,7 @@ class ResourceController < ApplicationController
   
   def remove_from_basket
     if session[:basket] and params[:id]
-      session[:basket].delete_if { |sample| sample.resource_id == params[:id].to_i }
+      session[:basket].delete_if { |sample| sample.resource_id == params[:id].to_s }
     end
     redirect_to request.referer
   end
