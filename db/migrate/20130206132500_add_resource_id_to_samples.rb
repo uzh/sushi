@@ -1,6 +1,6 @@
 class AddResourceIdToSamples < ActiveRecord::Migration
   def self.up
-    add_column :samples, :resource_id, :integer, :null => false, :default => "0"
+    add_column :samples, :resource_id, :string, :null => false, :default => "0"
   end
 
   def self.down
