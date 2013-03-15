@@ -16,7 +16,7 @@
   <% else %>
     <td></td>
   <% end %>
-    <td><%= File.basename(job[6].to_s) %></td>
+    <td><%= job[6,job.length].map{|file| File.basename(file)}.join("\n") %></td>
   <% if job[6] and job[6].to_s != 'no result' %>
     <td><%= link_to 'add to plate', "/resource/add_to_basket/9999#{job[0]}" %></td>
   <% else %>
