@@ -73,7 +73,7 @@ class DataSetController < ApplicationController
   end
   
   def create
-    if data_set_name = params[:data_set_name] and sample_resource_ids = params[:sample_resource_ids].map{|i| i.to_i}
+    if data_set_name = params[:data_set_name] and sample_resource_ids = params[:sample_resource_ids].map{|i| i.to_s}
       samples = session[:basket].select{|sample| sample_resource_ids.include?(sample.resource_id)}
       samples.each_with_index do |sample,i|
         unless sample.id
@@ -88,7 +88,7 @@ class DataSetController < ApplicationController
       samples.each do |sample|
         dl = DataList.new
         dl.data_set_id = ds.id
-        dl.sample_id = sample.id.to_i
+        dl.sample_id = sample.id
         dl.save
       end
     end
