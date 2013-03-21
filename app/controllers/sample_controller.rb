@@ -35,5 +35,6 @@ class SampleController < ApplicationController
 
   def edit
     @samples = Sample.all
+    @sample = @samples[params[:id].to_i-1]
   end
 end

@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(:version => 20130206132500) do
 
   create_table "data_sets", :force => true do |t|
     t.string   "note"
+    t.string   "name"
+    t.integer  "parent_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -29,7 +31,6 @@ ActiveRecord::Schema.define(:version => 20130206132500) do
   create_table "samples", :force => true do |t|
     t.string   "name"
     t.string   "path"
-    t.integer  "parent_id"
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
     t.string   "resource_id", :default => "0", :null => false
