@@ -12,13 +12,15 @@
 <table>
 	<tr>
 		<th>ID</th>
-		<th>Note</th>
+	 	<th>Name</th>
+	 	<th>Note</th>
 		<th>Creation</th>
 		<th>Modification</th>
 	</tr>
 <% @data_sets.each do |data_set| %>
 	<tr>
 		<td><%= data_set.id %></td>
+		<td><%= data_set.name %></td>
 		<td><%= data_set.note %></td>
 		<td><%= data_set.created_at.to_s[0..9] %></td>
 		<td><%= data_set.updated_at.to_s[0..9] %></td>
