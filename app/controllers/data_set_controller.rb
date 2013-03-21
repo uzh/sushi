@@ -6,6 +6,7 @@ class DataSetController < ApplicationController
   end
   def edit
     @data_sets = DataSet.all
+    @data_set = DataSet.find_by_id(params[:id])
     @data_lists = DataList.all
     @samples = Sample.all
     @params = params
@@ -82,7 +83,7 @@ class DataSetController < ApplicationController
         end
       end
       ds = DataSet.new
-      ds.note = data_set_name
+      ds.name = data_set_name
       ds.save
       
       samples.each do |sample|
