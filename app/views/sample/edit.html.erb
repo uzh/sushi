@@ -3,12 +3,13 @@
 <hr />
 <table>
   <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Path</th>
+    <th>ID</th>           <td><%= @sample.id %></td>
+  </tr><tr>
+    <th>Name</th>         <td><%= @sample.name %></td>
+  </tr><tr>
+    <th>Path</th>         <td><%= @sample.path %></td>
+  </tr><tr>
+    <th>DataList.size</th><td><%= @sample.data_lists.size %></td>
   </tr>
-  <% @samples.each do |sample| %>
-  <tr><td><%= sample.id %></td><td><%= sample.name %></td><td><%= sample.path %></td></tr>
-  <% end %>
 </table>
 

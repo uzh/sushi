@@ -12,5 +12,5 @@ Sample.create(name: 'sample_name2', path:'/srv/GT/analysis/masaomi/sushi/work/pu
 DataList.create(data_set_id: 1, sample_id: 1)
 DataList.create(data_set_id: 2, sample_id: 2)
 DataList.create(data_set_id: 1, sample_id: 2)
-DataSet.create(note: 'data set 1')
-DataSet.create(note: 'data set 2')
+DataSet.create(name: 'data_set1', note: 'data set 1')
+DataSet.create(name: 'data_set2', note: 'data set 2')
