@@ -10,16 +10,22 @@ params <%= @params.inspect.to_s %><br /> <br />
   </tr><tr>
     <th>Note</th><td><%= @data_set.note %></td>
   </tr><tr>
-  <th>Parent DataSet</th><td><%= link_to("data_set[#{@data_set.data_set.id}]", "/data_set/#{@data_set.data_set.id}/edit") if @data_set.data_set %></td>
+  <th>Parent DataSet</th>
+  <td>
+    <% if @data_set.data_set %>
+      <%= link_to("#{@data_set.data_set.name}[#{@data_set.data_set.id}]", "/data_set/#{@data_set.data_set.id}/edit") %>
+    <% end %>
+  </td>
   </tr><tr>
     <th>Child(ren) DataSet(s)</th>
     <td>
       <% @data_set.data_sets.each do |data_set|%>
-        <%= link_to("data_set[#{data_set.id}] ","/data_set/#{data_set.id}/edit") %>
+        <%= link_to("#{data_set.name}[#{data_set.id}] ","/data_set/#{data_set.id}/edit") %>
       <% end %>
     </td>
   </tr>
 </table>
+<%= link_to("Delete Parent Relation", "/data_set/#{@data_set.id}/edit?delete_parent_id=#{@data_set.data_set.id}") if @data_set.data_set %>
 
 <hr />
 <h3>DataSets Edit (Old, this does not work)</h3>
