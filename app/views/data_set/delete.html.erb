@@ -43,10 +43,11 @@ params <%= @params.inspect.to_s %><br /> <br />
 <hr />
 <%= form_tag(:action => :delete) do %>
   <table>
-    <tr><th>ID</th><th>Note</th></tr>
+    <tr><th>ID</th><th>Name</th><th>Note</th></tr>
     <% @data_sets.each do |data_set| %>
       <tr>
         <td><%= check_box_tag "data_set_ids[]", data_set.id, false %></td>
+        <td><%= data_set.name %></td>
         <td><%= data_set.note %></td>
       </tr>
     <% end %>

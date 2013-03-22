@@ -4,6 +4,20 @@ class DataSetController < ApplicationController
     @data_lists = DataList.all
     @samples = Sample.all
   end
+  def treeviews
+    tree = []
+    node_list = {}
+    DataSet.all.each do |data_set|
+      node = {"id" => data_set.id, "text" => data_set.id.to_s+' '+data_set.name, 'path' => '', "expanded" => true, "classes" => 'file', "hasChildren" => false, "children" => []}
+      node_list[data_set.id] = node
+      if parent = data_set.data_set
+        node_list[parent.id]['children'] << node
+      else
+        tree << node
+      end
+    end
+    render :json => tree
+  end
   def edit
     if delete_parent_id = params[:delete_parent_id]
       parent_id = delete_parent_id.to_i
