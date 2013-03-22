@@ -5,6 +5,14 @@ class DataSetController < ApplicationController
     @samples = Sample.all
   end
   def edit
+    if delete_parent_id = params[:delete_parent_id]
+      parent_id = delete_parent_id.to_i
+      parent = DataSet.find_by_id(parent_id)
+      child_id =  params[:id].to_i
+      child = DataSet.find_by_id(child_id)
+      parent.data_sets.delete(child)
+    end
+
     @data_sets = DataSet.all
     @data_set = DataSet.find_by_id(params[:id])
     @data_lists = DataList.all
