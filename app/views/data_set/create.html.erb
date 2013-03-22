@@ -34,12 +34,14 @@
   <input type="submit" class="button" value="Create Data Set" />
   <label for="data_set_name">with name</label>
   <input name="data_set_name" type="text" />
+  with parent DataSet
+  <%= select :data_set, :parent, @data_sets.map{|data_set|  data_set.id.to_s + ' ' + data_set.name}.unshift(nil) %>
 </p>
 <% end %>
 
 <h3>Available Data Sets</h3>
 <% @data_sets.each do |data_set| %>
-    <h4><%= data_set.id %>) <%= data_set.note %></h4>
+    <h4><%= data_set.id %>) <%= data_set.name %></h4>
     <table>
         <tr>
             <th>Sample ID</th>

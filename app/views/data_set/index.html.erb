@@ -18,6 +18,8 @@
 		<th>ID</th>
 	 	<th>Name</th>
 	 	<th>Note</th>
+	 	<th>Parent DataSet (ID)</th>
+	 	<th>Children DataSet (IDs)</th>
 		<th>Creation</th>
 		<th>Modification</th>
 	</tr>
@@ -26,6 +28,8 @@
 		<td><%= data_set.id %></td>
 		<td><%= data_set.name %></td>
 		<td><%= data_set.note %></td>
+		<td><%= data_set.data_set.id if data_set.data_set %></td>
+    <td><%= data_set.data_sets.map{|child| child.id} if data_set.data_sets %></td>
 		<td><%= data_set.created_at.to_s[0..9] %></td>
 		<td><%= data_set.updated_at.to_s[0..9] %></td>
 	</tr>

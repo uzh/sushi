@@ -85,7 +85,12 @@ class DataSetController < ApplicationController
       ds = DataSet.new
       ds.name = data_set_name
       ds.save
-      
+      if data_set = params[:data_set] and parent = data_set[:parent] and !parent.empty?
+        id = parent.split(/ /)[0].to_i
+        parent_data_set = DataSet.find_by_id(id)
+        parent_data_set.data_sets << ds 
+      end
+     
       samples.each do |sample|
         dl = DataList.new
         dl.data_set_id = ds.id
