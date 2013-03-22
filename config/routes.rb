@@ -46,9 +46,10 @@ SushiFabric::Application.routes.draw do
       post :delete
       post :add_or_delete
       post :create
+      get :treeviews
     end
   end
-  
+
   resources :project, :only => [:index, :show]
   resources :sample, :only => [:index, :edit, :show]
   resources :extract, :only => [:show]

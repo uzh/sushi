@@ -1,6 +1,15 @@
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#data_set_tree").treeview({
+      url: "/data_set/treeviews"
+    });
+});
+</script>
+
 <%= stylesheet_link_tag "data_set" %>
-<h1>Data Structure</h1>
+<h1>DataSet Structure</h1>
 <hr />
+
 <br />
 <pre>
    (Children)
@@ -35,8 +44,12 @@
 	</tr>
 <% end %>
 </table>
+<hr />
+
+<ul id="data_set_tree" class="filetree"></ul>
 
 <hr />
+
 <h3>DataList</h3>
 <table>
 	<tr>
