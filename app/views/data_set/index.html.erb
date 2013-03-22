@@ -26,7 +26,7 @@
 <% @data_sets.each do |data_set| %>
 	<tr>
 		<td><%= data_set.id %></td>
-		<td><%= data_set.name %></td>
+    <td><%= link_to data_set.name, "/data_set/#{data_set.id}/edit" %></td>
 		<td><%= data_set.note %></td>
 		<td><%= data_set.data_set.id if data_set.data_set %></td>
     <td><%= data_set.data_sets.map{|child| child.id} if data_set.data_sets %></td>
