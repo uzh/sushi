@@ -1,5 +1,6 @@
 
-params <%= @params.inspect.to_s %><br /> <br />
+params <%= @params.inspect.to_s %><br /> 
+data_set <%= @data_set.samples.length %><br />
 <hr />
 <h3>DataSet Edit (New)</h3>
 <table>
@@ -24,4 +25,21 @@ params <%= @params.inspect.to_s %><br /> <br />
   </tr>
 </table>
 <%= link_to("Delete Parent Relation", "/data_set/#{@data_set.id}/edit?delete_parent_id=#{@data_set.data_set.id}") if @data_set.data_set %>
-
+<hr />
+<h4>Samples Table View</h4>
+<table>
+  <tr>
+    <th>ID</th>
+    <% @data_set.samples.map{|sample| sample.to_hash.keys}.flatten.uniq.each do |header| %>
+      <th><%= header %></th>
+    <% end %>
+  </tr>
+  <% @data_set.samples.each do |sample| %>
+    <tr>
+      <td><%= sample.id %></td>
+      <% @data_set.samples.map{|sample| sample.to_hash.keys}.flatten.uniq.each do |header| %>
+        <td><%= File.basename(sample.to_hash[header].to_s) %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
