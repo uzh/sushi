@@ -1,8 +1,8 @@
-
+<h4>Debug Print</h4>
 params <%= @params.inspect.to_s %><br /> 
 data_set <%= @data_set.samples.length %><br />
 <hr />
-<h3>DataSet Edit (New)</h3>
+<h3>DataSet Edit</h3>
 <table>
   <tr>
     <th>ID</th><td><%= @data_set.id %></td>
@@ -13,6 +13,11 @@ data_set <%= @data_set.samples.length %><br />
   <td>
     <% if @data_set.data_set %>
       <%= link_to("#{@data_set.data_set.name}[#{@data_set.data_set.id}]", "/data_set/#{@data_set.data_set.id}/edit") %>
+    <% else %>
+      <%= form_tag({:action => :edit}, {:method => :get}) do %>
+        <%= select :parent, :data_set_id, @data_sets.select{|data_set| data_set!=@data_set}.map{|data_set| [data_set.name, data_set.id]} %>
+      <%= submit_tag 'create parent link' %>
+      <% end %>
     <% end %>
   </td>
   </tr><tr>

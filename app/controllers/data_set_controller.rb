@@ -33,7 +33,13 @@ class DataSetController < ApplicationController
     render :json => tree
   end
   def edit
-=begin
+    if parent = params[:parent] and parent_id = parent[:data_set_id]
+      parent = DataSet.find_by_id(parent_id.to_i)
+      child_id =  params[:id].to_i
+      child = DataSet.find_by_id(child_id)
+      parent.data_sets << child
+      parent.save
+    end
     if delete_parent_id = params[:delete_parent_id]
       parent_id = delete_parent_id.to_i
       parent = DataSet.find_by_id(parent_id)
@@ -41,7 +47,6 @@ class DataSetController < ApplicationController
       child = DataSet.find_by_id(child_id)
       parent.data_sets.delete(child)
     end
-=end
     @data_sets = DataSet.all
     @data_set = DataSet.find_by_id(params[:id])
     @samples = Sample.all
