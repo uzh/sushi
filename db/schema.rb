@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20130206132500) do
   end
 
   create_table "samples", :force => true do |t|
+    t.integer  "data_set_id"
     t.string   "key_value"
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false

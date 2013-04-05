@@ -7,6 +7,7 @@ class DataSetController < ApplicationController
         sample = row.to_hash.to_s
         new_sample = Sample.new
         new_sample.key_value = row.to_hash.to_s
+        #new_sample.save unless new_sample.saved?
         @data_set.samples << new_sample
       end
       if data_set = params[:data_set] and data_set_name = data_set[:name]
@@ -32,6 +33,7 @@ class DataSetController < ApplicationController
     render :json => tree
   end
   def edit
+=begin
     if delete_parent_id = params[:delete_parent_id]
       parent_id = delete_parent_id.to_i
       parent = DataSet.find_by_id(parent_id)
@@ -39,7 +41,7 @@ class DataSetController < ApplicationController
       child = DataSet.find_by_id(child_id)
       parent.data_sets.delete(child)
     end
-
+=end
     @data_sets = DataSet.all
     @data_set = DataSet.find_by_id(params[:id])
     @samples = Sample.all
