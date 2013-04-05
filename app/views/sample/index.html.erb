@@ -1,12 +1,29 @@
-<h3>Samples</h3>
+<h3>Samples (Raw Data View)</h3>
 <table>
   <tr>
     <th>ID</th>
-    <th>Name</th>
-    <th>Path</th>
+    <th>Key-Value</th>
   </tr>
   <% @samples.each do |sample| %>
-  <tr><td><%= sample.id %></td><td><%= sample.name %></td><td><%= sample.path %></td></tr>
+  <tr><td><%= sample.id %></td><td><%= sample.key_value %></td></tr>
+  <% end %>
+</table>
+<hr />
+<h3>Table View</h3>
+<table>
+  <tr>
+    <th>ID</th>
+    <% @samples.map{|sample| sample.to_hash.keys}.flatten.uniq.each do |header| %>
+      <th><%= header %></th>
+    <% end %>
+  </tr>
+  <% @samples.each do |sample| %>
+    <tr>
+      <td><%= sample.id %></td>
+      <% @samples.map{|sample| sample.to_hash.keys}.flatten.uniq.each do |header| %>
+        <td><%= File.basename(sample.to_hash[header].to_s) %></td>
+      <% end %>
+    </tr>
   <% end %>
 </table>
 

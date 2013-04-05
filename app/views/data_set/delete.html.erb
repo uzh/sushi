@@ -7,12 +7,11 @@ params <%= @params.inspect.to_s %><br /> <br />
 <hr />
 <%= form_tag(:action => :delete) do %>
   <table>
-    <tr><th>ID</th><th>Name</th><th>Path</th></tr>
+    <tr><th>ID</th><th>Name</th></tr>
     <% @samples.each do |sample| %>
       <tr>
         <td><%= check_box_tag "sample_ids[]", sample.id, false %></td>
-        <td><%= sample.name %></td>
-        <td><%= sample.path %></td>
+        <td><%= sample.to_hash['Sample'] %></td>
       </tr>
     <% end %>
   </table>
@@ -21,34 +20,15 @@ params <%= @params.inspect.to_s %><br /> <br />
   <%= submit_tag 'Delete Sample(s)' %>
 <% end %>
 <hr />
-<h3>DataList Delete (Test)</h3>
-<hr />
-<%= form_tag(:action => :delete) do %>
-  <table>
-    <tr><th>ID</th><th>DataSet ID</th><th>Sample ID</th></tr>
-    <% @data_lists.each do |data_list| %>
-      <tr>
-        <td><%= check_box_tag "data_list_ids[]", data_list.id, false %></td>
-        <td><%= data_list.data_set_id %></td>
-        <td><%= data_list.sample_id %></td>
-      </tr>
-    <% end %>
-  </table>
-  <br />
-  <br />
-  <%= submit_tag 'Delete DataList(s)' %>
-<% end %>
-<hr />
 <h3>DataSet Delete (Test)</h3>
 <hr />
 <%= form_tag(:action => :delete) do %>
   <table>
-    <tr><th>ID</th><th>Name</th><th>Note</th></tr>
+    <tr><th>ID</th><th>Name</th></tr>
     <% @data_sets.each do |data_set| %>
       <tr>
         <td><%= check_box_tag "data_set_ids[]", data_set.id, false %></td>
         <td><%= data_set.name %></td>
-        <td><%= data_set.note %></td>
       </tr>
     <% end %>
   </table>
