@@ -12,21 +12,35 @@ $(document).ready(function(){
 
 <br />
 <pre>
+        Project
+          |1 
+          |
+          |*
    (Children)
   +--* DataSet 1------* Sample
+  |    @name:String     @key_value:String(hash compatible)
+  |    #to_csv          #to_hash 
   |       1 (Parent)
   |       |
   +-------+
 </pre>
 <br />
-
+<hr />
+<h4>Debug Print</h4>
+<%= params %>
+<hr />
+<h3>CSV file import</h3>
+<%= form_tag('/data_set', :multipart => true) do %>
+<%= file_field :csv_file, :name %>
+DataSet Name: <%= text_field :data_set, :name %>
+<%= submit_tag 'load' %>
+<% end %>
 <hr />
 <h3>DataSet</h3>
 <table>
 	<tr>
 		<th>ID</th>
 	 	<th>Name</th>
-	 	<th>Note</th>
 	 	<th>Parent DataSet (ID)</th>
 	 	<th>Children DataSet (IDs)</th>
 		<th>Creation</th>
@@ -53,12 +67,14 @@ $(document).ready(function(){
 <table>
 	<tr>
 		<th>ID</th>
+    <th>Name</th>
 		<th>Creation</th>
 		<th>Modification</th>
 	</tr>
 <% @samples.each do |sample| %>
     <tr>
         <td><%= sample.id %></td>
+        <td><%= sample.to_hash['Sample']%></td>
         <td><%= sample.created_at.to_s[0..9] %></td>
         <td><%= sample.updated_at.to_s[0..9] %></td>
     </tr>

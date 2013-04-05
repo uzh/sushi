@@ -1,5 +1,19 @@
 class DataSetController < ApplicationController
   def index
+    if file = params[:csv_file] and file_io = file[:name]
+      csv = CSV.readlines(file_io.path, :headers => true)
+      @data_set = DataSet.new
+      csv.each do |row|
+        sample = row.to_hash.to_s
+        new_sample = Sample.new
+        new_sample.key_value = row.to_hash.to_s
+        @data_set.samples << new_sample
+      end
+      if data_set = params[:data_set] and data_set_name = data_set[:name]
+        @data_set.name = data_set_name
+      end
+      @data_set.save unless @data_set.saved?
+    end
     @data_sets = DataSet.all
     @samples = Sample.all
   end

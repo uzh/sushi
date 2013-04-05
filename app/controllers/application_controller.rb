@@ -1,5 +1,6 @@
 require 'savon'
 require 'bfabric'
+require 'csv'
 
 # TODO: why also has to force it from here?
 module Savon
