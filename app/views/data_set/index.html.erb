@@ -13,7 +13,7 @@ $(document).ready(function(){
 <br />
 <pre>
    (Children)
-  +--* DataSet *-------1 DataList 1------* Sample
+  +--* DataSet 1------* Sample
   |       1 (Parent)
   |       |
   +-------+
@@ -36,7 +36,6 @@ $(document).ready(function(){
 	<tr>
 		<td><%= data_set.id %></td>
     <td><%= link_to data_set.name, "/data_set/#{data_set.id}/edit" %></td>
-		<td><%= data_set.note %></td>
 		<td><%= data_set.data_set.id if data_set.data_set %></td>
     <td><%= data_set.data_sets.map{|child| child.id} if data_set.data_sets %></td>
 		<td><%= data_set.created_at.to_s[0..9] %></td>
@@ -50,66 +49,19 @@ $(document).ready(function(){
 
 <hr />
 
-<h3>DataList</h3>
-<table>
-	<tr>
-		<th>ID</th>
-		<th>DataSet ID</th>
-		<th>Sample ID</th>
-		<th>Creation</th>
-		<th>Modification</th>
-	</tr>
-<% @data_lists.each do |data_list| %>
-    <tr>
-        <td><%= data_list.id %></td>
-        <td><%= data_list.data_set_id %></td>
-        <td><%= data_list.sample_id %></td>
-        <td><%= data_list.created_at.to_s[0..9] %></td>
-        <td><%= data_list.updated_at.to_s[0..9] %></td>
-    </tr>
-<% end %>
-</table>
-
-<hr />
 <h3>Sample</h3>
 <table>
 	<tr>
 		<th>ID</th>
-		<th>Name</th>
-		<th>Path</th>
-    <th>ResourceID</th>
 		<th>Creation</th>
 		<th>Modification</th>
 	</tr>
 <% @samples.each do |sample| %>
     <tr>
         <td><%= sample.id %></td>
-        <td><%= sample.name %></td>
-        <td><%= sample.path %></td>
-        <td><%= sample.resource_id %></td>
         <td><%= sample.created_at.to_s[0..9] %></td>
         <td><%= sample.updated_at.to_s[0..9] %></td>
     </tr>
 <% end %>
 </table>
 
-
-<hr />
-<h1>DataSets (Combined)</h1>
-<% @data_sets.each do |data_set| %>
-    <p>[<%= data_set.id %>] <%= data_set.name %></p>
-    <table>
-        <tr>
-            <th>Sample ID</th>
-            <th>Sample Name</th>
-            <th>Sample Path</th>
-        </tr>
-    <% data_set.data_lists.each do |data_list| %>
-	    <tr>
-            <td><%= data_list.sample.id %></td>
-            <td><%= data_list.sample.name %></td>
-            <td><%= data_list.sample.path %></td>
-        </tr>
-  <% end %>
-    </table>
-<% end %>
