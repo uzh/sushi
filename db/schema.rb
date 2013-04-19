@@ -11,29 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130206132500) do
-
-  create_table "data_lists", :force => true do |t|
-    t.integer  "data_set_id"
-    t.integer  "sample_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
+ActiveRecord::Schema.define(:version => 20130419041027) do
 
   create_table "data_sets", :force => true do |t|
-    t.string   "note"
     t.string   "name"
-    t.integer  "parent_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   create_table "samples", :force => true do |t|
-    t.string   "name"
-    t.string   "path"
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
-    t.string   "resource_id", :default => "0", :null => false
+    t.string   "key_value"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

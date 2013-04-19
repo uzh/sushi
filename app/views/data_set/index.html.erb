@@ -1,115 +1,42 @@
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#data_set_tree").treeview({
-      url: "/data_set/treeviews"
-    });
-});
-</script>
-
-<%= stylesheet_link_tag "data_set" %>
-<h1>DataSet Structure</h1>
-<hr />
-
-<br />
-<pre>
-   (Children)
-  +--* DataSet *-------1 DataList 1------* Sample
-  |       1 (Parent)
-  |       |
-  +-------+
-</pre>
-<br />
-
-<hr />
 <h3>DataSet</h3>
+<br />
+<h4>Debug print</h4>
+<%= params %>
+<br />
+<h4>File selection</h4>
+<%= form_tag('/data_set', :multipart => true) do %>
+<%= file_field :file, :name %>
+<%= submit_tag 'load' %>
+<% end %>
+
+<hr />
+<h4>All Sample</h4>
+<% Sample.all.each do |sample| %>
+  <%= sample.to_hash.to_a.flatten %><br />
+<% end %>
+<h4>All Data Set</h4>
 <table>
-	<tr>
-		<th>ID</th>
-	 	<th>Name</th>
-	 	<th>Note</th>
-	 	<th>Parent DataSet (ID)</th>
-	 	<th>Children DataSet (IDs)</th>
-		<th>Creation</th>
-		<th>Modification</th>
-	</tr>
-<% @data_sets.each do |data_set| %>
-	<tr>
-		<td><%= data_set.id %></td>
-    <td><%= link_to data_set.name, "/data_set/#{data_set.id}/edit" %></td>
-		<td><%= data_set.note %></td>
-		<td><%= data_set.data_set.id if data_set.data_set %></td>
-    <td><%= data_set.data_sets.map{|child| child.id} if data_set.data_sets %></td>
-		<td><%= data_set.created_at.to_s[0..9] %></td>
-		<td><%= data_set.updated_at.to_s[0..9] %></td>
-	</tr>
+<% DataSet.all.each do |data_set| %>
+  <tr><td><%= data_set.id %></td><td><%= button_to 'Save CSV', :action=>:save_as_csv, :data_set_id=>data_set.id %></td></tr>
 <% end %>
 </table>
+<br />
+<h4>Loaded Data Set</h4>
 <hr />
-
-<ul id="data_set_tree" class="filetree"></ul>
-
-<hr />
-
-<h3>DataList</h3>
+<% if @data_set %>
 <table>
-	<tr>
-		<th>ID</th>
-		<th>DataSet ID</th>
-		<th>Sample ID</th>
-		<th>Creation</th>
-		<th>Modification</th>
-	</tr>
-<% @data_lists.each do |data_list| %>
+  <tr>
+    <% @data_set.headers.each do |header| %>
+      <th><%= header %></th>
+    <% end %>
+  </tr>
+  <% @data_set.samples.each do |sample| %>
     <tr>
-        <td><%= data_list.id %></td>
-        <td><%= data_list.data_set_id %></td>
-        <td><%= data_list.sample_id %></td>
-        <td><%= data_list.created_at.to_s[0..9] %></td>
-        <td><%= data_list.updated_at.to_s[0..9] %></td>
+      <% @data_set.headers.each do |header| %>
+        <td><%= File.basename(sample.to_hash[header].to_s) %></td>
+      <% end %>
     </tr>
-<% end %>
-</table>
-
-<hr />
-<h3>Sample</h3>
-<table>
-	<tr>
-		<th>ID</th>
-		<th>Name</th>
-		<th>Path</th>
-    <th>ResourceID</th>
-		<th>Creation</th>
-		<th>Modification</th>
-	</tr>
-<% @samples.each do |sample| %>
-    <tr>
-        <td><%= sample.id %></td>
-        <td><%= sample.name %></td>
-        <td><%= sample.path %></td>
-        <td><%= sample.resource_id %></td>
-        <td><%= sample.created_at.to_s[0..9] %></td>
-        <td><%= sample.updated_at.to_s[0..9] %></td>
-    </tr>
-<% end %>
-</table>
-
-
-<hr />
-<h1>DataSets (Combined)</h1>
-<% @data_sets.each do |data_set| %>
-    <p>[<%= data_set.id %>] <%= data_set.name %></p>
-    <table>
-        <tr>
-            <th>Sample ID</th>
-            <th>Sample Name</th>
-            <th>Sample Path</th>
-        </tr>
-    <% data_set.data_lists.each do |data_list| %>
-	    <tr>
-            <td><%= data_list.sample.id %></td>
-            <td><%= data_list.sample.name %></td>
-            <td><%= data_list.sample.path %></td>
-        </tr>
   <% end %>
-    </table>
+</table>
 <% end %>
+
