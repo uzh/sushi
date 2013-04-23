@@ -12,4 +12,5 @@ class Sample < ActiveRecord::Base
       false
     end
   end
+
 end
