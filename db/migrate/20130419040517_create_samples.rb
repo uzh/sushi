@@ -2,6 +2,7 @@ class CreateSamples < ActiveRecord::Migration
   def change
     create_table :samples do |t|
       t.string :key_value
+      t.integer :data_set_id
 
       t.timestamps
     end
