@@ -33,12 +33,7 @@ SushiFabric::Application.routes.draw do
   resources :data_set do
     collection do
       post :index
-      get :edit
-      post :add
-      post :delete
-      post :add_or_delete
-      post :create
-      get :treeviews
+      post :save_as_csv
     end
   end
 
