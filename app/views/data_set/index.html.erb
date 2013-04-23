@@ -12,14 +12,15 @@ DataSet Name: <%= text_field :dataset, :name %>
 <% end %>
 
 <hr />
-<h4>All Sample</h4>
+<h4>All Sample (All Project)</h4>
 <% Sample.all.each do |sample| %>
   <%= sample.to_hash.to_a.flatten %><br />
 <% end %>
 <h4>All Data Set ( Project <%= session[:project] %> )</h4>
 <table>
+  <tr><th>ID</th><th>Name</th><th>MD5</th></tr>
 <% @project.data_sets.each do |data_set| %>
-  <tr><td>ID <%= data_set.id %></td><td><%= data_set.name %></td><td><%= data_set.md5 %></td><td><%= button_to 'Save CSV', :action=>:save_as_csv, :data_set_id=>data_set.id %></td></tr>
+  <tr><td>ID <%= data_set.id %></td><td><%= data_set.name %></td><td><%= data_set.md5 %></td><td><!--<%= button_to 'Save CSV', :action=>:save_as_csv, :data_set_id=>data_set.id %>--></td></tr>
 <% end %>
 </table>
 <br />
