@@ -45,6 +45,9 @@ SushiFabric::Application.routes.draw do
   match "/resource/remove_from_basket/:id" => "resource#remove_from_basket"
   
   resources :run_application, :only => [:index] do
+    collection do 
+      post :set_parameters
+    end
   end
 
   # The priority is based upon order of creation:
