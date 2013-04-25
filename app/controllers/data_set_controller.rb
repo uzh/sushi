@@ -33,7 +33,7 @@ class DataSetController < ApplicationController
 	
         unless @data_set.saved?
           @project.data_sets << @data_set
-	  @parent_data_set.data_sets << @data_set
+	  @parent_data_set.data_sets << @data_set if @parent_data_set
           @data_set.save 
         end
       end
