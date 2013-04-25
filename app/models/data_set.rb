@@ -18,8 +18,8 @@ class DataSet < ActiveRecord::Base
     key_value = self.samples.map{|sample| sample.key_value}.join
     Digest::MD5.hexdigest(key_value)
   end
-  def to_csv(file_path)
-    CSV.open(file_path, 'w') do |out|
+  def to_tsv(file_path)
+    CSV.open(file_path, 'w', :col_sep=>"\t") do |out|
       out << headers
       self.samples.each do |sample|
         out << headers.map{|header| sample.to_hash[header]}
