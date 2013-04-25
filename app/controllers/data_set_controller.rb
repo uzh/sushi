@@ -17,6 +17,12 @@ class DataSetController < ApplicationController
         else
           @data_set.name = 'DataSet ' + (DataSet.all.length+1).to_s
         end
+	if parent = params[:parent] and parent_id = parent[:id]
+	  if parent_data_set = DataSet.find_by_id(parent_id.to_i)
+	    @data_set.parent_id = parent_id.to_i
+	    parent_data_set.data_sets << @data_set
+	  end
+	end
         data_set_tsv.each do |row|
           sample = Sample.new
           sample.key_value = row.to_hash.to_s

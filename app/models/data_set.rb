@@ -16,7 +16,7 @@ class DataSet < ActiveRecord::Base
     end
   end
   def md5hexdigest
-    key_value = self.samples.map{|sample| sample.key_value}.join
+    key_value = self.samples.map{|sample| sample.key_value}.join + self.parent_id.to_s + self.project_id.to_s
     Digest::MD5.hexdigest(key_value)
   end
   def export_tsv(file_path)
