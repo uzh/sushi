@@ -1,6 +1,7 @@
 class DataSet < ActiveRecord::Base
   attr_accessible :name, :md5
   has_many :samples
+  belongs_to :data_set
 
   def headers
     self.samples.map{|sample| sample.to_hash.keys}.flatten.uniq
