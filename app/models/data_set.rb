@@ -27,12 +27,4 @@ class DataSet < ActiveRecord::Base
       end
     end
   end
-  def to_arr
-    arr = []
-    arr << headers
-    self.samples.each do |sample|
-      arr << headers.map{|header| sample.to_hash[header]}
-    end
-    arr
-  end
 end
