@@ -33,7 +33,7 @@ SushiFabric::Application.routes.draw do
   resources :data_set do
     collection do
       post :index
-      post :save_as_csv
+      post :save_as_tsv
     end
   end
 

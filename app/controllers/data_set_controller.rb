@@ -8,8 +8,8 @@ class DataSetController < ApplicationController
         @project.number = session[:project].to_i
         @project.save
       end
-      if file = params[:file] and csv = file[:name]
-        data_set_csv = CSV.readlines(csv.path, :headers => true)
+      if file = params[:file] and tsv = file[:name]
+        data_set_tsv = CSV.readlines(tsv.path, :headers => true, :col_sep=>"\t")
 
         @data_set = DataSet.new
         if dataset = params[:dataset] and dataset_name = dataset[:name]
@@ -17,7 +17,7 @@ class DataSetController < ApplicationController
         else
           @data_set.name = 'DataSet ' + (DataSet.all.length+1).to_s
         end
-        data_set_csv.each do |row|
+        data_set_tsv.each do |row|
           sample = Sample.new
           sample.key_value = row.to_hash.to_s
           sample.save unless sample.saved?
@@ -32,20 +32,20 @@ class DataSetController < ApplicationController
     end
   end
 
-  def save_as_csv
+  def save_as_tsv
     project_dir = Dir.pwd
-    data_set_csv = File.join(project_dir, 'public/test_dataset.csv')
+    data_set_tsv = File.join(project_dir, 'public/test_dataset.tsv')
     if id = params[:id] and data_set = DataSet.find_by_id(id)
 =begin
-      CSV.open(data_set_csv, 'w') do |csv|
-        csv << data_set.headers
+      CSV.open(data_set_tsv, 'w', :col_sep=>"\t") do |tsv|
+        tsv << data_set.headers
         new_data_set.new_samples.each do |sample|
           row = []
           row_hash = sample.to_hash
           data_set.headers.each do |header|
             row << row_hash[header]
           end 
-          csv << row
+          tsv << row
         end
       end
 =end
