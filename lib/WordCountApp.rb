@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130419-101514'
+Version = '20130425-103511'
 
-require './sushiApp'
+require 'sushiApp'
 
 class WordCountApp < SushiApp
   def initialize

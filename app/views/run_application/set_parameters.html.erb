@@ -1,0 +1,23 @@
+<h1>Project <%= session[:project] %></h1>
+<hr />
+<h3> debug print </h3>
+params <%= @params.inspect.to_s %><br /><br />
+sushi_app class <%= @sushi_app.class %><br /><br />
+<hr />
+<%= form_tag(:action => 'confirmation') do %>
+  <%= hidden_field :sushi_app, :class, :value => @sushi_app.class %>
+  <%= hidden_field :data_set, :id, :value => @data_set.id %>
+  <h3>Parameters</h3>
+    <table>
+      <% @sushi_app.params.each do |key, param| %>
+        <tr>
+          <th><%= key %></th>
+          <td><%= text_field :parameters, key.to_sym, :value => "#{param.value}" %></td>
+        </tr>
+      <% end %>
+    </table>
+  <br />
+  <br />
+  <%= submit_tag 'Next' %>
+<% end %>
+
