@@ -12,6 +12,7 @@ class DataSetController < ApplicationController
         data_set_tsv = CSV.readlines(tsv.path, :headers => true, :col_sep=>"\t")
 
         @data_set = DataSet.new
+	@data_set.project = @project
         if dataset = params[:dataset] and dataset_name = dataset[:name]
           @data_set.name = dataset_name
         else
@@ -23,9 +24,16 @@ class DataSetController < ApplicationController
           sample.save unless sample.saved?
           @data_set.samples << sample
         end
+
+	if parent = params[:parent] and parent_id = parent[:id] and @parent_data_set = DataSet.find_by_id(parent_id.to_i)
+	  @data_set.data_set = @parent_data_set
+	end
+
         @data_set.md5 = @data_set.md5hexdigest
+	
         unless @data_set.saved?
           @project.data_sets << @data_set
+	  @parent_data_set.data_sets << @data_set if @parent_data_set
           @data_set.save 
         end
       end
