@@ -6,9 +6,9 @@
   <table>
     <tr><th>Data Set</th><th>Application</th></tr
     <tr><td>
-    <%= select :dataset, :id, @data_sets.map{|data_set| [data_set.name, data_set.id]} %>
+    <%= select :data_set, :id, @data_sets.map{|data_set| [data_set.name, data_set.id]} %>
     </td><td>
-    <%= select :script, :path, @job_scripts.map{|script| [File.basename(script).gsub(/\.sh/,''), script]} %>
+    <%= select :sushi_app, :class, @sushi_apps.map{|app| [app, app]} %>
     </td></tr>
   </table>
   <br />

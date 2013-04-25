@@ -1,0 +1,15 @@
+<h1>Project <%= session[:project] %></h1>
+<hr />
+<h3> debug print </h3>
+params <%= @params.inspect.to_s %><br /><br />
+sushi_app class <%= @sushi_app.class %><br /><br />
+<h2>Data Set</h2>
+<h2>Parameters</h2>
+<table>
+<% @sushi_app.params.each do |key, param| %>
+  <tr>
+    <th><%= key %></th>
+    <td><%= param.value %></td>
+  </tr>
+<% end %>
+</table>
