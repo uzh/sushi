@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130425-085436'
+Version = '20130425-114011'
 
 require 'csv'
 require 'fileutils'
 require 'active_record'
 
-SUSHI_APP_DIR='/srv/GT/analysis/masaomi/sushi/test_new_data_set'
+SUSHI_APP_DIR='/srv/GT/analysis/masaomi/sushi/work'
 SUSHI_DB_TYPE='sqlite3'
 WORKSPACE_DIR='/srv/GT/analysis/masaomi/sushi/sushi_launch_box/gstore/sushi'
 #WORKSPACE_DIR='/srv/gstore/projects'
@@ -24,6 +24,7 @@ class SushiApp
   attr_accessor :dataset_tsv_file
   attr_accessor :parameterset_tsv_file
   attr_accessor :dataset_sushi_id
+  attr_reader :job_ids
   def initialize
     @workspace = WORKSPACE_DIR ## will be on g-store; writable by sushi
     @project = "p999"
@@ -171,6 +172,7 @@ rm -rf $SCRATCH_DIR
     ## sushi writes creates the job scripts and builds the result data set that is to be generated
     @result_dataset = []
     @job_scripts = []
+    @job_ids = []
     if @params['process_mode'].value == 'SAMPLE'
       @dataset_hash.each do |row|
         @dataset = row
@@ -185,7 +187,8 @@ rm -rf $SCRATCH_DIR
         @result_dataset << output
       end
       @job_scripts.each do |job_script|
-        print "Submit job #{File.basename(job_script)} job_id=#{submit(job_script)}"
+        #print "Submit job #{File.basename(job_script)} job_id=#{submit(job_script)}"
+        @job_ids << submit(job_script).chomp
       end
     elsif @params['process_mode'].value == 'DATASET'
       # This should be implemented in a subclass (Application class)
@@ -193,11 +196,11 @@ rm -rf $SCRATCH_DIR
       #stop
     end
 
-		puts
-    print 'job scripts: '
-    p @job_scripts
-    print 'result dataset: '
-    p @result_dataset
+		#puts
+    #print 'job scripts: '
+    #p @job_scripts
+    #print 'result dataset: '
+    #p @result_dataset
 
     save_params_as_tsv
     save_input_dataset_as_tsv

@@ -1,9 +1,24 @@
 <h1>Project <%= session[:project] %></h1>
 <hr />
+<h2>Confirmation</h2>
 <h3> debug print </h3>
 params <%= @params.inspect.to_s %><br /><br />
 sushi_app class <%= @sushi_app.class %><br /><br />
-<h2>Data Set</h2>
+<h2>Data Sets</h2>
+<table>
+  <tr>
+    <% @data_set.headers.each do |header| %>
+      <th><%= header %></th>
+    <% end %>
+  </tr>
+  <% @data_set.samples.each do |sample| %>
+    <tr>
+      <% @data_set.headers.each do |header| %>
+        <td><%= File.basename(sample.to_hash[header].to_s) %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
 <h2>Parameters</h2>
 <table>
 <% @sushi_app.params.each do |key, param| %>
@@ -13,3 +28,12 @@ sushi_app class <%= @sushi_app.class %><br /><br />
   </tr>
 <% end %>
 </table>
+<br />
+<%= form_tag(:action => 'submit_jobs') do %>
+  <%= hidden_field :sushi_app, :class, :value => @sushi_app.class %>
+  <%= hidden_field :data_set, :id, :value => @data_set.id %>
+  <% @sushi_app.params.each do |key, param| %>
+    <%= hidden_field :parameters, key.to_sym, :value => param.value %>
+  <% end %>
+  <%= submit_tag 'Submit' %>
+<% end %>
