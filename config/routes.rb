@@ -33,7 +33,7 @@ SushiFabric::Application.routes.draw do
   resources :data_set do
     collection do
       post :index
-      post :save_as_csv
+      post :save_as_tsv
     end
   end
 
@@ -44,6 +44,14 @@ SushiFabric::Application.routes.draw do
   match "/resource/add_to_basket/:id" => "resource#add_to_basket"
   match "/resource/remove_from_basket/:id" => "resource#remove_from_basket"
   
+  resources :run_application, :only => [:index] do
+    collection do 
+      post :set_parameters
+      post :confirmation
+      post :submit_jobs
+    end
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
