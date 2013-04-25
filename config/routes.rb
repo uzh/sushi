@@ -48,6 +48,7 @@ SushiFabric::Application.routes.draw do
     collection do 
       post :set_parameters
       post :confirmation
+      post :submit_jobs
     end
   end
 
