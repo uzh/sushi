@@ -7,7 +7,8 @@
 <h4>File selection</h4>
 <%= form_tag('/data_set', :multipart => true) do %>
 <%= file_field :file, :name %>
-DataSet Name: <%= text_field :dataset, :name %>
+DataSet Name: <%= text_field :dataset, :name, :size=>10 %>
+Parent DataSet ID: <%= text_field :parent, :id, :size=>10 %>
 <%= submit_tag 'load' %>
 <% end %>
 

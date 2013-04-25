@@ -1,6 +1,7 @@
 class DataSet < ActiveRecord::Base
   attr_accessible :name, :md5
   has_many :samples
+  belongs_to :project
   has_many :data_sets, :foreign_key => :parent_id
   belongs_to :data_set, :foreign_key => :parent_id
 
@@ -15,11 +16,11 @@ class DataSet < ActiveRecord::Base
     end
   end
   def md5hexdigest
-    key_value = self.samples.map{|sample| sample.key_value}.join
+    key_value = self.samples.map{|sample| sample.key_value}.join + self.parent_id.to_s + self.project_id.to_s
     Digest::MD5.hexdigest(key_value)
   end
-  def to_csv(file_path)
-    CSV.open(file_path, 'w') do |out|
+  def export_tsv(file_path)
+    CSV.open(file_path, 'w', :col_sep=>"\t") do |out|
       out << headers
       self.samples.each do |sample|
         out << headers.map{|header| sample.to_hash[header]}
