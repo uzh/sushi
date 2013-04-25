@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(:version => 20130419120339) do
 
   create_table "data_sets", :force => true do |t|
     t.integer  "project_id"
+    t.integer  "parent_id"
     t.string   "name"
     t.string   "md5"
     t.datetime "created_at", :null => false
