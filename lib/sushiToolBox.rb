@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 module SushiToolBox
-Version = '20130430-132046'
+Version = '20130502-143121'
 
 #require "active_record"
 require 'pp'
@@ -23,7 +23,7 @@ require 'csv'
     data_set_hash = Hash[*data_set_arr]
     if project = Project.find_by_number(data_set_hash['ProjectNumber'].to_i)
       data_set = DataSet.new
-      data_set.name = data_set_hash['Name']
+      data_set.name = data_set_hash['DataSetName']
       data_set.project = project
       if parent_id = data_set_hash['ParentID'] and parent_data_set = DataSet.find_by_id(parent_id.to_i)
         data_set.data_set = parent_data_set
