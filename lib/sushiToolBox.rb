@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 module SushiToolBox
-Version = '20130502-143121'
+Version = '20130502-151016'
 
-#require "active_record"
 require 'pp'
 require 'csv'
 
 
+#require "active_record"
 #  SUSHI_APP_DIR='/srv/GT/analysis/masaomi/sushi/work_party'
 
 #  ActiveRecord::Base.establish_connection(
@@ -49,7 +49,6 @@ require 'csv'
 
     end
   end
-
 end
 
 include SushiToolBox

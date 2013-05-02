@@ -1,39 +1,4 @@
 class DataSetController < ApplicationController
-
-=begin
- def save_data_set(data_set_arr, headers, rows)
-    data_set_hash = Hash[*data_set_arr]
-    if project = Project.find_by_number(data_set_hash['ProjectNumber'].to_i)
-      data_set = DataSet.new
-      data_set.name = data_set_hash['Name']
-      data_set.project = project
-      if parent_id = data_set_hash['ParentID'] and parent_data_set = DataSet.find_by_id(parent_id.to_i)
-        data_set.data_set = parent_data_set
-      end
-
-      sample_hash = {}
-      rows.each do |row|
-        headers.each_with_index do |header, i|
-         sample_hash[header]=row[i]
-        end
-        sample = Sample.new
-        sample.key_value = sample_hash.to_s
-        unless sample.saved?
-          sample.save unless sample.saved?
-        end
-        data_set.samples << sample
-      end
-
-      data_set.md5 = data_set.md5hexdigest
-      unless data_set.saved?
-        project.data_sets << data_set
-        parent_data_set.data_sets << data_set if parent_data_set
-        data_set.save
-      end
-
-    end
-  end
-=end
   def index
     params[:project] = session[:project]
 
@@ -45,18 +10,17 @@ class DataSetController < ApplicationController
       end
 
       if file = params[:file] and tsv = file[:name]
-        data_set_set = false
+        multi_data_sets = false
         open(tsv.path) do |input|
           while line=input.gets
             if line =~ /ProjectNumber/
-              data_set_set = true
+              multi_data_sets = true
               break
             end
           end
         end
         
-        if data_set_set
-
+        if multi_data_sets
           csv = CSV.readlines(tsv.path, :col_sep=>"\t")
           data_set = []
           headers = []
@@ -71,42 +35,32 @@ class DataSetController < ApplicationController
             else
               save_data_set(data_set, headers, rows)
             end
-
             if row.empty?
               data_set = []
               headers = []
               rows = []
             end
           end
-
         else
           data_set_tsv = CSV.readlines(tsv.path, :headers => true, :col_sep=>"\t")
 
-          @data_set = DataSet.new
-          @data_set.project = @project
+          data_set = []
+          headers = data_set_tsv.headers
+          rows = []
+          data_set << "DataSetName"
           if dataset = params[:dataset] and dataset_name = dataset[:name]
-            @data_set.name = dataset_name
+            data_set << dataset_name
           else
-            @data_set.name = 'DataSet ' + (DataSet.all.length+1).to_s
+            data_set << "DataSet " + (DataSet.all.length+1).to_s
+          end
+          data_set << "ProjectNumber" << @project.number
+          if parent = params[:parent] and parent_id = parent[:id] and parent_data_set = DataSet.find_by_id(parent_id.to_i)
+            data_set << "ParentID" << parent_data_set.id
           end
           data_set_tsv.each do |row|
-            sample = Sample.new
-            sample.key_value = row.to_hash.to_s
-            sample.save unless sample.saved?
-            @data_set.samples << sample
+            rows << row.fields
           end
-
-          if parent = params[:parent] and parent_id = parent[:id] and @parent_data_set = DataSet.find_by_id(parent_id.to_i)
-            @data_set.data_set = @parent_data_set
-          end
-
-          @data_set.md5 = @data_set.md5hexdigest
-    
-          unless @data_set.saved?
-            @project.data_sets << @data_set
-            @parent_data_set.data_sets << @data_set if @parent_data_set
-            @data_set.save 
-          end
+          save_data_set(data_set, headers, rows)
         end
       end
     end
