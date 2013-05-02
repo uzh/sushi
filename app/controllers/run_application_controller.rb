@@ -1,6 +1,6 @@
 class RunApplicationController < ApplicationController
   def index
-    @sushi_apps = Dir['lib/*.rb'].sort.select{|script| script !~ /sushiApp\.rb/}.to_a.map{|script| File.basename(script).gsub(/\.rb/,'')}
+    @sushi_apps = Dir['lib/*.rb'].sort.select{|script| script !~ /sushiApp/ and script !~ /sushiToolBox/}.to_a.map{|script| File.basename(script).gsub(/\.rb/,'')}
     if project_number = session[:project] and project = Project.find_by_number(project_number.to_i)
       @data_sets = project.data_sets
     end
