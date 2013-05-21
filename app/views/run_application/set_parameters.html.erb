@@ -10,10 +10,10 @@ sushi_app class <%= @sushi_app.class %><br /><br />
   <%= hidden_field :data_set, :id, :value => @data_set.id %>
   <h3>Parameters</h3>
     <table>
-      <% @sushi_app.params.each do |key, param| %>
+      <% @sushi_app.params.each do |key, value| %>
         <tr>
           <th><%= key %></th>
-          <td><%= text_field :parameters, key.to_sym, :value => "#{param.value}" %></td>
+          <td><%= text_field :parameters, key.to_sym, :value => "#{value}" %></td>
         </tr>
       <% end %>
     </table>
