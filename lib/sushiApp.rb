@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130521-145447'
+Version = '20130521-170105'
 
 require 'csv'
 require 'fileutils'
@@ -12,11 +12,24 @@ WORKSPACE_DIR='/srv/GT/analysis/masaomi/sushi/work_lunch/gstore/sushi'
 #WORKSPACE_DIR='/srv/gstore/projects'
 
 
-
-class Object
-  attr_accessor :data_type
-  def data_type
-    @data_type ||= self.class
+class Hash
+  attr_reader :defaults
+  alias :set :[]=
+  def []=(k,v)
+    @defaults ||= {}
+    unless @defaults[k]
+      @defaults.set(k,v)
+    end
+    set(k,v)
+  end
+  def default_value(k)
+    @defaults[k]
+  end
+  def data_type(k)
+    @defaults[k].class
+  end
+  def data_types
+    Hash[@defaults.map{|k,v| [k, v.class]}]
   end
 end
 class SushiApp
@@ -29,12 +42,12 @@ class SushiApp
   def initialize
     @workspace = WORKSPACE_DIR ## will be on g-store; writable by sushi
     @project = ''
-    @params = {
-      'cores' => 1,
-      'ram' => nil,
-      'node' => '',
-      'process_mode' => 'SAMPLE'
-    }
+    @params = {}
+    @params['cores'] = 1
+    @params['ram'] = 1
+    @params['scratch'] = 1
+    @params['node'] = ''
+    @params['process_mode'] = 'SAMPLE'
     @job_ids = []
   end
   def save_params_as_tsv
@@ -91,7 +104,7 @@ class SushiApp
       parameterset_tsv.each do |row|
         row.headers.each do |header|
           @params[header] ||= row[header]
-          @params[header] = if @params[header].data_type == String
+          @params[header] = if @params.data_type(header) == String
                                     row[header]
                                   else
                                     eval(row[header])
@@ -145,10 +158,10 @@ rm -rf $SCRATCH_DIR
   end
   def submit(job_script)
     gsub_options = []
-    gsub_options << "-c #{@params['cores']}" if @params['cores']
-    gsub_options << "-n #{@params['node']}" if @params['node']
-    gsub_options << "-r #{@params['ram']}" if @params['ram']
-    gsub_options << "-s #{@params['scratch']}" if @params['scratch']
+    gsub_options << "-c #{@params['cores']}" unless @params['cores'].to_s.empty?
+    gsub_options << "-n #{@params['node']}" unless @params['node'].to_s.empty?
+    gsub_options << "-r #{@params['ram']}" unless @params['ram'].to_s.empty?
+    gsub_options << "-s #{@params['scratch']}" unless @params['scratch'].to_s.empty?
     job_id = `wfm_monitoring #{job_script} #{gsub_options.join(' ')}`
     job_id = job_id.to_i
     unless job_id.to_i > 1
