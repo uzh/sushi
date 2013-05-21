@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130425-103511'
+Version = '20130521-150626'
 
 require 'sushiApp'
 
@@ -9,7 +9,7 @@ class WordCountApp < SushiApp
     super
     @name = 'Word_Count'
     @required_columns = ['Read1','Species']
-    @params['lines_only'] = SushiApp::Param.new('boolean', true)
+    @params['lines_only'] = true
     @analysis_category = 'Stats'
     @output_files = ['Stats']
   end
