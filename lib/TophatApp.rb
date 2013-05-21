@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130521-114932'
+Version = '20130521-145826'
 
 require 'sushiApp'
 
@@ -83,7 +83,7 @@ if __FILE__ == $0
 
   # also possible to load a parameterset csv file
   # mainly for CUI sushi
-  usecase.parameterset_csv_file = 'tophat_parameterset.csv'
+  usecase.parameterset_tsv_file = 'tophat_parameterset.tsv'
 
   # set input dataset
   # mainly for CUI sushi

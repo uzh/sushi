@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130521-115649'
+Version = '20130521-145447'
 
 require 'csv'
 require 'fileutils'
@@ -32,7 +32,7 @@ class SushiApp
     @params = {
       'cores' => 1,
       'ram' => nil,
-      'node' => nil,
+      'node' => '',
       'process_mode' => 'SAMPLE'
     }
     @job_ids = []
