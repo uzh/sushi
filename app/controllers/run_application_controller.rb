@@ -40,7 +40,7 @@ class RunApplicationController < ApplicationController
                                      end
     end
     if project_number = session[:project] and project = Project.find_by_number(project_number.to_i)
-      @sushi_app.project = project_number.to_s
+      @sushi_app.project = 'p' + project_number.to_s
     end
     @sushi_app.dataset_sushi_id = data_set_id.to_i
     @sushi_app.run
