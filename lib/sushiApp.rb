@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130521-170105'
+Version = '20130524-084854'
 
 require 'csv'
 require 'fileutils'
@@ -81,14 +81,14 @@ class SushiApp
     end
   end
   def check_required_columns
-    if (@required_columns-@dataset_hash.map{|row| row.keys}.flatten.uniq).empty?
+    if @dataset_hash and (@required_columns-@dataset_hash.map{|row| row.keys}.flatten.uniq).empty?
       true
     else
       false
     end
   end
   def check_application_paramters
-    if (@required_params - @params.keys).empty?
+    if @required_params and (@required_params - @params.keys).empty?
       @output_params = @params.clone
     end
   end
@@ -293,7 +293,7 @@ rm -rf $SCRATCH_DIR
     if !@dataset_hash or @dataset_hash.empty?
       puts "\e[31mFAILURE\e[0m: dataset is not found. you should set it by using #{self.class}#dataset_sushi_id or #{self.class}#dataset_tsv_file properties"
       puts "\tex.)"
-      ptus "\tusecase = #{self.class}.new"
+      puts "\tusecase = #{self.class}.new"
       puts "\tusecase.dataset_tsv_file = \"dataset.tsv\""
       failures += 1
     else
@@ -308,15 +308,19 @@ rm -rf $SCRATCH_DIR
       puts "\e[32mPASSED\e[0m:"
     end
     puts "\trequired columns: #{@required_columns}"
-    puts "\tdataset  columns: #{@dataset_hash.map{|row| row.keys}.flatten.uniq}"
+    puts "\tdataset  columns: #{@dataset_hash.map{|row| row.keys}.flatten.uniq}" if @dataset_hash
 
     print 'check required parameters: '
     unless check_application_paramters
       puts "\e[31mFAILURE\e[0m: required_param(s) is not set yet. you should set it in usecase"
-      puts "\tmissing params: #{@required_params-@params.keys}"
+      puts "\tmissing params: #{@required_params-@params.keys}" if @required_params
       puts "\tex.)"
       puts "\tusecase = #{self.class}.new"
-      puts "\tusecase.params['#{(@required_params-@params.keys)[0]}'] = parameter"
+      if @required_params
+        puts "\tusecase.params['#{(@required_params-@params.keys)[0]}'] = parameter"
+      else
+        puts "\tusecase.params['parameter name'] = parameter"
+      end
       puts
       failures += 1
     else
@@ -341,7 +345,7 @@ rm -rf $SCRATCH_DIR
       puts "\e[31mWARNING\e[0m: no output files. you will not get any output files after the job running. you can set @output_files (array) in #{self.class}"
       puts "\tnote: usually it should be define in initialize method"
       puts "\t      the elements of @output_files should be chosen from #{self.class}#next_dataset.keys"
-      puts "\t      #{self.class}#next_dataset.keys: #{self.next_dataset.keys}"
+      puts "\t      #{self.class}#next_dataset.keys: #{self.next_dataset.keys}" if self.next_dataset
     else
       puts "\e[32mPASSED\e[0m:"
     end
