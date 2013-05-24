@@ -1,9 +1,11 @@
 <h1>Project <%= session[:project] %></h1>
 <hr />
 <h2>Set Parameters</h2>
+<!--
 <h3> debug print </h3>
 params <%= @params.inspect.to_s %><br /><br />
 sushi_app class <%= @sushi_app.class %><br /><br />
+-->
 <hr />
 <%= form_tag(:action => 'confirmation') do %>
   <%= hidden_field :sushi_app, :class, :value => @sushi_app.class %>
