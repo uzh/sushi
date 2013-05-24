@@ -1,10 +1,11 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130521-170105'
+Version = '20130524-162542'
 
 require 'csv'
 require 'fileutils'
 require 'active_record'
+require 'import_data_sets'
 
 SUSHI_APP_DIR='/srv/GT/analysis/masaomi/sushi/work_party'
 SUSHI_DB_TYPE='sqlite3'
@@ -33,6 +34,7 @@ class Hash
   end
 end
 class SushiApp
+  include SushiToolBox
   attr_reader :params
   attr_reader :job_ids
   attr_accessor :dataset_tsv_file
@@ -81,14 +83,14 @@ class SushiApp
     end
   end
   def check_required_columns
-    if (@required_columns-@dataset_hash.map{|row| row.keys}.flatten.uniq).empty?
+    if @dataset_hash and (@required_columns-@dataset_hash.map{|row| row.keys}.flatten.uniq).empty?
       true
     else
       false
     end
   end
   def check_application_paramters
-    if (@required_params - @params.keys).empty?
+    if @required_params and (@required_params - @params.keys).empty?
       @output_params = @params.clone
     end
   end
@@ -190,6 +192,7 @@ rm -rf $SCRATCH_DIR
         out << headers.map{|header| row_hash[header]}
       end
     end
+    file_path
   end
   def preprocess
     # this should be overwritten in a subclass
@@ -242,7 +245,22 @@ rm -rf $SCRATCH_DIR
 
     save_params_as_tsv
     save_input_dataset_as_tsv
-    save_next_dataset_as_tsv
+    next_dataset_file = save_next_dataset_as_tsv
+    if !@job_ids.empty? and @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
+      data_set_arr = []
+      headers = []
+      rows = []
+      data_set_arr = {'DataSetName'=>'result', 'ProjectNumber'=>@project, 'ParentID'=>@dataset_sushi_id}
+      csv = CSV.readlines(next_dataset_file, :col_sep=>"\t")
+      csv.each do |row|
+        if headers.empty?
+          headers = row
+        else
+          rows << row
+        end
+      end
+      save_data_set(data_set_arr.to_a.flatten, headers, rows)
+    end
   end
   def test_run
     preprocess
@@ -293,7 +311,7 @@ rm -rf $SCRATCH_DIR
     if !@dataset_hash or @dataset_hash.empty?
       puts "\e[31mFAILURE\e[0m: dataset is not found. you should set it by using #{self.class}#dataset_sushi_id or #{self.class}#dataset_tsv_file properties"
       puts "\tex.)"
-      ptus "\tusecase = #{self.class}.new"
+      puts "\tusecase = #{self.class}.new"
       puts "\tusecase.dataset_tsv_file = \"dataset.tsv\""
       failures += 1
     else
@@ -308,15 +326,19 @@ rm -rf $SCRATCH_DIR
       puts "\e[32mPASSED\e[0m:"
     end
     puts "\trequired columns: #{@required_columns}"
-    puts "\tdataset  columns: #{@dataset_hash.map{|row| row.keys}.flatten.uniq}"
+    puts "\tdataset  columns: #{@dataset_hash.map{|row| row.keys}.flatten.uniq}" if @dataset_hash
 
     print 'check required parameters: '
     unless check_application_paramters
       puts "\e[31mFAILURE\e[0m: required_param(s) is not set yet. you should set it in usecase"
-      puts "\tmissing params: #{@required_params-@params.keys}"
+      puts "\tmissing params: #{@required_params-@params.keys}" if @required_params
       puts "\tex.)"
       puts "\tusecase = #{self.class}.new"
-      puts "\tusecase.params['#{(@required_params-@params.keys)[0]}'] = parameter"
+      if @required_params
+        puts "\tusecase.params['#{(@required_params-@params.keys)[0]}'] = parameter"
+      else
+        puts "\tusecase.params['parameter name'] = parameter"
+      end
       puts
       failures += 1
     else
@@ -341,7 +363,7 @@ rm -rf $SCRATCH_DIR
       puts "\e[31mWARNING\e[0m: no output files. you will not get any output files after the job running. you can set @output_files (array) in #{self.class}"
       puts "\tnote: usually it should be define in initialize method"
       puts "\t      the elements of @output_files should be chosen from #{self.class}#next_dataset.keys"
-      puts "\t      #{self.class}#next_dataset.keys: #{self.next_dataset.keys}"
+      puts "\t      #{self.class}#next_dataset.keys: #{self.next_dataset.keys}" if self.next_dataset
     else
       puts "\e[32mPASSED\e[0m:"
     end
