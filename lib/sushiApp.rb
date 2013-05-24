@@ -1,10 +1,11 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130524-084854'
+Version = '20130524-162542'
 
 require 'csv'
 require 'fileutils'
 require 'active_record'
+require 'import_data_sets'
 
 SUSHI_APP_DIR='/srv/GT/analysis/masaomi/sushi/work_party'
 SUSHI_DB_TYPE='sqlite3'
@@ -33,6 +34,7 @@ class Hash
   end
 end
 class SushiApp
+  include SushiToolBox
   attr_reader :params
   attr_reader :job_ids
   attr_accessor :dataset_tsv_file
@@ -190,6 +192,7 @@ rm -rf $SCRATCH_DIR
         out << headers.map{|header| row_hash[header]}
       end
     end
+    file_path
   end
   def preprocess
     # this should be overwritten in a subclass
@@ -242,7 +245,22 @@ rm -rf $SCRATCH_DIR
 
     save_params_as_tsv
     save_input_dataset_as_tsv
-    save_next_dataset_as_tsv
+    next_dataset_file = save_next_dataset_as_tsv
+    if !@job_ids.empty? and @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
+      data_set_arr = []
+      headers = []
+      rows = []
+      data_set_arr = {'DataSetName'=>'result', 'ProjectNumber'=>@project, 'ParentID'=>@dataset_sushi_id}
+      csv = CSV.readlines(next_dataset_file, :col_sep=>"\t")
+      csv.each do |row|
+        if headers.empty?
+          headers = row
+        else
+          rows << row
+        end
+      end
+      save_data_set(data_set_arr.to_a.flatten, headers, rows)
+    end
   end
   def test_run
     preprocess
