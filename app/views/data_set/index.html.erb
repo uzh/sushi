@@ -1,8 +1,9 @@
 <h1>Project <%= session[:project] %></h1>
 <h3>DataSet</h3>
-<br />
+<!--<br />
 <h4>Debug print</h4>
 <%= params %>
+-->
 <br />
 <h4>File selection</h4>
 <%= form_tag('/data_set', :multipart => true) do %>
@@ -13,21 +14,22 @@ Parent DataSet ID: <%= text_field :parent, :id, :size=>10 %>
 <% end %>
 
 <hr />
-<h4>All Sample (All Project)</h4>
-<% Sample.all.each do |sample| %>
-  <%= sample.to_hash.to_a.flatten %><br />
-<% end %>
-<h4>All Data Set ( Project <%= session[:project] %> )</h4>
+<h4>All DataSets ( Project <%= session[:project] %> )</h4>
 <table>
   <tr><th>ID</th><th>Name</th><th>MD5</th><th>ParentID</th></tr>
 <% @project.data_sets.each do |data_set| %>
-  <tr><td>ID <%= data_set.id %></td><td><%= data_set.name %></td><td><%= data_set.md5 %></td><td><%= data_set.parent_id %></td><td><!--<%= button_to 'Save CSV', :action=>:save_as_tsv, :data_set_id=>data_set.id %>--></td></tr>
+  <tr><td><%= data_set.id %></td><td><%= data_set.name %></td><td><%= data_set.md5 %></td><td><%= data_set.parent_id %></td><td><!--<%= button_to 'Save CSV', :action=>:save_as_tsv, :data_set_id=>data_set.id %>--></td></tr>
 <% end %>
 </table>
+<h4>All Samples ( Project <%= session[:project] %>)</h4>
+<% Sample.all.select{|samp| samp.to_hash.to_a.join =~ /#{session[:project]}/}.each do |sample| %>
+  DataSetID <%= sample.data_set.id %> : <%= sample.to_hash.to_a.flatten %><br />
+<% end %>
+
 <br />
+<% if @data_set %>
 <h4>Loaded Data Set</h4>
 <hr />
-<% if @data_set %>
 <table>
   <tr>
     <% @data_set.headers.each do |header| %>
