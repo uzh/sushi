@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 module SushiToolBox
-Version = '20130529-093915'
+Version = '20130529-102124'
 
 require 'pp'
 require 'csv'

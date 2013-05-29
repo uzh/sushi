@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130529-090001'
+Version = '20130529-102107'
 
 require 'csv'
 require 'fileutils'
 require 'active_record'
-require 'import_data_sets'
+require 'sushiToolBox'
 
 SUSHI_APP_DIR='/srv/GT/analysis/masaomi/sushi/work_party'
 SUSHI_DB_TYPE='sqlite3'
@@ -257,7 +257,7 @@ rm -rf $SCRATCH_DIR
       data_set_arr = []
       headers = []
       rows = []
-      data_set_arr = {'DataSetName'=>'result', 'ProjectNumber'=>@project, 'ParentID'=>@dataset_sushi_id}
+      data_set_arr = {'DataSetName'=>"results_#{@analysis_category}_#{dataset.name}", 'ProjectNumber'=>@project.gsub(/p/,''), 'ParentID'=>@dataset_sushi_id}
       csv = CSV.readlines(next_dataset_file, :col_sep=>"\t")
       csv.each do |row|
         if headers.empty?
