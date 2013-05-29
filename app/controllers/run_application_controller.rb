@@ -31,6 +31,7 @@ class RunApplicationController < ApplicationController
     @params = params
     class_name = params[:sushi_app][:class]
     @sushi_app = eval(class_name).new
+    @sushi_app.user = current_user.login
     data_set_id = params[:data_set][:id]
     params[:parameters].each do |key, value|
       @sushi_app.params[key] = if @sushi_app.params.data_type(key) == String

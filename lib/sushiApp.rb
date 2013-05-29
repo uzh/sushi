@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130524-162542'
+Version = '20130529-102107'
 
 require 'csv'
 require 'fileutils'
 require 'active_record'
-require 'import_data_sets'
+require 'sushiToolBox'
 
 SUSHI_APP_DIR='/srv/GT/analysis/masaomi/sushi/work_party'
 SUSHI_DB_TYPE='sqlite3'
@@ -41,6 +41,7 @@ class SushiApp
   attr_accessor :parameterset_tsv_file
   attr_accessor :dataset_sushi_id
   attr_accessor :project
+  attr_accessor :user
   def initialize
     @workspace = WORKSPACE_DIR ## will be on g-store; writable by sushi
     @project = ''
@@ -158,13 +159,19 @@ rm -rf $SCRATCH_DIR
   def commands
     # this should be overwritten in a subclass
   end
-  def submit(job_script)
+  def submit_command(job_script)
     gsub_options = []
     gsub_options << "-c #{@params['cores']}" unless @params['cores'].to_s.empty?
     gsub_options << "-n #{@params['node']}" unless @params['node'].to_s.empty?
     gsub_options << "-r #{@params['ram']}" unless @params['ram'].to_s.empty?
     gsub_options << "-s #{@params['scratch']}" unless @params['scratch'].to_s.empty?
-    job_id = `wfm_monitoring #{job_script} #{gsub_options.join(' ')}`
+    gsub_options << "-u #{@user}" if @user
+    command = "wfm_monitoring #{job_script} #{gsub_options.join(' ')}"
+  end
+  def submit(job_script)
+    command = submit_command(job_script)
+    puts "submit: #{command}"
+    job_id = `#{command}`
     job_id = job_id.to_i
     unless job_id.to_i > 1
       raise 'failed in job submitting'
@@ -250,7 +257,7 @@ rm -rf $SCRATCH_DIR
       data_set_arr = []
       headers = []
       rows = []
-      data_set_arr = {'DataSetName'=>'result', 'ProjectNumber'=>@project, 'ParentID'=>@dataset_sushi_id}
+      data_set_arr = {'DataSetName'=>"results_#{@analysis_category}_#{dataset.name}", 'ProjectNumber'=>@project.gsub(/p/,''), 'ParentID'=>@dataset_sushi_id}
       csv = CSV.readlines(next_dataset_file, :col_sep=>"\t")
       csv.each do |row|
         if headers.empty?
@@ -277,6 +284,16 @@ rm -rf $SCRATCH_DIR
       failures += 1
     else
       puts "\e[32mPASSED\e[0m:\n\t@project=#{@project}"
+    end
+
+    print 'check user name: '
+    unless @user
+      puts "\e[31mWARNING\e[0m: user number is ought to be added but not found. you should set it in usecase. Default will be 'sushi lover'"
+      puts "\tex.)"
+      puts "\tapp = #{self.class}.new"
+      puts "\tapp.user = 'masa'"
+    else
+      puts "\e[32mPASSED\e[0m:\n\t@user=#{@user}"
     end
 
     print 'check application name: '
