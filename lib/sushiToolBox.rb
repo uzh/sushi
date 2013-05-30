@@ -1,20 +1,20 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130530-141024'
+Version = '20130530-141919'
 
 require "active_record"
+
+SUSHI_APP_DIR='/srv/GT/analysis/masaomi/sushi/work_party'
+SUSHI_DB_TYPE='sqlite3'
 
 module SushiToolBox
   begin
     ::Project
   rescue
-    SUSHI_APP_DIR='/srv/GT/analysis/masaomi/sushi/work_party'
-
     ActiveRecord::Base.establish_connection(
-                :adapter  => 'sqlite3',
+                :adapter  => SUSHI_DB_TYPE,
                 :database => "#{SUSHI_APP_DIR}/db/development.sqlite3" 
             )
-
     require "#{SUSHI_APP_DIR}/app/models/project"
     require "#{SUSHI_APP_DIR}/app/models/data_set"
     require "#{SUSHI_APP_DIR}/app/models/sample"
