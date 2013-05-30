@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130530-155633'
+Version = '20130530-160458'
 
 require 'csv'
 require 'fileutils'
@@ -110,6 +110,7 @@ class SushiApp
   end
   def prepare_result_dir
     ## sushi figures out where to put the resulting dataset
+    @name.gsub!(/\s/,'_')
     @result_dir = File.join(@project, [@analysis_category, @name, Time.now.strftime("%Y-%m-%d--%H-%M-%S")].join("_"))
     @result_dir_extended = File.join(@workspace, @result_dir)
     FileUtils.mkdir_p(@result_dir_extended)
