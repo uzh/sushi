@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130530-151013'
+Version = '20130530-155633'
 
 require 'csv'
 require 'fileutils'
@@ -385,12 +385,19 @@ rm -rf #{@scratch_dir}
     end
 
     print 'check commands: '
-    unless commands
-      puts "\e[31mFAILURE\e[0m: any commands is not defined yet. you should overwrite SushiApp#commands method in #{self.class}"
-      puts "\tnote: the return value should be String (this will be in the main body of submitted job script)"
-      failures += 1
-    else
-      puts "\e[32mPASSED\e[0m:"
+    if @params['process_mode'] == 'SAMPLE'
+      @dataset_hash.each do |row|
+        @dataset = row
+        unless com = commands
+          puts "\e[31mFAILURE\e[0m: any commands is not defined yet. you should overwrite SushiApp#commands method in #{self.class}"
+          puts "\tnote: the return value should be String (this will be in the main body of submitted job script)"
+          failures += 1
+        else
+          puts "\e[32mPASSED\e[0m:"
+          puts "generated command will be:"
+          puts "\t"+com.split(/\n/).join("\n\t")+"\n"
+        end
+      end
     end
 
     print 'check workflow manager: '
