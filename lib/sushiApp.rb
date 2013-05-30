@@ -1,14 +1,12 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130529-102107'
+Version = '20130530-142031'
 
 require 'csv'
 require 'fileutils'
 require 'active_record'
 require 'sushiToolBox'
 
-SUSHI_APP_DIR='/srv/GT/analysis/masaomi/sushi/work_party'
-SUSHI_DB_TYPE='sqlite3'
 WORKSPACE_DIR='/srv/GT/analysis/masaomi/sushi/work_lunch/gstore/sushi'
 #WORKSPACE_DIR='/srv/gstore/projects'
 
@@ -69,12 +67,6 @@ class SushiApp
         @dataset_hash << row.to_hash
       end
     elsif @dataset_sushi_id
-      require "#{SUSHI_APP_DIR}/app/models/data_set"
-      require "#{SUSHI_APP_DIR}/app/models/sample"
-      ActiveRecord::Base.establish_connection(
-            :adapter  => SUSHI_DB_TYPE,
-            :database => "#{SUSHI_APP_DIR}/db/development.#{SUSHI_DB_TYPE}"
-        )
       @dataset_hash = []
       if dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
         dataset.samples.each do |sample|
@@ -84,7 +76,7 @@ class SushiApp
     end
   end
   def check_required_columns
-    if @dataset_hash and (@required_columns-@dataset_hash.map{|row| row.keys}.flatten.uniq).empty?
+    if @dataset_hash and @required_columns and (@required_columns-@dataset_hash.map{|row| row.keys}.flatten.uniq).empty?
       true
     else
       false
@@ -136,18 +128,20 @@ cd $SCRATCH_DIR
   end
   def job_footer
     @out.print "#### JOB IS DONE WE PUT THINGS IN PLACE AND CLEAN AUP\n"
-    @output_files.map{|header| next_dataset[header]}.each do |file|
-      # in actual case, to save under /srv/gstore/
-      if WORKSPACE_DIR =~ /srv\/gstore/
-        @out.print "gstore-request copy ", File.basename(file), " ", File.join(@workspace, file), "\n"
-      else
-        @out.print "cp ", File.basename(file), " ", File.join(@workspace, file), "\n"
+    if @output_files
+      @output_files.map{|header| next_dataset[header]}.each do |file|
+        # in actual case, to save under /srv/gstore/
+        if WORKSPACE_DIR =~ /srv\/gstore/
+          @out.print "gstore-request -w copy ", File.basename(file), " ", File.join(@workspace, file), "\n"
+        else
+          @out.print "cp ", File.basename(file), " ", File.join(@workspace, file), "\n"
+        end
       end
-    end
-    @out.print <<-EOF
+      @out.print <<-EOF
 cd ~
 rm -rf $SCRATCH_DIR
-    EOF
+      EOF
+    end
   end
   def job_main
     @out.print "#### NOW THE ACTUAL JOBS STARTS\n"
@@ -337,7 +331,11 @@ rm -rf $SCRATCH_DIR
 
     print 'check required columns: '
     unless check_required_columns
-      puts "\e[31mFAILURE\e[0m: required_column(s) is not found in dataset"
+      puts "\e[31mFAILURE\e[0m: required_column(s) is not found in dataset. you should set it in application class."
+      puts "\tex.)"
+      puts "\tdef initialize"
+      puts "\t  @required_columns = ['Sample', 'Read1']"
+      puts
       failures += 1
     else
       puts "\e[32mPASSED\e[0m:"
@@ -354,7 +352,7 @@ rm -rf $SCRATCH_DIR
       if @required_params
         puts "\tusecase.params['#{(@required_params-@params.keys)[0]}'] = parameter"
       else
-        puts "\tusecase.params['parameter name'] = parameter"
+        puts "\tusecase.params['parameter name'] = default_parameter"
       end
       puts
       failures += 1
