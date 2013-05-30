@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130530-142031'
+Version = '20130530-151013'
 
 require 'csv'
 require 'fileutils'
@@ -115,11 +115,12 @@ class SushiApp
     FileUtils.mkdir_p(@result_dir_extended)
   end
   def job_header
+    @scratch_dir = File.join("/scratch/", [File.basename(@result_dir), @dataset['Sample']].join("_"))
     @out.print <<-EOF
 #!/bin/sh
 
 #### SET THE STAGE
-#{File.join("SCRATCH_DIR=/scratch/", [File.basename(@result_dir), @dataset['Sample']].join("_"))}
+SCRATCH_DIR=#{@scratch_dir}
 WORKSPACE_DIR=#{@workspace}
 mkdir $SCRATCH_DIR
 cd $SCRATCH_DIR
@@ -139,7 +140,7 @@ cd $SCRATCH_DIR
       end
       @out.print <<-EOF
 cd ~
-rm -rf $SCRATCH_DIR
+rm -rf #{@scratch_dir}
       EOF
     end
   end
