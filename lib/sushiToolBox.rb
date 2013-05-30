@@ -1,22 +1,24 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
+Version = '20130530-141024'
+
+require "active_record"
+
 module SushiToolBox
-Version = '20130529-102124'
+  begin
+    ::Project
+  rescue
+    SUSHI_APP_DIR='/srv/GT/analysis/masaomi/sushi/work_party'
 
-require 'pp'
-require 'csv'
+    ActiveRecord::Base.establish_connection(
+                :adapter  => 'sqlite3',
+                :database => "#{SUSHI_APP_DIR}/db/development.sqlite3" 
+            )
 
-#require "active_record"
-#  SUSHI_APP_DIR='/srv/GT/analysis/masaomi/sushi/work_party'
-
-#  ActiveRecord::Base.establish_connection(
-#              :adapter  => 'sqlite3',
-#              :database => "#{SUSHI_APP_DIR}/db/development.sqlite3" 
-#          )
-
-#  require "#{SUSHI_APP_DIR}/app/models/project"
-#  require "#{SUSHI_APP_DIR}/app/models/data_set"
-#  require "#{SUSHI_APP_DIR}/app/models/sample"
+    require "#{SUSHI_APP_DIR}/app/models/project"
+    require "#{SUSHI_APP_DIR}/app/models/data_set"
+    require "#{SUSHI_APP_DIR}/app/models/sample"
+  end
 
   def save_data_set(data_set_arr, headers, rows)
     data_set_hash = Hash[*data_set_arr]
@@ -45,40 +47,7 @@ require 'csv'
         parent_data_set.data_sets << data_set if parent_data_set
         data_set.save
       end
-
     end
   end
 end
 
-include SushiToolBox
-
-if __FILE__ == $0
-
-  unless input_tsv=ARGV[0] and input_tsv=~/\.tsv/
-    puts "Usage:\n ruby #{__FILE__} [input.tsv]"
-    exit
-  end
-
-  csv = CSV.readlines(input_tsv, :col_sep=>"\t")
-  data_set = []
-  headers = []
-  rows = []
-  csv.each do |row|
-    if data_set.empty?
-      data_set = row
-    elsif headers.empty?
-      headers = row
-    elsif !row.empty?
-      rows << row    
-    else
-      save_data_set(data_set, headers, rows)
-    end
-
-    if row.empty?
-      data_set = []
-      headers = []
-      rows = []
-    end
-  end
-
-end
