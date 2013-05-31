@@ -1,6 +1,6 @@
 class JobMonitoringController < ApplicationController
   def index
-    @job_list = `public/wfm_job_list with_result`
+    @job_list = `public/wfm_job_list -d #{WORKFLOW_MANAGER} -p #{session[:project]}`
     @job_list = @job_list.split(/\n/).map{|job| job.split(/,/)}
   end
   def print_log
