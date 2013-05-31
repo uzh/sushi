@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130531-092255'
+Version = '20130531-100935'
 
 require 'csv'
 require 'fileutils'
@@ -10,7 +10,6 @@ require 'sushiToolBox'
 WORKFLOW_MANAGER='druby://fgcz-s-034:12345'
 WORKSPACE_DIR='/srv/GT/analysis/masaomi/sushi/work_lunch/gstore/sushi'
 #WORKSPACE_DIR='/srv/gstore/projects'
-
 
 class Hash
   attr_reader :defaults
