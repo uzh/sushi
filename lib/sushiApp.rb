@@ -1,12 +1,13 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130530-160458'
+Version = '20130531-092255'
 
 require 'csv'
 require 'fileutils'
 require 'active_record'
 require 'sushiToolBox'
 
+WORKFLOW_MANAGER='druby://fgcz-s-034:12345'
 WORKSPACE_DIR='/srv/GT/analysis/masaomi/sushi/work_lunch/gstore/sushi'
 #WORKSPACE_DIR='/srv/gstore/projects'
 
@@ -162,7 +163,7 @@ rm -rf #{@scratch_dir}
     gsub_options << "-r #{@params['ram']}" unless @params['ram'].to_s.empty?
     gsub_options << "-s #{@params['scratch']}" unless @params['scratch'].to_s.empty?
     gsub_options << "-u #{@user}" if @user
-    command = "wfm_monitoring #{job_script} #{gsub_options.join(' ')}"
+    command = "wfm_monitoring --server #{WORKFLOW_MANAGER} #{job_script} #{gsub_options.join(' ')}"
   end
   def submit(job_script)
     command = submit_command(job_script)
@@ -403,7 +404,7 @@ rm -rf #{@scratch_dir}
 
     print 'check workflow manager: '
     begin
-      hello = `wfm_hello`
+      hello = `wfm_hello #{WORKFLOW_MANAGER}`
     rescue
     end
     unless hello =~ /hello/
