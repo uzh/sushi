@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130531-100935'
+Version = '20130610-145952'
 
 require 'csv'
 require 'fileutils'
@@ -8,8 +8,9 @@ require 'active_record'
 require 'sushiToolBox'
 
 WORKFLOW_MANAGER='druby://fgcz-s-034:12345'
-WORKSPACE_DIR='/srv/GT/analysis/masaomi/sushi/work_lunch/gstore/sushi'
-#WORKSPACE_DIR='/srv/gstore/projects'
+GSTORE_DIR='/srv/GT/analysis/masaomi/sushi/work_lunch/gstore/sushi'
+#GSTORE_DIR='/srv/gstore/projects'
+
 
 class Hash
   attr_reader :defaults
@@ -41,8 +42,9 @@ class SushiApp
   attr_accessor :project
   attr_accessor :user
   def initialize
-    @workspace = WORKSPACE_DIR ## will be on g-store; writable by sushi
-    @project = ''
+    @gstore_dir = GSTORE_DIR
+    @project = nil
+    @name = nil
     @params = {}
     @params['cores'] = 1
     @params['ram'] = 1
@@ -50,14 +52,7 @@ class SushiApp
     @params['node'] = ''
     @params['process_mode'] = 'SAMPLE'
     @job_ids = []
-  end
-  def save_params_as_tsv
-    file_name = 'parameters.tsv'
-    file_path = File.join(@result_dir_extended, file_name)
-    CSV.open(file_path, 'w', :col_sep=>"\t") do |out|
-      out << @output_params.keys
-      out << @output_params.values
-    end
+
   end
   def set_input_dataset
     if @dataset_tsv_file
@@ -74,6 +69,7 @@ class SushiApp
         end
       end
     end
+    @dataset_hash
   end
   def check_required_columns
     if @dataset_hash and @required_columns and (@required_columns-@dataset_hash.map{|row| row.keys}.flatten.uniq).empty?
@@ -108,23 +104,35 @@ class SushiApp
       end
     end
   end
-  def prepare_result_dir
+  def set_dir_paths
     ## sushi figures out where to put the resulting dataset
+    unless @name or @project
+      raise "should set #name and #project"
+    end
     @name.gsub!(/\s/,'_')
-    @result_dir = File.join(@project, [@analysis_category, @name, Time.now.strftime("%Y-%m-%d--%H-%M-%S")].join("_"))
-    @result_dir_extended = File.join(@workspace, @result_dir)
-    FileUtils.mkdir_p(@result_dir_extended)
+    result_dir_base = [@analysis_category, @name, Time.now.strftime("%Y-%m-%d--%H-%M-%S")].join("_")
+    @result_dir = File.join(@project, result_dir_base)
+    @scratch_result_dir = File.join("/scratch", result_dir_base)
+    @gstore_result_dir = File.join(@gstore_dir, @result_dir)
+    set_file_paths
+  end
+  def prepare_result_dir
+    FileUtils.mkdir_p(@scratch_result_dir)
   end
   def job_header
-    @scratch_dir = File.join("/scratch/", [File.basename(@result_dir), @dataset['Sample']].join("_"))
+    @scratch_dir = if @params['process_mode'] == 'SAMPLE'
+                     @scratch_result_dir + "_" + @dataset['Sample']
+                   else
+                     @scratch_result_dir
+                   end
     @out.print <<-EOF
 #!/bin/sh
 
 #### SET THE STAGE
 SCRATCH_DIR=#{@scratch_dir}
-WORKSPACE_DIR=#{@workspace}
-mkdir $SCRATCH_DIR
-cd $SCRATCH_DIR
+GSTORE_DIR=#{@gstore_dir}
+mkdir $SCRATCH_DIR || exit 1
+cd $SCRATCH_DIR || exit 1
 
     EOF
   end
@@ -133,15 +141,18 @@ cd $SCRATCH_DIR
     if @output_files
       @output_files.map{|header| next_dataset[header]}.each do |file|
         # in actual case, to save under /srv/gstore/
-        if WORKSPACE_DIR =~ /srv\/gstore/
-          @out.print "gstore-request -w copy ", File.basename(file), " ", File.join(@workspace, file), "\n"
+        if @gstore_dir =~ /srv\/gstore/
+          @out.print "gstore-request -w copy ", File.basename(file), " ", File.join(@gstore_dir, file), "\n"
         else
-          @out.print "cp ", File.basename(file), " ", File.join(@workspace, file), "\n"
+          dest = File.join(@gstore_dir, file)
+          dir  = File.dirname(dest)
+          @out.print "mkdir -p #{dir} || exit 1\n"
+          @out.print "cp -r ", File.basename(file), " ", dest, " || exit 1\n"
         end
       end
       @out.print <<-EOF
 cd ~
-rm -rf #{@scratch_dir}
+rm -rf #{@scratch_dir} || exit 1
       EOF
     end
   end
@@ -174,9 +185,27 @@ rm -rf #{@scratch_dir}
     end
     job_id
   end
+  def preprocess
+    # this should be overwritten in a subclass
+  end
+  def set_file_paths
+    @parameter_file = 'parameters.tsv'
+    @input_dataset_file = 'input_dataset.tsv'
+    @next_dataset_file = 'next_dataset.tsv'
+    @input_dataset_tsv_path = File.join(@gstore_result_dir, @input_dataset_file)
+    @parameters_tsv_path = File.join(@gstore_result_dir, @input_dataset_file)
+    @next_dataset_tsv_path = File.join(@gstore_result_dir, @next_dataset_file)
+  end
+  def save_parameters_as_tsv
+    file_path = File.join(@scratch_result_dir, @parameter_file)
+    CSV.open(file_path, 'w', :col_sep=>"\t") do |out|
+      out << @output_params.keys
+      out << @output_params.values
+    end
+    file_path
+  end
   def save_input_dataset_as_tsv
-    file_name = 'input_dataset.tsv'
-    file_path = File.join(@result_dir_extended, file_name)
+    file_path = File.join(@scratch_result_dir, @input_dataset_file)
     CSV.open(file_path, 'w', :col_sep=>"\t") do |out|
       headers = @dataset_hash.map{|row| row.keys}.flatten.uniq
       out << headers
@@ -184,11 +213,11 @@ rm -rf #{@scratch_dir}
         out << headers.map{|header| row[header]}
       end
     end
+    file_path
   end
   def save_next_dataset_as_tsv
     headers = @result_dataset.map{|row| row.keys}.flatten.uniq
-    file_name = 'next_dataset.tsv'
-    file_path = File.join(@result_dir_extended, file_name)
+    file_path = File.join(@scratch_result_dir, @next_dataset_file)
     CSV.open(file_path, 'w', :col_sep=>"\t") do |out|
       out << headers
       @result_dataset.each do |row_hash|
@@ -197,8 +226,76 @@ rm -rf #{@scratch_dir}
     end
     file_path
   end
-  def preprocess
-    # this should be overwritten in a subclass
+  def copy_command(org, dest)
+    command = ''
+    if @gstore_dir =~ /srv\/gstore/
+      command = "gstore-request -w copy #{org} #{dest};"
+    else
+      dir = File.dirname(dest)
+      command << "mkdir -p #{dir};"
+      command << "cp #{org} #{dest};"
+    end
+    command << "\n"
+    command
+  end
+  def copy_input_dataset_parameters
+    command = ''
+    transfer_files = [@input_dataset_file, @parameter_file]
+    transfer_files.each do |file|
+      org = File.join(@scratch_result_dir, file)
+      dest = File.join(@gstore_result_dir, file)
+      command << copy_command(org, dest)
+    end
+    unless system command
+      raise "fails in copying input_dataset files from /scratch to /gstore"
+    end
+  end
+  def copy_next_dataset_job_scripts
+    command = ''
+    transfer_files = [@next_dataset_file]
+    transfer_files.concat @job_scripts.map{|file| File.basename(file)}
+    transfer_files.concat @get_log_scripts.map{|file| File.basename(file)}
+
+    transfer_files.each do |file|
+      org = File.join(@scratch_result_dir, file)
+      dest = File.join(@gstore_result_dir, file)
+      command << copy_command(org, dest)
+    end
+    if system command
+      sleep 1
+      command = "rm -rf #{@scratch_result_dir}"
+      `#{command}`
+    else
+      raise "fails in copying next_dataset files from /scratch to /gstore"
+    end
+  end
+
+  def make_job_script
+    @out = open(@job_script, 'w')
+    job_header
+    job_main
+    job_footer
+    @out.close
+  end
+  def sample_mode
+    @dataset_hash.each do |row|
+      @dataset = row
+      ## WRITE THE JOB SCRIPT
+      @job_script = File.join(@scratch_result_dir, row['Sample']) + '.sh'
+      @get_log_script = File.join(@scratch_result_dir, "get_log_#{row['Sample']}.sh")
+      make_job_script
+      @job_scripts << @job_script
+      @get_log_scripts << @get_log_script
+      @result_dataset << next_dataset
+    end
+  end
+  def dataset_mode
+    @job_script = File.join(@scratch_result_dir, 'job_script.sh')
+    @get_log_script = File.join(@scratch_result_dir, "get_log.sh")
+    make_job_script
+    @job_scripts << @job_script
+    @get_log_scripts << @get_log_script
+    @result_dataset << next_dataset
   end
   def run
     test_run
@@ -206,38 +303,37 @@ rm -rf #{@scratch_dir}
     ## the user presses RUN
     prepare_result_dir
 
+    ## copy application data to gstore 
+    save_parameters_as_tsv
+    save_input_dataset_as_tsv
+    copy_input_dataset_parameters
+
+
     ## sushi writes creates the job scripts and builds the result data set that is to be generated
     @result_dataset = []
     @job_scripts = []
+    @get_log_scripts = []
     if @params['process_mode'] == 'SAMPLE'
-      @dataset_hash.each do |row|
-        @dataset = row
-        ## WRITE THE JOB SCRIPT
-        @job_script = File.join(@result_dir_extended, row['Sample']) + '.sh'
-        @out = open(@job_script, 'w')
-        job_header
-        job_main
-        job_footer
-        @out.close
-        @job_scripts << @job_script
-        @result_dataset << next_dataset
-      end
-      @job_scripts.each do |job_script|
-        job_id = submit(job_script)
-        @job_ids << job_id
-        print "Submit job #{File.basename(job_script)} job_id=#{job_id}"
-        open(File.join(@result_dir_extended, 'get_log.sh'), 'w') do |out|
-          out.print "#!/bin/sh\n\n"
-          out.print 'CURDIR=`dirname $0`', "\n"
-          out.print "wfm_get_log #{job_id} with_err > $CURDIR/log.dat\n"
-        end
-      end
+      sample_mode
     elsif @params['process_mode'] == 'DATASET'
-      # This should be implemented in a subclass (Application class)
+      dataset_mode
     else 
       #stop
       warn "the process mode (#{@params['process_mode']}) is not defined"
       raise "stop job submitting"
+    end
+
+    # job submittion
+    @job_scripts.each_with_index do |job_script, i|
+      job_id = submit(job_script)
+      @job_ids << job_id
+      print "Submit job #{File.basename(job_script)} job_id=#{job_id}"
+      get_log_script = @get_log_scripts[i]
+      open(get_log_script, 'w') do |out|
+        out.print "#!/bin/sh\n\n"
+        out.print 'CURDIR=`dirname $0`', "\n"
+        out.print "wfm_get_log #{job_id} with_err #{WORKFLOW_MANAGER} > $CURDIR/#{File.basename(get_log_script.gsub(/get_log_/,'').gsub(/\.sh/,'.log'))}\n"
+      end
     end
 
 		puts
@@ -246,15 +342,15 @@ rm -rf #{@scratch_dir}
     print 'result dataset: '
     p @result_dataset
 
-    save_params_as_tsv
-    save_input_dataset_as_tsv
-    next_dataset_file = save_next_dataset_as_tsv
+    @next_dataset_tsv_path = save_next_dataset_as_tsv
+    copy_next_dataset_job_scripts
+
     if !@job_ids.empty? and @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
       data_set_arr = []
       headers = []
       rows = []
       data_set_arr = {'DataSetName'=>"results_#{@analysis_category}_#{dataset.name}", 'ProjectNumber'=>@project.gsub(/p/,''), 'ParentID'=>@dataset_sushi_id}
-      csv = CSV.readlines(next_dataset_file, :col_sep=>"\t")
+      csv = CSV.readlines(@next_dataset_tsv_path, :col_sep=>"\t")
       csv.each do |row|
         if headers.empty?
           headers = row
@@ -264,15 +360,17 @@ rm -rf #{@scratch_dir}
       end
       save_data_set(data_set_arr.to_a.flatten, headers, rows)
     end
+    # ToDo: delete input/next_dataset parameters file
   end
   def test_run
+    set_dir_paths
     preprocess
     set_input_dataset
     set_user_parameters
 
     failures = 0
     print 'check project name: '
-    if @project.empty?
+    unless @project
       puts "\e[31mFAILURE\e[0m: project number is required but not found. you should set it in usecase."
       puts "\tex.)"
       puts "\tapp = #{self.class}.new"
@@ -366,7 +464,6 @@ rm -rf #{@scratch_dir}
 
     print 'check next dataset: '
     @dataset={}
-    @result_dir='.'
     unless self.next_dataset
       puts "\e[31mFAILURE\e[0m: next dataset is not set yet. you should overwrite SushiApp#next_dataset method in #{self.class}"
       puts "\tnote: the return value should be Hash (key: column title, value: value in a tsv table)"
@@ -398,6 +495,16 @@ rm -rf #{@scratch_dir}
           puts "generated command will be:"
           puts "\t"+com.split(/\n/).join("\n\t")+"\n"
         end
+      end
+    elsif @params['process_mode'] == 'DATASET'
+      unless com = commands
+        puts "\e[31mFAILURE\e[0m: any commands is not defined yet. you should overwrite SushiApp#commands method in #{self.class}"
+        puts "\tnote: the return value should be String (this will be in the main body of submitted job script)"
+        failures += 1
+      else
+        puts "\e[32mPASSED\e[0m:"
+        puts "generated command will be:"
+        puts "\t"+com.split(/\n/).join("\n\t")+"\n"
       end
     end
 
