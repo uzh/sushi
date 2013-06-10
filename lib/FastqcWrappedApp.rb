@@ -12,6 +12,7 @@ class FastqcWrappedApp<  SushiApp
     @required_columns = ['Sample','Read1','Species']
     @required_params = ['name', 'paired']
     @params['paired'] = false
+    @params['name'] = 'QC_Result'
     # optional params
     @output_files = ['Report']
   end
@@ -58,7 +59,7 @@ if __FILE__ == $0
   # also possible to load a parameterset csv file
   # mainly for CUI sushi
   usecase.parameterset_tsv_file = 'tophat_parameterset.tsv'
-  usecase.params['name'] = 'name'
+  #usecase.params['name'] = 'name'
 
   # set input dataset
   # mainly for CUI sushi
