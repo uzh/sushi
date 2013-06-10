@@ -1,19 +1,22 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 # 20121112 masa workflow manager client
-Version = '20130314-111233'
+Version = '20130531-100153'
 
 require 'drb/drb' 
+require File.join((File.expand_path('../../lib',__FILE__)), 'optparse_ex.rb')
 
-if ARGV[0]=='-h' or ARGV[0]=='--help'
-  puts "Usage:\n #{__FILE__} [with_result] [server]"
-  puts
-  puts "  with_result: true/false"
-  puts "  server: workflow_manager URI (default: druby://localhost:12345)"
-  exit
+opt = OptionParser.new do |o|
+  o.banner = "Usage:\n #{File.basename(__FILE__)} [options]"
+#  o.on(:user, 'sushi lover', '-u user', '--user', 'who submitted?')
+  o.on(:project, nil, '-p project', '--project', 'project number')
+  o.on(:server, 'druby://localhost:12345', '-d server', '--server', 'workflow manager URI (default: druby://localhost:12345)')
+  o.parse!(ARGV)
 end
-with_result=ARGV[0]
-uri = ARGV[1]||'druby://localhost:12345'
+
+with_result = false
+uri = opt.server||'druby://localhost:12345'
+project_number = opt.project
 wfmrc = if File.exist?(".wfmrc")
           ".wfmrc"
         elsif File.exist?(File.expand_path("~/.wfmrc"))
@@ -24,7 +27,10 @@ if wfmrc
     if line =~ /server:\s*(druby.+)/
       uri = $1
     end
+    if line =~ /project:\s*(\d+)/
+      project_number = $1
+    end
   end
 end
 workflow_manager = DRbObject.new_with_uri(uri)
-puts workflow_manager.job_list(with_result)
+puts workflow_manager.job_list(with_result, project_number)
