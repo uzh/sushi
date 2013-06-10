@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130610-145952'
+Version = '20130610-160725'
 
 require 'csv'
 require 'fileutils'
@@ -342,7 +342,7 @@ rm -rf #{@scratch_dir} || exit 1
     print 'result dataset: '
     p @result_dataset
 
-    @next_dataset_tsv_path = save_next_dataset_as_tsv
+    save_next_dataset_as_tsv
     copy_next_dataset_job_scripts
 
     if !@job_ids.empty? and @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
