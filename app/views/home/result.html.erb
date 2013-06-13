@@ -1,0 +1,6 @@
+
+<% Dir["#{GSTORE_DIR}/#{params[:project_id]}/*"].select{|i| File.directory?(i)}.each do |dir| %>
+  <%= File.basename(dir) %><br />
+<% end %>
+<hr>
+<%= link_to 'QC result sample', '/gstore/sushi/p1001/QC_Fastqc_Wrapped_2013-06-10--16-14-17/QC_Result/00index.html' %>
