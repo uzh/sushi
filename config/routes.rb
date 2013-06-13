@@ -52,6 +52,8 @@ SushiFabric::Application.routes.draw do
     end
   end
 
+  match "/result/:project_id" => "home#result"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
