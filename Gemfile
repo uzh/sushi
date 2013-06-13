@@ -42,3 +42,5 @@ gem 'hpricot'
 gem 'ruby_parser'
 
 gem 'bfabric'
+gem 'fgcz'
+

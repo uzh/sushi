@@ -55,6 +55,8 @@ GEM
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    fgcz (0.0.1)
+      rails (~> 3.2.9)
     gyoku (0.4.6)
       builder (>= 2.1.2)
     hike (1.2.3)
@@ -148,6 +150,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   devise
   devise_ldap_authenticatable
+  fgcz
   hpricot
   jquery-rails
   rails (= 3.2.9)
