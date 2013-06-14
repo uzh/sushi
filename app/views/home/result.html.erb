@@ -1,6 +1,22 @@
 
-<% Dir["#{GSTORE_DIR}/#{params[:project_id]}/*"].select{|i| File.directory?(i)}.each do |dir| %>
-  <%= File.basename(dir) %><br />
+<h2>Index of /gstore/sushi/<%= @path %></h2>
+<hr />
+<%= image_tag('back.gif') %>  <%= link_to 'Parent Directory', "/gstore/sushi/#{@parent}" %><br />
+<table>
+<% Dir[File.join(GSTORE_DIR, @path)+"/*"].each do |file| %>
+  <tr>
+  <% basename = File.basename(file) %>
+  <% if File.directory?(file) %>
+    <td><%= image_tag('folder.gif') %>  <%= link_to basename, "/gstore/sushi/#{File.join(@path, basename)}" %></td>
+    <td><%= File.ctime(file) %></td>
+    <td>-</td>
+  <% else %>
+    <td><%= image_tag('unknown.gif') %>  <%= link_to basename, "/gstore/sushi/#{@path}/#{basename}" %></td>
+    <td><%= File.ctime(file) %></td>
+    <td><%= number_to_human_size(File.size(file)) %></td>
+  <% end %>
+  </tr>
 <% end %>
-<hr>
-<%= link_to 'QC result sample', '/gstore/sushi/p1001/QC_Fastqc_Wrapped_2013-06-10--16-14-17/QC_Result/00index.html' %>
+</table>
+<hr />
+<%= link_to 'Project Root', "/gstore/sushi/#{params[:project_id]}" %>
