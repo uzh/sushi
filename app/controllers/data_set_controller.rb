@@ -1,5 +1,7 @@
 class DataSetController < ApplicationController
   def index
+  end
+  def import
     params[:project] = session[:project]
 
     if session[:project] 
