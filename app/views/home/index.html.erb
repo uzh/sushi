@@ -28,7 +28,7 @@
         Run an application on a data set.
       </p>
     </td>
-     <td class="page">
+    <td class="page">
       <%= link_to image_tag('sushi_icons/maguro.png'), '/job_monitoring' %>
       <h1><%= link_to 'Check Jobs', '/job_monitoring' %></h1>
       <p>
@@ -45,5 +45,14 @@
         Import DataSet from .tsv file.
       </p>
     </td>
+    <td class="page">
+      <%= link_to image_tag('sushi_icons/uni.png'), "/gstore/sushi/p#{session[:project]}" %>
+      <h1><%= link_to 'gStore', "/gstore/sushi/p#{session[:project]}" %></h1>
+      <p>
+        Go directly result folder.
+        You can see and download files of result data.
+      </p>
+    </td>
+
   </tr>
 </table>
