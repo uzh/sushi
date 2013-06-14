@@ -7,9 +7,9 @@
     <td></td><td></td>
   </tr>
   <tr>
-    <td><%= link_to 'Name', "#{File.join(@base, @path)}.Name" %></td>
-    <td><%= link_to 'Last Modified', "#{File.join(@base, @path)}.Last_Modified" %></td>
-    <td><%= link_to 'Size', "#{File.join(@base, @path)}.Size" %></td>
+    <td><%= link_to 'Name', "#{File.join(@base, @path)}.#{@current_page}:Name" %></td>
+    <td><%= link_to 'Last Modified', "#{File.join(@base, @path)}.#{@current_page}:Last_Modified" %></td>
+    <td><%= link_to 'Size', "#{File.join(@base, @path)}.#{@current_page}:Size" %></td>
   </tr>
 <% @files.each do |file| %>
   <tr>
@@ -25,6 +25,26 @@
   <% end %>
   </tr>
 <% end %>
+  </tr>
 </table>
+<hr />
+<%= form_tag(:action => "gstore") do %>
+<table>
+  <tr>
+    <td>
+      Total: <%= @total %> files, 
+      Page: 
+      <% @page_list.each do |page| %> 
+        <% if page == @current_page.to_i %>
+          <%= page %>
+        <% else %>
+          <%= link_to page, "#{File.join(@base, @path)}.#{page}:" %>
+        <% end %>
+      <% end %>
+    </td>
+    <td> <%= select :page, :unit, {"10" => 10, "50" => 50, "100" => 100}, :selected => @page_unit %> <%= submit_tag "Reload" %></td>
+  </tr>
+</table>
+<% end %>
 <hr />
 <%= link_to 'Project Root', "#{File.join(@base, params[:project_id])}" %>
