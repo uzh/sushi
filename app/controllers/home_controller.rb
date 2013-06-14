@@ -15,6 +15,8 @@ class HomeController < ApplicationController
     @files = Dir[File.join(GSTORE_DIR, @path)+"/*"]
     if params[:format]
       session[:gstore_reverse] = !session[:gstore_reverse]
+    else
+      session[:gstore_reverse] = nil
     end
     case params[:format]
     when 'Name'
@@ -23,6 +25,10 @@ class HomeController < ApplicationController
       @files.sort_by! {|file| File.ctime(file)}
     when 'Size'
       @files.sort_by! {|file| File.size(file)}
+    end
+    if @path == params[:project_id] and !params[:format]
+      @files.sort_by! {|file| File.ctime(file)}
+      @files.reverse!
     end
     @files.reverse! if session[:gstore_reverse]
   end
