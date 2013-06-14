@@ -1,0 +1,30 @@
+
+<h2>Index of <%= File.join(@base, @path) %></h2>
+<table>
+<hr />
+  <tr>
+    <td><%= image_tag('back.gif') %>  <%= link_to 'Parent Directory', "#{File.join(@base, @parent)}" %></td>
+    <td></td><td></td>
+  </tr>
+  <tr>
+    <td><%= link_to 'Name', "#{File.join(@base, @path)}.Name" %></td>
+    <td><%= link_to 'Last Modified', "#{File.join(@base, @path)}.Last_Modified" %></td>
+    <td><%= link_to 'Size', "#{File.join(@base, @path)}.Size" %></td>
+  </tr>
+<% @files.each do |file| %>
+  <tr>
+  <% basename = File.basename(file) %>
+  <% if File.directory?(file) %>
+    <td><%= image_tag('folder.gif') %>  <%= link_to basename, "#{File.join(@base, File.join(@path, basename))}" %></td>
+    <td><%= File.ctime(file) %></td>
+    <td>-</td>
+  <% else %>
+    <td><%= image_tag('unknown.gif') %>  <%= link_to basename, "#{File.join(@base, File.join(@path, basename))}" %></td>
+    <td><%= File.ctime(file) %></td>
+    <td><%= number_to_human_size(File.size(file)) %></td>
+  <% end %>
+  </tr>
+<% end %>
+</table>
+<hr />
+<%= link_to 'Project Root', "#{File.join(@base, params[:project_id])}" %>
