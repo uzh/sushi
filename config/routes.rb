@@ -43,6 +43,8 @@ SushiFabric::Application.routes.draw do
   
   match "/resource/add_to_basket/:id" => "resource#add_to_basket"
   match "/resource/remove_from_basket/:id" => "resource#remove_from_basket"
+  get "/api/:method" => "api#index"
+  post "/api/:method" => "api#index"
   
   resources :run_application, :only => [:index] do
     collection do 
