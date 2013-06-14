@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130610-160725'
+Version = '20130613-112210'
 
 require 'csv'
 require 'fileutils'
@@ -126,7 +126,9 @@ class SushiApp
                      @scratch_result_dir
                    end
     @out.print <<-EOF
-#!/bin/sh
+#!/bin/bash
+set -e
+set -o pipefail
 
 #### SET THE STAGE
 SCRATCH_DIR=#{@scratch_dir}
