@@ -2,6 +2,22 @@ class JobMonitoringController < ApplicationController
   def index
     @job_list = `public/wfm_job_list -d #{WORKFLOW_MANAGER} -p #{session[:project]}`
     @job_list = @job_list.split(/\n/).map{|job| job.split(/,/)}
+    @total = @job_list.length
+
+    # pager
+    @page_unit = if page = params[:page] and unit = page[:unit]
+                   session[:job_page_unit] = unit.to_i
+                 elsif unit = session[:job_page_unit]
+                   unit.to_i
+                 else
+                   session[:job_page_unit] = 10
+                 end
+    current_page = params[:format]
+    @current_page = (current_page||1).to_i
+    @page_list = (1..(@job_list.length.to_f/@page_unit).ceil).to_a
+    start = (@current_page - 1) * @page_unit
+    last  = @current_page * @page_unit - 1
+    @job_list = @job_list[start..last]
   end
   def print_log
     text = `public/wfm_get_log #{params[:job_id]} :with_err #{WORKFLOW_MANAGER}`
