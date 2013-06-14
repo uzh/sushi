@@ -43,6 +43,8 @@ SushiFabric::Application.routes.draw do
   
   match "/resource/add_to_basket/:id" => "resource#add_to_basket"
   match "/resource/remove_from_basket/:id" => "resource#remove_from_basket"
+  get "/api/:method" => "api#index"
+  post "/api/:method" => "api#index"
   
   resources :run_application, :only => [:index] do
     collection do 
@@ -52,7 +54,7 @@ SushiFabric::Application.routes.draw do
     end
   end
 
-  match "/result/:project_id" => "home#result"
+  match "/gstore/sushi/:project_id(/*dirs)" => "home#gstore"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
