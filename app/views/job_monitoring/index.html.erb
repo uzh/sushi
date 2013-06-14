@@ -3,7 +3,6 @@
 <h3>Job List</h3>
 
 <table><tr><th>Job ID</th><th>Status</th><th>User</th><th>JobScript</th><th>Log</th><th>Time (Start/End)</th>
-    <!--<th>Result</th><th>File(s)</th><th>Action</th>-->
   </tr>
 <% @job_list.each do |job| %>
   <tr>
@@ -13,19 +12,26 @@
     <td><%= link_to job[2], :action => 'print_script', :job_id => job[0] %></td>
     <td><%= link_to 'Log', :action => 'print_log', :job_id => job[0] %></td>
     <td><%= job[3].to_s %></td>
-<!--
-  <% if job[5] %>
-    <td><%= link_to 'Link', job[5] %></a></td>
-  <% else %>
-    <td></td>
-  <% end %>
-    <td><%= job[6,job.length].to_a.map{|file| File.basename(file)}.join("\n") %></td>
-  <% if job[6] and job[6].to_s != 'no result' %>
-    <td><%= link_to 'add to plate', "/resource/add_to_basket/JobID#{job[0]}" %></td>
-  <% else %>
-    <td></td>
-  <% end %>
--->
   </tr>
 <% end %>
 </table>
+<hr />
+<%= form_tag(:action => "index") do %>
+<table>
+  <tr>
+    <td>
+      Total: <%= @total %> jobs,
+      Page:
+      <% @page_list.each do |page| %>
+        <% if page == @current_page.to_i %>
+          <%= page %>
+        <% else %>
+          <%= link_to page, "job_monitoring.#{page}" %>
+        <% end %>
+      <% end %>
+    </td>
+    <td> <%= select :page, :unit, {"10" => 10, "50" => 50, "100" => 100}, :selected => @page_unit %> <%= submit_tag "Reload" %></td>
+  </tr>
+</table>
+<% end %>
+<hr />
