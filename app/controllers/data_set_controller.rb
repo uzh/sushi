@@ -5,6 +5,21 @@ class DataSetController < ApplicationController
   def show
     @data_set = DataSet.find_by_id(params[:id])
   end
+  def treeviews
+    @project = Project.find_by_number(session[:project].to_i)
+    tree = []
+    node_list = {}
+    @project.data_sets.each do |data_set|
+      node = {"id" => data_set.id, "text" => data_set.id.to_s+" <a href='/data_set/#{data_set.id}'>"+data_set.name+'</a>', 'path' => '', "expanded" => true, "classes" => 'file', "hasChildren" => false, "children" => []}
+      node_list[data_set.id] = node
+      if parent = data_set.data_set
+        node_list[parent.id]['children'] << node
+      else
+        tree << node
+      end
+    end
+    render :json => tree
+  end
   def import
     params[:project] = session[:project]
 

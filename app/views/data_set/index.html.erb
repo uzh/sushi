@@ -1,3 +1,11 @@
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#data_set_tree").treeview({
+      url: "/data_set/treeviews"
+    });
+});
+</script>
+
 <h1>Project <%= session[:project] %></h1>
 <h3>DataSet</h3>
 <table>
@@ -19,4 +27,4 @@
 <% end %>
 </table>
 
-
+<ul id="data_set_tree" class="filetree"></ul>
