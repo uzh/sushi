@@ -1,0 +1,43 @@
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#data_set_tree").treeview({
+      url: "/data_set/treeviews"
+    });
+});
+</script>
+
+<h1>Project <%= session[:project] %></h1>
+<h3>DataSet</h3>
+<%= link_to 'Back to DataSet OverView', '/data_set/' %>
+<%= form_tag({:action => 'index'}, :method=>:get) do %>
+<table>
+  <tr><th>ID</th><th colspan=2>Name</th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th>Created</th></tr>
+  <% @project.data_sets.each do |data_set| %>
+  <tr>
+    <td><%= data_set.id %></td>
+    <td>
+      <% if params[:id].to_i == data_set.id %>
+        <%= text_field :data_set, :name, :size=>15, :value=>data_set.name %>
+        <%= hidden_field :data_set, :id, :value => data_set.id %>
+      <% else %>
+        <%= link_to data_set.name, "/data_set/#{data_set.id}" %>
+      <% end %>
+    </td>
+    <td>
+      <%= submit_tag 'update' if params[:id].to_i == data_set.id %>
+    </td>
+    <td><%= data_set.samples.length %></td>
+    <td><%= link_to data_set.parent_id, "/data_set/#{data_set.parent_id}" if data_set.parent_id %></td>
+    <td>
+      <% data_set.data_sets.each do |child| %>
+        <%= link_to child.id, "/data_set/#{child.id}" %>
+        <%= "," unless child == data_set.data_sets.last %>
+      <% end %>
+    </td>
+    <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
+  </tr>
+  <% end %>
+</table>
+<% end %>
+
+<ul id="data_set_tree" class="filetree"></ul>
