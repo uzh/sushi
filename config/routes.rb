@@ -3,9 +3,6 @@ SushiFabric::Application.routes.draw do
   
   get "run_script/run_sample"
   
-  match "/data_set/create" => "data_set#create"
-  match "/data_set/delete" => "data_set#delete"
-  
   devise_for :users
   get 'run_script', :to => 'run_script#index', :as => :user_root
   
