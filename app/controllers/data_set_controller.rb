@@ -1,9 +1,17 @@
 class DataSetController < ApplicationController
   def index
     @project = Project.find_by_number(session[:project].to_i)
+    if new_data_set = params[:data_set] and name = new_data_set[:name] and id = new_data_set[:id]
+      data_set = DataSet.find_by_id(id)
+      data_set.name = name
+      data_set.save
+    end
   end
   def show
     @data_set = DataSet.find_by_id(params[:id])
+  end
+  def edit
+    @project = Project.find_by_number(session[:project].to_i)
   end
   def treeviews
     @project = Project.find_by_number(session[:project].to_i)

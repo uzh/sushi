@@ -8,12 +8,14 @@ $(document).ready(function(){
 
 <h1>Project <%= session[:project] %></h1>
 <h3>DataSet</h3>
+<%= @hoge %>
 <table>
-  <tr><th>ID</th><th>Name</th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th>Created</th></tr>
+  <tr><th>ID</th><th colspan=2>Name</th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th>Created</th></tr>
 <% @project.data_sets.each do |data_set| %>
   <tr>
     <td><%= data_set.id %></td>
     <td><%= link_to data_set.name, "/data_set/#{data_set.id}" %></td>
+    <td><%= button_to 'edit', "/data_set/#{data_set.id}/edit", :method=>:get %></td>
     <td><%= data_set.samples.length %></td>
     <td><%= link_to data_set.parent_id, "/data_set/#{data_set.parent_id}" if data_set.parent_id %></td>
     <td>
