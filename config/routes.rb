@@ -30,6 +30,7 @@ SushiFabric::Application.routes.draw do
   #resources :data_set do
   resources :data_set, :only => [:index, :show] do
     collection do
+      get :treeviews
       post :import
       post :save_as_tsv
     end
