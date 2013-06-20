@@ -15,6 +15,10 @@
     <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
     -
     <%= link_to "Today's Menu", "/" %>
+    <%= form_tag(:action => "index", :controller => "home") do %>
+      Project 
+      <%= select :project, :number, session[:projects], :selected => session[:project] %> <%= submit_tag "Go" %>
+    <% end %>
   <% end %>
   </nav>
   <h1>SushiFabric</h1>

@@ -3,9 +3,6 @@ SushiFabric::Application.routes.draw do
   
   get "run_script/run_sample"
   
-  match "/data_set/create" => "data_set#create"
-  match "/data_set/delete" => "data_set#delete"
-  
   devise_for :users
   get 'run_script', :to => 'run_script#index', :as => :user_root
   
@@ -30,8 +27,10 @@ SushiFabric::Application.routes.draw do
     end
   end
   
-  resources :data_set, :only => [:index] do
+  #resources :data_set do
+  resources :data_set, :only => [:index, :show, :edit] do
     collection do
+      get :treeviews
       post :import
       post :save_as_tsv
     end

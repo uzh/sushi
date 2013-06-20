@@ -1,0 +1,42 @@
+<h1>Project <%= session[:project] %></h1>
+<%= link_to 'Back to DataSet OverView', '/data_set/' %>
+<hr />
+<h3>DataSet</h3>
+<table>
+  <tr><th>ID</th><th>Name</th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th>Created</th></tr>
+  <% if @data_set %>
+  <tr>
+    <td><%= @data_set.id %></td>
+    <td><%= @data_set.name %></td>
+    <td><%= @data_set.samples.length %></td>
+    <td><%= link_to @data_set.parent_id, "/data_set/#{@data_set.parent_id}" if @data_set.parent_id %></td>
+    <td>
+      <% @data_set.data_sets.each do |child| %>
+        <%= link_to child.id, "/data_set/#{child.id}" %>
+        <%= "," unless child == @data_set.data_sets.last %>
+      <% end %>
+    </td>
+    <td><%= @data_set.created_at.to_s.gsub(/UTC/,'') %></td>
+  </tr>
+  <% end %>
+</table>
+<hr />
+<h3>Samples</h3>
+<% if @data_set %>
+<table>
+  <tr>
+    <% @data_set.headers.each do |header| %>
+      <th><%= header %></th>
+    <% end %>
+  </tr>
+  <% @data_set.samples.each do |sample| %>
+    <tr>
+      <% @data_set.headers.each do |header| %>
+        <td><%= File.basename(sample.to_hash[header].to_s) %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+<% end %>
+<hr />
+

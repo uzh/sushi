@@ -2,8 +2,22 @@
 <table class="pages_presentation">
   <tr>
     <td class="page">
+      <%= link_to image_tag('sushi_icons/tamago.png'), '/data_set', :method => :get %>
+      <h1><%= link_to 'DataSet', '/data_set', :method => :get %></h1>
+      <p>
+        You can see, edit and delete DataSet.
+      </p>
+    </td>
+    <td class="page">
+      <%= link_to image_tag('sushi_icons/tako.png'), '/data_set/import', :method => :post %>
+      <h1><%= link_to 'Import DataSet', '/data_set/import', :method => :post %></h1>
+      <p>
+        Import DataSet from .tsv file.
+      </p>
+    </td>
+<!--
+    <td class="page">
       <%= link_to image_tag('sushi_icons/tamago.png'), project_index_path %>
-      <!--<h1><%= link_to 'Projects', project_index_path %></h1>-->
       <h1><s>Projects</s> <font color='red'>SOLD OUT</font></h1>
       <p>
         List all the available projects.<br />
@@ -12,13 +26,13 @@
     </td>
     <td class="page">
       <%= link_to image_tag('sushi_icons/kappamaki.png'), '/data_set/create' %>
-      <!--<h1><s><%= link_to 'Your Plate', '/data_set/create' %></s></h1>-->
       <h1><s>Your Plate</s> <font color='red'>SOLD OUT</font></h1>
       <p>
         List all the sushis in your plate.<br />
         You can assemble them to create data sets.
       </p>
     </td>
+-->
   </tr>
   <tr>
     <td class="page">
@@ -39,13 +53,6 @@
   </tr>
   <tr>
     <td class="page">
-      <%= link_to image_tag('sushi_icons/tako.png'), '/data_set/import', :method => :post %>
-      <h1><%= link_to 'Import DataSet', '/data_set/import', :method => :post %></h1>
-      <p>
-        Import DataSet from .tsv file.
-      </p>
-    </td>
-    <td class="page">
       <%= link_to image_tag('sushi_icons/uni.png'), "/gstore/sushi/p#{session[:project]}" %>
       <h1><%= link_to 'gStore', "/gstore/sushi/p#{session[:project]}" %></h1>
       <p>
@@ -53,6 +60,6 @@
         You can see and download files of result data.
       </p>
     </td>
-
+    <td></td>
   </tr>
 </table>
