@@ -1,13 +1,20 @@
 <h1>Project <%= session[:project] %></h1>
 <h3>DataSet</h3>
 <table>
-  <tr><th>ID</th><th>Name</th><th>MD5</th><th>ParentID</th></tr>
+  <tr><th>ID</th><th>Name</th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th>Created</th></tr>
 <% @project.data_sets.each do |data_set| %>
   <tr>
     <td><%= data_set.id %></td>
-    <td><%= data_set.name %></td>
-    <td><%= data_set.md5 %></td>
-    <td><%= data_set.parent_id %></td>
+    <td><%= link_to data_set.name, "/data_set/#{data_set.id}" %></td>
+    <td><%= data_set.samples.length %></td>
+    <td><%= link_to data_set.parent_id, "/data_set/#{data_set.parent_id}" if data_set.parent_id %></td>
+    <td>
+      <% data_set.data_sets.each do |child| %>
+        <%= link_to child.id, "/data_set/#{child.id}" %>
+        <%= "," unless child == data_set.data_sets.last %>
+      <% end %>
+    </td>
+    <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
   </tr>
 <% end %>
 </table>

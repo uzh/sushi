@@ -2,6 +2,9 @@ class DataSetController < ApplicationController
   def index
     @project = Project.find_by_number(session[:project].to_i)
   end
+  def show
+    @data_set = DataSet.find_by_id(params[:id])
+  end
   def import
     params[:project] = session[:project]
 

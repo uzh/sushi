@@ -27,7 +27,8 @@ SushiFabric::Application.routes.draw do
     end
   end
   
-  resources :data_set, :only => [:index] do
+  #resources :data_set do
+  resources :data_set, :only => [:index, :show] do
     collection do
       post :import
       post :save_as_tsv
