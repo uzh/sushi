@@ -28,7 +28,7 @@ SushiFabric::Application.routes.draw do
   end
   
   #resources :data_set do
-  resources :data_set, :only => [:index, :show] do
+  resources :data_set, :only => [:index, :show, :edit] do
     collection do
       get :treeviews
       post :import
