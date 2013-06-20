@@ -1,10 +1,5 @@
 <h1>Project <%= session[:project] %></h1>
-<h3>DataSet</h3>
-<!--<br />
-<h4>Debug print</h4>
-<%= params %>
--->
-<br />
+<h3>Import DataSet</h3>
 <h4>File selection</h4>
 <%= form_tag('/data_set/import', :multipart => true) do %>
 <%= file_field :file, :name %>
@@ -17,32 +12,8 @@ Parent DataSet ID: <%= text_field :parent, :id, :size=>10 %>
 <h4>All DataSets ( Project <%= session[:project] %> )</h4>
 <table>
   <tr><th>ID</th><th>Name</th><th>MD5</th><th>ParentID</th></tr>
-<% @project.data_sets.each do |data_set| %>
-  <tr><td><%= data_set.id %></td><td><%= data_set.name %></td><td><%= data_set.md5 %></td><td><%= data_set.parent_id %></td><td><!--<%= button_to 'Save CSV', :action=>:save_as_tsv, :data_set_id=>data_set.id %>--></td></tr>
+<% @project.data_sets.reverse.each do |data_set| %>
+  <tr><td><%= data_set.id %></td><td><%= link_to data_set.name, "/data_set/#{data_set.id}" %></td><td><%= data_set.md5 %></td><td><%= data_set.parent_id %></td><td><!--<%= button_to 'Save CSV', :action=>:save_as_tsv, :data_set_id=>data_set.id %>--></td></tr>
 <% end %>
 </table>
-<h4>All Samples ( Project <%= session[:project] %>)</h4>
-<% Sample.all.select{|samp| samp.to_hash.to_a.join =~ /#{session[:project]}/}.each do |sample| %>
-  DataSetID <%= sample.data_set.id %> : <%= sample.to_hash.to_a.flatten %><br />
-<% end %>
-
-<br />
-<% if @data_set %>
-<h4>Loaded Data Set</h4>
-<hr />
-<table>
-  <tr>
-    <% @data_set.headers.each do |header| %>
-      <th><%= header %></th>
-    <% end %>
-  </tr>
-  <% @data_set.samples.each do |sample| %>
-    <tr>
-      <% @data_set.headers.each do |header| %>
-        <td><%= File.basename(sample.to_hash[header].to_s) %></td>
-      <% end %>
-    </tr>
-  <% end %>
-</table>
-<% end %>
 
