@@ -1,11 +1,3 @@
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#data_set_tree").treeview({
-    url: "/data_set/treeviews.<%= params[:id] %>"
-    });
-});
-</script>
-
 <h1>Project <%= session[:project] %></h1>
 <hr />
 <h3>DataSet</h3>
@@ -27,7 +19,6 @@ $(document).ready(function(){
   </tr>
   <% end %>
 </table>
-<ul id="data_set_tree" class="filetree"></ul>
 <hr />
 <h3>Samples</h3>
 <% if @data_set %>
@@ -53,13 +44,28 @@ $(document).ready(function(){
 </table>
 <% end %>
 <hr />
-
-<% unless @file_exist.values.inject{|a,b| a and b}%>
+<h3>Applications</h3>
+<% if @sushi_apps %>
+  <% if @sushi_apps.empty? %>
+    <font color=red>No Available Application for this DataSet</font><br />
+    <%= button_to 'Back', '/run_application', :method=>:get %>
+  <% else %>
+    <%= form_tag(:action => 'set_parameters') do %>
+      <%= hidden_field :data_set, :id, :value=>@data_set.id %>
+      <% @sushi_apps.sort.each do |app| %>
+        <%= submit_tag app, :name=>'app' %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% elsif !@file_exist.values.inject{|a,b| a and b}%>
   <font color=red>The RED file(s) does not exist in gstore:</font> <%= GSTORE_DIR %><br />
   <ul>
   <% @file_exist.select{|file, exist| !exist}.each do |file, exist| %>
     <li><%= file %></li>
-  <% end %>
+  <% end %> 
   </ul>
+  <%= button_to 'Back', '/run_application', :method=>:get %>
+<% else %>
+  <font color=red>Please select one DataSet</font><br />
+  <%= button_to 'Back', '/run_application', :method=>:get %>
 <% end %>
-
