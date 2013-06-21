@@ -8,14 +8,13 @@ $(document).ready(function(){
 </script>
 <h1>Project <%= session[:project] %></h1>
 <h2>Select DataSet</h2>
-<%= form_tag(:action => 'select_application') do %>
 <table>
-  <tr><th>ID</th><th>Name</th><th><font color=red>Select</font></th><th>Samples</th><th>Created</th></tr>
+  <tr><th>ID</th><th colspan=2>Name</th></th><th>Samples</th><th>Created</th></tr>
 <% @data_sets.each do |data_set| %>
   <tr>
     <td><%= data_set.id %></td>
     <td><%= link_to data_set.name, "/data_set/#{data_set.id}" %></td>
-    <td><%= radio_button 'data_set', 'id', data_set.id %></td>
+    <td><%= button_to 'select', "/run_application/select_application.#{data_set.id}" %></td>
     <td><%= data_set.samples.length %></td>
     <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
   </tr>
@@ -23,8 +22,6 @@ $(document).ready(function(){
 </table>
 <ul id="data_set_tree" class="filetree"></ul>
 <br />
-<%= submit_tag "Next" %>
-<% end %>
 
 
 
