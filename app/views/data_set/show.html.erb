@@ -1,3 +1,11 @@
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#data_set_tree").treeview({
+    url: "/data_set/treeviews.<%= params[:id] %>"
+    });
+});
+</script>
+
 <h1>Project <%= session[:project] %></h1>
 <%= link_to 'Back to DataSet OverView', '/data_set/' %>
 <hr />
@@ -20,6 +28,7 @@
   </tr>
   <% end %>
 </table>
+<ul id="data_set_tree" class="filetree"></ul>
 <hr />
 <h3>Samples</h3>
 <% if @data_set %>
