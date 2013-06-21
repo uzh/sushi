@@ -58,7 +58,7 @@
     <% end %>
   <% end %>
 <% elsif !@file_exist.values.inject{|a,b| a and b}%>
-  <font color=red>The RED file(s) do not exist in gstore:</font> <%= GSTORE_DIR %><br />
+  <font color=red>The RED file(s) does not exist in gstore:</font> <%= GSTORE_DIR %><br />
   <ul>
   <% @file_exist.select{|file, exist| !exist}.each do |file, exist| %>
     <li><%= file %></li>

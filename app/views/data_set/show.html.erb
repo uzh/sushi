@@ -40,11 +40,26 @@ $(document).ready(function(){
   <% @data_set.samples.each do |sample| %>
     <tr>
       <% @data_set.headers.each do |header| %>
-        <td><%= File.basename(sample.to_hash[header].to_s) %></td>
+        <td>
+          <% unless @file_exist[sample.to_hash[header].to_s] %>
+            <font color=red><%= File.basename(sample.to_hash[header].to_s) %></font>
+          <% else %>
+            <%= File.basename(sample.to_hash[header].to_s) %>
+          <% end %>
+        </td>
       <% end %>
     </tr>
   <% end %>
 </table>
 <% end %>
 <hr />
+
+<% unless @file_exist.values.inject{|a,b| a and b}%>
+  <font color=red>The RED file(s) does not exist in gstore:</font> <%= GSTORE_DIR %><br />
+  <ul>
+  <% @file_exist.select{|file, exist| !exist}.each do |file, exist| %>
+    <li><%= file %></li>
+  <% end %>
+  </ul>
+<% end %>
 
