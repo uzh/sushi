@@ -31,7 +31,13 @@
   <% @data_set.samples.each do |sample| %>
     <tr>
       <% @data_set.headers.each do |header| %>
-        <td><%= File.basename(sample.to_hash[header].to_s) %></td>
+        <td>
+          <% unless @file_exist[sample.to_hash[header].to_s] %>
+            <font color=red><%= File.basename(sample.to_hash[header].to_s) %></font>
+          <% else %>
+            <%= File.basename(sample.to_hash[header].to_s) %>
+          <% end %>
+        </td>
       <% end %>
     </tr>
   <% end %>
@@ -51,6 +57,14 @@
       <% end %>
     <% end %>
   <% end %>
+<% elsif !@file_exist.values.inject{|a,b| a and b}%>
+  <font color=red>The RED file(s) do not exist in gstore:</font> <%= GSTORE_DIR %><br />
+  <ul>
+  <% @file_exist.select{|file, exist| !exist}.each do |file, exist| %>
+    <li><%= file %></li>
+  <% end %> 
+  </ul>
+  <%= button_to 'Back', '/run_application', :method=>:get %>
 <% else %>
   <font color=red>Please select one DataSet</font><br />
   <%= button_to 'Back', '/run_application', :method=>:get %>
