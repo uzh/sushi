@@ -8,7 +8,6 @@ $(document).ready(function(){
 
 <h1>Project <%= session[:project] %></h1>
 <h3>DataSet</h3>
-<%= @hoge %>
 <table>
   <tr><th>ID</th><th colspan=2>Name</th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th>Created</th></tr>
 <% @project.data_sets.each do |data_set| %>

@@ -47,6 +47,7 @@ SushiFabric::Application.routes.draw do
   
   resources :run_application, :only => [:index] do
     collection do 
+      post :select_application
       post :set_parameters
       post :confirmation
       post :submit_jobs

@@ -1,18 +1,29 @@
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#data_set_tree").treeview({
+      url: "/data_set/treeviews"
+    });
+});
+
+</script>
 <h1>Project <%= session[:project] %></h1>
-<hr />
-<h2>Select DataSet & Application</h2>
+<h2>Select DataSet</h2>
+<%= form_tag(:action => 'select_application') do %>
+<table>
+  <tr><th>ID</th><th>Name</th><th><font color=red>Select</font></th><th>Samples</th><th>Created</th></tr>
+<% @data_sets.each do |data_set| %>
+  <tr>
+    <td><%= data_set.id %></td>
+    <td><%= link_to data_set.name, "/data_set/#{data_set.id}" %></td>
+    <td><%= radio_button 'data_set', 'id', data_set.id %></td>
+    <td><%= data_set.samples.length %></td>
+    <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
+  </tr>
+<% end %>
+</table>
+<ul id="data_set_tree" class="filetree"></ul>
 <br />
-<%= form_tag(:action => 'set_parameters') do %>
-  <table>
-    <tr><th>Data Set</th><th>Application</th></tr
-    <tr><td>
-    <%= select :data_set, :id, @data_sets.map{|data_set| [data_set.name, data_set.id]} %>
-    </td><td>
-    <%= select :sushi_app, :class, @sushi_apps.map{|app| [app, app]} %>
-    </td></tr>
-  </table>
-  <br />
-  <%= submit_tag "Next" %>
+<%= submit_tag "Next" %>
 <% end %>
 
 
