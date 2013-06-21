@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130613-112210'
+Version = '20130621-100537'
 
 require 'csv'
 require 'fileutils'
@@ -228,32 +228,34 @@ rm -rf #{@scratch_dir} || exit 1
     end
     file_path
   end
-  def copy_command(org, dest)
-    command = ''
+  def copy_commands(org, dest)
+    commands = []
     if @gstore_dir =~ /srv\/gstore/
-      command = "gstore-request -w copy #{org} #{dest};"
+      commands << "gstore-request -w copy #{org} #{dest}"
     else
       dir = File.dirname(dest)
-      command << "mkdir -p #{dir};"
-      command << "cp #{org} #{dest};"
+      commands << "mkdir -p #{dir}"
+      commands << "cp #{org} #{dest}"
     end
-    command << "\n"
-    command
+    commands
   end
   def copy_input_dataset_parameters
-    command = ''
+    commands = []
     transfer_files = [@input_dataset_file, @parameter_file]
     transfer_files.each do |file|
       org = File.join(@scratch_result_dir, file)
-      dest = File.join(@gstore_result_dir, file)
-      command << copy_command(org, dest)
+      dest = File.dirname(File.join(@gstore_result_dir, file))
+      commands.concat copy_commands(org, dest)
     end
-    unless system command
-      raise "fails in copying input_dataset files from /scratch to /gstore"
+    commands.each do |command|
+      puts command
+      unless system command
+        raise "fails in copying input_dataset files from /scratch to /gstore"
+      end
     end
   end
   def copy_next_dataset_job_scripts
-    command = ''
+    commands = []
     transfer_files = [@next_dataset_file]
     transfer_files.concat @job_scripts.map{|file| File.basename(file)}
     transfer_files.concat @get_log_scripts.map{|file| File.basename(file)}
@@ -261,15 +263,16 @@ rm -rf #{@scratch_dir} || exit 1
     transfer_files.each do |file|
       org = File.join(@scratch_result_dir, file)
       dest = File.join(@gstore_result_dir, file)
-      command << copy_command(org, dest)
+      commands.concat copy_commands(org, dest)
     end
-    if system command
-      sleep 1
-      command = "rm -rf #{@scratch_result_dir}"
-      `#{command}`
-    else
-      raise "fails in copying next_dataset files from /scratch to /gstore"
+    commands.each do |command|
+      unless system command
+        raise "fails in copying next_dataset files from /scratch to /gstore"
+      end
     end
+    sleep 1
+    command = "rm -rf #{@scratch_result_dir}"
+    `#{command}`
   end
 
   def make_job_script
