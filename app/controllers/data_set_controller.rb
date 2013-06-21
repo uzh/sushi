@@ -9,6 +9,20 @@ class DataSetController < ApplicationController
   end
   def show
     @data_set = DataSet.find_by_id(params[:id])
+
+    # check real data
+    @file_exist = {}
+    @data_set.samples.each do |sample|
+      sample.to_hash.values.each do |file|
+        if file.split(/\//).first =~ /^p\d+/
+          file_path = File.join(GSTORE_DIR, file)
+          @file_exist[file] = File.exist?(file_path)
+        else
+          @file_exist[file] = true
+        end
+      end
+    end
+
   end
   def edit
     @project = Project.find_by_number(session[:project].to_i)
@@ -17,15 +31,22 @@ class DataSetController < ApplicationController
     @project = Project.find_by_number(session[:project].to_i)
     tree = []
     node_list = {}
+    root = []
+    top_nodes = []
     @project.data_sets.each do |data_set|
       node = {"id" => data_set.id, "text" => data_set.id.to_s+" <a href='/data_set/#{data_set.id}'>"+data_set.name+'</a>', 'path' => '', "expanded" => true, "classes" => 'file', "hasChildren" => false, "children" => []}
       node_list[data_set.id] = node
       if parent = data_set.data_set
         node_list[parent.id]['children'] << node
       else
-        tree << node
+        top_nodes << node
+      end
+      if data_set.id == params[:format].to_i
+        root << node
       end
     end
+    root = top_nodes if root.empty?
+    tree.concat root
     render :json => tree
   end
   def import
