@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130621-100537'
+Version = '20130621-101124'
 
 require 'csv'
 require 'fileutils'
@@ -244,7 +244,7 @@ rm -rf #{@scratch_dir} || exit 1
     transfer_files = [@input_dataset_file, @parameter_file]
     transfer_files.each do |file|
       org = File.join(@scratch_result_dir, file)
-      dest = File.dirname(File.join(@gstore_result_dir, file))
+      dest = File.join(@gstore_result_dir, file)
       commands.concat copy_commands(org, dest)
     end
     commands.each do |command|
