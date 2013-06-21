@@ -1,13 +1,12 @@
 class RunApplicationController < ApplicationController
   def index
-    @sushi_apps = Dir['lib/*.rb'].sort.select{|script| script !~ /sushiApp/ and script !~ /sushiToolBox/ and script !~ /optparse/}.to_a.map{|script| File.basename(script).gsub(/\.rb/,'')}
     if project_number = session[:project] and project = Project.find_by_number(project_number.to_i)
       @data_sets = project.data_sets
     end
   end
   def select_application
-    if data_set = params[:data_set] and id = data_set[:id]
-      @data_set = DataSet.find_by_id(id.to_i)
+    if data_set_id = params[:format]
+      @data_set = DataSet.find_by_id(data_set_id.to_i)
 
       # check real data
       @file_exist = {}
