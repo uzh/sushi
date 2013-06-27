@@ -1,8 +1,10 @@
 class RunApplicationController < ApplicationController
   def index
-    if project_number = session[:project] and project = Project.find_by_number(project_number.to_i)
-      @data_sets = project.data_sets
-    end
+    @data_sets = if project_number = session[:project] and project = Project.find_by_number(project_number.to_i)
+                   project.data_sets
+                 else
+                   []
+                 end
   end
   def select_application
     if data_set_id = params[:format]
