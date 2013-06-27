@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130627-150830'
+Version = '20130627-161305'
 
 require 'csv'
 require 'fileutils'
@@ -8,7 +8,7 @@ require 'active_record'
 require 'sushiToolBox'
 
 WORKFLOW_MANAGER='druby://fgcz-s-034:12345'
-#GSTORE_DIR='/srv/GT/analysis/masaomi/sushi/work_lunch/gstore/sushi'
+#GSTORE_DIR='/srv/GT/analysis/masaomi/sushi/work_lunch/gstore/projects'
 GSTORE_DIR='/srv/gstore/projects'
 
 
@@ -41,7 +41,6 @@ class SushiApp
   attr_accessor :dataset_sushi_id
   attr_accessor :project
   attr_accessor :user
-  attr_reader :required_columns
   def initialize
     @gstore_dir = GSTORE_DIR
     @project = nil
@@ -53,7 +52,6 @@ class SushiApp
     @params['node'] = ''
     @params['process_mode'] = 'SAMPLE'
     @job_ids = []
-    @required_columns = []
 
   end
   def set_input_dataset
