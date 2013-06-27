@@ -10,6 +10,7 @@ $(document).ready(function(){
 <h3>DataSet</h3>
 <table>
   <tr><th>ID</th><th colspan=2>Name</th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th colspan=2>Created</th></tr>
+<% if @project %>
 <% @project.data_sets.each do |data_set| %>
   <tr>
     <td><%= data_set.id %></td>
@@ -26,6 +27,7 @@ $(document).ready(function(){
     <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
     <!--<td><%= button_to "delete", "/data_set", :method=>:get, :onclick=>"return confirm('Are you sure to delete #{data_set.name}?');" %></td>-->
   </tr>
+<% end %>
 <% end %>
 </table>
 
