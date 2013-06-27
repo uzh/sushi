@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130627-143408'
+Version = '20130627-150830'
 
 require 'csv'
 require 'fileutils'
@@ -41,6 +41,7 @@ class SushiApp
   attr_accessor :dataset_sushi_id
   attr_accessor :project
   attr_accessor :user
+  attr_reader :required_columns
   def initialize
     @gstore_dir = GSTORE_DIR
     @project = nil
@@ -52,6 +53,7 @@ class SushiApp
     @params['node'] = ''
     @params['process_mode'] = 'SAMPLE'
     @job_ids = []
+    @required_columns = []
 
   end
   def set_input_dataset
