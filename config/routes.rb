@@ -54,7 +54,7 @@ SushiFabric::Application.routes.draw do
     end
   end
 
-  match "/gstore/sushi/:project_id(/*dirs)" => "home#gstore"
+  match "/gstore/projects/:project_id(/*dirs)" => "home#gstore"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
