@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130621-111037'
+Version = '20130627-143408'
 
 require 'csv'
 require 'fileutils'
@@ -8,8 +8,8 @@ require 'active_record'
 require 'sushiToolBox'
 
 WORKFLOW_MANAGER='druby://fgcz-s-034:12345'
-GSTORE_DIR='/srv/GT/analysis/masaomi/sushi/work_lunch/gstore/sushi'
-#GSTORE_DIR='/srv/gstore/projects'
+#GSTORE_DIR='/srv/GT/analysis/masaomi/sushi/work_lunch/gstore/sushi'
+GSTORE_DIR='/srv/gstore/projects'
 
 
 class Hash
@@ -36,7 +36,6 @@ class SushiApp
   include SushiToolBox
   attr_reader :params
   attr_reader :job_ids
-  attr_reader :required_columns
   attr_accessor :dataset_tsv_file
   attr_accessor :parameterset_tsv_file
   attr_accessor :dataset_sushi_id
@@ -145,7 +144,7 @@ cd $SCRATCH_DIR || exit 1
       @output_files.map{|header| next_dataset[header]}.each do |file|
         # in actual case, to save under /srv/gstore/
         if @gstore_dir =~ /srv\/gstore/
-          @out.print "gstore-request -w copy ", File.basename(file), " ", File.join(@gstore_dir, file), "\n"
+          @out.print "g-req -w copy ", File.basename(file), " ", File.dirname(File.join(@gstore_dir, file)), "\n"
         else
           dest = File.join(@gstore_dir, file)
           dir  = File.dirname(dest)
@@ -232,7 +231,8 @@ rm -rf #{@scratch_dir} || exit 1
   def copy_commands(org, dest)
     commands = []
     if @gstore_dir =~ /srv\/gstore/
-      commands << "gstore-request -w copy #{org} #{dest}"
+      dest = File.dirname(dest)
+      commands << "g-req -w copy #{org} #{dest}"
     else
       dir = File.dirname(dest)
       commands << "mkdir -p #{dir}"
