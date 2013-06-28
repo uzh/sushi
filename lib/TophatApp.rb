@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130610-163048'
+Version = '20130628-172038'
 
 require 'sushiApp'
 
@@ -10,11 +10,14 @@ class TophatApp < SushiApp
     @name = 'Tophat'
     @analysis_category = 'Map'
     @required_columns = ['Sample','Read1','Species']
-    @required_params = ['build','paired','cores']
+    @required_params = ['build','paired']
     # optional params
-    @params['is_stranded'] = ''
+    @params['is_stranded'] = ['', 'sense', 'other']
     @params['paired'] = false
-    @params['build'] = ''
+    @params['build'] = {'select'=>''}
+    Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
+      @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
+    end
     @output_files = ['BAM','BAI']
   end
   def preprocess
@@ -53,11 +56,18 @@ class TophatApp < SushiApp
      end
     end
   end
+  def num_threads
+    if @params['cores'].to_i > 1
+      "--num-threads #{@params['cores']}"
+    else
+      ""
+    end 
+  end
   def commands
     if bowtie2_index and transcripts_index
-      command = "/usr/local/ngseq/bin/tophat -o . --num-threads #{@params['cores']} #{library_type} --transcriptome-index #{transcripts_index} #{bowtie2_index} $WORKSPACE_DIR/#{@dataset['Read1']}"
+      command = "/usr/local/ngseq/bin/tophat -o . #{num_threads} #{library_type} --transcriptome-index #{transcripts_index} #{bowtie2_index} #{@gstore_dir}/#{@dataset['Read1']}"
       if @params['paired']
-        command << ",$WORKSPACE_DIR/#{@dataset['Read2']}\n"
+        command << ",#{@gstore_dir}/#{@dataset['Read2']}\n"
       else
         command << "\n"
       end
@@ -72,6 +82,7 @@ if __FILE__ == $0
   usecase = TophatApp.new
 
   usecase.project = "p1001"
+  usecase.user = "masa"
 
   # set user parameter
   # for GUI sushi
@@ -83,7 +94,8 @@ if __FILE__ == $0
 
   # also possible to load a parameterset csv file
   # mainly for CUI sushi
-  usecase.parameterset_tsv_file = 'tophat_parameterset.tsv'
+  #usecase.parameterset_tsv_file = 'tophat_parameterset.tsv'
+  usecase.parameterset_tsv_file = 'test.tsv'
 
   # set input dataset
   # mainly for CUI sushi

@@ -5,6 +5,6 @@ class User < ActiveRecord::Base
   devise :ldap_authenticatable, :rememberable, :trackable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :password, :password_confirmation, :remember_me
+  attr_accessible :login, :password, :password_confirmation, :remember_me, :selected_project
   # attr_accessible :title, :body
 end
