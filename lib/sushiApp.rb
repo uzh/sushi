@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130621-111037'
+Version = '20130628-171905'
 
 require 'csv'
 require 'fileutils'
@@ -8,8 +8,8 @@ require 'active_record'
 require 'sushiToolBox'
 
 WORKFLOW_MANAGER='druby://fgcz-s-034:12345'
-GSTORE_DIR='/srv/GT/analysis/masaomi/sushi/work_lunch/gstore/sushi'
-#GSTORE_DIR='/srv/gstore/projects'
+#GSTORE_DIR='/srv/GT/analysis/masaomi/sushi/work_lunch/gstore/projects'
+GSTORE_DIR='/srv/gstore/projects'
 
 
 class Hash
@@ -18,7 +18,13 @@ class Hash
   def []=(k,v)
     @defaults ||= {}
     unless @defaults[k]
-      @defaults.set(k,v)
+      if v.instance_of?(Array)
+        @defaults.set(k,v.first)
+      elsif v.instance_of?(Hash) and v.first
+        @defaults.set(k,v.first.last)
+      else
+        @defaults.set(k,v)
+      end
     end
     set(k,v)
   end
@@ -37,6 +43,7 @@ class SushiApp
   attr_reader :params
   attr_reader :job_ids
   attr_reader :required_columns
+  attr_reader :required_params
   attr_accessor :dataset_tsv_file
   attr_accessor :parameterset_tsv_file
   attr_accessor :dataset_sushi_id
@@ -47,13 +54,13 @@ class SushiApp
     @project = nil
     @name = nil
     @params = {}
-    @params['cores'] = 1
-    @params['ram'] = 1
-    @params['scratch'] = 1
+    @params['cores'] = ''
+    @params['ram'] = ''
+    @params['scratch'] = ''
     @params['node'] = ''
     @params['process_mode'] = 'SAMPLE'
     @job_ids = []
-
+    @required_columns = []
   end
   def set_input_dataset
     if @dataset_tsv_file
@@ -102,12 +109,15 @@ class SushiApp
                                     eval(row[header])
                                   end
         end
+        (@params.keys - row.headers).each do |key|
+          @params[key] = @params.default_value(key)
+        end
       end
     end
   end
   def set_dir_paths
     ## sushi figures out where to put the resulting dataset
-    unless @name or @project
+    unless @name and @project
       raise "should set #name and #project"
     end
     @name.gsub!(/\s/,'_')
@@ -115,6 +125,7 @@ class SushiApp
     @result_dir = File.join(@project, result_dir_base)
     @scratch_result_dir = File.join("/scratch", result_dir_base)
     @gstore_result_dir = File.join(@gstore_dir, @result_dir)
+    @gstore_project_dir = File.join(@gstore_dir, @project)
     set_file_paths
   end
   def prepare_result_dir
@@ -145,7 +156,7 @@ cd $SCRATCH_DIR || exit 1
       @output_files.map{|header| next_dataset[header]}.each do |file|
         # in actual case, to save under /srv/gstore/
         if @gstore_dir =~ /srv\/gstore/
-          @out.print "gstore-request -w copy ", File.basename(file), " ", File.join(@gstore_dir, file), "\n"
+          @out.print "g-req -w copy ", File.basename(file), " ", File.dirname(File.join(@gstore_dir, file)), "\n"
         else
           dest = File.join(@gstore_dir, file)
           dir  = File.dirname(dest)
@@ -229,44 +240,21 @@ rm -rf #{@scratch_dir} || exit 1
     end
     file_path
   end
-  def copy_commands(org, dest)
+  def copy_commands(org_dir, dest_parent_dir)
     commands = []
     if @gstore_dir =~ /srv\/gstore/
-      commands << "gstore-request -w copy #{org} #{dest}"
+      commands << "g-req -w copy #{org_dir} #{dest_parent_dir}"
     else
-      dir = File.dirname(dest)
-      commands << "mkdir -p #{dir}"
-      commands << "cp #{org} #{dest}"
+      commands << "mkdir -p #{dest_parent_dir}"
+      commands << "cp -r #{org_dir} #{dest_parent_dir}"
     end
     commands
   end
-  def copy_input_dataset_parameters
-    commands = []
-    transfer_files = [@input_dataset_file, @parameter_file]
-    transfer_files.each do |file|
-      org = File.join(@scratch_result_dir, file)
-      dest = File.join(@gstore_result_dir, file)
-      commands.concat copy_commands(org, dest)
-    end
-    commands.each do |command|
+  def copy_dataset_parameter_jobscripts
+    org = @scratch_result_dir
+    dest = @gstore_project_dir
+    copy_commands(org, dest).each do |command|
       puts command
-      unless system command
-        raise "fails in copying input_dataset files from /scratch to /gstore"
-      end
-    end
-  end
-  def copy_next_dataset_job_scripts
-    commands = []
-    transfer_files = [@next_dataset_file]
-    transfer_files.concat @job_scripts.map{|file| File.basename(file)}
-    transfer_files.concat @get_log_scripts.map{|file| File.basename(file)}
-
-    transfer_files.each do |file|
-      org = File.join(@scratch_result_dir, file)
-      dest = File.join(@gstore_result_dir, file)
-      commands.concat copy_commands(org, dest)
-    end
-    commands.each do |command|
       unless system command
         raise "fails in copying next_dataset files from /scratch to /gstore"
       end
@@ -275,7 +263,6 @@ rm -rf #{@scratch_dir} || exit 1
     command = "rm -rf #{@scratch_result_dir}"
     `#{command}`
   end
-
   def make_job_script
     @out = open(@job_script, 'w')
     job_header
@@ -312,7 +299,6 @@ rm -rf #{@scratch_dir} || exit 1
     ## copy application data to gstore 
     save_parameters_as_tsv
     save_input_dataset_as_tsv
-    copy_input_dataset_parameters
 
 
     ## sushi writes creates the job scripts and builds the result data set that is to be generated
@@ -348,8 +334,9 @@ rm -rf #{@scratch_dir} || exit 1
     print 'result dataset: '
     p @result_dataset
 
+    # copy application data to gstore 
     save_next_dataset_as_tsv
-    copy_next_dataset_job_scripts
+    copy_dataset_parameter_jobscripts
 
     if !@job_ids.empty? and @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
       data_set_arr = []

@@ -10,13 +10,13 @@ $(document).ready(function(){
 <hr />
 <h3>DataSet</h3>
 <table>
-  <tr><th>ID</th><th>Name</th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th>Created</th></tr>
+  <tr><th>ID</th><th>Name</th><th>Samples</th><th>Parent</th><th>Child(ren)IDs</th><th>Created</th></tr>
   <% if @data_set %>
   <tr>
     <td><%= @data_set.id %></td>
     <td><%= @data_set.name %></td>
     <td><%= @data_set.samples.length %></td>
-    <td><%= link_to @data_set.parent_id, "/data_set/#{@data_set.parent_id}" if @data_set.parent_id %></td>
+    <td><%= link_to @data_set.data_set.name, "/data_set/#{@data_set.parent_id}" if @data_set.parent_id %></td>
     <td>
       <% @data_set.data_sets.each do |child| %>
         <%= link_to child.id, "/data_set/#{child.id}" %>
@@ -61,5 +61,10 @@ $(document).ready(function(){
     <li><%= file %></li>
   <% end %>
   </ul>
+<% else %>
+  <%= button_to "Go gstore", File.join("/gstore/projects/", @sample_path.first) if @sample_path.length == 1 %>
+  <% @sample_path.sort.each do |path| %>
+    <%= link_to "#{File.join('/gstore/projects/',path)}", File.join("/gstore/projects/", path) %>
+  <% end %>
 <% end %>
 
