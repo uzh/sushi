@@ -10,7 +10,13 @@
       <% @sushi_app.params.each do |key, value| %>
         <tr>
           <th><%= key %></th>
-          <td><%= text_field :parameters, key.to_sym, :value => "#{value}" %></td>
+          <td>
+          <% if key == 'process_mode' %>
+            <%= select :parameters, key.to_sym, ['SAMPLE', 'DATASET'], :selected => value %>
+          <% else %>
+            <%= text_field :parameters, key.to_sym, :value => "#{value}" %>
+          <% end %>
+        </td>
         </tr>
       <% end %>
     </table>
