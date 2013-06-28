@@ -75,10 +75,10 @@ class RunApplicationController < ApplicationController
     @data_set = DataSet.find(data_set_id.to_i)
     params[:parameters].each do |key, value|
       @sushi_app.params[key] = if @sushi_app.params.data_type(key) == String
-                                       value
-                                     else
-                                       eval(value)
-                                     end
+                                 value
+                               else
+                                 eval(value)
+                               end
     end
   end
   def submit_jobs

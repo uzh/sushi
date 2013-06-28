@@ -21,7 +21,13 @@
           <% when 'node' %>
             <%= select :parameters, key.to_sym, @nodes, :selected => '' %> (Munin Overview: <%= link_to 'http://fgcz-munin.uzh.ch/', 'http://fgcz-munin.uzh.ch/' %>)
           <% else %>
-            <%= text_field :parameters, key.to_sym, :value => "#{value}" %>
+            <% if value.class == TrueClass or value.class == FalseClass %>
+              <%= select :parameters, key.to_sym, ['true', 'false'], :selected => value.to_s %>
+            <% elsif value.class == Array %>
+              <%= select :parameters, key.to_sym, value, :selected => value.first %>
+            <% else %>
+              <%= text_field :parameters, key.to_sym, :value => "#{value}" %>
+            <% end %>
           <% end %>
         </td>
         </tr>
