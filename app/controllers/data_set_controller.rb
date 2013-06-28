@@ -12,17 +12,19 @@ class DataSetController < ApplicationController
 
     # check real data
     @file_exist = {}
+    @sample_path = []
     @data_set.samples.each do |sample|
       sample.to_hash.values.each do |file|
         if file.split(/\//).first =~ /^p\d+/
           file_path = File.join(GSTORE_DIR, file)
+          @sample_path << File.dirname(file)
           @file_exist[file] = File.exist?(file_path)
         else
           @file_exist[file] = true
         end
       end
     end
-
+    @sample_path.uniq!
   end
   def edit
     @project = Project.find_by_number(session[:project].to_i)
