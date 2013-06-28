@@ -12,6 +12,10 @@
           <th><%= key %></th>
           <td>
           <% case key %>
+          <% when 'ram' %>
+            <%= text_field :parameters, key.to_sym, :value => "#{value}" %> GB
+          <% when 'scratch' %>
+            <%= text_field :parameters, key.to_sym, :value => "#{value}" %> GB
           <% when 'process_mode' %>
             <%= select :parameters, key.to_sym, ['SAMPLE', 'DATASET'], :selected => value %>
           <% when 'node' %>
