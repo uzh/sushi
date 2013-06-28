@@ -21,13 +21,18 @@
           <% when 'node' %>
             <%= select :parameters, key.to_sym, @nodes, :selected => '' %> (Munin Overview: <%= link_to 'http://fgcz-munin.uzh.ch/', 'http://fgcz-munin.uzh.ch/' %>)
           <% else %>
-            <% if value.class == TrueClass or value.class == FalseClass %>
+            <% if value.instance_of?(TrueClass) or value.instance_of?(FalseClass) %>
               <%= select :parameters, key.to_sym, ['true', 'false'], :selected => value.to_s %>
-            <% elsif value.class == Array %>
+            <% elsif value.instance_of?(Array) %>
               <%= select :parameters, key.to_sym, value, :selected => value.first %>
+            <% elsif value.instance_of?(Hash) %>
+              <%= select :parameters, key.to_sym, value, :selected => '' %>
             <% else %>
               <%= text_field :parameters, key.to_sym, :value => "#{value}" %>
             <% end %>
+          <% end %>
+          <% if @sushi_app.required_params.include?(key) %>
+            <font color=red>required</font>
           <% end %>
         </td>
         </tr>
