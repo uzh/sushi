@@ -61,5 +61,10 @@ $(document).ready(function(){
     <li><%= file %></li>
   <% end %>
   </ul>
+<% else %>
+  <%= button_to "Go gstore", File.join("/gstore/projects/", @sample_path.first) if @sample_path.length == 1 %>
+  <% @sample_path.sort.each do |path| %>
+    <%= link_to "#{File.join('/gstore/projects/',path)}", File.join("/gstore/projects/", path) %>
+  <% end %>
 <% end %>
 
