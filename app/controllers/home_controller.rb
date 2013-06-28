@@ -3,10 +3,18 @@ class HomeController < ApplicationController
     session[:projects] = FGCZ.get_user_projects(current_user.login).map{|project| project.gsub(/p/,'').to_i}.sort
     session[:project] = if project = params[:project] and number = project[:number] or
                            number = session[:project]
+                          current_user.selected_project = number
+                          current_user.save
                           number.to_i
+                        elsif current_user.selected_project != -1
+                          current_user.selected_project
                         else
                           session[:projects].first
                         end
+    if current_user.selected_project == -1
+      current_user.selected_project = session[:project]
+      current_user.save
+    end
   end
   def gstore
     # path
