@@ -44,7 +44,6 @@ class RunApplicationController < ApplicationController
     @sushi_app = eval(class_name).new
     data_set_id = params[:data_set][:id]
     @data_set = DataSet.find(data_set_id.to_i)
-
     @nodes = {
       '' => '',
       'fgcz-c-046: cpu 64,mem 504 GB,scr  11T' => 'fgcz-c-046',
@@ -65,7 +64,6 @@ class RunApplicationController < ApplicationController
       'fgcz-c-064: cpu 24,mem  35 GB,scr 4.9T' => 'fgcz-c-064',
       'fgcz-c-065: cpu 24,mem  70 GB,scr 197G' => 'fgcz-c-065',
     }
-
   end
   def confirmation
     @params = params

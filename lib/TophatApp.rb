@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130628-161703'
+Version = '20130628-172038'
 
 require 'sushiApp'
 
@@ -10,11 +10,14 @@ class TophatApp < SushiApp
     @name = 'Tophat'
     @analysis_category = 'Map'
     @required_columns = ['Sample','Read1','Species']
-    @required_params = ['build','paired','cores']
+    @required_params = ['build','paired']
     # optional params
     @params['is_stranded'] = ['', 'sense', 'other']
     @params['paired'] = false
-    @params['build'] = ''
+    @params['build'] = {'select'=>''}
+    Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
+      @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
+    end
     @output_files = ['BAM','BAI']
   end
   def preprocess

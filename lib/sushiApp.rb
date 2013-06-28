@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130628-160637'
+Version = '20130628-171905'
 
 require 'csv'
 require 'fileutils'
@@ -20,6 +20,8 @@ class Hash
     unless @defaults[k]
       if v.instance_of?(Array)
         @defaults.set(k,v.first)
+      elsif v.instance_of?(Hash) and v.first
+        @defaults.set(k,v.first.last)
       else
         @defaults.set(k,v)
       end
@@ -41,6 +43,7 @@ class SushiApp
   attr_reader :params
   attr_reader :job_ids
   attr_reader :required_columns
+  attr_reader :required_params
   attr_accessor :dataset_tsv_file
   attr_accessor :parameterset_tsv_file
   attr_accessor :dataset_sushi_id
