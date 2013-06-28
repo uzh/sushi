@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130628-152305'
+Version = '20130628-160637'
 
 require 'csv'
 require 'fileutils'
@@ -18,7 +18,11 @@ class Hash
   def []=(k,v)
     @defaults ||= {}
     unless @defaults[k]
-      @defaults.set(k,v)
+      if v.instance_of?(Array)
+        @defaults.set(k,v.first)
+      else
+        @defaults.set(k,v)
+      end
     end
     set(k,v)
   end
@@ -101,6 +105,9 @@ class SushiApp
                                   else
                                     eval(row[header])
                                   end
+        end
+        (@params.keys - row.headers).each do |key|
+          @params[key] = @params.default_value(key)
         end
       end
     end

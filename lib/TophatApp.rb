@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130627-131605'
+Version = '20130628-161703'
 
 require 'sushiApp'
 
@@ -12,7 +12,7 @@ class TophatApp < SushiApp
     @required_columns = ['Sample','Read1','Species']
     @required_params = ['build','paired','cores']
     # optional params
-    @params['is_stranded'] = ''
+    @params['is_stranded'] = ['', 'sense', 'other']
     @params['paired'] = false
     @params['build'] = ''
     @output_files = ['BAM','BAI']
@@ -53,9 +53,16 @@ class TophatApp < SushiApp
      end
     end
   end
+  def num_threads
+    if @params['cores'].to_i > 1
+      "--num-threads #{@params['cores']}"
+    else
+      ""
+    end 
+  end
   def commands
     if bowtie2_index and transcripts_index
-      command = "/usr/local/ngseq/bin/tophat -o . --num-threads #{@params['cores']} #{library_type} --transcriptome-index #{transcripts_index} #{bowtie2_index} #{@gstore_dir}/#{@dataset['Read1']}"
+      command = "/usr/local/ngseq/bin/tophat -o . #{num_threads} #{library_type} --transcriptome-index #{transcripts_index} #{bowtie2_index} #{@gstore_dir}/#{@dataset['Read1']}"
       if @params['paired']
         command << ",#{@gstore_dir}/#{@dataset['Read2']}\n"
       else
