@@ -11,8 +11,11 @@
         <tr>
           <th><%= key %></th>
           <td>
-          <% if key == 'process_mode' %>
+          <% case key %>
+          <% when 'process_mode' %>
             <%= select :parameters, key.to_sym, ['SAMPLE', 'DATASET'], :selected => value %>
+          <% when 'node' %>
+            <%= select :parameters, key.to_sym, @nodes, :selected => '' %> (Munin Overview: <%= link_to 'http://fgcz-munin.uzh.ch/', 'http://fgcz-munin.uzh.ch/' %>)
           <% else %>
             <%= text_field :parameters, key.to_sym, :value => "#{value}" %>
           <% end %>
