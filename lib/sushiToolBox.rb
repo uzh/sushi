@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130530-141919'
+Version = '20130704-161551'
 
 require "active_record"
 
@@ -47,6 +47,7 @@ module SushiToolBox
         parent_data_set.data_sets << data_set if parent_data_set
         data_set.save
       end
+      data_set.id
     end
   end
 end

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130628-171905'
+Version = '20130704-163122'
 
 require 'csv'
 require 'fileutils'
@@ -42,6 +42,7 @@ class SushiApp
   include SushiToolBox
   attr_reader :params
   attr_reader :job_ids
+  attr_reader :next_dataset_id
   attr_reader :required_columns
   attr_reader :required_params
   attr_accessor :dataset_tsv_file
@@ -147,6 +148,8 @@ SCRATCH_DIR=#{@scratch_dir}
 GSTORE_DIR=#{@gstore_dir}
 mkdir $SCRATCH_DIR || exit 1
 cd $SCRATCH_DIR || exit 1
+echo "Job runs on `hostname`"
+echo "at $SCRATCH_DIR"
 
     EOF
   end
@@ -274,7 +277,11 @@ rm -rf #{@scratch_dir} || exit 1
     @dataset_hash.each do |row|
       @dataset = row
       ## WRITE THE JOB SCRIPT
-      @job_script = File.join(@scratch_result_dir, row['Sample']) + '.sh'
+      @job_script = if @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
+                      File.join(@scratch_result_dir, row['Sample']) + '_' + dataset.name.gsub(/\s+/,'_') + '.sh'
+                    else 
+                      File.join(@scratch_result_dir, row['Sample']) + '.sh'
+                    end
       @get_log_script = File.join(@scratch_result_dir, "get_log_#{row['Sample']}.sh")
       make_job_script
       @job_scripts << @job_script
@@ -351,9 +358,8 @@ rm -rf #{@scratch_dir} || exit 1
           rows << row
         end
       end
-      save_data_set(data_set_arr.to_a.flatten, headers, rows)
+      @next_dataset_id = save_data_set(data_set_arr.to_a.flatten, headers, rows)
     end
-    # ToDo: delete input/next_dataset parameters file
   end
   def test_run
     set_dir_paths

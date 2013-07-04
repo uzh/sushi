@@ -1,5 +1,5 @@
 <h1>Project <%= session[:project] %></h1>
 <hr />
 <h2>Submit Jobs</h2>
-job_ids <%= @sushi_app.job_ids.join(',') %><br /><br />
+Job IDs: <%= @sushi_app.job_ids.join(',') %>, Next DataSet ID: <%= @sushi_app.next_dataset_id %><br /><br />
 <%= link_to "Job List", "/job_monitoring" %>

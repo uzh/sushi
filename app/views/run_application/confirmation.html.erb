@@ -26,7 +26,15 @@ sushi_app class <%= @sushi_app.class %><br /><br />
 <% @sushi_app.params.each do |key, value| %>
   <tr>
     <th><%= key %></th>
-    <td><%= value %></td>
+    <td>
+      <% if @sushi_app.required_params.include?(key) and value.to_s.empty? %>
+        <font color=red>required</font>
+        <% @requires ||= [] %>
+        <% @requires << key %>
+      <% else %>
+        <%= value %>
+      <% end %>
+    </td>
   </tr>
 <% end %>
 </table>
@@ -37,5 +45,14 @@ sushi_app class <%= @sushi_app.class %><br /><br />
   <% @sushi_app.params.each do |key, value| %>
     <%= hidden_field :parameters, key.to_sym, :value => value %>
   <% end %>
-  <%= submit_tag 'Submit' %>
+  <% if @requires %>
+    <ul>
+    <% @requires.each do |required| %>
+      <li>Parameter <b><font color=red><%= required %></font></b> is required</li>
+    <% end %>
+    </ul>
+    <%= button_to_function 'Back', "history.back()" %>
+  <% else %>
+    <%= submit_tag 'Submit' unless @required %>
+<% end %>
 <% end %>
