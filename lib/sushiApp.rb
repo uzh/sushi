@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130704-104109'
+Version = '20130704-154134'
 
 require 'csv'
 require 'fileutils'
@@ -276,7 +276,11 @@ rm -rf #{@scratch_dir} || exit 1
     @dataset_hash.each do |row|
       @dataset = row
       ## WRITE THE JOB SCRIPT
-      @job_script = File.join(@scratch_result_dir, row['Sample']) + '.sh'
+      @job_script = if @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
+                      File.join(@scratch_result_dir, row['Sample']) + '_' + dataset.name.gsub(/\s+/,'_') + '.sh'
+                    else 
+                      File.join(@scratch_result_dir, row['Sample']) + '.sh'
+                    end
       @get_log_script = File.join(@scratch_result_dir, "get_log_#{row['Sample']}.sh")
       make_job_script
       @job_scripts << @job_script
