@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130704-154134'
+Version = '20130704-163122'
 
 require 'csv'
 require 'fileutils'
@@ -42,6 +42,7 @@ class SushiApp
   include SushiToolBox
   attr_reader :params
   attr_reader :job_ids
+  attr_reader :next_dataset_id
   attr_reader :required_columns
   attr_reader :required_params
   attr_accessor :dataset_tsv_file
@@ -357,9 +358,8 @@ rm -rf #{@scratch_dir} || exit 1
           rows << row
         end
       end
-      save_data_set(data_set_arr.to_a.flatten, headers, rows)
+      @next_dataset_id = save_data_set(data_set_arr.to_a.flatten, headers, rows)
     end
-    # ToDo: delete input/next_dataset parameters file
   end
   def test_run
     set_dir_paths
