@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130419120339) do
+ActiveRecord::Schema.define(:version => 20130704145600) do
 
   create_table "data_sets", :force => true do |t|
     t.integer  "project_id"
@@ -20,6 +20,14 @@ ActiveRecord::Schema.define(:version => 20130419120339) do
     t.string   "md5"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "jobs", :force => true do |t|
+    t.integer  "submit_job_id"
+    t.integer  "input_dataset_id"
+    t.integer  "next_dataset_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "projects", :force => true do |t|
