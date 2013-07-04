@@ -2,15 +2,20 @@
 <hr />
 <h3>Job List</h3>
 
-<table><tr><th>Job ID</th><th>Status</th><th>User</th><th>JobScript</th><th>Log</th><th>Time (Start/End)</th>
+<table><tr><th>Job ID</th><th>Status</th><th>User</th><th>JobScript</th><th>Log</th><th>DataSet</th><th>Time (Start/End)</th>
   </tr>
-<% @job_list.each do |job| %>
+<% @job_list.each_with_index do |job, i| %>
   <tr>
     <td><%= job[0] %></td>
     <td><%= job[1] %></td>
     <td><%= job[4] %></td>
     <td><%= link_to job[2], :action => 'print_script', :job_id => job[0] %></td>
     <td><%= link_to 'Log', :action => 'print_log', :job_id => job[0] %></td>
+    <td>
+      <% if submit_job = @submit_jobs[i] %>
+        <%= link_to submit_job.data_set.name, "/data_set/#{submit_job.next_dataset_id}" %>
+      <% end %>
+    </td>
     <td><%= job[3].to_s %></td>
   </tr>
 <% end %>
