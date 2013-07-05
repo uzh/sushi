@@ -3,10 +3,10 @@
 
 require 'sushiApp'
 
-class FastqcWrappedApp<  SushiApp
+class FastqcWrappedApp <  SushiApp
   def initialize
     super
-    @name = 'Fastqc Wrapped'
+    @name = 'Fastqc Warpped'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
     @required_columns = ['Sample','Read1','Species']
@@ -29,13 +29,18 @@ class FastqcWrappedApp<  SushiApp
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave<<  EOT\n"
     command<<  "source('/usr/local/ngseq/sushi_scripts/init.R')\n"
-    command<<  "config = list()\n"
+    command << "config = list()\n"
     config = @params
-    config.each do |key, value|
-      command<<  "config[['#{key}']] = '#{value}'\n"
+    config.keys.each do |key|
+      command << "config[['#{key}']] = '#{config[key]}'\n" 
+    end
+    command << "config[['dataRoot']] = '#{@gstore_dir}'\n"
+    command << "output = list()\n"
+    output = next_dataset
+    output.keys.each do |key|
+      command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
     command<<  "inputDatasetFile = '#{@input_dataset_tsv_path}'\n"
-    command<<  "output = '#{File.basename(next_dataset['Report'])}'\n"
     command<<  "fastqcApp(input=inputDatasetFile, output=output, config=config)\n"
     command<<  "EOT\n"
     command

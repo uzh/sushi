@@ -10,11 +10,21 @@ class TophatWrappedApp < SushiApp
     @name = 'Tophat Wrapped'
     @analysis_category = 'Map'
     @required_columns = ['Sample','Read1','Species']
-    @required_params = ['build', 'strandMode', 'paired','cores', 'foo']
-    @params['strandMode'] = 'both'
+    @required_params = ['build','paired', 'strandMode']
+    # optional params
+    @params['build'] = {'select'=>''}
+    Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
+      @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
+    end
     @params['paired'] = false
-    @params['build'] = ''
-    @params['foo'] = ''
+    @params['strandMode'] = ['both', 'sense', 'antisense']
+    @params['featureFile'] = 'genes.gtf'
+    @params['cmdOptions'] = ''
+    @params['trimAdapter'] = false
+    @params['trimLeft'] = 0
+    @params['trimRight'] = 0
+    @params['minTailQuality'] = 0
+    @params['specialOptions'] = ''
     @output_files = ['BAM','BAI']
   end
   def preprocess
@@ -37,6 +47,7 @@ class TophatWrappedApp < SushiApp
     config.keys.each do |key|
       command << "config[['#{key}']] = '#{config[key]}'\n" 
     end
+    command << "config[['dataRoot']] = '#{@gstore_dir}'\n"
     command << "input = list()\n"
     input = @dataset
     input.keys.each do |key|
