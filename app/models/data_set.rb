@@ -1,6 +1,7 @@
 class DataSet < ActiveRecord::Base
   attr_accessible :name, :md5
   has_many :samples
+  has_many :jobs, :foreign_key => :next_dataset_id
   belongs_to :project
   has_many :data_sets, :foreign_key => :parent_id
   belongs_to :data_set, :foreign_key => :parent_id

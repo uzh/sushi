@@ -58,7 +58,7 @@ class TophatWrappedApp < SushiApp
     output.keys.each do |key|
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
-    command << "tophatApp(input=input, output=output, config=config)\n"
+    command << "mapTophat(input=input, output=output, config=config)\n"
     command << "EOT"
     command
   end

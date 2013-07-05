@@ -13,7 +13,7 @@
     <td><%= link_to 'Log', :action => 'print_log', :job_id => job[0] %></td>
     <td>
       <% if submit_job = @submit_jobs[i] %>
-        <%= link_to submit_job.next_dataset.name, "/data_set/#{submit_job.next_dataset_id}" %>
+        <%= link_to submit_job.data_set.name, "/data_set/#{submit_job.next_dataset_id}" %>
       <% end %>
     </td>
     <td><%= job[3].to_s %></td>

@@ -102,6 +102,8 @@ class RunApplicationController < ApplicationController
       new_job.submit_job_id = job_id.to_i
       new_job.next_dataset_id = @sushi_app.next_dataset_id
       new_job.save
+      new_job.data_set.jobs << new_job
+      new_job.data_set.save
     end
   end
 end
