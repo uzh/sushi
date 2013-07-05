@@ -11,7 +11,7 @@ $(document).ready(function(){
 <table>
   <tr><th>ID</th><th colspan=2>Name</th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th colspan=2>Created</th></tr>
 <% if @project %>
-<% @project.data_sets.each do |data_set| %>
+<% @project.data_sets.reverse.each do |data_set| %>
   <tr>
     <td><%= data_set.id %></td>
     <td><%= link_to data_set.name, "/data_set/#{data_set.id}" %></td>
