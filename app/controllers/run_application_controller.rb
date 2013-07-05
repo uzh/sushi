@@ -100,7 +100,6 @@ class RunApplicationController < ApplicationController
     @sushi_app.job_ids.each do |job_id|
       new_job = Job.new
       new_job.submit_job_id = job_id.to_i
-      new_job.input_dataset_id = data_set_id.to_i
       new_job.next_dataset_id = @sushi_app.next_dataset_id
       new_job.save
     end
