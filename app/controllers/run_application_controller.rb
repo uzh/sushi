@@ -1,7 +1,7 @@
 class RunApplicationController < ApplicationController
   def index
     @data_sets = if project_number = session[:project] and project = Project.find_by_number(project_number.to_i)
-                   project.data_sets
+                   project.data_sets.reverse
                  else
                    []
                  end
@@ -100,9 +100,10 @@ class RunApplicationController < ApplicationController
     @sushi_app.job_ids.each do |job_id|
       new_job = Job.new
       new_job.submit_job_id = job_id.to_i
-      new_job.input_dataset_id = data_set_id.to_i
       new_job.next_dataset_id = @sushi_app.next_dataset_id
       new_job.save
+      new_job.data_set.jobs << new_job
+      new_job.data_set.save
     end
   end
 end
