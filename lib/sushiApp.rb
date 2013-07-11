@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130704-163122'
+Version = '20130711-154204'
 
 require 'csv'
 require 'fileutils'
@@ -190,7 +190,7 @@ rm -rf #{@scratch_dir} || exit 1
     gsub_options << "-r #{@params['ram']}" unless @params['ram'].to_s.empty?
     gsub_options << "-s #{@params['scratch']}" unless @params['scratch'].to_s.empty?
     gsub_options << "-u #{@user}" if @user
-    command = "wfm_monitoring --server #{WORKFLOW_MANAGER} #{job_script} #{gsub_options.join(' ')}"
+    command = "wfm_monitoring --server #{WORKFLOW_MANAGER} --project #{@project.gsub(/p/,'')} #{job_script} #{gsub_options.join(' ')}"
   end
   def submit(job_script)
     command = submit_command(job_script)
@@ -278,9 +278,9 @@ rm -rf #{@scratch_dir} || exit 1
       @dataset = row
       ## WRITE THE JOB SCRIPT
       @job_script = if @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
-                      File.join(@scratch_result_dir, row['Sample']) + '_' + dataset.name.gsub(/\s+/,'_') + '.sh'
+                      File.join(@scratch_result_dir, @analysis_category + '_' + row['Sample']) + '_' + dataset.name.gsub(/\s+/,'_') + '.sh'
                     else 
-                      File.join(@scratch_result_dir, row['Sample']) + '.sh'
+                      File.join(@scratch_result_dir, @analysis_category + '_' + row['Sample']) + '.sh'
                     end
       @get_log_script = File.join(@scratch_result_dir, "get_log_#{row['Sample']}.sh")
       make_job_script
@@ -290,7 +290,11 @@ rm -rf #{@scratch_dir} || exit 1
     end
   end
   def dataset_mode
-    @job_script = File.join(@scratch_result_dir, 'job_script.sh')
+    @job_script = if @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
+                    File.join(@scratch_result_dir, @analysis_category + '_' + dataset.name.gsub(/\s+/,'_') + '.sh')
+                  else 
+                    File.join(@scratch_result_dir, @analysis_category + '_' + 'job_script.sh')
+                  end
     @get_log_script = File.join(@scratch_result_dir, "get_log.sh")
     make_job_script
     @job_scripts << @job_script

@@ -36,7 +36,7 @@ class DataSetController < ApplicationController
     root = []
     top_nodes = []
     @project.data_sets.each do |data_set|
-      node = {"id" => data_set.id, "text" => data_set.id.to_s+" <a href='/data_set/#{data_set.id}'>"+data_set.name+'</a>', 'path' => '', "expanded" => true, "classes" => 'file', "hasChildren" => false, "children" => []}
+      node = {"id" => data_set.id, "text" => data_set.data_sets.length.to_s+" <a href='/data_set/#{data_set.id}'>"+data_set.name+'</a>', 'path' => '', "expanded" => false, "classes" => 'file', "hasChildren" => false, "children" => []}
       node_list[data_set.id] = node
       if parent = data_set.data_set
         node_list[parent.id]['children'] << node
@@ -47,7 +47,7 @@ class DataSetController < ApplicationController
         root << node
       end
     end
-    root = top_nodes if root.empty?
+    root = top_nodes.reverse if root.empty?
     tree.concat root
     render :json => tree
   end
