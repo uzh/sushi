@@ -1,7 +1,7 @@
 class RunApplicationController < ApplicationController
   def index
     @data_sets = if project_number = session[:project] and project = Project.find_by_number(project_number.to_i)
-                   project.data_sets
+                   project.data_sets.reverse
                  else
                    []
                  end
