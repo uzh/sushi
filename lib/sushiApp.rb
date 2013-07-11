@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130704-163122'
+Version = '20130711-111022'
 
 require 'csv'
 require 'fileutils'
@@ -190,7 +190,7 @@ rm -rf #{@scratch_dir} || exit 1
     gsub_options << "-r #{@params['ram']}" unless @params['ram'].to_s.empty?
     gsub_options << "-s #{@params['scratch']}" unless @params['scratch'].to_s.empty?
     gsub_options << "-u #{@user}" if @user
-    command = "wfm_monitoring --server #{WORKFLOW_MANAGER} #{job_script} #{gsub_options.join(' ')}"
+    command = "wfm_monitoring --server #{WORKFLOW_MANAGER} --project #{@project.gsub(/p/,'')} #{job_script} #{gsub_options.join(' ')}"
   end
   def submit(job_script)
     command = submit_command(job_script)
