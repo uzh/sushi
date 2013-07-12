@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130712-124916'
+Version = '20130712-130734'
 
 require 'csv'
 require 'fileutils'
@@ -134,7 +134,7 @@ class SushiApp
   end
   def job_header
     @scratch_dir = if @params['process_mode'] == 'SAMPLE'
-                     @scratch_result_dir + "_" + @dataset['Sample']
+                     @scratch_result_dir + "_" + @dataset['Name']
                    else
                      @scratch_result_dir
                    end
@@ -277,12 +277,13 @@ rm -rf #{@scratch_dir} || exit 1
     @dataset_hash.each do |row|
       @dataset = row
       ## WRITE THE JOB SCRIPT
+      sample_name = row['Name']||row.first
       @job_script = if @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
-                      File.join(@scratch_result_dir, @analysis_category + '_' + row['Sample']) + '_' + dataset.name.gsub(/\s+/,'_') + '.sh'
+                      File.join(@scratch_result_dir, @analysis_category + '_' + sample_name) + '_' + dataset.name.gsub(/\s+/,'_') + '.sh'
                     else 
-                      File.join(@scratch_result_dir, @analysis_category + '_' + row['Sample']) + '.sh'
+                      File.join(@scratch_result_dir, @analysis_category + '_' + sample_name) + '.sh'
                     end
-      @get_log_script = File.join(@scratch_result_dir, "get_log_#{row['Sample']}.sh")
+      @get_log_script = File.join(@scratch_result_dir, "get_log_#{sample_name}.sh")
       make_job_script
       @job_scripts << @job_script
       @get_log_scripts << @get_log_script
@@ -437,7 +438,7 @@ rm -rf #{@scratch_dir} || exit 1
       puts "\e[31mFAILURE\e[0m: required_column(s) is not found in dataset. you should set it in application class."
       puts "\tex.)"
       puts "\tdef initialize"
-      puts "\t  @required_columns = ['Sample', 'Read1']"
+      puts "\t  @required_columns = ['Name', 'Read1']"
       puts
       failures += 1
     else

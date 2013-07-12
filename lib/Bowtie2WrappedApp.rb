@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130712-065915'
+Version = '20130712-131844'
 
 require 'sushiApp'
 
@@ -9,7 +9,7 @@ class Bowtie2WrappedApp < SushiApp
     super
     @name = 'Bowtie2 Wrapped'
     @analysis_category = 'Map'
-    @required_columns = ['Sample','Read1','Species']
+    @required_columns = ['Name','Read1','Species']
     @required_params = ['build','paired', 'strandMode']
     # optional params
     @params['build'] = {'select'=>''}
@@ -33,9 +33,9 @@ class Bowtie2WrappedApp < SushiApp
     end
   end
   def next_dataset
-    {'Sample'=>@dataset['Sample'], 
-     'BAM'=>File.join(@result_dir, "#{@dataset['Sample']}.bam"), 
-     'BAI'=>File.join(@result_dir, "#{@dataset['Sample']}.bam.bai"),
+    {'Name'=>@dataset['Name'], 
+     'BAM'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+     'BAI'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'Build'=>@params['build']
     }
   end
