@@ -13,8 +13,6 @@ class FastqcWrappedApp <  SushiApp
     @required_params = ['name', 'paired']
     @params['paired'] = false
     @params['name'] = 'QC_Result'
-    # optional params
-    @output_files = ['Report']
   end
   def preprocess
     if @params['paired']
@@ -23,7 +21,7 @@ class FastqcWrappedApp <  SushiApp
   end
   def next_dataset
     {'Name'=>@params['name'],
-     'Report'=>File.join(@result_dir, @params['name']),
+     'Report [File]'=>File.join(@result_dir, @params['name']),
     }
   end
   def commands
