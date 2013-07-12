@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130712-131416'
+Version = '20130712-162017'
 
 require 'sushiApp'
 
@@ -18,7 +18,7 @@ class TophatApp < SushiApp
     Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
     end
-    @output_files = ['BAM','BAI']
+#    @output_files = ['BAM','BAI']
   end
   def preprocess
     if @params['paired']
@@ -27,8 +27,8 @@ class TophatApp < SushiApp
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
-     'BAM'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
-     'BAI'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
+     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+     'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'Build'=>@params['build']
     }
   end
