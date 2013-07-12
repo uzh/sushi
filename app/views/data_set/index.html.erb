@@ -14,7 +14,10 @@ $(document).ready(function(){
 <% @project.data_sets.reverse.each do |data_set| %>
   <tr>
     <td><%= data_set.id %></td>
-    <td><%= link_to data_set.name, "/data_set/#{data_set.id}" %></td>
+    <td>
+      <%= link_to data_set.name, "/data_set/#{data_set.id}" %> 
+      <span style="color:gray;font-size:smaller">[<%= data_set.headers.join(',') %>]</span>
+    </td>
     <td><%= button_to 'edit', "/data_set/#{data_set.id}/edit", :method=>:get %></td>
     <td><%= data_set.samples.length %></td>
     <td><%= link_to data_set.parent_id, "/data_set/#{data_set.parent_id}" if data_set.parent_id %></td>
