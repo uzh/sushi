@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130711-154204'
+Version = '20130712-163548'
 
 require 'csv'
 require 'fileutils'
@@ -80,6 +80,14 @@ class SushiApp
     end
     @dataset_hash
   end
+  def set_output_files
+    @dataset = {}
+    next_dataset.keys.select{|header| header =~ /\[File\]/}.each do |header|
+      @output_files ||= []
+      @output_files << header
+    end
+    @output_files.uniq!
+  end
   def check_required_columns
     if @dataset_hash and @required_columns and (@required_columns-@dataset_hash.map{|row| row.keys}.flatten.uniq).empty?
       true
@@ -134,7 +142,7 @@ class SushiApp
   end
   def job_header
     @scratch_dir = if @params['process_mode'] == 'SAMPLE'
-                     @scratch_result_dir + "_" + @dataset['Sample']
+                     @scratch_result_dir + "_" + @dataset['Name']
                    else
                      @scratch_result_dir
                    end
@@ -208,7 +216,7 @@ rm -rf #{@scratch_dir} || exit 1
   def set_file_paths
     @parameter_file = 'parameters.tsv'
     @input_dataset_file = 'input_dataset.tsv'
-    @next_dataset_file = 'next_dataset.tsv'
+    @next_dataset_file = 'dataset.tsv'
     @input_dataset_tsv_path = File.join(@gstore_result_dir, @input_dataset_file)
     @parameters_tsv_path = File.join(@gstore_result_dir, @input_dataset_file)
     @next_dataset_tsv_path = File.join(@gstore_result_dir, @next_dataset_file)
@@ -277,12 +285,13 @@ rm -rf #{@scratch_dir} || exit 1
     @dataset_hash.each do |row|
       @dataset = row
       ## WRITE THE JOB SCRIPT
+      sample_name = row['Name']||row.first
       @job_script = if @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
-                      File.join(@scratch_result_dir, @analysis_category + '_' + row['Sample']) + '_' + dataset.name.gsub(/\s+/,'_') + '.sh'
+                      File.join(@scratch_result_dir, @analysis_category + '_' + sample_name) + '_' + dataset.name.gsub(/\s+/,'_') + '.sh'
                     else 
-                      File.join(@scratch_result_dir, @analysis_category + '_' + row['Sample']) + '.sh'
+                      File.join(@scratch_result_dir, @analysis_category + '_' + sample_name) + '.sh'
                     end
-      @get_log_script = File.join(@scratch_result_dir, "get_log_#{row['Sample']}.sh")
+      @get_log_script = File.join(@scratch_result_dir, "get_log_#{sample_name}.sh")
       make_job_script
       @job_scripts << @job_script
       @get_log_scripts << @get_log_script
@@ -369,6 +378,7 @@ rm -rf #{@scratch_dir} || exit 1
     set_dir_paths
     preprocess
     set_input_dataset
+    set_output_files
     set_user_parameters
 
     failures = 0
@@ -437,7 +447,7 @@ rm -rf #{@scratch_dir} || exit 1
       puts "\e[31mFAILURE\e[0m: required_column(s) is not found in dataset. you should set it in application class."
       puts "\tex.)"
       puts "\tdef initialize"
-      puts "\t  @required_columns = ['Sample', 'Read1']"
+      puts "\t  @required_columns = ['Name', 'Read1']"
       puts
       failures += 1
     else

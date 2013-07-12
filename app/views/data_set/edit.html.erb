@@ -11,7 +11,7 @@ $(document).ready(function(){
 <%= form_tag({:action => 'index'}, :method=>:get) do %>
 <table>
   <tr><th>ID</th><th colspan=2>Name</th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th>Created</th></tr>
-  <% @project.data_sets.each do |data_set| %>
+  <% @project.data_sets.reverse.each do |data_set| %>
   <tr>
     <td><%= data_set.id %></td>
     <td>
