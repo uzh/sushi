@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130712-131744'
+Version = '20130712-171421'
 
 require 'sushiApp'
 
@@ -25,7 +25,6 @@ class TophatWrappedApp < SushiApp
     @params['trimRight'] = 0
     @params['minTailQuality'] = 0
     @params['specialOptions'] = ''
-    @output_files = ['BAM','BAI']
   end
   def preprocess
     if @params['paired']
@@ -34,9 +33,10 @@ class TophatWrappedApp < SushiApp
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
-     'BAM'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
-     'BAI'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-     'Build'=>@params['build']
+     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+     'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
+     'Build'=>@params['build'],
+     'Species'=>@dataset['Species']
     }
   end
   def commands

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130712-162017'
+Version = '20130712-170500'
 
 require 'sushiApp'
 
@@ -29,7 +29,8 @@ class TophatApp < SushiApp
     {'Name'=>@dataset['Name'], 
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-     'Build'=>@params['build']
+     'Build'=>@params['build'],
+     'Species'=>@dataset['Species']
     }
   end
   def build_dir
