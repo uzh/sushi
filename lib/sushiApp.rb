@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130712-130734'
+Version = '20130712-163548'
 
 require 'csv'
 require 'fileutils'
@@ -79,6 +79,14 @@ class SushiApp
       end
     end
     @dataset_hash
+  end
+  def set_output_files
+    @dataset = {}
+    next_dataset.keys.select{|header| header =~ /\[File\]/}.each do |header|
+      @output_files ||= []
+      @output_files << header
+    end
+    @output_files.uniq!
   end
   def check_required_columns
     if @dataset_hash and @required_columns and (@required_columns-@dataset_hash.map{|row| row.keys}.flatten.uniq).empty?
@@ -370,6 +378,7 @@ rm -rf #{@scratch_dir} || exit 1
     set_dir_paths
     preprocess
     set_input_dataset
+    set_output_files
     set_user_parameters
 
     failures = 0
