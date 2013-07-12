@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130712-171421'
+Version = '20130712-131900'
 
 require 'sushiApp'
 
-class TophatWrappedApp < SushiApp
+class STARWrappedApp < SushiApp
   def initialize
     super
-    @name = 'Tophat Wrapped'
+    @name = 'STAR Wrapped'
     @analysis_category = 'Map'
     @required_columns = ['Name','Read1','Species']
     @required_params = ['build','paired', 'strandMode']
@@ -25,6 +25,7 @@ class TophatWrappedApp < SushiApp
     @params['trimRight'] = 0
     @params['minTailQuality'] = 0
     @params['specialOptions'] = ''
+    @output_files = ['BAM','BAI']
   end
   def preprocess
     if @params['paired']
@@ -33,10 +34,9 @@ class TophatWrappedApp < SushiApp
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
-     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
-     'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-     'Build'=>@params['build'],
-     'Species'=>@dataset['Species']
+     'BAM'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+     'BAI'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
+     'Build'=>@params['build']
     }
   end
   def commands
@@ -58,14 +58,14 @@ class TophatWrappedApp < SushiApp
     output.keys.each do |key|
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
-    command << "mapTophat(input=input, output=output, config=config)\n"
+    command << "mapSTAR(input=input, output=output, config=config)\n"
     command << "EOT"
     command
   end
 end
 
 if __FILE__ == $0
-  usecase = TophatWrappedApp.new
+  usecase = STARWrappedApp.new
 
   usecase.project = "p1001"
   usecase.user = 'masamasa'

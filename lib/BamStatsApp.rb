@@ -3,21 +3,22 @@
 
 require 'sushiApp'
 
-class FastqcWrappedApp <  SushiApp
+class BamStatsApp <  SushiApp
   def initialize
     super
-    @name = 'Fastqc Warpped'
+    @name = 'BAM Stat'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
-    @required_columns = ['Name','Read1','Species']
+    @required_columns = ['Name','BAM [File]','BAI [File]', 'Species']
     @required_params = ['name', 'paired']
     @params['paired'] = false
-    @params['name'] = 'QC_Result'
-  end
-  def preprocess
-    if @params['paired']
-      @required_columns<<  'Read2'
+    @params['name'] = 'BAM Statistics'
+    @params['strandMode'] = ''
+    @params['build'] = {'select'=>''}
+    Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
+      @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
     end
+    @params['featureFile'] = 'genes.gtf'
   end
   def next_dataset
     {'Name'=>@params['name'],
@@ -39,14 +40,14 @@ class FastqcWrappedApp <  SushiApp
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
     command<<  "inputDatasetFile = '#{@input_dataset_tsv_path}'\n"
-    command<<  "fastqcApp(input=inputDatasetFile, output=output, config=config)\n"
+    command<<  "bamStatsApp(input=inputDatasetFile, output=output, config=config)\n"
     command<<  "EOT\n"
     command
   end
 end
 
 if __FILE__ == $0
-  usecase = FastqcWrappedApp.new
+  usecase = BamStatsApp.new
 
   usecase.project = "p1001"
   usecase.user = "masa"
