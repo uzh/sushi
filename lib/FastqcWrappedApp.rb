@@ -9,7 +9,7 @@ class FastqcWrappedApp <  SushiApp
     @name = 'Fastqc Warpped'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
-    @required_columns = ['Sample','Read1','Species']
+    @required_columns = ['Name','Read1','Species']
     @required_params = ['name', 'paired']
     @params['paired'] = false
     @params['name'] = 'QC_Result'
@@ -22,7 +22,7 @@ class FastqcWrappedApp <  SushiApp
     end
   end
   def next_dataset
-    {'Sample'=>@params['name'],
+    {'Name'=>@params['name'],
      'Report'=>File.join(@result_dir, @params['name']),
     }
   end

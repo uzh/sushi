@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130607-162151'
+Version = '20130712-131744'
 
 require 'sushiApp'
 
@@ -9,7 +9,7 @@ class TophatWrappedApp < SushiApp
     super
     @name = 'Tophat Wrapped'
     @analysis_category = 'Map'
-    @required_columns = ['Sample','Read1','Species']
+    @required_columns = ['Name','Read1','Species']
     @required_params = ['build','paired', 'strandMode']
     # optional params
     @params['build'] = {'select'=>''}
@@ -33,9 +33,9 @@ class TophatWrappedApp < SushiApp
     end
   end
   def next_dataset
-    {'Sample'=>@dataset['Sample'], 
-     'BAM'=>File.join(@result_dir, "#{@dataset['Sample']}.bam"), 
-     'BAI'=>File.join(@result_dir, "#{@dataset['Sample']}.bam.bai"),
+    {'Name'=>@dataset['Name'], 
+     'BAM'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+     'BAI'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'Build'=>@params['build']
     }
   end

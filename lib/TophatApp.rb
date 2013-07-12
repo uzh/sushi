@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130628-172038'
+Version = '20130712-131416'
 
 require 'sushiApp'
 
@@ -9,7 +9,7 @@ class TophatApp < SushiApp
     super
     @name = 'Tophat'
     @analysis_category = 'Map'
-    @required_columns = ['Sample','Read1','Species']
+    @required_columns = ['Name','Read1','Species']
     @required_params = ['build','paired']
     # optional params
     @params['is_stranded'] = ['', 'sense', 'other']
@@ -26,9 +26,9 @@ class TophatApp < SushiApp
     end
   end
   def next_dataset
-    {'Sample'=>@dataset['Sample'], 
-     'BAM'=>File.join(@result_dir, "#{@dataset['Sample']}.bam"), 
-     'BAI'=>File.join(@result_dir, "#{@dataset['Sample']}.bam.bai"),
+    {'Name'=>@dataset['Name'], 
+     'BAM'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+     'BAI'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'Build'=>@params['build']
     }
   end
@@ -71,8 +71,8 @@ class TophatApp < SushiApp
       else
         command << "\n"
       end
-      command << "mv accepted_hits.bam #{@dataset['Sample']}.bam\n"
-      command << "samtools index #{@dataset['Sample']}.bam\n"
+      command << "mv accepted_hits.bam #{@dataset['Name']}.bam\n"
+      command << "samtools index #{@dataset['Name']}.bam\n"
     end
     command
   end
