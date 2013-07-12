@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130711-154204'
+Version = '20130712-124916'
 
 require 'csv'
 require 'fileutils'
@@ -208,7 +208,7 @@ rm -rf #{@scratch_dir} || exit 1
   def set_file_paths
     @parameter_file = 'parameters.tsv'
     @input_dataset_file = 'input_dataset.tsv'
-    @next_dataset_file = 'next_dataset.tsv'
+    @next_dataset_file = 'dataset.tsv'
     @input_dataset_tsv_path = File.join(@gstore_result_dir, @input_dataset_file)
     @parameters_tsv_path = File.join(@gstore_result_dir, @input_dataset_file)
     @next_dataset_tsv_path = File.join(@gstore_result_dir, @next_dataset_file)
