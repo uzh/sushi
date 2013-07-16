@@ -21,7 +21,7 @@ COMMANDS
 end
     EOS
     @job_script = job_script
-    @class_name = job_script.gsub(/\.sh/,'')
+    @class_name = File.basename(job_script).gsub(/\.sh/,'')
     @init = ''
     @next_dataset = ''
     @commands = ''

@@ -4,6 +4,7 @@ require 'fgcz'
 require 'csv'
 require 'sushiApp'
 require 'sushiToolBox'
+require 'SushiWrap'
 
 # TODO: why also has to force it from here?
 module Savon
