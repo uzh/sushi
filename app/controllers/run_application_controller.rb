@@ -23,9 +23,10 @@ class RunApplicationController < ApplicationController
         end
       end
 
+      non_sushi_apps = ['sushiApp.rb', 'sushiToolBox.rb', 'SushiWrap.rb', 'optparse_ex.rb']
       if @file_exist.values.inject{|a,b| a and b}
         # prepare application buttons
-        @sushi_apps = Dir['lib/*.rb'].sort.select{|script| script !~ /sushiApp/ and script !~ /sushiToolBox/ and script !~ /optparse/}.to_a.map{|script| File.basename(script).gsub(/\.rb/,'')}
+        @sushi_apps = Dir['lib/*.rb'].sort.select{|script| !non_sushi_apps.include?(File.basename(script))}.to_a.map{|script| File.basename(script).gsub(/\.rb/,'')}
 
         # filter application with data_set
         headers = @data_set.headers 
