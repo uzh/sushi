@@ -1,17 +1,6 @@
 <div id="header">
   <nav id="login">
-  <% if ! session.include? :basket
-       session[:basket] = Array.new()
-     end
-     if session[:basket].empty? %>
-       <%= "Plate is empty!" %><%
-     else %>
-       <%= link_to session[:basket].count.to_s+" sushi(s)", "/data_set/create" %>
-       <%= " on your plate." %><%
-     end
-  %>
   <% if user_signed_in? %>
-    -
     <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
     -
     <%= link_to "Today's Menu", "/" %>
