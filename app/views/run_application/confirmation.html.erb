@@ -21,6 +21,8 @@ sushi_app class <%= @sushi_app.class %><br /><br />
     </tr>
   <% end %>
 </table>
+<h2>Application</h2>
+<%= @sushi_app.class %>
 <h2>Parameters</h2>
 <table>
 <% @sushi_app.params.each do |key, value| %>
