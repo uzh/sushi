@@ -53,7 +53,7 @@
     <%= form_tag(:action => 'set_parameters') do %>
       <%= hidden_field :data_set, :id, :value=>@data_set.id %>
       <% @sushi_apps.sort.each do |app| %>
-        <%= submit_tag app, :name=>'app' %>
+        <%= submit_tag app.gsub(/\.\w+$/,''), :name=>'app' %>
       <% end %>
     <% end %>
   <% end %>
