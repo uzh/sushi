@@ -82,5 +82,22 @@ $(document).ready(function(){
   <% @sample_path.sort.each do |path| %>
     <%= link_to "#{File.join('/gstore/projects/',path)}", File.join("/gstore/projects/", path) %>
   <% end %>
+
+  <% if @sushi_apps %>
+    <h3>Applications</h3>
+    <% if @sushi_apps.empty? %>
+      <font color=red>No Available Application for this DataSet</font><br />
+      <%= button_to 'Back', '/run_application', :method=>:get %>
+    <% else %>
+      <%= form_tag(:controller => 'run_application', :action => 'set_parameters') do %>
+        <%= hidden_field :data_set, :id, :value=>@data_set.id %>
+        <% @sushi_apps.sort.each do |app| %>
+          <%= submit_tag app.gsub(/\.\w+$/,''), :name=>'app' %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
 <% end %>
+
 
