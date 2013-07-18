@@ -17,7 +17,7 @@
           <% when 'scratch' %>
             <%= text_field :parameters, key.to_sym, :value => "#{value}" %> GB
           <% when 'process_mode' %>
-            <%= select :parameters, key.to_sym, ['SAMPLE', 'DATASET'], :selected => value %>
+            <%= text_field :parameters, key.to_sym, :value => value, :disabled => true %>
           <% when 'node' %>
             <%= select :parameters, key.to_sym, @nodes, :selected => '' %> (Munin Overview: <%= link_to 'http://fgcz-munin.uzh.ch/', 'http://fgcz-munin.uzh.ch/' %>)
           <% else %>
