@@ -23,8 +23,11 @@ class FastqcWrappedApp <  SushiApp
     end
   end
   def next_dataset
+    report_file = File.join(@result_dir, @params['name'])
+    report_link = File.join(report_file, '00index.html')
     {'Name'=>@params['name'],
-     'Report [File]'=>File.join(@result_dir, @params['name']),
+     'Report [File]'=>report_file,
+     'Html [Link]'=>report_link,
     }
   end
   def commands
