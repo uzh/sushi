@@ -17,7 +17,7 @@ class Hash
   alias :set :[]=
   def []=(k,v)
     @defaults ||= {}
-    if !@defaults[k] and !v
+    if !@defaults[k] and v
       if v.instance_of?(Array)
         @defaults.set(k,v.first)
       elsif v.instance_of?(Hash) and v.first
