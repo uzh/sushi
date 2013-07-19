@@ -17,7 +17,11 @@
           <% when 'scratch' %>
             <%= text_field :parameters, key.to_sym, :value => "#{value}" %> GB
           <% when 'process_mode' %>
-            <%= text_field :parameters, key.to_sym, :value => value, :disabled => true %>
+            <% if value.kind_of?(Array)%>
+              <%= select :parameters, key.to_sym, value %>
+            <% else %>
+              <%= text_field :parameters, key.to_sym, :value => value, :disabled => true %>
+            <% end %>
           <% when 'node' %>
             <%= select_tag "parameters[#{key}]", options_for_select(@nodes), :multiple => true, :size => 10 %><br />
             (Munin Overview: <%= link_to 'http://fgcz-munin.uzh.ch/', 'http://fgcz-munin.uzh.ch/' %>)
