@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130712-163548'
+Version = '20130719-094321'
 
 require 'csv'
 require 'fileutils'
@@ -17,7 +17,7 @@ class Hash
   alias :set :[]=
   def []=(k,v)
     @defaults ||= {}
-    unless @defaults[k]
+    if !@defaults[k] and !v
       if v.instance_of?(Array)
         @defaults.set(k,v.first)
       elsif v.instance_of?(Hash) and v.first
@@ -28,8 +28,12 @@ class Hash
     end
     set(k,v)
   end
-  def default_value(k)
-    @defaults[k]
+  def default_value(k,v=nil)
+    if v
+      @defaults[k] = v
+    else
+      @defaults[k]
+    end
   end
   def data_type(k)
     @defaults[k].class
@@ -55,9 +59,9 @@ class SushiApp
     @project = nil
     @name = nil
     @params = {}
-    @params['cores'] = ''
-    @params['ram'] = ''
-    @params['scratch'] = ''
+    @params['cores'] = nil
+    @params['ram'] = nil
+    @params['scratch'] = nil
     @params['node'] = ''
     @params['process_mode'] = 'SAMPLE'
     @job_ids = []
