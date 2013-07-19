@@ -11,6 +11,9 @@ class FastqcWrappedApp <  SushiApp
     @analysis_category = 'QC'
     @required_columns = ['Name','Read1','Species']
     @required_params = ['name', 'paired']
+    @params['cores'] = '8'
+    @params['ram'] = '16'
+    @params['scratch'] = '100'
     @params['paired'] = false
     @params['name'] = 'QC_Result'
   end
