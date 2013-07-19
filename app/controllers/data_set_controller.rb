@@ -14,8 +14,8 @@ class DataSetController < ApplicationController
     @file_exist = {}
     @sample_path = []
     @data_set.samples.each do |sample|
-      sample.to_hash.values.each do |file|
-        if file.split(/\//).first =~ /^p\d+/
+      sample.to_hash.each do |header, file|
+        if header =~ /\[File\]/ 
           file_path = File.join(GSTORE_DIR, file)
           @sample_path << File.dirname(file)
           @file_exist[file] = File.exist?(file_path)
