@@ -60,7 +60,13 @@ $(document).ready(function(){
           <% unless @file_exist[sample.to_hash[header].to_s] %>
             <font color=red><%= File.basename(sample.to_hash[header].to_s) %></font>
           <% else %>
-            <%= File.basename(sample.to_hash[header].to_s) %>
+            <% file_path = sample.to_hash[header].to_s %>
+            <% file_name = File.basename(file_path) %>
+            <% if header=~ /\[Link\]/ %>
+               <%= link_to file_name, File.join('/gstore/projects', file_path)  %>
+            <% else %>
+               <%= file_name %>
+            <% end %>
           <% end %>
         </td>
       <% end %>
