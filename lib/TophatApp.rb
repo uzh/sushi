@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130712-170500'
+Version = '20130719-094752'
 
 require 'sushiApp'
 
@@ -12,6 +12,9 @@ class TophatApp < SushiApp
     @required_columns = ['Name','Read1','Species']
     @required_params = ['build','paired']
     # optional params
+    @params['cores'] = '8'
+    @params['ram'] = '16'
+    @params['scratch'] = '100'
     @params['is_stranded'] = ['', 'sense', 'other']
     @params['paired'] = false
     @params['build'] = {'select'=>''}
