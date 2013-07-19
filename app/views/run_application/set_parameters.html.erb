@@ -1,6 +1,6 @@
 <h1>Project <%= session[:project] %></h1>
 <hr />
-<h2>Set Parameters</h2>
+<h2>Set Parameters <span style="color:gray;font-size:medium"><%= @sushi_app.class %></span></h2>
 <hr />
 <%= form_tag(:action => 'confirmation') do %>
   <%= hidden_field :sushi_app, :class, :value => @sushi_app.class %>
