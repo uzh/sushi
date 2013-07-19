@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130719-094321'
+Version = '20130719-110847'
 
 require 'csv'
 require 'fileutils'

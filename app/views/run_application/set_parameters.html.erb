@@ -19,7 +19,8 @@
           <% when 'process_mode' %>
             <%= text_field :parameters, key.to_sym, :value => value, :disabled => true %>
           <% when 'node' %>
-            <%= select :parameters, key.to_sym, @nodes, :selected => '' %> (Munin Overview: <%= link_to 'http://fgcz-munin.uzh.ch/', 'http://fgcz-munin.uzh.ch/' %>)
+            <%= select_tag "parameters[#{key}]", options_for_select(@nodes), :multiple => true, :size => 10 %><br />
+            (Munin Overview: <%= link_to 'http://fgcz-munin.uzh.ch/', 'http://fgcz-munin.uzh.ch/' %>)
           <% else %>
             <% if value.instance_of?(TrueClass) or value.instance_of?(FalseClass) %>
               <%= select :parameters, key.to_sym, ['true', 'false'], :selected => value.to_s %>
