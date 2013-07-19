@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130712-131829'
+Version = '20130719-094717'
 
 require 'sushiApp'
 
@@ -12,6 +12,9 @@ class BowtieWrappedApp < SushiApp
     @required_columns = ['Name','Read1','Species']
     @required_params = ['build','paired', 'strandMode']
     # optional params
+    @params['cores'] = '8'
+    @params['ram'] = '16'
+    @params['scratch'] = '100'
     @params['build'] = {'select'=>''}
     Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)

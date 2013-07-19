@@ -25,26 +25,7 @@ class RunApplicationController < ApplicationController
 
       non_sushi_apps = ['sushiApp.rb', 'sushiToolBox.rb', 'SushiWrap.rb', 'optparse_ex.rb']
       if @file_exist.values.inject{|a,b| a and b}
-        # prepare application buttons
-        @sushi_apps = Dir['lib/*.rb'].select{|script| !non_sushi_apps.include?(File.basename(script))}.to_a.map{|script| File.basename(script)}
-        @sushi_apps.concat Dir['lib/*.sh'].map{|script| File.basename(script)}
-
-        # filter application with data_set
-        headers = @data_set.headers 
-        @sushi_apps = @sushi_apps.sort.select do |script|
-          class_name = ''
-          if script =~ /\.rb/
-            class_name = script.gsub(/\.rb/,'')
-            require class_name
-          elsif script =~ /\.sh/
-            class_name = script.gsub(/\.sh/,'')
-            sushi_wrap = SushiWrap.new("lib/#{script}")
-            sushi_wrap.define_class
-          end
-          sushi_app = eval(class_name).new
-          required_columns = sushi_app.required_columns
-          (required_columns - headers).empty?
-        end
+        @sushi_apps = runnable_application(@data_set.headers)
       end
     end
   end
@@ -55,7 +36,6 @@ class RunApplicationController < ApplicationController
     data_set_id = params[:data_set][:id]
     @data_set = DataSet.find(data_set_id.to_i)
     @nodes = {
-      '' => '',
       'fgcz-c-046: cpu 64,mem 504 GB,scr  11T' => 'fgcz-c-046',
       'fgcz-c-047: cpu 32,mem   1 TB,scr  28T' => 'fgcz-c-047',
       'fgcz-c-048: cpu 48,mem 252 GB,scr 3.5T' => 'fgcz-c-048',
@@ -82,7 +62,9 @@ class RunApplicationController < ApplicationController
     data_set_id = params[:data_set][:id]
     @data_set = DataSet.find(data_set_id.to_i)
     params[:parameters].each do |key, value|
-      @sushi_app.params[key] = if @sushi_app.params.data_type(key) == String
+      @sushi_app.params[key] = if key == 'node'
+                                 value.map{|v| v.chomp}.join(',')
+                               elsif @sushi_app.params.data_type(key) == String
                                  value
                                else
                                  eval(value)

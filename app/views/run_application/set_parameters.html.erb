@@ -1,6 +1,6 @@
 <h1>Project <%= session[:project] %></h1>
 <hr />
-<h2>Set Parameters</h2>
+<h2>Set Parameters <span style="color:gray;font-size:medium"><%= @sushi_app.class %></span></h2>
 <hr />
 <%= form_tag(:action => 'confirmation') do %>
   <%= hidden_field :sushi_app, :class, :value => @sushi_app.class %>
@@ -19,7 +19,8 @@
           <% when 'process_mode' %>
             <%= text_field :parameters, key.to_sym, :value => value, :disabled => true %>
           <% when 'node' %>
-            <%= select :parameters, key.to_sym, @nodes, :selected => '' %> (Munin Overview: <%= link_to 'http://fgcz-munin.uzh.ch/', 'http://fgcz-munin.uzh.ch/' %>)
+            <%= select_tag "parameters[#{key}]", options_for_select(@nodes), :multiple => true, :size => 10 %><br />
+            (Munin Overview: <%= link_to 'http://fgcz-munin.uzh.ch/', 'http://fgcz-munin.uzh.ch/' %>)
           <% else %>
             <% if value.instance_of?(TrueClass) or value.instance_of?(FalseClass) %>
               <%= select :parameters, key.to_sym, ['true', 'false'], :selected => value.to_s %>
