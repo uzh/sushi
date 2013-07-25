@@ -24,7 +24,7 @@
             <% end %>
           <% when 'node' %>
             <%= select_tag "parameters[#{key}]", options_for_select(@nodes), :multiple => true, :size => 10 %><br />
-            (Munin Overview: <%= link_to 'http://fgcz-munin.uzh.ch/', 'http://fgcz-munin.uzh.ch/' %>)
+            (Grid Engine Status: <%= link_to 'http://fgcz-s-021.uzh.ch/cgi-bin/fgcz_ge_info.py', 'http://fgcz-s-021.uzh.ch/cgi-bin/fgcz_ge_info.py' %>)
           <% else %>
             <% if value.instance_of?(TrueClass) or value.instance_of?(FalseClass) %>
               <%= select :parameters, key.to_sym, ['true', 'false'], :selected => value.to_s %>
