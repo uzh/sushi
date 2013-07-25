@@ -36,6 +36,7 @@ class RunApplicationController < ApplicationController
     data_set_id = params[:data_set][:id]
     @data_set = DataSet.find(data_set_id.to_i)
     @nodes = {
+      'fgcz-c-047: cpu 32,mem   1 TB,scr  28T' => 'fgcz-c-047',
       'fgcz-c-048: cpu 48,mem 252 GB,scr 3.5T' => 'fgcz-c-048',
       'fgcz-c-049: cpu  8,mem  63 GB,scr 1.7T' => 'fgcz-c-049',
       'fgcz-c-051: cpu  8,mem  31 GB,scr 800G' => 'fgcz-c-051',
