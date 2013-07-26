@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130726-114653'
+Version = '20130726-141450'
 
 require 'sushiApp'
 
