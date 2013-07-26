@@ -23,7 +23,6 @@ class RunApplicationController < ApplicationController
         end
       end
 
-      non_sushi_apps = ['sushiApp.rb', 'sushiToolBox.rb', 'SushiWrap.rb', 'optparse_ex.rb']
       if @file_exist.values.inject{|a,b| a and b}
         @sushi_apps = runnable_application(@data_set.headers)
       end

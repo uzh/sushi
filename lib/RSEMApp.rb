@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130719-094810'
+Version = '20130726-113511'
 
 require 'sushiApp'
 
@@ -9,7 +9,7 @@ class RSEMApp < SushiApp
     super
     @name = 'RSEM'
     @analysis_category = 'Count'
-    @required_columns = ['Name','Read1 [File]','Species']
+    @required_columns = ['Name','Read1','Species']
     @required_params = ['build','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
@@ -27,11 +27,12 @@ class RSEMApp < SushiApp
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
     @params['minTailQuality'] = 0
+    @params['removeLowQualityReads'] = false
     @params['specialOptions'] = ''
   end
   def preprocess
     if @params['paired']
-      @required_columns << 'Read2 [File]'
+      @required_columns << 'Read2'
     end
   end
   def next_dataset
@@ -91,11 +92,11 @@ if __FILE__ == $0
   #usecase.dataset_tsv_file = 'tophat_dataset.tsv'
 
   # also possible to load a input dataset from Sushi DB
-  usecase.dataset_sushi_id = 3
+  usecase.dataset_sushi_id = 1
 
   # run (submit to workflow_manager)
-  usecase.run
-  #usecase.test_run
+  #usecase.run
+  usecase.test_run
 
 end
 
