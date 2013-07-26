@@ -8,6 +8,7 @@ $(document).ready(function(){
 
 <h1>Project <%= session[:project] %></h1>
 <h3>DataSet</h3>
+<ul id="data_set_tree" class="filetree"></ul>
 <table>
   <tr><th>ID</th><th colspan=3>Name</th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th colspan=2>Created</th></tr>
 <% if @project %>
@@ -32,4 +33,3 @@ $(document).ready(function(){
 <% end %>
 </table>
 
-<ul id="data_set_tree" class="filetree"></ul>

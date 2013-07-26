@@ -8,6 +8,7 @@ $(document).ready(function(){
 <h1>Project <%= session[:project] %></h1>
 
 <h2>Select DataSet</h2>
+<ul id="data_set_tree" class="filetree"></ul>
 <table>
   <tr><th>ID</th><th colspan=3>Name</th></th><th>Samples</th><th>Created</th></tr>
 <% @data_sets.each do |data_set| %>
@@ -21,5 +22,4 @@ $(document).ready(function(){
   </tr>
 <% end %>
 </table>
-<ul id="data_set_tree" class="filetree"></ul>
 <br />
