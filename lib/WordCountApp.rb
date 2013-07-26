@@ -3,7 +3,7 @@
 
 require 'sushiApp'
 
-class WordCount < SushiApp
+class WordCountApp < SushiApp
   def initialize
     super
     @name = 'Word_Count'
@@ -27,7 +27,7 @@ class WordCount < SushiApp
   end
 end
 if __FILE__ == $0
-  usecase = WordCount.new
+  usecase = WordCountApp.new
 
   usecase.project = "p1001"
   usecase.user = 'sushi_lover'
