@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130726-110023'
+Version = '20130726-160435'
 
 require 'csv'
 require 'fileutils'
@@ -49,6 +49,7 @@ class SushiApp
   attr_reader :next_dataset_id
   attr_reader :required_columns
   attr_reader :required_params
+  attr_reader :dataset_hash
   attr_accessor :dataset_tsv_file
   attr_accessor :parameterset_tsv_file
   attr_accessor :dataset_sushi_id
@@ -83,6 +84,12 @@ class SushiApp
       end
     end
     @dataset_hash
+  end
+  def get_columns_with_tag(tag)
+    #@factor_cols = @dataset_hash.first.keys.select{|header| header =~ /\[#{tag}\]/}.map{|header| header.gsub(/\[.+\]/,'').strip}
+    @dataset_hash.map{|row| 
+      Hash[*row.select{|k,v| k=~/\[#{tag}\]/}.map{|k,v| [k.gsub(/\[.+\]/,'').strip,v]}.flatten]
+    }
   end
   def set_output_files
     @dataset = {}
@@ -287,9 +294,9 @@ rm -rf #{@scratch_dir} || exit 1
   end
   def sample_mode
     @dataset_hash.each do |row|
-      @dataset = row
+      @dataset = Hash[*row.map{|key,value| [key.gsub(/\[.+\]/,'').strip, value]}.flatten]
       ## WRITE THE JOB SCRIPT
-      sample_name = row['Name']||row.first
+      sample_name = @dataset['Name']||@dataset.first
       @job_script = if @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
                       File.join(@scratch_result_dir, @analysis_category + '_' + sample_name) + '_' + dataset.name.gsub(/\s+/,'_') + '.sh'
                     else 
@@ -380,8 +387,8 @@ rm -rf #{@scratch_dir} || exit 1
   end
   def test_run
     set_dir_paths
-    preprocess
     set_input_dataset
+    preprocess
     set_output_files
     set_user_parameters
 
@@ -502,7 +509,7 @@ rm -rf #{@scratch_dir} || exit 1
     print 'check commands: '
     if @params['process_mode'] == 'SAMPLE'
       @dataset_hash.each do |row|
-        @dataset = row
+        @dataset = Hash[*row.map{|key,value| [key.gsub(/\[.+\]/,'').strip, value]}.flatten]
         unless com = commands
           puts "\e[31mFAILURE\e[0m: any commands is not defined yet. you should overwrite SushiApp#commands method in #{self.class}"
           puts "\tnote: the return value should be String (this will be in the main body of submitted job script)"
