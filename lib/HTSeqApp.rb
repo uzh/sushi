@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130719-094810'
+Version = '20130726-114653'
 
 require 'sushiApp'
 
@@ -9,7 +9,7 @@ class HTSeqApp < SushiApp
     super
     @name = 'HTSeq'
     @analysis_category = 'Count'
-    @required_columns = ['Name','BAM [File]','BAI [File]', 'Species']
+    @required_columns = ['Name','BAM','BAI', 'Species']
     @required_params = ['build','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'

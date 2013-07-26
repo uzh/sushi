@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
     sushi_apps = Dir['lib/*.rb'].select{|script| !non_sushi_apps.include?(File.basename(script))}.to_a.map{|script| File.basename(script)}
     sushi_apps.concat Dir['lib/*.sh'].map{|script| File.basename(script)}
 
-    # filter application with data_set
+    # filter application with data_set#required_columns
     sushi_apps = sushi_apps.sort.select do |script|
       class_name = ''
       if script =~ /\.rb/
@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
       end
       sushi_app = eval(class_name).new
       required_columns = sushi_app.required_columns
-      (required_columns - data_set_headers).empty?
+      (required_columns - data_set_headers.map{|colname| colname.gsub(/\[.+\]/,'').strip}).empty?
     end
     sushi_apps
   end
