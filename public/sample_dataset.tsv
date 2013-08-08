@@ -1,0 +1,3 @@
+Name	Read1 [File]	Read2 [File]	Species	Dummy [Factor]
+sample1	p1001/data/short-ama_E1_R1.fastq.gz	p1001/data/short-ama_E1_R2.fastq.gz	Arabidopsis	hoge
+sample2	p1001/data/short-ama2_R1.fastq.gz	p1001/data/short-ama2_R2.fastq.gz	Arabidopsis	bar
