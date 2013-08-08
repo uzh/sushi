@@ -50,11 +50,31 @@ test:
   # <<: *AUTHORIZATIONS
 
 production:
-  host: localhost
-  port: 636
-  attribute: cn
-  base: ou=people,dc=test,dc=com
-  admin_user: cn=admin,dc=test,dc=com
-  admin_password: admin_password
-  ssl: start_tls
+#  host: localhost
+#  port: 636
+#  attribute: cn
+#  base: ou=people,dc=test,dc=com
+#  admin_user: cn=admin,dc=test,dc=com
+#  admin_password: admin_password
+#  ssl: start_tls
+#  # <<: *AUTHORIZATIONS
+  
+  #host: localhost
+  #port: 389
+  #attribute: cn
+  #base: ou=people,dc=test,dc=com
+  #admin_user: cn=admin,dc=test,dc=com
+  #admin_password: admin_password
+  ssl: false
+  
+  host: fgcz-ldap.fgcz-net.unizh.ch
+  port: 389
+  attribute: CN
+  group_base: OU=OU_Employees,OU=OU_Accounts,DC=FGCZ-NET,DC=unizh,DC=ch
+  required_groups: OU=OU_Employees,OU=OU_Accounts,DC=FGCZ-NET,DC=unizh,DC=ch
+  base: OU=OU_Employees,OU=OU_Accounts,DC=FGCZ-NET,DC=unizh,DC=ch
+  admin_user: CN=trxcopy,OU=OU_Applications,OU=OU_Accounts,DC=FGCZ-NET,DC=unizh,DC=ch
+  admin_password: fXSC7o8g
   # <<: *AUTHORIZATIONS
+
+
