@@ -1,6 +1,3 @@
-$:.push '/srv/SushiFabric/plugins/bfabric/lib/'
-
-require 'bfabric'
 require 'tempfile'
 
 class RunScriptController < ApplicationController
