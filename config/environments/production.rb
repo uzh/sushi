@@ -69,7 +69,6 @@ SushiFabric::Application.configure do
   config.bfabric_user = ""
   config.bfabric_password = ""
 
-
   config.logger = Logger.new("log/production.log", 5, 10 * 1024 * 1024)
   config.logger.level = Logger::WARN
 end

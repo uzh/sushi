@@ -41,6 +41,11 @@ gem 'devise_ldap_authenticatable'
 gem 'hpricot'
 gem 'ruby_parser'
 
-gem 'bfabric'
+# Options for FGCZ gems:
+# A) gem 'fgcz', :bzr => 'bzr+ssh://fgcz-s-034.uzh.ch/usr/local/ngseq/repo/Gems/fgcz'
+#    but bzr source doesn't exist! (only git)
+# B) gem 'fgcz', :path => '/srv/SushiFabric/Gems/fgcz'
+# C) source 'https://gems-fgcz.uzh.ch:8888'
+#    gem 'fgcz'
+gem 'savon'
 gem 'fgcz'
-
