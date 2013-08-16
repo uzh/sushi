@@ -10,9 +10,9 @@ class NcPROApp < SushiApp
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['name', 'paired']
+    @required_params = ['name', 'cores', 'ram', 'scratch', 'paired']
 
-    @params['cores'] = '4'
+    @params['cores'] = '8'
     @params['ram'] = '16'
     @params['scratch'] = '100'
     @params['build'] = {'select'=>''}
