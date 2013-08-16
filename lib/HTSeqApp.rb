@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130726-141450'
+Version = '20130815-144415'
 
 require 'sushiApp'
 
@@ -35,7 +35,7 @@ class HTSeqApp < SushiApp
   end
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"
-    command << "source('/usr/local/ngseq/sushi_scripts/init.R')\n"
+    command << "source('/usr/local/ngseq/opt/sushi_scripts/init.R')\n"
     command << "config = list()\n"
     config = @params
     config.keys.each do |key|

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130729-110041'
+Version = '20130815-144521'
 
 require 'sushiApp'
 
@@ -44,7 +44,7 @@ class Bowtie2WrappedApp < SushiApp
   end
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"
-    command << "source('/usr/local/ngseq/sushi_scripts/init.R')\n"
+    command << "source('/usr/local/ngseq/opt/sushi_scripts/init.R')\n"
     command << "config = list()\n"
     config = @params
     config.keys.each do |key|
