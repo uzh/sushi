@@ -65,10 +65,6 @@ SushiFabric::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  # To connect to BFabric API
-  config.bfabric_user = ""
-  config.bfabric_password = ""
-
   config.logger = Logger.new("log/production.log", 5, 10 * 1024 * 1024)
   config.logger.level = Logger::WARN
 end
