@@ -9,7 +9,7 @@ class BamStatsApp <  SushiApp
     @name = 'BAM Stat'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
-    @required_columns = ['Name','BAM','BAI', 'Species']
+    @required_columns = ['Name','BAM [File]','BAI [File]', 'Species']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
     @params['ram'] = '16'
