@@ -9,7 +9,7 @@ class EdgeRApp < SushiApp
     super
     @name = 'EdgeR'
     @analysis_category = 'Differential Expression'
-    @required_columns = ['Name','Count', 'Species']
+    @required_columns = ['Name','Count', 'Species', 'Build']
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
     # optional params
     @params['cores'] = '1'
