@@ -9,7 +9,7 @@ class HTSeqApp < SushiApp
     super
     @name = 'HTSeq'
     @analysis_category = 'Count'
-    @required_columns = ['Name','BAM','BAI', 'Species']
+    @required_columns = ['Name','BAM','BAI', 'Build']
     @required_params = ['build','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
@@ -29,8 +29,8 @@ class HTSeqApp < SushiApp
   def next_dataset
     {'Name'=>@dataset['Name'], 
      'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"), 
-     'Build'=>@params['build'],
-     'Species'=>@dataset['Species']
+     'Species'=>@dataset['Species'],
+     'Build'=>@params['build']
     }
   end
   def commands

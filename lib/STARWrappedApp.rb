@@ -39,6 +39,7 @@ class STARWrappedApp < SushiApp
     {'Name'=>@dataset['Name'], 
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
+     'Species'=>@dataset['Species'],
      'Build'=>@params['build']
     }
   end
