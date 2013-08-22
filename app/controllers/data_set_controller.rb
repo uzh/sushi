@@ -158,4 +158,61 @@ class DataSetController < ApplicationController
     #File.open(path, "w") { |f| f.write(file.read) }
     render :text => "params: #{params} file.class: #{file.path} file_path: #{file_name}"
   end
+
+  def delete
+    @data_set = DataSet.find_by_id(params[:format])
+
+    # check real data
+    @file_exist = {}
+    @sample_path = []
+    @data_set.samples.each do |sample|
+      sample.to_hash.each do |header, file|
+        if header =~ /\[File\]/ 
+          file_path = File.join(GSTORE_DIR, file)
+          @sample_path << File.dirname(file)
+          @file_exist[file] = File.exist?(file_path)
+        else
+          @file_exist[file] = true
+        end
+      end
+    end
+    @sample_path.uniq!
+
+  end
+
+  def destroy
+    if @data_set = DataSet.find_by_id(params[:id])
+      @option = params[:option]
+
+      # check real data
+      @sample_path = []
+      @data_set.samples.each do |sample|
+        sample.to_hash.each do |header, file|
+          if header =~ /\[File\]/ 
+            file_path = File.join(GSTORE_DIR, file)
+            @sample_path << File.dirname(file)
+          end
+        end
+      end
+      @sample_path.uniq!
+
+      # delete data in gstore
+      if @sample_path.first
+        @command = "g-req remove #{File.join(GSTORE_DIR, @sample_path.first)}"
+        if @option[:delete] == 'also_gstore'
+          @command_log = `#{@command}`
+          if request = @command_log.split and request_no = request[4]
+            @greq_status_command = "g-req status #{request_no}"
+          end
+        end
+      end
+
+      # delete data in sushi
+      @data_set.samples.each do |sample|
+        sample.delete
+      end
+      @deleted_data_set = @data_set.delete
+
+    end
+  end
 end

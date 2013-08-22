@@ -17,9 +17,12 @@ $(document).ready(function(){
     <td><%= data_set.id %></td>
     <td><%= link_to data_set.name, "/data_set/#{data_set.id}" %></td> 
     <td><span style="color:gray;font-size:smaller">[<%= data_set.headers.join(',') %>]</span></td>
-    <td><%= button_to 'edit', "/data_set/#{data_set.id}/edit", :method=>:get %></td>
+    <td>
+      <%= button_to ' edit  ', "/data_set/#{data_set.id}/edit", :method=>:get %>
+      <%= button_to 'delete', "/data_set/delete.#{data_set.id}", :method=>:post %>
+    </td>
     <td><%= data_set.samples.length %></td>
-    <td><%= link_to data_set.parent_id, "/data_set/#{data_set.parent_id}" if data_set.parent_id %></td>
+    <td><%= link_to data_set.parent_id, "/data_set/#{data_set.parent_id}" if data_set.data_set %></td>
     <td>
       <% data_set.data_sets.each do |child| %>
         <%= link_to child.id, "/data_set/#{child.id}" %>
