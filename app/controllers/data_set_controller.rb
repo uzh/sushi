@@ -196,7 +196,7 @@ class DataSetController < ApplicationController
       end
       @sample_path.uniq!
 
-      @deleted_data_set = @data_set.delete
+      # delete data in gstore
       if @sample_path.first
         @command = "g-req remove #{File.join(GSTORE_DIR, @sample_path.first)}"
         if @option[:delete] == 'also_gstore'
@@ -206,6 +206,13 @@ class DataSetController < ApplicationController
           end
         end
       end
+
+      # delete data in sushi
+      @data_set.samples.each do |sample|
+        sample.delete
+      end
+      @deleted_data_set = @data_set.delete
+
     end
   end
 end

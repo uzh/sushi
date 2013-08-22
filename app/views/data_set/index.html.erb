@@ -22,7 +22,7 @@ $(document).ready(function(){
       <%= button_to 'delete', "/data_set/delete.#{data_set.id}", :method=>:post %>
     </td>
     <td><%= data_set.samples.length %></td>
-    <td><%= link_to data_set.parent_id, "/data_set/#{data_set.parent_id}" if data_set.parent_id %></td>
+    <td><%= link_to data_set.parent_id, "/data_set/#{data_set.parent_id}" if data_set.data_set %></td>
     <td>
       <% data_set.data_sets.each do |child| %>
         <%= link_to child.id, "/data_set/#{child.id}" %>
