@@ -16,7 +16,7 @@ $(document).ready(function(){
     <td><%= @data_set.id %></td>
     <td><%= @data_set.name %></td>
     <td><%= @data_set.samples.length %></td>
-    <td><%= link_to @data_set.data_set.name, "/data_set/#{@data_set.parent_id}" if @data_set.parent_id %></td>
+    <td><%= link_to @data_set.data_set.name, "/data_set/#{@data_set.parent_id}" if @data_set.data_set %></td>
     <td>
       <% @data_set.data_sets.each do |child| %>
         <%= link_to child.id, "/data_set/#{child.id}" %>
