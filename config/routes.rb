@@ -1,23 +1,7 @@
 SushiFabric::Application.routes.draw do
   root :to => "home#index"
   
-  get "run_script/run_sample"
-  
   devise_for :users
-  get 'run_script', :to => 'run_script#index', :as => :user_root
-  
-  resources :run_script do
-    collection do
-      post :run_fastqc
-      post :run_sample
-      post :run_sample2
-      post :index
-      post :confirm
-      post :set_parameters
-      post :run_application
-      post :submit_job
-    end
-  end
   
   resources :job_monitoring do
     collection do
