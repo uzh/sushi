@@ -12,7 +12,7 @@
     <td><%= link_to job[2], :action => 'print_script', :job_id => job[0] %></td>
     <td><%= link_to 'Log', :action => 'print_log', :job_id => job[0] %></td>
     <td>
-      <% if submit_job = @submit_jobs[i] %>
+      <% if submit_job = @submit_jobs[i] and submit_job.data_set %>
         <%= link_to submit_job.data_set.name, "/data_set/#{submit_job.next_dataset_id}" %>
       <% end %>
     </td>

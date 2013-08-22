@@ -1,0 +1,39 @@
+<h1>Project <%= session[:project] %> <span style="color:gray;font-size:medium">Delete DataSet</span></h1>
+<hr />
+<h3>Log</h3>
+<ul>
+  <li><b><%= @deleted_data_set.id %>.[<%= @deleted_data_set.name %>]</b> is removed from Sushi DataBase.</li>
+  <% unless @sample_path.empty? %>
+    <% if @option[:delete] == 'also_gstore' %>
+      <li>The files in <b><%= @sample_path.first %></b> are removed from GStore.</li>
+      <li>The following command has been executed
+      <pre><%= @command %></pre>
+      <pre><%= @command_log %></pre>
+      <% if @greq_status_command %>
+        <li>But sometimes g-req command fails with an error. In order to check the request status, run 
+        <pre><%= @greq_status_command %></pre>
+        </li>
+      <% end %>
+    <% elsif File.exist?(File.join(GSTORE_DIR, @sample_path.first)) %>
+      <li>The files in <b><%= @sample_path.first %> still <font color=red>remain in GStore</font></b>.</li>
+      <li>If you want to delete the files too, run
+      <pre><%= @command %></pre>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+<table>
+<hr />
+<% if !@sample_path.empty? and @option[:delete]=='only_sushi' and File.exist?(File.join(GSTORE_DIR, @sample_path.first)) %>
+  <%= button_to "Go gstore", File.join("/gstore/projects/", @sample_path.first) if @sample_path.length > 0 %>
+  <% @sample_path.sort.each do |path| %>
+    <%= link_to "#{File.join('/gstore/projects/',path)}", File.join("/gstore/projects/", path) %>
+  <% end %>
+<% else %>
+  <%= button_to "Go gstore", "/gstore/projects/p#{session[:project]}" %>
+  <%= link_to "/gstore/projects/p#{session[:project]}","/gstore/projects/p#{session[:project]}" %>
+<% end %>
+
+
+
+
