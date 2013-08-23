@@ -15,6 +15,10 @@ class CountQCApp < SushiApp
     @params['ram'] = '2'
     @params['scratch'] = '10'
     @params['name'] = 'Count_QC'
+    @params['build'] = {'select'=>''}
+    Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
+      @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
+    end
     @params['featureFile'] = 'genes.gtf'
     @params['featureLevel'] = ['gene', 'isoform']
     @params['normMethod'] = 'logMean'
