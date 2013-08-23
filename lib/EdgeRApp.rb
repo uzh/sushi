@@ -15,8 +15,12 @@ class EdgeRApp < SushiApp
     @params['cores'] = '1'
     @params['ram'] = '2'
     @params['scratch'] = '10'
+    @params['build'] = {'select'=>''}
+    Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
+      @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
+    end
     @params['featureFile'] = 'genes.gtf'
-    @params['featureLevel'] = 'gene'
+    @params['featureLevel'] = ['gene', 'isoform']
     @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
     @params['refGroup'] = '' ## TODO: this should be a value from the selected column
