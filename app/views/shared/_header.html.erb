@@ -6,7 +6,9 @@
     <%= link_to "Today's Menu", "/" %>
     <%= form_tag(:action => "index", :controller => "home") do %>
       Project 
-      <%= select :project, :number, session[:projects], :selected => session[:project] %> <%= submit_tag "Go" %>
+      <%= text_field :project, :number, :value=>"#{session[:project]}", :size=>10 %>
+      <%= select :select_project, :number, session[:projects], :prompt=>'project list' %>
+      <%= submit_tag "Go" %>
     <% end %>
   <% end %>
   </nav>
