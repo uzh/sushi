@@ -19,7 +19,13 @@
     <td><%= File.ctime(file) %></td>
     <td>-</td>
   <% else %>
-    <td><%= image_tag('unknown.gif') %>  <%= link_to basename, "#{File.join(@base, File.join(@path, basename))}" %></td>
+    <td>
+    <%= image_tag('unknown.gif') %>  <%= link_to basename, "#{File.join(@base, File.join(@path, basename))}" %>
+
+    <% if basename == "dataset.tsv" %>
+      <%= link_to image_tag('add.png'), "/import/#{File.join(@path, basename)}" %>
+    <% end %>
+    </td>
     <td><%= File.ctime(file) %></td>
     <td><%= number_to_human_size(File.size(file)) %></td>
   <% end %>

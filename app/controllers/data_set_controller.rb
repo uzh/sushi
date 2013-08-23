@@ -84,6 +84,66 @@ class DataSetController < ApplicationController
     tree.concat root
     render :json => tree
   end
+  def import_from_gstore
+    params[:project] = session[:project]
+
+    if session[:project] 
+      unless @project = Project.find_by_number(session[:project].to_i)
+        @project = Project.new
+        @project.number = session[:project].to_i
+        @project.save
+      end
+
+      tsv = "/srv/gstore/projects/#{params[:dataset]}.#{params[:format]}"
+      multi_data_sets = false
+      open(tsv) do |input|
+        while line=input.gets
+          if line =~ /ProjectNumber/
+            multi_data_sets = true
+            break
+          end
+        end
+      end
+      
+      if multi_data_sets
+        csv = CSV.readlines(tsv, :col_sep=>"\t")
+        data_set = []
+        headers = []
+        rows = []
+        csv.each do |row|
+          if data_set.empty?
+            data_set = row
+          elsif headers.empty?
+            headers = row
+          elsif !row.empty?
+            rows << row
+          else
+            save_data_set(data_set, headers, rows)
+          end
+          if row.empty?
+            data_set = []
+            headers = []
+            rows = []
+          end
+        end
+      else
+        data_set_tsv = CSV.readlines(tsv, :headers => true, :col_sep=>"\t")
+
+        data_set = []
+        headers = data_set_tsv.headers
+        rows = []
+        items = params[:dataset].split(/\//)
+        data_set << "DataSetName"
+        data_set << items[-2]
+        data_set << "ProjectNumber" << @project.number
+        data_set_tsv.each do |row|
+          rows << row.fields
+        end
+        save_data_set(data_set, headers, rows)
+      end
+    end
+    redirect_to :controller => "data_set"
+  end
   def import
     params[:project] = session[:project]
 
