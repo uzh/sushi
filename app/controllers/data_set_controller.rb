@@ -8,20 +8,22 @@ class DataSetController < ApplicationController
     end
 
     @sample_available = {}
-    @project.data_sets.each do |data_set|
-      data_set.samples.each do |sample|
-        flag = true
-        sample.to_hash.each do |header, file|
-          if header =~ /\[File\]/ 
-            file_path = File.join(GSTORE_DIR, file)
-            unless File.exist?(file_path)
-              flag = false
-              break
+    if @project
+      @project.data_sets.each do |data_set|
+        data_set.samples.each do |sample|
+          flag = true
+          sample.to_hash.each do |header, file|
+            if header =~ /\[File\]/ 
+              file_path = File.join(GSTORE_DIR, file)
+              unless File.exist?(file_path)
+                flag = false
+                break
+              end
             end
           end
+          @sample_available[data_set] ||= 0
+          @sample_available[data_set] += 1 if flag
         end
-        @sample_available[data_set] ||= 0
-        @sample_available[data_set] += 1 if flag
       end
     end
   end
