@@ -22,12 +22,11 @@ class RSEMApp < SushiApp
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['featureFile'] = 'genes.gtf'
-    @params['cmdOptions'] = ''
+    @params['cmdOptions'] = '--no-bam-output --calc-ci --ci-memory 12256'
     @params['trimAdapter'] = false
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
     @params['minTailQuality'] = 0
-    @params['removeLowQualityReads'] = false
     @params['specialOptions'] = ''
   end
   def preprocess
@@ -40,6 +39,7 @@ class RSEMApp < SushiApp
      'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"), 
      'Build'=>@params['build'],
      'Species'=>@dataset['Species']
+     'Feature Level'=>'transcript'
     }
   end
   def commands
