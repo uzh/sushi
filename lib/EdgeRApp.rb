@@ -8,6 +8,7 @@ class EdgeRApp < SushiApp
   def initialize
     super
     @name = 'EdgeR'
+    @params['process_mode'] = 'DATASET'
     @analysis_category = 'Differential Expression'
     @required_columns = ['Name','Count', 'Species', 'Build']
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
