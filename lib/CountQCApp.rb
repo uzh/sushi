@@ -8,6 +8,7 @@ class CountQCApp < SushiApp
     super
     @name = 'CountQC'
     @analysis_category = 'QC'
+    @params['process_mode'] = 'DATASET'
     @required_columns = ['Name','Count', 'Species', 'Build']
     @required_params = []
     # optional params

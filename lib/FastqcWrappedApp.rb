@@ -6,7 +6,7 @@ require 'sushiApp'
 class FastqcWrappedApp <  SushiApp
   def initialize
     super
-    @name = 'Fastqc Warpped'
+    @name = 'Fastqc Wrapped'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
     @required_columns = ['Name','Read1','Species']
