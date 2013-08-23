@@ -39,7 +39,7 @@ class RSEMApp < SushiApp
      'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"), 
      'Build'=>@params['build'],
      'Species'=>@dataset['Species']
-     'Feature Level'=>'transcript'
+     'Feature Level'=>'isoform'
     }
   end
   def commands
