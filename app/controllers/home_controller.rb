@@ -1,8 +1,9 @@
 class HomeController < ApplicationController
   def index
     session[:projects] = FGCZ.get_user_projects(current_user.login).map{|project| project.gsub(/p/,'').to_i}.sort
-    session[:project] = if project = params[:project] and number = project[:number] or
-                           number = session[:project]
+    session[:project] = if project=params[:select_project] and number=project[:number] and number.to_i!=0 or
+                           project=params[:project] and number=project[:number] and number.to_i!=0 and 
+                           session[:projects].include?(number.to_i) 
                           current_user.selected_project = number
                           current_user.save
                           number.to_i
