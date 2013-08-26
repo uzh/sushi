@@ -53,7 +53,7 @@ class EdgeRApp < SushiApp
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
     command<<  "inputDatasetFile = '#{@input_dataset_tsv_path}'\n"
-    command << "edgeRApp(input=inputDatasetFile, output=output, config=config)\n"
+    command << "edgerApp(input=inputDatasetFile, output=output, config=config)\n"
     command << "EOT"
     command
   end
