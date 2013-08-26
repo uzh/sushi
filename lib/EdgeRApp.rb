@@ -31,6 +31,7 @@ class EdgeRApp < SushiApp
   end
   def next_dataset
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"
+    @params['comparison'] = @comparison
     report_file = File.join(@result_dir, @comparison)
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@comparison,
