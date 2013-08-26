@@ -27,8 +27,9 @@ class ApplicationController < ActionController::Base
   
   def runnable_application(data_set_headers)
     non_sushi_apps = ['sushiApp.rb', 'sushiToolBox.rb', 'SushiWrap.rb', 'optparse_ex.rb']
-    sushi_apps = Dir['lib/*.rb'].select{|script| !non_sushi_apps.include?(File.basename(script))}.to_a.map{|script| File.basename(script)}
-    sushi_apps.concat Dir['lib/*.sh'].map{|script| File.basename(script)}
+    lib_dir = File.expand_path('../../../lib', __FILE__)
+    sushi_apps = Dir[File.join(lib_dir, '*.rb')].select{|script| !non_sushi_apps.include?(File.basename(script))}.to_a.map{|script| File.basename(script)}
+    sushi_apps.concat Dir[File.join(lib_dir, '*.sh')].map{|script| File.basename(script)}
 
     # filter application with data_set#required_columns
     sushi_apps = sushi_apps.sort.select do |script|
@@ -38,7 +39,7 @@ class ApplicationController < ActionController::Base
         require class_name
       elsif script =~ /\.sh/
         class_name = script.gsub(/\.sh/,'')
-        sushi_wrap = SushiWrap.new("lib/#{script}")
+        sushi_wrap = SushiWrap.new(File.join(lib_dir, script))
         sushi_wrap.define_class
       end
       sushi_app = eval(class_name).new
