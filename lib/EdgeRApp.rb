@@ -9,7 +9,7 @@ class EdgeRApp < SushiApp
     super
     @name = 'EdgeR'
     @params['process_mode'] = 'DATASET'
-    @analysis_category = 'Differential Expression'
+    @analysis_category = 'Differential_Expression'
     @required_columns = ['Name','Count', 'Species', 'Build']
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
     # optional params
