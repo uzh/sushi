@@ -26,7 +26,7 @@ class EdgeRApp < SushiApp
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
     @params['refGroup'] = '' ## TODO: this should be a value from the selected column
     @params['normMethod'] = 'logMean'
-    @params['runGO'] = 'false'
+    @params['runGO'] = ['false', 'true']
     @params['specialOptions'] = ''
   end
   def next_dataset
