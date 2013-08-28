@@ -24,9 +24,8 @@ class TrinityApp < SushiApp
     @params['specialOptions'] = ''
   end
   def next_dataset
-    report_file = File.join(@result_dir, @name)
-    {'Name'=>@comparison,
-     'Report [File]'=>report_file
+    {'Name'=>@params['name'],
+     'Fasta [File]'=>File.join(@result_dir, "#{@params['name']}.fasta")
     }
   end
   def commands
