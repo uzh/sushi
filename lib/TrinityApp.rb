@@ -8,7 +8,7 @@ class TrinityApp < SushiApp
     super
     @name = 'Trinity'
     @params['process_mode'] = 'DATASET'
-    @analysis_category = 'Assembly'
+    @analysis_category = 'Assemble'
     @required_columns = ['Name','Read1', 'Species', ]
     @required_params = ['name']
     # optional params
