@@ -28,6 +28,15 @@ $(document).ready(function(){
   <% end %>
 </table>
 <ul id="data_set_tree" class="filetree"></ul>
+
+<%= form_tag(:controller => 'data_set',:action => 'edit') do %>
+  <%= hidden_field :data_set, :id, :value=>@data_set.id %>
+  <%= submit_tag 'edit name', :name=>'edit_option' %>
+  <%= submit_tag 'edit column', :name=>'edit_option' %>
+  <%= submit_tag 'add column', :name=>'edit_option' %>
+  <%= submit_tag 'delete column', :name=>'edit_option' %>
+<% end %>
+
 <% if @data_set %>
   <hr />
   <h3>Job Script</h3>
