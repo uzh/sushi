@@ -32,9 +32,6 @@ $(document).ready(function(){
 <%= form_tag(:controller => 'data_set',:action => 'edit') do %>
   <%= hidden_field :data_set, :id, :value=>@data_set.id %>
   <%= submit_tag 'edit name', :name=>'edit_option' %>
-  <%= submit_tag 'edit column', :name=>'edit_option' %>
-  <%= submit_tag 'add column', :name=>'edit_option' %>
-  <%= submit_tag 'delete column', :name=>'edit_option' %>
 <% end %>
 
 <% if @data_set %>
@@ -82,6 +79,7 @@ $(document).ready(function(){
     </tr>
   <% end %>
 </table>
+<%= button_to 'edit sample', "/sample/#{@data_set.id}", :method=>:get %>
 <% end %>
 <hr />
 
