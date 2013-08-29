@@ -23,6 +23,8 @@ SushiFabric::Application.routes.draw do
       post :delete
     end
   end
+  
+  resources :sample, :only => [:show]
 
   get "/api/:method" => "api#index"
   post "/api/:method" => "api#index"

@@ -7,7 +7,6 @@ $(document).ready(function(){
 </script>
 
 <h1>Project <%= session[:project] %></h1>
-<%= params %>
 <hr />
 <h3>DataSet</h3>
 <%= form_tag({:controller => 'data_set',:action => 'show'}, :method=>:get) do %>
@@ -37,7 +36,7 @@ $(document).ready(function(){
 <ul id="data_set_tree" class="filetree"></ul>
 
   <%= hidden_field :data_set, :id, :value=>@data_set.id %>
-  <%= submit_tag 'ok', :name=>'app' %>
+  <%= submit_tag 'ok', :name=>'edit' if params[:edit_option] == 'edit name' %>
 <% end %>
 
 <% if @data_set %>
@@ -59,32 +58,32 @@ $(document).ready(function(){
 <hr />
 <h3>Samples</h3>
 <% if @data_set %>
-<table>
-  <tr>
-    <% @data_set.headers.each do |header| %>
-      <th><%= header %></th>
-    <% end %>
-  </tr>
-  <% @data_set.samples.each do |sample| %>
+  <table>
     <tr>
       <% @data_set.headers.each do |header| %>
-        <td>
-          <% unless @file_exist[sample.to_hash[header].to_s] %>
-            <font color=red><%= File.basename(sample.to_hash[header].to_s) %></font>
-          <% else %>
-            <% file_path = sample.to_hash[header].to_s %>
-            <% file_name = File.basename(file_path) %>
-            <% if header=~ /\[Link\]/ %>
-               <%= link_to file_name, File.join('/gstore/projects', file_path)  %>
-            <% else %>
-               <%= file_name %>
-            <% end %>
-          <% end %>
-        </td>
+        <th><%= header %></th>
       <% end %>
     </tr>
-  <% end %>
-</table>
+    <% @data_set.samples.each do |sample| %>
+      <tr>
+        <% @data_set.headers.each do |header| %>
+          <td>
+            <% unless @file_exist[sample.to_hash[header].to_s] %>
+              <font color=red><%= File.basename(sample.to_hash[header].to_s) %></font>
+            <% else %>
+              <% file_path = sample.to_hash[header].to_s %>
+              <% file_name = File.basename(file_path) %>
+              <% if header=~ /\[Link\]/ %>
+                 <%= link_to file_name, File.join('/gstore/projects', file_path)  %>
+              <% else %>
+                 <%= file_name %>
+              <% end %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
 <% end %>
 <hr />
 
