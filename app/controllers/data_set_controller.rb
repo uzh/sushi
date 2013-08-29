@@ -23,7 +23,6 @@ class DataSetController < ApplicationController
     end
   end
   def show
-    @data_set = DataSet.find_by_id(params[:id])
 
     # new data_set name
     if new_data_set = params[:data_set] and name = new_data_set[:name] and id = new_data_set[:id]
@@ -31,6 +30,8 @@ class DataSetController < ApplicationController
       data_set.name = name
       data_set.save
     end
+
+    @data_set = DataSet.find_by_id(params[:id])
 
     # check real data
     @file_exist = {}
