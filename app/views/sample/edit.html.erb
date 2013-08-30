@@ -1,0 +1,66 @@
+<h1>Project <%= session[:project] %></h1>
+<%= image_tag('back.gif') %>
+<%= link_to "Backto DataSet #{@data_set.name}", "/data_set/#{@data_set.id}", :method=>:get %>
+<hr />
+<h3>Samples</h3>
+<% if @data_set %>
+  <%= form_tag({:controller => 'sample',:action => 'show'}) do %>
+    <table>
+      <tr>
+        <% @data_set.headers.each_with_index do |header, j| %>
+          <th>
+            <% if !@edit_option %>
+              <%= text_field "sample_headers", header.to_s.split.first, :size=>15, :value=>header %>
+            <% elsif del_col=@edit_option[:del_col] and del_col==j.to_s %>
+              <s><font color=red><%= header %></font></s>
+            <% else %>
+              <%= header %>
+            <% end %>
+          </th>
+        <% end %>
+        <% if @edit_option and @edit_option[:add] == 'col' %>
+          <th>
+            <%= text_field "new_header", "name", :size=>15, :value=>'' %>
+          </th>
+        <% end %>
+      </tr>
+      <% @data_set.samples.each_with_index do |sample, i| %>
+        <tr>
+          <% @data_set.headers.each_with_index do |header, j| %>
+            <td>
+              <% file_path = sample.to_hash[header].to_s %>
+              <% if !@edit_option %>
+                <%= text_field "sample_#{i}", header.to_s.split.first, :size=>15, :value=>file_path %>
+              <% elsif @edit_option[:del_row]==i.to_s %>
+                <%= hidden_field :edit_option, :del_row, :value=>i.to_s %> 
+                <s><font color=red><%= File.basename(file_path) %></font></s>
+              <% elsif del_col=@edit_option[:del_col] and del_col==j.to_s %>
+                <%= hidden_field :edit_option, :del_col, :value=>header %> 
+                <s><font color=red><%= File.basename(file_path) %></font></s>
+              <% else %>
+                <%= File.basename(file_path) %>
+              <% end %>
+            </td>
+          <% end %>
+          <% if @edit_option and @edit_option[:add]=='col' %>
+            <td>
+              <%= text_field "new_col", i.to_s, :size=>15, :value=>'' %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+      <% if @edit_option and @edit_option[:add]=='row' %>
+        <tr>
+          <% @data_set.headers.each do |header| %>
+            <td>
+              <%= text_field "sample_new", header.to_s.split.first, :size=>15, :value=>'' %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+    <%= submit_tag 'ok', :name=>'edit' %>
+  <% end %>
+<% end %>
+<hr />
+

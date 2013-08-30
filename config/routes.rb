@@ -12,12 +12,22 @@ SushiFabric::Application.routes.draw do
   end
   
   #resources :data_set do
-  resources :data_set, :only => [:index, :show, :edit, :destroy] do
+  resources :data_set, :only => [:index, :show, :destroy] do
+    member do
+      post :edit
+    end
     collection do
       get :treeviews
       post :import
       post :save_as_tsv
       post :delete
+    end
+  end
+  
+  resources :sample, :only => [] do
+    member do
+      post :show
+      post :edit
     end
   end
 
