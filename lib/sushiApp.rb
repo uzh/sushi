@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130808-153255'
+Version = '20130830-150237'
 
 require 'csv'
 require 'fileutils'
@@ -50,6 +50,7 @@ class SushiApp
   attr_reader :required_columns
   attr_reader :required_params
   attr_reader :dataset_hash
+  attr_reader :analysis_category
   attr_accessor :dataset_tsv_file
   attr_accessor :parameterset_tsv_file
   attr_accessor :dataset_sushi_id

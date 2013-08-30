@@ -24,23 +24,37 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   
   before_filter :authenticate_user!  
-  
-  def runnable_application(data_set_headers)
+
+  def all_sushi_applications
     non_sushi_apps = ['sushiApp.rb', 'sushiToolBox.rb', 'SushiWrap.rb', 'optparse_ex.rb']
     lib_dir = File.expand_path('../../../lib', __FILE__)
     sushi_apps = Dir[File.join(lib_dir, '*.rb')].select{|script| !non_sushi_apps.include?(File.basename(script))}.to_a.map{|script| File.basename(script)}
     sushi_apps.concat Dir[File.join(lib_dir, '*.sh')].map{|script| File.basename(script)}
-
-    # filter application with data_set#required_columns
-    sushi_apps = sushi_apps.sort.select do |script|
-      class_name = ''
+    sushi_apps.each do |script|
       if script =~ /\.rb/
         class_name = script.gsub(/\.rb/,'')
         require class_name
       elsif script =~ /\.sh/
-        class_name = script.gsub(/\.sh/,'')
         sushi_wrap = SushiWrap.new(File.join(lib_dir, script))
         sushi_wrap.define_class
+      end
+    end
+    sushi_apps
+  end
+  def runnable_application(data_set_headers)
+    sushi_apps = all_sushi_applications
+
+    # filter application with data_set#required_columns
+    lib_dir = File.expand_path('../../../lib', __FILE__)
+    sushi_apps = sushi_apps.sort.select do |script|
+      class_name = ''
+      if script =~ /\.rb/
+        class_name = script.gsub(/\.rb/,'')
+        #require class_name
+      elsif script =~ /\.sh/
+        class_name = script.gsub(/\.sh/,'')
+        #sushi_wrap = SushiWrap.new(File.join(lib_dir, script))
+        #sushi_wrap.define_class
       end
       sushi_app = eval(class_name).new
       required_columns = sushi_app.required_columns
