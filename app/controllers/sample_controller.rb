@@ -38,6 +38,14 @@ class SampleController < ApplicationController
       @data_set.save
     end
 
+    # del row
+    if edit_option = params[:edit_option] and row = edit_option[:del_row]
+      @data_set.samples[row.to_i].delete
+      @data_set.md5 = @data_set.md5hexdigest
+      @data_set.save
+      @data_set = DataSet.find_by_id(params[:id])
+    end
+
     # update column names
     # assuming values are not different, 
     # in other words, this should be done after editing values

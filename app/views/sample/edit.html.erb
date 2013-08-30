@@ -23,8 +23,11 @@
           <% @data_set.headers.each do |header| %>
             <td>
               <% file_path = sample.to_hash[header].to_s %>
-              <% unless @edit_option %>
+              <% if !@edit_option %>
                 <%= text_field "sample_#{i}", header.to_s.split.first, :size=>15, :value=>file_path %>
+              <% elsif @edit_option[:del_row]==i.to_s %>
+                <%= hidden_field :edit_option, :del_row, :value=>i.to_s %> 
+                <s><font color=red><%= File.basename(file_path) %></font></s>
               <% else %>
                 <%= File.basename(file_path) %>
               <% end %>
