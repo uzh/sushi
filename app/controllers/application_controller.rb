@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
       end
       sushi_app = eval(class_name).new
       required_columns = sushi_app.required_columns
-      (required_columns - data_set_headers.map{|colname| colname.gsub(/\[.+\]/,'').strip}).empty?
+      (required_columns - data_set_headers.map{|colname| colname.to_s.gsub(/\[.+\]/,'').strip}).empty?
     end
     sushi_apps
   end
