@@ -9,8 +9,8 @@
     <th></th>
     <% @data_set.headers.each_with_index do |header, i| %>
       <th>
-        <%= header %>
         <%= form_tag({:controller => 'sample',:action => 'edit'}) do %>
+          <%= header %>
           <%= hidden_field :edit_option, :del_col, :value=>i.to_s %> 
           <%= image_submit_tag 'minus.png', :name=>'edit' %>
         <% end %>

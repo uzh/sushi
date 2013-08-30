@@ -50,7 +50,6 @@ class SampleController < ApplicationController
     # assuming values are not different, 
     # in other words, this should be done after editing values
     new_headers = params[:sample_headers]
-    #current_headers = Hash[*@data_set.samples.first.to_hash.keys.map{|header| [header.to_s.split.first, header]}.flatten]
     if new_headers and new_headers!=current_headers
       @data_set.samples.each_with_index do |sample, i|
         new_sample = {}
