@@ -10,7 +10,11 @@
       <tr>
         <% @data_set.headers.each do |header| %>
           <th>
-            <%= text_field "sample_headers", header.to_s.split.first, :size=>15, :value=>header %>
+            <% unless @edit_option %>
+              <%= text_field "sample_headers", header.to_s.split.first, :size=>15, :value=>header %>
+            <% else %>
+              <%= header %>
+            <% end %>
           </th>
         <% end %>
       </tr>
@@ -19,7 +23,20 @@
           <% @data_set.headers.each do |header| %>
             <td>
               <% file_path = sample.to_hash[header].to_s %>
-              <%= text_field "sample_#{i}", header.to_s.split.first, :size=>15, :value=>file_path %>
+              <% unless @edit_option %>
+                <%= text_field "sample_#{i}", header.to_s.split.first, :size=>15, :value=>file_path %>
+              <% else %>
+                <%= File.basename(file_path) %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+      <% if @edit_option and @edit_option[:add]=='row' %>
+        <tr>
+          <% @data_set.headers.each do |header| %>
+            <td>
+              <%= text_field "sample_new", header.to_s.split.first, :size=>15, :value=>'' %>
             </td>
           <% end %>
         </tr>

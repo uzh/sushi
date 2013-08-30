@@ -3,11 +3,9 @@ class SampleController < ApplicationController
     @data_set = DataSet.find_by_id(params[:id])
 
     # update values
-    @hoge=false
     @data_set.samples.each_with_index do |sample, i|
       current_sample = Hash[*sample.to_hash.map{|key, value| [key.split.first,value]}.flatten]
       if edit_sample = params["sample_#{i}"] and current_sample.to_s!=edit_sample.to_s
-        @hoge=true
         new_sample = {}
         sample.to_hash.each do |header, value|
           header_without_tag = header.to_s.split.first 
@@ -20,11 +18,31 @@ class SampleController < ApplicationController
       end
     end
 
+    # add new row
+    current_headers = Hash[*@data_set.samples.first.to_hash.keys.map{|header| [header.to_s.split.first, header]}.flatten]
+    if add_sample = params[:sample_new]
+      new_sample = {}
+      add_sample.each do |key, value|
+        header = current_headers[key]
+        if header =~ /\[File\]/ and sample = @data_set.samples.first and sample = sample.to_hash[header]
+          new_sample[header] = File.join(File.dirname(sample), value)
+        else
+          new_sample[header] = value
+        end
+      end
+      sample = Sample.new
+      sample.key_value = new_sample.to_s
+      sample.save
+      @data_set.samples << sample
+      @data_set.md5 = @data_set.md5hexdigest
+      @data_set.save
+    end
+
     # update column names
     # assuming values are not different, 
     # in other words, this should be done after editing values
     new_headers = params[:sample_headers]
-    current_headers = Hash[*@data_set.samples.first.to_hash.keys.map{|header| [header.to_s.split.first, header]}.flatten]
+    #current_headers = Hash[*@data_set.samples.first.to_hash.keys.map{|header| [header.to_s.split.first, header]}.flatten]
     if new_headers and new_headers!=current_headers
       @data_set.samples.each_with_index do |sample, i|
         new_sample = {}
@@ -45,5 +63,6 @@ class SampleController < ApplicationController
   end
   def edit
     @data_set = DataSet.find_by_id(params[:id])
+    @edit_option = params[:edit_option]
   end
 end
