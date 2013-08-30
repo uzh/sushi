@@ -10,7 +10,7 @@
       <tr>
         <% @data_set.headers.each do |header| %>
           <th>
-            <%= text_field "sample_header", header.split.first, :size=>15, :value=>header %>
+            <%= text_field "sample_headers", header.split.first, :size=>15, :value=>header %>
           </th>
         <% end %>
       </tr>

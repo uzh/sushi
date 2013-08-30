@@ -1,6 +1,6 @@
 <h1>Project <%= session[:project] %></h1>
-<%= params %><br />
-<%= @hoge %><br />
+current_headers: <%= @current_headers %><br />
+params[:sample_headers]: <%= params[:sample_headers] %><br />
 <%= image_tag('back.gif') %>
 <%= link_to "Backto DataSet #{@data_set.name}", "/data_set/#{@data_set.id}", :method=>:get %>
 <hr />
