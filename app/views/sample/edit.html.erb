@@ -1,0 +1,32 @@
+<h1>Project <%= session[:project] %></h1>
+<%= params %><br />
+<%= image_tag('back.gif') %>
+<%= link_to "Backto DataSet #{@data_set.name}", "/data_set/#{@data_set.id}", :method=>:get %>
+<hr />
+<h3>Samples</h3>
+<% if @data_set %>
+  <%= form_tag({:controller => 'sample',:action => 'show'}) do %>
+    <table>
+      <tr>
+        <% @data_set.headers.each do |header| %>
+          <th>
+            <%= text_field "sample_header", header.split.first, :size=>15, :value=>header %>
+          </th>
+        <% end %>
+      </tr>
+      <% @data_set.samples.each_with_index do |sample, i| %>
+        <tr>
+          <% @data_set.headers.each do |header| %>
+            <td>
+              <% file_path = sample.to_hash[header].to_s %>
+              <%= text_field "sample_#{i}", header.split.first, :size=>15, :value=>file_path %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+    <%= submit_tag 'ok', :name=>'edit' %>
+  <% end %>
+<% end %>
+<hr />
+
