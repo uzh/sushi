@@ -24,7 +24,12 @@ SushiFabric::Application.routes.draw do
     end
   end
   
-  resources :sample, :only => [:show]
+  resources :sample, :only => [] do
+    member do
+      post :show
+      post :edit
+    end
+  end
 
   get "/api/:method" => "api#index"
   post "/api/:method" => "api#index"
