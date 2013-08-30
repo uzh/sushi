@@ -9,10 +9,21 @@ params: <%= params %><br />
 <table>
   <tr>
     <th></th>
-    <% @data_set.headers.each do |header| %>
-      <th><%= header %><%= link_to image_tag('minus.png'), "/sample/#{@data_set.id}/edit", :method=>:post %></th>
+    <% @data_set.headers.each_with_index do |header, i| %>
+      <th>
+        <%= header %>
+        <%= form_tag({:controller => 'sample',:action => 'edit'}) do %>
+          <%= hidden_field :edit_option, :del_col, :value=>i.to_s %> 
+          <%= image_submit_tag 'minus.png', :name=>'edit' %>
+        <% end %>
+      </th>
     <% end %>
-    <th><%= link_to image_tag('add.png'), "/sample/#{@data_set.id}/edit", :method=>:post %></th>
+    <th>
+      <%= form_tag({:controller => 'sample',:action => 'edit'}) do %>
+        <%= hidden_field :edit_option, :add, :value=>'col' %> 
+        <%= image_submit_tag 'add.png', :name=>'edit' %>
+      <% end %>
+    </th>
   </tr>
   <% @data_set.samples.each_with_index do |sample, i| %>
     <tr>

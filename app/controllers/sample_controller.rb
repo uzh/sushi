@@ -68,6 +68,19 @@ class SampleController < ApplicationController
       @data_set.md5 = @data_set.md5hexdigest
       @data_set.save
     end
+
+    # add new column
+    if new_header = params[:new_header] and new_header_name = new_header[:name]
+      @data_set.samples.each_with_index do |sample, i|
+        new_sample = sample.to_hash
+        new_value = params[:new_col][i.to_s]
+        new_sample[new_header_name]=new_value
+        @data_set.samples[i].key_value = new_sample.to_s
+        @data_set.samples[i].save
+      end
+      @data_set.md5 = @data_set.md5hexdigest
+      @data_set.save
+    end
   end
   def edit
     @data_set = DataSet.find_by_id(params[:id])
