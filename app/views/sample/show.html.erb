@@ -14,10 +14,13 @@ params: <%= params %><br />
     <% end %>
     <th><%= link_to image_tag('add.png'), "/sample/#{@data_set.id}/edit", :method=>:post %></th>
   </tr>
-  <% @data_set.samples.each do |sample| %>
+  <% @data_set.samples.each_with_index do |sample, i| %>
     <tr>
       <td>
-        <%= link_to image_tag('minus.png'), "/sample/#{@data_set.id}/edit", :method=>:post %>
+        <%= form_tag({:controller => 'sample',:action => 'edit'}) do %>
+          <%= hidden_field :edit_option, :del_row, :value=>i.to_s %> 
+          <%= image_submit_tag 'minus.png', :name=>'edit' %>
+        <% end %>
       </td>
       <% @data_set.headers.each do |header| %>
         <td>
