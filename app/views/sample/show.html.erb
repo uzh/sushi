@@ -1,5 +1,5 @@
 <h1>Project <%= session[:project] %></h1>
-hoge: <%= @hoge %><br />
+sample: <%= @sample %><br />
 params: <%= params %><br />
 <%= image_tag('back.gif') %>
 <%= link_to "Backto DataSet #{@data_set.name}", "/data_set/#{@data_set.id}", :method=>:get %>
@@ -29,7 +29,10 @@ params: <%= params %><br />
     </tr>
   <% end %>
 </table>
-  <%= link_to image_tag('add.png'), "/sample/#{@data_set.id}/edit", :method=>:post %>
+  <%= form_tag({:controller => 'sample',:action => 'edit'}) do %>
+    <%= hidden_field :edit_option, :add, :value=>'row' %> 
+    <%= image_submit_tag 'add.png', :name=>'edit' %>
+  <% end %>
   <%= button_to 'edit sample', "/sample/#{@data_set.id}/edit" %>
 <% end %>
 <hr />
