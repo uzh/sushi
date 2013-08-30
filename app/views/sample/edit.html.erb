@@ -17,6 +17,11 @@
             <% end %>
           </th>
         <% end %>
+        <% if @edit_option and @edit_option[:add] == 'col' %>
+          <th>
+            <%= text_field "new_header", "name", :size=>15, :value=>'' %>
+          </th>
+        <% end %>
       </tr>
       <% @data_set.samples.each_with_index do |sample, i| %>
         <tr>
@@ -31,6 +36,11 @@
               <% else %>
                 <%= File.basename(file_path) %>
               <% end %>
+            </td>
+          <% end %>
+          <% if @edit_option and @edit_option[:add]=='col' %>
+            <td>
+              <%= text_field "new_col", i.to_s, :size=>15, :value=>'' %>
             </td>
           <% end %>
         </tr>
