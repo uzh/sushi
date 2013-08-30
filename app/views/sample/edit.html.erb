@@ -1,5 +1,4 @@
 <h1>Project <%= session[:project] %></h1>
-<%= params %><br />
 <%= image_tag('back.gif') %>
 <%= link_to "Backto DataSet #{@data_set.name}", "/data_set/#{@data_set.id}", :method=>:get %>
 <hr />
@@ -8,10 +7,12 @@
   <%= form_tag({:controller => 'sample',:action => 'show'}) do %>
     <table>
       <tr>
-        <% @data_set.headers.each do |header| %>
+        <% @data_set.headers.each_with_index do |header, j| %>
           <th>
-            <% unless @edit_option %>
+            <% if !@edit_option %>
               <%= text_field "sample_headers", header.to_s.split.first, :size=>15, :value=>header %>
+            <% elsif del_col=@edit_option[:del_col] and del_col==j.to_s %>
+              <s><font color=red><%= header %></font></s>
             <% else %>
               <%= header %>
             <% end %>
@@ -25,13 +26,16 @@
       </tr>
       <% @data_set.samples.each_with_index do |sample, i| %>
         <tr>
-          <% @data_set.headers.each do |header| %>
+          <% @data_set.headers.each_with_index do |header, j| %>
             <td>
               <% file_path = sample.to_hash[header].to_s %>
               <% if !@edit_option %>
                 <%= text_field "sample_#{i}", header.to_s.split.first, :size=>15, :value=>file_path %>
               <% elsif @edit_option[:del_row]==i.to_s %>
                 <%= hidden_field :edit_option, :del_row, :value=>i.to_s %> 
+                <s><font color=red><%= File.basename(file_path) %></font></s>
+              <% elsif del_col=@edit_option[:del_col] and del_col==j.to_s %>
+                <%= hidden_field :edit_option, :del_col, :value=>header %> 
                 <s><font color=red><%= File.basename(file_path) %></font></s>
               <% else %>
                 <%= File.basename(file_path) %>
