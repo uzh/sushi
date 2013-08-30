@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130830-150237'
+Version = '20130830-165757'
 
 require 'csv'
 require 'fileutils'
@@ -367,15 +367,14 @@ rm -rf #{@scratch_dir} || exit 1
     p @result_dataset
 
     # copy application data to gstore 
-    save_next_dataset_as_tsv
-    copy_dataset_parameter_jobscripts
+    next_dataset_tsv_path = save_next_dataset_as_tsv
 
     if !@job_ids.empty? and @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
       data_set_arr = []
       headers = []
       rows = []
       data_set_arr = {'DataSetName'=>"#{@analysis_category}_#{@name.gsub(/\s/,'').gsub(/_/,'')}_#{dataset.name}", 'ProjectNumber'=>@project.gsub(/p/,''), 'ParentID'=>@dataset_sushi_id}
-      csv = CSV.readlines(@next_dataset_tsv_path, :col_sep=>"\t")
+      csv = CSV.readlines(next_dataset_tsv_path, :col_sep=>"\t")
       csv.each do |row|
         if headers.empty?
           headers = row
@@ -384,6 +383,9 @@ rm -rf #{@scratch_dir} || exit 1
         end
       end
       @next_dataset_id = save_data_set(data_set_arr.to_a.flatten, headers, rows)
+    end
+    Thread.new do
+      copy_dataset_parameter_jobscripts
     end
   end
   def test_run
