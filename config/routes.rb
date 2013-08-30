@@ -1,4 +1,6 @@
 SushiFabric::Application.routes.draw do
+  get "sushi_application/index"
+
   root :to => "home#index"
   
   devise_for :users
@@ -30,6 +32,8 @@ SushiFabric::Application.routes.draw do
       post :edit
     end
   end
+
+  resources :sushi_application, :only => [:index]
 
   get "/api/:method" => "api#index"
   post "/api/:method" => "api#index"
