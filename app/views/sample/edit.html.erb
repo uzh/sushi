@@ -10,7 +10,7 @@
       <tr>
         <% @data_set.headers.each do |header| %>
           <th>
-            <%= text_field "sample_headers", header.split.first, :size=>15, :value=>header %>
+            <%= text_field "sample_headers", header.to_s.split.first, :size=>15, :value=>header %>
           </th>
         <% end %>
       </tr>
@@ -19,7 +19,7 @@
           <% @data_set.headers.each do |header| %>
             <td>
               <% file_path = sample.to_hash[header].to_s %>
-              <%= text_field "sample_#{i}", header.split.first, :size=>15, :value=>file_path %>
+              <%= text_field "sample_#{i}", header.to_s.split.first, :size=>15, :value=>file_path %>
             </td>
           <% end %>
         </tr>
