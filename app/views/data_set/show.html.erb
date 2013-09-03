@@ -84,7 +84,8 @@ $(document).ready(function(){
 <hr />
 
 <% unless @file_exist.values.inject{|a,b| a and b}%>
-  <font color=red>The RED file(s) does not exist in gstore:</font> <%= GSTORE_DIR %><br />
+  <%= button_to "Go gstore", File.join("/gstore/projects/", @sample_path.first) if @sample_path.length == 1 %>
+  <font color=red>RED file(s) or the following does not exist in gstore:</font> <%= GSTORE_DIR %><br />
   <ul>
   <% @file_exist.select{|file, exist| !exist}.each do |file, exist| %>
     <li><%= file %></li>

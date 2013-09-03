@@ -16,7 +16,7 @@ $(document).ready(function(){
     <td><%= data_set.id %></td>
     <td><%= link_to data_set.name, "/data_set/#{data_set.id}" %></td>
     <td><span style="color:gray;font-size:smaller">[<%= data_set.headers.join(',') %>]</span></td>
-    <td><%= button_to 'select', "/run_application/select_application.#{data_set.id}" %></td>
+    <td><%= button_to 'select', "/data_set/#{data_set.id}", :method=>:get %></td>
     <td><%= data_set.samples.length %></td>
     <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
   </tr>
