@@ -8,12 +8,10 @@ class DataSetController < ApplicationController
         data_set.samples.each do |sample|
           flag = true
           sample.to_hash.each do |header, file|
-            if header =~ /\[File\]/ 
-              file_path = File.join(GSTORE_DIR, file)
-              unless File.exist?(file_path)
-                flag = false
-                break
-              end
+            if header =~ /\[File\]/ and file and file_path = File.join(GSTORE_DIR, file) and !File.exist?(file_path) or
+              header =~ /\[File\]/ and !file
+              flag = false
+              break
             end
           end
           @sample_available[data_set] ||= 0
@@ -38,10 +36,14 @@ class DataSetController < ApplicationController
     @sample_path = []
     @data_set.samples.each do |sample|
       sample.to_hash.each do |header, file|
-        if header =~ /\[File\]/ 
-          file_path = File.join(GSTORE_DIR, file)
-          @sample_path << File.dirname(file)
-          @file_exist[file] = File.exist?(file_path)
+        if (header =~ /\[File\]/ or header =~ /\[Link\]/) 
+          if file
+            file_path = File.join(GSTORE_DIR, file)
+            @sample_path << File.dirname(file)
+            @file_exist[file] = File.exist?(file_path)
+          else
+            @file_exist[header] = false
+          end
         else
           @file_exist[file] = true
         end
