@@ -52,7 +52,14 @@ class DataSetController < ApplicationController
     @sample_path.uniq!
 
     if @file_exist.values.inject{|a,b| a and b}
-      @sushi_apps = runnable_application(@data_set.headers)
+      sushi_apps = runnable_application(@data_set.headers)
+      sushi_apps = sushi_apps.map{|app| eval(app.gsub(/\.rb/,'').gsub(/\.sh/,'')).new}
+      @sushi_apps_category = sushi_apps.map{|app| app.analysis_category}.uniq.sort
+      @sushi_apps = {}
+      sushi_apps.sort_by{|app| app.class.to_s}.each do |app|
+        @sushi_apps[app.analysis_category] ||= []
+        @sushi_apps[app.analysis_category] << app.class.to_s
+      end
     end
 
   end
