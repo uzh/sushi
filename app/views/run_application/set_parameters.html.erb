@@ -1,6 +1,9 @@
 <h1>Project <%= session[:project] %></h1>
 <hr />
 <h2>Set Parameters <span style="color:gray;font-size:medium"><%= @sushi_app.class %></span></h2>
+<blockquote>
+  <%= @sushi_app.description.to_s.html_safe %>
+</blockquote>
 <hr />
 <%= form_tag(:action => 'confirmation') do %>
   <%= hidden_field :sushi_app, :class, :value => @sushi_app.class %>
@@ -39,6 +42,7 @@
           <% if @sushi_app.required_params.include?(key) %>
             <font color=red>required</font>
           <% end %>
+          <span style='color:gray;'><%= @sushi_app.params[key, 'description'].to_s %></span>
         </td>
         </tr>
       <% end %>
