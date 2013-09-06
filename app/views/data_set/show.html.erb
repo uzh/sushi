@@ -105,9 +105,18 @@ $(document).ready(function(){
     <% else %>
       <%= form_tag(:controller => 'run_application', :action => 'set_parameters') do %>
         <%= hidden_field :data_set, :id, :value=>@data_set.id %>
-        <% @sushi_apps.sort.each do |app| %>
-          <%= submit_tag app.gsub(/\.\w+$/,''), :name=>'app' %>
+        <table>
+          <th>Category</th><th>Application</th>
+        <% @sushi_apps_category.each do |category| %>
+          <tr><td><%= category %></td>
+            <td>
+              <% @sushi_apps[category].each do |app| %>
+                <%= submit_tag app.to_s, :name=>'app' %>
+              <% end %>
+            </td>
+          </tr>
         <% end %>
+        </table>
       <% end %>
     <% end %>
   <% end %>
