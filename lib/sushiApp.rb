@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130830-165757'
+Version = '20130905-080703'
 
 require 'csv'
 require 'fileutils'
 require 'active_record'
 require 'sushiToolBox'
 
-WORKFLOW_MANAGER='druby://fgcz-s-034:40001'
+WORKFLOW_MANAGER='druby://fgcz-s-034:50001'
 #GSTORE_DIR='/srv/GT/analysis/masaomi/sushi/work_lunch/gstore/projects'
 GSTORE_DIR='/srv/gstore/projects'
 
