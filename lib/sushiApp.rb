@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130906-163626'
+Version = '20130906-171335'
 
 require 'csv'
 require 'fileutils'
@@ -15,18 +15,24 @@ GSTORE_DIR='/srv/gstore/projects'
 class Hash
   attr_reader :defaults
   alias :set :[]=
-  def []=(k,v)
-    @defaults ||= {}
-    if !@defaults[k] and v
-      if v.instance_of?(Array)
-        @defaults.set(k,v.first)
-      elsif v.instance_of?(Hash) and v.first
-        @defaults.set(k,v.first.last)
-      else
-        @defaults.set(k,v)
+  alias :get :[]
+  def []=(k1,k2,v=nil)
+    if v
+      @desc ||= {}
+      @desc.set([k1,k2].join('_'),v)
+    else
+      @defaults ||= {}
+      if !@defaults[k1] and k2
+        if k2.instance_of?(Array)
+          @defaults.set(k1,k2.first)
+        elsif k2.instance_of?(Hash) and k2.first
+          @defaults.set(k1,k2.first.last)
+        else
+          @defaults.set(k1,k2)
+        end
       end
+      set(k1,k2)
     end
-    set(k,v)
   end
   def default_value(k,v=nil)
     if v
@@ -40,16 +46,6 @@ class Hash
   end
   def data_types
     Hash[@defaults.map{|k,v| [k, v.class]}]
-  end
-
-  alias :get :[]
-  def []=(k1,k2,v=nil)
-    if v
-      @desc ||= {}
-      @desc.set([k1,k2].join('_'),v)
-    else
-      set(k1,k2)
-    end
   end
   def [](k1, k2=nil)
     if k2
