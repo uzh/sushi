@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130830-165757'
+Version = '20130906-162949'
 
 require 'csv'
 require 'fileutils'
 require 'active_record'
 require 'sushiToolBox'
 
-WORKFLOW_MANAGER='druby://fgcz-s-034:40001'
+WORKFLOW_MANAGER='druby://fgcz-s-034:50001'
 #GSTORE_DIR='/srv/GT/analysis/masaomi/sushi/work_lunch/gstore/projects'
 GSTORE_DIR='/srv/gstore/projects'
 
@@ -41,6 +41,27 @@ class Hash
   def data_types
     Hash[@defaults.map{|k,v| [k, v.class]}]
   end
+
+  alias :get :[]
+  def []=(k1,k2,v=nil)
+    if v
+      @desc ||= {}
+      @desc.set([k1,k2].join('_'),v)
+    else
+      set(k1,k2)
+    end
+  end
+  def [](k1, k2=nil)
+    if k2
+      if @desc
+        @desc.get([k1,k2].join('_'))
+      else
+        nil
+      end
+    else
+      get(k1)
+    end
+  end
 end
 class SushiApp
   include SushiToolBox
@@ -51,6 +72,7 @@ class SushiApp
   attr_reader :required_params
   attr_reader :dataset_hash
   attr_reader :analysis_category
+  attr_reader :description
   attr_accessor :dataset_tsv_file
   attr_accessor :parameterset_tsv_file
   attr_accessor :dataset_sushi_id

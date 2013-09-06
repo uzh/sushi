@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130719-150959'
+Version = '20130906-161905'
 
 require 'sushiApp'
 
@@ -9,6 +9,11 @@ class TophatApp < SushiApp
     super
     @name = 'Tophat'
     @analysis_category = 'Map'
+    @description =<<-EOS
+TopHat is a fast splice junction mapper for RNA-Seq reads. 
+It aligns RNA-Seq reads to mammalian-sized genomes using the ultra high-throughput short read aligner Bowtie, and then analyzes the mapping results to identify splice junctions between exons.<br />
+<a href='http://tophat.cbcb.umd.edu/'>http://tophat.cbcb.umd.edu/</a>
+    EOS
     @required_columns = ['Name','Read1','Species']
     @required_params = ['build','paired']
     # optional params
@@ -16,11 +21,14 @@ class TophatApp < SushiApp
     @params['ram'] = '16'
     @params['scratch'] = '100'
     @params['is_stranded'] = ['', 'sense', 'other']
+    @params['is_stranded', 'description'] = 'library type'
     @params['paired'] = false
+    @params['paired', 'description'] = 'either the reads are paired-ends or single-end'
     @params['build'] = {'select'=>''}
     Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
     end
+    @params['build', 'description'] = 'Reference sequence'
 #    @output_files = ['BAM','BAI']
   end
   def preprocess
