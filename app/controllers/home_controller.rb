@@ -53,7 +53,7 @@ class HomeController < ApplicationController
       when 'Name'
         @files.sort_by! {|file| File.basename(file)}
       when 'Last_Modified'
-        @files.sort_by! {|file| File.ctime(file)}
+        @files.sort_by! {|file| File.mtime(file)}
       when 'Size'
         @files.sort_by! {|file| File.size(file)}
       end
@@ -61,7 +61,7 @@ class HomeController < ApplicationController
     else
       session[:gstore_reverse] = nil
       if @path == params[:project_id] 
-        @files.sort_by! {|file| File.ctime(file)}
+        @files.sort_by! {|file| File.mtime(file)}
         @files.reverse!
       end
     end
