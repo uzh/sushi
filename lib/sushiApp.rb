@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130906-171335'
+Version = '20130912-142023'
 
 require 'csv'
 require 'fileutils'
@@ -196,20 +196,21 @@ echo "at $SCRATCH_DIR"
     if @output_files
       @output_files.map{|header| next_dataset[header]}.each do |file|
         # in actual case, to save under /srv/gstore/
-        if @gstore_dir =~ /srv\/gstore/
-          @out.print "g-req -w copy ", File.basename(file), " ", File.dirname(File.join(@gstore_dir, file)), "\n"
-        else
-          dest = File.join(@gstore_dir, file)
-          dir  = File.dirname(dest)
-          @out.print "mkdir -p #{dir} || exit 1\n"
-          @out.print "cp -r ", File.basename(file), " ", dest, " || exit 1\n"
-        end
+        src_file = File.basename(file)
+        dest_dir = File.dirname(File.join(@gstore_dir, file))
+        @out.print copy_commands(src_file, dest_dir).join("\n"), "\n"
       end
-      @out.print <<-EOF
+    end
+
+    # job log
+    @out.print "sh #{@gstore_result_dir}/#{File.basename(@get_log_script)}\n"
+    log_file = File.basename(@job_script.gsub(/\.sh/,'.log'))
+    @out.print copy_commands(log_file, @gstore_result_dir).join("\n"), "\n"
+    @out.print <<-EOF
 cd ~
 rm -rf #{@scratch_dir} || exit 1
-      EOF
-    end
+    EOF
+
   end
   def job_main
     @out.print "#### NOW THE ACTUAL JOBS STARTS\n"
@@ -373,8 +374,8 @@ rm -rf #{@scratch_dir} || exit 1
       get_log_script = @get_log_scripts[i]
       open(get_log_script, 'w') do |out|
         out.print "#!/bin/sh\n\n"
-        out.print 'CURDIR=`dirname $0`', "\n"
-        out.print "wfm_get_log #{job_id} with_err #{WORKFLOW_MANAGER} > $CURDIR/#{File.basename(get_log_script.gsub(/get_log_/,'').gsub(/\.sh/,'.log'))}\n"
+        log_file = File.basename(job_script.gsub(/\.sh/,'.log'))
+        out.print "wfm_get_log #{job_id} with_err #{WORKFLOW_MANAGER} > #{log_file}\n"
       end
     end
 
