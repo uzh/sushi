@@ -16,7 +16,7 @@
   <% basename = File.basename(file) %>
   <% if File.directory?(file) %>
     <td><%= image_tag('folder.gif') %>  <%= link_to basename, "#{File.join(@base, File.join(@path, basename))}" %></td>
-    <td><%= File.ctime(file) %></td>
+    <td><%= File.mtime(file) %></td>
     <td>-</td>
   <% else %>
     <td>
@@ -26,7 +26,7 @@
       <%= link_to image_tag('add.png'), "/import/#{File.join(@path, basename)}" %>
     <% end %>
     </td>
-    <td><%= File.ctime(file) %></td>
+    <td><%= File.mtime(file) %></td>
     <td><%= number_to_human_size(File.size(file)) %></td>
   <% end %>
   </tr>
