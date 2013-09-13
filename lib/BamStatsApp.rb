@@ -15,8 +15,8 @@ class BamStatsApp <  SushiApp
     @params['ram'] = '16'
     @params['scratch'] = '100'
     @params['paired'] = false
-    @params['name'] = 'BAM Statistics'
-    @params['strandMode'] = ''
+    @params['name'] = 'BAM_Statistics'
+    @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['build'] = {'select'=>''}
     Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
@@ -24,8 +24,10 @@ class BamStatsApp <  SushiApp
     @params['featureFile'] = 'genes.gtf'
   end
   def next_dataset
+    report_dir = File.join(@result_dir, @params['name'])
     {'Name'=>@params['name'],
-     'Report [File]'=>File.join(@result_dir, @params['name']),
+     'Report [File]'=>report_dir,
+     'Html [Link]'=>File.join(report_dir, '00index.html')
     }
   end
   def commands
