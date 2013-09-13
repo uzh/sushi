@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130913-095716'
+Version = '20130913-095944'
 
 require 'csv'
 require 'fileutils'
@@ -201,11 +201,6 @@ echo "at $SCRATCH_DIR"
         @out.print copy_commands(src_file, dest_dir).join("\n"), "\n"
       end
     end
-
-    # job log
-    @out.print "sh #{@gstore_result_dir}/#{File.basename(@get_log_script)}\n"
-    log_file = File.basename(@job_script.gsub(/\.sh/,'.log'))
-    @out.print copy_commands(log_file, @gstore_result_dir).join("\n"), "\n"
     @out.print <<-EOF
 cd ~
 rm -rf #{@scratch_dir} || exit 1
