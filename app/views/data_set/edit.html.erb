@@ -35,8 +35,14 @@ $(document).ready(function(){
 </table>
 <ul id="data_set_tree" class="filetree"></ul>
 
+  <% if params[:edit_option]=='edit comment' %>
+    Comments: <%= text_field :data_set, :comment, :size=>50, :value=>@data_set.comment %>
+  <% elsif params[:edit_option]=='add comment'  %>
+    Comments: <%= text_field :data_set, :comment, :size=>50, :value=>'' %>
+  <% end %>
+
   <%= hidden_field :data_set, :id, :value=>@data_set.id %>
-  <%= submit_tag 'ok', :name=>'edit' if params[:edit_option] == 'edit name' %>
+  <%= submit_tag 'ok', :name=>'edit' if params[:edit_option] %>
 <% end %>
 
 <% if @data_set %>
