@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130704-161551'
+Version = '20130913-162446'
 
 require "active_record"
 
@@ -28,6 +28,9 @@ module SushiToolBox
       data_set.project = project
       if parent_id = data_set_hash['ParentID'] and parent_data_set = DataSet.find_by_id(parent_id.to_i)
         data_set.data_set = parent_data_set
+      end
+      if comment = data_set_hash['Comment'] and !comment.to_s.empty?
+        data_set.comment = comment
       end
 
       sample_hash = {}
