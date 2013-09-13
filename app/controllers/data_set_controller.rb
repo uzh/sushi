@@ -22,6 +22,12 @@ class DataSetController < ApplicationController
   end
   def show
 
+    # data_set comment
+    if data_set = params[:data_set] and comment = data_set[:comment] and id = data_set[:id]
+      data_set = DataSet.find_by_id(id)
+      data_set.comment = comment
+      data_set.save
+    end 
     # new data_set name
     if new_data_set = params[:data_set] and name = new_data_set[:name] and id = new_data_set[:id]
       data_set = DataSet.find_by_id(id)

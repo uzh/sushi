@@ -28,8 +28,14 @@ $(document).ready(function(){
   <% end %>
 </table>
 <ul id="data_set_tree" class="filetree"></ul>
-
 <%= form_tag(:controller => 'data_set',:action => 'edit') do %>
+  <% if @data_set.comment %>
+    <%= @data_set.comment %><br />
+    <%= submit_tag 'edit comment', :name=>'edit_option' %>
+  <% else %>
+    <%= submit_tag 'add comment', :name=>'edit_option' %>
+  <% end %>
+
   <%= hidden_field :data_set, :id, :value=>@data_set.id %>
   <%= submit_tag 'edit name', :name=>'edit_option' %>
 <% end %>
