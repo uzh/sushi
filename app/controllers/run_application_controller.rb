@@ -58,6 +58,14 @@ class RunApplicationController < ApplicationController
     @sushi_app = eval(class_name).new
     data_set_id = params[:data_set][:id]
     @data_set = DataSet.find(data_set_id.to_i)
+    if next_dataset = params[:next_dataset] 
+      if name = next_dataset[:name] and !name.to_s.strip.empty?
+        @sushi_app.next_dataset_name = name.to_s.strip.gsub(/\s/,'_')
+      end
+      if comment = next_dataset[:comment] and !comment.to_s.strip.empty?
+        @sushi_app.next_dataset_comment = comment.to_s.strip
+      end
+    end
     params[:parameters].each do |key, value|
       @sushi_app.params[key] = if key == 'node'
                                  value.map{|v| v.chomp}.join(',')
@@ -74,6 +82,14 @@ class RunApplicationController < ApplicationController
     @sushi_app = eval(class_name).new
     @sushi_app.user = current_user.login
     data_set_id = params[:data_set][:id]
+    if next_dataset = params[:next_dataset] 
+      if name = next_dataset[:name] and !name.to_s.strip.empty?
+        @sushi_app.next_dataset_name = name.to_s.strip.gsub(/\s/,'_')
+      end
+      if comment = next_dataset[:comment] and !comment.to_s.strip.empty?
+        @sushi_app.next_dataset_comment = comment.to_s.strip
+      end
+    end
     params[:parameters].each do |key, value|
       @sushi_app.params[key] = if @sushi_app.params.data_type(key) == String
                                        value

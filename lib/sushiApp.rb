@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130913-151510'
+Version = '20130913-165424'
 
 require 'csv'
 require 'fileutils'
@@ -70,11 +70,14 @@ class SushiApp
   attr_reader :dataset_hash
   attr_reader :analysis_category
   attr_reader :description
+  attr_reader :name
   attr_accessor :dataset_tsv_file
   attr_accessor :parameterset_tsv_file
   attr_accessor :dataset_sushi_id
   attr_accessor :project
   attr_accessor :user
+  attr_accessor :next_dataset_name
+  attr_accessor :next_dataset_comment
   def initialize
     @gstore_dir = GSTORE_DIR
     @project = nil
@@ -388,7 +391,12 @@ rm -rf #{@scratch_dir} || exit 1
       data_set_arr = []
       headers = []
       rows = []
-      data_set_arr = {'DataSetName'=>"#{@analysis_category}_#{@name.gsub(/\s/,'').gsub(/_/,'')}_#{dataset.name}", 'ProjectNumber'=>@project.gsub(/p/,''), 'ParentID'=>@dataset_sushi_id}
+      next_dataset_name = if name = @next_dataset_name
+                            name.to_s
+                          else
+                            "#{@analysis_category}_#{@name.gsub(/\s/,'').gsub(/_/,'')}_#{dataset.name}"
+                          end
+      data_set_arr = {'DataSetName'=>next_dataset_name, 'ProjectNumber'=>@project.gsub(/p/,''), 'ParentID'=>@dataset_sushi_id, 'Comment'=>@next_dataset_comment.to_s}
       csv = CSV.readlines(next_dataset_tsv_path, :col_sep=>"\t")
       csv.each do |row|
         if headers.empty?

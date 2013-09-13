@@ -6,7 +6,18 @@
 params <%= @params.inspect.to_s %><br /><br />
 sushi_app class <%= @sushi_app.class %><br /><br />
 -->
-<h2>Data Sets</h2>
+<h2>Next DataSet</h2>
+<table>
+  <tr>
+    <th>Name</th>
+    <td><%= @sushi_app.next_dataset_name %></td>
+  </tr>
+  <tr>
+    <th>Comment</th>
+    <td><%= @sushi_app.next_dataset_comment %></td>
+  </tr>
+</table>
+<h2>Input DataSet</h2>
 <table>
   <tr>
     <% @data_set.headers.each do |header| %>
@@ -44,6 +55,8 @@ sushi_app class <%= @sushi_app.class %><br /><br />
 <%= form_tag(:action => 'submit_jobs') do %>
   <%= hidden_field :sushi_app, :class, :value => @sushi_app.class %>
   <%= hidden_field :data_set, :id, :value => @data_set.id %>
+  <%= hidden_field :next_dataset, :name, :value => @sushi_app.next_dataset_name %>
+  <%= hidden_field :next_dataset, :comment, :value => @sushi_app.next_dataset_comment %>
   <% @sushi_app.params.each do |key, value| %>
     <%= hidden_field :parameters, key.to_sym, :value => value %>
   <% end %>
@@ -56,5 +69,5 @@ sushi_app class <%= @sushi_app.class %><br /><br />
     <%= button_to_function 'Back', "history.back()" %>
   <% else %>
     <%= submit_tag 'Submit' unless @required %>
-<% end %>
+  <% end %>
 <% end %>

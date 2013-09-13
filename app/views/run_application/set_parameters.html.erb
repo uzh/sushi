@@ -8,6 +8,17 @@
 <%= form_tag(:action => 'confirmation') do %>
   <%= hidden_field :sushi_app, :class, :value => @sushi_app.class %>
   <%= hidden_field :data_set, :id, :value => @data_set.id %>
+  <h3>Next DataSet</h3>
+    <table>
+      <tr>
+        <th>Name</th>
+        <td><%= text_field :next_dataset, :name, :value => [@sushi_app.analysis_category,@sushi_app.name,@data_set.name].join('_').gsub(/\s/,'') %></td>
+      </tr>
+      <tr>
+        <th>Comment</th>
+        <td><%= text_field :next_dataset, :comment, :value => "" %></td>
+      </tr>
+    </table>
   <h3>Parameters</h3>
     <table>
       <% @sushi_app.params.each do |key, value| %>
