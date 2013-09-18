@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130913-165424'
+Version = '20130918-172258'
 
 require 'csv'
 require 'fileutils'
@@ -60,6 +60,11 @@ class Hash
     end
   end
 end
+class String
+  def tag?(tag)
+    scan(/\[(.*)\]/).flatten.join =~ /#{tag}/
+  end
+end
 class SushiApp
   include SushiToolBox
   attr_reader :params
@@ -116,7 +121,7 @@ class SushiApp
   end
   def set_output_files
     @dataset = {}
-    next_dataset.keys.select{|header| header =~ /\[File\]/}.each do |header|
+    next_dataset.keys.select{|header| header.tag?('File')}.each do |header|
       @output_files ||= []
       @output_files << header
     end
