@@ -8,8 +8,8 @@ class DataSetController < ApplicationController
         data_set.samples.each do |sample|
           flag = true
           sample.to_hash.each do |header, file|
-            if header =~ /\[File\]/ and file and file_path = File.join(GSTORE_DIR, file) and !File.exist?(file_path) or
-              header =~ /\[File\]/ and !file
+            if header.tag?('File') and file and file_path = File.join(GSTORE_DIR, file) and !File.exist?(file_path) or
+              header.tag?('File') and !file
               flag = false
               break
             end
@@ -42,7 +42,7 @@ class DataSetController < ApplicationController
     @sample_path = []
     @data_set.samples.each do |sample|
       sample.to_hash.each do |header, file|
-        if (header =~ /\[File\]/ or header =~ /\[Link\]/) 
+        if (header.tag?('File') or header.tag?('Link')) 
           if file
             file_path = File.join(GSTORE_DIR, file)
             @sample_path << File.dirname(file)
@@ -265,7 +265,7 @@ class DataSetController < ApplicationController
     @sample_path = []
     @data_set.samples.each do |sample|
       sample.to_hash.each do |header, file|
-        if header =~ /\[File\]/ 
+        if header.tag?('File')
           file_path = File.join(GSTORE_DIR, file)
           @sample_path << File.dirname(file)
           @file_exist[file] = File.exist?(file_path)
@@ -286,7 +286,7 @@ class DataSetController < ApplicationController
       @sample_path = []
       @data_set.samples.each do |sample|
         sample.to_hash.each do |header, file|
-          if header =~ /\[File\]/ 
+          if header.tag?('File') 
             file_path = File.join(GSTORE_DIR, file)
             @sample_path << File.dirname(file)
           end

@@ -24,7 +24,7 @@ class SampleController < ApplicationController
       new_sample = {}
       add_sample.each do |key, value|
         header = current_headers[key]
-        if header =~ /\[File\]/ and sample = @data_set.samples.first and sample = sample.to_hash[header]
+        if header.tag?('File') and sample = @data_set.samples.first and sample = sample.to_hash[header]
           new_sample[header] = File.join(File.dirname(sample), value)
         else
           new_sample[header] = value
