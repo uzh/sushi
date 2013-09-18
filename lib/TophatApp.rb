@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130906-161905'
+Version = '20130918-171201'
 
 require 'sushiApp'
 
@@ -38,7 +38,7 @@ It aligns RNA-Seq reads to mammalian-sized genomes using the ultra high-throughp
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
-     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+     'BAM [File,Link]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'Build'=>@params['build'],
      'Species'=>@dataset['Species']

@@ -62,9 +62,4 @@ class ApplicationController < ActionController::Base
     end
     sushi_apps
   end
-  class ::String
-    def tag?(tag)
-      scan(/\[(.*)\]/).flatten.join =~ /#{tag}/
-    end
-  end
 end
