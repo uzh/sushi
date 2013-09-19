@@ -49,3 +49,8 @@ gem 'ruby_parser'
 #    gem 'fgcz'
 gem 'savon'
 gem 'fgcz', :path => '/srv/SushiFabric/Gems/fgcz'
+
+group :test do
+  gem "rspec"
+  gem "rspec-rails"
+end
