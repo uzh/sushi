@@ -9,3 +9,4 @@ tmp/cache/assets
 log/development.log
 db/development.sqlite3
 tmp/cache/assets
+coverage
