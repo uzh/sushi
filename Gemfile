@@ -53,4 +53,6 @@ gem 'fgcz', :path => '/srv/SushiFabric/Gems/fgcz'
 group :test do
   gem "rspec"
   gem "rspec-rails"
+  gem 'simplecov'
+  gem 'simplecov-rcov'
 end
