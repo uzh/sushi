@@ -8,8 +8,7 @@ class DataSetController < ApplicationController
         data_set.samples.each do |sample|
           flag = true
           sample.to_hash.each do |header, file|
-            if header.tag?('File') and file and file_path = File.join(GSTORE_DIR, file) and !File.exist?(file_path) or
-              header.tag?('File') and !file
+            if header.tag?('File') and file and file_path = File.join(GSTORE_DIR, file) and !File.exist?(file_path)
               flag = false
               break
             end
