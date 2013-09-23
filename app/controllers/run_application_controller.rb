@@ -6,28 +6,6 @@ class RunApplicationController < ApplicationController
                    []
                  end
   end
-  def select_application
-    if data_set_id = params[:format]
-      @data_set = DataSet.find_by_id(data_set_id.to_i)
-
-      # check real data
-      @file_exist = {}
-      @data_set.samples.each do |sample|
-        sample.to_hash.values.each do |file|
-          if file.split(/\//).first =~ /^p\d+/
-            file_path = File.join(GSTORE_DIR, file)
-            @file_exist[file] = File.exist?(file_path)
-          else
-            @file_exist[file] = true
-          end
-        end
-      end
-
-      if @file_exist.values.inject{|a,b| a and b}
-        @sushi_apps = runnable_application(@data_set.headers)
-      end
-    end
-  end
   def set_parameters
     class_name = params[:app]
     #require class_name
