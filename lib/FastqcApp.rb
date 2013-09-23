@@ -3,10 +3,10 @@
 
 require 'sushiApp'
 
-class FastqcWrappedApp <  SushiApp
+class FastqcApp <  SushiApp
   def initialize
     super
-    @name = 'Fastqc Wrapped'
+    @name = 'Fastqc'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
     @required_columns = ['Name','Read1','Species']
@@ -52,7 +52,7 @@ class FastqcWrappedApp <  SushiApp
 end
 
 if __FILE__ == $0
-  usecase = FastqcWrappedApp.new
+  usecase = FastqcApp.new
 
   usecase.project = "p1001"
   usecase.user = "masa"
