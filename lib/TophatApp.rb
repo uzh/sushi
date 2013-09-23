@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130918-171201'
+Version = '20130923-165800'
 
 require 'sushiApp'
 
@@ -9,27 +9,25 @@ class TophatApp < SushiApp
     super
     @name = 'Tophat'
     @analysis_category = 'Map'
-    @description =<<-EOS
-TopHat is a fast splice junction mapper for RNA-Seq reads. 
-It aligns RNA-Seq reads to mammalian-sized genomes using the ultra high-throughput short read aligner Bowtie, and then analyzes the mapping results to identify splice junctions between exons.<br />
-<a href='http://tophat.cbcb.umd.edu/'>http://tophat.cbcb.umd.edu/</a>
-    EOS
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['build','paired']
+    @required_params = ['build','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
     @params['scratch'] = '100'
-    @params['is_stranded'] = ['', 'sense', 'other']
-    @params['is_stranded', 'description'] = 'library type'
-    @params['paired'] = false
-    @params['paired', 'description'] = 'either the reads are paired-ends or single-end'
     @params['build'] = {'select'=>''}
     Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
     end
-    @params['build', 'description'] = 'Reference sequence'
-#    @output_files = ['BAM','BAI']
+    @params['paired'] = false
+    @params['strandMode'] = ['both', 'sense', 'antisense']
+    @params['featureFile'] = 'genes.gtf'
+    @params['cmdOptions'] = ''
+    @params['trimAdapter'] = false
+    @params['trimLeft'] = 0
+    @params['trimRight'] = 0
+    @params['minTailQuality'] = 0
+    @params['specialOptions'] = ''
   end
   def preprocess
     if @params['paired']
@@ -38,54 +36,33 @@ It aligns RNA-Seq reads to mammalian-sized genomes using the ultra high-throughp
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
-     'BAM [File,Link]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
+     'Species'=>@dataset['Species'],
      'Build'=>@params['build'],
-     'Species'=>@dataset['Species']
     }
   end
-  def build_dir
-    @build_dir ||= Dir["/srv/GT/reference/*/*/#{@params['build']}"].to_a[0]
-  end
-  def bowtie2_index
-    @bowtie2_index ||= if build_dir
-                         File.join(build_dir, 'Sequence/BOWTIE2Index/genome')
-                       end
-  end
-  def transcripts_index
-    @transcripts_index ||= if build_dir
-                             File.join(build_dir, 'Annotation/Genes/genes_BOWTIE2Index/transcripts')
-                           end
-  end
-  def library_type
-    if @params['is_stranded'].empty?
-      "--library-type fr-unstranded"
-    else
-     if  @params['is_stranded'] == 'sense'
-      "--library-type fr-secondstrand"
-     else
-       "--library-type fr-firststrand"
-     end
-    end
-  end
-  def num_threads
-    if @params['cores'].to_i > 1
-      "--num-threads #{@params['cores']}"
-    else
-      ""
-    end 
-  end
   def commands
-    if bowtie2_index and transcripts_index
-      command = "/usr/local/ngseq/bin/tophat -o . #{num_threads} #{library_type} --transcriptome-index #{transcripts_index} #{bowtie2_index} #{@gstore_dir}/#{@dataset['Read1']}"
-      if @params['paired']
-        command << ",#{@gstore_dir}/#{@dataset['Read2']}\n"
-      else
-        command << "\n"
-      end
-      command << "mv accepted_hits.bam #{@dataset['Name']}.bam\n"
-      command << "samtools index #{@dataset['Name']}.bam\n"
+    command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"
+    command << "source('/usr/local/ngseq/opt/sushi_scripts/init.R')\n"
+    command << "config = list()\n"
+    config = @params
+    config.keys.each do |key|
+      command << "config[['#{key}']] = '#{config[key]}'\n" 
     end
+    command << "config[['dataRoot']] = '#{@gstore_dir}'\n"
+    command << "input = list()\n"
+    input = @dataset
+    input.keys.each do |key|
+      command << "input[['#{key}']] = '#{input[key]}'\n" 
+    end
+    command << "output = list()\n"
+    output = next_dataset
+    output.keys.each do |key|
+      command << "output[['#{key}']] = '#{output[key]}'\n" 
+    end
+    command << "mapTophat(input=input, output=output, config=config)\n"
+    command << "EOT"
     command
   end
 end
@@ -94,27 +71,28 @@ if __FILE__ == $0
   usecase = TophatApp.new
 
   usecase.project = "p1001"
-  usecase.user = "masa"
+  usecase.user = 'masamasa'
 
   # set user parameter
   # for GUI sushi
   #usecase.params['process_mode'].value = 'SAMPLE'
-  #usecase.params['build'] = 'TAIR10'
-  #usecase.params['paired'] = true
-  #usecase.params['cores'] = 2
-  #usecase.params['node'] = 'fgcz-c-048'
+  usecase.params['build'] = 'mm10'
+  usecase.params['paired'] = true
+  usecase.params['strandMode'] = 'both'
+  usecase.params['cores'] = 8
+  usecase.params['node'] = 'fgcz-c-048'
 
   # also possible to load a parameterset csv file
   # mainly for CUI sushi
   #usecase.parameterset_tsv_file = 'tophat_parameterset.tsv'
-  usecase.parameterset_tsv_file = 'test.tsv'
+  #usecase.parameterset_tsv_file = 'test.tsv'
 
   # set input dataset
   # mainly for CUI sushi
-  usecase.dataset_tsv_file = 'tophat_dataset.tsv'
+  #usecase.dataset_tsv_file = 'tophat_dataset.tsv'
 
   # also possible to load a input dataset from Sushi DB
-  #usecase.dataset_sushi_id = 1
+  usecase.dataset_sushi_id = 3
 
   # run (submit to workflow_manager)
   usecase.run
