@@ -1,16 +1,15 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130815-144438'
 
 require 'sushiApp'
 
-class STARWrappedApp < SushiApp
+class BWAApp < SushiApp
   def initialize
     super
-    @name = 'STAR Wrapped'
+    @name = 'BWA'
     @analysis_category = 'Map'
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['build','paired', 'strandMode']
+    @required_params = ['build','paired']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
@@ -20,15 +19,13 @@ class STARWrappedApp < SushiApp
       @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
     end
     @params['paired'] = false
-    @params['strandMode'] = ['both', 'sense', 'antisense']
-    @params['featureFile'] = 'genes.gtf'
+    @params['algorithm'] = ['aln', 'mem', 'bwasw']
     @params['cmdOptions'] = ''
     @params['trimAdapter'] = false
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
     @params['minTailQuality'] = 0
     @params['specialOptions'] = ''
-    #@output_files = ['BAM','BAI']
   end
   def preprocess
     if @params['paired']
@@ -62,14 +59,14 @@ class STARWrappedApp < SushiApp
     output.keys.each do |key|
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
-    command << "mapSTAR(input=input, output=output, config=config)\n"
+    command << "mapBWA(input=input, output=output, config=config)\n"
     command << "EOT"
     command
   end
 end
 
 if __FILE__ == $0
-  usecase = STARWrappedApp.new
+  usecase = BWAApp.new
 
   usecase.project = "p1001"
   usecase.user = 'masamasa'
