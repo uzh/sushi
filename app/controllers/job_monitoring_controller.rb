@@ -1,7 +1,12 @@
 class JobMonitoringController < ApplicationController
   def index
     public_dir = File.expand_path('../../../public', __FILE__)
-    @job_list = `#{public_dir}/wfm_job_list -d #{WORKFLOW_MANAGER} -p #{session[:project]}`
+    @job_list = if option=params[:option] and option[:all_job_list]
+                  @all_job_list=true
+                  `#{public_dir}/wfm_job_list -d #{WORKFLOW_MANAGER}`
+                else
+                  `#{public_dir}/wfm_job_list -d #{WORKFLOW_MANAGER} -p #{session[:project]}`
+                end
     @job_list = @job_list.split(/\n/).map{|job| job.split(/,/)}
     @total = @job_list.length
 
