@@ -76,6 +76,8 @@ $(document).ready(function(){
             <% file_name = File.basename(file_path) %>
             <% if header.tag?('Link') %>
                <%= link_to file_name, File.join('/gstore/projects', file_path)  %>
+            <% elsif @sample_invalid_name[file_name] %>
+               <font color=red><%= file_name %></font>
             <% else %>
                <%= file_name %>
             <% end %>
@@ -103,7 +105,12 @@ $(document).ready(function(){
     <%= link_to "#{File.join('/gstore/projects/',path)}", File.join("/gstore/projects/", path) %>
   <% end %>
 
-  <% if @sushi_apps %>
+  <% if !@sample_invalid_name.keys.empty? %>
+    <ul>
+      <li><font color=red>Invalid character is used in sample name. Please correct it.</font></li>
+      <li>Invalid characters: !@#$%^&*()<>{}[]/:;"='+| and SPACE</li>
+    </ul>
+  <% elsif @sushi_apps %>
     <h3>Applications</h3>
     <% if @sushi_apps.empty? %>
       <font color=red>No Available Application for this DataSet</font><br />
