@@ -20,7 +20,10 @@ class DataSetController < ApplicationController
     end
   end
   def show
-
+    # switch project (from job_monitoring)
+    if project = params[:project]
+      session[:project] = project.to_i
+    end
     # data_set comment
     if data_set = params[:data_set] and comment = data_set[:comment] and id = data_set[:id]
       data_set = DataSet.find_by_id(id)

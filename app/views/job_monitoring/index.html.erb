@@ -1,7 +1,12 @@
 <h1>Project <%= session[:project] %></h1>
+<% if session[:employee] %>
+  <%= form_tag(:action => "index") do %>
+    <%= submit_tag 'All Job List' %>
+    <%= hidden_field :option, :all_job_list, :value=>true %>
+  <% end %>
+<% end %>
 <hr />
 <h3>Job List</h3>
-
 <table><tr><th>Job ID</th><th>Status</th><th>User</th><th>JobScript</th><th>Log</th><th>DataSet</th><th>Time (Start/End)</th>
   </tr>
 <% @job_list.each_with_index do |job, i| %>
@@ -13,7 +18,11 @@
     <td><%= link_to 'Log', :action => 'print_log', :job_id => job[0] %></td>
     <td>
       <% if submit_job = @submit_jobs[i] and submit_job.data_set %>
-        <%= link_to submit_job.data_set.name, "/data_set/#{submit_job.next_dataset_id}" %>
+        <% if @all_job_list %>
+          <%= link_to submit_job.data_set.name+" (p#{job[5]})", :controller=>:data_set, :action=>:show, :id=>submit_job.next_dataset_id, :project=>job[5] %>
+        <% else %>
+          <%= link_to submit_job.data_set.name, "/data_set/#{submit_job.next_dataset_id}" %>
+        <% end %>
       <% end %>
     </td>
     <td><%= job[3].to_s %></td>
