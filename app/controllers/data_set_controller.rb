@@ -39,6 +39,7 @@ class DataSetController < ApplicationController
     # check real data
     @file_exist = {}
     @sample_path = []
+    @sample_invalid_name = {}
     @data_set.samples.each do |sample|
       sample.to_hash.each do |header, file|
         if (header.tag?('File') or header.tag?('Link')) 
@@ -51,6 +52,9 @@ class DataSetController < ApplicationController
           end
         else
           @file_exist[file] = true
+        end
+        if header == 'Name' and file =~ /[!@\#$%^&*\(\)\<\>\{\}\[\]\/:; '"=+\|]/
+          @sample_invalid_name[file] = true
         end
       end
     end
