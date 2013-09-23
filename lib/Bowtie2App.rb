@@ -1,15 +1,16 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
+Version = '20130923-165357'
 
 require 'sushiApp'
 
-class BWAWrappedApp < SushiApp
+class Bowtie2App < SushiApp
   def initialize
     super
-    @name = 'BWA Wrapped'
+    @name = 'Bowtie2'
     @analysis_category = 'Map'
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['build','paired']
+    @required_params = ['build','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
@@ -19,13 +20,15 @@ class BWAWrappedApp < SushiApp
       @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
     end
     @params['paired'] = false
-    @params['algorithm'] = ['aln', 'mem', 'bwasw']
+    @params['strandMode'] = ['both', 'sense', 'antisense']
+    @params['featureFile'] = 'genes.gtf'
     @params['cmdOptions'] = ''
     @params['trimAdapter'] = false
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
     @params['minTailQuality'] = 0
     @params['specialOptions'] = ''
+    #@output_files = ['BAM','BAI']
   end
   def preprocess
     if @params['paired']
@@ -59,14 +62,14 @@ class BWAWrappedApp < SushiApp
     output.keys.each do |key|
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
-    command << "mapBWA(input=input, output=output, config=config)\n"
+    command << "mapBowtie2(input=input, output=output, config=config)\n"
     command << "EOT"
     command
   end
 end
 
 if __FILE__ == $0
-  usecase = BWAWrappedApp.new
+  usecase = Bowtie2App.new
 
   usecase.project = "p1001"
   usecase.user = 'masamasa'

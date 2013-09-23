@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130815-144246'
+Version = '20130923-165404'
 
 require 'sushiApp'
 
-class BowtieWrappedApp < SushiApp
+class BowtieApp < SushiApp
   def initialize
     super
-    @name = 'Bowtie Wrapped'
+    @name = 'Bowtie'
     @analysis_category = 'Map'
     @required_columns = ['Name','Read1','Species']
     @required_params = ['build','paired', 'strandMode']
@@ -69,7 +69,7 @@ class BowtieWrappedApp < SushiApp
 end
 
 if __FILE__ == $0
-  usecase = BowtieWrappedApp.new
+  usecase = BowtieApp.new
 
   usecase.project = "p1001"
   usecase.user = 'masamasa'
