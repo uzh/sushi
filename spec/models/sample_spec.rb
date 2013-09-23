@@ -16,7 +16,7 @@ describe Sample do
     subject {sample.to_hash}
     it {should eq sample_hash}
   end
-  describe "#save?" do
+  describe "#saved?" do
     context "before save" do
       subject {sample.saved?}
       it {should be_false}
