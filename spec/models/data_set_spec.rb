@@ -34,8 +34,9 @@ describe DataSet do
   end
   describe "#export_tsv" do
     before do
-      csv = double("csv")
+      CSV.stub(:open).and_yield([])
     end
-    pending
+    subject {data_set.export_tsv('file_path')}
+    it {should == data_set.samples}
   end
 end
