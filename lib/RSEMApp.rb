@@ -10,7 +10,7 @@ class RSEMApp < SushiApp
     @name = 'RSEM'
     @analysis_category = 'Count'
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['build','paired', 'strandMode']
+    @required_params = ['paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
