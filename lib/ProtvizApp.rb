@@ -15,7 +15,8 @@ class ProtvizApp < SushiApp
     @params['ram'] = '2'
     @params['scratch'] = '10'
     @params['name'] = 'protViz_MarkerFinder'
-    @params['markerIons'] = ['ADP_Ribose', 'Glycan', 'HexNAc' ]
+    @params['markerIonNames'] = ['manual', 'ADP_Ribose', 'Glycan', 'HexNAc' ]
+    @params['markerIonMasses'] = ''
     @params['itol_ppm'] = 20
   end
   def next_dataset
@@ -31,20 +32,22 @@ class ProtvizApp < SushiApp
 
 /usr/local/ngseq/bin/R --vanilla --slave << EOT
 dataFileBase = sub(".dat\$", "", basename("#{@dataset['Mascot DAT']}"))
-markerIonsName = "#{@params['markerIons']}"
+markerIonsName = "#{@params['markerIonNames']}"
 itol_ppm = #{@params['itol_ppm']}
 mgfFile = "#{@dataset['Name']}.mgf"
 pdfFile = "#{@dataset['Name']}.pdf"
 csvFile = "#{@dataset['Name']}.csv"
+ionMasses = c(#{@params['markerIonMasses']})
 
 library(protViz)
 markerIons = switch(markerIonsName,
                     Glycan=sort(c(366.140, 325.1135, 274.0927, 204.0866, 163.0601)),
                     ADP_Ribose=sort(c(428.0367, 348.0704, 250.0935, 136.0618)),
-                    HexNAc=sort(c(204.0866, 186.0761, 168.0655, 144.0655, 138.0550, 126.0550)))
+                    HexNAc=sort(c(204.0866, 186.0761, 168.0655, 144.0655, 138.0550, 126.0550)),
+                    manual=sort(ionMasses))
 PTM_MarkerFinder_util(dataFileBase, 
     mZmarkerIons=markerIons, 
-    minMarkerIntensityRatio=2, 
+    minMarkerIntensityRatio=2,
     minNumberIons=2, 
     itol_ppm=itol_ppm, 
     write_csv=TRUE)
