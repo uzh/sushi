@@ -112,6 +112,21 @@ describe SushiApp do
       it {should eq result}
     end
   end
+  describe '#submit_command' do
+    let(:sushi) {SushiApp.new}
+    before do
+      sushi.params['cores'] = '4'
+      sushi.params['ram']   = '8'
+      sushi.params['scratch'] = '16'
+      sushi.params['node']  = 'fgcz-c-046'
+      sushi.params['user']  = 'sushi'
+      sushi.project = 'p1001'
+      sushi.instance_variable_set(:@gstore_script_dir, '/gstore_script_dir')
+    end
+    let(:result) {"wfm_monitoring --server #{WORKFLOW_MANAGER} --project 1001 --logdir /gstore_script_dir job_script -c 4 -n fgcz-c-046 -r 8 -s 16"}
+    subject {sushi.submit_command('job_script')}
+    it {should eq result}
+  end
 
   describe '#prepare_result_dir' do
     it 'making @result_dir'

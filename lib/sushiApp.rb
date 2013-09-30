@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130930-113815'
+Version = '20130930-135706'
 
 require 'csv'
 require 'fileutils'
@@ -173,12 +173,15 @@ class SushiApp
     result_dir_base = [@analysis_category, @name, Time.now.strftime("%Y-%m-%d--%H-%M-%S")].join("_")
     @result_dir = File.join(@project, result_dir_base)
     @scratch_result_dir = File.join("/scratch", result_dir_base)
+    @job_script_dir = File.join(@scratch_result_dir, 'scripts')
     @gstore_result_dir = File.join(@gstore_dir, @result_dir)
+    @gstore_script_dir = File.join(@gstore_result_dir, 'scripts')
     @gstore_project_dir = File.join(@gstore_dir, @project)
     set_file_paths
   end
   def prepare_result_dir
     FileUtils.mkdir_p(@scratch_result_dir)
+    FileUtils.mkdir_p(@job_script_dir)
   end
   def job_header
     @scratch_dir = if @params['process_mode'] == 'SAMPLE'
@@ -234,7 +237,7 @@ rm -rf #{@scratch_dir} || exit 1
     gsub_options << "-r #{@params['ram']}" unless @params['ram'].to_s.empty?
     gsub_options << "-s #{@params['scratch']}" unless @params['scratch'].to_s.empty?
     gsub_options << "-u #{@user}" if @user
-    command = "wfm_monitoring --server #{WORKFLOW_MANAGER} --project #{@project.gsub(/p/,'')} --logdir #{@gstore_result_dir} #{job_script} #{gsub_options.join(' ')}"
+    command = "wfm_monitoring --server #{WORKFLOW_MANAGER} --project #{@project.gsub(/p/,'')} --logdir #{@gstore_script_dir} #{job_script} #{gsub_options.join(' ')}"
   end
   def submit(job_script)
     command = submit_command(job_script)
@@ -324,27 +327,23 @@ rm -rf #{@scratch_dir} || exit 1
       ## WRITE THE JOB SCRIPT
       sample_name = @dataset['Name']||@dataset.first
       @job_script = if @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
-                      File.join(@scratch_result_dir, @analysis_category + '_' + sample_name) + '_' + dataset.name.gsub(/\s+/,'_') + '.sh'
+                      File.join(@job_script_dir, @analysis_category + '_' + sample_name) + '_' + dataset.name.gsub(/\s+/,'_') + '.sh'
                     else 
-                      File.join(@scratch_result_dir, @analysis_category + '_' + sample_name) + '.sh'
+                      File.join(@job_script_dir, @analysis_category + '_' + sample_name) + '.sh'
                     end
-      @get_log_script = File.join(@scratch_result_dir, "get_log_#{sample_name}.sh")
       make_job_script
       @job_scripts << @job_script
-      @get_log_scripts << @get_log_script
       @result_dataset << next_dataset
     end
   end
   def dataset_mode
     @job_script = if @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
-                    File.join(@scratch_result_dir, @analysis_category + '_' + dataset.name.gsub(/\s+/,'_') + '.sh')
+                    File.join(@job_script_dir, @analysis_category + '_' + dataset.name.gsub(/\s+/,'_') + '.sh')
                   else 
-                    File.join(@scratch_result_dir, @analysis_category + '_' + 'job_script.sh')
+                    File.join(@job_script_dir, @analysis_category + '_' + 'job_script.sh')
                   end
-    @get_log_script = File.join(@scratch_result_dir, "get_log.sh")
     make_job_script
     @job_scripts << @job_script
-    @get_log_scripts << @get_log_script
     @result_dataset << next_dataset
   end
   def run
@@ -361,7 +360,6 @@ rm -rf #{@scratch_dir} || exit 1
     ## sushi writes creates the job scripts and builds the result data set that is to be generated
     @result_dataset = []
     @job_scripts = []
-    @get_log_scripts = []
     if @params['process_mode'] == 'SAMPLE'
       sample_mode
     elsif @params['process_mode'] == 'DATASET'
@@ -377,12 +375,6 @@ rm -rf #{@scratch_dir} || exit 1
       job_id = submit(job_script)
       @job_ids << job_id
       print "Submit job #{File.basename(job_script)} job_id=#{job_id}"
-      get_log_script = @get_log_scripts[i]
-      open(get_log_script, 'w') do |out|
-        out.print "#!/bin/sh\n\n"
-        log_file = File.basename(job_script.gsub(/\.sh/,'.log'))
-        out.print "wfm_get_log #{job_id} with_err #{WORKFLOW_MANAGER} > #{log_file}\n"
-      end
     end
 
 		puts
