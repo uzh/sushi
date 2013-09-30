@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130918-172258'
+Version = '20130930-111620'
 
 require 'csv'
 require 'fileutils'
@@ -259,8 +259,9 @@ rm -rf #{@scratch_dir} || exit 1
   def save_parameters_as_tsv
     file_path = File.join(@scratch_result_dir, @parameter_file)
     CSV.open(file_path, 'w', :col_sep=>"\t") do |out|
-      out << @output_params.keys
-      out << @output_params.values
+      @output_params.each do |key, value|
+        out << [key, value]
+      end
     end
     file_path
   end
