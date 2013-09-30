@@ -89,6 +89,29 @@ describe SushiApp do
       it {should eq [['cores','4'], ['ram','16']]}
     end
   end
+  describe '#set_user_parameters' do
+    let(:sushi) {SushiApp.new}
+    before do
+      parameterset_tsv_file = [['cores','4'], ['ram','16']]
+      CSV.stub(:readlines).and_return(parameterset_tsv_file)
+    end
+    context 'when @parameterset_tsv_file is set' do
+      before do
+        sushi.parameterset_tsv_file = true
+      end
+      let(:result) {{"cores"=>4, "ram"=>16, "scratch"=>nil, "node"=>"", "process_mode"=>"SAMPLE"}}
+      subject {sushi.set_user_parameters}
+      it {should eq result}
+    end
+    context 'when @parameterset_tsv_file is not set' do
+      before do
+        sushi.parameterset_tsv_file = false
+      end
+      let(:result) {{"cores"=>nil, "ram"=>nil, "scratch"=>nil, "node"=>"", "process_mode"=>"SAMPLE"}}
+      subject {sushi.set_user_parameters}
+      it {should eq result}
+    end
+  end
 
   describe '#prepare_result_dir' do
     it 'making @result_dir'
