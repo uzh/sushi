@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130918-172258'
+Version = '20130930-113815'
 
 require 'csv'
 require 'fileutils'
@@ -147,21 +147,22 @@ class SushiApp
   def set_user_parameters
     # this should be done in an instance of applicaiton subclass
     if @parameterset_tsv_file
-      parameterset_tsv = CSV.readlines(@parameterset_tsv_file, :headers=>true, :col_sep=>"\t")
+      parameterset_tsv = CSV.readlines(@parameterset_tsv_file, :col_sep=>"\t")
+      headers = []
       parameterset_tsv.each do |row|
-        row.headers.each do |header|
-          @params[header] ||= row[header]
-          @params[header] = if @params.data_type(header) == String
-                                    row[header]
-                                  else
-                                    eval(row[header])
-                                  end
-        end
-        (@params.keys - row.headers).each do |key|
-          @params[key] = @params.default_value(key)
-        end
+        header, value = row
+        headers << header
+        @params[header] = if @params.data_type(header) == String
+                            value
+                          else
+                            eval(value)
+                          end
+      end
+      (@params.keys - headers).each do |key|
+        @params[key] = @params.default_value(key)
       end
     end
+    @params
   end
   def set_dir_paths
     ## sushi figures out where to put the resulting dataset
@@ -259,8 +260,9 @@ rm -rf #{@scratch_dir} || exit 1
   def save_parameters_as_tsv
     file_path = File.join(@scratch_result_dir, @parameter_file)
     CSV.open(file_path, 'w', :col_sep=>"\t") do |out|
-      out << @output_params.keys
-      out << @output_params.values
+      @output_params.each do |key, value|
+        out << [key, value]
+      end
     end
     file_path
   end
