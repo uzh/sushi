@@ -12,7 +12,7 @@
     <table>
       <tr>
         <th>Name</th>
-        <td><%= text_field :next_dataset, :name, :value => [@sushi_app.analysis_category,@sushi_app.name,@data_set.name].join('_').gsub(/\s/,'') %></td>
+        <td><%= text_field :next_dataset, :name, :value => [@sushi_app.analysis_category, @sushi_app.name, @data_set.id].join('_').gsub(/\s/,'') %></td>
       </tr>
       <tr>
         <th>Comment</th>
