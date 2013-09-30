@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130930-150429'
+Version = '20130930-155542'
 
 require 'csv'
 require 'fileutils'
@@ -165,7 +165,11 @@ class SushiApp
       raise "should set #name and #project"
     end
     @name.gsub!(/\s/,'_')
-    result_dir_base = [@analysis_category, @name, Time.now.strftime("%Y-%m-%d--%H-%M-%S")].join("_")
+    result_dir_base = if @next_dataset_name
+                        [@next_dataset_name, Time.now.strftime("%Y-%m-%d--%H-%M-%S")].join("_")
+                      else
+                        [@analysis_category, @name, @dataset_sushi_id.to_s, Time.now.strftime("%Y-%m-%d--%H-%M-%S")].join("_")
+                      end
     @result_dir = File.join(@project, result_dir_base)
     @scratch_result_dir = File.join("/scratch", result_dir_base)
     @job_script_dir = File.join(@scratch_result_dir, 'scripts')
@@ -388,7 +392,7 @@ rm -rf #{@scratch_dir} || exit 1
       next_dataset_name = if name = @next_dataset_name
                             name.to_s
                           else
-                            "#{@analysis_category}_#{@name.gsub(/\s/,'').gsub(/_/,'')}_#{dataset.name}"
+                            "#{@analysis_category}_#{@name.gsub(/\s/,'').gsub(/_/,'')}_#{dataset.id}"
                           end
       data_set_arr = {'DataSetName'=>next_dataset_name, 'ProjectNumber'=>@project.gsub(/p/,''), 'ParentID'=>@dataset_sushi_id, 'Comment'=>@next_dataset_comment.to_s}
       csv = CSV.readlines(next_dataset_tsv_path, :col_sep=>"\t")
