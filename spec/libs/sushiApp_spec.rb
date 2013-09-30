@@ -67,6 +67,28 @@ describe SushiApp do
       it {should eq result}
     end
   end
+  describe '#save_parameters_as_tsv' do
+    let(:sushi) {SushiApp.new}
+    let(:out) {[]}
+    before do
+      sushi.instance_variable_set(:@scratch_result_dir, '/scratch_result_dir')
+      sushi.instance_variable_set(:@parameter_file, 'parameters.tsv')
+      output_params = {'cores' => '4', 'ram' => '16'}
+      output_params.each do |key, value|
+        out << [key, value]
+      end
+      CSV.stub(:open).and_yield(out)
+      sushi.instance_variable_set(:@output_params, output_params)
+    end
+    context 'return value' do
+      subject {sushi.save_parameters_as_tsv}
+      it {should eq "/scratch_result_dir/parameters.tsv"}
+    end
+    context 'output tsv file' do
+      subject {out}
+      it {should eq [['cores','4'], ['ram','16']]}
+    end
+  end
 
   describe '#prepare_result_dir' do
     it 'making @result_dir'
