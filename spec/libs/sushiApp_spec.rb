@@ -92,7 +92,7 @@ describe SushiApp do
   describe '#set_user_parameters' do
     let(:sushi) {SushiApp.new}
     before do
-      parameterset_tsv_file = [['cores','4'], ['ram','16']]
+      parameterset_tsv_file = [['cores','4'], ['ram','16'], ['process_mode','SAMPLE']]
       CSV.stub(:readlines).and_return(parameterset_tsv_file)
     end
     context 'when @parameterset_tsv_file is set' do
