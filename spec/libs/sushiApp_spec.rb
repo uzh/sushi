@@ -5,6 +5,7 @@ require 'spec_helper'
 require 'csv'
 
 describe SushiApp do
+  let(:sushi) {SushiApp.new}
   context 'when new' do
     it {should be_an_instance_of SushiApp}
     its(:params) {should be_an_instance_of Hash}
@@ -21,7 +22,6 @@ describe SushiApp do
     its(:commands) {should be_nil}
   end
   describe '#copy_commands' do
-    let(:sushi) {SushiApp.new}
     subject {sushi.copy_commands('file1','path')}
     context 'when @gstore includes "gstore"' do
       before do
@@ -68,7 +68,6 @@ describe SushiApp do
     end
   end
   describe '#save_parameters_as_tsv' do
-    let(:sushi) {SushiApp.new}
     let(:out) {[]}
     before do
       sushi.instance_variable_set(:@scratch_result_dir, '/scratch_result_dir')
@@ -90,7 +89,6 @@ describe SushiApp do
     end
   end
   describe '#set_user_parameters' do
-    let(:sushi) {SushiApp.new}
     before do
       parameterset_tsv_file = [['cores','4'], ['ram','16'], ['process_mode','SAMPLE']]
       CSV.stub(:readlines).and_return(parameterset_tsv_file)
@@ -113,7 +111,6 @@ describe SushiApp do
     end
   end
   describe '#submit_command' do
-    let(:sushi) {SushiApp.new}
     before do
       sushi.params['cores'] = '4'
       sushi.params['ram']   = '8'
@@ -127,8 +124,97 @@ describe SushiApp do
     subject {sushi.submit_command('job_script')}
     it {should eq result}
   end
-
   describe '#prepare_result_dir' do
-    it 'making @result_dir'
+    before do
+      FileUtils.stub(:mkdir_p).twice.and_return('mkdir_p done')
+    end
+    subject {sushi.prepare_result_dir}
+    it {should eq 'mkdir_p done'}
+  end
+  describe '#set_file_paths' do
+    before do
+      sushi.instance_variable_set(:@gstore_result_dir, '/gstore_result_dir')
+    end
+    subject {sushi.set_file_paths}
+    it {should eq "/gstore_result_dir/dataset.tsv"}
+  end
+  describe '#set_dir_paths' do
+    context 'when @name and @project are not set' do
+      it {lambda{sushi.set_dir_paths}.should raise_error(RuntimeError)}
+    end
+    context 'when @name and @project are set' do
+      before do
+        sushi.instance_variable_set(:@name, 'name')
+        sushi.project = 'p1001'
+        sushi.should_receive(:set_file_paths).and_return('set_file_paths')
+      end
+      subject {sushi.set_dir_paths}
+      it {should eq 'set_file_paths'}
+    end
+  end
+  describe '#set_output_files' do
+    before do
+      next_dataset = {
+        'Name' => 'name',
+        'Bam [File]' => 'test.bam'
+      }
+      sushi.stub(:next_dataset).and_return(next_dataset)
+    end
+    subject {sushi.set_output_files}
+    it {should eq ["Bam [File]"]}
+  end
+  describe '#check_required_columns' do
+    let(:required_columns) {['Name', 'Species']}
+    before do
+      sushi.instance_variable_set(:@required_columns, required_columns)
+    end
+    context 'when required_columns is not satified' do
+      let(:dataset_hash) {
+        [{'Name' => 'name1'},
+         {'Name' => 'name2'}]
+      }
+      before do
+        sushi.instance_variable_set(:@dataset_hash, dataset_hash)
+      end
+      subject {sushi.check_required_columns}
+      it {should be_false}
+    end
+    context 'when required_columns is statisfied' do
+      let(:dataset_hash) {
+        [{'Name' => 'name1', 'Species [File]' => 'A.thaliana'},
+         {'Name' => 'name2', 'Species [File]' => 'A.thaliana'}]
+      }
+      before do
+        sushi.instance_variable_set(:@dataset_hash, dataset_hash)
+      end
+      subject {sushi.check_required_columns}
+      it {should be_true}
+    end
+  end
+  describe '#check_application_parameters' do
+    let(:required_params) {['Name', 'Bam', 'Species']}
+    before do
+      sushi.instance_variable_set(:@required_params, required_params)
+    end
+    context 'when required_params is not satisfied' do
+      before do
+        sushi.params['Name'] = 'name1'
+        sushi.params['Species'] = 'A.thaliana'
+      end
+      subject {sushi.check_application_parameters}
+      it {should be_nil}
+    end
+    context 'when required_params is satisfied' do
+      before do
+        sushi.params['Name'] = 'name1'
+        sushi.params['Bam']  = 'bam1'
+        sushi.params['Species'] = 'A.thaliana'
+      end
+      let(:result) {
+        {"cores"=>nil, "ram"=>nil, "scratch"=>nil, "node"=>"", "process_mode"=>"SAMPLE", "Name"=>"name1", "Bam"=>"bam1", "Species"=>"A.thaliana"}
+      }
+      subject {sushi.check_application_parameters}
+      it {should eq result}
+    end
   end
 end

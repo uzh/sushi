@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130930-135706'
+Version = '20130930-150429'
 
 require 'csv'
 require 'fileutils'
@@ -125,7 +125,7 @@ class SushiApp
       @output_files ||= []
       @output_files << header
     end
-    @output_files.uniq!
+    @output_files = @output_files.uniq
   end
   def check_required_columns
     if @dataset_hash and @required_columns and (@required_columns-@dataset_hash.map{|row| row.keys}.flatten.uniq.map{|colname| colname.gsub(/\[.+\]/,'').strip}).empty?
@@ -134,14 +134,9 @@ class SushiApp
       false
     end
   end
-  def check_application_paramters
+  def check_application_parameters
     if @required_params and (@required_params - @params.keys).empty?
       @output_params = @params.clone
-    end
-  end
-  def output_parameters
-    @output_params.keys.each do |key|
-      @output_params[key] = @params[key]
     end
   end
   def set_user_parameters
@@ -493,7 +488,7 @@ rm -rf #{@scratch_dir} || exit 1
     puts "\tdataset  columns: #{@dataset_hash.map{|row| row.keys}.flatten.uniq}" if @dataset_hash
 
     print 'check required parameters: '
-    unless check_application_paramters
+    unless check_application_parameters
       puts "\e[31mFAILURE\e[0m: required_param(s) is not set yet. you should set it in usecase"
       puts "\tmissing params: #{@required_params-@params.keys}" if @required_params
       puts "\tex.)"
