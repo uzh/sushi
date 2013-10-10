@@ -9,7 +9,7 @@ class FastqcApp <  SushiApp
     @name = 'Fastqc'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
-    @required_columns = ['Name','Read1','Species']
+    @required_columns = ['Name','Read1']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
     @params['ram'] = '16'
