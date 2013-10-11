@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20131011-112644'
+Version = '20131011-113114'
 
 require 'sushiApp'
 
@@ -14,7 +14,7 @@ Trimmomatic performs a variety of useful trimming tasks for illumina paired-end 
 Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usadellab.org/cms/?page=trimmomatic</a>
     EOS
     @required_columns = ['Name','Read1']
-    @required_params = ['paired', 'quality_type', 'leading', 'trailing', 'slidingwindow', 'avgqual', 'minlen']
+    @required_params = ['paired', 'quality_type', 'leading', 'trailing', 'slidingwindow', 'avgqual', 'headcrop', 'minlen']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
