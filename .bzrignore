@@ -10,3 +10,4 @@ log/development.log
 db/development.sqlite3
 tmp/cache/assets
 coverage
+lib/*.yml
