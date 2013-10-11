@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20131010-114135'
+Version = '20131011-113114'
 
 require 'sushiApp'
 
@@ -14,7 +14,7 @@ Trimmomatic performs a variety of useful trimming tasks for illumina paired-end 
 Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usadellab.org/cms/?page=trimmomatic</a>
     EOS
     @required_columns = ['Name','Read1']
-    @required_params = ['paired', 'quality_type', 'leading', 'trailing', 'slidingwindow', 'avgqual', 'minlen']
+    @required_params = ['paired', 'quality_type', 'leading', 'trailing', 'slidingwindow', 'avgqual', 'headcrop', 'minlen']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
@@ -42,6 +42,8 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     @params['slidingwindow', 'description'] = 'Perform a sliding window trimming, cutting once the average quality within the window falls below a threshold'
     @params['avgqual'] = '20'
     @params['avgqual', 'description'] = 'Drop the read if the average quality is below the specified level'
+    @params['headcrop'] = 0
+    @params['headcrop', 'description'] = 'The number of bases to remove from the start of the read'
     @params['minlen'] = '30'
     @params['minlen', 'description'] = 'Drop the read if it is below a specified length'
 
@@ -82,7 +84,7 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     unless @params['illuminaclip'].to_s.empty?
       command << " ILLUMINACLIP:#{@params['illuminaclip']}:#{@params['seed_mismatchs']}:#{@params['palindrome_clip_threshold']}:#{@params['simple_clip_threshold']}"
     end
-    command << " LEADING:#{@params['leading']} TRAILING:#{@params['trailing']} SLIDINGWINDOW:#{@params['slidingwindow']} AVGQUAL:#{@params['avgqual']} MINLEN:#{@params['minlen']}"
+    command << " LEADING:#{@params['leading']} TRAILING:#{@params['trailing']} SLIDINGWINDOW:#{@params['slidingwindow']} AVGQUAL:#{@params['avgqual']} HEADCROP:#{@params['headcrop']} MINLEN:#{@params['minlen']}"
     command
   end
 end
