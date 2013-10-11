@@ -1,17 +1,23 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130930-155542'
+Version = '20131011-142132'
 
 require 'csv'
 require 'fileutils'
 require 'active_record'
 require 'sushiToolBox'
+require 'yaml'
 
-WORKFLOW_MANAGER='druby://fgcz-s-034:50001'
-#WORKFLOW_MANAGER='druby://fgcz-s-034:40001'
-#GSTORE_DIR='/srv/GT/analysis/masaomi/sushi/work_lunch/gstore/projects'
-GSTORE_DIR='/srv/gstore/projects'
-
+CONFIG = 'sushi_configure.yml'
+current_dir = File.dirname(File.expand_path(__FILE__))
+config_yml = File.join(current_dir, CONFIG)
+config = if File.exist?(config_yml)
+           YAML.load(File.read(config_yml))
+         else
+           {}
+         end
+WORKFLOW_MANAGER = config[:workflow_manager]||'druby://localhost:3000'
+GSTORE_DIR = config[:gstore_dir]||'gstore'
 
 class Hash
   attr_reader :defaults
