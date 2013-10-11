@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20131010-114135'
+Version = '20131011-112327'
 
 require 'sushiApp'
 
@@ -42,6 +42,8 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     @params['slidingwindow', 'description'] = 'Perform a sliding window trimming, cutting once the average quality within the window falls below a threshold'
     @params['avgqual'] = '20'
     @params['avgqual', 'description'] = 'Drop the read if the average quality is below the specified level'
+    @params['headcrop'] = 0
+    @params['headcrop', 'description'] = 'The number of bases to remove from the start of the read'
     @params['minlen'] = '30'
     @params['minlen', 'description'] = 'Drop the read if it is below a specified length'
 
