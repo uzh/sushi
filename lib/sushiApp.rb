@@ -1,11 +1,12 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20131011-153152'
+Version = '20131025-163606'
 
 require 'csv'
 require 'fileutils'
 require 'active_record'
 require 'yaml'
+require 'drb/drb'
 
 CONFIG = 'sushi_configure.yml'
 current_dir = File.dirname(File.expand_path(__FILE__))
@@ -147,6 +148,7 @@ class SushiApp
     @params['process_mode'] = 'SAMPLE'
     @job_ids = []
     @required_columns = []
+    @workflow_manager = DRbObject.new_with_uri(WORKFLOW_MANAGER)
   end
   def set_input_dataset
     if @dataset_tsv_file
@@ -343,14 +345,7 @@ rm -rf #{@scratch_dir} || exit 1
     file_path
   end
   def copy_commands(org_dir, dest_parent_dir)
-    commands = []
-    if @gstore_dir =~ /srv\/gstore/
-      commands << "g-req -w copy #{org_dir} #{dest_parent_dir}"
-    else
-      commands << "mkdir -p #{dest_parent_dir}"
-      commands << "cp -r #{org_dir} #{dest_parent_dir}"
-    end
-    commands
+    @workflow_manager.copy_commands(org_dir, dest_parent_dir)
   end
   def copy_dataset_parameter_jobscripts
     org = @scratch_result_dir
