@@ -48,7 +48,9 @@ gem 'ruby_parser'
 # C) source 'https://gems-fgcz.uzh.ch:8888'
 #    gem 'fgcz'
 gem 'savon'
+if `hostname`.chomp =~ /fgcz/
 gem 'fgcz', :path => '/srv/SushiFabric/Gems/fgcz'
+end
 
 group :test do
   gem "rspec"
