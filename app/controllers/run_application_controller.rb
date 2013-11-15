@@ -59,7 +59,11 @@ class RunApplicationController < ApplicationController
     @params = params
     class_name = params[:sushi_app][:class]
     @sushi_app = eval(class_name).new
-    @sushi_app.user = current_user.login
+    @sushi_app.user = if current_user 
+                        current_user.login
+                      else
+                        'sushi_lover'
+                      end
     data_set_id = params[:data_set][:id]
     if next_dataset = params[:next_dataset] 
       if name = next_dataset[:name] and !name.to_s.strip.empty?
