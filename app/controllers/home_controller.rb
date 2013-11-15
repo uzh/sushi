@@ -1,19 +1,32 @@
 class HomeController < ApplicationController
   def index
-    session[:employee] = true if FGCZ.get_user_groups(current_user.login).include?('Employees')
-    session[:projects] = FGCZ.get_user_projects(current_user.login).map{|project| project.gsub(/p/,'').to_i}.sort
-    session[:project] = if project=params[:select_project] and number=project[:number] and number.to_i!=0 or
-                           project=params[:project] and number=project[:number] and number.to_i!=0 and 
-                           (session[:employee] or session[:projects].include?(number.to_i))
-                          current_user.selected_project = number
-                          current_user.save
-                          number.to_i
-                        elsif current_user.selected_project != -1
-                          current_user.selected_project
+    @fgcz = if `hostname`.chomp =~ /fgcz/
+              true
+            else
+              false
+            end
+    session[:employee] = true if @fgcz and FGCZ.get_user_groups(current_user.login).include?('Employees')
+    session[:projects] = if @fgcz 
+                           FGCZ.get_user_projects(current_user.login).map{|project| project.gsub(/p/,'').to_i}.sort
+                         else
+                           [1001]
+                         end
+    session[:project] = if @fgcz
+                          if project=params[:select_project] and number=project[:number] and number.to_i!=0 or
+                             project=params[:project] and number=project[:number] and number.to_i!=0 and 
+                             (session[:employee] or session[:projects].include?(number.to_i))
+                            current_user.selected_project = number
+                            current_user.save
+                            number.to_i
+                          elsif current_user.selected_project != -1
+                            current_user.selected_project
+                          else
+                            session[:projects].first
+                          end
                         else
                           session[:projects].first
                         end
-    if current_user.selected_project == -1
+    if @fgcz and current_user.selected_project == -1
       current_user.selected_project = session[:project]
       current_user.save
     end
