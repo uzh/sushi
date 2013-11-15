@@ -1,6 +1,8 @@
 require 'savon'
+if `hostname`.chomp =~ /fgcz/
 require 'fgcz'
-require 'csv'
+end
+require 'csv' 
 require 'sushiApp'
 require 'SushiWrap'
 
@@ -21,7 +23,9 @@ class ApplicationController < ActionController::Base
   end
   protect_from_forgery
   
-  before_filter :authenticate_user!  
+  if `hostname`.chomp =~ /fgcz/
+    before_filter :authenticate_user!
+  end
 
   def all_sushi_applications
     non_sushi_apps = ['sushiApp.rb', 'sushiToolBox.rb', 'SushiWrap.rb', 'optparse_ex.rb']
