@@ -60,3 +60,5 @@ group :test do
 end
 
 gem 'workflow_manager'
+gem 'sushi_fabric'
+
