@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
-require 'sushiApp'
+require 'sushi_fabric'
 
-class FastqcApp <  SushiApp
+class FastqcApp <  SushiFabric::SushiApp
   def initialize
     super
     @name = 'Fastqc'

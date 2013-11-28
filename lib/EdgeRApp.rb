@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130815-144504'
+Version = '20131128-084558'
 
-require 'sushiApp'
+require 'sushi_fabric'
 
-class EdgeRApp < SushiApp
+class EdgeRApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'EdgeR'
