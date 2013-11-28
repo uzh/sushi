@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
-require 'sushiApp'
+require 'sushi_fabric'
 
 $global_binding = Kernel.binding
 class SushiWrap
   def initialize(job_script)
     @template =<<-EOS
-class CLASS_NAME < SushiApp
+class CLASS_NAME < SushiFabric::SushiApp
   def initialize
     super
 INIT
@@ -72,7 +72,7 @@ end
 #!/usr/bin/env ruby
 # encoding: utf-8
 
-require 'sushiApp'
+require 'sushi_fabric'
 
     EOS
     print generate_class

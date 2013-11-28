@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
-require 'sushiApp'
+require 'sushi_fabric'
 
-class NcPROApp < SushiApp
+class NcPROApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'ncPRO_Report'

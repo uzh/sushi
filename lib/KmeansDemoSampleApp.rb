@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
-require 'sushiApp'
+require 'sushi_fabric'
 
-class KmeansDemoSampleApp < SushiApp
+class KmeansDemoSampleApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'Kmeans per Sample Demo'

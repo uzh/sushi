@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130815-144535'
+Version = '20131128-084622'
 
-require 'sushiApp'
+require 'sushi_fabric'
 
-class RSEMApp < SushiApp
+class RSEMApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'RSEM'

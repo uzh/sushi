@@ -14,7 +14,7 @@
         <pre><%= @greq_status_command %></pre>
         </li>
       <% end %>
-    <% elsif File.exist?(File.join(GSTORE_DIR, @sample_path.first)) %>
+    <% elsif File.exist?(File.join(SushiFabric::GSTORE_DIR, @sample_path.first)) %>
       <li>The files in <b><%= @sample_path.first %> still <font color=red>remain in GStore</font></b>.</li>
       <li>If you want to delete the files too, run
       <pre><%= @command %></pre>
@@ -24,7 +24,7 @@
 </ul>
 <table>
 <hr />
-<% if !@sample_path.empty? and @option[:delete]=='only_sushi' and File.exist?(File.join(GSTORE_DIR, @sample_path.first)) %>
+<% if !@sample_path.empty? and @option[:delete]=='only_sushi' and File.exist?(File.join(SushiFabric::GSTORE_DIR, @sample_path.first)) %>
   <%= button_to "Go gstore", File.join("/gstore/projects/", @sample_path.first) if @sample_path.length > 0 %>
   <% @sample_path.sort.each do |path| %>
     <%= link_to "#{File.join('/gstore/projects/',path)}", File.join("/gstore/projects/", path) %>
