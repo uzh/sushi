@@ -38,7 +38,7 @@ SushiFabric::Application.configure do
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   
   # fgcz
-  if `hostname`.chomp =~ /fgcz/
+  if `hostname`.chomp =~ /fgcz-s-034/
     config.workflow_manager = "druby://fgcz-s-034:40001"
     config.scratch_dir = "/scratch"
     config.gstore_dir = File.join(Dir.pwd, 'public/gstore/projects')
