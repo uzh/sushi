@@ -119,7 +119,7 @@ class DataSetController < ApplicationController
         @project.save
       end
 
-      tsv = "/srv/gstore/projects/#{params[:dataset]}.#{params[:format]}"
+      tsv = File.join(SushiFabric::GSTORE_DIR, "#{params[:dataset]}.#{params[:format]}")
       multi_data_sets = false
       open(tsv) do |input|
         while line=input.gets
