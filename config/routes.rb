@@ -47,6 +47,7 @@ SushiFabric::Application.routes.draw do
   end
 
   match "/gstore/projects/:project_id(/*dirs)" => "home#gstore"
+  match "/check_sushi_constants" => "home#sushi_constants"
   match "/import/*dataset" => "data_set#import_from_gstore"
 
   # The priority is based upon order of creation:

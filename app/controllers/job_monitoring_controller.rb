@@ -3,9 +3,9 @@ class JobMonitoringController < ApplicationController
     public_dir = File.expand_path('../../../public', __FILE__)
     @job_list = if option=params[:option] and option[:all_job_list]
                   @all_job_list=true
-                  `#{public_dir}/wfm_job_list -d #{WORKFLOW_MANAGER}`
+                  `#{public_dir}/wfm_job_list -d #{SushiFabric::WORKFLOW_MANAGER}`
                 else
-                  `#{public_dir}/wfm_job_list -d #{WORKFLOW_MANAGER} -p #{session[:project]}`
+                  `#{public_dir}/wfm_job_list -d #{SushiFabric::WORKFLOW_MANAGER} -p #{session[:project]}`
                 end
     @job_list = @job_list.split(/\n/).map{|job| job.split(/,/)}
     @total = @job_list.length
@@ -33,12 +33,12 @@ class JobMonitoringController < ApplicationController
   end
   def print_log
     public_dir = File.expand_path('../../../public', __FILE__)
-    text = `#{public_dir}/wfm_get_log #{params[:job_id]} :with_err #{WORKFLOW_MANAGER}`
+    text = `#{public_dir}/wfm_get_log #{params[:job_id]} :with_err #{SushiFabric::WORKFLOW_MANAGER}`
     render :text => text.gsub(/\n/,'<br />')
   end
   def print_script
     public_dir = File.expand_path('../../../public', __FILE__)
-    text = `#{public_dir}/wfm_get_script #{params[:job_id]} #{WORKFLOW_MANAGER}`
+    text = `#{public_dir}/wfm_get_script #{params[:job_id]} #{SushiFabric::WORKFLOW_MANAGER}`
     render :text => text.gsub(/\n/,'<br />')
   end
 end
