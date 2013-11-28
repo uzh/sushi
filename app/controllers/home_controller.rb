@@ -41,7 +41,7 @@ class HomeController < ApplicationController
     @parent = parent.join('/')
     @parent = params[:project_id] if @parent.empty?
     @sort = params[:format] if params[:format]
-    @files = Dir[File.join(GSTORE_DIR, @path)+"/*"]
+    @files = Dir[File.join(SushiFabric::GSTORE_DIR, @path)+"/*"]
     @total = @files.length
 
     # pager
