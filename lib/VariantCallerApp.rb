@@ -29,19 +29,19 @@ class VariantCallerApp < SushiApp
   end
   def commands
     command =<<-EOS
-samtools rmdup #{File.join(@gstore_dir, @dataset['BAM'])} INTERNAL.nodup.bam
-samtools index INTERNAL.nodup.bam
+samtools rmdup #{File.join(@gstore_dir, @dataset['BAM'])} internal.nodup.bam
+samtools index inernal.nodup.bam
 
 ### SORT OUT GROUPS ISSUES ###
-java -jar /usr/local/ngseq/stow/picard-tools-1.96/bin/AddOrReplaceReadGroups.jar I=INTERNAL.nodup.bam \
-O=internal.bam SORT_ORDER=coordinate RGID=ID_NAME TMP_DIR=/scratch \
+java -jar /usr/local/ngseq/stow/picard-tools-1.96/bin/AddOrReplaceReadGroups.jar I=internal.nodup.bam \
+O=internal_grouped.bam SORT_ORDER=coordinate RGID=ID_NAME TMP_DIR=/scratch \
 RGLB=Paired_end RGPL=illumina RGSM=project RGPU=BIOSEQUENCER
 
 ### REINDEXING CORRECTLY GROUPED FILES ###
-samtools index internal.bam
+samtools index internal_grouped.bam
 
 ### DETECTING VARIANTS ###
-GATK_DIR=/usr/local/ngseq/stow/GenomeAnalysisTK-2.5-2-gf57256b/bin
+GATK_DIR=
 #REF=/srv/GT/software/SMRTAnalysis/references/ecoli/sequence/ecoli.fasta
 REF=#{params['reference']}
 java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar \
