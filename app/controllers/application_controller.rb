@@ -1,5 +1,5 @@
 require 'savon'
-if `hostname`.chomp =~ /fgcz/
+if `hostname`.chomp =~ /fgcz-s-034/
 require 'fgcz'
 end
 require 'csv' 
@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   end
   protect_from_forgery
   
-  if `hostname`.chomp =~ /fgcz/
+  if `hostname`.chomp =~ /fgcz-s-034/
     before_filter :authenticate_user!
   end
 

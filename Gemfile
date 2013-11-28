@@ -48,7 +48,7 @@ gem 'ruby_parser'
 # C) source 'https://gems-fgcz.uzh.ch:8888'
 #    gem 'fgcz'
 gem 'savon'
-if `hostname`.chomp =~ /fgcz/
+if `hostname`.chomp =~ /fgcz-s-034/
 gem 'fgcz', :path => '/srv/SushiFabric/Gems/fgcz'
 end
 

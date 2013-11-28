@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @fgcz = if `hostname`.chomp =~ /fgcz/
+    @fgcz = if `hostname`.chomp =~ /fgcz-s-034/
               true
             else
               false
