@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130815-144415'
+Version = '20131128-084607'
 
-require 'sushiApp'
+require 'sushi_fabric'
 
-class HTSeqApp < SushiApp
+class HTSeqApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'HTSeq'
