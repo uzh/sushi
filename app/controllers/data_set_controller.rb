@@ -8,7 +8,7 @@ class DataSetController < ApplicationController
         data_set.samples.each do |sample|
           flag = true
           sample.to_hash.each do |header, file|
-            if header.tag?('File') and file and file_path = File.join(GSTORE_DIR, file) and !File.exist?(file_path)
+            if header.tag?('File') and file and file_path = File.join(SushiFabric::GSTORE_DIR, file) and !File.exist?(file_path)
               flag = false
               break
             end
@@ -47,7 +47,7 @@ class DataSetController < ApplicationController
       sample.to_hash.each do |header, file|
         if (header.tag?('File') or header.tag?('Link')) 
           if file
-            file_path = File.join(GSTORE_DIR, file)
+            file_path = File.join(SushiFabric::GSTORE_DIR, file)
             @sample_path << File.dirname(file)
             @file_exist[file] = File.exist?(file_path)
           else
@@ -272,7 +272,7 @@ class DataSetController < ApplicationController
     @data_set.samples.each do |sample|
       sample.to_hash.each do |header, file|
         if header.tag?('File')
-          file_path = File.join(GSTORE_DIR, file)
+          file_path = File.join(SushiFabric::GSTORE_DIR, file)
           @sample_path << File.dirname(file)
           @file_exist[file] = File.exist?(file_path)
         else
@@ -293,7 +293,7 @@ class DataSetController < ApplicationController
       @data_set.samples.each do |sample|
         sample.to_hash.each do |header, file|
           if header.tag?('File') 
-            file_path = File.join(GSTORE_DIR, file)
+            file_path = File.join(SushiFabric::GSTORE_DIR, file)
             @sample_path << File.dirname(file)
           end
         end
@@ -302,7 +302,7 @@ class DataSetController < ApplicationController
 
       # delete data in gstore
       if @sample_path.first
-        @command = "g-req remove #{File.join(GSTORE_DIR, @sample_path.first)}"
+        @command = "g-req remove #{File.join(SushiFabric::GSTORE_DIR, @sample_path.first)}"
         if @option[:delete] == 'also_gstore'
           @command_log = `#{@command}`
           if request = @command_log.split and request_no = request[4]
