@@ -58,3 +58,7 @@ group :test do
   gem 'simplecov'
   gem 'simplecov-rcov'
 end
+
+gem 'workflow_manager'
+gem 'sushi_fabric'
+
