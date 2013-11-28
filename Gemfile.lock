@@ -164,6 +164,7 @@ GEM
     wasabi (2.5.1)
       httpi (~> 1.0)
       nokogiri (>= 1.4.0)
+    workflow_manager (0.0.8)
 
 PLATFORMS
   ruby
@@ -185,3 +186,4 @@ DEPENDENCIES
   simplecov-rcov
   sqlite3
   uglifier (>= 1.0.3)
+  workflow_manager
