@@ -11,7 +11,7 @@ $(document).ready(function(){
 <h2>Select</h2>
 <%= form_tag(@data_set.id.to_s, :method=>:delete) do %>
   <%= radio_button 'option', 'delete', "only_sushi", {:checked => true} %> Delete <span class="alert">ONLY</span> entry in <span class="alert">Sushi DB</span><br />
-  <% if @sample_path.first and File.exist?(File.join(GSTORE_DIR, @sample_path.first)) %>
+  <% if @sample_path.first and File.exist?(File.join(SushiFabric::GSTORE_DIR, @sample_path.first)) %>
   <%= radio_button 'option', 'delete', "also_gstore" %> Delete <span style="color:red;font-weight:bold;">BOTH</span> entry in <span class="alert">Sushi DB</span> and data in <span class="alert">GStore</span> <br /><br />
   <% end %>
   <%= submit_tag 'delete', :confirm=>"Are you sure you want to delete the '#{@data_set.name}'?" %>
@@ -70,7 +70,7 @@ $(document).ready(function(){
 <hr />
 
 <% unless @file_exist.values.inject{|a,b| a and b}%>
-  <font color=red>The RED file(s) does not exist in gstore:</font> <%= GSTORE_DIR %><br />
+  <font color=red>The RED file(s) does not exist in gstore:</font> <%= SushiFabric::GSTORE_DIR %><br />
   <ul>
   <% @file_exist.select{|file, exist| !exist}.each do |file, exist| %>
     <li><%= file %></li>

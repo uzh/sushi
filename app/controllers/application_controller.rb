@@ -3,7 +3,7 @@ if `hostname`.chomp =~ /fgcz-s-034/
 require 'fgcz'
 end
 require 'csv' 
-require 'sushiApp'
+require 'sushi_fabric'
 require 'SushiWrap'
 
 # TODO: why also has to force it from here?
@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   end
 
   def all_sushi_applications
-    non_sushi_apps = ['sushiApp.rb', 'sushiToolBox.rb', 'SushiWrap.rb', 'optparse_ex.rb']
+    non_sushi_apps = ['SushiWrap.rb', 'optparse_ex.rb']
     lib_dir = File.expand_path('../../../lib', __FILE__)
     sushi_apps = Dir[File.join(lib_dir, '*.rb')].select{|script| !non_sushi_apps.include?(File.basename(script))}.to_a.map{|script| File.basename(script)}
     sushi_apps.concat Dir[File.join(lib_dir, '*.sh')].map{|script| File.basename(script)}

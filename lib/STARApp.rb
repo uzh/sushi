@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20130923-165539'
+Version = '20131128-084625'
 
-require 'sushiApp'
+require 'sushi_fabric'
 
-class STARApp < SushiApp
+class STARApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'STAR'

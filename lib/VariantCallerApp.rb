@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
-require 'sushiApp'
+require 'sushi_fabric'
 
-class VariantCallerApp < SushiApp
+class VariantCallerApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'VariantCaller'
