@@ -1,4 +1,5 @@
 class DataSetController < ApplicationController
+  include SushiFabric
   def index
     @project = Project.find_by_number(session[:project].to_i)
 
