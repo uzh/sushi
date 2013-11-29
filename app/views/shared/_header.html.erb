@@ -10,6 +10,8 @@
       <%= select :select_project, :number, session[:projects], :prompt=>'project list' %>
       <%= submit_tag "Go" %>
     <% end %>
+  <% elsif `hostname`.chomp !~ /fgcz-s-034/ %>
+    <%= link_to "Today's Menu", "/" %>
   <% end %>
   </nav>
   <h1>SushiFabric</h1>
