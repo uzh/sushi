@@ -9,6 +9,11 @@ class Bowtie2App < SushiFabric::SushiApp
     super
     @name = 'Bowtie2'
     @analysis_category = 'Map'
+    @description =<<-EOS
+Fast and sensitive read alignment. Supports local and end-to-end mode<br/>
+<a href='http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml'>http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml/</a>
+EOS
+    
     @required_columns = ['Name','Read1','Species']
     @required_params = ['build','paired', 'strandMode']
     # optional params
@@ -19,16 +24,25 @@ class Bowtie2App < SushiFabric::SushiApp
     Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
     end
+    @params['build', 'description'] = 'the genome build to use as reference'
     @params['paired'] = false
+    @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
     @params['strandMode'] = ['both', 'sense', 'antisense']
+    @params['strandMode', 'description'] = 'orientation of the reads relative to the annotated transcript. Use "both" if the reads are not strand-specific.'
     @params['featureFile'] = 'genes.gtf'
+    @params['featureFile', 'description'] = 'specify a gtf file with the transcript coordinates; if the file is a relative path then it must be in the build directory'
     @params['cmdOptions'] = ''
+    @params['cmdOptions', 'description'] = 'specify the commandline options for bowtie2; do not specify any option that is already covered by the dedicated input fields'
     @params['trimAdapter'] = false
+    @params['trimAdapter', 'description'] = 'if adapters should be trimmed'
     @params['trimLeft'] = 0
+    @params['trimLeft', 'description'] = 'fixed trimming at the "left" i.e. 5-prime end of the read'
     @params['trimRight'] = 0
+    @params['trimRight', 'description'] = 'fixed trimming at the "right" i.e. 3-prime end of the read'
     @params['minTailQuality'] = 0
+    @params['minTailQuality', 'description'] = 'if above zero, then reads are trimmed as soon as 4 consecutive bases have lower mean quality'
     @params['specialOptions'] = ''
-    #@output_files = ['BAM','BAI']
+    @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
   end
   def preprocess
     if @params['paired']
@@ -93,11 +107,11 @@ if __FILE__ == $0
   #usecase.dataset_tsv_file = 'tophat_dataset.tsv'
 
   # also possible to load a input dataset from Sushi DB
-  usecase.dataset_sushi_id = 3
+  #usecase.dataset_sushi_id = 3
 
   # run (submit to workflow_manager)
-  usecase.run
-  #usecase.test_run
+  #usecase.run
+  usecase.test_run
 
 end
 
