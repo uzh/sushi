@@ -9,6 +9,13 @@ class NcPROApp < SushiFabric::SushiApp
     @name = 'ncPRO_Report'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
+    @description =<<-EOS
+Annotation and Profiling of ncRNAs in smallRNA-seq<br/>
+Uses ncPRO-seq for a complete analysis of small-RNA-seq. ncPRO-seq considers performs quality assessment and quantiation.
+It considers various species of small RNA.<br />
+<a href='https://ncpro.curie.fr/index.html'>https://ncpro.curie.fr/index.html/</a>
+EOS
+
     @required_columns = ['Name','Read1','Species']
     @required_params = ['name', 'cores', 'ram', 'scratch', 'paired']
 
@@ -20,6 +27,7 @@ class NcPROApp < SushiFabric::SushiApp
       @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
     end
     @params['paired'] = false
+    @params['paired', 'description'] = 'whether the reads are paired end; must be false since ncPRO-seq does not support paired-end'
     @params['name'] = 'ncPRO_Result'
   end
   def preprocess

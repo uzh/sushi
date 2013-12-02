@@ -11,7 +11,7 @@ class TophatAppSimple < SushiFabric::SushiApp
     @analysis_category = 'Map'
     @description =<<-EOS
 TopHat is a fast splice junction mapper for RNA-Seq reads. 
-It aligns RNA-Seq reads to mammalian-sized genomes using the ultra high-throughput short read aligner Bowtie, and then analyzes the mapping results to identify splice junctions between exons.<br />
+It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identify splice junctions between exons.<br />
 <a href='http://tophat.cbcb.umd.edu/'>http://tophat.cbcb.umd.edu/</a>
     EOS
     @required_columns = ['Name','Read1','Species']

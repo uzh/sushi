@@ -19,27 +19,36 @@ class KmeansDemoSampleApp < SushiFabric::SushiApp
     @params['makePlot'] = false
   end
   def next_dataset
-    {'Name'=>@params['name'],
-     'Cluster [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt")
-    }
+    if @params['makePlot']
+      {'Name'=>@params['name'],
+       'Cluster [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
+       'CenterPlot [File,Link]'=>File.join(@result_dir, "#{@dataset['Name']}-centers.png")
+      }
+    else
+      {'Name'=>@params['name'],
+       'Cluster [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt")
+      }      
+    end
   end
   def commands
     command =<<-EOS
-/usr/local/ngseq/bin/R --vanilla --slave << EOT
+R --vanilla --slave << EOT
 nClusters = #{@params['nClusters']}
 countFile = "#{File.join(@gstore_dir, @dataset['Count'])}"
 clusterFile = basename("#{next_dataset['Cluster [File]']}")
 makePlot = "#{@params['makePlot']}" == "true"
+pngFile =  basename("#{next_dataset['CenterPlot [File,Link]']}")
+
 x = read.table(countFile, sep="\\t", stringsAsFactors=FALSE, header=TRUE)
 logCounts = log2(x[ , "transcriptCount"] + 1)
 kmeansResult = kmeans(logCounts, nClusters)
 clusterTable = data.frame(Name=rownames(x), Cluster=kmeansResult[["cluster"]])
 write.table(clusterTable, file=clusterFile, row.names=FALSE)
-#if (makePlot){
-#    png(file=basename(output$"CenterPlot [File]"), height=800, width=800)
-#    my.profilePlot(cl$centers)
-#    dev.off()
-#  }
+if (makePlot){
+    png(file=pngFile, height=800, width=800)
+    plot(kmeansResult[["centers"]])
+    dev.off()
+}
 EOT
 EOS
   end
