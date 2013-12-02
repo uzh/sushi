@@ -303,7 +303,11 @@ class DataSetController < ApplicationController
 
       # delete data in gstore
       if @sample_path.first
-        @command = "g-req remove #{File.join(SushiFabric::GSTORE_DIR, @sample_path.first)}"
+        @command = if `hostname` =~ /fgcz-s-034/
+                     "g-req remove #{File.join(SushiFabric::GSTORE_DIR, @sample_path.first)}"
+                   else
+                     "rm -rf #{File.join(SushiFabric::GSTORE_DIR, @sample_path.first)}"
+                   end
         if @option[:delete] == 'also_gstore'
           @command_log = `#{@command}`
           if request = @command_log.split and request_no = request[4]
