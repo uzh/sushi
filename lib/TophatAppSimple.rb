@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20131128-084642'
+Version = '20131205-114543'
 
 require 'sushi_fabric'
 
@@ -26,7 +26,13 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
     @params['paired', 'description'] = 'either the reads are paired-ends or single-end'
     @params['build'] = {'select'=>''}
     Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
-      @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
+      if versions = Dir[File.join(dir, "Annotation/Version*")] and !versions.empty?
+        versions.each do |version|
+          @params['build'][version.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(version)
+        end
+      else
+        @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
+      end
     end
     @params['build', 'description'] = 'Reference sequence'
 #    @output_files = ['BAM','BAI']
@@ -49,12 +55,20 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
   end
   def bowtie2_index
     @bowtie2_index ||= if build_dir
-                         File.join(build_dir, 'Sequence/BOWTIE2Index/genome')
+                         if build_dir =~ /Annotation\/Version/
+                           File.join(build_dir, '../../Sequence/BOWTIE2Index/genome')
+                         else
+                           File.join(build_dir, 'Sequence/BOWTIE2Index/genome')
+                         end
                        end
   end
   def transcripts_index
     @transcripts_index ||= if build_dir
-                             File.join(build_dir, 'Annotation/Genes/genes_BOWTIE2Index/transcripts')
+                            if build_dir =~ /Annotation\/Version/
+                              File.join(build_dir, 'Genes/genes_BOWTIE2Index/transcripts')
+                            else
+                              File.join(build_dir, 'Annotation/Genes/genes_BOWTIE2Index/transcripts')
+                            end
                            end
   end
   def library_type
