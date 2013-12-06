@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<!-- saved from url=(0074)README -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<title>SushiFabric README 20131205 - Report - Redmine</title>
+<meta name="description" content="Redmine">
+<meta name="keywords" content="issue,bug,tracker">
+<meta content="authenticity_token" name="csrf-param">
+<meta content="AUYmeRUMzuNAJxf54odlHKPWnnygU4PqnHbpU/spOYQ=" name="csrf-token">
+<link rel="shortcut icon" href="http://localhost/favicon.ico?1373820669">
+<link href="./README_files/jquery-ui-1.9.2.css" media="all" rel="stylesheet" type="text/css">
+<link href="./README_files/application.css" media="all" rel="stylesheet" type="text/css">
+
+<script src="./README_files/jquery-1.8.3-ui-1.9.2-ujs-2.0.3.js" type="text/javascript"></script>
+<script src="./README_files/application.js" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(window).load(function(){ warnLeavingUnsaved('このページから移動すると、保存されていないデータが失われます。'); });
+//]]>
+</script>
+
+
+<!-- page specific tags -->
+  <script src="./README_files/attachments.js" type="text/javascript"></script>
+</head>
+<body class="controller-wiki action-show">
+<div id="wrapper">
+<div id="wrapper2">
+<div id="wrapper3">
+<div id="top-menu">
+    <div id="account">
+        <ul><li><a href="http://localhost/my/account" class="my-account"></a></li>
+<li><a href="http://localhost/logout" class="logout" data-method="post" rel="nofollow"></a></li></ul>    </div>
+</div>
+
+<div id="header">
+    <div id="quick-search">
+        <form accept-charset="UTF-8" action="http://localhost/projects/report/search" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"></div>
+        <input name="wiki_pages" type="hidden" value="1">
+        <label for="q">
+          <a href="http://localhost/projects/report/search" accesskey="4"></a>
+        </label>
+</form>        
+    </div>
+
+    <h1>SushiFabric README</h1>
+
+    <div id="main-menu">
+        <ul><li><a href="http://localhost/projects/report" class="overview"></a></li>
+</ul>
+    </div>
+</div>
+
+<div id="main" class="">
+    <div id="sidebar">
+    </div>
+
+    <div id="content">
+        
+        <div class="contextual">
+</div>
+
+
+
+<div class="wiki wiki-page">
+
+
+	<ul class="toc"><li><a href="README#Introduction">Introduction</a></li><li><a href="README#Modules">Modules</a></li><li><a href="README#Dependencies">Dependencies</a></li><li><a href="README#Installation">Installation</a><ul><li><a href="README#Steps">Steps</a></li><li><a href="README#Install-Ruby-19">Install Ruby 1.9</a></li><li><a href="README#Install-bundle">Install bundle</a></li><li><a href="README#Install-workflow_manager">Install workflow_manager</a></li><li><a href="README#Install-sushi_fabric-core-code-of-SushiFabric">Install sushi_fabric (core code of SushiFabric)</a></li><li><a href="README#Download-SushiFabric-Ruby-on-Rails-code">Download SushiFabric (Ruby on Rails code)</a></li><li><a href="README#Set-up-database-for-Ruby-on-Rails">Set up database for Ruby on Rails</a></li><li><a href="README#Configuration">Configuration</a></li></ul>
+</li><li><a href="README#Usage">Usage</a><ul><li><a href="README#Run-Application">Run Application</a></li><li><a href="README#Job-monitoring">Job monitoring</a></li><li><a href="README#Command-interface">Command interface</a></li><li><a href="README#Workflow-manager">Workflow manager</a><ul><li><a href="README#Abstract">Abstract</a></li></ul>
+</li><li><a href="README#Example">Example</a></li></ul>
+</li><li><a href="README#How-to-implement-a-new-sushi-application-a-subclass-of-SushiApp-class">How to implement a new sushi application (a subclass of SushiApp class)</a><ul><li><a href="README#General-Info">General Info.</a></li><li><a href="README#Template-of-Sushi-Application">Template of Sushi Application</a></li></ul>
+</li><li><a href="README#DataSet-format">DataSet format</a></li></ul>
+
+
+	<a name="Introduction"></a>
+<h1>Introduction<a href="README#Introduction" class="wiki-anchor">¶</a></h1>
+
+
+	<p><span style="color:red;">Process your raw data, without cooking it!</span></p>
+
+
+Sushi Fabric is defined as
+	<ul>
+	<li><strong>S</strong> equence analysis of <strong>U</strong> seless <strong>S</strong> taff with <strong>H</strong> ighly <strong>I</strong> ntegrated Fabric<br>or</li>
+		<li><strong>S</strong> uper <strong>U</strong> seful <strong>S</strong> ystem for <strong>HI</strong> gh-throughput data Fabric<br>or</li>
+		<li><strong>S</strong> uper <strong>U</strong> ltra <strong>S</strong> pecial <strong>H</strong> yper <strong>I</strong> ncredible Fabric</li>
+	</ul>
+
+
+	<p>Namely, it is not decided yet. Please send an email to <a class="email" href="mailto:masaomi.hatakeyama@fgcz.uzh.ch">masaomi.hatakeyama@fgcz.uzh.ch</a> if you have better definition.</p>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=2"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Modules"></a>
+<h1>Modules<a href="README#Modules" class="wiki-anchor">¶</a></h1>
+
+
+There are 3 modules.
+	<ol>
+	<li>workflow_manager (gem): manage jobs and cluster environment, checking a running job and submitting a job</li>
+		<li>sushi_fabric (gem): Super class for a specific application, and provide primitive functions communicating with workflow_manager via DRuby</li>
+		<li>SushiFabric (Ruby on Rails): provide GUI, calling sushi_fabric functions</li>
+	</ol>
+
+
+TODO
+	<ul>
+	<li>UML diagrams</li>
+	</ul>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=3"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Dependencies"></a>
+<h1>Dependencies<a href="README#Dependencies" class="wiki-anchor">¶</a></h1>
+
+
+	<ul>
+	<li>Ruby 1.9.3</li>
+		<li>Ruby on Rails (~&gt; 3.2.9)</li>
+		<li>libsqlite3-dev (to build the gem)</li>
+		<li>libxml2-dev (to build a gem)</li>
+		<li>libxslt1-dev (to build a gem)</li>
+		<li>node.js (installed from source, <a class="external" href="http://nodejs.org/">http://nodejs.org/</a>)</li>
+	</ul>
+
+
+Note
+	<ul>
+	<li>Ruby 1.8.7 does not work</li>
+		<li>Ruby 2.1 is not checked yet</li>
+		<li>More details for gem libraries refer to Gemfile.lock</li>
+	</ul>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=4"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Installation"></a>
+<h1>Installation<a href="README#Installation" class="wiki-anchor">¶</a></h1>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=5"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Steps"></a>
+<h2>Steps<a href="README#Steps" class="wiki-anchor">¶</a></h2>
+
+
+	<ol>
+	<li>(Install Ruby)</li>
+		<li>Install bundle (gem)</li>
+		<li>Install workflow_manager (gem)</li>
+		<li>Install sushi_fabric (gem)</li>
+		<li>Download SushiFabric.tgz (Ruby on Rails application)</li>
+		<li>Install required libraries (bundle install)</li>
+		<li>Setup database (rake db:migrate)</li>
+		<li>Run (rails server)</li>
+	</ol>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=6"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Install-Ruby-19"></a>
+<h2>Install Ruby 1.9<a href="README#Install-Ruby-19" class="wiki-anchor">¶</a></h2>
+
+
+	<p>Check if Ruby 1.9.3 is installed on your computer<br></p><pre>$ ruby -v
+</pre><p></p>
+
+
+If Ruby is NOT installed or Ruby version is under 1.9, then you should download and install Ruby from 
+	<ul>
+	<li><a class="external" href="https://www.ruby-lang.org/en/downloads/">https://www.ruby-lang.org/en/downloads/</a></li>
+	</ul>
+
+
+	<p>Apple: Needs XCode or at least the command-line tools found here: <a class="external" href="https://developer.apple.com/downloads/">https://developer.apple.com/downloads/</a></p>
+
+
+	<p>Typical commands to install Ruby<br></p><pre>$ wget http://cache.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p484.tar.gz
+$ tar zxvf ruby-1.9.3-p484.tar.gz
+$ cd ruby-1.9.3-p484
+$ ./configure
+$ make
+$ sudo make install
+</pre><p></p>
+
+
+Note
+	<ul>
+	<li>Usually Ruby interpreter is installed in /usr/local/bin</li>
+		<li>If you want to change the installation directory, set --prefix option to ./configure as follows</li>
+	</ul>
+
+
+<pre>$ ./configure --prefix=$HOME/bin/ruby-1.9.3
+$ make
+$ make install
+</pre>
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=7"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Install-bundle"></a>
+<h2>Install bundle<a href="README#Install-bundle" class="wiki-anchor">¶</a></h2>
+
+
+<pre>gem install bundle
+</pre>
+
+Note
+	<ul>
+	<li>gem is a Ruby library manager, and it downloads and installs a library from <a class="external" href="http://rubygems.org/">http://rubygems.org/</a></li>
+		<li>bundle is a Ruby library version manager that manages specific library versions for an application</li>
+		<li>All gem installations may need sudo permissions (if you installed Ruby in a system directory but you can change the gem directory with setting GEM_HOME environmental variable. see below.)</li>
+	</ul>
+
+
+	<p>Gem library installtion directory can be set with the environment variable:<br></p><pre>GEM_HOME = $HOME/.gems
+</pre><p></p>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=8"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Install-workflow_manager"></a>
+<h2>Install workflow_manager<a href="README#Install-workflow_manager" class="wiki-anchor">¶</a></h2>
+
+
+<pre>$ gem install workflow_manager
+</pre>
+
+	<p>Run<br></p><pre>$ workflow_manager
+mode = development
+druby://localhost:12345
+</pre><p></p>
+
+
+Note
+	<ul>
+	<li>Ignore the warning:<br><pre>/usr/local/lib/ruby/1.9.1/yaml.rb:84:in `&lt;top (required)&gt;':
+It seems your ruby installation is missing psych (for YAML output).
+To eliminate this warning, please install libyaml and reinstall your ruby.
+</pre></li>
+	</ul>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=9"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Install-sushi_fabric-core-code-of-SushiFabric"></a>
+<h2>Install sushi_fabric (core code of SushiFabric)<a href="README#Install-sushi_fabric-core-code-of-SushiFabric" class="wiki-anchor">¶</a></h2>
+
+
+<pre>$ gem install sushi_fabric
+</pre>
+
+	<p>That's it.</p>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=10"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Download-SushiFabric-Ruby-on-Rails-code"></a>
+<h2>Download SushiFabric (Ruby on Rails code)<a href="README#Download-SushiFabric-Ruby-on-Rails-code" class="wiki-anchor">¶</a></h2>
+
+
+<pre>$ wget http://fgcz-sushi.uzh.ch//SushiFabric_20131201.tgz
+</pre>
+
+	<p>Tar and bundle install<br></p><pre>$ tar zxvf SushiFabric_20131201.tgz
+$ cd SushiFabric
+$ bundle install
+</pre><p></p>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=11"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Set-up-database-for-Ruby-on-Rails"></a>
+<h2>Set up database for Ruby on Rails<a href="README#Set-up-database-for-Ruby-on-Rails" class="wiki-anchor">¶</a></h2>
+
+
+	<p>Go to the SushiFabric directory, then</p>
+
+
+<pre>$ bundle exec rake db:migrate
+</pre>
+
+	<p>Start Ruby on Rails server<br></p><pre>$ rails server
+</pre><p></p>
+
+
+Note
+	<ul>
+	<li>And then, try to access <strong><a class="external" href="http://localhost:3000/">http://localhost:3000</a></strong></li>
+		<li>If you can see the top menu of SushiFabric, it scceeded in installing.</li>
+		<li>In order to stop it, Ctrl + C</li>
+	</ul>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=12"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Configuration"></a>
+<h2>Configuration<a href="README#Configuration" class="wiki-anchor">¶</a></h2>
+
+
+	<p>There are two configuration files, one for workflow_manager and one for sushi_fabric</p>
+
+
+Configuration file
+	<ul>
+	<li>config/environments/development.rb</li>
+	</ul>
+
+
+<pre>#!/usr/bin/env ruby
+# encoding: utf-8
+
+WorkflowManager::Server.configure do |config|
+  config.log_dir = 'logs'
+  config.db_dir = 'dbs'
+  config.interval = 30
+  config.resubmit = 0
+  config.cluster = WorkflowManager::LocalComputer.new('local_computer')
+end
+</pre>
+
+Note
+	<ul>
+	<li>A new cluster class should inherit WorkflowManager::Cluster Class and define (overwrite) the following 4 methods:</li>
+		<li>In more detail, you can refer to $GEM_HOME/**/workflow_manager/lib/workflow_manager/cluster.rb</li>
+	</ul>
+
+
+	<p>Cluster Class<br></p><pre>  class Cluster
+    def submit_job(script_file, script_content, option='')
+    end
+    def job_running?(job_id)
+    end
+    def job_ends?(log_file)
+    end
+    def copy_commands(org_dir, dest_parent_dir)
+    end
+  end
+</pre><p></p>
+
+
+	<p>Default sushi_fabric parameters (config/environments/development.rb)<br></p><pre>SushiFabric::Application.configure do
+  # sushi_fabric
+  config.workflow_manager = 'druby://localhost:12345'
+  config.gstore_dir = File.join(Dir.pwd, 'public/gstore/projects')
+  config.sushi_app_dir = Dir.pwd
+  config.scratch_dir = '/tmp/scratch'
+end
+</pre><p></p>
+
+
+Note
+	<ul>
+	<li>If you want to change the parameters, make <strong>config/environments/development.rb</strong> like above.</li>
+		<li>workflow_manager and sushi_fabric configurations are totally independent.</li>
+		<li>Usually, Ruby on Rails has a configuration file with the same file name (in development mode), and you can add the above 4 additional parameters in the file.</li>
+	</ul>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=13"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Usage"></a>
+<h1>Usage<a href="README#Usage" class="wiki-anchor">¶</a></h1>
+
+
+	<h2>Top Menu
+{img src="img/wiki_up/top_menu.png" }</h2>
+
+
+	<ul>
+	<li>Project: You can select a project where you are belonging</li>
+		<li>DataSet: You can see DataSets</li>
+		<li>Import DataSet: Import DataSet from .tsv file</li>
+		<li>Run Application: Submit a job</li>
+		<li>Check Jobs: Show job list</li>
+		<li>gStore: Browsing gstore directory</li>
+	</ul>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=14"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Run-Application"></a>
+<h2>Run Application<a href="README#Run-Application" class="wiki-anchor">¶</a></h2>
+
+
+	<p>First, select  input <i>DataSet</i> and <i>Application</i>.<br>Second, set SGE job parameters and application parameters.<br>Then clicking the submit button, the job will be submitted to SGE via workflow manager.</p>
+
+
+After the job running, 
+	<ol>
+	<li>A new DataSet</li>
+		<li>Parameter set</li>
+		<li>Logs</li>
+	</ol>
+
+
+	<p>are generated automattically in a directory under gStore directory.</p>
+
+
+	<p>The new DataSet can be an input for the other application.</p>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=15"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Job-monitoring"></a>
+<h2>Job monitoring<a href="README#Job-monitoring" class="wiki-anchor">¶</a></h2>
+
+
+	<p>All submitted jobs are listed with running status: success, failure, or re-submitted.<br>Submitted time and finish time are also shown.</p>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=16"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Command-interface"></a>
+<h2>Command interface<a href="README#Command-interface" class="wiki-anchor">¶</a></h2>
+
+
+	<p>All sushi functions are available also on command line.</p>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=17"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Workflow-manager"></a>
+<h2>Workflow manager<a href="README#Workflow-manager" class="wiki-anchor">¶</a></h2>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=18"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Abstract"></a>
+<h3>Abstract<a href="README#Abstract" class="wiki-anchor">¶</a></h3>
+
+
+	<ul>
+	<li>A console based server-client application</li>
+		<li>For each (g-sub, qsub) submittion, a new thread is created and it will be monitoring the job once in 30 seconds (default, you can modify it by changing the constant INTERVAL = 30 in the source code).</li>
+		<li>If a job fails (the case that it does not reach at the end of script), it submits it again automatically (at maximum 2 times, it also can be modified in the source code RESUBMIT = 2)</li>
+		<li>It logs when it starts and ends and who submits a job, and the submitted scripts and standard outputs and errors.</li>
+	</ul>
+
+
+	<p>Server (daemon)<br></p><pre>$ ruby workflow_manager.rb -h
+Version: 20130228-170033
+Usage:
+ workflow_manager.rb [druby://host:port]
+
+  host: you should select the server where you start workflow_manager.rb
+  port: whatever that is free
+  default: druby://localhost:12345
+</pre><p></p>
+
+
+Note
+	<ul>
+	<li>It automatically creates 'logs' directory. All the scripts and logs will be saved in the directory.</li>
+		<li>Some *.kch files will also be created. Those files are binary files that are DB files of KyotoCabinet.</li>
+		<li>The URI should be the same when you use the client commands (wfm_*).</li>
+		<li>If the same URI has been already used by somebody, it does not start.</li>
+		<li>If workflow manager stops for some reason while the monitoring job is running, the job status will never change because the monitoring thread is gone away.</li>
+		<li>At the moment, there is no command to assign a thread to monitor a submitted job (This would be a future feature).</li>
+		<li>I want a function to send an email when a monitored job finishs (this function will be added soon)</li>
+	</ul>
+
+
+	<p>Example<br></p><pre>start: 
+  workflow_manager
+kill: 
+  ctl-c
+</pre><p></p>
+
+
+	<p>Client (command)<br></p><pre>wfm_monitoring job_script.sh
+wfm_job_list
+wfm_status job_id
+wfm_get_log job_id
+wfm_get_job_script job_id
+</pre><p></p>
+
+
+Note
+	<ul>
+	<li>The client commands use the url druby://localhost:12345 as a default</li>
+		<li>If you start the server with the other URI, you have to add the URI after the client command as an argument like<br><pre>wfm_job_list druby://hogehoge:777
+</pre></li>
+	</ul>
+
+
+	<ul>
+	<li>But if you have .wfmrc file in your home directory or the current directory where you run the client command as follows, the server URI in the file is used from both server and client without the URL argument.</li>
+	</ul>
+
+
+<pre>user: masa
+server: druby://localhost:7777
+</pre>
+
+	<ul>
+	<li>wfm_monitoring just transfer the script to g-sub command, and only .sh (born shell script or bash script) is available (this will be updated).</li>
+		<li>You should write all the options for g-sub (qsub) in your job script</li>
+		<li>Only -o and -e options are ignored in the script since the standard outpus and errors are outputted in 'logs' directory.</li>
+		<li>For private use, the important file is statuses.kch. If you want to edit this file directory,  you can use <i>kchashmgr</i> command. An example is below. This command works without workflow_manager server.</li>
+	</ul>
+
+
+<pre>$ kchashmgr
+kchashmgr: the command line utility of the file hash database of Kyoto Cabinet
+
+usage:
+  kchashmgr create [-otr] [-onl|-otl|-onr] [-apow num] [-fpow num] [-ts] [-tl] [-tc] [-bnum num] path
+  kchashmgr inform [-onl|-otl|-onr] [-st] path
+  kchashmgr set [-onl|-otl|-onr] [-add|-rep|-app|-inci|-incd] [-sx] path key value
+  kchashmgr remove [-onl|-otl|-onr] [-sx] path key
+  kchashmgr get [-onl|-otl|-onr] [-rm] [-sx] [-px] [-pz] path key
+  kchashmgr list [-onl|-otl|-onr] [-max num] [-rm] [-sx] [-pv] [-px] path [key]
+  kchashmgr clear [-onl|-otl|-onr] path
+  kchashmgr import [-onl|-otl|-onr] [-sx] path [file]
+  kchashmgr copy [-onl|-otl|-onr] path file
+  kchashmgr dump [-onl|-otl|-onr] path [file]
+  kchashmgr load [-otr] [-onl|-otl|-onr] path [file]
+  kchashmgr defrag [-onl|-otl|-onr] path
+  kchashmgr setbulk [-onl|-otl|-onr] [-sx] path key value ...
+  kchashmgr removebulk [-onl|-otl|-onr] [-sx] path key ...
+  kchashmgr getbulk [-onl|-otl|-onr] [-sx] [-px] path key ...
+  kchashmgr check [-onl|-otl|-onr] path
+$ kchashmgr inform statuses.kch 
+count: 11
+size: 6298656
+$ kchashmgr list statuses.kch 
+541726
+541727
+$ kchashmgr get statuses.kch 541727
+resubmit: 541728,fail_sample.sh,2013-03-01 09:50:38,masa
+$ kchashmgr remove statuses.kch 541727
+$ kchashmgr list statuses.kch 
+541726
+$ kchashmgr get statuses.kch 541727
+kchashmgr: DB::get failed: statuses.kch: 7: no record: no record
+</pre>
+
+	<ul>
+	<li>For more detail, refer to <a class="external" href="http://fallabs.com/kyotocabinet/command.html">http://fallabs.com/kyotocabinet/command.html</a></li>
+	</ul>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=19"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Example"></a>
+<h2>Example<a href="README#Example" class="wiki-anchor">¶</a></h2>
+
+
+	<p>Server:<br></p><pre>$ workflow_manager
+druby://localhost:12345
+</pre><p></p>
+
+
+	<p>Client:</p>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=20"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="How-to-implement-a-new-sushi-application-a-subclass-of-SushiApp-class"></a>
+<h1>How to implement a new sushi application (a subclass of SushiApp class)<a href="README#How-to-implement-a-new-sushi-application-a-subclass-of-SushiApp-class" class="wiki-anchor">¶</a></h1>
+
+
+	<p>TODO</p>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=21"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="General-Info"></a>
+<h2>General Info.<a href="README#General-Info" class="wiki-anchor">¶</a></h2>
+
+
+	<ul>
+	<li>All applicationes (classes) inherit SushiApp (lib/sushiApp.rb) class</li>
+		<li>At the moment, we must make a sushi application class file manually and import it in <em>lib</em> directory at the moment (Feature#2548 <a class="external" href="http://fgcz-track.uzh.ch/issues/2548">http://fgcz-track.uzh.ch/issues/2548</a> )</li>
+		<li>The class file is automatically loaded and make an instance when it is selected (no need to reboot sushi server), but the update of Sushi Application file is required to reboot the server</li>
+		<li>I recommend to make a trunk (branch) of SushiFabric in your local environment and test your Sushi Application before you commit the file</li>
+		<li>You can refer to many existing application files in lib directory of SushiFabric repository</li>
+		<li>lib/WordCountApp.rb is the smallest application and it can be referred to for the first time when you create your Sushi Application</li>
+	</ul>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=22"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="Template-of-Sushi-Application"></a>
+<h2>Template of Sushi Application<a href="README#Template-of-Sushi-Application" class="wiki-anchor">¶</a></h2>
+
+
+<pre>#!/usr/bin/env ruby
+# encoding: utf-8
+
+require 'sushiApp'
+
+class YourSushiApplication &lt; SushiApp
+  def initialize
+    super
+    @name = 'Application_Name'      # No Space
+    @analysis_category = 'Category' # No Space
+    @required_columns = ['Name', 'Read1']
+    @required_params = []
+  end
+  def next_dataset
+    {'Name'=&gt;@dataset['Name'],
+     'Stats [File]'=&gt;File.join(@result_dir, @dataset['Name'].to_s + '.stats')
+    }
+    # [File] tag value will be outputted in gstore
+  end
+  def preprocess
+  end
+  def commands
+    'echo hoge'
+  end
+end
+if __FILE__ == $0
+  usecase = YourSushiApplication.new
+  usecase.project = "p1001" 
+  usecase.user = 'sushi_lover'
+  usecase.dataset_tsv_file = 'sample_dataset.tsv'
+
+  # run (submit to workflow_manager)
+  #usecase.run
+  usecase.test_run
+end
+</pre>
+
+Note
+	<ul>
+	<li>Important methods are <strong>initialized</strong>, <strong>next_dataset</strong>, and <strong>commands</strong></li>
+		<li><strong>preprocess</strong> method is not required but it will be executed before running <strong>commands</strong> method</li>
+		<li><strong>next_dataset</strong> method must return Hash data, key will be column name and value will be a value</li>
+		<li><strong>commands</strong> method must return String data</li>
+		<li><strong>@name</strong> and <strong>@analysis_category</strong> instance variable is required and no space must be included</li>
+	</ul>
+
+
+	<h1>Test Run</h1>
+
+
+	<ul>
+	<li>SushiApp#test_run method is implemented, which helps you to check if your application is correctly implemented</li>
+	</ul>
+
+
+<pre>$ cd $RAILS_ROOT/lib
+$ ruby -I. your_sushi_app.rb
+</pre>
+
+	<p>Example: WordCountApp.rb<br></p><pre>masaomi@fgcz-s-034:$RAILS_ROOT/lib
+$ ruby -I. WordCountApp.rb
+check project name: PASSED:
+    @project=p1001
+check user name: PASSED:
+    @user=sushi_lover
+check application name: PASSED:
+    @name=Word_Count
+check analysis_category: PASSED:
+    @analysis_category=Stats
+check dataset: PASSED:
+    @dataset_hash.length = 2
+check required columns: PASSED:
+    required columns: ["Name", "Read1"]
+    dataset  columns: ["Name", "Read1 [File]", "Read2 [File]", "Species", "Dummy [Factor]"]
+check required parameters: PASSED:
+    parameters: ["cores", "ram", "scratch", "node", "process_mode"]
+    required  : []
+check next dataset: PASSED:
+check output files: PASSED:
+check commands: PASSED:
+generated command will be:
+    gunzip -c $GSTORE_DIR/p1001/data/short-ama_E1_R1.fastq.gz |wc &gt; sample1.stats
+    echo 'Factor columns: [Dummy]'
+    echo 'Factors: [{"Dummy"=&gt;"hoge"},{"Dummy"=&gt;"bar"}]'
+PASSED:
+generated command will be:
+    gunzip -c $GSTORE_DIR/p1001/data/short-ama2_R1.fastq.gz |wc &gt; sample2.stats
+    echo 'Factor columns: [Dummy]'
+    echo 'Factors: [{"Dummy"=&gt;"hoge"},{"Dummy"=&gt;"bar"}]'
+check workflow manager: PASSED:
+All checks PASSED
+</pre><p></p>
+
+
+	<div class="contextual" title="このセクションを編集"><a href="README/edit?section=23"><img alt="Edit" src="./README_files/edit.png"></a></div><a name="DataSet-format"></a>
+<h1>DataSet format<a href="README#DataSet-format" class="wiki-anchor">¶</a></h1>
+
+
+	<p>TODO</p>
+</div>
+
+
+
+
+<div id="wiki_add_attachment">
+<p><a href="./README_files/README.html" id="attach_files_link" onclick="$(&#39;#add_attachment_form&#39;).show(); return false;"></a></p>
+<form accept-charset="UTF-8" action="README/add_attachment" enctype="multipart/form-data" id="add_attachment_form" method="post" style="display:none;"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="AUYmeRUMzuNAJxf54odlHKPWnnygU4PqnHbpU/spOYQ="></div>
+  <div class="box">
+  <p><span id="attachments_fields">
+</span>
+<span class="add_attachment">
+<input class="file_selector" data-description-placeholder="任意のコメント" data-max-concurrent-uploads="2" data-max-file-size-message="このファイルはアップロードできません。添付ファイルサイズの上限(5 MB)を超えています。" data-max-file-size="5242880" data-upload-path="/uploads.js" multiple="multiple" name="attachments[dummy][file]" onchange="addInputFiles(this);" type="file">
+(サイズの上限: 5 MB)
+</span>
+
+</p>
+  </div>
+<input name="commit" type="submit" value="追加">
+<a href="./README_files/README.html" onclick="$(&#39;#add_attachment_form&#39;).hide(); return false;">キャンセル</a>
+</form></div>
+
+
+
+        
+        <div style="clear:both;"></div>
+    </div>
+</div>
+</div>
+
+<div id="ajax-modal" style="display:none;"></div>
+
+<div id="footer">
+  <div class="bgl"><div class="bgr">
+    Powered by <a href="http://www.redmine.org/">Redmine</a> © 2006-2013 Jean-Philippe Lang
+  </div></div>
+</div>
+</div>
+</div>
+
+
+
+</body></html>
