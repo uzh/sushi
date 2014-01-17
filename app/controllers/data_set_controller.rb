@@ -20,6 +20,11 @@ class DataSetController < ApplicationController
       end
     end
   end
+  def script_log
+    @data_set = if id = params[:format]
+                  DataSet.find_by_id(id)
+                end
+  end
   def show
     # switch project (from job_monitoring)
     if project = params[:project]
@@ -44,21 +49,23 @@ class DataSetController < ApplicationController
     @file_exist = {}
     @sample_path = []
     @sample_invalid_name = {}
-    @data_set.samples.each do |sample|
-      sample.to_hash.each do |header, file|
-        if (header.tag?('File') or header.tag?('Link')) 
-          if file
-            file_path = File.join(SushiFabric::GSTORE_DIR, file)
-            @sample_path << File.dirname(file)
-            @file_exist[file] = File.exist?(file_path)
+    if @data_set
+      @data_set.samples.each do |sample|
+        sample.to_hash.each do |header, file|
+          if (header.tag?('File') or header.tag?('Link')) 
+            if file
+              file_path = File.join(SushiFabric::GSTORE_DIR, file)
+              @sample_path << File.dirname(file)
+              @file_exist[file] = File.exist?(file_path)
+            else
+              @file_exist[header] = false
+            end
           else
-            @file_exist[header] = false
+            @file_exist[file] = true
           end
-        else
-          @file_exist[file] = true
-        end
-        if header == 'Name' and file =~ /[!@\#$%^&*\(\)\<\>\{\}\[\]\/:; '"=+\|]/
-          @sample_invalid_name[file] = true
+          if header == 'Name' and file =~ /[!@\#$%^&*\(\)\<\>\{\}\[\]\/:; '"=+\|]/
+            @sample_invalid_name[file] = true
+          end
         end
       end
     end
@@ -74,7 +81,6 @@ class DataSetController < ApplicationController
         @sushi_apps[app.analysis_category] << app.class.to_s
       end
     end
-
   end
   def edit
     show

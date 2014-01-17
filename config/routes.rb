@@ -23,6 +23,7 @@ SushiFabric::Application.routes.draw do
       post :import
       post :save_as_tsv
       post :delete
+      get :script_log
     end
   end
   
