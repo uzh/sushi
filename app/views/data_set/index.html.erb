@@ -15,7 +15,7 @@ $(document).ready(function(){
 <% @project.data_sets.reverse.each do |data_set| %>
   <tr>
     <td><%= data_set.id %></td>
-    <td><%= link_to data_set.name, "/data_set/#{data_set.id}" %></td> 
+    <td><%= link_to td(data_set.name), "/data_set/#{data_set.id}" %></td> 
     <td><span style="color:gray;font-size:smaller">[<%= data_set.headers.join(',') %>]</span></td>
     <td>
       <%= button_to 'delete', "/data_set/delete.#{data_set.id}", :method=>:post %>

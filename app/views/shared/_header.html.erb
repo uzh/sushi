@@ -16,3 +16,9 @@
   </nav>
   <h1>SushiFabric</h1>
 </div>
+<% def td(str) %>
+  <% if str.to_s.length >= 16 %>
+    <% str=str.to_s.split(//)[0,16].join+"...<span>#{str}</span>" %>
+  <% end %>
+  <% str.to_s.html_safe %>
+<% end %>
