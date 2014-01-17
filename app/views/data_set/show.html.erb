@@ -5,7 +5,6 @@ $(document).ready(function(){
     });
 });
 </script>
-
 <h1>Project <%= session[:project] %></h1>
 <hr />
 <h3>DataSet</h3>
@@ -14,9 +13,9 @@ $(document).ready(function(){
   <% if @data_set %>
   <tr>
     <td><%= @data_set.id %></td>
-    <td><%= @data_set.name %></td>
+    <td><%= td @data_set.name %></td>
     <td><%= @data_set.samples.length %></td>
-    <td><%= link_to @data_set.data_set.name, "/data_set/#{@data_set.parent_id}" if @data_set.data_set %></td>
+    <td><%= link_to td(@data_set.data_set.name), "/data_set/#{@data_set.parent_id}" if @data_set.data_set %></td>
     <td>
       <% @data_set.data_sets.each do |child| %>
         <%= link_to child.id, "/data_set/#{child.id}" %>
@@ -59,11 +58,11 @@ $(document).ready(function(){
             <% file_path = sample.to_hash[header].to_s %>
             <% file_name = File.basename(file_path) %>
             <% if header.tag?('Link') %>
-               <%= link_to file_name, File.join('/gstore/projects', file_path)  %>
+               <%= link_to td(file_name), File.join('/gstore/projects', file_path)  %>
             <% elsif @sample_invalid_name[file_name] %>
-               <font color=red><%= file_name %></font>
+               <font color=red><%= td file_name %></font>
             <% else %>
-               <%= file_name %>
+               <%= td file_name %>
             <% end %>
           <% end %>
         </td>

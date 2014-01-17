@@ -10,3 +10,21 @@ blockquote {
   color:grey;
   font-style: italic;
 }
+
+td:hover {
+  background:#ffffff; 
+  text-decoration:none;
+}
+td span {
+  display:none; 
+  padding:0px 3px; 
+  margin-left:8px;
+}
+td:hover span {
+  display:inline; 
+  position:absolute; 
+  background:#ffffff; 
+  border:1px solid #cccccc; 
+  color:#6c6c6c;
+}
+
