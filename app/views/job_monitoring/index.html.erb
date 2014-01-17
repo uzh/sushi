@@ -14,14 +14,14 @@
     <td><%= job[0] %></td>
     <td><%= job[1] %></td>
     <td><%= job[4] %></td>
-    <td><%= link_to job[2], :action => 'print_script', :job_id => job[0] %></td>
+    <td><%= link_to td(job[2]), :action => 'print_script', :job_id => job[0] %></td>
     <td><%= link_to 'Log', :action => 'print_log', :job_id => job[0] %></td>
     <td>
       <% if submit_job = @submit_jobs[i] and submit_job.data_set %>
         <% if @all_job_list %>
-          <%= link_to submit_job.data_set.name+" (p#{job[5]})", :controller=>:data_set, :action=>:show, :id=>submit_job.next_dataset_id, :project=>job[5] %>
+          <%= link_to td(submit_job.data_set.name+" (p#{job[5]})"), :controller=>:data_set, :action=>:show, :id=>submit_job.next_dataset_id, :project=>job[5] %>
         <% else %>
-          <%= link_to submit_job.data_set.name, "/data_set/#{submit_job.next_dataset_id}" %>
+          <%= link_to td(submit_job.data_set.name), "/data_set/#{submit_job.next_dataset_id}" %>
         <% end %>
       <% end %>
     </td>
