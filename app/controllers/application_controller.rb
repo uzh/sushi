@@ -64,4 +64,16 @@ class ApplicationController < ActionController::Base
     end
     sushi_apps
   end
+  def sample_path(data_set)
+    paths = []
+    data_set.samples.each do |sample|
+      sample.to_hash.each do |header, file|
+        if header.tag?('File') or header.tag?('Link')
+          paths << File.dirname(file)
+        end
+      end
+    end
+    paths.uniq!
+    paths.first
+  end
 end
