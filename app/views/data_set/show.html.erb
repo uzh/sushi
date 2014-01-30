@@ -126,3 +126,4 @@ $(document).ready(function(){
 <% end %>
 <hr />
 <%= button_to 'Go Job Script&Log', "/data_set/script_log.#{@data_set.id}", :method=>:get %>
+<%= button_to 'Show Job Parameter', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>

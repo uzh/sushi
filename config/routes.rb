@@ -24,6 +24,7 @@ SushiFabric::Application.routes.draw do
       post :save_as_tsv
       post :delete
       get :script_log
+      get :job_parameter
     end
   end
   
