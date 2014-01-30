@@ -330,4 +330,22 @@ class DataSetController < ApplicationController
 
     end
   end
+  def job_parameter
+    @data_set = if id = params[:format]
+                  DataSet.find_by_id(id)
+                end
+    @sample_path = if @data_set 
+                     sample_path(@data_set)
+                   end
+    @parameters_tsv = if @sample_path
+                        File.join(SushiFabric::GSTORE_DIR, @sample_path, 'parameters.tsv')
+                      end
+    @parameters = {}
+    if @parameters_tsv
+      File.readlines(@parameters_tsv).each do |line|
+        header, value = line.chomp.split
+        @parameters[header] = value
+      end
+    end
+  end
 end
