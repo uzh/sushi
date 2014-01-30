@@ -1,0 +1,22 @@
+<h1>Project <%= session[:project] %></h1>
+<hr />
+<h3>Job Parameter</h3>
+File: <%= @parameters_tsv.to_s %>
+<% unless File.exist?(@parameters_tsv.to_s) %>
+  does not exist.
+<% end %>
+<table>
+  <tr><th>Parameter</th><th>Value</th>
+  <% if File.exist?(@parameters_tsv.to_s) %>
+    <% @parameters.each do |header, value| %>
+    <tr>
+      <td><%= header %></td><td><%= value %></td>
+    </tr>
+    <% end %>
+  <% end %>
+  </tr>
+</table>
+<hr />
+<%= button_to 'Back to DataSet', "/data_set/#{@data_set.id}", :method=>:get %>
+
+
