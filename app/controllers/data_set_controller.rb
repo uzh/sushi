@@ -341,7 +341,7 @@ class DataSetController < ApplicationController
                         File.join(SushiFabric::GSTORE_DIR, @sample_path, 'parameters.tsv')
                       end
     @parameters = {}
-    if File.exist?(@parameters_tsv)
+    if @parameters_tsv and File.exist?(@parameters_tsv)
       File.readlines(@parameters_tsv).each do |line|
         header, value = line.chomp.split
         @parameters[header] = value
