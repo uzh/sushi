@@ -15,9 +15,9 @@ class VariantCallerApp < SushiFabric::SushiApp
     @params['ram'] = '10'
     @params['scratch'] = '100'
     @params['glm'] = ['BOTH', 'INDEL', 'SNP'] 
-    @params['reference'] = {'select'=>''}
-    Dir["/srv/GT/software/SMRTAnalysis/references/*/sequence/*.fasta"].sort.each do |build| 
-      @params['reference'][File.basename(build)] = build
+    @params['build'] = {'select'=>''}
+    Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
+      @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
     end
     @params['gatkOptions'] = '-minIndelCnt 8 --min_base_quality_score 15 -stand_call_conf 15 -baqGOP 30'
   end
@@ -30,7 +30,7 @@ class VariantCallerApp < SushiFabric::SushiApp
   def commands
     command =<<-EOS
 samtools rmdup #{File.join(@gstore_dir, @dataset['BAM'])} internal.nodup.bam
-samtools index inernal.nodup.bam
+samtools index internal.nodup.bam
 
 ### SORT OUT GROUPS ISSUES ###
 java -jar /usr/local/ngseq/stow/picard-tools-1.96/bin/AddOrReplaceReadGroups.jar I=internal.nodup.bam \
@@ -41,18 +41,17 @@ RGLB=Paired_end RGPL=illumina RGSM=project RGPU=BIOSEQUENCER
 samtools index internal_grouped.bam
 
 ### DETECTING VARIANTS ###
-GATK_DIR=
-#REF=/srv/GT/software/SMRTAnalysis/references/ecoli/sequence/ecoli.fasta
+GATK_DIR=/usr/local/ngseq/src/GenomeAnalysisTK-2.8-1-g932cd3a
 REF=#{params['reference']}
 java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar \
-  -I internal.bam  -log gatk_log.txt -nt #{@params['cores']} \
+  -I internal_grouped.bam  -log gatk_log.txt -nt #{@params['cores']} \
   -o internal.vcf -R $REF -T UnifiedGenotyper \
   -glm #{@params['glm']} \
   #{@params['gatkOptions']}
 ### ANNOTATION ####
-SNPEFF_DIR=/usr/local/ngseq/src/snpEff-3.3e
-java -Xmx4g -jar $SNPEFF_DIR/snpEff.jar eff -c $SNPEFF_DIR/snpEff.config   -v $SNPEFF_DIR/Escherichia_coli_K_12_substr__MG1655_uid57779 \
-internal.vcf > #{@dataset['Name']}.vcf
+SNPEFF_DIR=/usr/local/ngseq/src/snpEff_v3.4/
+#cd $SNPEFF_DIR
+java -Xmx4g -jar $SNPEFF_DIR/snpEff.jar -c $SNPEFF_DIR/snpEff.config  athalianaTair10  -v internal.vcf > #{@dataset['Name']}.vcf
 EOS
     command
   end
