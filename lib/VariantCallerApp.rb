@@ -9,7 +9,6 @@ class VariantCallerApp < SushiFabric::SushiApp
     @name = 'VariantCaller'
     @analysis_category = 'Variant_Analysis'
     @required_columns = ['Name','BAM','BAI', 'Build']
-    @required_params = ['reference']
     # optional params
     @params['cores'] = '4'
     @params['ram'] = '10'
