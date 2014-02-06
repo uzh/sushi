@@ -9,7 +9,7 @@ class DataSetController < ApplicationController
         data_set.samples.each do |sample|
           flag = true
           sample.to_hash.each do |header, file|
-            if header.tag?('File') and file and file_path = File.join(SushiFabric::GSTORE_DIR, file) and !File.exist?(file_path)
+            if header and header.tag?('File') and file and file_path = File.join(SushiFabric::GSTORE_DIR, file) and !File.exist?(file_path)
               flag = false
               break
             end
@@ -52,7 +52,7 @@ class DataSetController < ApplicationController
     if @data_set
       @data_set.samples.each do |sample|
         sample.to_hash.each do |header, file|
-          if (header.tag?('File') or header.tag?('Link')) 
+          if header and (header.tag?('File') or header.tag?('Link')) 
             if file
               file_path = File.join(SushiFabric::GSTORE_DIR, file)
               @sample_path << File.dirname(file)
@@ -278,7 +278,7 @@ class DataSetController < ApplicationController
     @sample_path = []
     @data_set.samples.each do |sample|
       sample.to_hash.each do |header, file|
-        if header.tag?('File')
+        if header and header.tag?('File')
           file_path = File.join(SushiFabric::GSTORE_DIR, file)
           @sample_path << File.dirname(file)
           @file_exist[file] = File.exist?(file_path)
