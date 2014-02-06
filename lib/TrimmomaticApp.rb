@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20131128-084647'
+Version = '20140206-160229'
 
 require 'sushi_fabric'
 
@@ -66,9 +66,9 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     @params['paired'] ? 'PE' : 'SE'
   end
   def commands
-    command = "java -jar /usr/local/ngseq/src/Trimmomatic-0.30/trimmomatic-0.30.jar #{se_pe} -threads #{@params['cores']} -#{@params['quality_type']} #{File.join(GSTORE_DIR, @dataset['Read1'])}"
+    command = "java -jar /usr/local/ngseq/src/Trimmomatic-0.30/trimmomatic-0.30.jar #{se_pe} -threads #{@params['cores']} -#{@params['quality_type']} #{File.join(SushiFabric::GSTORE_DIR, @dataset['Read1'])}"
     if @params['paired']
-      command << " #{File.join(GSTORE_DIR, @dataset['Read2'])}"
+      command << " #{File.join(SushiFabric::GSTORE_DIR, @dataset['Read2'])}"
     end
     output_R1 = File.basename(@dataset['Read1']).gsub('fastq.gz', 'trimmed.fastq.gz')
     command << " #{output_R1}"
