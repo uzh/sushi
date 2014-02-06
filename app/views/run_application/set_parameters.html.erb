@@ -50,7 +50,7 @@
               <%= text_field :parameters, key.to_sym, :value => "#{value}" %>
             <% end %>
           <% end %>
-          <% if @sushi_app.required_params.include?(key) %>
+          <% if @sushi_app.required_params and @sushi_app.required_params.include?(key) %>
             <font color=red>required</font>
           <% end %>
           <span style='color:gray;'><%= @sushi_app.params[key, 'description'].to_s %></span>
