@@ -299,7 +299,7 @@ class DataSetController < ApplicationController
       @sample_path = []
       @data_set.samples.each do |sample|
         sample.to_hash.each do |header, file|
-          if header.tag?('File') 
+          if header and file and header.tag?('File') 
             file_path = File.join(SushiFabric::GSTORE_DIR, file)
             @sample_path << File.dirname(file)
           end
