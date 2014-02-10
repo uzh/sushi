@@ -2,7 +2,7 @@
 <% if current_user %>
 <span style="color:gray;font-size:medium">Hi, <%= current_user.login %></span>
 <% end %>
-<h1>Today's Menu <span style="color:gray;font-size:medium">Project <%= session[:project] %></span></h1>
+<h1>Project <%= session[:project] %> <span style="color:gray;font-size:medium">Today's Menu</span></h1>
 <table class="pages_presentation">
   <tr>
     <td class="page">
@@ -39,6 +39,7 @@
       </p>
     </td>
   </tr>
+<!--
   <tr>
     <td class="page">
       <%= link_to image_tag('sushi_icons/californiaroll.png'), "/sushi_application" %>
@@ -48,4 +49,5 @@
       </p>
     </td>
   </tr>
+-->
 </table>
