@@ -4,6 +4,8 @@
     <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
     -
     <%= link_to "Today's Menu", "/" %>
+		-
+    <%= link_to "SushiApp List", "/sushi_application" %>
     <%= form_tag(:action => "index", :controller => "home") do %>
       Project 
       <%= text_field :project, :number, :value=>"#{session[:project]}", :size=>10 %>
