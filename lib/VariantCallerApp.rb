@@ -42,7 +42,7 @@ samtools index internal_grouped.bam
 
 ### DETECTING VARIANTS ###
 GATK_DIR=/usr/local/ngseq/src/GenomeAnalysisTK-2.8-1-g932cd3a
-REF=#{params['reference']}
+REF=#{params['build']}
 java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar \
   -I internal_grouped.bam  -log gatk_log.txt -nt #{@params['cores']} \
   -o internal.vcf -R $REF -T UnifiedGenotyper \
