@@ -42,7 +42,7 @@ samtools index internal_grouped.bam
 
 ### DETECTING VARIANTS ###
 GATK_DIR=/usr/local/ngseq/src/GenomeAnalysisTK-2.8-1-g932cd3a
-REF=$(ls -l /srv/GT/reference/*/*/*/Sequence/WholeGenomeFasta/genome.fa | #{@params['build']} | awk '{print $9}')
+REF=$(ls -l /srv/GT/reference/*/*/*/Sequence/WholeGenomeFasta/genome.fa | grep #{@params['build']} | awk '{print $9}')
 
 java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar \
   -I internal_grouped.bam  -log gatk_log.txt -nt #{@params['cores']} \
@@ -52,7 +52,7 @@ java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar \
 ### ANNOTATION ####
 SNPEFF_DIR=/usr/local/ngseq/src/snpEff_v3.4/
 #cd $SNPEFF_DIR
-java -Xmx4g -jar $SNPEFF_DIR/snpEff.jar -c $SNPEFF_DIR/snpEff.config  athalianaTair10  -v internal.vcf > #{@dataset['Name']}.vcf
+java -Xmx4g -jar $SNPEFF_DIR/snpEff.jar -c $SNPEFF_DIR/snpEff.config  hg19  -v internal.vcf > #{@dataset['Name']}.vcf
 EOS
     command
   end
