@@ -24,7 +24,7 @@ class CountQCApp < SushiFabric::SushiApp
     @params['featureLevel'] = ['gene', 'isoform']
     @params['normMethod'] = 'logMean'
     @params['expressionName'] = ''
-    @params['runGO'] = 'false'
+    @params['runGO'] = false
     @params['specialOptions'] = ''
   end
   def next_dataset
