@@ -22,7 +22,8 @@ class RSEMApp < SushiFabric::SushiApp
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['featureFile'] = 'genes.gtf'
-    @params['cmdOptions'] = '--no-bam-output --calc-ci --ci-memory 12256'
+    @params['cmdOptions'] = ' --calc-ci --ci-memory 12256'
+    @params['keepBam'] = false
     @params['trimAdapter'] = false
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
@@ -35,12 +36,23 @@ class RSEMApp < SushiFabric::SushiApp
     end
   end
   def next_dataset
-    {'Name'=>@dataset['Name'], 
-     'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"), 
-     'Build'=>@params['build'],
-     'Species'=>@dataset['Species'],
-     'Feature Level'=>'isoform'
-    }
+    if @params['keepBam']
+      {'Name'=>@dataset['Name'], 
+       'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
+       'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+       'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
+       'Build'=>@params['build'],
+       'Species'=>@dataset['Species'],
+       'Feature Level'=>'isoform'
+      }
+    else 
+      {'Name'=>@dataset['Name'],
+       'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
+       'Build'=>@params['build'],
+       'Species'=>@dataset['Species'],
+       'Feature Level'=>'isoform'
+      }
+   end
   end
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"
