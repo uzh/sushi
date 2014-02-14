@@ -343,8 +343,8 @@ class DataSetController < ApplicationController
     @parameters = {}
     if @parameters_tsv and File.exist?(@parameters_tsv)
       File.readlines(@parameters_tsv).each do |line|
-        header, value = line.chomp.split
-        @parameters[header] = value
+        header, *values = line.chomp.split
+        @parameters[header] = values.join(" ")
       end
     end
   end
