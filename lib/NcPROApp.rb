@@ -8,7 +8,7 @@ class NcPROApp < SushiFabric::SushiApp
     super
     @name = 'ncPRO_Report'
     @params['process_mode'] = 'DATASET'
-    @analysis_category = 'QC'
+    @analysis_category = 'Count'
     @description =<<-EOS
 Annotation and Profiling of ncRNAs in smallRNA-seq<br/>
 Uses ncPRO-seq for a complete analysis of small-RNA-seq. ncPRO-seq considers performs quality assessment and quantiation.
