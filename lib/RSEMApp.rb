@@ -9,6 +9,11 @@ class RSEMApp < SushiFabric::SushiApp
     super
     @name = 'RSEM'
     @analysis_category = 'Count'
+    @description =<<-EOS
+    Use bowtie alignments to transcript database and a posterior model to estimate isoform/gene abundances<br/>
+<a href='http://deweylab.biostat.wisc.edu/rsem/rsem-calculate-expression.html'>manual/</a><br/>
+Noteworthy is the option --bowtie-e which can be used to limit the sum of mismatching qualities for the alignments
+EOS
     @required_columns = ['Name','Read1','Species']
     @required_params = ['paired', 'strandMode']
     # optional params
