@@ -9,6 +9,11 @@ class STARApp < SushiFabric::SushiApp
     super
     @name = 'STAR'
     @analysis_category = 'Map'
+    @description =<<-EOS
+    Ultafast spliced alignment<br/>
+<a href='https://code.google.com/p/rna-star/'>manual</a><br/>
+Noteworthy options: --outFilterMatchNmin 30 --outFilterMismatchNmax 5 --outFilterMismatchNoverLmax 0.05 --outFilterMultimapNmax 50
+EOS
     @required_columns = ['Name','Read1','Species']
     @required_params = ['build','paired', 'strandMode']
     # optional params
@@ -22,7 +27,7 @@ class STARApp < SushiFabric::SushiApp
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['featureFile'] = 'genes.gtf'
-    @params['cmdOptions'] = ''
+    @params['cmdOptions'] = '--outFilterMatchNmin 30 --outFilterMismatchNmax 5 --outFilterMismatchNoverLmax 0.05 --outFilterMultimapNmax 50'
     @params['trimAdapter'] = false
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
