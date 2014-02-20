@@ -19,6 +19,10 @@ class VariantCallerApp < SushiFabric::SushiApp
     Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
     end
+    @params['snpEff_database'] = {'select'=>''}
+    Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|build| File.directory?(build)}.each do |dir|
+      @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
+    end
     @params['gatkOptions'] = '-minIndelCnt 8 --min_base_quality_score 15 -stand_call_conf 15 -baqGOP 30'
   end
   def next_dataset
@@ -52,7 +56,7 @@ java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar \
 ### ANNOTATION ####
 SNPEFF_DIR=/usr/local/ngseq/src/snpEff_v3.4/
 #cd $SNPEFF_DIR
-java -Xmx4g -jar $SNPEFF_DIR/snpEff.jar -c $SNPEFF_DIR/snpEff.config  hg19  -v internal.vcf > #{@dataset['Name']}.vcf
+java -Xmx4g -jar $SNPEFF_DIR/snpEff.jar -c $SNPEFF_DIR/snpEff.config #{@params['snpEff_database']} -v internal.vcf > #{@dataset['Name']}.vcf
 EOS
     command
   end
