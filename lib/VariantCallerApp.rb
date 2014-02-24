@@ -33,7 +33,7 @@ class VariantCallerApp < SushiFabric::SushiApp
   end
   def commands
     command =<<-EOS
-samtools rmdup #{File.join(@gstore_dir, @dataset['BAM'])} internal.nodup.bam
+samtools view -F 4 -hb #{File.join(@gstore_dir, @dataset['BAM'])} | samtools rmdup - internal.nodup.bam
 samtools index internal.nodup.bam
 
 ### SORT OUT GROUPS ISSUES ###
@@ -51,8 +51,7 @@ REF=$(ls -l /srv/GT/reference/*/*/*/Sequence/WholeGenomeFasta/genome.fa | grep #
 java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar \
   -I internal_grouped.bam  -log gatk_log.txt -nt #{@params['cores']} \
   -o internal.vcf -R $REF -T UnifiedGenotyper \
-  -glm #{@params['glm']} \
-  #{@params['gatkOptions']}
+  -glm #{@params['glm']} #{@params['gatkOptions']}
 ### ANNOTATION ####
 SNPEFF_DIR=/usr/local/ngseq/src/snpEff_v3.4/
 #cd $SNPEFF_DIR
