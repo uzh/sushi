@@ -1,5 +1,6 @@
 <h1>Project <%= session[:project] %></h1>
 <hr />
+<%= params %>
 <h2>Set Parameters <span style="color:gray;font-size:medium"><%= @sushi_app.class %></span></h2>
 <blockquote>
   <%= @sushi_app.description.to_s.html_safe %>
@@ -39,6 +40,12 @@
           <% when 'node' %>
             <%= select_tag "parameters[#{key}]", options_for_select(@nodes), :multiple => true, :size => 10 %><br />
             (Grid Engine Status: <%= link_to 'http://fgcz-s-021.uzh.ch/cgi-bin/fgcz_ge_info.py', 'http://fgcz-s-021.uzh.ch/cgi-bin/fgcz_ge_info.py' %>)
+          <% when 'grouping' %>
+						<%= select :parameters, :grouping, options_for_select(@factor_colums.keys.map{|factor| [factor.split.first, factor.split.first]}, params[:grouping]),  :prompt => "select please" %>
+          <% when 'sampleGroup' %>
+						<%= render :partial => '/run_application/select_factor' %>
+          <% when 'refGroup' %>
+						<%= render :partial => '/run_application/select_factor' %>
           <% else %>
             <% if value.instance_of?(TrueClass) or value.instance_of?(FalseClass) %>
               <%= select :parameters, key.to_sym, ['true', 'false'], :selected => value.to_s %>
@@ -76,13 +83,22 @@
 <% end %>
 
 <script type="text/javascript">
-    $(function(){
-        $('#parameters_pref_id').change(function(){
-            var pref_id = $("#parameters_pref_id").val();
-						//alert(pref_id);
-            $.get("/run_application/city_select?pref_id=" + pref_id);
-        })
-    });
+   $(function(){
+       $('#parameters_grouping').change(function(){
+           var group_name = $("#parameters_grouping").val();
+					 var data_set_id = $("#data_set_id").val();
+					 //alert(group_name);
+					 //alert(data_set_id);
+           $.get("/run_application/factor_select?grouping=" + group_name + "&data_set_id=" + data_set_id);
+       })
+   });
+   $(function(){
+       $('#parameters_pref_id').change(function(){
+           var pref_id = $("#parameters_pref_id").val();
+ 					//alert(pref_id);
+           $.get("/run_application/city_select?pref_id=" + pref_id);
+       })
+   });
 </script>
 
 

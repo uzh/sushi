@@ -51,10 +51,65 @@ class RunApplicationController < ApplicationController
   def city_select
     init(params[:pref_id].to_i)
   end
+=begin
   def result
     @pref_id = params[:pref_id]
     @city_id = params[:city_id]
   end
+=end
+	def init_factor(factor_key)
+		@factor_colums = {}
+    data_set_id = params[:data_set_id]||params[:data_set][:id]
+    @data_set = DataSet.find(data_set_id.to_i)
+    #if @data_set
+			@data_set.samples.each do |sample|
+				sample.to_hash.each do |header, value|
+					if header.tag?('Factor') 
+						key = header.split(/\[/).first.strip
+						#@factor_colums[header] ||= []
+						#@factor_colums[header] << value
+
+						@factor_colums[key] ||= []
+						@factor_colums[key] << value
+					end
+				end
+			end
+			@factor_colums.keys.each do |header|
+				@factor_colums[header].uniq!
+			end
+    #end
+		factor_key = @factor_colums.keys.first unless factor_key
+		@factors = @factor_colums[factor_key]
+		params[:grouping] = factor_key
+		params[:sampleGroup] = @factor_colums[params[:grouping]]
+	end
+	def factor_select
+		init_factor(params[:grouping])
+=begin
+#		if @factor_colums
+			if params[:grouping]
+				@factors = @factor_colums[@factor_colums.keys.first]
+				params[:grouping] = @factor_colums.keys.first
+#				@factors = @factor_colums[params[:parameters][:grouping]]
+#				params[:grouping] = params[:grouping]
+			else
+				@factors = @factor_colums[@factor_colums.keys.last]
+				params[:grouping] = @factor_colums.keys.last
+#			end
+			params[:sampleGroup] = @factor_colums[params[:grouping]]
+#=begin
+#=end
+		else
+			@factors = @factor_colums['Condition']
+			params[:grouping] = 'Condition'
+			params[:sampleGroup] = @factor_colums[params[:grouping]]
+
+			@factors = @factor_colums[@factor_colums.keys.first]
+			params[:grouping] = @factor_colums.keys.first
+			params[:sampleGroup] = @factor_colums[params[:grouping]]
+		end
+=end
+	end
   def index
     unless @prefectures
       init(1)
@@ -92,6 +147,9 @@ class RunApplicationController < ApplicationController
       'fgcz-c-063: cpu 12,mem  70 GB,scr 450G' => 'fgcz-c-063',
       'fgcz-c-065: cpu 24,mem  70 GB,scr 197G' => 'fgcz-c-065',
     }
+		unless @factors
+			init_factor('Condition')
+		end
   end
   def confirmation
     @params = params
