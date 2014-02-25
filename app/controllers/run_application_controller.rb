@@ -1,5 +1,5 @@
 class RunApplicationController < ApplicationController
-	def init_factor(factor_key)
+	def init_factor(factor_key=nil)
 		@factor_colums = {}
     data_set_id = params[:data_set_id]||params[:data_set][:id]
     @data_set = DataSet.find(data_set_id.to_i)
@@ -61,7 +61,8 @@ class RunApplicationController < ApplicationController
       'fgcz-c-065: cpu 24,mem  70 GB,scr 197G' => 'fgcz-c-065',
     }
 		unless @factors
-			init_factor('Condition')
+			#init_factor('Condition')
+			init_factor
 		end
   end
   def confirmation
