@@ -1,1 +1,0 @@
-<div id='result'><%= select :parameters, :city_id, options_for_select(@cities.map{|obj| [obj.name, obj.id]}, params['city_id']),  :prompt => "please select" %></div>
