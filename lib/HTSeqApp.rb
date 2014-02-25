@@ -30,7 +30,8 @@ class HTSeqApp < SushiFabric::SushiApp
     {'Name'=>@dataset['Name'], 
      'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"), 
      'Species'=>@dataset['Species'],
-     'Build'=>@params['build']
+     'Build'=>@params['build'],
+     'Feature Level'=>@params['featureLevel']
     }
   end
   def commands
