@@ -6,6 +6,25 @@ $(document).ready(function(){
 });
 </script>
 <h1>Project <%= session[:project] %></h1>
+<h1>Ajax Test</h1>
+
+<%= form_tag({:action => 'result'}) do %>
+    <%= select_tag "pref_id", options_for_select(@prefectures.map{|obj| [obj.name, obj.id]}, params['pref_id']),  :prompt => "select please" %>
+
+    <%= render :partial => '/run_application/select_city' %>
+    <%= submit_tag 'ok' %>
+<% end %>
+
+<script type="text/javascript">
+    $(function(){
+        $('#pref_id').change(function(){
+            var pref_id = $("#pref_id").val();
+            $.get("/run_application/city_select?pref_id=" + pref_id);
+        })
+    });
+</script>
+
+
 
 <h2>Select DataSet</h2>
 <ul id="data_set_tree" class="filetree"></ul>

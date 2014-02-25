@@ -45,12 +45,18 @@ SushiFabric::Application.routes.draw do
       post :set_parameters
       post :confirmation
       post :submit_jobs
+			get  :city_select
+			post  :result
     end
   end
 
   match "/gstore/projects/:project_id(/*dirs)" => "home#gstore"
   match "/check_sushi_constants" => "home#sushi_constants"
   match "/import/*dataset" => "data_set#import_from_gstore"
+
+
+#	match "/city_select" => "run_application#city_select"
+#	match "/result" => "run_application#result"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

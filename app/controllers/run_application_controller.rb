@@ -1,5 +1,64 @@
 class RunApplicationController < ApplicationController
+  class Prefecture
+    def initialize
+      @cities = []
+    end
+    attr_accessor :id, :name
+    attr_accessor :cities
+  end
+  class City
+    attr_accessor :id, :name
+  end
+  def init(pref_id)
+    p1 = Prefecture.new
+    p1.id = 1
+    p1.name = 'Tokyo'
+    p2 = Prefecture.new
+    p2.id = 2
+    p2.name = 'Saitama'
+    p3 = Prefecture.new
+    p3.id = 3
+    p3.name = 'Kanagawa'
+    @prefectures = [p1, p2, p3]
+
+    c11 = City.new
+    c11.id = 11
+    c11.name = 'Asakusa'
+    c12 = City.new
+    c12.id = 12
+    c12.name = 'Hachioji'
+    p1.cities = [c11, c12]
+
+    c21 = City.new
+    c21.id = 21
+    c21.name = 'Kawaguchi'
+    c22 = City.new
+    c22.id = 22
+    c22.name = 'Tokorozawa'
+    p2.cities = [c21, c22]
+
+    c31 = City.new
+    c31.id = 31
+    c31.name = 'Yokohama'
+    p3.cities = [c31]
+
+    pref = @prefectures.find{|pref| pref.id == pref_id}
+    @cities = pref.cities
+
+    params[:pref_id] = pref_id
+    params[:city_id] = pref.cities[0].id
+  end
+  def city_select
+    init(params[:pref_id].to_i)
+  end
+  def result
+    @pref_id = params[:pref_id]
+    @city_id = params[:city_id]
+  end
   def index
+    unless @prefectures
+      init(1)
+    end
     @data_sets = if project_number = session[:project] and project = Project.find_by_number(project_number.to_i)
                    project.data_sets.reverse
                  else
@@ -7,6 +66,9 @@ class RunApplicationController < ApplicationController
                  end
   end
   def set_parameters
+    unless @prefectures
+      init(1)
+    end
     class_name = params[:app]
     #require class_name
     @sushi_app = eval(class_name).new
