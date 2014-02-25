@@ -1,0 +1,4 @@
+//$("#result").html("<%= @cities.map{|c| c.name}.join(",")+session[:hoge] %>");
+//$("#city_id").html("<%= escape_javascript(render :partial => 'select_city', :pref_id => params[:pref_id]) %>");
+$("#result").html("<%= escape_javascript(render :partial => 'select_city', :pref_id => params[:pref_id]) %>");
+//$("#result").html("<%= escape_javascript(render :partial => 'select_city') %>");
