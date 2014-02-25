@@ -8,6 +8,9 @@ class WordCountApp < SushiFabric::SushiApp
     super
     @name = 'Word_Count'
     @analysis_category = 'Stats'
+    @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'
+    @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
+    @params['refGroup'] = '' ## TODO: this should be a value from the selected column
     @required_columns = ['Name', 'Read1']
     @required_params = []
   end

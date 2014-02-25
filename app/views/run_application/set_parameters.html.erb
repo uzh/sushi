@@ -39,6 +39,12 @@
           <% when 'node' %>
             <%= select_tag "parameters[#{key}]", options_for_select(@nodes), :multiple => true, :size => 10 %><br />
             (Grid Engine Status: <%= link_to 'http://fgcz-s-021.uzh.ch/cgi-bin/fgcz_ge_info.py', 'http://fgcz-s-021.uzh.ch/cgi-bin/fgcz_ge_info.py' %>)
+          <% when 'grouping' %>
+						<%= select :parameters, :grouping, options_for_select(@factor_colums.keys.map{|factor| [factor.split.first, factor.split.first]}, params[:grouping]),  :prompt => "select please" %>
+          <% when 'sampleGroup' %>
+						<%= render :partial => '/run_application/select_sample_group' %>
+          <% when 'refGroup' %>
+						<%= render :partial => '/run_application/select_ref_group' %>
           <% else %>
             <% if value.instance_of?(TrueClass) or value.instance_of?(FalseClass) %>
               <%= select :parameters, key.to_sym, ['true', 'false'], :selected => value.to_s %>
@@ -50,6 +56,7 @@
               <%= text_field :parameters, key.to_sym, :value => "#{value}" %>
             <% end %>
           <% end %>
+
           <% if @sushi_app.required_params and @sushi_app.required_params.include?(key) %>
             <font color=red>required</font>
           <% end %>
@@ -62,4 +69,18 @@
   <br />
   <%= submit_tag 'Next' %>
 <% end %>
+
+<script type="text/javascript">
+   $(function(){
+       $('#parameters_grouping').change(function(){
+           var group_name = $("#parameters_grouping").val();
+					 var data_set_id = $("#data_set_id").val();
+					 //alert(group_name);
+					 //alert(data_set_id);
+           $.get("/run_application/factor_select?grouping=" + group_name + "&data_set_id=" + data_set_id);
+       })
+   });
+</script>
+
+
 
