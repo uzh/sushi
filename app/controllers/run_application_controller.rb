@@ -82,6 +82,7 @@ class RunApplicationController < ApplicationController
 		@factors = @factor_colums[factor_key]
 		params[:grouping] = factor_key
 		params[:sampleGroup] = @factor_colums[params[:grouping]]
+		params[:refGroup] = @factor_colums[params[:grouping]]
 	end
 	def factor_select
 		init_factor(params[:grouping])
