@@ -50,6 +50,7 @@
               <%= text_field :parameters, key.to_sym, :value => "#{value}" %>
             <% end %>
           <% end %>
+
           <% if @sushi_app.required_params and @sushi_app.required_params.include?(key) %>
             <font color=red>required</font>
           <% end %>
@@ -57,9 +58,32 @@
         </td>
         </tr>
       <% end %>
+			<tr>
+				<th>Prefecture</th>
+				<td>
+					<%= select :parameters, :pref_id, options_for_select(@prefectures.map{|obj| [obj.name, obj.id]}, params['pref_id']),  :prompt => "select please" %>
+				</td>
+			</tr><tr>
+				<th>City</th>
+				<td>
+					<%= render :partial => '/run_application/select_city' %>
+				</td>
+			</tr>
     </table>
   <br />
   <br />
   <%= submit_tag 'Next' %>
 <% end %>
+
+<script type="text/javascript">
+    $(function(){
+        $('#parameters_pref_id').change(function(){
+            var pref_id = $("#parameters_pref_id").val();
+						//alert(pref_id);
+            $.get("/run_application/city_select?pref_id=" + pref_id);
+        })
+    });
+</script>
+
+
 
