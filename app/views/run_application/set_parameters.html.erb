@@ -45,7 +45,7 @@
           <% when 'sampleGroup' %>
 						<%= render :partial => '/run_application/select_factor' %>
           <% when 'refGroup' %>
-						<%= render :partial => '/run_application/select_factor' %>
+						<%= render :partial => '/run_application/select_ref_group' %>
           <% else %>
             <% if value.instance_of?(TrueClass) or value.instance_of?(FalseClass) %>
               <%= select :parameters, key.to_sym, ['true', 'false'], :selected => value.to_s %>
