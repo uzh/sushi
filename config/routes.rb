@@ -45,8 +45,6 @@ SushiFabric::Application.routes.draw do
       post :set_parameters
       post :confirmation
       post :submit_jobs
-			get  :city_select
-			post  :result
 			get  :factor_select
 			post  :factor_result
     end
