@@ -2,11 +2,14 @@
 # encoding: utf-8
 
 require 'sushi_fabric'
+require_relative 'global_variables'
 
 class WordCountApp < SushiFabric::SushiApp
+  include GlobalVariables
   def initialize
     super
     @name = 'Word_Count'
+    @description = "#{GlobalVariables::SUSHI}"
     @analysis_category = 'Stats'
     @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
@@ -26,6 +29,8 @@ class WordCountApp < SushiFabric::SushiApp
     commands << "gunzip -c $GSTORE_DIR/#{@dataset['Read1']} |wc > #{@dataset['Name']}.stats\n"
     commands << "echo 'Factor columns: [#{@factor_cols.join(',')}]'\n"
     commands << "echo 'Factors: [#{@factors.join(',')}]'\n"
+    commands << "echo '#{GlobalVariables::SUSHI}'\n"
+    commands << "echo '#{SUSHI}'\n"
     commands
   end
 end
