@@ -18,7 +18,7 @@ EOS
     @required_params = ['build','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '16'
+    @params['ram'] = '30'
     @params['scratch'] = '100'
     @params['build'] = {'select'=>''}
     Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|

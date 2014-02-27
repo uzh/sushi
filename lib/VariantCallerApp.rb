@@ -28,7 +28,7 @@ class VariantCallerApp < SushiFabric::SushiApp
   def next_dataset
     {'Name'=>@dataset['Name'], 
      'VCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf"),
-     'Html [Link]'=>File.join(@result_dir, "#{@dataset['Name']}.html"), 
+     'Html [Link,File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
      'Build'=>@dataset['Build']
     }
   end
@@ -55,8 +55,7 @@ java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar \
   -glm #{@params['glm']} #{@params['gatkOptions']}
 ### ANNOTATION ####
 SNPEFF_DIR=/usr/local/ngseq/src/snpEff_v3.4/
-#cd $SNPEFF_DIR
-java -Xmx4g -jar $SNPEFF_DIR/snpEff.jar -s #{@dataset['Name']}.html -c $SNPEFF_DIR/snpEff.config #{@params['snpEff_database']} -v internal.vcf > #{@dataset['Name']}.vcf
+java -Xmx2g -jar $SNPEFF_DIR/snpEff.jar -s #{@dataset['Name']}.html -c $SNPEFF_DIR/snpEff.config #{@params['snpEff_database']} -v internal.vcf > #{@dataset['Name']}.vcf
 EOS
     command
   end

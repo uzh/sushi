@@ -12,7 +12,7 @@ class BamStatsApp <  SushiFabric::SushiApp
     @required_columns = ['Name','BAM','BAI', 'Build']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
-    @params['ram'] = '16'
+    @params['ram'] = '50'
     @params['scratch'] = '100'
     @params['paired'] = false
     @params['name'] = 'BAM_Statistics'
