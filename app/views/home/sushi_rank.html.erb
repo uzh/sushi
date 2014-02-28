@@ -1,0 +1,21 @@
+<h1>Sushi Rank</h1>
+Counted since <%= @first_date %>
+<hr />
+<table>
+  <tr>
+    <th>Rank</th><th>Name</th><th>Submitting</th>
+  </tr>
+<% @rank.each_with_index do |name_count, i| %>
+  <tr>
+    <td>
+    <% if i==0 %>
+      <font color=blue><%= "The Sushi Master" %></font>
+    <% else %>
+      <%= i+1 %>
+    <% end %>
+    </td>
+    <td><%= name_count[0] %></td>
+    <td><%= name_count[1] %></td>
+  </tr>
+<% end %>
+</table>
