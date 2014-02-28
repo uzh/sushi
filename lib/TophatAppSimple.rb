@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20131205-114543'
+Version = '20140228-143728'
 
 require 'sushi_fabric'
 
@@ -25,6 +25,19 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
     @params['paired'] = false
     @params['paired', 'description'] = 'either the reads are paired-ends or single-end'
     @params['build'] = {'select'=>''}
+
+    base_pattern = "/srv/GT/reference/*/*/*"
+    shown_replace_pattern = {/\/srv\/GT\/reference\//=>''}
+    builds = builder_selector(base_pattern, shown_replace_pattern)
+
+    base_pattern = "/srv/GT/reference/*/*/*/Annotation/Version*"
+    versions = builder_selector(base_pattern, shown_replace_pattern)
+
+    builds.merge!(versions)
+    builds = builds.sort.to_h
+
+    @params['build'].merge!(builds)
+=begin
     Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       if versions = Dir[File.join(dir, "Annotation/Version*")] and !versions.empty?
         versions.each do |version|
@@ -34,6 +47,7 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
         @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
       end
     end
+=end
     @params['build', 'description'] = 'Reference sequence'
 #    @output_files = ['BAM','BAI']
   end
