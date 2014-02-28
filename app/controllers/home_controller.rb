@@ -78,6 +78,21 @@ class HomeController < ApplicationController
         @files.reverse!
       end
     end
-
+  end
+  def sushi_rank
+    command = "wfm_job_list -d #{SushiFabric::WORKFLOW_MANAGER}"
+    count_name = {}
+    first_date = []
+    IO.popen(command) do |io|
+      while line=io.gets
+        # e.g. "564201,fail,QC_sample_dataset.sh,2013-07-12 17:38:21,masaomi,1001\n"
+        id, stat, script, date, name, project = line.chomp.split(/,/)
+        count_name[name]||=0
+        count_name[name]+=1
+        first_date << date
+      end
+    end
+    @rank = count_name.sort_by{|name, count| count}.reverse
+    @first_date = first_date.sort.first.split.first
   end
 end

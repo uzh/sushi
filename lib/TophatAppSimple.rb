@@ -1,10 +1,12 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20140228-143728'
+Version = '20140228-152850'
 
 require 'sushi_fabric'
+require_relative 'global_variables'
 
 class TophatAppSimple < SushiFabric::SushiApp
+  include GlobalVariables
   def initialize
     super
     @name = 'TophatSimple'
@@ -24,6 +26,8 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
     @params['is_stranded', 'description'] = 'library type'
     @params['paired'] = false
     @params['paired', 'description'] = 'either the reads are paired-ends or single-end'
+    @params['build'] = build_selector
+=begin
     @params['build'] = {'select'=>''}
 
     base_pattern = "/srv/GT/reference/*/*/*"
@@ -37,16 +41,6 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
     builds = builds.sort.to_h
 
     @params['build'].merge!(builds)
-=begin
-    Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
-      if versions = Dir[File.join(dir, "Annotation/Version*")] and !versions.empty?
-        versions.each do |version|
-          @params['build'][version.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(version)
-        end
-      else
-        @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
-      end
-    end
 =end
     @params['build', 'description'] = 'Reference sequence'
 #    @output_files = ['BAM','BAI']
