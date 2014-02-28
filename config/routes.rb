@@ -53,6 +53,7 @@ SushiFabric::Application.routes.draw do
   match "/gstore/projects/:project_id(/*dirs)" => "home#gstore"
   match "/check_sushi_constants" => "home#sushi_constants"
   match "/import/*dataset" => "data_set#import_from_gstore"
+  match "/sushi_rank" => "home#sushi_rank"
 
 
 #	match "/city_select" => "run_application#city_select"
