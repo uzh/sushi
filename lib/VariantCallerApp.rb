@@ -14,7 +14,6 @@ class VariantCallerApp < SushiFabric::SushiApp
     @params['cores'] = '4'
     @params['ram'] = '10'
     @params['scratch'] = '100'
-    @params['glm'] = ['BOTH', 'INDEL', 'SNP'] 
     @params['build'] = {'select'=>''}
     Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
