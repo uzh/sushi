@@ -34,23 +34,33 @@ class VariantCallerApp < SushiFabric::SushiApp
   end
   def commands
     command =<<-EOS
+REF=$(ls -l /srv/GT/reference/*/*/*/Sequence/WholeGenomeFasta/genome.fa | grep "\/#{@params['build']}\/" | awk '{print $9}')
 samtools view -F 4 -hb #{File.join(@gstore_dir, @dataset['BAM'])} | samtools rmdup - internal.nodup.bam
 samtools index internal.nodup.bam
 
 ### SORT OUT GROUPS ISSUES ###
 java -jar /usr/local/ngseq/stow/picard-tools-1.96/bin/AddOrReplaceReadGroups.jar I=internal.nodup.bam \
-O=internal_grouped.bam SORT_ORDER=coordinate RGID=ID_NAME TMP_DIR=/scratch \
+O=internal_grouped.lex.bam SORT_ORDER=coordinate RGID=ID_NAME TMP_DIR=/scratch \
 RGLB=Paired_end RGPL=illumina RGSM=project RGPU=BIOSEQUENCER
 
 ### REINDEXING CORRECTLY GROUPED FILES ###
-samtools index internal_grouped.bam
+samtools index internal_grouped.lex.bam
 
+if [ $REF == "/hg19/" ]; then 
+### SORT OUT ORDER  ###
+java -jar /usr/local/ngseq/stow/picard-tools-1.96/bin/ReorderSam.jar \
+I=internal_grouped.lex.bam O=internal_grouped.bam REFERENCE=$REF
+### REINDEXING CORRECTLY GROUPED AND ORDERED FILES ###
+samtools index internal_grouped.bam
+BAMFILE=internal_grouped.bam
+else
+BAMFILE=internal_grouped.lex.bam 
+fi 
 ### DETECTING VARIANTS ###
 GATK_DIR=/usr/local/ngseq/src/GenomeAnalysisTK-2.8-1-g932cd3a
-REF=$(ls -l /srv/GT/reference/*/*/*/Sequence/WholeGenomeFasta/genome.fa | grep #{@params['build']} | awk '{print $9}')
 
-java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar \
-  -I internal_grouped.bam  -log gatk_log.txt -nt #{@params['cores']} \
+java -jar $GATK_DIR/GenomeAnalysisTK.jar \
+  -I $BAMFILE  -log gatk_log.txt -nt #{@params['cores']} \
   -o internal.vcf -R $REF -T UnifiedGenotyper \
   -glm #{@params['glm']} #{@params['gatkOptions']}
 ### ANNOTATION ####
