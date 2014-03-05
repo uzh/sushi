@@ -22,8 +22,11 @@ class VariantCallerApp < SushiFabric::SushiApp
     Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
     end
+    @params['snpCaller'] = {'select'=>'mpileup_bcftools,gatk'} 
     @params['mpileupOtions'] = ''
     @params['bcftoolsOtions'] = ''
+    @params['gatk_glm'] = {'select'=>'SNP,INDEL,BOTH'}
+    @params['gatkOptions'] = '-baqGOP 30 -minIndelCnt 8 --min_base_quality_score 15 -stand_call_conf 15'
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
@@ -45,15 +48,21 @@ RGLB=Paired_end RGPL=illumina RGSM=project RGPU=BIOSEQUENCER
 
 
 BAMFILE=internal_grouped.lex.bam 
-### DETECTING VARIANTS ###
+### DETECTING VARIANTS BCFTOOLS ###
+if [ #{@params['snpCaller']} == 'mpileup_bcftools' ]; then  
 samtools mpileup #{@params['mpileupOtions']} -uf $REF $BAMFILE | bcftools view -bvcg - > internal.bcf  
 bcftools view  #{@params['bcftoolsOtions']}  internal.bcf | vcfutils.pl varFilter -D200 > internal.vcf 
-#GATK_DIR=/usr/local/ngseq/src/GenomeAnalysisTK-2.8-1-g932cd3a
 
-#java -jar $GATK_DIR/GenomeAnalysisTK.jar \
-#  -I $BAMFILE  -log gatk_log.txt -nt #{@params['cores']} \
-#  -o internal.vcf -R $REF -T UnifiedGenotyper \
-#  -glm #{@params['glm']} #{@params['gatkOptions']}
+else
+### DETECTING VARIANTS GATK  ###
+GATK_DIR=/usr/local/ngseq/src/GenomeAnalysisTK-2.8-1-g932cd3a
+
+java -jar $GATK_DIR/GenomeAnalysisTK.jar \
+  -I $BAMFILE  -log gatk_log.txt -nt #{@params['cores']} \
+  -o internal.vcf -R $REF -T UnifiedGenotyper \
+  -glm #{@params['glm']} #{@params['gatkOptions']}
+#############
+fi
 ### ANNOTATION ####
 SNPEFF_DIR=/usr/local/ngseq/src/snpEff_v3.4/
 java -Xmx2g -jar $SNPEFF_DIR/snpEff.jar -s #{@dataset['Name']}.html -c $SNPEFF_DIR/snpEff.config #{@params['snpEff_database']} -v internal.vcf > #{@dataset['Name']}.vcf
