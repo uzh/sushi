@@ -20,4 +20,12 @@ module GlobalVariables
     selector.merge!(builds)
     selector
   end
+  def factor_dataset
+    factors = get_columns_with_tag 'Factor'
+    dataset = {}
+    factors.first.keys.each do |colname|
+      dataset[colname+" [Factor]"] = @dataset[colname]
+    end
+    dataset
+  end
 end
