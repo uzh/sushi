@@ -8,10 +8,9 @@ Counted since <%= @first_date %>
 <% @rank.each_with_index do |name_count, i| %>
   <tr>
     <td>
-    <% if i==0 %>
-      <font color=blue><%= "The Sushi Master" %></font>
-    <% else %>
       <%= i+1 %>
+    <% if i==0 %>
+      <font color=red> *<%= "The Sushi Master!" %> *</font>
     <% end %>
     </td>
     <td><%= name_count[0] %></td>
