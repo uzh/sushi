@@ -83,12 +83,16 @@ class HomeController < ApplicationController
     command = "wfm_job_list -d #{SushiFabric::WORKFLOW_MANAGER}"
     count_name = {}
     first_date = []
+    @count_month = {}
     IO.popen(command) do |io|
       while line=io.gets
         # e.g. "564201,fail,QC_sample_dataset.sh,2013-07-12 17:38:21,masaomi,1001\n"
         id, stat, script, date, name, project = line.chomp.split(/,/)
         count_name[name]||=0
         count_name[name]+=1
+        date = date.split.first.split(/-/)[0,2].join('-')
+        @count_month[date]||=0
+        @count_month[date]+=1
         first_date << date
       end
     end
