@@ -18,7 +18,10 @@ class WordCountApp < SushiFabric::SushiApp
     @required_params = []
   end
   def next_dataset
-    {'Name'=>@dataset['Name'],'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats')}
+    {
+      'Name'=>@dataset['Name'],
+      'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats')
+    }.merge factor_dataset
   end
   def preprocess
     @factors = get_columns_with_tag 'Factor'
