@@ -61,4 +61,4 @@ end
 
 gem 'workflow_manager'
 gem 'sushi_fabric'
-
+gem 'chartkick'
