@@ -14,7 +14,10 @@ Counted since <%= @first_date %>
     <td>
       <%= i+1 %>
     <% if i==0 %>
-      <font color=red> *<%= "The Sushi Master!" %> *</font>
+      <font color=red> *<%= "The Sushi Master!" %>*</font>
+    <% end %>
+    <% if name_count[0] == @monthly_mvp %>
+      <font color=blue> *<%= "Monthly MVP!" %>*</font>
     <% end %>
     </td>
     <td><%= name_count[0] %></td>
