@@ -27,5 +27,7 @@ module GlobalVariables
       dataset[colname+" [Factor]"] = @dataset[colname]
     end
     dataset
+  rescue
+    {}
   end
 end
