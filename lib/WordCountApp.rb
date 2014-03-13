@@ -24,8 +24,9 @@ class WordCountApp < SushiFabric::SushiApp
     }.merge factor_dataset
   end
   def preprocess
-    @factors = get_columns_with_tag 'Factor'
-    @factor_cols = @factors.first.keys
+    if @factors = get_columns_with_tag('Factor') and @factors.first
+      @factor_cols = @factors.first.keys
+    end
   end
   def commands
     commands = ''
@@ -44,7 +45,7 @@ if __FILE__ == $0
   usecase.user = 'sushi_lover'
   #usecase.parameterset_tsv_file = 'sample_parameterset.tsv'
   #usecase.dataset_tsv_file = 'sample_dataset.tsv'
-  usecase.dataset_sushi_id = 26
+  usecase.dataset_sushi_id = 1
 
   # run (submit to workflow_manager)
   #usecase.run
