@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20140306-133550'
+Version = '20140313-095714'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -26,7 +26,7 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
     @params['is_stranded', 'description'] = 'library type'
     @params['paired'] = false
     @params['paired', 'description'] = 'either the reads are paired-ends or single-end'
-    @params['build'] = build_selector
+    @params['build'] = ref_selector
     @params['build', 'description'] = 'Reference sequence'
 #    @output_files = ['BAM','BAI']
   end
