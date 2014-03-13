@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20140313-095714'
+Version = '20140313-161638'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -29,6 +29,9 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
     @params['build'] = ref_selector
     @params['build', 'description'] = 'Reference sequence'
 #    @output_files = ['BAM','BAI']
+  end
+  def set_default_parameters
+    @params['paired'] = dataset_has_column?('Read2')
   end
   def preprocess
     if @params['paired']
