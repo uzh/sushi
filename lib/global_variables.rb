@@ -4,7 +4,7 @@
 module GlobalVariables
   SUSHI = 'Supercalifragilisticexpialidocious!!'
 
-  def build_selector
+  def ref_selector
     selector = {'select'=>''}
 
     base_pattern = "/srv/GT/reference/*/*/*"
@@ -14,6 +14,11 @@ module GlobalVariables
     base_pattern = "/srv/GT/reference/*/*/*/Annotation/Version*"
     versions = builder_selector(base_pattern, shown_replace_pattern)
 
+    builds.keys.each do |build_key|
+      if versions.keys.find{|version_key| version_key=~/#{build_key}/}
+        builds.delete(build_key)
+      end
+    end
     builds.merge!(versions)
     builds = builds.sort.to_h
 
