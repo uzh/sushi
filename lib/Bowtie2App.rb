@@ -15,16 +15,13 @@ Fast and sensitive read alignment. Supports local and end-to-end mode<br/>
 EOS
     
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['build','paired', 'strandMode']
+    @required_params = ['reference','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
     @params['scratch'] = '100'
-    @params['build'] = {'select'=>''}
-    Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
-      @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
-    end
-    @params['build', 'description'] = 'the genome build to use as reference'
+    @params['reference'] = ref_selector
+    @params['reference', 'description'] = 'the genome build and annotation to use as reference'
     @params['paired'] = false
     @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
     @params['strandMode'] = ['both', 'sense', 'antisense']
@@ -49,12 +46,18 @@ EOS
       @required_columns << 'Read2'
     end
   end
+ def set_default_parameters
+    @params['paired'] = dataset_has_column?('Read2')
+  end
   def next_dataset
     {'Name'=>@dataset['Name'], 
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'Species'=>@dataset['Species'],
-     'Build'=>@params['build']
+     'reference'=>@params['reference'],
+     'strandMode'=>@params['strandMode'],
+     'featureFile'=>@params['featureFile'],
+     'paired'=>@params['paired']
     }
   end
   def commands
