@@ -22,10 +22,10 @@ class VariantCallerApp < SushiFabric::SushiApp
     Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
     end
-    @params['snpCaller'] = {'select'=>'mpileup_bcftools,gatk'} 
+    @params['snpCaller'] = ['mpileup_bcftools','gatk']
     @params['mpileupOtions'] = ''
     @params['bcftoolsOtions'] = ''
-    @params['gatk_glm'] = {'select'=>'SNP,INDEL,BOTH'}
+    @params['gatk_glm'] = ['SNP','INDEL','BOTH']
     @params['gatkOptions'] = '-baqGOP 30 -minIndelCnt 8 --min_base_quality_score 15 -stand_call_conf 15'
   end
   def next_dataset
@@ -45,13 +45,13 @@ samtools index internal.nodup.bam
 java -jar /usr/local/ngseq/stow/picard-tools-1.96/bin/AddOrReplaceReadGroups.jar I=internal.nodup.bam \
 O=internal_grouped.lex.bam SORT_ORDER=coordinate RGID=ID_NAME TMP_DIR=/scratch \
 RGLB=Paired_end RGPL=illumina RGSM=project RGPU=BIOSEQUENCER
-
-
 BAMFILE=internal_grouped.lex.bam 
+samtools index $BAMFILE
+
 ### DETECTING VARIANTS BCFTOOLS ###
 if [ #{@params['snpCaller']} == 'mpileup_bcftools' ]; then  
 samtools mpileup #{@params['mpileupOtions']} -uf $REF $BAMFILE | bcftools view -bvcg - > internal.bcf  
-bcftools view  #{@params['bcftoolsOtions']}  internal.bcf | vcfutils.pl varFilter -D200 > internal.vcf 
+bcftools view  #{@params['bcftoolsOtions']}  internal.bcf  > internal.vcf 
 
 else
 ### DETECTING VARIANTS GATK  ###
@@ -60,7 +60,7 @@ GATK_DIR=/usr/local/ngseq/src/GenomeAnalysisTK-2.8-1-g932cd3a
 java -jar $GATK_DIR/GenomeAnalysisTK.jar \
   -I $BAMFILE  -log gatk_log.txt -nt #{@params['cores']} \
   -o internal.vcf -R $REF -T UnifiedGenotyper \
-  -glm #{@params['glm']} #{@params['gatkOptions']}
+  -glm #{@params['gatk_glm']} #{@params['gatkOptions']}
 #############
 fi
 ### ANNOTATION ####
