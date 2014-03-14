@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20140314-141130'
+Version = '20140314-142036'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -52,7 +52,7 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
   def bowtie2_index
     @bowtie2_index ||= if build_dir
                          if build_dir =~ /Annotation\/Version/
-                           File.join(build_dir, '../../Sequence/BOWTIE2Index/genome')
+                           File.join(build_dir, '../../../Sequence/BOWTIE2Index/genome')
                          else
                            File.join(build_dir, 'Sequence/BOWTIE2Index/genome')
                          end
