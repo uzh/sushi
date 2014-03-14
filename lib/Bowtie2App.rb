@@ -4,9 +4,10 @@ Version = '20140314-094249'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
+require_relative 'optparse_ex'
+include GlobalVariables
 
 class Bowtie2App < SushiFabric::SushiApp
-  include GlobalVariables
   def initialize
     super
     @name = 'Bowtie2'
@@ -17,7 +18,7 @@ Fast and sensitive read alignment. Supports local and end-to-end mode<br/>
 EOS
     
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['reference','paired']
+    @required_params = ['build','paired']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
@@ -82,19 +83,20 @@ EOS
 end
 
 if __FILE__ == $0
-  usecase = Bowtie2App.new
+  run Bowtie2App
+  #usecase = Bowtie2App.new
 
-  usecase.project = "p1001"
-  usecase.user = 'masamasa'
+  #usecase.project = "p1001"
+  #usecase.user = 'masamasa'
 
   # set user parameter
   # for GUI sushi
   #usecase.params['process_mode'].value = 'SAMPLE'
-  usecase.params['build'] = 'mm10'
-  usecase.params['paired'] = true
-  usecase.params['strandMode'] = 'both'
-  usecase.params['cores'] = 8
-  usecase.params['node'] = 'fgcz-c-048'
+  #usecase.params['build'] = 'mm10'
+  #usecase.params['paired'] = true
+  #usecase.params['strandMode'] = 'both'
+  #usecase.params['cores'] = 8
+  #usecase.params['node'] = 'fgcz-c-048'
 
   # also possible to load a parameterset csv file
   # mainly for CUI sushi
@@ -110,7 +112,7 @@ if __FILE__ == $0
 
   # run (submit to workflow_manager)
   #usecase.run
-  usecase.test_run
+  #usecase.test_run
 
 end
 
