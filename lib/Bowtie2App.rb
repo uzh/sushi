@@ -22,8 +22,8 @@ EOS
     @params['cores'] = '8'
     @params['ram'] = '16'
     @params['scratch'] = '100'
-    @params['reference'] = ref_selector
-    @params['reference', 'description'] = 'the genome build and annotation to use as reference'
+    @params['build'] = ref_selector
+    @params['build', 'description'] = 'the genome build and annotation to use as reference'
     @params['paired'] = false
     @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
     @params['cmdOptions'] = ''
@@ -52,7 +52,7 @@ EOS
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'Species'=>@dataset['Species'],
-     'reference'=>@params['reference'],
+     'build'=>@params['build'],
      'paired'=>@params['paired']
     }
   end
