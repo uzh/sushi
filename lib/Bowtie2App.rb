@@ -16,7 +16,7 @@ Fast and sensitive read alignment. Supports local and end-to-end mode<br/>
 EOS
     
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['reference','paired', 'strandMode']
+    @required_params = ['reference','paired']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
@@ -25,10 +25,6 @@ EOS
     @params['reference', 'description'] = 'the genome build and annotation to use as reference'
     @params['paired'] = false
     @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
-    @params['strandMode'] = ['both', 'sense', 'antisense']
-    @params['strandMode', 'description'] = 'orientation of the reads relative to the annotated transcript. Use "both" if the reads are not strand-specific.'
-    @params['featureFile'] = 'genes.gtf'
-    @params['featureFile', 'description'] = 'specify a gtf file with the transcript coordinates; if the file is a relative path then it must be in the build directory'
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify the commandline options for bowtie2; do not specify any option that is already covered by the dedicated input fields'
     @params['trimAdapter'] = false
@@ -56,8 +52,6 @@ EOS
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'Species'=>@dataset['Species'],
      'reference'=>@params['reference'],
-     'strandMode'=>@params['strandMode'],
-     'featureFile'=>@params['featureFile'],
      'paired'=>@params['paired']
     }
   end
