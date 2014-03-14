@@ -38,7 +38,7 @@ SushiFabric::Application.configure do
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
   config.logger = Logger.new("log/development.log", 5, 10 * 1024 * 1024)
-  config.logger.level = Logger::WARN
+  config.logger.level = Logger::ERROR
 
   # fgcz
   if `hostname`.chomp =~ /fgcz-s-034/

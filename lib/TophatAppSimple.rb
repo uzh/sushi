@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20140313-161638'
+Version = '20140314-141130'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
+include GlobalVariables
 
 class TophatAppSimple < SushiFabric::SushiApp
-  include GlobalVariables
   def initialize
     super
     @name = 'TophatSimple'
@@ -47,7 +47,7 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
     }
   end
   def build_dir
-    @build_dir ||= Dir["/srv/GT/reference/*/*/#{@params['build']}"].to_a[0]
+    @build_dir ||= File.join('/srv/GT/reference', @params['build'])
   end
   def bowtie2_index
     @bowtie2_index ||= if build_dir
