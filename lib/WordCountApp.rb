@@ -46,6 +46,7 @@ if __FILE__ == $0
   #usecase.parameterset_tsv_file = 'sample_parameterset.tsv'
   #usecase.dataset_tsv_file = 'sample_dataset.tsv'
   usecase.dataset_sushi_id = 1
+  usecase.params['grouping'] = 'hoge'
 
   # run (submit to workflow_manager)
   #usecase.run
