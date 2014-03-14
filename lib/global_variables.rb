@@ -27,10 +27,10 @@ module GlobalVariables
 
     base_pattern = "/srv/GT/reference/*/*/*"
     shown_replace_pattern = {/\/srv\/GT\/reference\//=>''}
-    builds = builder_selector(base_pattern, shown_replace_pattern)
+    value_replace_pattern = {/\/srv\/GT\/reference\//=>''}
+    builds = builder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
     base_pattern = "/srv/GT/reference/*/*/*/Annotation/Version*"
-    value_replace_pattern = {/\/srv\/GT\/reference\/.+?\/.+?\//=>''}
     versions = builder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
     builds.keys.each do |build_key|
