@@ -3,9 +3,10 @@
 
 require 'sushi_fabric'
 require_relative 'global_variables'
+require_relative 'optparse_ex'
+include GlobalVariables
 
 class WordCountApp < SushiFabric::SushiApp
-  include GlobalVariables
   def initialize
     super
     @name = 'Word_Count'
@@ -38,17 +39,18 @@ class WordCountApp < SushiFabric::SushiApp
     commands
   end
 end
-if __FILE__ == $0
-  usecase = WordCountApp.new
 
-  usecase.project = "p1001"
-  usecase.user = 'sushi_lover'
-  #usecase.parameterset_tsv_file = 'sample_parameterset.tsv'
-  #usecase.dataset_tsv_file = 'sample_dataset.tsv'
-  usecase.dataset_sushi_id = 1
-  usecase.params['grouping'] = 'hoge'
+if __FILE__ == $0
+  run WordCountApp
+
+  #usecase.project = "p1001"
+  #usecase.user = 'sushi_lover'
+  #usecase.parameterset_tsv_file = 'parameters.tsv'
+  #usecase.dataset_tsv_file = 'dataset.tsv'
+  #usecase.dataset_sushi_id = 1
+  #usecase.params['grouping'] = 'hoge'
 
   # run (submit to workflow_manager)
   #usecase.run
-  usecase.test_run
+  #usecase.test_run
 end

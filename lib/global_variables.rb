@@ -54,4 +54,37 @@ module GlobalVariables
   rescue
     {}
   end
+  def run(class_name)
+    opt = OptionParser.new do |o|
+      o.banner = "Usage: ruby #{__FILE__} [options]"
+      o.on(:dataset_id, '-i dataset_id', '--dataset_id', Integer, 'DataSet ID in Sushi DB')
+      o.on(:dataset_tsv, '-d dataset_tsv', '--dataset', String, 'DataSet file (.tsv) (This option is prior to dataset_id option)')
+      o.on(:parameterset_tsv, '-m parameterset_tsv', '--parameterset', String, 'Parameterset file (.tsv)')
+      o.on(:run_mode, '-r', '--run', 'Real run mode. without this option, it runs with test run mode which checks only DataSet and Parameters and no submittion')
+      o.on(:project, '1001', '-p', '--project', String, 'Project Number (default: 1001)')
+      o.on(:user, 'sushi_lover', '-u', '--user', String, 'Submit user (default: sushi_lover)')
+      o.parse!(ARGV)
+    end
+    opt.project = 'p' + opt.project
+    unless opt.dataset_id or opt.dataset_tsv
+      puts
+      warn "\e[31mERROR\e[0m: Either dataset_id or dataset_tsv is required"
+      print opt.help
+      exit
+    end
+
+    usecase = class_name.new
+
+    usecase.project = opt.project
+    usecase.user = opt.user
+    usecase.dataset_sushi_id = opt.dataset_id
+    usecase.dataset_tsv_file = opt.dataset_tsv
+    usecase.parameterset_tsv_file = opt.parameterset_tsv
+    if opt.run_mode
+      usecase.run
+    else
+      usecase.test_run
+    end
+  end
+
 end

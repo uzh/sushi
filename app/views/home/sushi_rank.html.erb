@@ -7,7 +7,7 @@ Counted since <%= @first_date %>
 <hr />
 <table>
   <tr>
-    <th>Rank</th><th>Name</th><th>Submitting</th>
+    <th>Rank</th><th>Name</th><th>Submitting (<%= Time.now.strftime("%Y-%m") %>)</th><th>Submitting (Total)</th>
   </tr>
 <% @rank.each_with_index do |name_count, i| %>
   <tr>
@@ -16,11 +16,12 @@ Counted since <%= @first_date %>
     <% if i==0 %>
       <font color=red> *<%= "The Sushi Master!" %>*</font>
     <% end %>
-    <% if name_count[0] == @monthly_mvp %>
+    <% if name_count[0] == @mvp %>
       <font color=blue> *<%= "Monthly MVP!" %>*</font>
     <% end %>
     </td>
     <td><%= name_count[0] %></td>
+    <td><%= @monthly_mvp[name_count[0]] %></td>
     <td><%= name_count[1] %></td>
   </tr>
 <% end %>
