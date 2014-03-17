@@ -1,10 +1,9 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20131128-084625'
+Version = '20140317-150043'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
-require_relative 'optparse_ex'
 include GlobalVariables
 
 class STARApp < SushiFabric::SushiApp
