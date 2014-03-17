@@ -60,7 +60,7 @@
           <% if @sushi_app.required_params and @sushi_app.required_params.include?(key) %>
             <font color=red>required</font>
           <% end %>
-          <span style='color:gray;'><%= @sushi_app.params[key, 'description'].to_s %></span>
+          <font color=gray><%= @sushi_app.params[key, 'description'].to_s %></font>
         </td>
         </tr>
       <% end %>
