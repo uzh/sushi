@@ -15,6 +15,7 @@ class WordCountApp < SushiFabric::SushiApp
     @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
     @params['refGroup'] = '' ## TODO: this should be a value from the selected column
+    @params['hoge'] = '' 
     @required_columns = ['Name', 'Read1']
     @required_params = []
   end
@@ -23,6 +24,9 @@ class WordCountApp < SushiFabric::SushiApp
       'Name'=>@dataset['Name'],
       'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats')
     }.merge factor_dataset
+  end
+  def set_default_parameters
+    @params['hoge'] = @dataset[0]['Read1 [File]']
   end
   def preprocess
     if @factors = get_columns_with_tag('Factor') and @factors.first
