@@ -44,7 +44,9 @@ class TophatApp < SushiFabric::SushiApp
      'Species'=>@dataset['Species'],
      'build'=>@params['build'],
      'paired'=>@params['paired'],
-     'featureFile=@params['featureFile']
+     'featureFile'=>@params['featureFile'],
+     'strandMode'=>@params['strandMode'],
+     'Read Count'=>@dataset['Read Count']
     }
   end
   def commands
