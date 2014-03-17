@@ -2,6 +2,9 @@
 # encoding: utf-8
 
 require 'sushi_fabric'
+require_relative 'global_variables'
+require_relative 'optparse_ex'
+include GlobalVariables
 
 class BamStatsApp <  SushiFabric::SushiApp
   def initialize
@@ -9,27 +12,36 @@ class BamStatsApp <  SushiFabric::SushiApp
     @name = 'BAM Stat'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
-    @required_columns = ['Name','BAM','BAI', 'Build']
+    @required_columns = ['Name','BAM','BAI', 'build']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
     @params['ram'] = '50'
     @params['scratch'] = '100'
     @params['paired'] = false
     @params['name'] = 'BAM_Statistics'
-    @params['strandMode'] = ['both', 'sense', 'antisense']
-    @params['build'] = {'select'=>''}
-    Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
-      @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
-    end
+    @params['build'] = ref_selector
     @params['featureFile'] = 'genes.gtf'
+    @params['strandMode'] = ['both', 'sense', 'antisense']
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
     {'Name'=>@params['name'],
      'Report [File]'=>report_dir,
-     'Html [Link]'=>File.join(report_dir, '00index.html')
+     'Html [Link]'=>File.join(report_dir, '00index.html'),
+     'Species'=>@dataset['Species'],
+     'build'=>@params['build'],
+     'featureFile'=>@params['featureFile']
     }
   end
+  def set_default_parameters
+    #@params['build'] = @dataset['build'][1]
+    if dataset_has_column?('featureFile')
+      #@params['featureFile'] = @dataset['featureFile'][1]
+      #@params['strandMode'] = @dataset['strandMode'][1]
+      #@params['paired'] = @dataset['paired'][1]
+    end
+  end
+
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave<<  EOT\n"
     command<<  "source('/usr/local/ngseq/opt/sushi_scripts/init.R')\n"
