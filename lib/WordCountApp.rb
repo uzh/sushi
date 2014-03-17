@@ -3,7 +3,6 @@
 
 require 'sushi_fabric'
 require_relative 'global_variables'
-require_relative 'optparse_ex'
 include GlobalVariables
 
 class WordCountApp < SushiFabric::SushiApp

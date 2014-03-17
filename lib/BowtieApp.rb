@@ -1,10 +1,9 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20131128-084543'
+Version = '20140317-150101'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
-require_relative 'optparse_ex'
 include GlobalVariables
 
 class BowtieApp < SushiFabric::SushiApp
