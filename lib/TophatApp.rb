@@ -1,10 +1,9 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20131128-084636'
+Version = '20140317-150052'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
-require_relative 'optparse_ex'
 include GlobalVariables
 
 class TophatApp < SushiFabric::SushiApp
