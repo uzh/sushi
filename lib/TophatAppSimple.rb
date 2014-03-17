@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20140315-211005'
+Version = '20140317-142505'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -42,7 +42,7 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
     {'Name'=>@dataset['Name'], 
      'BAM [File,Link]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-     'Build'=>@params['build'],
+     'build'=>@params['build'],
      'Species'=>@dataset['Species']
     }
   end
