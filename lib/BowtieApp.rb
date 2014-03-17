@@ -41,8 +41,9 @@ class BowtieApp < SushiFabric::SushiApp
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'Species'=>@dataset['Species'],
      'build'=>@params['build'],
-     'paired'=>@params['paired']
-    }
+     'paired'=>@params['paired'],
+     'Read Count'=>@dataset['Read Count']
+    }.merge factor_dataset
   end
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"
