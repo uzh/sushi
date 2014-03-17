@@ -33,11 +33,11 @@ class BamStatsApp <  SushiFabric::SushiApp
     }
   end
   def set_default_parameters
-    #@params['build'] = @dataset['build'][1]
+    @params['build'] = @dataset[0]['build']
     if dataset_has_column?('featureFile')
-      #@params['featureFile'] = @dataset['featureFile'][1]
-      #@params['strandMode'] = @dataset['strandMode'][1]
-      #@params['paired'] = @dataset['paired'][1]
+      @params['featureFile'] = @dataset[0]['featureFile']
+      @params['strandMode'] = @dataset[0]['strandMode']
+      @params['paired'] = @dataset[0]['paired']
     end
   end
 
