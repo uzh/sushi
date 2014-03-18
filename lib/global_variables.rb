@@ -3,6 +3,11 @@
 
 module GlobalVariables
   SUSHI = 'Supercalifragilisticexpialidocious!!'
+  SAMTOOLS = '/usr/local/ngseq/stow/samtools-0.1.19/bin/samtools'
+  BCFTOOLS = '/usr/local/ngseq/stow/samtools-0.1.19/bin/bcftools'
+  PICARD_DIR = '/usr/local/ngseq/src/picard-tools-1.108'
+  GATK_DIR = '/usr/local/ngseq/src/GenomeAnalysisTK-2.8-1-g932cd3a'
+  SNPEFF_DIR='/usr/local/ngseq/src/snpEff_v3.4/'
 
 
   def builder_selector(base_dir, shown_pattern=nil, value_pattern=nil)
