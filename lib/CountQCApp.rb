@@ -2,6 +2,9 @@
 # encoding: utf-8
 
 require 'sushi_fabric'
+require_relative 'global_variables'
+include GlobalVariables
+
 
 class CountQCApp < SushiFabric::SushiApp
   def initialize
@@ -9,17 +12,14 @@ class CountQCApp < SushiFabric::SushiApp
     @name = 'CountQC'
     @analysis_category = 'QC'
     @params['process_mode'] = 'DATASET'
-    @required_columns = ['Name','Count', 'Species', 'Build']
+    @required_columns = ['Name','Count', 'Species', 'build', 'featureLevel', 'featureFile']
     @required_params = []
     # optional params
     @params['cores'] = '1'
     @params['ram'] = '2'
     @params['scratch'] = '10'
     @params['name'] = 'Count_QC'
-    @params['build'] = {'select'=>''}
-    Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
-      @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
-    end
+    @params['build'] = ref_selector
     @params['featureFile'] = 'genes.gtf'
     @params['featureLevel'] = ['gene', 'isoform']
     @params['normMethod'] = 'logMean'
@@ -31,9 +31,17 @@ class CountQCApp < SushiFabric::SushiApp
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@params['name'],
+     'Species'=>@dataset['Species'],
+     'build'=>@params['build'],
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
     }
+  end
+  def set_default_parameters
+    @params['build'] = @dataset[0]['build']
+    if dataset_has_column?('featureFile')
+      @params['featureFile'] = @dataset[0]['featureFile']
+    end
   end
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"
@@ -57,35 +65,6 @@ class CountQCApp < SushiFabric::SushiApp
 end
 
 if __FILE__ == $0
-   usecase = CountQCApp.new
-
-  usecase.project = "p1001"
-  usecase.user = 'masamasa'
-
-  # set user parameter
-  # for GUI sushi
-  #usecase.params['process_mode'].value = 'SAMPLE'
-  usecase.params['build'] = 'mm10'
-  usecase.params['paired'] = true
-  usecase.params['strandMode'] = 'both'
-  usecase.params['cores'] = 8
-  usecase.params['node'] = 'fgcz-c-048'
-
-  # also possible to load a parameterset csv file
-  # mainly for CUI sushi
-  #usecase.parameterset_tsv_file = 'tophat_parameterset.tsv'
-  #usecase.parameterset_tsv_file = 'test.tsv'
-
-  # set input dataset
-  # mainly for CUI sushi
-  #usecase.dataset_tsv_file = 'tophat_dataset.tsv'
-
-  # also possible to load a input dataset from Sushi DB
-  usecase.dataset_sushi_id = 3
-
-  # run (submit to workflow_manager)
-  usecase.run
-  #usecase.test_run
 
 end
 
