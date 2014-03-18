@@ -53,7 +53,7 @@ CORES="#{@params['cores']}"
 GATK_GLM="#{@params['gatk_glm']}"
 GATK_OPTIONS="#{@params['gatkOptions']}"
 
-REF=/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome.fa
+REF=/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome
 MY_BAM=internal_grouped.lex.bam
 
 $SAMTOOLS view -F 4 -hb #{File.join(@gstore_dir, @dataset['BAM'])} | $SAMTOOLS rmdup - internal.nodup.bam
@@ -68,13 +68,19 @@ $SAMTOOLS index $MY_BAM
    
 if [ $SNP_CALLER == 'mpileup_bcftools' ]; then  
  ### DETECTING VARIANTS BCFTOOLS ###
- $SAMTOOLS mpileup $MPILEUP_OPTIONS -uf $REF $MY_BAM | $BCFTOOLS view -bvcg - > internal.bcf  
+ $SAMTOOLS mpileup $MPILEUP_OPTIONS -uf $REF.fa $MY_BAM | $BCFTOOLS view -bvcg - > internal.bcf  
  $BCFTOOLS view  $BCF_OPTIONS  internal.bcf  > internal.vcf 
 else
+if [ ! -f $REF.fa.fai ]; then 
+$SAMTOOLS faidx $REF.fa
+fi  
+if [ ! -f $REF.dict ]; then
+java -jar $PICARD_DIR/CreateSequenceDictionary.jar R=$REF.fa O=$REF.dict
+fi 
   ### DETECTING VARIANTS GATK  ###
   java -jar $GATK_DIR/GenomeAnalysisTK.jar \
    -I $MY_BAM  -log gatk_log.txt -nt $CORES \
-  -o internal.vcf -R $REF -T UnifiedGenotyper \
+  -o internal.vcf -R $REF.fa -T UnifiedGenotyper \
   -glm $GATK_GLM $GATK_OPTIONS
 fi
 ### ANNOTATION ####
