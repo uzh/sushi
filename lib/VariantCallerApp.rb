@@ -32,7 +32,7 @@ class VariantCallerApp < SushiFabric::SushiApp
      'VCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf"),
      'Html [Link,File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
      'build'=>@params['build']
-    }
+    }.merge factor_dataset
   end
   def set_default_parameters
     @params['build'] = @dataset[0]['build']
