@@ -36,8 +36,12 @@ class BamStatsApp <  SushiFabric::SushiApp
     @params['build'] = @dataset[0]['build']
     if dataset_has_column?('featureFile')
       @params['featureFile'] = @dataset[0]['featureFile']
-      @params['strandMode'] = @dataset[0]['strandMode']
+    end
+    if dataset_has_column?('paired')
       @params['paired'] = @dataset[0]['paired']
+    end
+    if dataset_has_column?('strandMode')
+      @params['strandMode'] = @dataset[0]['strandMode']
     end
   end
 

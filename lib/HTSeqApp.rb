@@ -3,22 +3,21 @@
 Version = '20131128-084607'
 
 require 'sushi_fabric'
+require_relative 'global_variables'
+include GlobalVariables
 
 class HTSeqApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'HTSeq'
     @analysis_category = 'Count'
-    @required_columns = ['Name','BAM','BAI', 'Build']
+    @required_columns = ['Name','BAM','BAI', 'build']
     @required_params = ['build','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
     @params['scratch'] = '100'
-    @params['build'] = {'select'=>''}
-    Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
-      @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
-    end
+    @params['build'] = ref_selector
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['featureFile'] = 'genes.gtf'
@@ -26,12 +25,29 @@ class HTSeqApp < SushiFabric::SushiApp
     @params['cmdOptions'] = ''
     @params['specialOptions'] = ''
   end
+  def set_default_parameters
+    @params['build'] = @dataset[0]['build']
+    if dataset_has_column?('featureFile')
+      @params['featureFile'] = @dataset[0]['featureFile']
+    end
+    if dataset_has_column?('paired')
+      @params['paired'] = @dataset[0]['paired']
+    end                               
+    if dataset_has_column?('strandMode')
+      @params['strandMode'] = @dataset[0]['strandMode']
+    end                               
+  end
+
   def next_dataset
     {'Name'=>@dataset['Name'], 
      'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"), 
      'Species'=>@dataset['Species'],
-     'Build'=>@params['build'],
-     'Feature Level'=>@params['featureLevel']
+     'build'=>@params['build'],
+     'featureLevel'=>'isoform',
+     'featureFile'=>@params['featureFile'],
+     'strandMode'=>@params['strandMode'],
+     'paired'=>@params['paired'],
+     'Read Count'=>@dataset['Read Count']
     }
   end
   def commands
