@@ -19,7 +19,7 @@ It considers various species of small RNA.<br />
 ncPRO can only process single-end stranded RNA.
 EOS
 
-    @required_columns = ['Name','Read1','Species']
+    @required_columns = ['Name','Read1', 'Adapter1', 'Species']
     @required_params = ['name', 'cores', 'ram', 'scratch']
 
     @params['cores'] = '8'
