@@ -2,22 +2,21 @@
 # encoding: utf-8
 
 require 'sushi_fabric'
+require_relative 'global_variables'
+include GlobalVariables
 
 class VariantCallerApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'VariantCaller'
     @analysis_category = 'Variant_Analysis'
-    @required_columns = ['Name','BAM','BAI', 'Build']
-		@required_params = []
+    @required_columns = ['Name','BAM','BAI', 'build']
+    @required_params = []
     # optional params
     @params['cores'] = '4'
     @params['ram'] = '10'
     @params['scratch'] = '100'
-    @params['build'] = {'select'=>''}
-    Dir["/srv/GT/reference/*/*/*"].sort.select{|build| File.directory?(build)}.each do |dir|
-      @params['build'][dir.gsub(/\/srv\/GT\/reference\//,'')] = File.basename(dir)
-    end
+    @params['build'] = ref_selector
     @params['snpEff_database'] = {'select'=>''}
     Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
@@ -32,72 +31,60 @@ class VariantCallerApp < SushiFabric::SushiApp
     {'Name'=>@dataset['Name'], 
      'VCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf"),
      'Html [Link,File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
-     'Build'=>@dataset['Build']
+     'build'=>@params['build']
     }
   end
+  def set_default_parameters
+    @params['build'] = @dataset[0]['build']
+  end
+
   def commands
     command =<<-EOS
-REF=$(ls -l /srv/GT/reference/*/*/*/Sequence/WholeGenomeFasta/genome.fa | grep "\/#{@params['build']}\/" | awk '{print $9}')
-samtools view -F 4 -hb #{File.join(@gstore_dir, @dataset['BAM'])} | samtools rmdup - internal.nodup.bam
-samtools index internal.nodup.bam
+SAMTOOLS=#{GlobalVariables::SAMTOOLS}
+BCFTOOLS=#{GlobalVariables::BCFTOOLS}
+GATK_DIR=#{GlobalVariables::GATK_DIR}
+PICARD_DIR=#{GlobalVariables::PICARD_DIR}
+SNPEFF_DIR=#{GlobalVariables::SNPEFF_DIR}
+SNP_CALLER=#{@params['snpCaller']}
+SNPEFF_DATABASE=#{@params['snpEff_database']}
+MPILEUP_OPTIONS=#{@params['mpileupOtions']}
+BCF_OPTIONS=#{@params['bcftoolsOtions']}
+CORES=#{@params['cores']}
+GATK_GLM=#{@params['gatk_glm']}
+GATK_OPTIONS=#{@params['gatkOptions']}
+
+REF=/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome.fa
+MY_BAM=internal_grouped.lex.bam
+
+$SAMTOOLS view -F 4 -hb #{File.join(@gstore_dir, @dataset['BAM'])} | $SAMTOOLS rmdup - internal.nodup.bam
+$SAMTOOLS index internal.nodup.bam
 
 ### SORT OUT GROUPS ISSUES ###
-java -jar /usr/local/ngseq/stow/picard-tools-1.96/bin/AddOrReplaceReadGroups.jar I=internal.nodup.bam \
-O=internal_grouped.lex.bam SORT_ORDER=coordinate RGID=ID_NAME TMP_DIR=/scratch \
-RGLB=Paired_end RGPL=illumina RGSM=project RGPU=BIOSEQUENCER
-BAMFILE=internal_grouped.lex.bam 
-samtools index $BAMFILE
-
-### DETECTING VARIANTS BCFTOOLS ###
-if [ #{@params['snpCaller']} == 'mpileup_bcftools' ]; then  
-samtools mpileup #{@params['mpileupOtions']} -uf $REF $BAMFILE | bcftools view -bvcg - > internal.bcf  
-bcftools view  #{@params['bcftoolsOtions']}  internal.bcf  > internal.vcf 
-
+java -jar $PICARD_DIR/AddOrReplaceReadGroups.jar I=internal.nodup.bam \
+   O=internal_grouped.lex.bam SORT_ORDER=coordinate RGID=ID_NAME TMP_DIR=/scratch \
+   RGLB=Paired_end RGPL=illumina RGSM=project RGPU=BIOSEQUENCER
+   BAMFILE=$MY_BAM 
+$SAMTOOLS index $MY_BAM
+   
+if [ $SNP_CALLER == 'mpileup_bcftools' ]; then  
+ ### DETECTING VARIANTS BCFTOOLS ###
+ $SAMTOOLS mpileup $MPILEUP_OPTIONS -uf $REF $MY_BAM | $BCFTOOLS view -bvcg - > internal.bcf  
+ $BCFTOOLS view  $BCF_OPTIONS  internal.bcf  > internal.vcf 
 else
-### DETECTING VARIANTS GATK  ###
-GATK_DIR=/usr/local/ngseq/src/GenomeAnalysisTK-2.8-1-g932cd3a
-
-java -jar $GATK_DIR/GenomeAnalysisTK.jar \
-  -I $BAMFILE  -log gatk_log.txt -nt #{@params['cores']} \
+  ### DETECTING VARIANTS GATK  ###
+  java -jar $GATK_DIR/GenomeAnalysisTK.jar \
+   -I $MY_BAM  -log gatk_log.txt -nt $CORES \
   -o internal.vcf -R $REF -T UnifiedGenotyper \
-  -glm #{@params['gatk_glm']} #{@params['gatkOptions']}
-#############
+  -glm $GATK_GLM $GATK_OPTIONS
 fi
 ### ANNOTATION ####
-SNPEFF_DIR=/usr/local/ngseq/src/snpEff_v3.4/
-java -Xmx2g -jar $SNPEFF_DIR/snpEff.jar -s #{@dataset['Name']}.html -c $SNPEFF_DIR/snpEff.config #{@params['snpEff_database']} -v internal.vcf > #{@dataset['Name']}.vcf
+java -Xmx2g -jar $SNPEFF_DIR/snpEff.jar -s #{@dataset['Name']}.html -c $SNPEFF_DIR/snpEff.config $SNPEFF_DATABASE -v internal.vcf > #{@dataset['Name']}.vcf
 EOS
     command
   end
 end
 
 if __FILE__ == $0
-  usecase = VariantCallerApp.new
-
-  usecase.project = "p1001"
-  usecase.user = 'masamasa'
-
-  # set user parameter
-  # for GUI sushi
-  #usecase.params['process_mode'].value = 'SAMPLE'
-  usecase.params['cores'] = 8
-  usecase.params['node'] = 'fgcz-c-048'
-
-  # also possible to load a parameterset csv file
-  # mainly for CUI sushi
-  #usecase.parameterset_tsv_file = 'tophat_parameterset.tsv'
-  #usecase.parameterset_tsv_file = 'test.tsv'
-
-  # set input dataset
-  # mainly for CUI sushi
-  #usecase.dataset_tsv_file = 'tophat_dataset.tsv'
-
-  # also possible to load a input dataset from Sushi DB
-  usecase.dataset_sushi_id = 1
-
-  # run (submit to workflow_manager)
-  #usecase.run
-  usecase.test_run
 
 end
 
