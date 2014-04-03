@@ -43,7 +43,7 @@ class HTSeqApp < SushiFabric::SushiApp
      'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"), 
      'Species'=>@dataset['Species'],
      'build'=>@params['build'],
-     'featureLevel'=>'isoform',
+     'featureLevel'=>@params['featureLevel'],
      'featureFile'=>@params['featureFile'],
      'strandMode'=>@params['strandMode'],
      'paired'=>@params['paired'],
