@@ -25,6 +25,7 @@ end
     @init = ''
     @next_dataset = ''
     @commands = ''
+    @params = {}
   end
   def generate_class
     File.readlines(@job_script).each do |line|
@@ -54,6 +55,8 @@ end
         values.each do |val|
           if @required_columns.include?(val.gsub(/\$/,''))
             replaces[val] = '#{@dataset[\'' + val.gsub(/\$/,'') + "']}"
+          elsif @params.keys.include?(val.gsub(/\$/,''))
+            replaces[val] = '#{@params[\'' + val.gsub(/\$/,'') + "']}"
           else
             replaces[val] = val
           end
