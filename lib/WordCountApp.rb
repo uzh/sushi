@@ -14,9 +14,10 @@ class WordCountApp < SushiFabric::SushiApp
     @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
     @params['refGroup'] = '' ## TODO: this should be a value from the selected column
+    @params['count_option'] = ['', '-c', '-l', '-m', '-w']
     @params['hoge'] = '' 
     @required_columns = ['Name', 'Read1']
-    @required_params = []
+    @required_params = ['count_option']
   end
   def next_dataset
     {
