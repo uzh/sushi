@@ -21,6 +21,7 @@ class BamStatsApp <  SushiFabric::SushiApp
     @params['build'] = ref_selector
     @params['featureFile'] = 'genes.gtf'
     @params['strandMode'] = ['both', 'sense', 'antisense']
+    @params['specialOptions'] = ''
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
