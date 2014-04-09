@@ -48,7 +48,7 @@ class HTSeqApp < SushiFabric::SushiApp
      'strandMode'=>@params['strandMode'],
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count']
-    }
+    }.merge factor_dataset
   end
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"

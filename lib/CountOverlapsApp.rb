@@ -43,12 +43,12 @@ class CountOverlapsApp < SushiFabric::SushiApp
      'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"), 
      'Species'=>@dataset['Species'],
      'build'=>@params['build'],
-     'featureLevel'=>'isoform',
+     'featureLevel'=>@params['featureLevel'],
      'featureFile'=>@params['featureFile'],
      'strandMode'=>@params['strandMode'],
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count']
-    }
+    }.merge factor_dataset
   end
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"
