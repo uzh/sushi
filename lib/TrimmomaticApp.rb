@@ -53,10 +53,15 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
       @required_columns << 'Read2'
     end
   end
+  def set_default_parameters
+    @params['paired'] = dataset_has_column?('Read2')
+  end
   def next_dataset
-    nds = {'Name'=>@dataset['Name'], 
-     'Read1 [File]' => File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}"),
-    }
+    nds = @dataset
+    ngs['Read1 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")
+    #nds = {'Name'=>@dataset['Name'], 
+    # 'Read1 [File]' => File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}"),
+    #}
     if @params['paired'] 
       nds['Read2 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read2'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")
     end
@@ -90,34 +95,6 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
 end
 
 if __FILE__ == $0
-  usecase = TrimmomaticApp.new
-
-  usecase.project = "p1001"
-  usecase.user = "masa"
-
-  # set user parameter
-  # for GUI sushi
-  #usecase.params['process_mode'].value = 'SAMPLE'
-  #usecase.params['build'] = 'TAIR10'
-  usecase.params['paired'] = true
-  usecase.params['cores'] = 2
-  usecase.params['node'] = 'fgcz-c-048'
-
-  # also possible to load a parameterset csv file
-  # mainly for CUI sushi
-  #usecase.parameterset_tsv_file = 'tophat_parameterset.tsv'
-  #usecase.parameterset_tsv_file = 'test.tsv'
-
-  # set input dataset
-  # mainly for CUI sushi
-  usecase.dataset_tsv_file = 'test_dataset.tsv'
-
-  # also possible to load a input dataset from Sushi DB
-  #usecase.dataset_sushi_id = 1
-
-  # run (submit to workflow_manager)
-  #usecase.run
-  usecase.test_run
 
 end
 
