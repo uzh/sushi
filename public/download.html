@@ -276,7 +276,221 @@ img {
 <a href="http://www.fgcz.ethz.ch/" title="FGCZ Home">Functional Genomics Center Zurich</a>
 </div>
 <h1><a href="sushi_doc.html">Sushi Documentation</a> &mdash; Download and Install</h1>
-<p>Currently not available. Please check back later.</p>
+
+<h2>0. Prerequisites</h2>
+<ul>
+  <li>Ruby (>=1.9.3)</li>
+  <li>Ruby on Rails (>= 3.2.9)</li>
+  <li>libsqlite3-dev (to build the gem)</li>
+  <li>libxml2-dev (to build a gem)</li>
+  <li>libxslt1-dev (to build a gem)</li>
+  <li>node.js (installed from source, http://nodejs.org/)</li>
+</ul>
+Note
+<ul>
+  <li>Ruby 1.8.7 does not work</li>
+  <li>Ruby 2.1 is not checked yet</li>
+  <li>Ruby on Rails 4.1 is not checked yet</li>
+  <li>More details for gem libraries refer to Gemfile.lock</li>
+</ul>
+
+<h2>1. Installation Steps</h2>
+<ol>
+  <li>(Install Ruby)</li>
+  <li>Install bundle (gem)</li>
+  <li>Install workflow_manager (gem)</li>
+  <li>Install sushi_fabric (gem)</li>
+  <li>Download SushiFabric.tgz (Ruby on Rails application)</li>
+  <li>Install required libraries (bundle install)</li>
+  <li>Setup database (rake db:migrate)</li>
+  <li>Run (rails server)</li>
+</ol>
+
+<h2>2. Check Ruby</h2>
+Check if Ruby 1.9.3 is installed on your computer
+<pre>
+  $ ruby -v
+</pre>
+If Ruby is NOT installed or Ruby version is under 1.9, then you should download and install Ruby from
+<a href="https://www.ruby-lang.org/en/downloads/">https://www.ruby-lang.org/en/downloads/</a><br />
+<ul>
+  <li>Apple: Needs XCode or at least the command-line tools found here: https://developer.apple.com/downloads/</li>
+</ul>
+
+Typical commands to install Ruby
+<pre>
+  $ wget http://cache.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p545.tar.gz
+  $ tar zxvf ruby-1.9.3-p545.tar.gz
+  $ cd ruby-1.9.3-p545
+  $ ./configure
+  $ make
+  $ sudo make install
+</pre>
+
+Note
+<ul>
+  <li>Usually Ruby interpreter is installed in /usr/local/bin</li>
+  <li>If you want to change the installation directory, set --prefix option to ./configure as follows</li>
+  <pre>
+  $ ./configure --prefix=$HOME/bin/ruby-1.9.3
+  $ make
+  $ make install
+  </pre>
+</ul>
+
+<h2>3. Install bundle</h2>
+Check if <i>bundle</i> command is installed on your system.
+<pre>
+  $ which bundle
+</pre>
+If it is not installed, if the command answers <i>bundle is not found</i>, you need to install bundle RubyGem library as follows:  
+<pre>
+  $ gem install bundle
+</pre>
+
+Note
+<ul>
+  <li>RubGem(<i>gem</i>) is a Ruby library manager, and it downloads and installs a library from http://rubygems.org/</li>
+  <li>bundle is a Ruby library version manager that manages specific library versions for an application</li>
+  <li>All gem installations may need sudo permissions (if you installed Ruby in a system directory but you can change the gem directory with setting GEM_HOME environmental variable. see below.)</li>
+  <li>Gem library installtion directory can be set with the environment variable:</li>
+  <pre>
+    GEM_HOME = $HOME/.gems
+  </pre>
+</ul>
+
+
+
+<h2>4 .Install workflow_manager</h2>
+
+
+<pre>
+  $ gem install workflow_manager
+</pre>
+
+  <p>Run<br></p><pre>
+  $ workflow_manager
+  mode = development
+` druby://localhost:12345
+</pre><p></p>
+
+
+Note
+	<ul>
+	<li>Ignore the warning:<br><pre>/usr/local/lib/ruby/1.9.1/yaml.rb:84:in `&lt;top (required)&gt;':
+It seems your ruby installation is missing psych (for YAML output).
+To eliminate this warning, please install libyaml and reinstall your ruby.
+</pre></li>
+	</ul>
+
+
+<h2>5. Install sushi_fabric (core code of SushiFabric)</h2>
+
+<pre>
+  $ gem install sushi_fabric
+</pre>
+
+	<p>That's it.</p>
+
+
+<h2>6. Download SushiFabric (Ruby on Rails code)</h2>
+
+
+<pre>
+  $ wget http://fgcz-sushi.uzh.ch//SushiFabric_20131201.tgz
+</pre>
+
+  <p>Tar and bundle install<br></p><pre>
+  $ tar zxvf SushiFabric_20131201.tgz
+  $ cd SushiFabric
+  $ bundle install
+</pre><p></p>
+
+
+<h2>7. Set up database for Ruby on Rails</h2>
+
+
+	<p>Go to the SushiFabric directory, then</p>
+
+
+<pre>
+  $ bundle exec rake db:migrate
+</pre>
+
+  <p>Start Ruby on Rails server<br></p><pre>
+  $ rails server
+</pre><p></p>
+
+
+Note
+	<ul>
+	<li>And then, try to access <strong><a class="external" href="http://localhost:3000/">http://localhost:3000</a></strong></li>
+		<li>If you can see the top menu of SushiFabric, it scceeded in installing.</li>
+		<li>In order to stop it, Ctrl + C</li>
+	</ul>
+
+
+<h2>8. Configuration</h2>
+
+	<p>There are two configuration files, one for workflow_manager and one for sushi_fabric</p>
+
+
+Configuration file
+	<ul>
+	<li>config/environments/development.rb</li>
+	</ul>
+
+
+<pre>
+  #!/usr/bin/env ruby
+  # encoding: utf-8
+
+  WorkflowManager::Server.configure do |config|
+    config.log_dir = 'logs'
+    config.db_dir = 'dbs'
+    config.interval = 30
+    config.resubmit = 0
+    config.cluster = WorkflowManager::LocalComputer.new('local_computer')
+  end
+</pre>
+
+Note
+	<ul>
+	<li>A new cluster class should inherit WorkflowManager::Cluster Class and define (overwrite) the following 4 methods:</li>
+		<li>In more detail, you can refer to $GEM_HOME/**/workflow_manager/lib/workflow_manager/cluster.rb</li>
+	</ul>
+
+
+	<p>Cluster Class<br></p><pre>  class Cluster
+    def submit_job(script_file, script_content, option='')
+    end
+    def job_running?(job_id)
+    end
+    def job_ends?(log_file)
+    end
+    def copy_commands(org_dir, dest_parent_dir)
+    end
+  end
+</pre><p></p>
+
+
+	<p>Default sushi_fabric parameters (config/environments/development.rb)<br></p><pre>SushiFabric::Application.configure do
+  # sushi_fabric
+  config.workflow_manager = 'druby://localhost:12345'
+  config.gstore_dir = File.join(Dir.pwd, 'public/gstore/projects')
+  config.sushi_app_dir = Dir.pwd
+  config.scratch_dir = '/tmp/scratch'
+end
+</pre><p></p>
+
+
+Note
+	<ul>
+	<li>If you want to change the parameters, make <strong>config/environments/development.rb</strong> like above.</li>
+		<li>workflow_manager and sushi_fabric configurations are totally independent.</li>
+		<li>Usually, Ruby on Rails has a configuration file with the same file name (in development mode), and you can add the above 4 additional parameters in the file.</li>
+	</ul>
+
 
 <table>
 <tbody><tr>
