@@ -275,13 +275,54 @@ img {
 <div class="pathline">
 <a href="http://www.fgcz.ethz.ch/" title="FGCZ Home">Functional Genomics Center Zurich</a>
 </div>
-<h1><a href="sushi_doc.html">Sushi Documentation</a> &mdash; Applications and DataSets</h1>
-<p>Currently not available. Please check back later.</p>
 
 <table>
-<tbody><tr>
-<td id="contentblock" align="left" valign="top">
+<tr>
+<td valign="top" align="left" id="contentblock">
 <div class="listing">
+<h1><a href="sushi_doc.html">Sushi Documentation</a> &mdash; Applications and datasets</h1>
+<p>In short: a <i>Sushi Application</i> takes as input parameters an existing dataset and generates a new dataset.</p>
+<h2>The  <i>Sushi Application</i></h2>
+<p>Key characteristics:
+<ul>
+<li>represented by a Ruby object, defined in a single file, can be a Ruby or a shell script</li>
+<li>self-documented</li>
+<li>writing a  <i>Sushi Application</i> requires no additional knowledge about the internals of the sushi_fabric framework</li>
+<li>can be run on the commandline interface (CLI) or via web interface (GUI)</li>
+<li>generates a <i>Sushi dataset</i> that is reproducible, but the <i>Sushi Application</i> is not needed to reproduce the <i>Sushi dataset</i>. 
+This means, it can be removed if obsolete without compromising reproducibility</li>
+</li>
+</ul></p>
+<p>The full definition is at <a href="http://rubydoc.info/gems/sushi_fabric/0.1.9/frames">http://rubydoc.info/gems/sushi_fabric/0.1.9/frames</a>.
+There is only one key attribute
+<ul> <li>params: specifies the parameters, type of UI element and gives default value; description gives help text</li>
+</ul>
+and there are two key methods:
+<ul>
+<li>next_dataset: determines the element of the next dataset given the parameters and the input dataset</li>
+<li>commands: specifies the shell commands that need to be executed to generate the next dataset</li>
+</ul>
+An example application is the <a href="WordCountApp.rb" >WordCountApp.rb</a>
+</p>
+<h2>The  <i>Sushi dataset</i></h2>
+<ul>
+<li>fully defined and self-contained on the file system; all elements are stored in a single directory on the file system</li>
+<li>fully documented: analysis algorithms, options, and versions are fully specified</li>
+<li>fully reproducible</li>
+<li>completely portable: can be copied to a different system and can be further analyzed by a bioinformatician without any requirements on the software environment</li>
+<li>human-readable and machine-parseable</li>
+</ul>
+Elements of a SushiDataset
+<ul>
+    <li>all data files</li>
+    <li>all job scripts that generated the data files</li>
+    <li>parameter file</li>
+    <li>all logs</li>
+    <li>a <i>DataSet</i> meta-information file that specifies the content of the folder</li>
+    <li>a <i>DataSet</i> meta-information file that specifies the parent dataset</li>
+</ul>
+An example dataset of the WordCountApp: <a href="http://fgcz-gstore.uzh.ch/public/Word_count_dataset/">Word_count_dataset</a>
+
 
 </div></td></tr></tbody></table></div>
 
