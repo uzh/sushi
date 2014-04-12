@@ -45,7 +45,7 @@ $SAMTOOLS view -ub #{File.join(@gstore_dir, @dataset['BAM'])} | $SAMSTAT -f bam 
 ###qualimap
 $QUALIMAP bamqc -bam  #{File.join(@gstore_dir, @dataset['BAM'])} -c -nt #{@params['cores']} --java-mem-size=10G -outdir #{@dataset['Name']}
 ###picard 
-/usr/bin/java -Xmx10g -jar $PICARD_DIR/CollectGcBiasMetrics.jar OUTPUT=#{@dataset['Name']}.gc.dat SUMMARY_OUTPUT=#{@dataset['Name']}.gc.sum.dat INPUT=#{File.join(@gstore_dir, @dataset['BAM'])} CHART_OUTPUT=#{@dataset['Name']}.picard.pdf ASSUME_SORTED=false REFERENCE_SEQUENCE=$REF
+/usr/bin/java -Xmx10g -jar $PICARD_DIR/CollectGcBiasMetrics.jar OUTPUT=#{@dataset['Name']}.gc.dat SUMMARY_OUTPUT=#{@dataset['Name']}.gc.sum.dat INPUT=#{File.join(@gstore_dir, @dataset['BAM'])} CHART_OUTPUT=#{@dataset['Name']}.picard.pdf ASSUME_SORTED=false REFERENCE_SEQUENCE=$REF VALIDATION_STRINGENCY=LENIENT
 EOS
     command
   end
