@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20140206-160229'
+Version = '20140414-103102'
 
 require 'sushi_fabric'
 
@@ -58,7 +58,7 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
   end
   def next_dataset
     nds = @dataset
-    ngs['Read1 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")
+    nds['Read1 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")
     #nds = {'Name'=>@dataset['Name'], 
     # 'Read1 [File]' => File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}"),
     #}
