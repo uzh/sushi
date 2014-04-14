@@ -48,6 +48,8 @@ EOS
      'Species'=>@dataset['Species'],
      'build'=>@params['build'],
      'paired'=>@params['paired'],
+     'featureFile'=>@params['featureFile'],
+     'strandMode'=>@params['strandMode'],
      'Read Count'=>@dataset['Read Count']
     }.merge factor_dataset
   end
