@@ -11,11 +11,12 @@ class DnaBamStatsApp < SushiFabric::SushiApp
     @name = 'DnaBamStats'
     @analysis_category = 'QC'
     @required_columns = ['Name','BAM']
-    @required_params = ['cores','ram','build']
+    @required_params = ['cores','ram','build','sortedBam']
     @params['cores'] = '8'
     @params['ram'] = '60'
     @params['scratch'] = '100'
     @params['build'] = ref_selector
+    @params['sortedBam'] = ['false','true']
   end
   def next_dataset
     samstat_link = File.join(@result_dir, "#{@dataset['Name']}.samstat.html")
@@ -45,7 +46,7 @@ $SAMTOOLS view -ub #{File.join(@gstore_dir, @dataset['BAM'])} | $SAMSTAT -f bam 
 ###qualimap
 $QUALIMAP bamqc -bam  #{File.join(@gstore_dir, @dataset['BAM'])} -c -nt #{@params['cores']} --java-mem-size=10G -outdir #{@dataset['Name']}
 ###picard 
-/usr/bin/java -Xmx10g -jar $PICARD_DIR/CollectGcBiasMetrics.jar OUTPUT=#{@dataset['Name']}.gc.dat SUMMARY_OUTPUT=#{@dataset['Name']}.gc.sum.dat INPUT=#{File.join(@gstore_dir, @dataset['BAM'])} CHART_OUTPUT=#{@dataset['Name']}.picard.pdf ASSUME_SORTED=false REFERENCE_SEQUENCE=$REF VALIDATION_STRINGENCY=LENIENT
+/usr/bin/java -Xmx10g -jar $PICARD_DIR/CollectGcBiasMetrics.jar OUTPUT=#{@dataset['Name']}.gc.dat SUMMARY_OUTPUT=#{@dataset['Name']}.gc.sum.dat INPUT=#{File.join(@gstore_dir, @dataset['BAM'])} CHART_OUTPUT=#{@dataset['Name']}.picard.pdf ASSUME_SORTED=#{@params['sortedBam']} REFERENCE_SEQUENCE=$REF VALIDATION_STRINGENCY=LENIENT
 EOS
     command
   end
