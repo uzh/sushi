@@ -1,6 +1,6 @@
 <h1>Project <%= session[:project] %></h1>
 <hr />
-<h2>Set Parameters <span style="color:gray;font-size:medium"><%= @sushi_app.class %></span></h2>
+<h2><%= @sushi_app.class %> <span style="color:gray;font-size:medium">Set Parameters</span></h2>
 <blockquote>
   <%= @sushi_app.description.to_s.html_safe %>
 </blockquote>
