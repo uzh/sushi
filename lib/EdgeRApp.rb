@@ -24,7 +24,8 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
     @params['refGroup'] = '' ## TODO: this should be a value from the selected column
-    @params['normMethod'] = 'logMean'
+    @params['normMethod'] = ['TMM', 'RLE', 'upperquartile', 'none']
+    @params['normMethod', 'description'] = "see http://www.bioconductor.org/packages/2.13/bioc/html/edgeR.html"
     @params['runGO'] = ['false', 'true']
     @params['specialOptions'] = ''
   end
