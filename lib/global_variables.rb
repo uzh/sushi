@@ -8,7 +8,7 @@ module GlobalVariables
   PICARD_DIR = '/usr/local/ngseq/stow/picard-tools-1.108/bin'
   GATK_DIR = '/usr/local/ngseq/src/GenomeAnalysisTK-2.8-1-g932cd3a'
   SNPEFF_DIR='/usr/local/ngseq/src/snpEff_v3.4/'
-  BWA='usr/local/ngseq/src/bwa-0.7.8/bwa'
+  BWA='/usr/local/ngseq/src/bwa-0.7.8/bwa'
   SAMSTAT='/usr/local/ngseq/stow/samstat_1.09/bin/samstat'
   QUALIMAP='/usr/local/ngseq/src/qualimap_v0.8/qualimap'
 
