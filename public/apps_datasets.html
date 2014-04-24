@@ -280,7 +280,7 @@ img {
 <tr>
 <td valign="top" align="left" id="contentblock">
 <div class="listing">
-<h1><a href="sushi_doc.html">Sushi Documentation</a> &mdash; Applications and datasets</h1>
+<h1><a href="sushi_doc.html">Sushi Documentation</a> &mdash; Applications and Datasets</h1>
 <p>In short: a <i>Sushi Application</i> takes as input parameters an existing dataset and generates a new dataset.</p>
 <h2>The  <i>Sushi Application</i></h2>
 <p>Key characteristics:
@@ -289,30 +289,31 @@ img {
 <li>self-documented</li>
 <li>writing a  <i>Sushi Application</i> requires no additional knowledge about the internals of the sushi_fabric framework</li>
 <li>can be run on the commandline interface (CLI) or via web interface (GUI)</li>
-<li>generates a <i>Sushi dataset</i> that is reproducible, but the <i>Sushi Application</i> is not needed to reproduce the <i>Sushi dataset</i>. 
-This means, it can be removed if obsolete without compromising reproducibility</li>
+<li>generates a <i>Sushi dataset</i> that is reproducible; remarkably, the <i>Sushi Application</i> is not needed to reproduce the <i>Sushi dataset</i>. 
+This means, <i>Sushi Applicaitons</i> can be updated or removed if obsolete without compromising reproducibility</li>
 </li>
 </ul></p>
-<p>The full definition is at <a href="http://rubydoc.info/gems/sushi_fabric/0.1.9/frames">http://rubydoc.info/gems/sushi_fabric/0.1.9/frames</a>.
-There is only one key attribute
-<ul> <li>params: specifies the parameters, type of UI element and gives default value; description gives help text</li>
+<p>The full definition is at <a target="_blank" href="http://rubydoc.info/gems/sushi_fabric/0.1.9/SushiFabric/SushiApp">http://rubydoc.info/gems/sushi_fabric/0.1.9/SushiFabric/SushiApp</a>.
+There is one central attribute
+<ul> <li><b>params:</b> This attribute serves the 3 purposes of specifying the parameters, the type of UI element and the default value.
+ Additionally it can hold a description that will be used as help text</li>
 </ul>
 and there are two key methods:
 <ul>
-<li>next_dataset: determines the element of the next dataset given the parameters and the input dataset</li>
-<li>commands: specifies the shell commands that need to be executed to generate the next dataset</li>
+<li><b>next_dataset:</b> determines the element of the next dataset given the parameters and the input dataset</li>
+<li><b>commands:</b> specifies the shell commands that need to be executed to generate the next dataset</li>
 </ul>
-An example application is the <a href="WordCountApp.rb" >WordCountApp.rb</a>
+An example application is the <a target="_blank" href="WordCountApp.rb" >WordCountApp.rb</a>
 </p>
-<h2>The  <i>Sushi dataset</i></h2>
+<h2>The <i>Sushi dataset</i></h2>
 <ul>
 <li>fully defined and self-contained on the file system; all elements are stored in a single directory on the file system</li>
 <li>fully documented: analysis algorithms, options, and versions are fully specified</li>
-<li>fully reproducible</li>
+<li>fully reproducible: the executed job scripts and the parameters are stored</li>
 <li>completely portable: can be copied to a different system and can be further analyzed by a bioinformatician without any requirements on the software environment</li>
 <li>human-readable and machine-parseable</li>
 </ul>
-Elements of a SushiDataset
+Elements of a Sushi dataset
 <ul>
     <li>all data files</li>
     <li>all job scripts that generated the data files</li>
@@ -321,8 +322,7 @@ Elements of a SushiDataset
     <li>a <i>DataSet</i> meta-information file that specifies the content of the folder</li>
     <li>a <i>DataSet</i> meta-information file that specifies the parent dataset</li>
 </ul>
-An example dataset of the WordCountApp: <a href="http://fgcz-gstore.uzh.ch/public/Word_count_dataset/">Word_count_dataset</a>
-
+An example dataset of the WordCountApp: <a target="_blank" href="http://fgcz-gstore.uzh.ch/public/Word_count_dataset/">Word_count_dataset</a>
 
 </div></td></tr></tbody></table></div>
 
