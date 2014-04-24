@@ -282,7 +282,9 @@ img {
 <div class="listing">
 <h1><a href="sushi_doc.html">Sushi Documentation</a> &mdash; Download and Install</h1>
 
-<h2>Download Locations</h2>
+<p>Please follow the download and installation instructions closely. </p>
+
+<h3>Download Locations</h3>
 <ul>
 	<li>Workflow manager: <a href="http://rubygems.org/gems/workflow_manager">http://rubygems.org/gems/workflow_manager</a></li>
 	<li>Sushi_fabric: <a href="http://rubygems.org/gems/sushi_fabric">http://rubygems.org/gems/sushi_fabric</a></li>
@@ -290,6 +292,11 @@ img {
 	<li>FGCZ Sushi Application Library: <a href="http://fgcz-sushi.uzh.ch/fgcz_sushi_apps.tar" >http://fgcz-sushi.uzh.ch/fgcz_sushi_apps.tar</a></li>
 </ul>
 
+<h2>Hard- and software requirements</h2>
+<p>The sushi framework has been successfully deployed and run on Max OSX 10.7 and on the Linux distribution Debian 7. We do not have experience with Windows OS.
+If you experience problems please contact Hubert.Rehrauer/at/fgcz.uzh.ch.</p>
+
+<!--
 <h2>0. Prerequisites</h2>
 <ul>
   <li>Ruby (>=1.9.3)</li>
@@ -306,10 +313,11 @@ Note
   <li>Ruby on Rails 4.1 is not checked yet</li>
   <li>More details for gem libraries refer to Gemfile.lock</li>
 </ul>
+-->
 
-<h2>1. Installation Steps</h2>
+<h2>Installation Steps</h2>
 <ol>
-  <li>(Install Ruby)</li>
+  <li>Install Ruby</li>
   <li>Install bundle (gem)</li>
   <li>Install workflow_manager (gem)</li>
   <li>Install sushi_fabric (gem)</li>
@@ -319,15 +327,15 @@ Note
   <li>Run (rails server)</li>
 </ol>
 
-<h2>2. Check Ruby</h2>
-Check if Ruby 1.9.3 is installed on your computer
+<h2>Install Ruby</h2>
+Check if Ruby 1.9.3 or later is installed on your computer
 <pre>
   $ ruby -v
 </pre>
-If Ruby is NOT installed or Ruby version is under 1.9, then you should download and install Ruby from
+If Ruby is NOT installed or Ruby version is under 1.9, then follow the instructions to download and install Ruby from
 <a href="https://www.ruby-lang.org/en/downloads/">https://www.ruby-lang.org/en/downloads/</a><br />
 <ul>
-  <li>Apple: Needs XCode or at least the command-line tools found here: https://developer.apple.com/downloads/</li>
+  <li>Mac OSX: Needs XCode or at least the command-line tools found here: https://developer.apple.com/downloads/</li>
 </ul>
 
 Typical commands to install Ruby
@@ -351,7 +359,7 @@ Note
   </pre>
 </ul>
 
-<h2>3. Install bundle</h2>
+<h2>Install bundle</h2>
 Check if <i>bundle</i> command is installed on your system.
 <pre>
   $ which bundle
@@ -374,19 +382,15 @@ Note
 
 
 
-<h2>4 .Install workflow_manager</h2>
-
-
+<h2>Install workflow_manager</h2>
 <pre>
   $ gem install workflow_manager
 </pre>
-
   <p>Run<br></p><pre>
   $ workflow_manager
   mode = development
 ` druby://localhost:12345
 </pre><p></p>
-
 
 Note
 	<ul>
@@ -396,18 +400,14 @@ To eliminate this warning, please install libyaml and reinstall your ruby.
 </pre></li>
 	</ul>
 
-
-<h2>5. Install sushi_fabric (core code of SushiFabric)</h2>
+<h2>Install sushi_fabric (core code of SushiFabric)</h2>
 
 <pre>
   $ gem install sushi_fabric
 </pre>
 
-	<p>That's it.</p>
 
-
-<h2>6. Download SushiFabric (Ruby on Rails code)</h2>
-
+<h2>Download SushiFabric (Ruby on Rails code)</h2>
 
 <pre>
   $ wget http://fgcz-sushi.uzh.ch//SushiFabric_20131201.tgz
@@ -420,11 +420,9 @@ To eliminate this warning, please install libyaml and reinstall your ruby.
 </pre><p></p>
 
 
-<h2>7. Set up database for Ruby on Rails</h2>
+<h2>Set up database for Ruby on Rails</h2>
 
-
-	<p>Go to the SushiFabric directory, then</p>
-
+<p>Go to the SushiFabric directory, then</p>
 
 <pre>
   $ bundle exec rake db:migrate
@@ -443,16 +441,13 @@ Note
 	</ul>
 
 
-<h2>8. Configuration</h2>
-
-	<p>There are two configuration files, one for workflow_manager and one for sushi_fabric</p>
-
+<h2>Configuration</h2>
+<p>There are two configuration files, one for workflow_manager and one for sushi_fabric</p>
 
 Configuration file
 	<ul>
 	<li>config/environments/development.rb</li>
 	</ul>
-
 
 <pre>
   #!/usr/bin/env ruby
@@ -468,13 +463,13 @@ Configuration file
 </pre>
 
 Note
-	<ul>
-	<li>A new cluster class should inherit WorkflowManager::Cluster Class and define (overwrite) the following 4 methods:</li>
-		<li>In more detail, you can refer to $GEM_HOME/**/workflow_manager/lib/workflow_manager/cluster.rb</li>
-	</ul>
-
-
-	<p>Cluster Class<br></p><pre>  class Cluster
+<ul>
+    <li>A new cluster class should inherit WorkflowManager::Cluster Class and define (overwrite) the following 4 methods:</li>
+    <li>In more detail, you can refer to $GEM_HOME/**/workflow_manager/lib/workflow_manager/cluster.rb</li>
+</ul>
+<p>Cluster Class<br></p>
+<pre>
+    class Cluster
     def submit_job(script_file, script_content, option='')
     end
     def job_running?(job_id)
@@ -486,8 +481,7 @@ Note
   end
 </pre><p></p>
 
-
-	<p>Default sushi_fabric parameters (config/environments/development.rb)<br></p><pre>SushiFabric::Application.configure do
+<p>Default sushi_fabric parameters (config/environments/development.rb)<br></p><pre>SushiFabric::Application.configure do
   # sushi_fabric
   config.workflow_manager = 'druby://localhost:12345'
   config.gstore_dir = File.join(Dir.pwd, 'public/gstore/projects')
@@ -495,7 +489,6 @@ Note
   config.scratch_dir = '/tmp/scratch'
 end
 </pre><p></p>
-
 
 Note
 	<ul>
