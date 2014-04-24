@@ -21,10 +21,10 @@ class DESeq2App < SushiFabric::SushiApp
     @params['build'] = ref_selector
     @params['featureFile'] = 'genes.gtf'
     @params['featureLevel'] = ['gene', 'isoform']
-    @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'
-    @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
-    @params['refGroup'] = '' ## TODO: this should be a value from the selected column
-    @params['normMethod'] = 'logMean'
+    @params['grouping'] = '' 
+    @params['sampleGroup'] = '' 
+    @params['refGroup'] = ''
+    #@params['normMethod'] = 'logMean'
     @params['runGO'] = ['false', 'true']
     @params['specialOptions'] = ''
   end
