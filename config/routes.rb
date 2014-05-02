@@ -50,7 +50,7 @@ SushiFabric::Application.routes.draw do
     end
   end
 
-  match "/gstore/projects/:project_id(/*dirs)" => "home#gstore"
+  match "/projects/:project_id(/*dirs)" => "home#gstore"
   match "/check_sushi_constants" => "home#sushi_constants"
   match "/import/*dataset" => "data_set#import_from_gstore"
   match "/sushi_rank" => "home#sushi_rank"
