@@ -33,7 +33,7 @@ class HomeController < ApplicationController
   end
   def gstore
     # path
-    @base = '/gstore/projects'
+    @base = '/projects'
     @path = params[:project_id]
     @path = File.join(@path, params[:dirs]) if params[:dirs]
     parent = @path.split('/')
