@@ -56,7 +56,7 @@ $(document).ready(function(){
             <% file_path = sample.to_hash[header].to_s %>
             <% file_name = File.basename(file_path) %>
             <% if header.tag?('Link') %>
-               <%= link_to file_name, File.join('/gstore/projects', file_path)  %>
+               <%= link_to file_name, File.join('/projects', file_path)  %>
             <% else %>
                <%= file_name %>
             <% end %>
@@ -77,9 +77,9 @@ $(document).ready(function(){
   <% end %>
   </ul>
 <% else %>
-  <%= button_to "Go gstore", File.join("/gstore/projects/", @sample_path.first) if @sample_path.length == 1 %>
+  <%= button_to "Go gstore", File.join("/projects/", @sample_path.first) if @sample_path.length == 1 %>
   <% @sample_path.sort.each do |path| %>
-    <%= link_to "#{File.join('/gstore/projects/',path)}", File.join("/gstore/projects/", path) %>
+    <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
   <% end %>
 
 <% end %>
