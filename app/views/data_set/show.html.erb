@@ -38,6 +38,7 @@ $(document).ready(function(){
   <%= hidden_field :data_set, :id, :value=>@data_set.id %>
   <%= submit_tag 'edit name', :name=>'edit_option' %>
 <% end %>
+<%= button_to "download as tsv", "/data_set/#{@data_set.id}/save_as_tsv", :method => :get %>
 
 <hr />
 <h3>Samples</h3>
