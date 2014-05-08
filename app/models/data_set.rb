@@ -20,12 +20,13 @@ class DataSet < ActiveRecord::Base
     key_value = self.samples.map{|sample| sample.key_value}.join + self.parent_id.to_s + self.project_id.to_s
     Digest::MD5.hexdigest(key_value)
   end
-  def export_tsv(file_path)
-    CSV.open(file_path, 'w', :col_sep=>"\t") do |out|
+  def tsv_string
+    string = CSV.generate(:col_sep=>"\t") do |out|
       out << headers
       self.samples.each do |sample|
         out << headers.map{|header| sample.to_hash[header]}
       end
     end
+    string
   end
 end
