@@ -26,6 +26,7 @@ class DataSetController < ApplicationController
                 end
   end
   def show
+    @fgcz = (`hostname`.chomp =~ /fgcz-s-034/)
     # switch project (from job_monitoring)
     if project = params[:project]
       session[:project] = project.to_i
