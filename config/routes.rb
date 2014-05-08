@@ -17,11 +17,11 @@ SushiFabric::Application.routes.draw do
   resources :data_set, :only => [:index, :show, :destroy] do
     member do
       post :edit
+      get :save_as_tsv
     end
     collection do
       get :treeviews
       post :import
-      post :save_as_tsv
       post :delete
       get :script_log
       get :job_parameter
