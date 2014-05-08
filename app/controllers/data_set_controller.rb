@@ -244,31 +244,16 @@ class DataSetController < ApplicationController
   end
 
   def save_as_tsv
-    project_dir = Dir.pwd
-    data_set_tsv = File.join(project_dir, 'public/test_dataset.tsv')
-    if id = params[:id] and data_set = DataSet.find_by_id(id)
-=begin
-      CSV.open(data_set_tsv, 'w', :col_sep=>"\t") do |tsv|
-        tsv << data_set.headers
-        new_data_set.new_samples.each do |sample|
-          row = []
-          row_hash = sample.to_hash
-          data_set.headers.each do |header|
-            row << row_hash[header]
-          end 
-          tsv << row
-        end
-      end
-=end
-    end
-
-    file = params[:file][:name]
-    file_name = file.original_filename
-    file_size = file.size
-    #path = File.join('public',file_name) 
-    #UploadFile.create(:filename => file_name, :filesize => file_size, :filepath => path)
-    #File.open(path, "w") { |f| f.write(file.read) }
-    render :text => "params: #{params} file.class: #{file.path} file_path: #{file_name}"
+    tsv_string = 'Error:DataSet is not found'
+    data_set_name = if id = params[:id] and data_set = DataSet.find_by_id(id)
+                      tsv_string = data_set.tsv_string
+                      data_set.name
+                    else
+                      'dataset'
+                    end
+     send_data tsv_string,
+     :type => 'text/csv',
+     :disposition => "attachment; filename=#{data_set_name}.csv" 
   end
 
   def delete
