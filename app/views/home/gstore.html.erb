@@ -22,7 +22,7 @@
     <td>
     <%= image_tag('unknown.gif') %>  <%= link_to basename, "#{File.join(@base, File.join(@path, basename))}" %>
 
-    <% if basename == "dataset.tsv" %>
+    <% if basename =~ /dataset\.tsv/ %>
       <%= link_to image_tag('add.png'), "/import/#{File.join(@path, basename)}" %>
     <% end %>
     </td>
