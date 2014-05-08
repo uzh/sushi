@@ -15,10 +15,12 @@
         </li>
       <% end %>
     <% elsif File.exist?(File.join(SushiFabric::GSTORE_DIR, @sample_path.first)) %>
-      <li>The files in <b><%= @sample_path.first %> still <font color=red>remain in GStore</font></b>.</li>
-      <li>If you want to delete the files too, run
-      <pre><%= @command %></pre>
-      </li>
+      <li>The files in <b><%= @sample_path.first %> still <font color=red>remain in gStore</font></b>.</li>
+      <% if @fgcz %>
+        <li>If you want to delete the files too, run
+        <pre><%= @command %></pre>
+        </li>
+      <% end %>
     <% end %>
   <% end %>
 </ul>

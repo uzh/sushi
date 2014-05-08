@@ -293,6 +293,7 @@ class DataSetController < ApplicationController
   end
 
   def destroy
+    @fgcz = (`hostname` =~ /fgcz-s-034/)
     if @data_set = DataSet.find_by_id(params[:id])
       @option = params[:option]
 
@@ -310,7 +311,7 @@ class DataSetController < ApplicationController
 
       # delete data in gstore
       if @sample_path.first
-        @command = if `hostname` =~ /fgcz-s-034/
+        @command = if @fgcz
                      "g-req remove #{File.join(SushiFabric::GSTORE_DIR, @sample_path.first)}"
                    else
                      "rm -rf #{File.join(SushiFabric::GSTORE_DIR, @sample_path.first)}"
