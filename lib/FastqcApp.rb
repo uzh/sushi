@@ -16,6 +16,7 @@ class FastqcApp <  SushiFabric::SushiApp
     @params['scratch'] = '100'
     @params['paired'] = false
     @params['name'] = 'QC_Result'
+    @params['cmdOptions'] = ""
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')

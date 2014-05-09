@@ -11,7 +11,10 @@ module GlobalVariables
   BWA='/usr/local/ngseq/src/bwa-0.7.8/bwa'
   SAMSTAT='/usr/local/ngseq/stow/samstat_1.09/bin/samstat'
   QUALIMAP='/usr/local/ngseq/src/qualimap_v0.8/qualimap'
-
+  TRANSDECODER='/usr/local/ngseq/src/trinityrnaseq_r20131110/trinity-plugins/transdecoder/TransDecoder'
+  HMMSCAN='/usr/local/ngseq/src/hmmer-3.1b1-linux-intel-x86_64/binaries/hmmscan'
+  UNIPROT_DIR='/srv/GT/databases/uniprot_blast_db/'
+  BLAST_DIR='/usr/local/ngseq/src/ncbi-blast-2.2.26+/bin/'
 
 
   def builder_selector(base_dir, shown_pattern=nil, value_pattern=nil)
