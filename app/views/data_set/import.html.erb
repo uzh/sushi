@@ -18,7 +18,6 @@ Parent DataSet ID: <%= text_field :parent, :id, :size=>10 %>
     <td><%= link_to data_set.name, "/data_set/#{data_set.id}" %></td>
     <td><%= data_set.md5 %></td><td><%= data_set.parent_id %></td>
     <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
-    <td><!--<%= button_to 'Save CSV', :action=>:save_as_tsv, :data_set_id=>data_set.id %>--></td></tr>
 <% end %>
 </table>
 
