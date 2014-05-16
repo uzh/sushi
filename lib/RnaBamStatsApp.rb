@@ -5,10 +5,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class BamStatsApp <  SushiFabric::SushiApp
+class RnaBamStatsApp <  SushiFabric::SushiApp
   def initialize
     super
-    @name = 'BAM Stat'
+    @name = 'RNA BamStats'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
     @required_columns = ['Name','BAM','BAI', 'build']

@@ -8,7 +8,7 @@ include GlobalVariables
 class DnaBamStatsApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'DnaBamStats'
+    @name = 'DNA BamStats'
     @analysis_category = 'QC'
     @required_columns = ['Name','BAM']
     @required_params = ['cores','ram','build','sortedBam']
