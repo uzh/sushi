@@ -14,7 +14,7 @@
     <td><%= job[0] %></td>
     <td><%= job[1] %></td>
     <td>
-      <% if job[1]=='running' and job[4]==current_user.login %>
+      <% if false and job[1]=='running' and job[4]==current_user.login %>
         <%= button_to 'kill', "/job_monitoring/#{job[0]}/kill_job", :confirm=>"Are you sure you want to kill the job '#{job[0]}'?" %>
       <% end %>
     </td>
