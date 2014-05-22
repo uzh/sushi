@@ -17,7 +17,7 @@ class FastqScreenApp <  SushiFabric::SushiApp
     @params['paired'] = false
     @params['name'] = 'QC_Result'
     @params['subset'] = '100000'
-    @params['confFile'] = 'variousSpecies_rRNA.conf'
+    @params['confFile'] = 'variousSpecies_rRNA_20140522.conf'
     @params['cmdOptions'] = ""
   end
  def set_default_parameters
