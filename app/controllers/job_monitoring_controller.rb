@@ -41,4 +41,13 @@ class JobMonitoringController < ApplicationController
     text = `#{public_dir}/wfm_get_script #{params[:job_id]} #{SushiFabric::WORKFLOW_MANAGER}`
     render :text => text.gsub(/\n/,'<br />')
   end
+  def kill_job
+    @status = 'kill job failed'
+    if @job_id = params[:id]
+      public_dir = File.expand_path('../../../public', __FILE__)
+      @command = "#{public_dir}/wfm_kill_job -i #{@job_id} -d #{SushiFabric::WORKFLOW_MANAGER}"
+      @status = `#{@command}`
+      @command = "wfm_kill_job -i #{@job_id} -d #{SushiFabric::WORKFLOW_MANAGER}"
+    end
+  end
 end
