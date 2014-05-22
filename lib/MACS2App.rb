@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20140523'
+Version = '201405230044'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -38,7 +38,7 @@ class MACS2App < SushiFabric::SushiApp
      'Species'=>@dataset['Species'],
      'build'=>@params['build'],
      'featureFile'=>@params['featureFile'],
-     'paired'=>@params['paired'],
+     'paired'=>@params['paired']
     }.merge factor_dataset
   end
   def commands
@@ -55,7 +55,7 @@ class MACS2App < SushiFabric::SushiApp
     input.keys.each do |key|
       command << "input[['#{key}']] = '#{input[key]}'\n" 
     end
-    command << "config[['chromSizes']] = paste('/srv/GT/reference/', gsub('Annotation/Version-.*', 'Sequence/Chromosomes/chromsizes.txt', input[['build']]),sep='')"
+    command << "config[['chromSizes']] = paste('/srv/GT/reference/', gsub('Annotation/Version-.*', 'Sequence/Chromosomes/chromsizes.txt', input[['build']]),sep='')\n"
     command << "output = list()\n"
     output = next_dataset
     output.keys.each do |key|
