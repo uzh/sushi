@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+# 20121112 masa workflow manager client
+Version = '20140516-161420'
+
+require 'drb/drb' 
+require 'workflow_manager/optparse_ex'
+require 'pstore'
+
+opt = OptionParser.new do |o|
+  o.banner = "Usage:\n #{File.basename(__FILE__)} [options]"
+#  o.on(:user, 'sushi lover', '-u user', '--user', 'who submitted?')
+  o.on(:job_id, nil, '-i job_id', '--job_id', 'Job ID')
+  o.on(:server, 'druby://localhost:12345', '-d server', '--server', 'workflow manager URI (default: druby://localhost:12345)')
+  o.parse!(ARGV)
+end
+
+uri = opt.server||'druby://localhost:12345'
+unless job_id = opt.job_id
+  print opt.help
+  exit
+end
+
+workflow_manager = DRbObject.new_with_uri(uri)
+puts workflow_manager.kill_job(job_id)

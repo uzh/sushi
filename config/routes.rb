@@ -6,6 +6,9 @@ SushiFabric::Application.routes.draw do
   devise_for :users
   
   resources :job_monitoring do
+    member do
+      post :kill_job
+    end
     collection do
       post :index
       get :print_log
