@@ -43,6 +43,7 @@ EOS
      'build'=>@params['build'],
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
+     'TrimCounts [Link]'= File.join(report_file, 'trimCounts-barplot.png')
     }
   end
   def commands
