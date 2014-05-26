@@ -34,11 +34,16 @@ class MACS2App < SushiFabric::SushiApp
  end
 
   def next_dataset
+    bw_link = File.join(@result_dir, "#{@dataset['Name']}.bw")
+    peakfile_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.xls")
+
     {'Name'=>@dataset['Name'], 
      'Species'=>@dataset['Species'],
      'build'=>@params['build'],
      'featureFile'=>@params['featureFile'],
-     'paired'=>@params['paired']
+     'paired'=>@params['paired'],
+     'CalledPeaks [File]'=>peakfile_link,
+      'BigWigFile [File]'=>bw_link
     }.merge factor_dataset
   end
   def commands
