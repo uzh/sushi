@@ -22,8 +22,8 @@ class VariantCallerApp < SushiFabric::SushiApp
       @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
     end
     @params['snpCaller'] = ['mpileup_bcftools','gatk']
-    @params['mpileupOtions'] = ''
-    @params['bcftoolsOtions'] = ''
+    @params['mpileupOptions'] = ''
+    @params['bcftoolsOptions'] = ''
     @params['gatk_glm'] = ['SNP','INDEL','BOTH']
     @params['gatkOptions'] = '-baqGOP 30 -minIndelCnt 8 --min_base_quality_score 15 -stand_call_conf 15'
   end
@@ -47,8 +47,8 @@ PICARD_DIR=#{GlobalVariables::PICARD_DIR}
 SNPEFF_DIR=#{GlobalVariables::SNPEFF_DIR}
 SNP_CALLER="#{@params['snpCaller']}"
 SNPEFF_DATABASE="#{@params['snpEff_database']}"
-MPILEUP_OPTIONS="#{@params['mpileupOtions']}"
-BCF_OPTIONS="#{@params['bcftoolsOtions']}"
+MPILEUP_OPTIONS="#{@params['mpileupOptions']}"
+BCF_OPTIONS="#{@params['bcftoolsOptions']}"
 CORES="#{@params['cores']}"
 GATK_GLM="#{@params['gatk_glm']}"
 GATK_OPTIONS="#{@params['gatkOptions']}"
