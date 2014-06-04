@@ -6,18 +6,17 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class Bowtie2App < SushiFabric::SushiApp
+class PileupApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'Bowtie2'
-    @analysis_category = 'Map'
+    @name = 'Pileup'
+    @analysis_category = 'Variant_Analysis'
     @description =<<-EOS
-Fast and sensitive read alignment. Supports local and end-to-end mode<br/>
-<a href='http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml'>http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml/</a>
+Does simple variant calling using samtools mpileup and bcftools. Performs no variant annotation.
 EOS
     
-    @required_columns = ['Name','Read1','Species']
-    @required_params = ['build','paired']
+    @required_columns = ['Name','BAM','BAI', 'build']
+    @required_params = []
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
@@ -26,31 +25,25 @@ EOS
     @params['build', 'description'] = 'the genome build and annotation to use as reference'
     @params['paired'] = false
     @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
-    @params['cmdOptions'] = ''
-    @params['cmdOptions', 'description'] = 'specify the commandline options for bowtie2; do not specify any option that is already covered by the dedicated input fields'
-    @params['trimAdapter'] = false
-    @params['trimAdapter', 'description'] = 'if adapters should be trimmed'
-    @params['trimLeft'] = 0
-    @params['trimLeft', 'description'] = 'fixed trimming at the "left" i.e. 5-prime end of the read'
-    @params['trimRight'] = 0
-    @params['trimRight', 'description'] = 'fixed trimming at the "right" i.e. 3-prime end of the read'
-    @params['minTailQuality'] = 0
-    @params['minTailQuality', 'description'] = 'if above zero, then reads are trimmed as soon as 4 consecutive bases have lower mean quality'
+    @params['mpileupOptions'] = ''
+    @params['bcftoolsOptions'] = '-c'
+    @params['rmdup'] = true
+    @params['rmdup', 'description'] = 'remove duplicates?'
     @params['specialOptions'] = ''
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
   end
-  def preprocess
-    if @params['paired']
-      @required_columns << 'Read2'
-    end
-  end
  def set_default_parameters
-    @params['paired'] = dataset_has_column?('Read2')
+     @params['build'] = @dataset[0]['build']
+    if dataset_has_column?('featureFile')
+      @params['featureFile'] = @dataset[0]['featureFile']
+    end
+    if dataset_has_column?('paired')
+      @params['paired'] = @dataset[0]['paired']
+    end                               
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
-     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
-     'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
+     'VCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf"), 
      'Species'=>@dataset['Species'],
      'build'=>@params['build'],
      'paired'=>@params['paired'],
@@ -76,14 +69,14 @@ EOS
     output.keys.each do |key|
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
-    command << "mapBowtie2(input=input, output=output, config=config)\n"
+    command << "pileup2vcf(input=input, output=output, config=config)\n"
     command << "EOT"
     command
   end
 end
 
 if __FILE__ == $0
-  run Bowtie2App
+  run PileupApp
   #usecase = Bowtie2App.new
 
   #usecase.project = "p1001"
