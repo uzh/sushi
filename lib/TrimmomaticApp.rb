@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20140414-103102'
+Version = '20140610-160547'
 
 require 'sushi_fabric'
 
@@ -24,7 +24,7 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     @params['quality_type'] = ['phred33', 'phred64']
     @params['quality_type', 'description'] = 'Fastq quality score type, if you use Illumina HiSeq or MySeq, chose phred33'
     @params['illuminaclip'] = {
-      'select' => '',
+      'none' => '',
       'All Illumina Adapter' => '/srv/GT/reference/contaminants/illuminaContaminants.fa',
       #'Original Adapter' => 'under construction'
     }
@@ -55,9 +55,12 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
   end
   def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
+    if dataset_has_column?('Adapter')
+      @params['illuminaclip']['Adapters'] = 'adapters.fa'
+    end
   end
   def next_dataset
-    nds = @dataset
+    nds = {'Name'=>@dataset['Name']}
     nds['Read1 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")
     #nds = {'Name'=>@dataset['Name'], 
     # 'Read1 [File]' => File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}"),
@@ -65,13 +68,30 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     if @params['paired'] 
       nds['Read2 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read2'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")
     end
+    nds['Adapters [File]'] = File.join(@result_dir, "#{@dataset['Name']}_adapters.fa")
+    pds = @dataset.clone
+    pds.delete("Read1")
+    pds.delete("Read2")
+    nds.merge!(pds)
     nds
   end
   def se_pe
     @params['paired'] ? 'PE' : 'SE'
   end
   def commands
-    command = "java -jar /usr/local/ngseq/src/Trimmomatic-0.30/trimmomatic-0.30.jar #{se_pe} -threads #{@params['cores']} -#{@params['quality_type']} #{File.join(SushiFabric::GSTORE_DIR, @dataset['Read1'])}"
+    command = ""
+    if @dataset['Adapter1']
+      adapters_fa = "#{@dataset['Name']}_adapters.fa"
+      scratch_dir = @scratch_dir.to_s
+      command << "echo '>Adapter1' > #{adapters_fa}\n"
+      command << "echo '#{@dataset["Adapter1"]}' >> #{adapters_fa}\n"
+      if @dataset['Adapter2']
+        command << "echo '>Adapter2' >> #{adapters_fa}\n"
+        command << "echo #{@dataset['Adapter2']} >> #{adapters_fa}\n"
+      end
+      command << "ln -s #{adapters_fa} adapters.fa\n"
+    end
+    command << "java -jar /usr/local/ngseq/src/Trimmomatic-0.30/trimmomatic-0.30.jar #{se_pe} -threads #{@params['cores']} -#{@params['quality_type']} #{File.join(SushiFabric::GSTORE_DIR, @dataset['Read1'])}"
     if @params['paired']
       command << " #{File.join(SushiFabric::GSTORE_DIR, @dataset['Read2'])}"
     end
