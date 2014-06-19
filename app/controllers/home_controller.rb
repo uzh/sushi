@@ -57,7 +57,6 @@ class HomeController < ApplicationController
     @page_list = (1..(@files.length.to_f/@page_unit).ceil).to_a
     start = (@current_page - 1) * @page_unit
     last  = @current_page * @page_unit - 1
-    @files = @files[start..last]
 
     # sort
     if sort
@@ -78,6 +77,7 @@ class HomeController < ApplicationController
         @files.reverse!
       end
     end
+    @files = @files[start..last]
   end
   def sushi_rank
     command = "wfm_job_list -d #{SushiFabric::WORKFLOW_MANAGER}"
