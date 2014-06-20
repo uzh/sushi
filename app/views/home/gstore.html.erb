@@ -34,7 +34,7 @@
   </tr>
 </table>
 <hr />
-<%= form_tag(:action => "gstore") do %>
+<%= form_tag(["/projects", params[:project_id],params[:dirs].to_s].join("/")) do %>
 <table>
   <tr>
     <td>
