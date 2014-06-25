@@ -10,7 +10,7 @@ class FastqScreenApp <  SushiFabric::SushiApp
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
     @required_columns = ['Name','Read1']
-    @required_params = ['name', 'paired']
+    @required_params = ['name', 'paired','confFile']
     @params['cores'] = '8'
     @params['ram'] = '16'
     @params['scratch'] = '100'
@@ -56,6 +56,7 @@ class FastqScreenApp <  SushiFabric::SushiApp
     command
   end
 end
+
 
 if __FILE__ == $0
   usecase = FastqscreenApp.new
