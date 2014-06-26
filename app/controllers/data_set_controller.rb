@@ -253,7 +253,7 @@ class DataSetController < ApplicationController
                     end
      send_data tsv_string,
      :type => 'text/csv',
-     :disposition => "attachment; filename=#{data_set_name}.csv" 
+     :disposition => "attachment; filename=#{data_set_name}.tsv" 
   end
 
   def delete
