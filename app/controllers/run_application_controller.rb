@@ -125,11 +125,6 @@ class RunApplicationController < ApplicationController
       @sushi_app.project = 'p' + project_number.to_s
     end
     @sushi_app.dataset_sushi_id = data_set_id.to_i
-    pid = fork do 
-      fork do 
-        @sushi_app.run
-      end
-    end
-    Process.waitpid pid
+    @sushi_app.run
   end
 end
