@@ -19,6 +19,7 @@ class MACS2App < SushiFabric::SushiApp
     @params['scratch'] = '100'
     @params['build'] = ref_selector
     @params['paired'] = false
+    @params['useControl'] = true
     @params['featureFile'] = 'genes.gtf'
     @params['cmdOptions'] = '--nomodel --shiftsize 73 --SPMR -g hs --bw 200'
     @params['specialOptions'] = ''

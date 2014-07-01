@@ -21,6 +21,7 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['build'] = ref_selector
     @params['featureFile'] = 'genes.gtf'
     @params['featureLevel'] = ['gene', 'isoform']
+    @params['testMethod'] = ['glm', 'exactTest']
     @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
     @params['refGroup'] = '' ## TODO: this should be a value from the selected column
