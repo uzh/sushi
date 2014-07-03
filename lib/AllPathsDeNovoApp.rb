@@ -11,7 +11,7 @@ class AllPathsDeNovoApp < SushiFabric::SushiApp
     @params['process_mode'] = 'DATASET'
     @name = 'AllPaths'
     @analysis_category = 'DeNovoAssembler'
-    @required_columns = ['library','file','project','organism','type','frag_size','frag_stddev','insert_size','insert_stddev','read_orientation','genomic_start','genomic_end']
+    @required_columns = ['library','file','project','organism','type','paired','frag_size','frag_stddev','insert_size','insert_stddev','read_orientation','genomic_start','genomic_end']
     @required_params = []
     # optional params
     @params['cores'] = '48'
