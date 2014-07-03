@@ -23,6 +23,7 @@ class MACS2App < SushiFabric::SushiApp
     @params['featureFile'] = 'genes.gtf'
     @params['cmdOptions'] = '--nomodel --shiftsize 73 --SPMR -g hs --bw 200'
     @params['specialOptions'] = ''
+    @params['mail'] = ''
   end
   def set_default_parameters
     @params['build'] = @dataset[0]['build']
