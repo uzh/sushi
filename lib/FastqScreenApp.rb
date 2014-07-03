@@ -19,6 +19,7 @@ class FastqScreenApp <  SushiFabric::SushiApp
     @params['subset'] = '100000'
     @params['confFile'] = 'variousSpecies_rRNA_20140522.conf'
     @params['cmdOptions'] = ""
+    @params['mail'] = ""
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
