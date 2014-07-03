@@ -27,7 +27,10 @@ class AllPathsDeNovoApp < SushiFabric::SushiApp
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
-     'Fasta [File]'=>File.join(@result_dir, "#{@dataset['Name']}.fasta"),
+     'Fasta [File]'=>File.join(@result_dir, "final.assembly.fasta"),
+     'Fasta [File]'=>File.join(@result_dir, "final.contigs.fasta"),
+     'Report [File]'=>File.join(@result_dir, "assembly.report"),
+     'Stats [File]'=>File.join(@result_dir, "assembly_stats.report"),
     }.merge factor_dataset
   end
 #  def set_default_parameters
@@ -70,6 +73,10 @@ echo "$PLOIDY" > AP_REF/AP_SUBDIR/ploidy
 
 $ALL_PATHS_DIR/PrepareAllPathsInputs.pl DATA_DIR=AP_REF/AP_SUBDIR  GENOME_SIZE=$SIZE FRAG_COVERAGE=$F_COV JUMP_COVERAGE=$J_COV  PLOIDY=$PLOIDY HOSTS=$CORES
 $ALL_PATHS_DIR/RunAllPathsLG  PRE=./ REFERENCE_NAME=AP_REF RUN=ATT1 DATA_SUBDIR=AP_SUBDIR  HAPLOIDIFY=$HAPLODIFY TARGETS=standard  REMOVE_DODGY_READS_JUMP=$REM_DODGY
+mv AP_REF/AP_SUBDIR/ATT1/ASSEMBLIES/test/final.assembly.fasta ./
+mv AP_REF/AP_SUBDIR/ATT1/ASSEMBLIES/test/final.contigs.fasta  ./
+mv AP_REF/AP_SUBDIR/ATT1/ASSEMBLIES/test/assembly.report ./
+mv AP_REF/AP_SUBDIR/ATT1/ASSEMBLIES/test/assembly_stats.report ./
 EOS
     command
   end
