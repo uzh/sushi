@@ -8,16 +8,15 @@ include GlobalVariables
 class AllPathsDeNovoApp < SushiFabric::SushiApp
   def initialize
     super
+    @params['process_mode'] = 'DATASET'
     @name = 'AllPaths'
     @analysis_category = 'DeNovoAssembler'
-    @required_columns = ['library','file','project','organism','type','frag_size','frag_stddev','insert_size','insert_stddev','read_orientation']
+    @required_columns = ['library','file','project','organism','type','frag_size','frag_stddev','insert_size','insert_stddev','read_orientation','genomic_start','genomic_end']
     @required_params = []
     # optional params
     @params['cores'] = '48'
     @params['ram'] = '300'
     @params['scratch'] = '500'
-    @params['Path to in_libs.csv file'] = ''
-    @params['Path to in_groups.csv file'] = ''
     @params['Estimated_Genome_Size'] = ''
     @params['Estimated_Coverage_From_Fragment_Libraries'] = ''
     @params['Estimated_Coverage_From_Jump_Libraries'] = ''
@@ -31,9 +30,9 @@ class AllPathsDeNovoApp < SushiFabric::SushiApp
      'Fasta [File]'=>File.join(@result_dir, "#{@dataset['Name']}.fasta"),
     }.merge factor_dataset
   end
-  def set_default_parameters
-    @params['build'] = @dataset[0]['build']
-  end
+#  def set_default_parameters
+#    @params['build'] = @dataset[0]['build']
+#  end
 
   def commands
     command =<<-EOS
@@ -44,12 +43,33 @@ J_COV="#{@params['Estimated_Coverage_From_Jump_Libraries']}"
 PLOIDY="#{@params['Ploidy']}"
 CORES="#{@params['cores']}"
 REM_DODGY="#{@params['Remove_dodgy_reads?']}"
+HAPLODIFY="#{@params['Haplodify?']}"
+TSV_FILE='#{@input_dataset_tsv_path}'
 echo "group_name,library_name,file_name" > in_groups.csv
-echo  #{@dataset['Name']} 
 echo "library_name,project_name,organism_name,type,paired,frag_size,frag_stddev,insert_size,insert_stddev,read_orientation,genomic_start,genomic_end" > in_libs.csv
+R << EOT
+x = read.table("$TSV_FILE", sep="\t", header=TRUE,blank.lines.skip = FALSE)
+x1=cbind(subset(x,select=library),subset(x,select=library:genomic_end))
+write.table(x1, file="in_libs.csv", append=TRUE,sep=",") 
 
-$ALL_PATHS_DIR/PrepareAllPathsInputs.pl DATA_DIR=$  GENOME_SIZE=$SIZE FRAG_COVERAGE=$F_COV JUMP_COVERAGE=$J_COV  PLOIDY=$PLOIDY HOSTS=$CORES
-$ALL_PATHS_DIR/RunAllPathsLG  PRE=$WD REFERENCE_NAME=ALL_PATHS RUN=ATT1 DATA_SUBDIR=3_PE_AND_ALL_PROTON  HAPLOIDIFY=True TARGETS=standard  REMOVE_DODGY_READS_JUMP=$REM_DODGY
+x2=cbind(subset(x,select=library),subset(x,select=project:),sep=",")
+write.table(x2, file="in_groups.csv", append=TRUE)
+EOT
+sed -i s/"NA/""/g in_groups.csv 
+sed -i s/"NA/""/g in_libs.csv
+#echo "group_name,library_name,file_name" > in_groups.csv
+#echo "#{@dataset['library']},#{@dataset['library']},#{@dataset['file']}" >> in_groups.csv 
+
+#echo "library_name,project_name,organism_name,type,paired,frag_size,frag_stddev,insert_size,insert_stddev,read_orientation,genomic_start,genomic_end" > in_libs.csv
+#echo "#{@dataset['library']},#{@dataset['project']},#{@dataset['organism']},#{@dataset['type']},1,#{@dataset['frag_size']},#{@dataset['frag_stddev']},#{@dataset['insert_size']}",#{@dataset['insert_stddev']},\
+##{@dataset['read_orientation']},," >> in_libs.csv
+
+mkdir AP_REF
+mkdir AP_REF/AP_SUBDIR 
+echo "$PLOIDY" > AP_REF/AP_SUBDIR/ploidy
+
+$ALL_PATHS_DIR/PrepareAllPathsInputs.pl DATA_DIR=AP_REF/AP_SUBDIR  GENOME_SIZE=$SIZE FRAG_COVERAGE=$F_COV JUMP_COVERAGE=$J_COV  PLOIDY=$PLOIDY HOSTS=$CORES
+$ALL_PATHS_DIR/RunAllPathsLG  PRE=./ REFERENCE_NAME=AP_REF RUN=ATT1 DATA_SUBDIR=AP_SUBDIR  HAPLOIDIFY=$HAPLODIFY TARGETS=standard  REMOVE_DODGY_READS_JUMP=$REM_DODGY
 EOS
     command
   end
