@@ -22,6 +22,12 @@ class CountOverlapsApp < SushiFabric::SushiApp
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['featureFile'] = 'genes.gtf'
     @params['featureLevel'] = 'gene'
+    @params['countNonredundant'] = true
+    @params['countNonredundant', 'description'] = "downweights alignments by the number of different genomic alignments"
+    @params['minFeatureOverlap'] = 10
+    @params['minFeatureOverlap', 'description'] = "minimum overlap of a read with a transcript feature"
+    @params['countTrimmedTranscripts'] = false
+    @params['trimmedMaxLength'] = 200
     @params['cmdOptions'] = ''
     @params['specialOptions'] = ''
   end
