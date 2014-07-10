@@ -1,6 +1,10 @@
 <html><head>
 <meta http-equiv="content-type" content="text/html; charset=windows-1252">
 
+<script src="Images/lightbox/js/jquery-1.11.0.min.js"></script>
+<script src="Images/lightbox/js/lightbox.min.js"></script>
+<link href="Images/lightbox/css/lightbox.css" rel="stylesheet" />
+
 <style type="text/css">
 <!-- 
 /****************************************************
@@ -261,6 +265,17 @@ tr {
 img {
   border: 0px;
 }
+
+.shadow_box {
+background-color:#EFEFEF;
+-moz-box-shadow: 5px 5px 5px #666;
+-webkit-box-shadow: 5px 5px 5px #666;
+-moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+margin:0px 0px 15px 0px;
+width:400px;
+padding:5px;
+}
 -->
 </style>
 <title>SushiFabric Documentation</title>
@@ -280,23 +295,111 @@ img {
 <tr>
 <td valign="top" align="left" id="contentblock">
 <div class="listing">
-<h1><a href="sushi_doc.html">Sushi Documentation</a></h1>
-<ul>
-    <li>Key Concepts:</li>
-    <ul>
-        <li><a href="apps_datasets.html">Applications and Datasets</a></li>
-        <li><a href="app_execution.html">Executing an Application</a></li>
-    </ul>
-    <li><a href="download.html">Download and Installation</a></li>
-    <li><a href="usage.html">Basic Usage</a></li>
-    <li><a href="faq.html">FAQ</a></li>
-</ul>
-Contact: Hubert.Rehrauer/at/fgcz.uzh.ch
+<h1><a href="sushi_doc.html">Sushi Documentation</a> &mdash; Basic Usage</h1>
 
-<table>
-<tbody><tr>
-<td id="contentblock" align="left" valign="top">
-<div class="listing">
+<h2>Contents</h2>
+<ol>
+  <li><a href="#login">Login</a></li>
+  <li><a href="#main_menu">Main Menu</a></li>
+  <li><a href="#import_dataset">Import DataSet</a></li>
+  <li><a href="#run_sushi_application">Run Sushi Application</a></li>
+  <li><a href="#check_job_status">Check Job Status</a></li>
+  <li><a href="#check_result">Check Result</a></li>
+</ol>
+
+<a name="login"> <h2>1. Login</h2> </a>
+<ul>
+  <li>Access to <a href="http://fgcz-sushi.uzh.ch">http://fgcz-sushi.uzh.ch</a></li>
+</ul>
+<a href="Images/login_form.png" data-lightbox="login_form" data-title="Login Form">
+  <img class="shadow_box" src="Images/login_form.png" />
+</a>
+<ul>
+  <li>Please use your <a href="http://fgcz-bfabric.uzh.ch/">B-Fabric</a> account (ID and Password)</li>
+  <li>If you do not have an account, please register in <a href="http://fgcz-bfabric.uzh.ch/">B-Fabric</a> system first</li>
+</ul>
+
+<a name="main_menu"> <h2>2. Main Menu</h2> </a>
+<ul>
+  <li>You can see main menu below after you succeed in logging-in Sushi</li>
+</ul>
+<a href="Images/top_menu.png" data-lightbox="top_menu" data-title="Main Menu">
+  <img class="shadow_box" src="Images/top_menu.png" />
+</a>
+<ul>
+  <li><i>DataSet</i>: You can see, edit and delete DataSet.</li>
+  <li><i>Import DataSet</i>: You can import a DataSet from .tsv file.</li>
+  <li><i>Check Jobs</i>: You can check your submitted jobs and the status. </li>
+  <li><i>gStore</i>: You can browse reslut files. </li>
+</ul>
+<i>top right</i>
+<ul>
+  <li><i>Sign out</i>: Logout from Sushi</i>
+  <li><i>Today's Menu</i>: Go back to the top menu</li>
+  <li><i>SushiApp List</i>: All available Sushi Applications will be shown </li>
+  <li><i>Help</i>: Sushi Documentation </li>
+  <li><i>Project</i>: You can select your project from the drop-down list, and 'GO' button switches to the project page</li>
+</ul>
+
+<a name="import_dataset"> <h2>3. Import DataSet</h2> </a>
+<a href="Images/import_dataset.png" data-lightbox="import_dataset" data-title="Import DataSet">
+  <img class="shadow_box" src="Images/import_dataset.png" />
+</a>
+<ul>
+  <li>You can import a DataSet file (.tsv) in Sushi database.</li>
+  <li>DataSet Name can be set.</li>
+  <li>If you want to make a relation to an existing DataSet, you can put the DataSet ID in 'Parent DataSet ID' box.</li>
+</ul>
+
+<a name="run_sushi_application"> <h2>4. Run Sushi Application</h2> </a>
+<ul>
+  <li>Clicking and DataSet from top menu and selecting one DataSet, then you can see samples in the DataSet and application buttons available will be shown.</li>
+  <li>If there is no application available for the DataSet, no button will be shown.</li>
+</ul>
+<a href="Images/sample.png" data-lightbox="sample" data-title="DataSet view">
+  <img class="shadow_box" src="Images/sample.png" />
+</a>
+<ul>
+  <li>After clicking an application button, parameter setting view will come.</li>
+  <li>It is an esample of FastQC application view below.</li>
+</ul>
+<a href="Images/parameter_set.png" data-lightbox="parameter_set" data-title="Parameter setting view (Example of FastQC application)">
+  <img class="shadow_box" src="Images/parameter_set.png" />
+</a>
+
+<h3>Parameters</h3>
+<ul>
+  <li><i>Name</i>: This will be a part of result folder name</li>
+  <li><i>Comment</i>: You can add some comment</li>
+  <li><i>Cores</i>: Number of cores for parallel calculation</li>
+  <li><i>RAM</i>: Expected memory amount to be used</li>
+  <li><i>Scratch</i>: Expected working disk space to be used</li>
+  <li><i>Node</i>: Cluster node on which the job will run</li>
+  <li><i>Process Mode</i>: Sample mode or DataSet mode (Usually it is fixed)</li>
+  <li><i>cmdOption</i>: specific command like option (depending on application)</li>
+</ul>
+Note
+<ul>
+  <li>The other parameter(s) are defined depending on the Sushi application</li>
+</ul>
+
+<a name="check_job_status"> <h2>5. Check Job Status</h2> </a>
+<a href="Images/job_list.png" data-lightbox="job_list" data-title="Job list Example">
+  <img class="shadow_box" src="Images/job_list.png" />
+</a>
+<ul>
+  <li>'Check Jobs' menu shows submitted job statuses</li>
+  <li>The job status becomes <i>running</i>, <i>fail</i>, or <i>success</i></li>
+</ul>
+
+<a name="check_result"> <h2>6. Check Result</h2> </a>
+<ul>
+  <li>If a job sceeds and finish, a new DataSet is generated.</li>
+  <li>If the output DataSet has a column with <i>Link</i> tag (e.g. FastQC see below), you can see the more detail by clicking the link.</li>
+</ul>
+<a href="Images/html_result.png" data-lightbox="html_result" data-title="Result with Link tag">
+  <img class="shadow_box" src="Images/html_result.png" />
+</a>
 
 </div></td></tr></tbody></table></div>
 
