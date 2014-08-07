@@ -24,7 +24,7 @@ $(document).ready(function(){
       <%= button_to 'delete', "/data_set/delete.#{data_set.id}", :method=>:post %>
     </td>
     <td>
-      <% if @sample_available[data_set] < data_set.samples.length %>
+      <% if @sample_available[data_set] and @sample_available[data_set] < data_set.samples.length %>
         <span class="alert"><%= @sample_available[data_set] %></span>
       <% else %>
         <%= @sample_available[data_set] %>
