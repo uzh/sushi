@@ -18,6 +18,7 @@ class TeqcApp <  SushiFabric::SushiApp
     @params['name'] = 'TEQC_Result'
     @params['designFile'] = '/srv/GT/databases/targetEnrichment_designs/SureSelect_HumanAllExon_V5_UTR/S04380110_Covered.bed'
     @params['cmdOptions'] = ""
+    @params['mail'] = ""
   end
  def set_default_parameters
    if dataset_has_column?('paired')
