@@ -263,7 +263,7 @@ img {
 }
 -->
 </style>
-<title>SushiFabric Documentation</title>
+<title>Sushi Documentation</title>
 </head><body>
 <div id="margins">
 <table id="screenhead" bgcolor="#FFFFFF">
@@ -288,7 +288,7 @@ img {
 <ul>
 	<li>Workflow manager: <a href="http://rubygems.org/gems/workflow_manager">http://rubygems.org/gems/workflow_manager</a></li>
 	<li>Sushi_fabric: <a href="http://rubygems.org/gems/sushi_fabric">http://rubygems.org/gems/sushi_fabric</a></li>
-	<li>Sushi_fabric Ruby on Rails appliction): <a href="http://fgcz-sushi.uzh.ch/SushiFabric_20140428.tgz">http://fgcz-sushi.uzh.ch/SushiFabric_20140428.tgz</a></li>
+	<li>Sushi_fabric Ruby on Rails appliction): <a href="http://fgcz-sushi.uzh.ch/sushi_20140814.tgz">http://fgcz-sushi.uzh.ch/sushi_20140814.tgz</a></li>
 	<li>FGCZ Sushi Application Library: <a href="http://fgcz-sushi.uzh.ch/fgcz_sushi_apps.tar" >http://fgcz-sushi.uzh.ch/fgcz_sushi_apps.tar</a></li>
 </ul>
 
@@ -321,7 +321,7 @@ Note
   <li>Install bundle (gem)</li>
   <li>Install workflow_manager (gem)</li>
   <li>Install sushi_fabric (gem)</li>
-  <li>Download SushiFabric.tgz (Ruby on Rails application)</li>
+  <li>Download sushi_2014xxxx.tgz (Ruby on Rails application)</li>
   <li>Install required libraries (bundle install)</li>
   <li>Setup database (rake db:migrate)</li>
   <li>Run (rails server)</li>
@@ -402,33 +402,33 @@ To eliminate this warning, please install libyaml and reinstall your ruby.
   <li>WorkflowManager client commands will installed under $GEM_HOME/bin directory. If <i>workflow_manager</i> command is not available, please check your $PATH setting, and add $GEM_HOME/bin to $PATH environmental variable.</li>
 	</ul>
 
-<h2>Install sushi_fabric (core code of SushiFabric)</h2>
+<h2>Install sushi_fabric (core code of Sushi)</h2>
 
 <pre>
   $ gem install sushi_fabric
 </pre>
 
 
-<h2>Download SushiFabric (Ruby on Rails code)</h2>
+<h2>Download Sushi (Ruby on Rails code)</h2>
 
 <pre>
-  $ wget http://fgcz-sushi.uzh.ch/SushiFabric_20140428.tgz
+  $ wget http://fgcz-sushi.uzh.ch/sushi_20140814.tgz
 </pre>
 or
 <pre>
-  $ curl -O http://fgcz-sushi.uzh.ch/SushiFabric_20140428.tgz
+  $ curl -O http://fgcz-sushi.uzh.ch/sushi_20140814.tgz
 </pre>
 
   <p>Tar and bundle install<br></p><pre>
-  $ tar zxvf SushiFabric_20140428.tgz
-  $ cd SushiFabric
+  $ tar zxvf sushi_20140814.tgz
+  $ cd sushi
   $ bundle install
 </pre><p></p>
 
 
 <h2>Set up database for Ruby on Rails</h2>
 
-<p>Go to the SushiFabric directory, then</p>
+<p>Go to the Sushi directory, then</p>
 
 <pre>
   $ bundle exec rake db:migrate
@@ -442,7 +442,7 @@ or
 Note
 	<ul>
 	<li>And then, try to access <strong><a class="external" href="http://localhost:3000/">http://localhost:3000</a></strong></li>
-		<li>If you can see the top menu of SushiFabric, it scceeded in installing.</li>
+		<li>If you can see the top menu of Sushi, it scceeded in installing.</li>
 		<li>In order to stop it, Ctrl + C</li>
 	</ul>
 
