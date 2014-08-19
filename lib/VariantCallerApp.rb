@@ -67,7 +67,7 @@ $SAMTOOLS index internal.nodup.bam
 java -jar $PICARD_DIR/AddOrReplaceReadGroups.jar I=internal.nodup.bam \
    O=internal_grouped.lex.bam SORT_ORDER=coordinate RGID=ID_NAME TMP_DIR=/scratch \
    RGLB=Paired_end RGPL=illumina RGSM=project RGPU=BIOSEQUENCER
-   BAMFILE=$MY_BAM 
+   MY_BAM=internal_grouped.lex.bam
 $SAMTOOLS index $MY_BAM
    
 
@@ -75,7 +75,7 @@ $SAMTOOLS index $MY_BAM
  if [ $SNP_CALLER == 'mpileup_bcftools' ]; then  
   ### DETECTING VARIANTS BCFTOOLS ###
   $SAMTOOLS mpileup $MPILEUP_OPTIONS -uf $REF.fa $MY_BAM | $BCFTOOLS view -bvcg - > internal.bcf  
-  $BCFTOOLS view  $BCF_OPTIONS  internal.bcf  > internal.vcf 
+  $BCFTOOLS view  $BCF_OPTIONS  internal.bcf  > final.output.vcf 
  else
 
 
@@ -174,6 +174,7 @@ else
 
      grep "#" internal2.vcf  >  final.output.vcf
      grep "PASS" internal2.vcf   >> final.output.vcf
+fi
 fi
 ### ANNOTATION ####
 
