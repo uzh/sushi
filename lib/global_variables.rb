@@ -6,7 +6,7 @@ module GlobalVariables
   SAMTOOLS = '/usr/local/ngseq/stow/samtools-0.1.19/bin/samtools'
   BCFTOOLS = '/usr/local/ngseq/stow/samtools-0.1.19/bin/bcftools'
   PICARD_DIR = '/usr/local/ngseq/stow/picard-tools-1.108/bin'
-  GATK_DIR = '/usr/local/ngseq/src/GenomeAnalysisTK-2.8-1-g932cd3a'
+  GATK_DIR = '/usr/local/ngseq/src/GenomeAnalysisTK-3.2-2'
   SNPEFF_DIR='/usr/local/ngseq/src/snpEff_v3.4/'
   BWA='/usr/local/ngseq/src/bwa-0.7.8/bwa'
   SAMSTAT='/usr/local/ngseq/stow/samstat_1.09/bin/samstat'
@@ -15,8 +15,8 @@ module GlobalVariables
   HMMSCAN='/usr/local/ngseq/src/hmmer-3.1b1-linux-intel-x86_64/binaries/hmmscan'
   UNIPROT_DIR='/srv/GT/databases/uniprot_blast_db/'
   BLAST_DIR='/usr/local/ngseq/src/ncbi-blast-2.2.26+/bin/'
-
-
+  AUGUSTUS_DIR='/usr/local/ngseq/src/augustus.2.7/'
+  HUMAN_SNP_DATABASES='/srv/GT/reference/Homo_sapiens/UCSC/hg19_karyiotipic/SNPS/'
   def builder_selector(base_dir, shown_pattern=nil, value_pattern=nil)
     selector = {}
     Dir[base_dir].sort.select{|dir| File.directory?(dir)}.each do |dir|
