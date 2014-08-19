@@ -10,18 +10,22 @@ class VariantCallerApp < SushiFabric::SushiApp
     super
     @name = 'VariantCaller'
     @analysis_category = 'Variant_Analysis'
+@description =<<-EOS
+Variant caller and variant annotator starting from a bam file. One can choose to using samtools+mpileup+bcftools or GATK. 
+GATK is particularly recommended for human samples and cohort studies.
+EOS
     @required_columns = ['Name','BAM','BAI', 'build']
     @required_params = ['min_depth_to_call_variants']
     # optional params
     @params['cores'] = '4'
     @params['ram'] = '10'
     @params['scratch'] = '100'
-    @params['build'] = ref_selector
-    @params['snpEff_database'] = {'select'=>''}
+    @params['build','description'] = 'If human, then ensure that the build is hg_19_karyotipic'
+    @params['snpEff_database'] = {'select'=>''} 'If the database is not present, download from snpEff repository firs.' 
     Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
     end
-    @params['snpCaller'] = ['mpileup_bcftools','gatk']
+    @params['snpCaller','description'] = ['mpileup_bcftools','gatk'] 'Choose bewteen samtools+mpileup+bcftools and GATK. GATK is particularly recommended for human samples and cohort studies.'
     @params['min_depth_to_call_variants'] = '19'
     @params['mpileupOptions'] = ''
     @params['bcftoolsOptions'] = ''
@@ -98,11 +102,11 @@ $SAMTOOLS index $MY_BAM
      ### REALINGING AROUND POSSIBLE INDELS ###
      java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar   -I $MY_BAM  \
      -R $REF.fa -T IndelRealigner -known $HSD/dbsnp_138.hg19.2.vcf  \
-     -targetIntervals paired_end.intervals -o $MY_BAM.real
+     -targetIntervals paired_end.intervals -o $MY_BAM.real.bam
 
      ### DETECTING VARIANTS GATK  ###
      java -jar $GATK_DIR/GenomeAnalysisTK.jar \
-     -I $MY_BAM.real  -log gatk_log.txt -nt $CORES \
+     -I $MY_BAM.real.bam  -log gatk_log.txt -nt $CORES \
      -o internal.vcf -R $REF.fa -T UnifiedGenotyper \
      -glm $GATK_GLM $GATK_OPTIONS --dbsnp  $HSD/dbsnp_138.hg19.2.vcf
 
@@ -155,11 +159,11 @@ else
      ### REALINGING AROUND POSSIBLE INDELS ###
      java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar   -I $MY_BAM  \
      -R $REF.fa -T IndelRealigner \
-     -targetIntervals paired_end.intervals -o $MY_BAM.real
+     -targetIntervals paired_end.intervals -o $MY_BAM.real.bam
 
      ### DETECTING VARIANTS GATK  ###
      java -jar $GATK_DIR/GenomeAnalysisTK.jar \
-     -I $MY_BAM.real  -log gatk_log.txt -nt $CORES \
+     -I $MY_BAM.real.bam  -log gatk_log.txt -nt $CORES \
      -o internal.vcf -R $REF.fa -T UnifiedGenotyper \
      -glm $GATK_GLM $GATK_OPTIONS
 
