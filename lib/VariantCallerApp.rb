@@ -21,7 +21,7 @@ EOS
     @params['ram'] = '10'
     @params['scratch'] = '100'
     @params['build','description'] = 'If human, then ensure that the build is hg_19_karyotipic'
-    @params['snpEff_database'] = {'select'=>''} 'If the database is not present, download from snpEff repository firs.' 
+    @params['snpEff_database','description'] = {'select'=>''} 'If the database is not present, download from snpEff repository firs.' 
     Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
     end
