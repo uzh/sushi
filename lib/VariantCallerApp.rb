@@ -20,12 +20,15 @@ EOS
     @params['cores'] = '4'
     @params['ram'] = '10'
     @params['scratch'] = '100'
+    @params['build'] = ref_selector
     @params['build','description'] = 'If human, then ensure that the build is hg_19_karyotipic'
-    @params['snpEff_database','description'] = {'select'=>''} 'If the database is not present, download from snpEff repository firs.' 
+    @params['snpEff_database'] = {'select'=>''} 
+    @params['snpEff_database','description'] = 'If the database is not present, download from snpEff repository first.' 
     Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
     end
-    @params['snpCaller','description'] = ['mpileup_bcftools','gatk'] 'Choose bewteen samtools+mpileup+bcftools and GATK. GATK is particularly recommended for human samples and cohort studies.'
+    @params['snpCaller'] = ['mpileup_bcftools','gatk']
+    @params['snpCaller','description'] = 'Choose bewteen samtools+mpileup+bcftools and GATK. GATK is particularly recommended for human samples and cohort studies.'
     @params['min_depth_to_call_variants'] = '19'
     @params['mpileupOptions'] = ''
     @params['bcftoolsOptions'] = ''
