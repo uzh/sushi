@@ -12,7 +12,7 @@ class VariantCallerApp < SushiFabric::SushiApp
     @analysis_category = 'Variant_Analysis'
 @description =<<-EOS
 Variant caller and variant annotator starting from a bam file. 
-For calling variants, one can choose to using samtools+mpileup+bcftools or GATK. GATK is particularly recommended for human samples and cohort studies.
+For calling variants, one can choose to using <a href="http://samtools.sourceforge.net/samtools.shtml">samtools+mpileup+bcftools</a> or <a href="http://www.broadinstitute.org/gatk/">GATK</a>.
 To annotate variants, <a href="http://snpeff.sourceforge.net">snpEFF</a> is used. Please check <a href="http://snpeff.sourceforge.net/download.html#databases">here</a> whether the desired snpEFF database needs to be downloaded.   
 EOS
     @required_columns = ['Name','BAM','BAI', 'build']
@@ -68,6 +68,7 @@ GATK_OPTIONS="#{@params['gatkOptions']}"
 HSD=#{GlobalVariables::HUMAN_SNP_DATABASES}
 MIN_DEPTH="#{@params['min_depth_to_call_variants']}"
 PAIRED="#{@params['paired']}"
+ANN="#{@params['snpEff_annotation']}"
 
 REF=/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome
 MY_BAM=internal_grouped.lex.bam
@@ -194,8 +195,9 @@ else
 fi
 fi
 ### ANNOTATION ####
-
+if [ $ANN == "true" ]; then 
 java -Xmx2g -jar $SNPEFF_DIR/snpEff.jar -s #{@dataset['Name']}.html -c $SNPEFF_DIR/snpEff.config $SNPEFF_DATABASE -v final.output.vcf  > #{@dataset['Name']}.vcf
+fi 
 EOS
     command
   end
