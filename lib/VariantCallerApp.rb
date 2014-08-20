@@ -11,8 +11,9 @@ class VariantCallerApp < SushiFabric::SushiApp
     @name = 'VariantCaller'
     @analysis_category = 'Variant_Analysis'
 @description =<<-EOS
-Variant caller and variant annotator starting from a bam file. One can choose to using samtools+mpileup+bcftools or GATK. 
-GATK is particularly recommended for human samples and cohort studies.
+Variant caller and variant annotator starting from a bam file. 
+For calling variants, one can choose to using samtools+mpileup+bcftools or GATK. GATK is particularly recommended for human samples and cohort studies.
+To annotate variants, <a href="http://snpeff.sourceforge.net">snpEFF</a> is used. Please check <a href="http://snpeff.sourceforge.net/download.html#databases">here</a> whether the desired snpEFF database needs to be downloaded.   
 EOS
     @required_columns = ['Name','BAM','BAI', 'build']
     @required_params = ['min_depth_to_call_variants']
@@ -22,13 +23,17 @@ EOS
     @params['scratch'] = '100'
     @params['build'] = ref_selector
     @params['build','description'] = 'If human, then ensure that the build is hg_19_karyotipic'
+    @params['snpEff_annotation'] = ['true','false']
+    @params['snpEff_annotation','description'] = 'Annotate the variants? If yes, choose a snnEff database.'
     @params['snpEff_database'] = {'select'=>''} 
-    @params['snpEff_database','description'] = 'If the database is not present, download from snpEff repository first.' 
+    @params['snpEff_database','description'] = 'If the database is not listed, check at http://snpeff.sourceforge.net/download.html#databases if it's available and download it.' 
     Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
     end
     @params['snpCaller'] = ['mpileup_bcftools','gatk']
     @params['snpCaller','description'] = 'Choose bewteen samtools+mpileup+bcftools and GATK. GATK is particularly recommended for human samples and cohort studies.'
+    @params['paired'] = ['true','false']
+    @params['paired','description'] = 'Are the reads paired?'
     @params['min_depth_to_call_variants'] = '19'
     @params['mpileupOptions'] = ''
     @params['bcftoolsOptions'] = ''
@@ -62,13 +67,18 @@ GATK_GLM="#{@params['gatk_glm']}"
 GATK_OPTIONS="#{@params['gatkOptions']}"
 HSD=#{GlobalVariables::HUMAN_SNP_DATABASES}
 MIN_DEPTH="#{@params['min_depth_to_call_variants']}"
-
+PAIRED="#{@params['paired']}"
 
 REF=/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome
 MY_BAM=internal_grouped.lex.bam
 
+if [ $PAIRED == "true" ]; then 
 $SAMTOOLS view -F 4 -hb #{File.join(@gstore_dir, @dataset['BAM'])} | $SAMTOOLS rmdup - internal.nodup.bam
 $SAMTOOLS index internal.nodup.bam
+else
+$SAMTOOLS view -F 4 -hb #{File.join(@gstore_dir, @dataset['BAM'])} | $SAMTOOLS rmdup -s - internal.nodup.bam
+$SAMTOOLS index internal.nodup.bam 
+fi
 
 ### SORT OUT GROUPS ISSUES ###
 java -jar $PICARD_DIR/AddOrReplaceReadGroups.jar I=internal.nodup.bam \
@@ -94,7 +104,7 @@ $SAMTOOLS index $MY_BAM
  java -jar $PICARD_DIR/CreateSequenceDictionary.jar R=$REF.fa O=$REF.dict
  fi 
 
-     if [ $REF == "/srv/GT/reference/Homo_sapiens/UCSC/hg19_karyiotipic/Sequence/WholeGenomeFasta/genome" ]; then 
+     if [ $REF == "/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome" ]; then
      ### HUMAN BEST PRACTICES ####
 
      ########FINDING POSSIBLE INDELS ####

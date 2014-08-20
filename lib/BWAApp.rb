@@ -17,6 +17,7 @@ class BWAApp < SushiFabric::SushiApp
     @params['ram'] = '16'
     @params['scratch'] = '100'
     @params['build'] = ref_selector
+    @params['build', 'description'] = 'the genome build and annotation to use as reference. If human variant calling is the main goal, please use hg_19_kariotypic.'
     @params['paired'] = false
     @params['algorithm'] = ['aln', 'mem', 'bwasw']
     @params['cmdOptions'] = ''
