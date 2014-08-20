@@ -26,7 +26,7 @@ EOS
     @params['snpEff_annotation'] = ['true','false']
     @params['snpEff_annotation','description'] = 'Annotate the variants? If yes, choose a snnEff database.'
     @params['snpEff_database'] = {'select'=>''} 
-    @params['snpEff_database','description'] = 'If the database is not listed, check at http://snpeff.sourceforge.net/download.html#databases if it's available and download it.' 
+    @params['snpEff_database','description'] = 'If the database is not listed, check if it is available and download it.' 
     Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
     end
