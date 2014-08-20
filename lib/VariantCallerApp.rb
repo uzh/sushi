@@ -13,7 +13,7 @@ class VariantCallerApp < SushiFabric::SushiApp
 @description =<<-EOS
 Variant caller and variant annotator starting from a bam file. 
 For calling variants, one can choose to using <a href="http://samtools.sourceforge.net/samtools.shtml">samtools+mpileup+bcftools</a> or <a href="http://www.broadinstitute.org/gatk/">GATK</a>.
-To annotate variants, <a href="http://snpeff.sourceforge.net">snpEFF</a> is used. Please check <a href="http://snpeff.sourceforge.net/download.html#databases">here</a> whether the desired snpEFF database needs to be downloaded.   
+To annotate variants, <a href="http://snpeff.sourceforge.net">snpEFF</a> is used. Please check <a href="http://snpeff.sourceforge.net/download.html#databases">here</a> whether the desired snpEFF database is avilable and needs to be downloaded.   
 EOS
     @required_columns = ['Name','BAM','BAI', 'build']
     @required_params = ['min_depth_to_call_variants']
@@ -26,7 +26,7 @@ EOS
     @params['snpEff_annotation'] = ['true','false']
     @params['snpEff_annotation','description'] = 'Annotate the variants? If yes, choose a snpEff database.'
     @params['snpEff_database'] = {'select'=>''} 
-    @params['snpEff_database','description'] = 'If the database is not listed,  please check <a href="http://snpeff.sourceforge.net/download.html#databases">here</a> whether it is available and  needs to be downloaded.' 
+    @params['snpEff_database','description'] = 'If the database is not listed,  please check whether it is avilable and needs to be downloaded (link above).' 
     Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
     end
