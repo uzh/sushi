@@ -146,7 +146,7 @@ $SAMTOOLS index $MY_BAM
      -resource:omni,known=false,training=true,truth=false,prior=12.0 $HSD/1000G_omni2.5.hg19.vcf \
      -resource:dbsnp,known=true,training=false,truth=false,prior=6.0 $HSD/dbsnp_138.hg19.reord.2.vcf \
      -an QD  -an MQRankSum -an ReadPosRankSum -an FS -an MQ \
-     -mode  \
+     -mode $GATK_GLM \
      -recalFile output.recal --num_threads 4 \
      -tranchesFile output.tranches \
      -rscriptFile output.plots.R
@@ -159,7 +159,7 @@ $SAMTOOLS index $MY_BAM
      --ts_filter_level 99.0 \
      -tranchesFile output.tranches \
      -recalFile output.recal \
-     -mode BOTH --num_threads 4 \
+     -mode  $GATK_GLM --num_threads 4 \
      -o final.output.vcf
 
 else 
