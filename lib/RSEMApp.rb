@@ -41,6 +41,9 @@ EOS
   end
   def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
+    if dataset_has_column?('strandMode')
+      @params['strandMode'] = @dataset[0]['strandMode']
+    end
   end
   def next_dataset
     if @params['keepBam']
