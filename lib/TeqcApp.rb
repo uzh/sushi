@@ -16,7 +16,8 @@ class TeqcApp <  SushiFabric::SushiApp
     @params['scratch'] = '100'
     @params['paired'] = false
     @params['name'] = 'TEQC_Result'
-    @params['designFile'] = '/srv/GT/databases/targetEnrichment_designs/SureSelect_HumanAllExon_V5_UTR/S04380110_Covered.bed'
+    @params['designFile'] = '/srv/GT/databases/targetEnrichment_designs/SureSelect_HumanAllExon_V5_UTR/S04380219_Covered.bed'
+    @params['designFile', 'description'] = 'set full path to designFile according to the used kit'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
   end
