@@ -20,7 +20,7 @@ EOS
     @required_params = ['build','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '30'
+    @params['ram'] = '40'
     @params['scratch'] = '100'
     @params['build'] = ref_selector
     @params['paired'] = false
