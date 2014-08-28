@@ -19,7 +19,9 @@ class AllPathsDeNovoApp < SushiFabric::SushiApp
     @params['scratch'] = '500'
     @params['Estimated_Genome_Size'] = ''
     @params['Estimated_Coverage_From_Fragment_Libraries'] = ''
+    @params['Estimated_Coverage_From_Fragment_Libraries','description'] = 'A coverage between 50x and 70x for at least one of the libraries is recommended.'
     @params['Estimated_Coverage_From_Jump_Libraries'] = ''
+    @params['Estimated_Coverage_From_Jump_Libraries','description'] = 'A coverage between 40x and 50x for at least one of the libraries is recommended.'
     @params['Ploidy']  = ['1','2']
     @params['Remove_dodgy_reads?'] = ['True','False']
     @params['Haplodify?'] = ['True','False']
