@@ -36,6 +36,7 @@ class DnaBamStatsApp < SushiFabric::SushiApp
   end
   def commands
     command =<<-EOS
+echo Display=$DISPLAY
 REF=/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome.fa
 SAMTOOLS=#{GlobalVariables::SAMTOOLS}
 SAMSTAT=#{GlobalVariables::SAMSTAT}
@@ -46,6 +47,7 @@ $SAMTOOLS view -ub #{File.join(@gstore_dir, @dataset['BAM'])} | $SAMSTAT -f bam 
 ###qualimap
 unset DISPLAY ; $QUALIMAP bamqc -bam  #{File.join(@gstore_dir, @dataset['BAM'])} -c -nt #{@params['cores']} --java-mem-size=10G -outdir #{@dataset['Name']}
 rm #{@dataset['Name']}/coverage.txt
+echo Display=$DISPLAY
 ###picard 
 /usr/bin/java -Xmx10g -jar $PICARD_DIR/CollectGcBiasMetrics.jar OUTPUT=#{@dataset['Name']}.gc.dat SUMMARY_OUTPUT=#{@dataset['Name']}.gc.sum.dat INPUT=#{File.join(@gstore_dir, @dataset['BAM'])} CHART_OUTPUT=#{@dataset['Name']}.picard.pdf ASSUME_SORTED=#{@params['sortedBam']} REFERENCE_SEQUENCE=$REF VALIDATION_STRINGENCY=LENIENT
 EOS
