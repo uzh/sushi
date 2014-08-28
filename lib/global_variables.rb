@@ -16,7 +16,7 @@ module GlobalVariables
   UNIPROT_DIR='/srv/GT/databases/uniprot_blast_db/'
   BLAST_DIR='/usr/local/ngseq/src/ncbi-blast-2.2.26+/bin/'
   AUGUSTUS_DIR='/usr/local/ngseq/src/augustus.2.7/'
-  HUMAN_SNP_DATABASES='/srv/GT/reference/Homo_sapiens/UCSC/hg19_karyotipic/SNPS/'
+  HUMAN_SNP_DATABASES='/srv/GT/reference/Homo_sapiens/UCSC/hg19_karyotypic/SNPS/'
 
   def builder_selector(base_dir, shown_pattern=nil, value_pattern=nil)
     selector = {}

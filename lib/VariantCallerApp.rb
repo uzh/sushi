@@ -22,7 +22,7 @@ EOS
     @params['ram'] = '10'
     @params['scratch'] = '100'
     @params['build'] = ref_selector
-    @params['build','description'] = 'If human, then ensure that the build is hg_19_karyotipic'
+    @params['build','description'] = 'If human, then ensure that the build is hg_19_karyotypic'
     @params['snpEff_annotation'] = ['true','false']
     @params['snpEff_annotation','description'] = 'Annotate the variants? If yes, choose a snpEff database.'
     @params['snpEff_database'] = {'select'=>''} 
