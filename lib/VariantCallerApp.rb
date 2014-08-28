@@ -144,7 +144,7 @@ $SAMTOOLS index $MY_BAM
      -input  internal3.vcf \
      -resource:hapmap,known=false,training=true,truth=true,prior=15.0 $HSD/hapmap_3.3.hg19.reord.vcf \
      -resource:omni,known=false,training=true,truth=false,prior=12.0 $HSD/1000G_omni2.5.hg19.vcf \
-     -resource:dbsnp,known=true,training=false,truth=false,prior=6.0 $HSD/dbsnp_138.hg19.reord.2.vcf \
+     -resource:dbsnp,known=true,training=false,truth=false,prior=6.0 $HSD/dbsnp_138.hg19.2.vcf \
      -an QD  -an MQRankSum -an ReadPosRankSum -an FS -an MQ \
      -mode $GATK_GLM \
      -recalFile output.recal --num_threads 4 \
