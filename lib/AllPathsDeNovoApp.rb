@@ -60,15 +60,15 @@ write.table(x1, file="in_libs.csv", append=TRUE,sep=",", col.names = FALSE, row.
 x2=cbind(subset(x,select=library),subset(x,select=project:genomic_end),sep=",")
 write.table(x2, file="in_groups.csv", append=TRUE, col.names = FALSE, row.names = FALSE, quote = FALSE)
 EOT
-sed -i s/"NA/""/g in_groups.csv 
-sed -i s/"NA/""/g in_libs.csv
+sed -i s/"NA"/""/g in_groups.csv 
+sed -i s/"NA"/""/g in_libs.csv
 #echo "group_name,library_name,file_name" > in_groups.csv
 #echo "#{@dataset['library']},#{@dataset['library']},#{@dataset['file']}" >> in_groups.csv 
 
 #echo "library_name,project_name,organism_name,type,paired,frag_size,frag_stddev,insert_size,insert_stddev,read_orientation,genomic_start,genomic_end" > in_libs.csv
 #echo "#{@dataset['library']},#{@dataset['project']},#{@dataset['organism']},#{@dataset['type']},1,#{@dataset['frag_size']},#{@dataset['frag_stddev']},#{@dataset['insert_size']}",#{@dataset['insert_stddev']},\
 ##{@dataset['read_orientation']},," >> in_libs.csv
-
+cp in_* /srv/GT/analysis/p1438/AppTest
 mkdir AP_REF
 mkdir AP_REF/AP_SUBDIR 
 echo "$PLOIDY" > AP_REF/AP_SUBDIR/ploidy
