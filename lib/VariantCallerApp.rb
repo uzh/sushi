@@ -170,7 +170,7 @@ $SAMTOOLS index $MY_BAM
      ### APPLY RECALIBRATION #####
      java -Xmx16g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -T ApplyRecalibration \
-     -R $REF \
+     -R $REF.fa \
      -input internal3.vcf \
      --ts_filter_level 99.0 \
      -tranchesFile output.tranches \
