@@ -152,7 +152,7 @@ $SAMTOOLS index $MY_BAM
      -rscriptFile output.plots.R
 
      ### APPLY RECALIBRATION #####
-     java -Xmx16g -jar $EXEGATK/GenomeAnalysisTK.jar \
+     java -Xmx16g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -T ApplyRecalibration \
      -R $REF \
      -input internal3.vcf \
