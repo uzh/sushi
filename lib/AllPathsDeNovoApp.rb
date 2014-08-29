@@ -69,12 +69,12 @@ sed -i s/"NA"/""/g in_libs.csv
 #echo "#{@dataset['library']},#{@dataset['project']},#{@dataset['organism']},#{@dataset['type']},1,#{@dataset['frag_size']},#{@dataset['frag_stddev']},#{@dataset['insert_size']}",#{@dataset['insert_stddev']},\
 ##{@dataset['read_orientation']},," >> in_libs.csv
 cp in_* /srv/GT/analysis/p1438/AppTest
-mkdir AP_REF
-mkdir AP_REF/AP_SUBDIR 
+mkdir $(pwd)/AP_REF
+mkdir $(pwd)/AP_REF/AP_SUBDIR 
 echo "$PLOIDY" > AP_REF/AP_SUBDIR/ploidy
 
-$ALL_PATHS_DIR/PrepareAllPathsInputs.pl DATA_DIR=AP_REF/AP_SUBDIR  GENOME_SIZE=$SIZE FRAG_COVERAGE=$F_COV JUMP_COVERAGE=$J_COV  PLOIDY=$PLOIDY HOSTS=$CORES
-$ALL_PATHS_DIR/RunAllPathsLG  PRE=./ REFERENCE_NAME=AP_REF RUN=ATT1 DATA_SUBDIR=AP_SUBDIR  HAPLOIDIFY=$HAPLODIFY TARGETS=standard  REMOVE_DODGY_READS_JUMP=$REM_DODGY
+$ALL_PATHS_DIR/PrepareAllPathsInputs.pl DATA_DIR=$(pwd)/AP_REF/AP_SUBDIR  GENOME_SIZE=$SIZE FRAG_COVERAGE=$F_COV JUMP_COVERAGE=$J_COV  PLOIDY=$PLOIDY HOSTS=$CORES
+$ALL_PATHS_DIR/RunAllPathsLG  PRE=$(pwd) REFERENCE_NAME=$(pwd)/AP_REF RUN=ATT1 DATA_SUBDIR=AP_SUBDIR  HAPLOIDIFY=$HAPLODIFY TARGETS=standard  REMOVE_DODGY_READS_JUMP=$REM_DODGY
 mv AP_REF/AP_SUBDIR/ATT1/ASSEMBLIES/test/final.assembly.fasta ./
 mv AP_REF/AP_SUBDIR/ATT1/ASSEMBLIES/test/final.contigs.fasta  ./
 mv AP_REF/AP_SUBDIR/ATT1/ASSEMBLIES/test/assembly.report ./
