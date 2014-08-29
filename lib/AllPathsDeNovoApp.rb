@@ -57,8 +57,8 @@ x = read.table("$TSV_FILE", sep="\t", header=TRUE,blank.lines.skip = FALSE)
 x1=cbind(subset(x,select=library),subset(x,select=project:genomic_end))
 write.table(x1, file="in_libs.csv", append=TRUE,sep=",", col.names = FALSE, row.names = FALSE, quote = FALSE) 
 
-x2=cbind(subset(x,select=library),subset(x,select=library:file),sep=",")
-write.table(x2, file="in_groups.csv", append=TRUE, col.names = FALSE, row.names = FALSE, quote = FALSE)
+x2=cbind(subset(x,select=library),subset(x,select=library:file))
+write.table(x2, file="in_groups.csv",sep=",", append=TRUE, col.names = FALSE, row.names = FALSE, quote = FALSE)
 EOT
 sed -i s/"NA"/""/g in_groups.csv 
 sed -i s/"NA"/""/g in_libs.csv
