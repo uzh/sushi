@@ -47,8 +47,8 @@ F_COV="#{@params['Estimated_Coverage_From_Fragment_Libraries']}"
 J_COV="#{@params['Estimated_Coverage_From_Jump_Libraries']}"
 PLOIDY="#{@params['Ploidy']}"
 CORES="#{@params['cores']}"
-REM_DODGY="#{@params['Remove_dodgy_reads?']}"
-HAPLODIFY="#{@params['Haplodify?']}"
+REM_DODGY="#{@params['Remove_dodgy_reads']}"
+HAPLODIFY="#{@params['Haplodify']}"
 TSV_FILE='#{@input_dataset_tsv_path}'
 echo "group_name,library_name,file_name" > in_groups.csv
 echo "library_name,project_name,organism_name,type,paired,frag_size,frag_stddev,insert_size,insert_stddev,read_orientation,genomic_start,genomic_end" > in_libs.csv
