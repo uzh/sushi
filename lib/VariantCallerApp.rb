@@ -116,7 +116,23 @@ $SAMTOOLS index $MY_BAM
      ### REALINGING AROUND POSSIBLE INDELS ###
      java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar   -I $MY_BAM  \
      -R $REF.fa -T IndelRealigner -known $HSD/dbsnp_138.hg19.2.vcf  \
-     -targetIntervals paired_end.intervals -o $MY_BAM.real.bam
+     -targetIntervals paired_end.intervals -o $MY_BAM.real.trans.bam
+
+     ### BASE RECALIBRATION ###
+     java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar \
+     -T BaseRecalibrator \
+     -I $MY_BAM.real.trans.bam \
+     -R $REF.fa \
+     -knownSites $HSD/dbsnp_138.hg19.2.vcf \
+     -o recal_data.table
+
+     ### APPLY BASE RECALIBRATION ###
+     java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar \
+     -T PrintReads \
+     -R $REF.fa \
+     -I $MY_BAM.real.trans.bam \
+     -BQSR recal_data.table \
+     -o $MY_BAM.real.bam
 
      ### DETECTING VARIANTS GATK  ###
      java -jar $GATK_DIR/GenomeAnalysisTK.jar \
@@ -149,8 +165,8 @@ $SAMTOOLS index $MY_BAM
      -mode $GATK_GLM \
      -recalFile output.recal --num_threads 4 \
      -tranchesFile output.tranches \
-     -rscriptFile output.plots.R
-
+     -rscriptFile output.plots.R -rf BadCigar 
+ 
      ### APPLY RECALIBRATION #####
      java -Xmx16g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -T ApplyRecalibration \
@@ -160,7 +176,7 @@ $SAMTOOLS index $MY_BAM
      -tranchesFile output.tranches \
      -recalFile output.recal \
      -mode  $GATK_GLM --num_threads 4 \
-     -o final.output.vcf
+     -o final.output.vcf -rf BadCigar 
 
 else 
 
