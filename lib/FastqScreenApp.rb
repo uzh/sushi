@@ -17,7 +17,12 @@ class FastqScreenApp <  SushiFabric::SushiApp
     @params['paired'] = false
     @params['name'] = 'QC_Result'
     @params['subset'] = '100000'
-    @params['confFile'] = 'variousSpecies_rRNA_20140522.conf'
+    @params['confFile'] = {'select'=>''}
+    Dir["/usr/local/ngseq/opt/fastq_screen_v0.4.2/conf/*.conf"].sort.select{|conf| File.file?(conf)}.each do |file|
+      @params['confFile'][File.basename(file)] = File.basename(file)
+    end
+
+#'variousSpecies_rRNA_20140522.conf'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
   end
