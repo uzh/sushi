@@ -17,7 +17,7 @@ EOS
     @params['process_mode'] = 'DATASET'
     @name = 'AllPaths'
     @analysis_category = 'DeNovoAssembler'
-    @required_columns = ['file','library','project','organism','type','paired','frag_size','frag_stddev','insert_size','insert_stddev','read_orientation','genomic_start','genomic_end']
+    @required_columns = ['file','library_name','project_name','organism_name','type','paired','frag_size','frag_stddev','insert_size','insert_stddev','read_orientation','genomic_start','genomic_end']
     @required_params = ['Estimated_Genome_Size','Estimated_Coverage_From_Fragment_Libraries','Estimated_Coverage_From_Jump_Libraries']
     # optional params
     @params['cores'] = '48'
