@@ -10,7 +10,7 @@ class AllPathsDeNovoApp < SushiFabric::SushiApp
     super
 @description =<<-EOS
 Genome <i>deNovo</i> assembler based on  <a href="http://www.broadinstitute.org/software/allpaths-lg/blog/">AllPaths</a>.
-The App requires a comma-separated input file with exactly 13 columns, i.e., the standard in_libs.csv file that
+The App requires a tab-separated input file with exactly 13 columns, i.e., the standard in_libs.csv columns (but still tab-sep, not comma-sep, as the original in_libs.csv would request) that
 AllPaths requires with an additional column at the beginning called 'file'.
 All the details about the in_libs.csv file and the various AllPaths options are described in the  <a href="ftp://ftp.broadinstitute.org/pub/crd/ALLPATHS/Release-LG/AllPaths-LG_Manual.pdf">AllPaths Manual</a>.
 EOS
