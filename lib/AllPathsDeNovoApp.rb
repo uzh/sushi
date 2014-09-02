@@ -4,15 +4,20 @@
 require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
-
+@description =<<-EOS
+Genome <i>deNovo</i> assembler based on  <a href="http://www.broadinstitute.org/software/allpaths-lg/blog/">AllPaths</a>.
+The App requires a comma-separated input file with exactly 13 columns, i.e., the standard in_libs.csv file that   
+AllPaths requires (<a href="ftp://ftp.broadinstitute.org/pub/crd/ALLPATHS/Release-LG/AllPaths-LG_Manual.pdf">details here</a>) with an additional column at the beginning headed 'file'.
+All the details about the in_libs.csv file and the various options are described in the  <a href="ftp://ftp.broadinstitute.org/pub/crd/ALLPATHS/Release-LG/AllPaths-LG_Manual.pdf">AllPaths Manual</a>.
+EOS
 class AllPathsDeNovoApp < SushiFabric::SushiApp
   def initialize
     super
     @params['process_mode'] = 'DATASET'
     @name = 'AllPaths'
     @analysis_category = 'DeNovoAssembler'
-   @required_columns = ['library','file','project','organism','type','paired','frag_size','frag_stddev','insert_size','insert_stddev','read_orientation','genomic_start','genomic_end']
-    @required_params = []
+    @required_columns = ['file','library','project','organism','type','paired','frag_size','frag_stddev','insert_size','insert_stddev','read_orientation','genomic_start','genomic_end']
+    @required_params = ['Estimated_Genome_Size','Estimated_Coverage_From_Fragment_Libraries','Estimated_Coverage_From_Jump_Libraries']
     # optional params
     @params['cores'] = '48'
     @params['ram'] = '300'
@@ -23,8 +28,10 @@ class AllPathsDeNovoApp < SushiFabric::SushiApp
     @params['Estimated_Coverage_From_Jump_Libraries'] = ''
     @params['Estimated_Coverage_From_Jump_Libraries','description'] = 'A coverage between 40x and 50x for at least one of the libraries is recommended.'
     @params['Ploidy']  = ['1','2']
+    @params['Ploidy','description'] = 'Is the genome to assemble haploid or diploid?' 
     @params['Remove_dodgy_reads'] = ['True','False']
     @params['Haplodify'] = ['True','False']
+    @params['Haplodify', 'description'] = 'If the genome is diploid, activate this in case of an expected high level of heterozygosity.'
     @params['Additional_Options'] = ''
   end
   def next_dataset
@@ -54,10 +61,10 @@ echo "group_name,library_name,file_name" > in_groups.csv
 echo "library_name,project_name,organism_name,type,paired,frag_size,frag_stddev,insert_size,insert_stddev,read_orientation,genomic_start,genomic_end" > in_libs.csv
 R --vanilla << EOT
 x = read.table("$TSV_FILE", sep="\t", header=TRUE,blank.lines.skip = FALSE)
-x1=cbind(subset(x,select=library),subset(x,select=project:genomic_end))
+x1=subset(x,select=library:genomic_end)
 write.table(x1, file="in_libs.csv", append=TRUE,sep=",", col.names = FALSE, row.names = FALSE, quote = FALSE) 
 
-x2=cbind(subset(x,select=library),subset(x,select=library:file))
+x2=cbind(subset(x,select=library),subset(x,select=library),subset(x,select=file))
 write.table(x2, file="in_groups.csv",sep=",", append=TRUE, col.names = FALSE, row.names = FALSE, quote = FALSE)
 EOT
 sed -i s/"NA"/""/g in_groups.csv 

@@ -16,12 +16,12 @@ For calling variants, one can choose to using <a href="http://samtools.sourcefor
 To annotate variants, <a href="http://snpeff.sourceforge.net">snpEFF</a> is used. Please check <a href="http://snpeff.sourceforge.net/download.html#databases">here</a> whether the desired snpEFF database is avilable and needs to be downloaded.   
 EOS
     @required_columns = ['Name','BAM','BAI', 'build']
-    @required_params = ['min_depth_to_call_variants']
+    @required_params = ['min_depth_to_call_variants','build']
     # optional params
     @params['cores'] = '4'
     @params['ram'] = '10'
     @params['scratch'] = '100'
-    @params['build'] = ref_selector
+#    @params['build'] = ref_selector
     @params['build','description'] = 'If human, then ensure that the build is hg_19_karyotypic'
     @params['snpEff_annotation'] = ['true','false']
     @params['snpEff_annotation','description'] = 'Annotate the variants? If yes, choose a snpEff database.'
@@ -34,7 +34,6 @@ EOS
     @params['snpCaller','description'] = 'Choose bewteen samtools+mpileup+bcftools and GATK. GATK is particularly recommended for human samples and cohort studies.'
     @params['paired'] = ['true','false']
     @params['paired','description'] = 'Are the reads paired?'
-    @params['min_depth_to_call_variants'] = '19'
     @params['mpileupOptions'] = ''
     @params['bcftoolsOptions'] = ''
     @params['gatk_glm'] = ['SNP','INDEL','BOTH']
@@ -43,12 +42,14 @@ EOS
   def next_dataset
     {'Name'=>@dataset['Name'], 
      'VCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf"),
+     'Gene_summary [File]'=>File.join(@result_dir, "#{@dataset['Name']}.genes.txt"),
      'Html [Link,File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
      'build'=>@params['build']
     }.merge factor_dataset
   end
   def set_default_parameters
     @params['build'] = @dataset[0]['build']
+    @params['min_depth_to_call_variants'] = '19'
   end
 
   def commands
@@ -105,7 +106,9 @@ $SAMTOOLS index $MY_BAM
  java -jar $PICARD_DIR/CreateSequenceDictionary.jar R=$REF.fa O=$REF.dict
  fi 
 
-     if [ $REF == "/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome" ]; then
+#     if [ $REF == "/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome" ]; then
+      human=$(grep "Homo_S" "/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome")
+      if [ -n "$human"  ]; then
      ### HUMAN BEST PRACTICES ####
 
      ########FINDING POSSIBLE INDELS ####
@@ -161,7 +164,7 @@ $SAMTOOLS index $MY_BAM
      -resource:hapmap,known=false,training=true,truth=true,prior=15.0 $HSD/hapmap_3.3.hg19.reord.vcf \
      -resource:omni,known=false,training=true,truth=false,prior=12.0 $HSD/1000G_omni2.5.hg19.vcf \
      -resource:dbsnp,known=true,training=false,truth=false,prior=6.0 $HSD/dbsnp_138.hg19.2.vcf \
-     -an QD  -an MQRankSum -an ReadPosRankSum -an FS -an MQ \
+     -an QD -an MQRankSum -an ReadPosRankSum -an FS -an MQ \
      -mode $GATK_GLM \
      -recalFile output.recal --num_threads 4 \
      -tranchesFile output.tranches \
