@@ -4,15 +4,16 @@
 require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
-@description =<<-EOS
-Genome <i>deNovo</i> assembler based on  <a href="http://www.broadinstitute.org/software/allpaths-lg/blog/">AllPaths</a>.
-The App requires a comma-separated input file with exactly 13 columns, i.e., the standard in_libs.csv file that   
-AllPaths requires (<a href="ftp://ftp.broadinstitute.org/pub/crd/ALLPATHS/Release-LG/AllPaths-LG_Manual.pdf">details here</a>) with an additional column at the beginning headed 'file'.
-All the details about the in_libs.csv file and the various options are described in the  <a href="ftp://ftp.broadinstitute.org/pub/crd/ALLPATHS/Release-LG/AllPaths-LG_Manual.pdf">AllPaths Manual</a>.
-EOS
+
 class AllPathsDeNovoApp < SushiFabric::SushiApp
   def initialize
     super
+@description =<<-EOS
+Genome <i>deNovo</i> assembler based on  <a href="http://www.broadinstitute.org/software/allpaths-lg/blog/">AllPaths</a>.
+The App requires a comma-separated input file with exactly 13 columns, i.e., the standard in_libs.csv file that
+AllPaths requires (<a href="ftp://ftp.broadinstitute.org/pub/crd/ALLPATHS/Release-LG/AllPaths-LG_Manual.pdf">details here</a>) with an additional column at the beginning headed 'file'.
+All the details about the in_libs.csv file and the various options are described in the  <a href="ftp://ftp.broadinstitute.org/pub/crd/ALLPATHS/Release-LG/AllPaths-LG_Manual.pdf">AllPaths Manual</a>.
+EOS
     @params['process_mode'] = 'DATASET'
     @name = 'AllPaths'
     @analysis_category = 'DeNovoAssembler'
