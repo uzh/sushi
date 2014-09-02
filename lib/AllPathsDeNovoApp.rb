@@ -63,10 +63,10 @@ echo "group_name,library_name,file_name" > in_groups.csv
 echo "library_name,project_name,organism_name,type,paired,frag_size,frag_stddev,insert_size,insert_stddev,read_orientation,genomic_start,genomic_end" > in_libs.csv
 R --vanilla << EOT
 x = read.table("$TSV_FILE", sep="\t", header=TRUE,blank.lines.skip = FALSE)
-x1=subset(x,select=library:genomic_end)
+x1=subset(x,select=library_name:genomic_end)
 write.table(x1, file="in_libs.csv", append=TRUE,sep=",", col.names = FALSE, row.names = FALSE, quote = FALSE) 
 
-x2=cbind(subset(x,select=library),subset(x,select=library),subset(x,select=file))
+x2=cbind(subset(x,select=library_name),subset(x,select=library_name),subset(x,select=file))
 write.table(x2, file="in_groups.csv",sep=",", append=TRUE, col.names = FALSE, row.names = FALSE, quote = FALSE)
 EOT
 sed -i s/"NA"/""/g in_groups.csv 
