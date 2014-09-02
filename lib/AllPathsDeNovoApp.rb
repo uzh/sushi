@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-c# encoding: utf-8
+# encoding: utf-8
 
 require 'sushi_fabric'
 require_relative 'global_variables'
