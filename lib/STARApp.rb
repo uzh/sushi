@@ -14,7 +14,11 @@ class STARApp < SushiFabric::SushiApp
     @description =<<-EOS
     Ultafast spliced alignment<br/>
 <a href='https://code.google.com/p/rna-star/'>manual</a><br/>
-Noteworthy options: --outFilterMatchNmin 30 --outFilterMismatchNmax 5 --outFilterMismatchNoverLmax 0.05 --outFilterMultimapNmax 50
+Noteworthy options:<ul>
+<li> --outFilterMatchNmin 30 --outFilterMismatchNmax 5 --outFilterMismatchNoverLmax 0.05 --outFilterMultimapNmax 50</li>
+<li> large numbers of contigs ask form more RAM. In that case the index must be built with a smaller --genomeChrBinNbits 18;
+e.g. the Wheat assembly with 1Mio contigs and --genomeChrBinNbits 10 still takes 120GB of RAM during alignmnet</li>
+</ul>
 EOS
     @required_columns = ['Name','Read1','Species']
     @required_params = ['build','paired', 'strandMode']
