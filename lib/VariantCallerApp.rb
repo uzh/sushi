@@ -27,9 +27,9 @@ EOS
     @params['snpEff_annotation','description'] = 'Annotate the variants? If yes, choose a snpEff database.'
 #    @params['snpEff_database'] = {'select'=>''} 
 #    @params['snpEff_database','description'] = 'If the database is not listed,  please check whether it is avilable and needs to be downloaded (link above).' 
-    Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|build| File.directory?(build)}.each do |dir|
-      @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
-    end
+#    Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|build| File.directory?(build)}.each do |dir|
+#      @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
+#    end
     @params['snpCaller'] = ['mpileup_bcftools','gatk']
     @params['snpCaller','description'] = 'Choose bewteen samtools+mpileup+bcftools and GATK. GATK is particularly recommended for human samples and cohort studies.'
     @params['paired'] = ['true','false']
@@ -62,7 +62,7 @@ GATK_DIR=#{GlobalVariables::GATK_DIR}
 PICARD_DIR=#{GlobalVariables::PICARD_DIR}
 SNPEFF_DIR=#{GlobalVariables::SNPEFF_DIR}
 SNP_CALLER="#{@params['snpCaller']}"
-SNPEFF_DATABASE="#{@params['snpEff_database']}"
+#SNPEFF_DATABASE="#{@params['snpEff_database']}"
 MPILEUP_OPTIONS="#{@params['mpileupOptions']}"
 BCF_OPTIONS="#{@params['bcftoolsOptions']}"
 CORES="#{@params['cores']}"
