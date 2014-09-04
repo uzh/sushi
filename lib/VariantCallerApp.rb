@@ -54,6 +54,8 @@ EOS
 
   def commands
     command =<<-EOS
+set -e
+set -o pipefail 
 SAMTOOLS=#{GlobalVariables::SAMTOOLS}
 BCFTOOLS=#{GlobalVariables::BCFTOOLS}
 GATK_DIR=#{GlobalVariables::GATK_DIR}
@@ -215,8 +217,33 @@ fi
 fi
 ### ANNOTATION ####
 if [ $ANN == "true" ]; then 
-java -Xmx2g -jar $SNPEFF_DIR/snpEff.jar -s #{@dataset['Name']}.html -c $SNPEFF_DIR/snpEff.config $SNPEFF_DATABASE -v final.output.vcf  > #{@dataset['Name']}.vcf
-fi 
+snpEffDir=/srv/GT/reference/"#{@params['build']}"/Genes/snpEff
+sed s/"DIRECTORY_FOR_DATA"/"\/srv\/GT\/reference\/"#{@params['build']}"\/Genes\/snpEff"/g $SNPEFF_DIR/snpEff.config > $snpEffDir/snpEff.config
+
+   ## CHECK IF DATABASE EXISTS AND CREATE IT IF NOT ###
+    while [ ! -f "$snpEffDir/*/snpEffectPredictor.bin"  ]
+     do
+     if
+     [ -f "$snpEffDir/temp.txt" ]; then
+     sleep 1m
+     continue
+     else
+     echo "database under contrsuction" > $snpEffDir/temp.txt
+     base=$(echo /srv/GT/reference/"#{@params['build']}" | sed s/"\/"/" "/g | awk '{print $1}')
+     provider=$(echo /srv/GT/reference/"#{@params['build']}" | sed s/"\/"/" "/g | awk '{print $2}')
+     mkdir $snpEffDir
+     mkdir $snpEffDir/$base.$provider
+     echo "# $base"    >> $snpEffDir/snpEff.config
+     echo "$provider.genome : $base"    >> $snpEffDir/snpEff.config
+     echo "$provider.reference : $REF.fa"    >> $snpEffDir/snpEff.config
+     ln $REF.fa $snpEffDir/$base.$provider/sequences.fa
+     ln /srv/GT/reference/"#{@params['build']}"/Genes/genes.gtf $snpEffDir/sequences.fa/$base.$provider
+     java -Xmx2g -jar $SNPEFF_DIR/snpEff.jar build -c $snpEffDir/snpEff.config -gtf22 -v "$base.$provider"
+    fi
+    done
+
+    java -Xmx2g -jar $SNPEFF_DIR/snpEff.jar -s #{@dataset['Name']}.html -c $snpEffDir/snpEff.config $base.$provider -v final.output.vcf  > #{@dataset['Name']}.vcf 
+
 EOS
     command
   end

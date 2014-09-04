@@ -7,7 +7,7 @@ module GlobalVariables
   BCFTOOLS = '/usr/local/ngseq/stow/samtools-0.1.19/bin/bcftools'
   PICARD_DIR = '/usr/local/ngseq/stow/picard-tools-1.108/bin'
   GATK_DIR = '/usr/local/ngseq/src/GenomeAnalysisTK-3.2-2'
-  SNPEFF_DIR='/usr/local/ngseq/src/snpEff_v3.4/'
+  SNPEFF_DIR='/usr/local/ngseq/src/snpEff_v4.0/'
   BWA='/usr/local/ngseq/stow/bwa-0.7.10/bin/bwa'
   SAMSTAT='/usr/local/ngseq/stow/samstat_1.09/bin/samstat'
   QUALIMAP='/usr/local/ngseq/opt/qualimap_v1.0/qualimap'
