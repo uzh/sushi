@@ -25,8 +25,8 @@ EOS
     @params['build','description'] = 'If human, then ensure that the build is hg_19_karyotypic'
     @params['snpEff_annotation'] = ['true','false']
     @params['snpEff_annotation','description'] = 'Annotate the variants? If yes, choose a snpEff database.'
-    @params['snpEff_database'] = {'select'=>''} 
-    @params['snpEff_database','description'] = 'If the database is not listed,  please check whether it is avilable and needs to be downloaded (link above).' 
+#    @params['snpEff_database'] = {'select'=>''} 
+#    @params['snpEff_database','description'] = 'If the database is not listed,  please check whether it is avilable and needs to be downloaded (link above).' 
     Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|build| File.directory?(build)}.each do |dir|
       @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
     end
