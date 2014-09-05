@@ -72,6 +72,7 @@ HSD=#{GlobalVariables::HUMAN_SNP_DATABASES}
 MIN_DEPTH="#{@params['min_depth_to_call_variants']}"
 PAIRED="#{@params['paired']}"
 ANN="#{@params['snpEff_annotation']}"
+BUILD="#{@params['build']}"
 
 REF=/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome
 MY_BAM=internal_grouped.lex.bam
@@ -218,8 +219,8 @@ fi
 ### ANNOTATION ####
 if [ $ANN == "true" ]; then 
 snpEffDir=/srv/GT/reference/"#{@params['build']}"/Genes/snpEff
-mkdir $snpEffDir
-sed s/"DIRECTORY_FOR_DATA"/"\/srv\/GT\/reference\/"#{@params['build']}"\/Genes\/snpEff"/g $SNPEFF_DIR/snpEff.config > $snpEffDir/snpEff.config
+mkdir -p $snpEffDir
+sed s/"DIRECTORY_FOR_DATA"/"\/srv\/GT\/reference\/$BUILD\/Genes\/snpEff"/g $SNPEFF_DIR/snpEff.config > $snpEffDir/snpEff.config
 
    ## CHECK IF DATABASE EXISTS AND CREATE IT IF NOT ###
     while [ ! -f "$snpEffDir/*/snpEffectPredictor.bin"  ]
