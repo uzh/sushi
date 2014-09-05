@@ -99,8 +99,7 @@ $SAMTOOLS index $MY_BAM
   $BCFTOOLS view  $BCF_OPTIONS  internal.bcf  > final.output.vcf 
  else
 
-
-### USE GATK ###
+ ### USE GATK ###
  if [ ! -f $REF.fa.fai ]; then 
  $SAMTOOLS faidx $REF.fa
  fi  
@@ -183,7 +182,7 @@ $SAMTOOLS index $MY_BAM
      -mode  $GATK_GLM --num_threads 4 \
      -o final.output.vcf -rf BadCigar 
 
-else 
+     else 
 
      ### GENOME OTHER THAN HUMAN ###
      ########FINDING POSSIBLE INDELS ####
@@ -215,6 +214,7 @@ else
      grep "PASS" internal2.vcf   >> final.output.vcf
 fi
 fi
+
 ### ANNOTATION ####
 if [ $ANN == "true" ]; then 
 snpEffDir=/srv/GT/reference/"#{@params['build']}"/Genes/snpEff
@@ -240,10 +240,10 @@ sed s/"DIRECTORY_FOR_DATA"/"\/srv\/GT\/reference\/"#{@params['build']}"\/Genes\/
      ln /srv/GT/reference/"#{@params['build']}"/Genes/genes.gtf $snpEffDir/sequences.fa/$base.$provider
      java -Xmx2g -jar $SNPEFF_DIR/snpEff.jar build -c $snpEffDir/snpEff.config -gtf22 -v "$base.$provider"
     fi
-    done
+   done
 
     java -Xmx2g -jar $SNPEFF_DIR/snpEff.jar -s #{@dataset['Name']}.html -c $snpEffDir/snpEff.config $base.$provider -v final.output.vcf  > #{@dataset['Name']}.vcf 
-
+fi
 EOS
     command
   end
