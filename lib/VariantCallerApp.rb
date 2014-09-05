@@ -231,8 +231,8 @@ awk -v str="DIRECTORY_FOR_DATA" -v str2="/srv/GT/reference/#{@params['build']}/G
      continue
      else
      echo "database under contrsuction" > $snpEffDir/temp.txt
-     base=$(echo /srv/GT/reference/"#{@params['build']}" | sed s/"\/"/" "/g | awk '{print $1}')
-     provider=$(echo /srv/GT/reference/"#{@params['build']}" | sed s/"\/"/" "/g | awk '{print $2}')
+     base=$(echo "#{@params['build']}" | sed s/"\/"/" "/g | awk '{print $1}')
+     provider=$(echo "#{@params['build']}" | sed s/"\/"/" "/g | awk '{print $2}')
      mkdir $snpEffDir
      mkdir $snpEffDir/$base.$provider
      echo "# $base"    >> $snpEffDir/snpEff.config
