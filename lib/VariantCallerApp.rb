@@ -221,7 +221,6 @@ if [ $ANN == "true" ]; then
 snpEffDir=/srv/GT/reference/"#{@params['build']}"/Genes/snpEff
 mkdir -p $snpEffDir
 awk -v str="DIRECTORY_FOR_DATA" -v str2="/srv/GT/reference/#{@params['build']}/Genes/snpEff" '{sub(str,str2,$0); print }' > $snpEffDir/snpEff.config
-#sed s/"DIRECTORY_FOR_DATA"/"\/srv\/GT\/reference\/\#{@params['build']}\/Genes\/snpEff"/g $SNPEFF_DIR/snpEff.config > $snpEffDir/snpEff.config
 
    ## CHECK IF DATABASE EXISTS AND CREATE IT IF NOT ###
     while [ ! -f "$snpEffDir/*/snpEffectPredictor.bin"  ]
