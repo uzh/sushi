@@ -225,13 +225,12 @@ awk -v str="DIRECTORY_FOR_DATA" \
 '{sub(str,str2,$0); print }' $SNPEFF_DIR/snpEff.config > $snpEffDir/snpEff.config
 
    ## CHECK IF DATABASE EXISTS AND CREATE IT IF NOT ###
-    while [ ! -f "$snpEffDir/*/snpEffectPredictor.bin"  ]
+    while [ ! -f "$snpEffDir/*/snpEffectPredictor.bin" ]
      do
-     if
-     [ -f "$snpEffDir/temp.txt" ]; then
+     if [ -f "$snpEffDir/temp.txt" ]; then
      sleep 1m
      continue
-     else
+     else	
      echo "database under contrsuction" > $snpEffDir/temp.txt
      base=$(echo "#{@params['build']}" |  awk -v str="/" -v str2=" " '{sub(str,str2,$0); print $1}')
      provider=$(echo "#{@params['build']}" | awk -v str="/" -v str2=" " '{sub(str,str2,$0); print $2}' )
