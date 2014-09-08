@@ -238,6 +238,8 @@ awk -v str="DIRECTORY_FOR_DATA" \
      echo "# $base"    >> $snpEffDir/snpEff.config
      echo "$provider.genome : $base"    >> $snpEffDir/snpEff.config
      echo "$provider.reference : $REF.fa"    >> $snpEffDir/snpEff.config
+     chmod "a+w" $REF.fa
+     chmod "a+w" /srv/GT/reference/"#{@params['build']}"/Genes/genes.gtf
      ln $REF.fa $snpEffDir/$base.$provider/sequences.fa
      ln /srv/GT/reference/"#{@params['build']}"/Genes/genes.gtf $snpEffDir/sequences.fa/$base.$provider
      java -Xmx2g -jar $SNPEFF_DIR/snpEff.jar build -c $snpEffDir/snpEff.config -gtf22 -v "$base.$provider"
