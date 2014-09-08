@@ -218,9 +218,11 @@ fi
 
 ### ANNOTATION ####
 if [ $ANN == "true" ]; then 
-snpEffDir=/srv/GT/reference/"#{@params['build']}"/Genes/snpEff
+snpEffDir="/srv/GT/reference/#{@params['build']}/Genes/snpEff"
 mkdir -p $snpEffDir
-awk -v str="DIRECTORY_FOR_DATA" -v str2="/srv/GT/reference/#{@params['build']}/Genes/snpEff" '{sub(str,str2,$0); print }' > $snpEffDir/snpEff.config
+awk -v str="DIRECTORY_FOR_DATA" \
+-v str2="/srv/GT/reference/#{@params['build']}/Genes/snpEff" \
+'{sub(str,str2,$0); print }' $SNPEFF_DIR/snpEff.config > $snpEffDir/snpEff.config
 
    ## CHECK IF DATABASE EXISTS AND CREATE IT IF NOT ###
     while [ ! -f "$snpEffDir/*/snpEffectPredictor.bin"  ]
@@ -231,8 +233,8 @@ awk -v str="DIRECTORY_FOR_DATA" -v str2="/srv/GT/reference/#{@params['build']}/G
      continue
      else
      echo "database under contrsuction" > $snpEffDir/temp.txt
-     base=$(echo "#{@params['build']}" | sed s/"\/"/" "/g | awk '{print $1}')
-     provider=$(echo "#{@params['build']}" | sed s/"\/"/" "/g | awk '{print $2}')
+     base=$(echo "#{@params['build']}" |  awk -v str="/" -v str2=" " '{sub(str,str2,$0); print $1}')
+     provider=$(echo "#{@params['build']}" | awk -v str="/" -v str2=" " '{sub(str,str2,$0); print $2}' )
      mkdir $snpEffDir
      mkdir $snpEffDir/$base.$provider
      echo "# $base"    >> $snpEffDir/snpEff.config
