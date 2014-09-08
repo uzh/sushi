@@ -234,7 +234,6 @@ awk -v str="DIRECTORY_FOR_DATA" \
      echo "database under contrsuction" > $snpEffDir/temp.txt
      base=$(echo "#{@params['build']}" |  awk -v str="/" -v str2=" " '{sub(str,str2,$0); print $1}')
      provider=$(echo "#{@params['build']}" | awk -v str="/" -v str2=" " '{sub(str,str2,$0); print $2}' )
-     mkdir $snpEffDir
      mkdir $snpEffDir/$base.$provider
      echo "# $base"    >> $snpEffDir/snpEff.config
      echo "$provider.genome : $base"    >> $snpEffDir/snpEff.config
@@ -255,3 +254,4 @@ end
 if __FILE__ == $0
 
 end
+v
