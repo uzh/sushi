@@ -30,6 +30,7 @@ class CountOverlapsApp < SushiFabric::SushiApp
     @params['trimmedMaxLength'] = 200
     @params['cmdOptions'] = ''
     @params['specialOptions'] = ''
+    @params['mail'] = ""
   end
   def set_default_parameters
     @params['build'] = @dataset[0]['build']

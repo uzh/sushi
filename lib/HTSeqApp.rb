@@ -24,6 +24,7 @@ class HTSeqApp < SushiFabric::SushiApp
     @params['featureLevel'] = 'gene'
     @params['cmdOptions'] = ''
     @params['specialOptions'] = ''
+    @params['mail'] = ""
   end
   def set_default_parameters
     @params['build'] = @dataset[0]['build']

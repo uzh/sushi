@@ -27,6 +27,7 @@ class DESeq2App < SushiFabric::SushiApp
     #@params['normMethod'] = 'logMean'
     @params['runGO'] = ['false', 'true']
     @params['specialOptions'] = ''
+    @params['mail'] = ""
   end
   def next_dataset
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"

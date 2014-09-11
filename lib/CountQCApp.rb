@@ -26,6 +26,7 @@ class CountQCApp < SushiFabric::SushiApp
     @params['expressionName'] = ''
     @params['runGO'] = false
     @params['specialOptions'] = ''
+    @params['mail'] = ""
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])

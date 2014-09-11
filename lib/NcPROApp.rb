@@ -29,6 +29,7 @@ EOS
     #@params['paired'] = false
     #@params['paired', 'description'] = 'whether the reads are paired end; must be false since ncPRO-seq does not support paired-end'
     @params['name'] = 'ncPRO_Result'
+    @params['mail'] = ""
   end
   def preprocess
     if @params['paired']

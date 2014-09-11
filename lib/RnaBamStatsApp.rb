@@ -22,6 +22,7 @@ class RnaBamStatsApp <  SushiFabric::SushiApp
     @params['featureFile'] = 'genes.gtf'
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['specialOptions'] = ''
+    @params['mail'] = ""
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])

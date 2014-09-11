@@ -22,7 +22,8 @@ class TrinityApp < SushiFabric::SushiApp
     @params['flexbarOpt'] = '--adapter-min-overlap 15 -at 1 --min-readlength 50'
     @params['trinityOpt'] = '--min_kmer_cov 2'
     @params['specialOptions'] = ''
-  end
+    @params['mail'] = ""
+ end
   def next_dataset
     {'Name'=>@params['name'],
      'Fasta [File]'=>File.join(@result_dir, "#{@params['name']}.fasta")
