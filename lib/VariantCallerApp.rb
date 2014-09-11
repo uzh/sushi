@@ -109,7 +109,8 @@ $SAMTOOLS index $MY_BAM
  fi 
 
 #     if [ $REF == "/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome" ]; then
-      human=$(grep "Homo_S" "/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome")
+      human=$(echo "/srv/GT/reference/#{@params['build']}"|grep 'Homo_sapiens')
+      #human=$(grep "Homo_S" "/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome")
       if [ -n "$human"  ]; then
      ### HUMAN BEST PRACTICES ####
 
@@ -220,7 +221,7 @@ fi
 if [ $ANN == "true" ]; then 
 snpEffDir="/srv/GT/reference/#{@params['build']}/Genes/snpEff"
 mkdir -p $snpEffDir
-awk -v str="DIRECTORY_FOR_DATA" \
+awk -v str="/usr/local/ngseq/src/snpEff_v4.0/data" \
 -v str2="/srv/GT/reference/#{@params['build']}/Genes/snpEff" \
 '{sub(str,str2,$0); print }' $SNPEFF_DIR/snpEff.config > $snpEffDir/snpEff.config
 
@@ -235,9 +236,9 @@ awk -v str="DIRECTORY_FOR_DATA" \
      base=$(echo "#{@params['build']}" |  awk -v str="/" -v str2=" " '{gsub(str,str2,$0); print $1}')
      provider=$(echo "#{@params['build']}" | awk -v str="/" -v str2=" " '{gsub(str,str2,$0); print $2}' )
      mkdir $snpEffDir/$base.$provider
-     echo "# $base"    >> $snpEffDir/snpEff.config
-     echo "$provider.genome : $base"    >> $snpEffDir/snpEff.config
-     echo "$provider.reference : $REF.fa"    >> $snpEffDir/snpEff.config
+     echo "# $base" >> $snpEffDir/snpEff.config
+     echo "$provider.genome : $base" >> $snpEffDir/snpEff.config
+     echo "$provider.reference : $REF.fa" >> $snpEffDir/snpEff.config
      cp $REF.fa $snpEffDir/$base.$provider/sequences.fa
      cp /srv/GT/reference/"#{@params['build']}"/Genes/genes.gtf $snpEffDir/$base.$provider
      java -Xmx2g -jar $SNPEFF_DIR/snpEff.jar build -c $snpEffDir/snpEff.config -gtf22 -v "$base.$provider"
