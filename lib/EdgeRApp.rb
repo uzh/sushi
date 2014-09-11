@@ -29,6 +29,7 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['normMethod', 'description'] = "see http://www.bioconductor.org/packages/2.13/bioc/html/edgeR.html"
     @params['runGO'] = ['false', 'true']
     @params['specialOptions'] = ''
+    @params['mail'] = ""
   end
   def next_dataset
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"

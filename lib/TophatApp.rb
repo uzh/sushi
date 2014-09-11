@@ -27,6 +27,7 @@ class TophatApp < SushiFabric::SushiApp
     @params['trimRight'] = 0
     @params['minTailQuality'] = 0
     @params['specialOptions'] = ''
+    @params['mail'] = ""
   end
   def preprocess
     if @params['paired']
