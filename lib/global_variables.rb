@@ -5,7 +5,7 @@ module GlobalVariables
   SUSHI = 'Supercalifragilisticexpialidocious!!'
   SAMTOOLS = '/usr/local/ngseq/stow/samtools-0.1.19/bin/samtools'
   BCFTOOLS = '/usr/local/ngseq/stow/samtools-0.1.19/bin/bcftools'
-  PICARD_DIR = '/usr/local/ngseq/stow/picard-tools-1.108/bin'
+  PICARD_DIR = '/usr/local/ngseq/stow/picard-tools-1.119/bin'
   GATK_DIR = '/usr/local/ngseq/src/GenomeAnalysisTK-3.2-2'
   SNPEFF_DIR='/usr/local/ngseq/src/snpEff_v4.0/'
   BWA='/usr/local/ngseq/stow/bwa-0.7.10/bin/bwa'
