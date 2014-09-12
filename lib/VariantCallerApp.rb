@@ -237,16 +237,16 @@ awk -v str="/usr/local/ngseq/src/snpEff_v4.0/data" \
      provider=$(echo "#{@params['build']}" | awk -v str="/" -v str2=" " '{gsub(str,str2,$0); print $2}' )
      mkdir $snpEffDir/$base.$provider
      echo "# $base" >> $snpEffDir/snpEff.config
-     echo "# $base" 
+     #echo "# $base" 
      echo "$base.$provider.genome : $base" >> $snpEffDir/snpEff.config
-     echo "$base.$provider.genome : $base"
+     #echo "$base.$provider.genome : $base"
      echo "$base.$provider.reference : $REF.fa" >> $snpEffDir/snpEff.config
-     echo "$base.$provider.reference : $REF.fa"
+     #echo "$base.$provider.reference : $REF.fa"
      cp $REF.fa $snpEffDir/$base.$provider/sequences.fa
      cp /srv/GT/reference/"#{@params['build']}"/Genes/genes.gtf $snpEffDir/$base.$provider
      java -Xmx2g -jar $SNPEFF_DIR/snpEff.jar build -c $snpEffDir/snpEff.config -gtf22 -v "$base.$provider"
      rm $snpEffDir/$base.$provider/sequences.fa
-     rm $snpEffDir/sequences.fa/$base.$provider/genes.gtf   
+     rm $snpEffDir/$base.$provider/genes.gtf   
     fi
    done
 
