@@ -22,8 +22,8 @@ EOS
     @params['ram'] = '10'
     @params['scratch'] = '100'
     @params['build'] = ref_selector
-    @params['build','description'] = 'If human, then ensure that the build is hg_19_karyotypic'
-    @params['snpEff_annotation'] = ['true','false']
+    @params['build','description'] = 'If human, then ensure that the build is GRCh38_hg38'
+    @params['snpEff_annotation'] = true
     @params['snpEff_annotation','description'] = 'Annotate the variants? If yes, choose a snpEff database.'
 #    @params['snpEff_database'] = {'select'=>''} 
 #    @params['snpEff_database','description'] = 'If the database is not listed,  please check whether it is avilable and needs to be downloaded (link above).' 
@@ -32,7 +32,7 @@ EOS
 #    end
     @params['snpCaller'] = ['mpileup_bcftools','gatk']
     @params['snpCaller','description'] = 'Choose bewteen samtools+mpileup+bcftools and GATK. GATK is particularly recommended for human samples and cohort studies.'
-    @params['paired'] = ['true','false']
+    @params['paired'] = true
     @params['paired','description'] = 'Are the reads paired?'
     @params['mpileupOptions'] = ''
     @params['bcftoolsOptions'] = ''
@@ -68,7 +68,8 @@ BCF_OPTIONS="#{@params['bcftoolsOptions']}"
 CORES="#{@params['cores']}"
 GATK_GLM="#{@params['gatk_glm']}"
 GATK_OPTIONS="#{@params['gatkOptions']}"
-HSD=#{GlobalVariables::HUMAN_SNP_DATABASES}
+#HSD=#{GlobalVariables::HUMAN_SNP_DATABASES}
+HSD=#{GlobalVariables::HUMAN_DBSNP}
 MIN_DEPTH="#{@params['min_depth_to_call_variants']}"
 PAIRED="#{@params['paired']}"
 ANN="#{@params['snpEff_annotation']}"
@@ -115,25 +116,25 @@ $SAMTOOLS index $MY_BAM
      ### HUMAN BEST PRACTICES ####
 
      ########FINDING POSSIBLE INDELS ####
-     java -Xmx2g -jar $GATK_DIR/GenomeAnalysisTK.jar -T RealignerTargetCreator \
-     -R $REF.fa -o paired_end.intervals --num_threads 4 -known $HSD/dbsnp_138.hg19.2.vcf \
+     java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar -T RealignerTargetCreator \
+     -R $REF.fa -o paired_end.intervals --num_threads 4 -known $HSD/All_GRCh38_20140922.vcf \
      -I $MY_BAM
 
      ### REALINGING AROUND POSSIBLE INDELS ###
-     java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar   -I $MY_BAM  \
-     -R $REF.fa -T IndelRealigner -known $HSD/dbsnp_138.hg19.2.vcf  \
+     java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar   -I $MY_BAM  \
+     -R $REF.fa -T IndelRealigner -known $HSD/All_GRCh38_20140922.vcf  \
      -targetIntervals paired_end.intervals -o $MY_BAM.real.trans.bam
 
      ### BASE RECALIBRATION ###
-     java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar \
+     java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -T BaseRecalibrator \
      -I $MY_BAM.real.trans.bam \
      -R $REF.fa \
-     -knownSites $HSD/dbsnp_138.hg19.2.vcf \
+     -knownSites $HSD/All_GRCh38_20140922.vcf \
      -o recal_data.table
 
      ### APPLY BASE RECALIBRATION ###
-     java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar \
+     java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -T PrintReads \
      -R $REF.fa \
      -I $MY_BAM.real.trans.bam \
@@ -141,13 +142,13 @@ $SAMTOOLS index $MY_BAM
      -o $MY_BAM.real.bam
 
      ### DETECTING VARIANTS GATK  ###
-     java -jar $GATK_DIR/GenomeAnalysisTK.jar \
+     java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -I $MY_BAM.real.bam  -log gatk_log.txt -nt $CORES \
      -o internal.vcf -R $REF.fa -T UnifiedGenotyper \
-     -glm $GATK_GLM $GATK_OPTIONS --dbsnp  $HSD/dbsnp_138.hg19.2.vcf
+     -glm $GATK_GLM $GATK_OPTIONS --dbsnp  $HSD/All_GRCh38_20140922.vcf
 
      ### FILTER VARIANTS ###
-     java -jar $GATK_DIR/GenomeAnalysisTK.jar \
+     java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -T VariantFiltration \
      -R $REF.fa \
      -V internal.vcf \
@@ -164,15 +165,15 @@ $SAMTOOLS index $MY_BAM
      -T VariantRecalibrator \
      -R $REF.fa \
      -input  internal3.vcf \
-     -resource:hapmap,known=false,training=true,truth=true,prior=15.0 $HSD/hapmap_3.3.hg19.reord.vcf \
-     -resource:omni,known=false,training=true,truth=false,prior=12.0 $HSD/1000G_omni2.5.hg19.vcf \
-     -resource:dbsnp,known=true,training=false,truth=false,prior=6.0 $HSD/dbsnp_138.hg19.2.vcf \
+     -resource:dbsnp,known=true,training=false,truth=false,prior=6.0 $HSD/All_GRCh38_20140922.vcf \
      -an QD -an MQRankSum -an ReadPosRankSum -an FS -an MQ \
      -mode $GATK_GLM \
      -recalFile output.recal --num_threads 4 \
      -tranchesFile output.tranches \
      -rscriptFile output.plots.R -rf BadCigar 
- 
+#-resource:hapmap,known=false,training=true,truth=true,prior=15.0 $HSD/hapmap_3.3.hg19.reord.vcf
+#-resource:omni,known=false,training=true,truth=false,prior=12.0 $HSD/1000G_omni2.5.hg19.vcf
+
      ### APPLY RECALIBRATION #####
      java -Xmx16g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -T ApplyRecalibration \
@@ -188,23 +189,23 @@ $SAMTOOLS index $MY_BAM
 
      ### GENOME OTHER THAN HUMAN ###
      ########FINDING POSSIBLE INDELS ####
-     java -Xmx2g -jar $GATK_DIR/GenomeAnalysisTK.jar -T RealignerTargetCreator \
+     java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar -T RealignerTargetCreator \
      -R $REF.fa -o paired_end.intervals --num_threads 4 \
      -I $MY_BAM
 
      ### REALINGING AROUND POSSIBLE INDELS ###
-     java -Xmx4g -jar $GATK_DIR/GenomeAnalysisTK.jar   -I $MY_BAM  \
+     java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar   -I $MY_BAM  \
      -R $REF.fa -T IndelRealigner \
      -targetIntervals paired_end.intervals -o $MY_BAM.real.bam
 
      ### DETECTING VARIANTS GATK  ###
-     java -jar $GATK_DIR/GenomeAnalysisTK.jar \
+     java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -I $MY_BAM.real.bam  -log gatk_log.txt -nt $CORES \
      -o internal.vcf -R $REF.fa -T UnifiedGenotyper \
      -glm $GATK_GLM $GATK_OPTIONS
 
      ### FILTER VARIANTS ###
-     java -jar $GATK_DIR/GenomeAnalysisTK.jar \
+     java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -T VariantFiltration \
      -R $REF.fa \
      -V internal.vcf \
@@ -221,21 +222,25 @@ fi
 if [ $ANN == "true" ]; then 
 snpEffDir="/srv/GT/reference/#{@params['build']}/Genes/snpEff"
 mkdir -p $snpEffDir
-awk -v str="/usr/local/ngseq/src/snpEff_v4.0/data" \
--v str2="/srv/GT/reference/#{@params['build']}/Genes/snpEff" \
-'{sub(str,str2,$0); print }' $SNPEFF_DIR/snpEff.config > $snpEffDir/snpEff.config
-
+#awk -v str="/usr/local/ngseq/src/snpEff_v4.0/data" \
+#-v str2="/srv/GT/reference/#{@params['build']}/Genes/snpEff" \
+#'{sub(str,str2,$0); print }' $SNPEFF_DIR/snpEff.config > $snpEffDir/snpEff.config
+base=$(echo "#{@params['build']}" |  awk -v str="/" -v str2=" " '{gsub(str,str2,$0); print $1}')                                                               
+provider=$(echo "#{@params['build']}" | awk -v str="/" -v str2=" " '{gsub(str,str2,$0); print $2}' )
+echo "Base:"$base
+echo "provider:"$provider
+echo "Check for AnnotationFile in" "$snpEffDir/$base.$provider/snpEffectPredictor.bin"
    ## CHECK IF DATABASE EXISTS AND CREATE IT IF NOT ###
-    while [ ! -f "$snpEffDir/*/snpEffectPredictor.bin" ]
+    while [ ! -f "$snpEffDir/$base.$provider/snpEffectPredictor.bin" ]
      do
      if [ -f "$snpEffDir/temp.txt" ]; then
      sleep 1m
      continue
      else	
-     echo "database under contrsuction" > $snpEffDir/temp.txt
-     base=$(echo "#{@params['build']}" |  awk -v str="/" -v str2=" " '{gsub(str,str2,$0); print $1}')
-     provider=$(echo "#{@params['build']}" | awk -v str="/" -v str2=" " '{gsub(str,str2,$0); print $2}' )
+     echo "database under construction" > $snpEffDir/temp.txt
      mkdir $snpEffDir/$base.$provider
+     awk -v str="/usr/local/ngseq/src/snpEff_v4.0/data" -v str2="/srv/GT/reference/#{@params['build']}/Genes/snpEff" \
+     '{sub(str,str2,$0); print }' $SNPEFF_DIR/snpEff.config > $snpEffDir/snpEff.config
      echo "# $base" >> $snpEffDir/snpEff.config
      #echo "# $base" 
      echo "$base.$provider.genome : $base" >> $snpEffDir/snpEff.config
@@ -244,13 +249,13 @@ awk -v str="/usr/local/ngseq/src/snpEff_v4.0/data" \
      #echo "$base.$provider.reference : $REF.fa"
      cp $REF.fa $snpEffDir/$base.$provider/sequences.fa
      cp /srv/GT/reference/"#{@params['build']}"/Genes/genes.gtf $snpEffDir/$base.$provider
-     java -Xmx2g -jar $SNPEFF_DIR/snpEff.jar build -c $snpEffDir/snpEff.config -gtf22 -v "$base.$provider"
+     java -Xmx8g -jar $SNPEFF_DIR/snpEff.jar build -c $snpEffDir/snpEff.config -gtf22 -v "$base.$provider"
      rm $snpEffDir/$base.$provider/sequences.fa
-     rm $snpEffDir/$base.$provider/genes.gtf   
+     rm $snpEffDir/$base.$provider/genes.gtf
+     rm $snpEffDir/temp.txt   
     fi
    done
-
-    java -Xmx2g -jar $SNPEFF_DIR/snpEff.jar -s #{@dataset['Name']}.html -c $snpEffDir/snpEff.config $base.$provider -v final.output.vcf  > #{@dataset['Name']}.vcf 
+java -Xmx8g -jar $SNPEFF_DIR/snpEff.jar -s #{@dataset['Name']}.html -c $snpEffDir/snpEff.config $base.$provider -v final.output.vcf  > #{@dataset['Name']}.vcf 
 fi
 EOS
     command
