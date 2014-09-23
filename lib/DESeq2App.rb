@@ -26,6 +26,7 @@ class DESeq2App < SushiFabric::SushiApp
     @params['refGroup'] = ''
     #@params['normMethod'] = 'logMean'
     @params['runGO'] = ['false', 'true']
+    @params['expressionName'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end

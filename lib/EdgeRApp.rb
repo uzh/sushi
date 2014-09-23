@@ -28,6 +28,7 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['normMethod'] = ['TMM', 'RLE', 'upperquartile', 'none']
     @params['normMethod', 'description'] = "see http://www.bioconductor.org/packages/2.13/bioc/html/edgeR.html"
     @params['runGO'] = ['false', 'true']
+    @params['expressionName'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end
