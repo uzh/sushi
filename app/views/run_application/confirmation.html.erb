@@ -6,7 +6,14 @@
 params <%= @params.inspect.to_s %><br /><br />
 sushi_app class <%= @sushi_app.class %><br /><br />
 -->
-
+<%= form_tag(:action => 'submit_jobs') do %>
+  <%= hidden_field :sushi_app, :class, :value => @sushi_app.class %>
+  <%= hidden_field :data_set, :id, :value => @data_set.id %>
+  <%= hidden_field :next_dataset, :name, :value => @sushi_app.next_dataset_name %>
+  <%= hidden_field :next_dataset, :comment, :value => @sushi_app.next_dataset_comment %>
+  <% @sushi_app.params.each do |key, value| %>
+    <%= hidden_field :parameters, key.to_sym, :value => value %>
+  <% end %>
   <% if @requires %>
     <ul>
     <% @requires.keys.each do |required| %>
@@ -17,6 +24,7 @@ sushi_app class <%= @sushi_app.class %><br /><br />
   <% else %>
     <%= submit_tag 'Submit' unless @required %>
   <% end %>
+<% end %>
 
 <h2>Next DataSet</h2>
 <table>
@@ -64,12 +72,4 @@ sushi_app class <%= @sushi_app.class %><br /><br />
 <% end %>
 </table>
 <br />
-<%= form_tag(:action => 'submit_jobs') do %>
-  <%= hidden_field :sushi_app, :class, :value => @sushi_app.class %>
-  <%= hidden_field :data_set, :id, :value => @data_set.id %>
-  <%= hidden_field :next_dataset, :name, :value => @sushi_app.next_dataset_name %>
-  <%= hidden_field :next_dataset, :comment, :value => @sushi_app.next_dataset_comment %>
-  <% @sushi_app.params.each do |key, value| %>
-    <%= hidden_field :parameters, key.to_sym, :value => value %>
-  <% end %>
-<% end %>
+
