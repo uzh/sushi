@@ -6,6 +6,18 @@
 params <%= @params.inspect.to_s %><br /><br />
 sushi_app class <%= @sushi_app.class %><br /><br />
 -->
+
+  <% if @requires %>
+    <ul>
+    <% @requires.keys.each do |required| %>
+      <li>Parameter <b><font color=red><%= required %></font></b> is required</li>
+    <% end %>
+    </ul>
+    <%= button_to_function 'Back', "history.back()" %>
+  <% else %>
+    <%= submit_tag 'Submit' unless @required %>
+  <% end %>
+
 <h2>Next DataSet</h2>
 <table>
   <tr>
@@ -42,10 +54,8 @@ sushi_app class <%= @sushi_app.class %><br /><br />
   <tr>
     <th><%= key %></th>
     <td>
-      <% if @sushi_app.required_params.include?(key) and value.to_s.empty? %>
+      <% if @requires and @requires[key] %>
         <font color=red>required</font>
-        <% @requires ||= [] %>
-        <% @requires << key %>
       <% else %>
         <%= value %>
       <% end %>
@@ -61,15 +71,5 @@ sushi_app class <%= @sushi_app.class %><br /><br />
   <%= hidden_field :next_dataset, :comment, :value => @sushi_app.next_dataset_comment %>
   <% @sushi_app.params.each do |key, value| %>
     <%= hidden_field :parameters, key.to_sym, :value => value %>
-  <% end %>
-  <% if @requires %>
-    <ul>
-    <% @requires.each do |required| %>
-      <li>Parameter <b><font color=red><%= required %></font></b> is required</li>
-    <% end %>
-    </ul>
-    <%= button_to_function 'Back', "history.back()" %>
-  <% else %>
-    <%= submit_tag 'Submit' unless @required %>
   <% end %>
 <% end %>

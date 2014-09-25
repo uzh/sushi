@@ -95,6 +95,13 @@ class RunApplicationController < ApplicationController
                                  eval(value)
                                end
     end
+    @sushi_app.params.each do |key, value|
+      if @sushi_app.required_params.include?(key) and value.to_s.empty? 
+        @requires ||= {}
+        @requires[key] = true 
+      end
+    end
+
   end
   def submit_jobs
     @params = params
