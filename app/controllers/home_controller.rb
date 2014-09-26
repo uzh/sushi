@@ -78,6 +78,14 @@ class HomeController < ApplicationController
       end
     end
     @files = @files[start..last]
+    @fgcz = if `hostname`.chomp =~ /fgcz-s-034/
+              true
+            else
+              false
+            end
+    if @fgcz and !@files
+      redirect_to "http://fgcz-gstore.uzh.ch/projects/#{@path}.#{params[:format]}"
+    end
   end
   def sushi_rank
     command = "wfm_job_list -d #{SushiFabric::WORKFLOW_MANAGER}"
