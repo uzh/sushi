@@ -53,6 +53,7 @@ SushiFabric::Application.routes.draw do
     end
   end
 
+  #get "/projects/:project_id" => redirect("http://fgcz-gstore.uzh.ch/projects/%{project_id}")
   match "/projects/:project_id(/*dirs)" => "home#gstore"
   match "/check_sushi_constants" => "home#sushi_constants"
   match "/import/*dataset" => "data_set#import_from_gstore"
