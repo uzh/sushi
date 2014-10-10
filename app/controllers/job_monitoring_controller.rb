@@ -50,4 +50,19 @@ class JobMonitoringController < ApplicationController
       @command = "wfm_kill_job -i #{@job_id} -d #{SushiFabric::WORKFLOW_MANAGER}"
     end
   end
+  def change_status
+    if @job_id = params[:id]
+      public_dir = File.expand_path('../../../public', __FILE__)
+      @command = "#{public_dir}/wfm_status #{@job_id} #{SushiFabric::WORKFLOW_MANAGER}"
+      @status = `#{@command}`.split(',').first
+      if @status == 'success'
+        @command = "#{public_dir}/wfm_status #{@job_id} #{SushiFabric::WORKFLOW_MANAGER} fail"
+        `#{@command}`
+      elsif @status == 'fail'
+        @command = "#{public_dir}/wfm_status #{@job_id} #{SushiFabric::WORKFLOW_MANAGER} success"
+        `#{@command}`
+      end
+    end
+    redirect_to :controller => "job_monitoring"
+  end
 end

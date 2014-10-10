@@ -8,6 +8,7 @@ SushiFabric::Application.routes.draw do
   resources :job_monitoring do
     member do
       post :kill_job
+      post :change_status
     end
     collection do
       post :index
