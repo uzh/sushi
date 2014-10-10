@@ -1,14 +1,31 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 # 20121112 masa workflow manager client
-Version = '20121130-084919'
+Version = '20140116-084302'
 
 require 'drb/drb' 
 
 unless job_id = ARGV[0]
-	puts "Usage:\n #{__FILE__} [job_id]"
+	puts "Usage:\n #{__FILE__} [job_id] [server] ([new status])"
+  puts
+  puts "  job_id: required"
+  puts "  server: workflow_manager URI (default: druby://localhost:12345)"
+  puts "  new status: success, running, or fail"
 	exit
 end
 uri = ARGV[1]||'druby://localhost:12345'
+new_status = ARGV[2]
+wfmrc = if File.exist?(".wfmrc")
+          ".wfmrc"
+        elsif File.exist?(File.expand_path("~/.wfmrc"))
+          File.expand_path("~/.wfmrc")
+        end
+if wfmrc
+  File.readlines(wfmrc).each do |line|
+    if line =~ /server:\s*(druby.+)/
+      uri = $1
+    end
+  end
+end
 workflow_manager = DRbObject.new_with_uri(uri)
-puts workflow_manager.status(job_id)
+puts workflow_manager.status(job_id, new_status)
