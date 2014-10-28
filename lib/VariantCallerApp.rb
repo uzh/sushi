@@ -30,8 +30,12 @@ EOS
 #    Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|build| File.directory?(build)}.each do |dir|
 #      @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
 #    end
+    @params['sequenceType'] = ['DNA','RNA']
+    @params['sequenceType','description'] = 'If data are from RNA-seq, the app follows the  gatk RNA best practicesa and gatk MUST be selected.'
     @params['snpCaller'] = ['mpileup_bcftools','gatk']
-    @params['snpCaller','description'] = 'Choose bewteen samtools+mpileup+bcftools and GATK. GATK is particularly recommended for human samples and cohort studies.'
+    @params['snpCaller','description'] = 'Choose bewteen samtools+mpileup+bcftools and gatk. gatk is particularly recommended for human samples and cohort studies.'
+    @params['sequenceType'] = ['DNA','RNA']
+    @params['sequenceType','description'] = 'If data are from RNA-seq, the app follows the  gatk RNA best practices.'
     @params['paired'] = true
     @params['paired','description'] = 'Are the reads paired?'
     @params['mpileupOptions'] = ''
@@ -74,23 +78,41 @@ MIN_DEPTH="#{@params['min_depth_to_call_variants']}"
 PAIRED="#{@params['paired']}"
 ANN="#{@params['snpEff_annotation']}"
 BUILD="#{@params['build']}"
+TYPE="#{@params['sequenceType']}"
 
 REF=/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome
 MY_BAM=internal_grouped.lex.bam
 
-if [ $PAIRED == "true" ]; then 
-$SAMTOOLS view -F 4 -hb #{File.join(@gstore_dir, @dataset['BAM'])} | $SAMTOOLS rmdup - internal.nodup.bam
-$SAMTOOLS index internal.nodup.bam
-else
-$SAMTOOLS view -F 4 -hb #{File.join(@gstore_dir, @dataset['BAM'])} | $SAMTOOLS rmdup -s - internal.nodup.bam
-$SAMTOOLS index internal.nodup.bam 
-fi
 
-### SORT OUT GROUPS ISSUES ###
-java -jar $PICARD_DIR/AddOrReplaceReadGroups.jar I=internal.nodup.bam \
+if [ $TYPE == "DNA" ]; then
+ if [ $PAIRED == "true" ]; then 
+ $SAMTOOLS view -F 4 -hb #{File.join(@gstore_dir, @dataset['BAM'])} | $SAMTOOLS rmdup - internal.nodup.bam
+ $SAMTOOLS index internal.nodup.bam
+ else
+ $SAMTOOLS view -F 4 -hb #{File.join(@gstore_dir, @dataset['BAM'])} | $SAMTOOLS rmdup -s - internal.nodup.bam
+ $SAMTOOLS index internal.nodup.bam 
+ fi
+
+ ### SORT OUT GROUPS ISSUES ###
+ java -jar $PICARD_DIR/AddOrReplaceReadGroups.jar I=internal.nodup.bam \
    O=internal_grouped.lex.bam SORT_ORDER=coordinate RGID=ID_NAME TMP_DIR=/scratch \
    RGLB=Paired_end RGPL=illumina RGSM=project RGPU=BIOSEQUENCER
-   MY_BAM=internal_grouped.lex.bam
+
+else 
+ ### SORT OUT GROUPS, MARK DUPLICATES AND SPLIT READS ###
+ java -jar $PICARD_DIR/AddOrReplaceReadGroups.jar I=internal.nodup.bam \
+   O=internal_grouped.lex.2.bam SORT_ORDER=coordinate RGID=ID_NAME TMP_DIR=/scratch \
+   RGLB=Paired_end RGPL=illumina RGSM=project RGPU=BIOSEQUENCER
+ 
+ java -jar $PICARD_DIR/MarkDuplicates I=internal_grouped.lex.2.bam  O=internal_grouped.lex.3.bam \
+ CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics    
+
+ java -jar $GATK_DIR/GenomeAnalysisTK.jar -T SplitNCigarReads -R $REF.fa -I internal_grouped.lex.3.bam -o internal_grouped.lex.bam \
+ -rf ReassignOneMappingQuality -RMQF 255 -RMQT 60 -U ALLOW_N_CIGAR_READS
+
+fi 
+
+
 $SAMTOOLS index $MY_BAM
    
 
