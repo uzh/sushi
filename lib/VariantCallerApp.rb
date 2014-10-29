@@ -104,7 +104,7 @@ else
    O=internal_grouped.lex.2.bam SORT_ORDER=coordinate RGID=ID_NAME TMP_DIR=/scratch \
    RGLB=Paired_end RGPL=illumina RGSM=project RGPU=BIOSEQUENCER
  
- java -jar $PICARD_DIR/MarkDuplicates I=internal_grouped.lex.2.bam  O=internal_grouped.lex.3.bam \
+ java -jar $PICARD_DIR/MarkDuplicates.jar I=internal_grouped.lex.2.bam  O=internal_grouped.lex.3.bam \
  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics    
 
  java -jar $GATK_DIR/GenomeAnalysisTK.jar -T SplitNCigarReads -R $REF.fa -I internal_grouped.lex.3.bam -o internal_grouped.lex.bam \
