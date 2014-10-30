@@ -6,7 +6,7 @@ require_relative 'global_variables'
 include GlobalVariables
 
 class VariantCallerApp < SushiFabric::SushiApp
-  def initialize
+ def initialize
     super
     @name = 'VariantCaller'
     @analysis_category = 'Variant_Analysis'
@@ -34,8 +34,6 @@ EOS
     @params['sequenceType','description'] = 'If data are from RNA-seq, the app follows the  gatk RNA best practicesa and gatk MUST be selected.'
     @params['snpCaller'] = ['mpileup_bcftools','gatk']
     @params['snpCaller','description'] = 'Choose bewteen samtools+mpileup+bcftools and gatk. gatk is particularly recommended for human samples and cohort studies.'
-    @params['sequenceType'] = ['DNA','RNA']
-    @params['sequenceType','description'] = 'If data are from RNA-seq, the app follows the  gatk RNA best practices.'
     @params['paired'] = true
     @params['paired','description'] = 'Are the reads paired?'
     @params['mpileupOptions'] = ''
@@ -66,24 +64,24 @@ GATK_DIR=#{GlobalVariables::GATK_DIR}
 PICARD_DIR=#{GlobalVariables::PICARD_DIR}
 SNPEFF_DIR=#{GlobalVariables::SNPEFF_DIR}
 SNP_CALLER="#{@params['snpCaller']}"
+BAM_UTIL=#{GlobalVariables::BAM_UTIL}
 #SNPEFF_DATABASE="#{@params['snpEff_database']}"
 MPILEUP_OPTIONS="#{@params['mpileupOptions']}"
 BCF_OPTIONS="#{@params['bcftoolsOptions']}"
 CORES="#{@params['cores']}"
 GATK_GLM="#{@params['gatk_glm']}"
 GATK_OPTIONS="#{@params['gatkOptions']}"
-#HSD=#{GlobalVariables::HUMAN_SNP_DATABASES}
-HSD=#{GlobalVariables::HUMAN_DBSNP}
+HSD=#{GlobalVariables::HUMAN_SNP_DATABASES}
+#HSD=#{GlobalVariables::HUMAN_DBSNP}
 MIN_DEPTH="#{@params['min_depth_to_call_variants']}"
 PAIRED="#{@params['paired']}"
 ANN="#{@params['snpEff_annotation']}"
 BUILD="#{@params['build']}"
 TYPE="#{@params['sequenceType']}"
-
 REF=/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome
 MY_BAM=internal_grouped.lex.bam
 
-
+### DNA OR RNA INPUT DATA ###
 if [ $TYPE == "DNA" ]; then
  if [ $PAIRED == "true" ]; then 
  $SAMTOOLS view -F 4 -hb #{File.join(@gstore_dir, @dataset['BAM'])} | $SAMTOOLS rmdup - internal.nodup.bam
@@ -100,7 +98,7 @@ if [ $TYPE == "DNA" ]; then
 
 else 
  ### SORT OUT GROUPS, MARK DUPLICATES AND SPLIT READS ###
- java -jar $PICARD_DIR/AddOrReplaceReadGroups.jar I=internal.nodup.bam \
+ java -jar $PICARD_DIR/AddOrReplaceReadGroups.jar I=#{File.join(@gstore_dir, @dataset['BAM'])} \
    O=internal_grouped.lex.2.bam SORT_ORDER=coordinate RGID=ID_NAME TMP_DIR=/scratch \
    RGLB=Paired_end RGPL=illumina RGSM=project RGPU=BIOSEQUENCER
  
@@ -117,9 +115,12 @@ $SAMTOOLS index $MY_BAM
    
 echo "CAZ"
 ### USE MPILEUP ####
- if [ $SNP_CALLER == 'mpileup_bcftools' ]; then  
+ if [ $SNP_CALLER == 'mpileup_bcftools' ]; then 
+  ### JOINING OVERLAPPING READS ###
+  $BAM_UTIL/bam clipOverlap --in $MY_BAM --out clipped_overl.bam 
+  $SAMTOOLS index clipped_overl.bam
   ### DETECTING VARIANTS BCFTOOLS ###
-  $SAMTOOLS mpileup $MPILEUP_OPTIONS -uf $REF.fa $MY_BAM | $BCFTOOLS view -bvcg - > internal.bcf  
+  $SAMTOOLS mpileup $MPILEUP_OPTIONS -uf $REF.fa clipped_overl.bam | $BCFTOOLS view -bvcg - > internal.bcf  
   $BCFTOOLS view  $BCF_OPTIONS  internal.bcf  > final.output.vcf 
  else
 
@@ -133,18 +134,19 @@ echo "CAZ"
 
 #     if [ $REF == "/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome" ]; then
       human=$(echo "/srv/GT/reference/#{@params['build']}"|grep 'Homo_sapiens')
+      echo "$human"
       #human=$(grep "Homo_S" "/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome")
       if [ -n "$human"  ]; then
      ### HUMAN BEST PRACTICES ####
 
      ########FINDING POSSIBLE INDELS ####
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar -T RealignerTargetCreator \
-     -R $REF.fa -o paired_end.intervals --num_threads 4 -known $HSD/All_GRCh38_20140922.vcf \
+     -R $REF.fa -o paired_end.intervals --num_threads 4 -known $HSD/dbsnp_138.hg19.2.vcf \
      -I $MY_BAM
 
      ### REALINGING AROUND POSSIBLE INDELS ###
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar   -I $MY_BAM  \
-     -R $REF.fa -T IndelRealigner -known $HSD/All_GRCh38_20140922.vcf  \
+     -R $REF.fa -T IndelRealigner -known $HSD/dbsnp_138.hg19.2.vcf  \
      -targetIntervals paired_end.intervals -o $MY_BAM.real.trans.bam
 
      ### BASE RECALIBRATION ###
@@ -152,7 +154,7 @@ echo "CAZ"
      -T BaseRecalibrator \
      -I $MY_BAM.real.trans.bam \
      -R $REF.fa \
-     -knownSites $HSD/All_GRCh38_20140922.vcf \
+     -knownSites $HSD/dbsnp_138.hg19.2.vcf \
      -o recal_data.table
 
      ### APPLY BASE RECALIBRATION ###
@@ -167,7 +169,7 @@ echo "CAZ"
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -I $MY_BAM.real.bam  -log gatk_log.txt -nt $CORES \
      -o internal.vcf -R $REF.fa -T UnifiedGenotyper \
-     -glm $GATK_GLM $GATK_OPTIONS --dbsnp  $HSD/All_GRCh38_20140922.vcf
+     -glm $GATK_GLM $GATK_OPTIONS --dbsnp  $HSD/dbsnp_138.hg19.2.vcf
 
      ### FILTER VARIANTS ###
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
@@ -187,14 +189,14 @@ echo "CAZ"
      -T VariantRecalibrator \
      -R $REF.fa \
      -input  internal3.vcf \
-     -resource:dbsnp,known=true,training=false,truth=false,prior=6.0 $HSD/All_GRCh38_20140922.vcf \
+     -resource:dbsnp,known=true,training=false,truth=false,prior=6.0 $HSD/dbsnp_138.hg19.2.vcf \
+     -resource:hapmap,known=false,training=true,truth=true,prior=15.0 $HSD/hapmap_3.3.hg19.reord.vcf \
+     -resource:omni,known=false,training=true,truth=false,prior=12.0 $HSD/1000G_omni2.5.hg19.vcf \
      -an QD -an MQRankSum -an ReadPosRankSum -an FS -an MQ \
      -mode $GATK_GLM \
      -recalFile output.recal --num_threads 4 \
      -tranchesFile output.tranches \
      -rscriptFile output.plots.R -rf BadCigar 
-#-resource:hapmap,known=false,training=true,truth=true,prior=15.0 $HSD/hapmap_3.3.hg19.reord.vcf
-#-resource:omni,known=false,training=true,truth=false,prior=12.0 $HSD/1000G_omni2.5.hg19.vcf
 
      ### APPLY RECALIBRATION #####
      java -Xmx16g -jar $GATK_DIR/GenomeAnalysisTK.jar \
