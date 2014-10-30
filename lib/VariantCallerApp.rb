@@ -133,10 +133,11 @@ echo "CAZ"
  fi 
 
 #     if [ $REF == "/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome" ]; then
-      human=$(echo "/srv/GT/reference/#{@params['build']}"|grep 'Homo_sapiens')
-      echo "$human"
+#      human=$(echo "/srv/GT/reference/#{@params['build']}"|grep 'Homo_sapiens')
+     human=''
+#     echo "$human"
       #human=$(grep "Homo_S" "/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome")
-      if [ -n "$human"  ]; then
+      if [[ -n "$human"  ]]; then
      ### HUMAN BEST PRACTICES ####
 
      ########FINDING POSSIBLE INDELS ####
