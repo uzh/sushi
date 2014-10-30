@@ -115,7 +115,7 @@ fi
 
 $SAMTOOLS index $MY_BAM
    
-
+echo "CAZ"
 ### USE MPILEUP ####
  if [ $SNP_CALLER == 'mpileup_bcftools' ]; then  
   ### DETECTING VARIANTS BCFTOOLS ###
@@ -208,7 +208,7 @@ $SAMTOOLS index $MY_BAM
      -o final.output.vcf -rf BadCigar 
 
      else 
-
+     echo "CAZ2"
      ### GENOME OTHER THAN HUMAN ###
      ########FINDING POSSIBLE INDELS ####
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar -T RealignerTargetCreator \
