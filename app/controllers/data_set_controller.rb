@@ -296,7 +296,7 @@ class DataSetController < ApplicationController
 
       # delete data in gstore
       if @sample_path.first
-        @command = "wfm_delete_target -f #{File.join(SushiFabric::GSTORE_DIR, @sample_path.first)} -d #{SushiFabric::WORKFLOW_MANAGER}"
+        @command = "wfm_delete_command -f #{File.join(SushiFabric::GSTORE_DIR, @sample_path.first)} -d #{SushiFabric::WORKFLOW_MANAGER}"
         if @option[:delete] == 'also_gstore'
           @command_log = `#{@command}`
           if request = @command_log.split and request_no = request[4]
