@@ -17,13 +17,12 @@ class TeqcApp <  SushiFabric::SushiApp
     @params['paired'] = false
     @params['name'] = 'TEQC_Result'
     @params['designFile'] = {'select'=>''}
-#'/srv/GT/databases/targetEnrichment_designs/SureSelect_HumanAllExon_V5_UTR/S04380219_Covered.bed'
-#    @params['designFile', 'description'] = 'set full path to designFile according to the used kit'
     Dir["/srv/GT/databases/targetEnrichment_designs/*"].sort.select{|design| File.directory?(design)}.each do |dir|
       @params['designFile'][File.basename(dir)] = File.basename(dir)
     end
-
-
+    @params['CovUniformityPlot'] = true
+    @params['CovTargetLengthPlot'] = true
+    @params['duplicatesPlot'] = true
     @params['cmdOptions'] = ""
     @params['mail'] = ""
   end

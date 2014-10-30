@@ -19,6 +19,7 @@ module GlobalVariables
   HUMAN_SNP_DATABASES='/srv/GT/reference/Homo_sapiens/UCSC/hg19_karyotypic/SNPS/'
   HUMAN_DBSNP='/srv/GT/databases/dbSNP/release141/'
   ALL_PATHS='/usr/local/ngseq/stow/allpathslg-48579/bin'
+  BAM_UTIL='/usr/local/ngseq/src/bamUtil/'
   def builder_selector(base_dir, shown_pattern=nil, value_pattern=nil)
     selector = {}
     Dir[base_dir].sort.select{|dir| File.directory?(dir)}.each do |dir|
