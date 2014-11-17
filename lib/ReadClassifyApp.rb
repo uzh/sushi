@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20141117-013020'
+Version = '20141117-025239'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -11,7 +11,7 @@ class ReadClassifyApp < SushiFabric::SushiApp
     super
     @name = 'ReadClassify'
     @description =<<-EOS
-ReadClassify does the mapped read classification depending on the number of mismatch. ReadClassifyApp calls 'read_clasify.py' script.
+ReadClassifyApp does the mapped read classification depending on the number of mismatch. ReadClassifyApp calls 'read_clasify.py' script.
 Three types of bam files will be generated.<br />
 Panret1Orig: the read mapped on build1 with less mismatch than build2<br />
 Panret1Other: the read mapped on build1 with more mismatch than build2<br />
@@ -31,12 +31,12 @@ http://seselab.org/homeoroq/
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
-     'Parent1Orig [File]'=>File.join(@result_dir, "parent1_genome_orig.bam"), 
-     'Parent1Other [File]'=>File.join(@result_dir, "parent1_genome_other.bam"), 
-     'Parent1Common [File]'=>File.join(@result_dir, "parent1_genome_common.bam"), 
-     'Parent2Orig [File]'=>File.join(@result_dir, "parent2_genome_orig.bam"), 
-     'Parent2Other [File]'=>File.join(@result_dir, "parent2_genome_other.bam"), 
-     'Parent2Common [File]'=>File.join(@result_dir, "parent2_genome_common.bam"), 
+     'Parent1Orig [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent1_genome_orig.bam"), 
+     'Parent1Other [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent1_genome_other.bam"), 
+     'Parent1Common [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent1_genome_common.bam"), 
+     'Parent2Orig [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent2_genome_orig.bam"), 
+     'Parent2Other [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent2_genome_other.bam"), 
+     'Parent2Common [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent2_genome_common.bam"), 
      'Species'=>@dataset['Species'],
     }.merge factor_dataset
   end
@@ -45,8 +45,8 @@ http://seselab.org/homeoroq/
     bam2 = File.join(@gstore_dir, @dataset['BAM2'])
     sam1 = File.join("tmp", File.basename(bam1).gsub(/.bam/, '_parent1.sam'))
     sam2 = File.join("tmp", File.basename(bam2).gsub(/.bam/, '_parent2.sam'))
-    out1_prefix = "parent1_genome"
-    out2_prefix = "parent2_genome"
+    out1_prefix = "#{@dataset['Name']}_parent1_genome"
+    out2_prefix = "#{@dataset['Name']}_parent2_genome"
     command = "mkdir tmp\n"
     command << "samtools view -h #{bam1} > #{sam1}\n"
     command << "samtools view -h #{bam2} > #{sam2}\n"
