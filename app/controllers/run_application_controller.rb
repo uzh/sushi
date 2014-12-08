@@ -66,6 +66,9 @@ class RunApplicationController < ApplicationController
       'fgcz-c-061: cpu  8,mem  31 GB,scr 200G' => 'fgcz-c-061',
       'fgcz-c-063: cpu 12,mem  70 GB,scr 450G' => 'fgcz-c-063',
       'fgcz-c-065: cpu 24,mem  70 GB,scr 197G' => 'fgcz-c-065',
+      'fgcz-h-002: cpu 30,mem  660 GB,scr 493G' => 'fgcz-h-002',
+      'fgcz-h-005: cpu xx,mem  xx GB,scr xxxG' => 'fgcz-h-005',
+      'fgcz-h-006: cpu xx,mem  xx GB,scr xxxG' => 'fgcz-h-006',
     }
 		unless @factors
 			#init_factor('Condition')
