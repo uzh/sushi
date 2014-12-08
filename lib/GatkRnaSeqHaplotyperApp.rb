@@ -25,8 +25,8 @@ class GatkRnaSeqHaplotyperApp <  SushiFabric::SushiApp
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
     {'Name'=>@params['name'],
-     'VCF [File]'=>"#{@params['name']}-haplo.vcf.gz",
-     'TBI [File]'=>"#{@params['name']}-haplo.vcf.gz.tbi",
+     'VCF [File]'=>File.join(@result_dir, "#{@params['name']}-haplo.vcf.gz"),
+     'TBI [File]'=>File.join(@result_dir, "#{@params['name']}-haplo.vcf.gz.tbi"),
      'Report [File]'=>report_dir,
      'Html [Link]'=>File.join(report_dir, '00index.html'),
      'Species'=>@dataset['Species'],
