@@ -59,7 +59,7 @@ class CountQCApp < SushiFabric::SushiApp
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
     command<<  "inputDatasetFile = '#{@input_dataset_tsv_path}'\n"
-    command << "countQCApp(input=inputDatasetFile, output=output, config=config)\n"
+    command << "tryCatch({countQCApp(input=inputDatasetFile, output=output, config=config)}, error=function(e){my.mail(to=config[['mail']], text=e); stop(e)})\n"
     command << "EOT"
     command
   end
