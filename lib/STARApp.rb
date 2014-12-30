@@ -58,7 +58,8 @@ EOS
      'paired'=>@params['paired'],
      'featureFile'=>@params['featureFile'],
      'strandMode'=>@params['strandMode'],
-     'Read Count'=>@dataset['Read Count']
+     'Read Count'=>@dataset['Read Count'],
+     'Chimerics [File]'=>File.join(@result_dir, "#{@dataset['Name']}.chimeric") 
     }.merge factor_dataset
   end
   def commands
