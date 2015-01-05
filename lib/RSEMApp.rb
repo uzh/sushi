@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20131128-084622'
+Version = '20150105-102801'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -59,7 +59,7 @@ EOS
        'strandMode'=>@params['strandMode'],
        'paired'=>@params['paired'],
        'Read Count'=>@dataset['Read Count']
-      }.merge factor_dataset
+      }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
     else 
       {'Name'=>@dataset['Name'],
        'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
@@ -70,7 +70,7 @@ EOS
        'strandMode'=>@params['strandMode'],
        'paired'=>@params['paired'],
        'Read Count'=>@dataset['Read Count']
-      }.merge factor_dataset 
+      }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
     end
   end
   def commands

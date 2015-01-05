@@ -23,7 +23,7 @@ class WordCountApp < SushiFabric::SushiApp
     {
       'Name'=>@dataset['Name'],
       'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats')
-    }.merge factor_dataset
+    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def set_default_parameters
     @params['hoge'] = @dataset[0]['Read1 [File]']

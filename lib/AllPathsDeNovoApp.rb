@@ -42,7 +42,7 @@ EOS
      'Fasta [File]'=>File.join(@result_dir, "final.contigs.fasta"),
      'Report [File]'=>File.join(@result_dir, "assembly.report"),
      'Stats [File]'=>File.join(@result_dir, "assembly_stats.report"),
-    }.merge factor_dataset
+    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
 #  def set_default_parameters
 #    @params['build'] = @dataset[0]['build']

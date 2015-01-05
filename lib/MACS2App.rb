@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '201405230044'
+Version = '20150105-102744'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -46,7 +46,7 @@ class MACS2App < SushiFabric::SushiApp
      'paired'=>@params['paired'],
      'CalledPeaks [File]'=>peakfile_link,
       'BigWigFile [File]'=>bw_link
-    }.merge factor_dataset
+    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"

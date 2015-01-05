@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20140317-150052'
+Version = '20150105-102809'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -50,7 +50,7 @@ class TophatApp < SushiFabric::SushiApp
      'featureFile'=>@params['featureFile'],
      'strandMode'=>@params['strandMode'],
      'Read Count'=>@dataset['Read Count']
-    }.merge factor_dataset
+    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"

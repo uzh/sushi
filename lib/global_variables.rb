@@ -59,15 +59,20 @@ module GlobalVariables
     selector.merge!(builds)
     selector
   end
-  def factor_dataset
-    factors = get_columns_with_tag 'Factor'
+  def extract_column(type)
+    factors = get_columns_with_tag(type)
     dataset = {}
     factors.first.keys.each do |colname|
-      dataset[colname+" [Factor]"] = @dataset[colname]
+      dataset[colname+" [#{type}]"] = @dataset[colname]
     end
     dataset
   rescue
     {}
+  end
+  def factor_dataset
+    # deprecated
+    # please use extract_column() method
+    extract_column("Factor")
   end
   def run(class_name)
     opt = OptionParser.new do |o|
