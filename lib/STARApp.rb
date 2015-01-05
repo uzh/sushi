@@ -31,6 +31,7 @@ EOS
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['featureFile'] = 'genes.gtf'
     @params['cmdOptions'] = '--outFilterMatchNmin 30 --outFilterMismatchNmax 5 --outFilterMismatchNoverLmax 0.05 --outFilterMultimapNmax 50 --chimSegmentMin 15 --chimJunctionOverhangMin 15 --chimScoreMin 15 --chimScoreSeparation 10'
+    @params['getChimericReads'] = false
     @params['trimAdapter'] = false
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
@@ -50,17 +51,30 @@ EOS
     end
   end
   def next_dataset
-    {'Name'=>@dataset['Name'], 
-     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
-     'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-     'Species'=>@dataset['Species'],
-     'build'=>@params['build'],
-     'paired'=>@params['paired'],
-     'featureFile'=>@params['featureFile'],
-     'strandMode'=>@params['strandMode'],
-     'Read Count'=>@dataset['Read Count'],
-     'Chimerics [File]'=>File.join(@result_dir, "#{@dataset['Name']}.chimeric") 
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+     if @params['getChimericReads']
+       {'Name'=>@dataset['Name'], 
+        'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+        'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
+        'Species'=>@dataset['Species'],
+        'build'=>@params['build'],
+        'paired'=>@params['paired'],
+        'featureFile'=>@params['featureFile'],
+        'strandMode'=>@params['strandMode'],
+        'Read Count'=>@dataset['Read Count'],
+        'Chimerics [File]'=>File.join(@result_dir, "#{@dataset['Name']}.chimeric") 
+      }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+     else 
+       {'Name'=>@dataset['Name'],
+        'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
+        'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
+        'Species'=>@dataset['Species'],
+        'build'=>@params['build'],
+        'paired'=>@params['paired'],
+        'featureFile'=>@params['featureFile'],
+        'strandMode'=>@params['strandMode'],
+        'Read Count'=>@dataset['Read Count']
+      }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+     end
   end
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"
