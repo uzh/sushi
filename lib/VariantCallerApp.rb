@@ -47,7 +47,7 @@ EOS
      'Gene_summary [File]'=>File.join(@result_dir, "#{@dataset['Name']}.genes.txt"),
      'Html [Link,File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
      'build'=>@params['build']
-    }.merge factor_dataset
+    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def set_default_parameters
     @params['build'] = @dataset[0]['build']

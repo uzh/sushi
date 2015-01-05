@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20131128-084607'
+Version = '20150105-102728'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -55,7 +55,7 @@ class CountOverlapsApp < SushiFabric::SushiApp
      'strandMode'=>@params['strandMode'],
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count']
-    }.merge factor_dataset
+    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"

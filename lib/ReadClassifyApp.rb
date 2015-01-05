@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20141117-025239'
+Version = '20150105-102831'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -38,7 +38,7 @@ http://seselab.org/homeoroq/
      'Parent2Other [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent2_genome_other.bam"), 
      'Parent2Common [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent2_genome_common.bam"), 
      'Species'=>@dataset['Species'],
-    }.merge factor_dataset
+    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
     bam1 = File.join(@gstore_dir, @dataset['BAM1'])

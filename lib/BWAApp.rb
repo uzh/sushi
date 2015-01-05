@@ -44,7 +44,7 @@ class BWAApp < SushiFabric::SushiApp
      'build'=>@params['build'],
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count']
-    }.merge factor_dataset
+    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"
