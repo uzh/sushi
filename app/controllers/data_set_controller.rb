@@ -276,7 +276,38 @@ class DataSetController < ApplicationController
     @sample_path.uniq!
 
   end
+  def multi_delete
+    @data_set_ids = if flag=params[:delete_flag]
+                      flag.keys
+                    end
+    if @data_set_ids.length == 1
+      # same as delete action
+      @data_set = DataSet.find_by_id(@data_set_ids.first)
 
+      # check real data
+      @file_exist = {}
+      @sample_path = []
+      @data_set.samples.each do |sample|
+        sample.to_hash.each do |header, file|
+          if header and file and header.tag?('File')
+            file_path = File.join(SushiFabric::GSTORE_DIR, file)
+            @sample_path << File.dirname(file)
+            @file_exist[file] = File.exist?(file_path)
+          else
+            @file_exist[file] = true
+          end
+        end
+      end
+      @sample_path.uniq!
+      render action: "delete"
+    else
+      # @data_set_ids.length should_be > 1
+      @data_sets = []
+      @data_set_ids.each do |id|
+        @data_sets << DataSet.find_by_id(id)
+      end
+    end
+  end
   def destroy
     @fgcz = (`hostname` =~ /fgcz-s-034/)
     if @data_set = DataSet.find_by_id(params[:id])
@@ -311,6 +342,24 @@ class DataSetController < ApplicationController
       end
       @deleted_data_set = @data_set.delete
 
+    end
+  end
+  def multi_destroy
+    @data_set_ids = params[:option][:data_set_ids].split(',')
+    @commands = []
+    @command_logs = []
+    @deleted_data_sets = []
+    @data_set_ids.each do |id|
+      params[:id] = id
+      @deleted_data_sets << destroy
+      if @command
+        @commands << @command.chomp
+        @command = nil
+      end
+      if @command_log
+        @command_logs << @command_log.chomp
+        @command_log = nil
+      end
     end
   end
   def job_parameter

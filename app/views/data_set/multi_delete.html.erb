@@ -1,0 +1,31 @@
+<h1>Project <%= session[:project] %> <span style="color:red;font-size:medium">Delete DataSet</span></h1>
+<hr />
+<h2>Select</h2>
+<%= form_tag(:action=>:multi_destroy, :method=>:post) do %>
+  <%= radio_button 'option', 'delete', "only_sushi", {:checked => true} %> Delete <span class="alert">ONLY</span> entry in <span class="alert">Sushi DB</span><br />
+  <%= radio_button 'option', 'delete', "also_gstore" %> Delete <span style="color:red;font-weight:bold;">BOTH</span> entry in <span class="alert">Sushi DB</span> and data in <span class="alert">GStore</span> <br /><br />
+  <%= hidden_field :option, :data_set_ids, :value=>@data_set_ids.join(',') %>
+  <%= submit_tag 'delete', :confirm=>"Are you sure you want to delete the following DataSets?" %>
+<% end %>
+<hr />
+
+<h2>DataSets</h2>
+<table>
+  <tr><th>ID</th><th>Name</th><th>ParentID</th><th>Child(ren)IDs</th><th colspan=2>Created</th></tr>
+<% @data_sets.reverse.each do |data_set| %>
+  <tr>
+    <td><%= data_set.id %></td>
+    <td><%= link_to td(data_set.name), "/data_set/#{data_set.id}" %></td> 
+    <td><%= link_to data_set.parent_id, "/data_set/#{data_set.parent_id}" if data_set.data_set %></td>
+    <td>
+      <% data_set.data_sets.each do |child| %>
+        <%= link_to child.id, "/data_set/#{child.id}" %>
+        <%= "," unless child == data_set.data_sets.last %>
+      <% end %>
+    </td>
+    <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
+  </tr>
+<% end %>
+</table>
+
+

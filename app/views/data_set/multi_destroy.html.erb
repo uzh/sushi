@@ -1,0 +1,37 @@
+<h1>Project <%= session[:project] %> <span style="color:gray;font-size:medium">Delete DataSet</span></h1>
+<hr />
+<h3>Log</h3>
+The following DataSets are removed from Sushi DataBase..
+<ul>
+  <% @deleted_data_sets.each do |deleted_data_set| %>
+   <li><b><%= deleted_data_set.id %>.[<%= deleted_data_set.name %>]</b></li>
+  <% end %>
+</ul>
+<% unless @commands.empty? %>
+  <% if @option[:delete] == 'also_gstore' %>
+    The following commands have been executed
+    <pre>
+    <% @commands.each do |command| %>
+      <%= command %>
+    <% end %>
+    </pre>
+    The followings are the command logs
+    <pre>
+    <% @command_logs.each do |log| %>
+      <%= log %>
+    <% end %>
+    </pre>
+  <% end %>
+<% end %>
+<table>
+<hr />
+<%= button_to "Go gstore", "/projects/p#{session[:project]}" %>
+<%= link_to "/projects/p#{session[:project]}","/projects/p#{session[:project]}" %>
+
+
+
+
+
+
+
+

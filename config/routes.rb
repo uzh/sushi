@@ -29,6 +29,8 @@ SushiFabric::Application.routes.draw do
       post :delete
       get :script_log
       get :job_parameter
+      post :multi_delete
+      post :multi_destroy
     end
   end
   
