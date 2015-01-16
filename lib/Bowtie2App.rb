@@ -52,10 +52,13 @@ EOS
     {'Name'=>@dataset['Name'], 
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
+     'IGV Starter [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
      'Species'=>@dataset['Species'],
      'build'=>@params['build'],
      'paired'=>@params['paired'],
-     'Read Count'=>@dataset['Read Count']
+     'Read Count'=>@dataset['Read Count'],
+     'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
+     'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml")
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
