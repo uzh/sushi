@@ -19,6 +19,9 @@ class MpileupApp <  SushiFabric::SushiApp
     @params['paired'] = false
     @params['name'] = 'Variants'
     @params['build'] = ref_selector
+    @params['mpileupOptions'] = '--skip-indels --output-tags DP,DV,DPR,INFO/DPR,DP4,SP'
+    @params['callOptions'] = '--multiallelic-caller --keep-alts --variants-only'
+    @params['filterOptions'] = '--include \"MIN(DP)>20\"'
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end
