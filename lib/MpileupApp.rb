@@ -5,10 +5,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class GatkRnaSeqHaplotyperApp <  SushiFabric::SushiApp
+class MpileupApp <  SushiFabric::SushiApp
   def initialize
     super
-    @name = 'GATK RNA-Seq Haplotyper'
+    @name = 'samtools mpileup'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Variant_Analysis'
     @required_columns = ['Name','BAM','BAI', 'build']
@@ -17,7 +17,7 @@ class GatkRnaSeqHaplotyperApp <  SushiFabric::SushiApp
     @params['ram'] = '100'
     @params['scratch'] = '500'
     @params['paired'] = false
-    @params['name'] = 'RnaSeqVariants'
+    @params['name'] = 'Variants'
     @params['build'] = ref_selector
     @params['specialOptions'] = ''
     @params['mail'] = ""
@@ -25,8 +25,8 @@ class GatkRnaSeqHaplotyperApp <  SushiFabric::SushiApp
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
     {'Name'=>@params['name'],
-     'VCF [File]'=>File.join(@result_dir, "#{@params['name']}-haplo.vcf.gz"),
-     'TBI [File]'=>File.join(@result_dir, "#{@params['name']}-haplo.vcf.gz.tbi"),
+     'VCF [File]'=>File.join(@result_dir, "#{@params['name']}.vcf.gz"),
+     'TBI [File]'=>File.join(@result_dir, "#{@params['name']}.vcf.gz.tbi"),
      'Report [File]'=>report_dir,
      'Html [Link]'=>File.join(report_dir, '00index.html'),
      'Species'=>@dataset['Species'],
@@ -55,7 +55,7 @@ class GatkRnaSeqHaplotyperApp <  SushiFabric::SushiApp
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
     command<<  "inputDatasetFile = '#{@input_dataset_tsv_path}'\n"
-    command<<  "gatkRnaSeqHaplotyperApp(input=inputDatasetFile, output=output, config=config)\n"
+    command<<  "mpileupApp(input=inputDatasetFile, output=output, config=config)\n"
     command<<  "EOT\n"
     command
   end
