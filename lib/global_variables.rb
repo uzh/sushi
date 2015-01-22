@@ -3,6 +3,7 @@
 
 module GlobalVariables
   SUSHI = 'Supercalifragilisticexpialidocious!!'
+  R_SCRIPT_DIR = 'usr/local/ngseq/opt/sushi_scripts'
   SAMTOOLS = '/usr/local/ngseq/stow/samtools-0.1.19/bin/samtools'
   BCFTOOLS = '/usr/local/ngseq/stow/samtools-0.1.19/bin/bcftools'
   PICARD_DIR = '/usr/local/ngseq/stow/picard-tools-1.119/bin'
