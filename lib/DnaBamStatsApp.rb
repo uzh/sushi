@@ -10,13 +10,19 @@ class DnaBamStatsApp < SushiFabric::SushiApp
     super
     @name = 'DNA BamStats'
     @analysis_category = 'QC'
+    @description =<<-EOS
+Runs the following tools that check alignment statistics for the DNA applications<br/>
+<a href='http://samstat.sourceforge.net/'>SAMStat</a><br/>
+<a href='http://qualimap.bioinfo.cipf.es/'>QualiMap</a><br/>
+<a href='http://broadinstitute.github.io/picard/command-line-overview.html#CollectGcBiasMetrics'>picard/CollectGcBiasMetrics</a><br/>
+EOS
     @required_columns = ['Name','BAM']
     @required_params = ['cores','ram','build','sortedBam']
     @params['cores'] = '8'
-    @params['ram'] = '60'
+    @params['ram'] = '30'
     @params['scratch'] = '100'
     @params['build'] = ref_selector
-    @params['sortedBam'] = ['false','true']
+    @params['sortedBam'] = true
   end
   def next_dataset
     samstat_link = File.join(@result_dir, "#{@dataset['Name']}.samstat.html")
@@ -36,20 +42,22 @@ class DnaBamStatsApp < SushiFabric::SushiApp
   end
   def commands
     command =<<-EOS
-echo Display=$DISPLAY
+#echo Display=$DISPLAY
+set -x
 REF=/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome.fa
 SAMTOOLS=#{GlobalVariables::SAMTOOLS}
 SAMSTAT=#{GlobalVariables::SAMSTAT}
 QUALIMAP=#{GlobalVariables::QUALIMAP}
 PICARD_DIR=#{GlobalVariables::PICARD_DIR}
+BAM_FILE=#{File.join(@gstore_dir, @dataset['BAM'])}
 ###samstat
-$SAMTOOLS view -ub #{File.join(@gstore_dir, @dataset['BAM'])} | $SAMSTAT -f bam -n #{@dataset['Name']}.samstat
+$SAMSTAT -n #{@dataset['Name']}.samstat $BAM_FILE > samstat.out
 ###qualimap
-unset DISPLAY ; $QUALIMAP bamqc -bam  #{File.join(@gstore_dir, @dataset['BAM'])} -c -nt #{@params['cores']} --java-mem-size=10G -outdir #{@dataset['Name']}
+unset DISPLAY ; $QUALIMAP bamqc -bam  $BAM_FILE -c -nt #{@params['cores']} --java-mem-size=10G -outdir #{@dataset['Name']} > qualimap.out
 #rm #{@dataset['Name']}/coverage.txt
 echo Display=$DISPLAY
 ###picard 
-/usr/bin/java -Xmx10g -jar $PICARD_DIR/CollectGcBiasMetrics.jar OUTPUT=#{@dataset['Name']}.gc.dat SUMMARY_OUTPUT=#{@dataset['Name']}.gc.sum.dat INPUT=#{File.join(@gstore_dir, @dataset['BAM'])} CHART_OUTPUT=#{@dataset['Name']}.picard.pdf ASSUME_SORTED=#{@params['sortedBam']} REFERENCE_SEQUENCE=$REF VALIDATION_STRINGENCY=LENIENT
+java -Xmx10g -jar $PICARD_DIR/CollectGcBiasMetrics.jar OUTPUT=#{@dataset['Name']}.gc.dat SUMMARY_OUTPUT=#{@dataset['Name']}.gc.sum.dat INPUT=$BAM_FILE CHART_OUTPUT=#{@dataset['Name']}.picard.pdf ASSUME_SORTED=#{@params['sortedBam']} REFERENCE_SEQUENCE=$REF VALIDATION_STRINGENCY=LENIENT > picard.out 2> picard.err
 EOS
     command
   end
