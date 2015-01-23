@@ -26,7 +26,7 @@ EOS
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['featureFile'] = 'genes.gtf'
-    @params['cmdOptions'] = ' --calc-ci --ci-memory 12256'
+    @params['cmdOptions'] = ' --calc-ci '
     @params['keepBam'] = false
     @params['trimAdapter'] = false
     @params['trimLeft'] = 0
