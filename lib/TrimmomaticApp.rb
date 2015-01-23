@@ -3,6 +3,8 @@
 Version = '20140610-160547'
 
 require 'sushi_fabric'
+require_relative 'global_variables'
+include GlobalVariables
 
 class TrimmomaticApp < SushiFabric::SushiApp
   def initialize

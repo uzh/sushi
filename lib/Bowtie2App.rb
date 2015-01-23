@@ -26,7 +26,7 @@ EOS
     @params['build', 'description'] = 'the genome build and annotation to use as reference. If human variant calling is the main goal, please use hg_19_karyotypic.'
     @params['paired'] = false
     @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
-    @params['cmdOptions'] = ''
+    @params['cmdOptions'] = '--no-unal'
     @params['cmdOptions', 'description'] = 'specify the commandline options for bowtie2; do not specify any option that is already covered by the dedicated input fields'
     @params['trimAdapter'] = false
     @params['trimAdapter', 'description'] = 'if adapters should be trimmed'
@@ -36,8 +36,8 @@ EOS
     @params['trimRight', 'description'] = 'fixed trimming at the "right" i.e. 3-prime end of the read'
     @params['minTailQuality'] = 0
     @params['minTailQuality', 'description'] = 'if above zero, then reads are trimmed as soon as 4 consecutive bases have lower mean quality'
-    @params['specialOptions'] = ''
-    @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
+    #@params['specialOptions'] = ''
+    #@params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
   end
   def preprocess
@@ -63,7 +63,8 @@ EOS
   end
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"
-    command << "source('/usr/local/ngseq/opt/sushi_scripts/init.R')\n"
+    command << "R_SCRIPT_DIR <<- '#{GlobalVariables::R_SCRIPT_DIR}'\n"
+    command<<  "source(file.path(R_SCRIPT_DIR, 'init.R'))\n"
     command << "config = list()\n"
     config = @params
     config.keys.each do |key|

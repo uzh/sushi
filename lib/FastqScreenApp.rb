@@ -2,6 +2,8 @@
 # encoding: utf-8
 
 require 'sushi_fabric'
+require_relative 'global_variables'
+include GlobalVariables
 
 class FastqScreenApp <  SushiFabric::SushiApp
   def initialize
@@ -9,6 +11,10 @@ class FastqScreenApp <  SushiFabric::SushiApp
     @name = 'FastqScreen'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
+@description =<<-EOS
+Screen files for contaminations or ribosomal RNA content<br/>
+<a target='_blank' href='http://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/'>fastq_screen web site</a>
+EOS
     @required_columns = ['Name','Read1']
     @required_params = ['name', 'paired','confFile']
     @params['cores'] = '8'
@@ -44,7 +50,8 @@ class FastqScreenApp <  SushiFabric::SushiApp
   end
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave<<  EOT\n"
-    command<<  "source('/usr/local/ngseq/opt/sushi_scripts/init.R')\n"
+    command << "R_SCRIPT_DIR <<- '#{GlobalVariables::R_SCRIPT_DIR}'\n"
+    command<<  "source(file.path(R_SCRIPT_DIR, 'init.R'))\n"
     command << "config = list()\n"
     config = @params
     config.keys.each do |key|

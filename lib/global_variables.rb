@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 module GlobalVariables
+  R_SCRIPT_DIR = '/srv/GT/analysis/course_sushi/sushi_scripts'
   SUSHI = 'Supercalifragilisticexpialidocious!!'
   R_SCRIPT_DIR = 'usr/local/ngseq/opt/sushi_scripts'
   SAMTOOLS = '/usr/local/ngseq/stow/samtools-0.1.19/bin/samtools'

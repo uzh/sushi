@@ -2,6 +2,8 @@
 # encoding: utf-8
 
 require 'sushi_fabric'
+require_relative 'global_variables'
+include GlobalVariables
 
 class ProfilesDemoApp < SushiFabric::SushiApp
   def initialize
