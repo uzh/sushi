@@ -11,18 +11,29 @@ class MpileupApp <  SushiFabric::SushiApp
     @name = 'samtools mpileup'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Variant_Analysis'
+    @description =<<-EOS
+Variant analysis with samtools/bcftools.<br/>
+The analysis runs the 3 commands: samtools mpileup, bcftools call, bcftools filter<br/>
+<a href='http://www.htslib.org/doc/samtools-1.1.html'>samtools manual/</a><br>
+<a href='http://www.htslib.org/doc/bcftools-1.1.html'>bcftools manual/</a><br>
+EOS
     @required_columns = ['Name','BAM','BAI', 'build']
     @required_params = ['name', 'paired']
-    @params['cores'] = '24'
-    @params['ram'] = '100'
-    @params['scratch'] = '500'
+    @params['cores'] = '8'
+    @params['ram'] = '30'
+    @params['scratch'] = '100'
     @params['paired'] = false
     @params['name'] = 'Variants'
     @params['build'] = ref_selector
+    @params['region'] = ""
+    @params['region', 'description'] = 'The region of the genome. You can give either a chromosome name or a region on a chromosome like chr1:1000-2000'
     @params['mpileupOptions'] = '--skip-indels --output-tags DP,DV,DPR,INFO/DPR,DP4,SP'
+    @params['mpileupOptions', 'description'] = 'The options to the samtools mpileup command'
     @params['callOptions'] = '--multiallelic-caller --keep-alts --variants-only'
-    @params['filterOptions'] = '--include \"MIN(DP)>20\"'
-    @params['specialOptions'] = ''
+    @params['callOptions', 'description'] = 'The options to <a href=http://www.htslib.org/doc/bcftools-1.1.html#call>bcftools call</a>'
+    @params['filterOptions'] = '--include "MIN(DP)>5"'
+    @params['filterOptions', 'description'] = 'The options to <a href=http://www.htslib.org/doc/bcftools-1.1.html#filter>bcftools filter</a>'
+    #@params['specialOptions'] = ''
     @params['mail'] = ""
   end
   def next_dataset
@@ -30,10 +41,13 @@ class MpileupApp <  SushiFabric::SushiApp
     {'Name'=>@params['name'],
      'VCF [File]'=>File.join(@result_dir, "#{@params['name']}.vcf.gz"),
      'TBI [File]'=>File.join(@result_dir, "#{@params['name']}.vcf.gz.tbi"),
+     'IGV Starter [Link]'=>File.join(@result_dir, "#{@params['name']}-igv.jnlp"),
      'Report [File]'=>report_dir,
      'Html [Link]'=>File.join(report_dir, '00index.html'),
      'Species'=>@dataset['Species'],
-     'build'=>@params['build']
+     'build'=>@params['build'],
+     'IGV Starter [File]'=>File.join(@result_dir, "#{@params['name']}-igv.jnlp"),
+     'IGV Session [File]'=>File.join(@result_dir, "#{@params['name']}-igv.xml")
     }
   end
   def set_default_parameters
@@ -45,7 +59,8 @@ class MpileupApp <  SushiFabric::SushiApp
 
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave<<  EOT\n"
-    command<<  "source('/usr/local/ngseq/opt/sushi_scripts/init.R')\n"
+    command << "R_SCRIPT_DIR <<- '#{GlobalVariables::R_SCRIPT_DIR}'\n"
+    command<<  "source(file.path(R_SCRIPT_DIR, 'init.R'))\n"
     command << "config = list()\n"
     config = @params
     config.keys.each do |key|
