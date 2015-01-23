@@ -21,7 +21,7 @@ class TophatApp < SushiFabric::SushiApp
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['featureFile'] = 'genes.gtf'
-    @params['cmdOptions'] = ''
+    @params['cmdOptions'] = '--mate-inner-dist 100 --mate-std-dev 150'
     @params['trimAdapter'] = false
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
