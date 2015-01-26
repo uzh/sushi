@@ -58,21 +58,21 @@ EOS
     command =<<-EOS
 set -e
 set -o pipefail 
-SAMTOOLS=#{GlobalVariables::SAMTOOLS}
-BCFTOOLS=#{GlobalVariables::BCFTOOLS}
-GATK_DIR=#{GlobalVariables::GATK_DIR}
-PICARD_DIR=#{GlobalVariables::PICARD_DIR}
-SNPEFF_DIR=#{GlobalVariables::SNPEFF_DIR}
+SAMTOOLS=#{SAMTOOLS}
+BCFTOOLS=#{BCFTOOLS}
+GATK_DIR=#{GATK_DIR}
+PICARD_DIR=#{PICARD_DIR}
+SNPEFF_DIR=#{SNPEFF_DIR}
 SNP_CALLER="#{@params['snpCaller']}"
-BAM_UTIL=#{GlobalVariables::BAM_UTIL}
+BAM_UTIL=#{BAM_UTIL}
 #SNPEFF_DATABASE="#{@params['snpEff_database']}"
 MPILEUP_OPTIONS="#{@params['mpileupOptions']}"
 BCF_OPTIONS="#{@params['bcftoolsOptions']}"
 CORES="#{@params['cores']}"
 GATK_GLM="#{@params['gatk_glm']}"
 GATK_OPTIONS="#{@params['gatkOptions']}"
-HSD=#{GlobalVariables::HUMAN_SNP_DATABASES}
-#HSD=#{GlobalVariables::HUMAN_DBSNP}
+HSD=#{HUMAN_SNP_DATABASES}
+#HSD=#{HUMAN_DBSNP}
 MIN_DEPTH="#{@params['min_depth_to_call_variants']}"
 PAIRED="#{@params['paired']}"
 ANN="#{@params['snpEff_annotation']}"

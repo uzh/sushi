@@ -1,26 +1,13 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
+def c(*list)
+  list
+end
+load '/usr/local/ngseq/opt/sushi_scripts/GLOBAL_VARIABLES.txt'
+
 module GlobalVariables
   SUSHI = 'Supercalifragilisticexpialidocious!!'
-  R_SCRIPT_DIR = '/usr/local/ngseq/opt/sushi_scripts'
-  SAMTOOLS = '/usr/local/ngseq/stow/samtools-0.1.19/bin/samtools'
-  BCFTOOLS = '/usr/local/ngseq/stow/samtools-0.1.19/bin/bcftools'
-  PICARD_DIR = '/usr/local/ngseq/stow/picard-tools-1.119/bin'
-  GATK_DIR = '/usr/local/ngseq/src/GenomeAnalysisTK-3.2-2'
-  SNPEFF_DIR='/usr/local/ngseq/src/snpEff_v4.0/'
-  BWA='/usr/local/ngseq/stow/bwa-0.7.10/bin/bwa'
-  SAMSTAT='/usr/local/ngseq/stow/samstat_1.09/bin/samstat'
-  QUALIMAP='/usr/local/ngseq/opt/qualimap_v1.0/qualimap'
-  TRANSDECODER='/usr/local/ngseq/src/trinityrnaseq_r20131110/trinity-plugins/transdecoder/TransDecoder'
-  HMMSCAN='/usr/local/ngseq/src/hmmer-3.1b1-linux-intel-x86_64/binaries/hmmscan'
-  UNIPROT_DIR='/srv/GT/databases/uniprot_blast_db/'
-  BLAST_DIR='/usr/local/ngseq/src/ncbi-blast-2.2.26+/bin/'
-  AUGUSTUS_DIR='/usr/local/ngseq/src/augustus.2.7/'
-  HUMAN_SNP_DATABASES='/srv/GT/reference/Homo_sapiens/UCSC/hg19_karyotypic/SNPS/'
-  HUMAN_DBSNP='/srv/GT/databases/dbSNP/release141/'
-  ALL_PATHS='/usr/local/ngseq/stow/allpathslg-48579/bin'
-  BAM_UTIL='/usr/local/ngseq/src/bamUtil/'
   def builder_selector(base_dir, shown_pattern=nil, value_pattern=nil)
     selector = {}
     Dir[base_dir].sort.select{|dir| File.directory?(dir)}.each do |dir|
