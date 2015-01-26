@@ -45,10 +45,10 @@ EOS
 #echo Display=$DISPLAY
 set -x
 REF=/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome.fa
-SAMTOOLS=#{GlobalVariables::SAMTOOLS}
-SAMSTAT=#{GlobalVariables::SAMSTAT}
-QUALIMAP=#{GlobalVariables::QUALIMAP}
-PICARD_DIR=#{GlobalVariables::PICARD_DIR}
+SAMTOOLS=#{SAMTOOLS}
+SAMSTAT=#{SAMSTAT}
+QUALIMAP=#{QUALIMAP}
+PICARD_DIR=#{PICARD_DIR}
 BAM_FILE=#{File.join(@gstore_dir, @dataset['BAM'])}
 ###samstat
 $SAMSTAT -n #{@dataset['Name']}.samstat $BAM_FILE > samstat.out

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150105-102809'
+Version = '20150126-164849'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -54,7 +54,7 @@ class TophatApp < SushiFabric::SushiApp
   end
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"
-    command << "R_SCRIPT_DIR <<- '#{GlobalVariables::R_SCRIPT_DIR}'\n"
+    command << "R_SCRIPT_DIR <<- '#{R_SCRIPT_DIR}'\n"
     command<<  "source(file.path(R_SCRIPT_DIR, 'init.R'))\n"
     command << "config = list()\n"
     config = @params

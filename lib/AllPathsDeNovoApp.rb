@@ -50,7 +50,7 @@ EOS
 
   def commands
     command =<<-EOS
-ALL_PATHS_DIR=#{GlobalVariables::ALL_PATHS}
+ALL_PATHS_DIR=#{ALL_PATHS}
 SIZE="#{@params['Estimated_Genome_Size']}"
 F_COV="#{@params['Estimated_Coverage_From_Fragment_Libraries']}"
 J_COV="#{@params['Estimated_Coverage_From_Jump_Libraries']}"
