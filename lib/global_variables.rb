@@ -4,8 +4,9 @@
 def c(*list)
   list
 end
-load '/usr/local/ngseq/opt/sushi_scripts/GLOBAL_VARIABLES.txt'
-R_SCRIPT_DIR="/usr/local/ngseq/opt/sushi_scripts"
+GLOBAL_VARIABLES = '/usr/local/ngseq/opt/sushi_scripts/GLOBAL_VARIABLES.txt'
+load GLOBAL_VARIABLES
+#R_SCRIPT_DIR="/usr/local/ngseq/opt/sushi_scripts"
 
 module GlobalVariables
   SUSHI = 'Supercalifragilisticexpialidocious!!'
