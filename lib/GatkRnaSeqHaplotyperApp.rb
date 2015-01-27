@@ -42,6 +42,7 @@ class GatkRnaSeqHaplotyperApp <  SushiFabric::SushiApp
 
   def commands
     command = "/usr/local/ngseq/bin/R --vanilla --slave<<  EOT\n"
+    command << "GLOBAL_VARIABLES <<- '#{GLOBAL_VARIABLES}'\n"
     command << "R_SCRIPT_DIR <<- '#{R_SCRIPT_DIR}'\n"
     command<<  "source(file.path(R_SCRIPT_DIR, 'init.R'))\n"
     command << "config = list()\n"
