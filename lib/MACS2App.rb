@@ -59,18 +59,18 @@ class MACS2App < SushiFabric::SushiApp
       command << "config[['#{key}']] = '#{config[key]}'\n" 
     end
     command << "config[['dataRoot']] = '#{@gstore_dir}'\n"
+    command << "config[['resultDir']] = '#{@result_dir}'\n"
     command << "input = list()\n"
     input = @dataset
     input.keys.each do |key|
       command << "input[['#{key}']] = '#{input[key]}'\n" 
     end
-    command << "config[['chromSizes']] = paste('/srv/GT/reference/', gsub('Annotation/Version-.*', 'Sequence/Chromosomes/chromsizes.txt', input[['build']]),sep='')\n"
     command << "output = list()\n"
     output = next_dataset
     output.keys.each do |key|
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
-    command << "runMacs2(input=input, output=output, config=config)\n"
+    command << "runApp('runMacs2App', input=input, output=output, config=config)\n"
     command << "EOT"
     command
   end

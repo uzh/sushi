@@ -55,24 +55,30 @@ EOS
        {'Name'=>@dataset['Name'], 
         'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
         'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
+        'IGV Starter [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
         'Species'=>@dataset['Species'],
         'build'=>@params['build'],
         'paired'=>@params['paired'],
         'featureFile'=>@params['featureFile'],
         'strandMode'=>@params['strandMode'],
         'Read Count'=>@dataset['Read Count'],
-        'Chimerics [File]'=>File.join(@result_dir, "#{@dataset['Name']}.chimeric") 
+        'Chimerics [File]'=>File.join(@result_dir, "#{@dataset['Name']}.chimeric"),
+        'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
+        'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml")
       }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
      else 
        {'Name'=>@dataset['Name'],
         'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
         'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
+        'IGV Starter [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
         'Species'=>@dataset['Species'],
         'build'=>@params['build'],
         'paired'=>@params['paired'],
         'featureFile'=>@params['featureFile'],
         'strandMode'=>@params['strandMode'],
-        'Read Count'=>@dataset['Read Count']
+        'Read Count'=>@dataset['Read Count'],
+        'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
+        'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml")
       }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
      end
   end
@@ -87,6 +93,7 @@ EOS
       command << "config[['#{key}']] = '#{config[key]}'\n" 
     end
     command << "config[['dataRoot']] = '#{@gstore_dir}'\n"
+    command << "config[['resultDir']] = '#{@result_dir}'\n"
     command << "input = list()\n"
     input = @dataset
     input.keys.each do |key|
@@ -97,7 +104,7 @@ EOS
     output.keys.each do |key|
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
-    command << "mapSTAR(input=input, output=output, config=config)\n"
+    command << "runApp('mapSTARApp', input=input, output=output, config=config)\n"
     command << "EOT"
     command
   end

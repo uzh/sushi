@@ -33,7 +33,8 @@ class DESeq2App < SushiFabric::SushiApp
   def next_dataset
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"
     @params['comparison'] = @comparison
-    report_file = File.join(@result_dir, @comparison)
+    @params['name'] = @comparison
+    report_file = File.join(@result_dir, "#{@name}--#{@params['name']}")
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@comparison,
      'Species'=>@dataset['Species'],
@@ -59,13 +60,14 @@ class DESeq2App < SushiFabric::SushiApp
       command << "config[['#{key}']] = '#{config[key]}'\n" 
     end
     command << "config[['dataRoot']] = '#{@gstore_dir}'\n"
+    command << "config[['resultDir']] = '#{@result_dir}'\n"
     command << "output = list()\n"
     output = next_dataset
     output.keys.each do |key|
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
     command<<  "inputDatasetFile = '#{@input_dataset_tsv_path}'\n"
-    command << "DESeq2App(input=inputDatasetFile, output=output, config=config)\n"
+    command << "runApp('DESeq2App', input=inputDatasetFile, output=output, config=config)\n"
     command << "EOT"
     command
   end

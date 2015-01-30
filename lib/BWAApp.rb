@@ -57,6 +57,7 @@ class BWAApp < SushiFabric::SushiApp
       command << "config[['#{key}']] = '#{config[key]}'\n" 
     end
     command << "config[['dataRoot']] = '#{@gstore_dir}'\n"
+    command << "config[['resultDir']] = '#{@result_dir}'\n"
     command << "input = list()\n"
     input = @dataset
     input.keys.each do |key|
@@ -67,7 +68,7 @@ class BWAApp < SushiFabric::SushiApp
     output.keys.each do |key|
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
-    command << "mapBWA(input=input, output=output, config=config)\n"
+    command << "runApp('mapBWAApp', input=input, output=output, config=config)\n"
     command << "EOT"
     command
   end
