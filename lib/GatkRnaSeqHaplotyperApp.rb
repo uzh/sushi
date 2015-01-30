@@ -17,7 +17,7 @@ class GatkRnaSeqHaplotyperApp <  SushiFabric::SushiApp
     @params['ram'] = '100'
     @params['scratch'] = '500'
     @params['paired'] = false
-    @params['name'] = 'RnaSeqVariants'
+    @params['name'] = 'GATK_RnaSeqVariants'
     @params['build'] = ref_selector
     @params['specialOptions'] = ''
     @params['mail'] = ""
@@ -51,13 +51,14 @@ class GatkRnaSeqHaplotyperApp <  SushiFabric::SushiApp
       command << "config[['#{key}']] = '#{config[key]}'\n" 
     end
     command << "config[['dataRoot']] = '#{@gstore_dir}'\n"
+    command << "config[['resultDir']] = '#{@result_dir}'\n"
     command << "output = list()\n"
     output = next_dataset
     output.keys.each do |key|
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
     command<<  "inputDatasetFile = '#{@input_dataset_tsv_path}'\n"
-    command<<  "gatkRnaSeqHaplotyperApp(input=inputDatasetFile, output=output, config=config)\n"
+    command<<  "runApp('gatkRnaSeqHaplotyperApp', input=inputDatasetFile, output=output, config=config)\n"
     command<<  "EOT\n"
     command
   end

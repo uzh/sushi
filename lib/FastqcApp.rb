@@ -21,7 +21,7 @@ EOS
     @params['ram'] = '16'
     @params['scratch'] = '100'
     @params['paired'] = false
-    @params['name'] = 'QC_Result'
+    @params['name'] = 'FastQC_Result'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
   end
@@ -52,13 +52,14 @@ EOS
       command << "config[['#{key}']] = '#{config[key]}'\n" 
     end
     command << "config[['dataRoot']] = '#{@gstore_dir}'\n"
+    command << "config[['resultDir']] = '#{@result_dir}'\n"
     command << "output = list()\n"
     output = next_dataset
     output.keys.each do |key|
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
     command<<  "inputDatasetFile = '#{@input_dataset_tsv_path}'\n"
-    command<<  "fastqcApp(input=inputDatasetFile, output=output, config=config)\n"
+    command<<  "runApp('fastqcApp', input=inputDatasetFile, output=output, config=config)\n"
     command<<  "EOT\n"
     command
   end

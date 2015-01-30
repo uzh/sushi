@@ -23,7 +23,7 @@ EOS
     @params['ram'] = '30'
     @params['scratch'] = '100'
     @params['paired'] = false
-    @params['name'] = 'Variants'
+    @params['name'] = 'Mpileup_Variants'
     @params['build'] = ref_selector
     @params['region'] = ""
     @params['region', 'description'] = 'The region of the genome. You can give either a chromosome name or a region on a chromosome like chr1:1000-2000'
@@ -68,13 +68,14 @@ EOS
       command << "config[['#{key}']] = '#{config[key]}'\n" 
     end
     command << "config[['dataRoot']] = '#{@gstore_dir}'\n"
+    command << "config[['resultDir']] = '#{@result_dir}'\n"
     command << "output = list()\n"
     output = next_dataset
     output.keys.each do |key|
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
     command<<  "inputDatasetFile = '#{@input_dataset_tsv_path}'\n"
-    command<<  "mpileupApp(input=inputDatasetFile, output=output, config=config)\n"
+    command<<  "runApp('mpileupApp', input=inputDatasetFile, output=output, config=config)\n"
     command<<  "EOT\n"
     command
   end

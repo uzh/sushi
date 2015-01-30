@@ -21,7 +21,7 @@ EOS
     @params['ram'] = '16'
     @params['scratch'] = '100'
     @params['paired'] = false
-    @params['name'] = 'QC_Result'
+    @params['name'] = 'FastqScreen_Result'
     @params['subset'] = '100000'
     @params['confFile'] = {'select'=>''}
     Dir["/usr/local/ngseq/opt/fastq_screen_v0.4.2/conf/*.conf"].sort.select{|conf| File.file?(conf)}.each do |file|
@@ -59,13 +59,14 @@ EOS
       command << "config[['#{key}']] = '#{config[key]}'\n" 
     end
     command << "config[['dataRoot']] = '#{@gstore_dir}'\n"
+    command << "config[['resultDir']] = '#{@result_dir}'\n"
     command << "output = list()\n"
     output = next_dataset
     output.keys.each do |key|
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
     command<<  "inputDatasetFile = '#{@input_dataset_tsv_path}'\n"
-    command<<  "fastqscreenApp(input=inputDatasetFile, output=output, config=config)\n"
+    command<<  "runApp('fastqScreenApp', input=inputDatasetFile, output=output, config=config)\n"
     command<<  "EOT\n"
     command
   end
