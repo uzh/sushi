@@ -40,7 +40,7 @@ class RunApplicationController < ApplicationController
   end
   def set_parameters
     class_name = params[:app]
-    #require class_name
+    require class_name
     @sushi_app = eval(class_name).new
     data_set_id = params[:data_set][:id]
     @data_set = DataSet.find(data_set_id.to_i)
@@ -78,6 +78,7 @@ class RunApplicationController < ApplicationController
   def confirmation
     @params = params
     class_name = params[:sushi_app][:class]
+    require class_name
     @sushi_app = eval(class_name).new
     data_set_id = params[:data_set][:id]
     @data_set = DataSet.find(data_set_id.to_i)
@@ -109,6 +110,7 @@ class RunApplicationController < ApplicationController
   def submit_jobs
     @params = params
     class_name = params[:sushi_app][:class]
+    require class_name
     @sushi_app = eval(class_name).new
     @sushi_app.user = if current_user 
                         current_user.login
