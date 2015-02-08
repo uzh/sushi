@@ -36,8 +36,8 @@ EOS
     @params['trimRight', 'description'] = 'fixed trimming at the "right" i.e. 3-prime end of the read'
     @params['minTailQuality'] = 0
     @params['minTailQuality', 'description'] = 'if above zero, then reads are trimmed as soon as 4 consecutive bases have lower mean quality'
-    #@params['specialOptions'] = ''
-    #@params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
+    @params['specialOptions'] = ''
+    @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
   end
   def preprocess
