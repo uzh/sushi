@@ -33,7 +33,8 @@ EOS
     @params['callOptions', 'description'] = 'The options to <a href=http://www.htslib.org/doc/bcftools-1.1.html#call>bcftools call</a>'
     @params['filterOptions'] = '--include "MIN(DP)>5"'
     @params['filterOptions', 'description'] = 'The options to <a href=http://www.htslib.org/doc/bcftools-1.1.html#filter>bcftools filter</a>'
-    #@params['specialOptions'] = ''
+    @params['specialOptions'] = ''
+    @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
   end
   def next_dataset
