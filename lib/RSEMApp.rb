@@ -26,7 +26,9 @@ EOS
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['featureFile'] = 'genes.gtf'
-    @params['cmdOptions'] = ' --calc-ci --bowtie-e '
+    @params['bowtie-e'] = '200'
+    @params['bowtie-e', 'description'] = 'maximum sum of base qualities at mismatching positions'
+    @params['cmdOptions'] = ' --calc-ci '
     @params['keepBam'] = false
     @params['trimAdapter'] = false
     @params['trimLeft'] = 0
