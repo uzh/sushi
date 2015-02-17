@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20140610-160547'
+Version = '20150217-152505'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -70,7 +70,9 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     if @params['paired'] 
       nds['Read2 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read2'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")
     end
-    nds['Adapters [File]'] = File.join(@result_dir, "#{@dataset['Name']}_adapters.fa")
+    if @dataset['Adapter1']
+      nds['Adapters [File]'] = File.join(@result_dir, "#{@dataset['Name']}_adapters.fa")
+    end
     pds = @dataset.clone
     pds.delete("Read1")
     pds.delete("Read2")
