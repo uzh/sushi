@@ -59,7 +59,7 @@ class TeqcApp <  SushiFabric::SushiApp
       command << "output[['#{key}']] = '#{output[key]}'\n" 
     end
     command<<  "inputDatasetFile = '#{@input_dataset_tsv_path}'\n"
-    command<<  "runApp('teqcApp', inputDatasetFile=inputDatasetFile, output=output, config=config)\n"
+    command<<  "runApp('teqcApp', input=inputDatasetFile, output=output, config=config)\n"
     command<<  "EOT\n"
     command
   end
