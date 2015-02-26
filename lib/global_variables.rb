@@ -113,8 +113,16 @@ module GlobalVariables
     output.keys.each do |key|
       command << "output[['#{key}']] = '#{output[key]}'\n"
     end
-    command<<  "inputDatasetFile = '#{@input_dataset_tsv_path}'\n"
-    command<<  "runApp('#{app_name}', input=inputDatasetFile, output=output, config=config)\n"
+    if @params['process_mode'] == 'DATASET'
+      command <<  "input = '#{@input_dataset_tsv_path}'\n"
+    else # sample mode
+      command << "input = list()\n" 
+      input = @dataset
+      input.keys.each do |key|
+        command << "input[['#{key}']] = '#{input[key]}'\n" 
+      end
+    end
+    command<<  "runApp('#{app_name}', input=input, output=output, config=config)\n"
     command<<  "EOT\n"
     command
   end
