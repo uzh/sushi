@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150126-165339'
+Version = '20150226-111227'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -49,30 +49,7 @@ class MACS2App < SushiFabric::SushiApp
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
-    command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"
-    command << "GLOBAL_VARIABLES <<- '#{GLOBAL_VARIABLES}'\n"
-    command << "R_SCRIPT_DIR <<- '#{R_SCRIPT_DIR}'\n"
-    command<<  "source(file.path(R_SCRIPT_DIR, 'init.R'))\n"
-    command << "config = list()\n"
-    config = @params
-    config.keys.each do |key|
-      command << "config[['#{key}']] = '#{config[key]}'\n" 
-    end
-    command << "config[['dataRoot']] = '#{@gstore_dir}'\n"
-    command << "config[['resultDir']] = '#{@result_dir}'\n"
-    command << "input = list()\n"
-    input = @dataset
-    input.keys.each do |key|
-      command << "input[['#{key}']] = '#{input[key]}'\n" 
-    end
-    command << "output = list()\n"
-    output = next_dataset
-    output.keys.each do |key|
-      command << "output[['#{key}']] = '#{output[key]}'\n" 
-    end
-    command << "runApp('runMacs2App', input=input, output=output, config=config)\n"
-    command << "EOT"
-    command
+    run_RApp("runMacs2App")
   end
 end
 
