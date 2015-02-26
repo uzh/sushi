@@ -45,26 +45,7 @@ class CountQCApp < SushiFabric::SushiApp
     end
   end
   def commands
-    command = "/usr/local/ngseq/bin/R --vanilla --slave << EOT\n"
-    command << "GLOBAL_VARIABLES <<- '#{GLOBAL_VARIABLES}'\n"
-    command << "R_SCRIPT_DIR <<- '#{R_SCRIPT_DIR}'\n"
-    command<<  "source(file.path(R_SCRIPT_DIR, 'init.R'))\n"
-    command << "config = list()\n"
-    config = @params
-    config.keys.each do |key|
-      command << "config[['#{key}']] = '#{config[key]}'\n" 
-    end
-    command << "config[['dataRoot']] = '#{@gstore_dir}'\n"
-    command << "config[['resultDir']] = '#{@result_dir}'\n"
-    command << "output = list()\n"
-    output = next_dataset
-    output.keys.each do |key|
-      command << "output[['#{key}']] = '#{output[key]}'\n" 
-    end
-    command<<  "inputDatasetFile = '#{@input_dataset_tsv_path}'\n"
-    command << "runApp('countQCApp', input=inputDatasetFile, output=output, config=config)\n"
-    command << "EOT"
-    command
+    run_RApp
   end
 end
 
