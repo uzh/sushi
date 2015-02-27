@@ -11,16 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130913115750) do
+ActiveRecord::Schema.define(:version => 20150227095020) do
 
   create_table "data_sets", :force => true do |t|
     t.integer  "project_id"
     t.integer  "parent_id"
     t.string   "name"
     t.string   "md5"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.string   "comment"
+    t.text     "runnable_apps"
+    t.boolean  "refreshed_apps"
   end
 
   create_table "jobs", :force => true do |t|
