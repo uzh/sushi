@@ -25,6 +25,20 @@ class DataSetController < ApplicationController
                   DataSet.find_by_id(id)
                 end
   end
+  def set_runnable_apps
+    if @data_set = DataSet.find_by_id(params[:id]) or (@data_set_id and @data_set = DataSet.find_by_id(@data_set_id))
+      sushi_apps = runnable_application(@data_set.headers)
+      sushi_apps = sushi_apps.map{|app| eval(app.gsub(/\.rb/,'').gsub(/\.sh/,'')).new}
+      @sushi_apps_category = sushi_apps.map{|app| app.analysis_category}.uniq.sort
+      @sushi_apps = {}
+      sushi_apps.sort_by{|app| app.class.to_s}.each do |app|
+        @sushi_apps[app.analysis_category] ||= []
+        @sushi_apps[app.analysis_category] << app.class.to_s
+      end
+      @data_set.runnable_apps = @sushi_apps
+      @data_set.save
+    end
+  end
   def show
     @fgcz = (`hostname`.chomp =~ /fgcz-s-034/)
     # switch project (from job_monitoring)
@@ -72,16 +86,20 @@ class DataSetController < ApplicationController
     end
     @sample_path.uniq!
 
-    if @file_exist.values.inject{|a,b| a and b}
-      sushi_apps = runnable_application(@data_set.headers)
-      sushi_apps = sushi_apps.map{|app| eval(app.gsub(/\.rb/,'').gsub(/\.sh/,'')).new}
-      @sushi_apps_category = sushi_apps.map{|app| app.analysis_category}.uniq.sort
-      @sushi_apps = {}
-      sushi_apps.sort_by{|app| app.class.to_s}.each do |app|
-        @sushi_apps[app.analysis_category] ||= []
-        @sushi_apps[app.analysis_category] << app.class.to_s
-      end
+    if !@data_set.refreshed_apps and @data_set.runnable_apps.empty?
+      @data_set.refreshed_apps = true
+      @data_set.save
+      set_runnable_apps
     end
+    if @file_exist.values.inject{|a,b| a and b}
+      @sushi_apps = @data_set.runnable_apps
+      @sushi_apps_category = @sushi_apps.keys.sort
+    end
+  end
+  def refresh_apps
+    set_runnable_apps
+    show
+    render :action => "show"
   end
   def edit
     show
@@ -150,7 +168,7 @@ class DataSetController < ApplicationController
           elsif !row.empty?
             rows << row
           else
-            save_data_set(data_set, headers, rows)
+            @data_set_id = save_data_set(data_set, headers, rows)
           end
           if row.empty?
             data_set = []
@@ -171,9 +189,14 @@ class DataSetController < ApplicationController
         data_set_tsv.each do |row|
           rows << row.fields
         end
-        save_data_set(data_set, headers, rows)
+        @data_set_id = save_data_set(data_set, headers, rows)
+      end
+
+      if @data_set_id
+        set_runnable_apps
       end
     end
+
     redirect_to :controller => "data_set"
   end
   def import
@@ -210,7 +233,7 @@ class DataSetController < ApplicationController
             elsif !row.empty?
               rows << row
             else
-              save_data_set(data_set, headers, rows)
+              @data_set_id = save_data_set(data_set, headers, rows)
             end
             if row.empty?
               data_set = []
@@ -237,8 +260,12 @@ class DataSetController < ApplicationController
           data_set_tsv.each do |row|
             rows << row.fields
           end
-          save_data_set(data_set, headers, rows)
+          @data_set_id = save_data_set(data_set, headers, rows)
         end
+      end
+
+      if @data_set_id
+        set_runnable_apps
       end
     end
   end
