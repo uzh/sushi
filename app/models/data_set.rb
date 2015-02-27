@@ -5,6 +5,7 @@ class DataSet < ActiveRecord::Base
   belongs_to :project
   has_many :data_sets, :foreign_key => :parent_id
   belongs_to :data_set, :foreign_key => :parent_id
+  serialize :runnable_apps, Hash
 
   def headers
     self.samples.map{|sample| sample.to_hash.keys}.flatten.uniq

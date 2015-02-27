@@ -22,6 +22,7 @@ SushiFabric::Application.routes.draw do
     member do
       post :edit
       get :save_as_tsv
+      get :refresh_apps
     end
     collection do
       get :treeviews
