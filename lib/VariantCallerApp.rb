@@ -22,7 +22,7 @@ EOS
     @params['ram'] = '10'
     @params['scratch'] = '100'
     @params['build'] = ref_selector
-    @params['build','description'] = 'If human, then ensure that the build is GRCh38_hg38'
+    @params['build','description'] = 'If human, then ensure that the build is hg19_karyotypic'
     @params['snpEff_annotation'] = true
     @params['snpEff_annotation','description'] = 'Annotate the variants? If yes, choose a snpEff database.'
 #    @params['snpEff_database'] = {'select'=>''} 
@@ -58,8 +58,8 @@ EOS
     command =<<-EOS
 set -e
 set -o pipefail 
-SAMTOOLS=#{SAMTOOLS}
-BCFTOOLS=#{BCFTOOLS}
+SAMTOOLS=#{SAMTOOLS_v0_1x}
+BCFTOOLS=#{BCFTOOLS_v0_1x}
 GATK_DIR=#{GATK_DIR}
 PICARD_DIR=#{PICARD_DIR}
 SNPEFF_DIR=#{SNPEFF_DIR}
@@ -132,22 +132,19 @@ echo "CAZ"
  java -jar $PICARD_DIR/CreateSequenceDictionary.jar R=$REF.fa O=$REF.dict
  fi 
 
-#     if [ $REF == "/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome" ]; then
-#      human=$(echo "/srv/GT/reference/#{@params['build']}"|grep 'Homo_sapiens')
-     human=''
-#     echo "$human"
-      #human=$(grep "Homo_S" "/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome")
+
+      human=$(echo "/srv/GT/reference/#{@params['build']}"|grep 'Homo_sapiens')
       if [[ -n "$human"  ]]; then
      ### HUMAN BEST PRACTICES ####
 
      ########FINDING POSSIBLE INDELS ####
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar -T RealignerTargetCreator \
-     -R $REF.fa -o paired_end.intervals --num_threads 4 -known $HSD/dbsnp_138.hg19.2.vcf \
+     -R $REF.fa -o paired_end.intervals --num_threads 4 -known $HSD/All_GRCh37_r142_current.vcf \
      -I $MY_BAM
 
      ### REALINGING AROUND POSSIBLE INDELS ###
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar   -I $MY_BAM  \
-     -R $REF.fa -T IndelRealigner -known $HSD/dbsnp_138.hg19.2.vcf  \
+     -R $REF.fa -T IndelRealigner -known $HSD/All_GRCh37_r142_current.vcf  \
      -targetIntervals paired_end.intervals -o $MY_BAM.real.trans.bam
 
      ### BASE RECALIBRATION ###
@@ -155,7 +152,7 @@ echo "CAZ"
      -T BaseRecalibrator \
      -I $MY_BAM.real.trans.bam \
      -R $REF.fa \
-     -knownSites $HSD/dbsnp_138.hg19.2.vcf \
+     -knownSites $HSD/All_GRCh37_r142_current.vcf \
      -o recal_data.table
 
      ### APPLY BASE RECALIBRATION ###
@@ -170,7 +167,7 @@ echo "CAZ"
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -I $MY_BAM.real.bam  -log gatk_log.txt -nt $CORES \
      -o internal.vcf -R $REF.fa -T UnifiedGenotyper \
-     -glm $GATK_GLM $GATK_OPTIONS --dbsnp  $HSD/dbsnp_138.hg19.2.vcf
+     -glm $GATK_GLM $GATK_OPTIONS --dbsnp  $HSD/All_GRCh37_r142_current.vcf
 
      ### FILTER VARIANTS ###
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
@@ -190,7 +187,7 @@ echo "CAZ"
      -T VariantRecalibrator \
      -R $REF.fa \
      -input  internal3.vcf \
-     -resource:dbsnp,known=true,training=false,truth=false,prior=6.0 $HSD/dbsnp_138.hg19.2.vcf \
+     -resource:dbsnp,known=true,training=false,truth=false,prior=6.0 $HSD/All_GRCh37_r142_current.vcf \
      -resource:hapmap,known=false,training=true,truth=true,prior=15.0 $HSD/hapmap_3.3.hg19.reord.vcf \
      -resource:omni,known=false,training=true,truth=false,prior=12.0 $HSD/1000G_omni2.5.hg19.vcf \
      -an QD -an MQRankSum -an ReadPosRankSum -an FS -an MQ \
@@ -226,7 +223,7 @@ echo "CAZ"
      ### DETECTING VARIANTS GATK  ###
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -I $MY_BAM.real.bam  -log gatk_log.txt -nt $CORES \
-     -o internal.vcf -R $REF.fa -T UnifiedGenotyper \
+     -o internal.vcf -R $REF.fa -T HaplotypeCaller \
      -glm $GATK_GLM $GATK_OPTIONS
 
      ### FILTER VARIANTS ###
