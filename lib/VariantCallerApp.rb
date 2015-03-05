@@ -92,13 +92,13 @@ if [ $TYPE == "DNA" ]; then
  fi
 
  ### SORT OUT GROUPS ISSUES ###
- java -jar $PICARD_DIR/AddOrReplaceReadGroups.jar I=internal.nodup.bam \
+ java -Dsamjdk.try_use_intel_deflater=false -jar $PICARD_DIR/AddOrReplaceReadGroups.jar I=internal.nodup.bam \
    O=internal_grouped.lex.bam SORT_ORDER=coordinate RGID=ID_NAME TMP_DIR=/scratch \
    RGLB=Paired_end RGPL=illumina RGSM=project RGPU=BIOSEQUENCER
 
 else 
  ### SORT OUT GROUPS, MARK DUPLICATES AND SPLIT READS ###
- java -jar $PICARD_DIR/AddOrReplaceReadGroups.jar I=#{File.join(@gstore_dir, @dataset['BAM'])} \
+ java -Dsamjdk.try_use_intel_deflater=false -jar $PICARD_DIR/AddOrReplaceReadGroups.jar I=#{File.join(@gstore_dir, @dataset['BAM'])} \
    O=internal_grouped.lex.2.bam SORT_ORDER=coordinate RGID=ID_NAME TMP_DIR=/scratch \
    RGLB=Paired_end RGPL=illumina RGSM=project RGPU=BIOSEQUENCER
  
