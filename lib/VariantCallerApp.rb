@@ -39,7 +39,7 @@ EOS
     @params['mpileupOptions'] = ''
     @params['bcftoolsOptions'] = ''
     @params['gatk_glm'] = ['SNP','INDEL','BOTH']
-    @params['gatkOptions'] = '-baqGOP 30 -minIndelCnt 8 --min_base_quality_score 15 -stand_call_conf 15'
+    @params['gatkOptions'] = '-baqGOP 30 --min_base_quality_score 15 -stand_call_conf 15'
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
@@ -165,9 +165,9 @@ echo "CAZ"
 
      ### DETECTING VARIANTS GATK  ###
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
-     -I $MY_BAM.real.bam  -log gatk_log.txt -nt $CORES \
+     -I $MY_BAM.real.bam  -log gatk_log.txt  \
      -o internal.vcf -R $REF.fa -T HaplotypeCaller  \
-     -glm $GATK_GLM $GATK_OPTIONS --dbsnp  $HSD/All_GRCh37_r142_current.vcf
+      $GATK_OPTIONS --dbsnp  $HSD/All_GRCh37_r142_current.vcf
 
      ### FILTER VARIANTS ###
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
@@ -224,7 +224,7 @@ echo "CAZ"
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -I $MY_BAM.real.bam  -log gatk_log.txt -nt $CORES \
      -o internal.vcf -R $REF.fa -T UnifiedGenotyper \
-     -glm $GATK_GLM $GATK_OPTIONS
+     -glm $GATK_GLM $GATK_OPTIONS -minIndelCnt 8
 
      ### FILTER VARIANTS ###
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
