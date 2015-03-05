@@ -166,7 +166,7 @@ echo "CAZ"
      ### DETECTING VARIANTS GATK  ###
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -I $MY_BAM.real.bam  -log gatk_log.txt -nt $CORES \
-     -o internal.vcf -R $REF.fa -T UnifiedGenotyper \
+     -o internal.vcf -R $REF.fa -T HaplotypeCaller  \
      -glm $GATK_GLM $GATK_OPTIONS --dbsnp  $HSD/All_GRCh37_r142_current.vcf
 
      ### FILTER VARIANTS ###
@@ -223,7 +223,7 @@ echo "CAZ"
      ### DETECTING VARIANTS GATK  ###
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
      -I $MY_BAM.real.bam  -log gatk_log.txt -nt $CORES \
-     -o internal.vcf -R $REF.fa -T HaplotypeCaller \
+     -o internal.vcf -R $REF.fa -T UnifiedGenotyper \
      -glm $GATK_GLM $GATK_OPTIONS
 
      ### FILTER VARIANTS ###
