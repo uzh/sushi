@@ -21,6 +21,7 @@ EOS
     @params['ram'] = '16'
     @params['scratch'] = '100'
     @params['paired'] = false
+    @params['LibQuantPlots'] = false
     @params['name'] = 'FastQC_Result'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
