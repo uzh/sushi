@@ -28,6 +28,8 @@ class CountOverlapsApp < SushiFabric::SushiApp
     @params['minFeatureOverlap', 'description'] = "minimum overlap of a read with a transcript feature"
     @params['countTrimmedTranscripts'] = false
     @params['trimmedMaxLength'] = 200
+    @params['minMapQuality'] = 10
+    @params['keepMultiHits'] = true
     @params['cmdOptions'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
