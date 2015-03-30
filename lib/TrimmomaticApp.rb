@@ -95,7 +95,7 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
       end
       command << "ln -s #{adapters_fa} adapters.fa\n"
     end
-    command << "java -jar /usr/local/ngseq/src/Trimmomatic-0.30/trimmomatic-0.30.jar #{se_pe} -threads #{@params['cores']} -#{@params['quality_type']} #{File.join(SushiFabric::GSTORE_DIR, @dataset['Read1'])}"
+    command << "java -jar /usr/local/ngseq/src/Trimmomatic-0.33/trimmomatic-0.33.jar #{se_pe} -threads #{@params['cores']} -#{@params['quality_type']} #{File.join(SushiFabric::GSTORE_DIR, @dataset['Read1'])}"
     if @params['paired']
       command << " #{File.join(SushiFabric::GSTORE_DIR, @dataset['Read2'])}"
     end

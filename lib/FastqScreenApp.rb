@@ -25,7 +25,7 @@ EOS
     @params['subset'] = '100000'
    # @params['RefSeq_mRNA'] = false
     @params['TopN_Species'] = '5'
-    @params['MinMQ'] = '20'
+    @params['minAlignmentScore'] = '-20'
     @params['confFile'] = {'select'=>''}
     Dir["/usr/local/ngseq/opt/fastq_screen_v0.4.2/conf/*.conf"].sort.select{|conf| File.file?(conf)}.each do |file|
       @params['confFile'][File.basename(file)] = File.basename(file)
