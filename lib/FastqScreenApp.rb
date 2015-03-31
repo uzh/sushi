@@ -32,7 +32,7 @@ EOS
     end
 
 #'variousSpecies_rRNA_20140522.conf'
-    @params['cmdOptions'] = ""
+    @params['cmdOptions'] = "-k 10 --trim5 4 --trim3 4 --very-sensitive"
     @params['mail'] = ""
   end
  def set_default_parameters
