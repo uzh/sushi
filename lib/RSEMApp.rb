@@ -34,6 +34,7 @@ EOS
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
     @params['minTailQuality'] = 0
+    @params['minAvgQuality'] = 20
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end
