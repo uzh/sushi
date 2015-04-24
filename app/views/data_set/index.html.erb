@@ -45,15 +45,19 @@ $(function(){
 
 <h1>Project <%= session[:project] %></h1>
 <h3>DataSet</h3>
+<% if @project.data_sets.length == @data_sets.length %>
 <ul id="data_set_tree" class="filetree"></ul>
-<% if @project and @project.data_sets.length > 20 %>
+<% else %>
+  <%= link_to "Tree view...", "/data_set/index_full" %>
+<% end %>
+<% if @project and @data_sets.length > 20 %>
   <div style="height:800px; overflow-y:scroll;">
 <% end %>
 <%= form_tag('/data_set/multi_delete', :id=>"multi_delete") do %>
 <table>
   <tr><th>ID</th><th>Name</th><th nowrap><button type="button" id="btn_multi_delete">delete</button> all<%= check_box 'delete_all_flag', 'all', {:id=>'checkall'}, true, false %></th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th colspan=2>Created</th></tr>
 <% if @project %>
-<% @project.data_sets.reverse.each do |data_set| %>
+<% @data_sets.each do |data_set| %>
   <tr>
     <td><%= data_set.id %></td>
     <td><%= link_to td(data_set.name), "/data_set/#{data_set.id}" %></td> 
@@ -78,8 +82,11 @@ $(function(){
 <% end %>
 <% end %>
 </table>
+<% if @project.data_sets.length > @data_sets.length %>
+  <%= link_to "More...", "/data_set/index_full" %>
 <% end %>
-<% if @project and @project.data_sets.length > 20 %>
+<% end %>
+<% if @project and @data_sets.length > 20 %>
   </div/
 <% end %>
 

@@ -1,11 +1,12 @@
 class DataSetController < ApplicationController
   include SushiFabric
-  def index
+  def top(n_dataset=1000)
     @project = Project.find_by_number(session[:project].to_i)
 
     @sample_available = {}
+    @data_sets = @project.data_sets.reverse[0, n_dataset]
     if @project
-      @project.data_sets.each do |data_set|
+      @data_sets.each do |data_set|
         data_set.samples.each do |sample|
           flag = true
           sample.to_hash.each do |header, file|
@@ -19,6 +20,13 @@ class DataSetController < ApplicationController
         end
       end
     end
+  end
+  def index
+    top(20)
+  end
+  def index_full
+    top
+    render action: "index"
   end
   def script_log
     @data_set = if id = params[:format]
