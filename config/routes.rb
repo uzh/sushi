@@ -32,6 +32,7 @@ SushiFabric::Application.routes.draw do
       get :job_parameter
       post :multi_delete
       post :multi_destroy
+      get :index_full
     end
   end
   
