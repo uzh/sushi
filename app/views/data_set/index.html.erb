@@ -45,10 +45,12 @@ $(function(){
 
 <h1>Project <%= session[:project] %></h1>
 <h3>DataSet</h3>
-<% if @project.data_sets.length == @data_sets.length %>
-<ul id="data_set_tree" class="filetree"></ul>
-<% else %>
-  <%= link_to "Tree view...", "/data_set/index_full" %>
+<% if @project %>
+  <% if data_sets = @project.data_sets and data_sets.length == @data_sets.length %>
+    <ul id="data_set_tree" class="filetree"></ul>
+  <% else %>
+    <%= link_to "Tree view...", "/data_set/index_full" %>
+  <% end %>
 <% end %>
 <% if @project and @data_sets.length > 20 %>
   <div style="height:800px; overflow-y:scroll;">
@@ -82,7 +84,7 @@ $(function(){
 <% end %>
 <% end %>
 </table>
-<% if @project.data_sets.length > @data_sets.length %>
+<% if @project and data_sets = @project.data_sets and data_sets.length > @data_sets.length %>
   <%= link_to "More...", "/data_set/index_full" %>
 <% end %>
 <% end %>
