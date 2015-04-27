@@ -4,8 +4,10 @@ class DataSetController < ApplicationController
     @project = Project.find_by_number(session[:project].to_i)
 
     @sample_available = {}
-    @data_sets = @project.data_sets.reverse[0, n_dataset]
-    if @project
+
+    @data_sets = []
+    if @project and  data_sets = @project.data_sets
+      @data_sets = data_sets.reverse[0, n_dataset]
       @data_sets.each do |data_set|
         data_set.samples.each do |sample|
           flag = true
