@@ -21,7 +21,7 @@ class TrinityApp < SushiFabric::SushiApp
     @params['paired'] = ['false', 'true']
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['prinseqOpt'] = '-trim_qual_left 20 -trim_qual_right 20 -min_qual_mean 25 -min_len 50'
-    @params['flexbarOpt'] = '--adapter-min-overlap 15 -at 1 --min-read-length 50'
+    @params['flexbarOpt'] = '--adapter-min-overlap 10 -at 1 --min-read-length 50'
     @params['trinityOpt'] = '--min_kmer_cov 2'
     @params['specialOptions'] = ''
     @params['mail'] = ""
