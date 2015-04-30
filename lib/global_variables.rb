@@ -38,8 +38,14 @@ module GlobalVariables
     base_pattern = "/srv/GT/reference/*/*/*/Annotation/Version*"
     versions = builder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
+    base_pattern = "/srv/GT/reference/*/*/*/Sequence"
+    sequences = builder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
+
     builds.keys.each do |build_key|
       if versions.keys.find{|version_key| version_key=~/#{build_key}/}
+        builds.delete(build_key)
+      end
+      unless sequences.keys.find{|sequence_key| sequence_key=~/#{build_key}/}
         builds.delete(build_key)
       end
     end
