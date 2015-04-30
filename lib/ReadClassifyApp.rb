@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150105-102831'
+Version = '20150427-134606'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -31,12 +31,20 @@ http://seselab.org/homeoroq/
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
-     'Parent1Orig [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent1_genome_orig.bam"), 
-     'Parent1Other [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent1_genome_other.bam"), 
-     'Parent1Common [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent1_genome_common.bam"), 
-     'Parent2Orig [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent2_genome_orig.bam"), 
-     'Parent2Other [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent2_genome_other.bam"), 
-     'Parent2Common [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent2_genome_common.bam"), 
+     'Parent1OrigBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent1_genome_orig.bam"), 
+     'Parent1OrigBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent1_genome_orig.bam.bai"), 
+     'Parent1OtherBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent1_genome_other.bam"), 
+     'Parent1OtherBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent1_genome_other.bam.bai"), 
+     'Parent1CommonBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent1_genome_common.bam"), 
+     'Parent1CommonBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent1_genome_common.bam.bai"), 
+     'build1'=>@dataset['build1'],
+     'Parent2OrigBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent2_genome_orig.bam"), 
+     'Parent2OrigBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent2_genome_orig.bam.bai"), 
+     'Parent2OtherBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent2_genome_other.bam"), 
+     'Parent2OtherBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent2_genome_other.bam.bai"), 
+     'Parent2CommonBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent2_genome_common.bam"), 
+     'Parent2CommonBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_parent2_genome_common.bam.bai"), 
+     'build2'=>@dataset['build2'],
      'Species'=>@dataset['Species'],
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
@@ -51,6 +59,8 @@ http://seselab.org/homeoroq/
     command << "samtools view -h #{bam1} > #{sam1}\n"
     command << "samtools view -h #{bam2} > #{sam2}\n"
     command << "read_classify.py #{sam1} #{sam2} #{out1_prefix} #{out2_prefix}\n"
+    command << "samtools index #{bam1}\n" 
+    command << "samtools index #{bam2}\n" 
     command
   end
 end
