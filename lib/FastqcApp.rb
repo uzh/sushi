@@ -21,6 +21,8 @@ EOS
     @params['ram'] = '16'
     @params['scratch'] = '100'
     @params['paired'] = false
+#    @params['libQuantPlots'] = true
+#    @params['libQuantPlots', 'description'] = "make plot comparing library quantifications with read numbers"
     @params['name'] = 'FastQC_Result'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
@@ -42,7 +44,7 @@ EOS
     }
   end
   def commands
-    run_RApp
+    run_RApp("ezAppFastQC")
   end
 end
 
@@ -55,7 +57,7 @@ if __FILE__ == $0
   # set user parameter
   # for GUI sushi
   #usecase.params['process_mode'].value = 'SAMPLE'
-  #usecase.params['build'] = 'TAIR10'
+  #usecase.params['refBuild'] = 'TAIR10'
   #usecase.params['paired'] = true
   #usecase.params['cores'] = 2
   #usecase.params['node'] = 'fgcz-c-048'

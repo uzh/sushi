@@ -15,19 +15,19 @@ Variant caller and variant annotator starting from a bam file.
 For calling variants, one can choose to using <a href="http://samtools.sourceforge.net/samtools.shtml">samtools+mpileup+bcftools</a> or <a href="http://www.broadinstitute.org/gatk/">GATK</a>.
 To annotate variants, <a href="http://snpeff.sourceforge.net">snpEFF</a> is used. Please check <a href="http://snpeff.sourceforge.net/download.html#databases">here</a> whether the desired snpEFF database is avilable and needs to be downloaded.   
 EOS
-    @required_columns = ['Name','BAM','BAI', 'build']
-    @required_params = ['min_depth_to_call_variants','build']
+    @required_columns = ['Name','BAM','BAI', 'refBuild']
+    @required_params = ['min_depth_to_call_variants','refBuild']
     # optional params
     @params['cores'] = '4'
     @params['ram'] = '10'
     @params['scratch'] = '100'
-    @params['build'] = ref_selector
-    @params['build','description'] = 'If human, then ensure that the build is hg19_karyotypic'
+    @params['refBuild'] = ref_selector
+    @params['refBuild','description'] = 'If human, then ensure that the refBuild is hg19_karyotypic'
     @params['snpEff_annotation'] = true
     @params['snpEff_annotation','description'] = 'Annotate the variants? If yes, choose a snpEff database.'
 #    @params['snpEff_database'] = {'select'=>''} 
 #    @params['snpEff_database','description'] = 'If the database is not listed,  please check whether it is avilable and needs to be downloaded (link above).' 
-#    Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|build| File.directory?(build)}.each do |dir|
+#    Dir["/usr/local/ngseq/src/snpEff_v3.4/data/*"].sort.select{|refBuild| File.directory?(refBuild)}.each do |dir|
 #      @params['snpEff_database'][File.basename(dir)] = File.basename(dir)
 #    end
     @params['sequenceType'] = ['DNA','RNA']
@@ -46,11 +46,11 @@ EOS
      'VCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf"),
      'Gene_summary [File]'=>File.join(@result_dir, "#{@dataset['Name']}.genes.txt"),
      'Html [Link,File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
-     'build'=>@params['build']
+     'refBuild'=>@params['refBuild']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def set_default_parameters
-    @params['build'] = @dataset[0]['build']
+    @params['refBuild'] = @dataset[0]['refBuild']
     @params['min_depth_to_call_variants'] = '19'
   end
 
@@ -76,9 +76,9 @@ HSD=#{HUMAN_SNP_DATABASES}
 MIN_DEPTH="#{@params['min_depth_to_call_variants']}"
 PAIRED="#{@params['paired']}"
 ANN="#{@params['snpEff_annotation']}"
-BUILD="#{@params['build']}"
+BUILD="#{@params['refBuild']}"
 TYPE="#{@params['sequenceType']}"
-REF=/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome
+REF=/srv/GT/reference/#{@params['refBuild']}/../../Sequence/WholeGenomeFasta/genome
 MY_BAM=internal_grouped.lex.bam
 
 ### DNA OR RNA INPUT DATA ###
@@ -133,7 +133,7 @@ echo "CAZ"
  fi 
 
 
-      human=$(echo "/srv/GT/reference/#{@params['build']}"|grep 'Homo_sapiens')
+      human=$(echo "/srv/GT/reference/#{@params['refBuild']}"|grep 'Homo_sapiens')
       if [[ -n "$human"  ]]; then
      ### HUMAN BEST PRACTICES ####
 
@@ -242,13 +242,13 @@ fi
 
 ### ANNOTATION ####
 if [ $ANN == "true" ]; then 
-snpEffDir="/srv/GT/reference/#{@params['build']}/Genes/snpEff"
+snpEffDir="/srv/GT/reference/#{@params['refBuild']}/Genes/snpEff"
 mkdir -p $snpEffDir
 #awk -v str="/usr/local/ngseq/src/snpEff_v4.0/data" \
-#-v str2="/srv/GT/reference/#{@params['build']}/Genes/snpEff" \
+#-v str2="/srv/GT/reference/#{@params['refBuild']}/Genes/snpEff" \
 #'{sub(str,str2,$0); print }' $SNPEFF_DIR/snpEff.config > $snpEffDir/snpEff.config
-base=$(echo "#{@params['build']}" |  awk -v str="/" -v str2=" " '{gsub(str,str2,$0); print $1}')                                                               
-provider=$(echo "#{@params['build']}" | awk -v str="/" -v str2=" " '{gsub(str,str2,$0); print $2}' )
+base=$(echo "#{@params['refBuild']}" |  awk -v str="/" -v str2=" " '{gsub(str,str2,$0); print $1}')                                                               
+provider=$(echo "#{@params['refBuild']}" | awk -v str="/" -v str2=" " '{gsub(str,str2,$0); print $2}' )
 echo "Base:"$base
 echo "provider:"$provider
 echo "Check for AnnotationFile in" "$snpEffDir/$base.$provider/snpEffectPredictor.bin"
@@ -261,7 +261,7 @@ echo "Check for AnnotationFile in" "$snpEffDir/$base.$provider/snpEffectPredicto
      else	
      echo "database under construction" > $snpEffDir/temp.txt
      mkdir $snpEffDir/$base.$provider
-     awk -v str="/usr/local/ngseq/src/snpEff_v4.0/data" -v str2="/srv/GT/reference/#{@params['build']}/Genes/snpEff" \
+     awk -v str="/usr/local/ngseq/src/snpEff_v4.0/data" -v str2="/srv/GT/reference/#{@params['refBuild']}/Genes/snpEff" \
      '{sub(str,str2,$0); print }' $SNPEFF_DIR/snpEff.config > $snpEffDir/snpEff.config
      echo "# $base" >> $snpEffDir/snpEff.config
      #echo "# $base" 
@@ -270,8 +270,8 @@ echo "Check for AnnotationFile in" "$snpEffDir/$base.$provider/snpEffectPredicto
      echo "$base.$provider.reference : $REF.fa" >> $snpEffDir/snpEff.config
      #echo "$base.$provider.reference : $REF.fa"
      cp $REF.fa $snpEffDir/$base.$provider/sequences.fa
-     cp /srv/GT/reference/"#{@params['build']}"/Genes/genes.gtf $snpEffDir/$base.$provider
-     java -Xmx8g -jar $SNPEFF_DIR/snpEff.jar build -c $snpEffDir/snpEff.config -gtf22 -v "$base.$provider"
+     cp /srv/GT/reference/"#{@params['refBuild']}"/Genes/genes.gtf $snpEffDir/$base.$provider
+     java -Xmx8g -jar $SNPEFF_DIR/snpEff.jar refBuild -c $snpEffDir/snpEff.config -gtf22 -v "$base.$provider"
      rm $snpEffDir/$base.$provider/sequences.fa
      rm $snpEffDir/$base.$provider/genes.gtf
      rm $snpEffDir/temp.txt   

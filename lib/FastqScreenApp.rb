@@ -22,16 +22,15 @@ EOS
     @params['scratch'] = '100'
     @params['paired'] = false
     @params['name'] = 'FastqScreen_Result'
-    @params['subset'] = '100000'
-   # @params['RefSeq_mRNA'] = false
-    @params['TopN_Species'] = '5'
+    @params['nReads'] = '100000'
+    @params['nTopSpecies'] = '5'
     @params['minAlignmentScore'] = '-20'
+    @params['minAlignmentScore', 'description'] = 'the alignment score for bowtie2; can be negative'
     @params['confFile'] = {'select'=>''}
-    Dir["/usr/local/ngseq/opt/fastq_screen_v0.4.2/conf/*.conf"].sort.select{|conf| File.file?(conf)}.each do |file|
+    Dir["#{FASTQSCREEN_CONF_DIR}/*.conf"].sort.select{|conf| File.file?(conf)}.each do |file|
       @params['confFile'][File.basename(file)] = File.basename(file)
     end
 
-#'variousSpecies_rRNA_20140522.conf'
     @params['cmdOptions'] = "-k 10 --trim5 4 --trim3 4 --very-sensitive"
     @params['mail'] = ""
   end
@@ -52,7 +51,7 @@ EOS
     }
   end
   def commands
-    run_RApp
+    run_RApp("ezAppFastqScreen")
   end
 end
 
@@ -66,7 +65,7 @@ if __FILE__ == $0
   # set user parameter
   # for GUI sushi
   #usecase.params['process_mode'].value = 'SAMPLE'
-  #usecase.params['build'] = 'TAIR10'
+  #usecase.params['refBuild'] = 'TAIR10'
   #usecase.params['paired'] = true
   #usecase.params['cores'] = 2
   #usecase.params['node'] = 'fgcz-c-048'

@@ -11,7 +11,7 @@ class TeqcApp <  SushiFabric::SushiApp
     @name = 'Teqc'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
-    @required_columns = ['Name','BAM','BAI', 'build']
+    @required_columns = ['Name','BAM','BAI', 'refBuild']
     @required_params = ['name', 'paired']
     @params['cores'] = '4'
     @params['ram'] = '100'
@@ -22,8 +22,8 @@ class TeqcApp <  SushiFabric::SushiApp
     Dir["/srv/GT/databases/targetEnrichment_designs/*"].sort.select{|design| File.directory?(design)}.each do |dir|
       @params['designFile'][File.basename(dir)] = File.basename(dir)
     end
-    @params['CovUniformityPlot'] = true
-    @params['CovTargetLengthPlot'] = true
+    @params['covUniformityPlot'] = true
+    @params['covTargetLengthPlot'] = true
     @params['duplicatesPlot'] = true
     @params['cmdOptions'] = ""
     @params['mail'] = ""
@@ -42,7 +42,7 @@ class TeqcApp <  SushiFabric::SushiApp
     }
   end
   def commands
-    run_RApp
+    run_RApp("ezAppTeqc")
   end
 end
 
@@ -56,7 +56,7 @@ if __FILE__ == $0
   # set user parameter
   # for GUI sushi
   #usecase.params['process_mode'].value = 'SAMPLE'
-  #usecase.params['build'] = 'TAIR10'
+  #usecase.params['refBuild'] = 'TAIR10'
   #usecase.params['paired'] = true
   #usecase.params['cores'] = 2
   #usecase.params['node'] = 'fgcz-c-048'
