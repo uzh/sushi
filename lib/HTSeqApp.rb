@@ -20,7 +20,7 @@ class HTSeqApp < SushiFabric::SushiApp
     @params['build'] = ref_selector
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
-    @params['featureFile'] = 'genes.gtf'
+    @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = 'gene'
     @params['cmdOptions'] = ''
     @params['specialOptions'] = ''
@@ -28,8 +28,8 @@ class HTSeqApp < SushiFabric::SushiApp
   end
   def set_default_parameters
     @params['build'] = @dataset[0]['build']
-    if dataset_has_column?('featureFile')
-      @params['featureFile'] = @dataset[0]['featureFile']
+    if dataset_has_column?('refFeatureFile')
+      @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
     end
     if dataset_has_column?('paired')
       @params['paired'] = @dataset[0]['paired']
@@ -45,7 +45,7 @@ class HTSeqApp < SushiFabric::SushiApp
      'Species'=>@dataset['Species'],
      'build'=>@params['build'],
      'featureLevel'=>@params['featureLevel'],
-     'featureFile'=>@params['featureFile'],
+     'refFeatureFile'=>@params['refFeatureFile'],
      'strandMode'=>@params['strandMode'],
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count']

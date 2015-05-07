@@ -29,7 +29,7 @@ EOS
     @params['refBuild'] = ref_selector
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
-    @params['featureFile'] = 'genes.gtf'
+    @params['refFeatureFile'] = 'genes.gtf'
     @params['cmdOptions'] = '--outFilterType BySJout --outFilterMatchNmin 30 --outFilterMismatchNmax 10 --outFilterMismatchNoverLmax 0.05 --alignSJDBoverhangMin 1 --alignSJoverhangMin 8 --alignIntronMax 1000000 --alignMatesGapMax 1000000  --outFilterMultimapNmax 50 --chimSegmentMin 15 --chimJunctionOverhangMin 15 --chimScoreMin 15 --chimScoreSeparation 10 --outSAMstrandField intronMotif'
     @params['getChimericReads'] = false
     @params['trimAdapter'] = false
