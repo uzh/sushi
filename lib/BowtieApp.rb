@@ -12,12 +12,12 @@ class BowtieApp < SushiFabric::SushiApp
     @name = 'Bowtie'
     @analysis_category = 'Map'
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['build','paired']
+    @required_params = ['refBuild','paired']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
     @params['scratch'] = '100'
-    @params['build'] = ref_selector
+    @params['refBuild'] = ref_selector
     @params['paired'] = false
     @params['cmdOptions'] = ''
     @params['trimAdapter'] = false
@@ -40,13 +40,13 @@ class BowtieApp < SushiFabric::SushiApp
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'Species'=>@dataset['Species'],
-     'build'=>@params['build'],
+     'refBuild'=>@params['refBuild'],
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
-    run_RApp("mapBowtieApp")
+    run_RApp("ezAppBowtie")
   end
 end
 

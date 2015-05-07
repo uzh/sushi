@@ -17,14 +17,14 @@ The analysis runs the 3 commands: samtools mpileup, bcftools call, bcftools filt
 <a href='http://www.htslib.org/doc/samtools-1.1.html'>samtools manual/</a><br>
 <a href='http://www.htslib.org/doc/bcftools-1.1.html'>bcftools manual/</a><br>
 EOS
-    @required_columns = ['Name','BAM','BAI', 'build']
+    @required_columns = ['Name','BAM','BAI', 'refBuild']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
     @params['ram'] = '30'
     @params['scratch'] = '100'
     @params['paired'] = false
     @params['name'] = 'Mpileup_Variants'
-    @params['build'] = ref_selector
+    @params['refBuild'] = ref_selector
     @params['region'] = ""
     @params['region', 'description'] = 'The region of the genome. You can give either a chromosome name or a region on a chromosome like chr1:1000-2000'
     @params['mpileupOptions'] = '--skip-indels --output-tags DP,DV,DPR,INFO/DPR,DP4,SP'
@@ -46,20 +46,20 @@ EOS
      'Report [File]'=>report_dir,
      'Html [Link]'=>File.join(report_dir, '00index.html'),
      'Species'=>@dataset['Species'],
-     'build'=>@params['build'],
+     'refBuild'=>@params['refBuild'],
      'IGV Starter [File]'=>File.join(@result_dir, "#{@params['name']}-igv.jnlp"),
      'IGV Session [File]'=>File.join(@result_dir, "#{@params['name']}-igv.xml")
     }
   end
   def set_default_parameters
-    @params['build'] = @dataset[0]['build']
+    @params['refBuild'] = @dataset[0]['refBuild']
     if dataset_has_column?('paired')
       @params['paired'] = @dataset[0]['paired']
     end
   end
 
   def commands
-    run_RApp
+    run_RApp("ezAppMpileup")
   end
 end
 
@@ -72,7 +72,7 @@ if __FILE__ == $0
   # set user parameter
   # for GUI sushi
   #usecase.params['process_mode'].value = 'SAMPLE'
-  #usecase.params['build'] = 'TAIR10'
+  #usecase.params['refBuild'] = 'TAIR10'
   #usecase.params['paired'] = true
   #usecase.params['cores'] = 2
   #usecase.params['node'] = 'fgcz-c-048'

@@ -17,11 +17,11 @@ Runs the following tools that check alignment statistics for the DNA application
 <a href='http://broadinstitute.github.io/picard/command-line-overview.html#CollectGcBiasMetrics'>picard/CollectGcBiasMetrics</a><br/>
 EOS
     @required_columns = ['Name','BAM']
-    @required_params = ['cores','ram','build','sortedBam']
+    @required_params = ['cores','ram','refBuild','sortedBam']
     @params['cores'] = '8'
     @params['ram'] = '30'
     @params['scratch'] = '100'
-    @params['build'] = ref_selector
+    @params['refBuild'] = ref_selector
     @params['sortedBam'] = true
   end
   def next_dataset
@@ -38,13 +38,13 @@ EOS
     }
   end
   def set_default_parameters
-    @params['build'] = @dataset[0]['build']
+    @params['refBuild'] = @dataset[0]['refBuild']
   end
   def commands
     command =<<-EOS
 #echo Display=$DISPLAY
 set -x
-REF=/srv/GT/reference/#{@params['build']}/../../Sequence/WholeGenomeFasta/genome.fa
+REF=/srv/GT/reference/#{@params['refBuild']}/../../Sequence/WholeGenomeFasta/genome.fa
 SAMTOOLS=#{SAMTOOLS}
 SAMSTAT=#{SAMSTAT}
 QUALIMAP=#{QUALIMAP}

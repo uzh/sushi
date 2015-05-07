@@ -11,24 +11,24 @@ class MACS2App < SushiFabric::SushiApp
     super
     @name = 'MACS2'
     @analysis_category = 'PeakCalling'
-    @required_columns = ['Name','BAM','BAI', 'build','Control']
-    @required_params = ['build','paired']
+    @required_columns = ['Name','BAM','BAI', 'refBuild','Control']
+    @required_params = ['refBuild','paired']
     # optional params
     @params['cores'] = '1'
     @params['ram'] = '16'
     @params['scratch'] = '100'
-    @params['build'] = ref_selector
+    @params['refBuild'] = ref_selector
     @params['paired'] = false
     @params['useControl'] = true
-    @params['featureFile'] = 'genes.gtf'
+    @params['refFeatureFile'] = 'genes.gtf'
     @params['cmdOptions'] = '--nomodel --shiftsize 73 --SPMR -g hs --bw 200'
     @params['specialOptions'] = ''
     @params['mail'] = ''
   end
   def set_default_parameters
-    @params['build'] = @dataset[0]['build']
-    if dataset_has_column?('featureFile')
-      @params['featureFile'] = @dataset[0]['featureFile']
+    @params['refBuild'] = @dataset[0]['refBuild']
+    if dataset_has_column?('refFeatureFile')
+      @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
     end
     if dataset_has_column?('paired')
       @params['paired'] = @dataset[0]['paired']
@@ -41,15 +41,15 @@ class MACS2App < SushiFabric::SushiApp
 
     {'Name'=>@dataset['Name'], 
      'Species'=>@dataset['Species'],
-     'build'=>@params['build'],
-     'featureFile'=>@params['featureFile'],
+     'refBuild'=>@params['refBuild'],
+     'refFeatureFile'=>@params['refFeatureFile'],
      'paired'=>@params['paired'],
      'CalledPeaks [File]'=>peakfile_link,
       'BigWigFile [File]'=>bw_link
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
-    run_RApp("runMacs2App")
+    run_RApp("ezAppMacs2")
   end
 end
 
