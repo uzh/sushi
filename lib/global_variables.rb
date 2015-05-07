@@ -4,9 +4,9 @@
 def c(*list)
   list
 end
-EZ_GLOBAL_VARIABLES = '/srv/GT/analysis/course_sushi/lib/EZ_GLOBAL_VARIABLES.txt'
+EZ_GLOBAL_VARIABLES = '/srv/SushiFabric/prod/lib/EZ_GLOBAL_VARIABLES.txt'
 ## by defining R_LIBS_USER we make sure the scripts load the development version of ezRun
-R_COMMAND = 'export R_LIBS_USER=/misc/GT/analysis/course_sushi/lib; /usr/local/ngseq/stow/R-3.2.0/bin/R'
+R_COMMAND = '/usr/local/ngseq/stow/R-3.2.0/bin/R'
 load EZ_GLOBAL_VARIABLES
 
 module GlobalVariables
