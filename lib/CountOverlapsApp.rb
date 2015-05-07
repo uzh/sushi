@@ -11,16 +11,16 @@ class CountOverlapsApp < SushiFabric::SushiApp
     super
     @name = 'CountOverlaps'
     @analysis_category = 'Count'
-    @required_columns = ['Name','BAM','BAI', 'build']
-    @required_params = ['build','paired', 'strandMode']
+    @required_columns = ['Name','BAM','BAI', 'refBuild']
+    @required_params = ['refBuild','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '32'
     @params['scratch'] = '100'
-    @params['build'] = ref_selector
+    @params['refBuild'] = ref_selector
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
-    @params['featureFile'] = 'genes.gtf'
+    @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = 'gene'
     @params['countNonredundant'] = true
     @params['countNonredundant', 'description'] = "downweights alignments by the number of different genomic alignments"
@@ -35,9 +35,9 @@ class CountOverlapsApp < SushiFabric::SushiApp
     @params['mail'] = ""
   end
   def set_default_parameters
-    @params['build'] = @dataset[0]['build']
-    if dataset_has_column?('featureFile')
-      @params['featureFile'] = @dataset[0]['featureFile']
+    @params['refBuild'] = @dataset[0]['refBuild']
+    if dataset_has_column?('refFeatureFile')
+      @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
     end
     if dataset_has_column?('paired')
       @params['paired'] = @dataset[0]['paired']
@@ -51,16 +51,16 @@ class CountOverlapsApp < SushiFabric::SushiApp
     {'Name'=>@dataset['Name'], 
      'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"), 
      'Species'=>@dataset['Species'],
-     'build'=>@params['build'],
+     'refBuild'=>@params['refBuild'],
      'featureLevel'=>@params['featureLevel'],
-     'featureFile'=>@params['featureFile'],
+     'refFeatureFile'=>@params['refFeatureFile'],
      'strandMode'=>@params['strandMode'],
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
-    run_RApp
+    run_RApp("ezAppCountOverlaps")
   end
 end
 

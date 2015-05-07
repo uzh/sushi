@@ -12,15 +12,15 @@ class TophatApp < SushiFabric::SushiApp
     @name = 'Tophat'
     @analysis_category = 'Map'
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['build','paired', 'strandMode']
+    @required_params = ['refBuild','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
     @params['scratch'] = '100'
-    @params['build'] = ref_selector
+    @params['refBuild'] = ref_selector
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
-    @params['featureFile'] = 'genes.gtf'
+    @params['refFeatureFile'] = 'genes.gtf'
     @params['cmdOptions'] = '--mate-inner-dist 100 --mate-std-dev 150'
     @params['trimAdapter'] = false
     @params['trimLeft'] = 0
@@ -45,15 +45,15 @@ class TophatApp < SushiFabric::SushiApp
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'Species'=>@dataset['Species'],
-     'build'=>@params['build'],
+     'refBuild'=>@params['refBuild'],
      'paired'=>@params['paired'],
-     'featureFile'=>@params['featureFile'],
+     'refFeatureFile'=>@params['refFeatureFile'],
      'strandMode'=>@params['strandMode'],
      'Read Count'=>@dataset['Read Count']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
-    run_RApp("mapTophatApp")
+    run_RApp("ezAppTophat")
   end
 end
 

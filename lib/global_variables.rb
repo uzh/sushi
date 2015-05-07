@@ -4,13 +4,14 @@
 def c(*list)
   list
 end
-GLOBAL_VARIABLES = '/usr/local/ngseq/opt/sushi_scripts/GLOBAL_VARIABLES.txt'
-load GLOBAL_VARIABLES
-#R_SCRIPT_DIR="/usr/local/ngseq/opt/sushi_scripts"
+EZ_GLOBAL_VARIABLES = '/srv/GT/analysis/course_sushi/lib/EZ_GLOBAL_VARIABLES.txt'
+## by defining R_LIBS_USER we make sure the scripts load the development version of ezRun
+R_COMMAND = 'export R_LIBS_USER=/misc/GT/analysis/course_sushi/lib; /usr/local/ngseq/stow/R-3.2.0/bin/R'
+load EZ_GLOBAL_VARIABLES
 
 module GlobalVariables
   SUSHI = 'Supercalifragilisticexpialidocious!!'
-  def builder_selector(base_dir, shown_pattern=nil, value_pattern=nil)
+  def refBuilder_selector(base_dir, shown_pattern=nil, value_pattern=nil)
     selector = {}
     Dir[base_dir].sort.select{|dir| File.directory?(dir)}.each do |dir|
       key = if shown_pattern
@@ -33,26 +34,26 @@ module GlobalVariables
     base_pattern = "/srv/GT/reference/*/*/*"
     shown_replace_pattern = {/\/srv\/GT\/reference\//=>''}
     value_replace_pattern = {/\/srv\/GT\/reference\//=>''}
-    builds = builder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
+    refBuilds = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
     base_pattern = "/srv/GT/reference/*/*/*/Annotation/Version*"
-    versions = builder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
+    versions = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
     base_pattern = "/srv/GT/reference/*/*/*/Sequence"
-    sequences = builder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
+    sequences = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
-    builds.keys.each do |build_key|
-      if versions.keys.find{|version_key| version_key=~/#{build_key}/}
-        builds.delete(build_key)
+    refBuilds.keys.each do |refBuild_key|
+      if versions.keys.find{|version_key| version_key=~/#{refBuild_key}/}
+        refBuilds.delete(refBuild_key)
       end
-      unless sequences.keys.find{|sequence_key| sequence_key=~/#{build_key}/}
-        builds.delete(build_key)
+      unless sequences.keys.find{|sequence_key| sequence_key=~/#{refBuild_key}/}
+        refBuilds.delete(refBuild_key)
       end
     end
-    builds.merge!(versions)
-    builds = builds.sort.to_h
+    refBuilds.merge!(versions)
+    refBuilds = refBuilds.sort.to_h
 
-    selector.merge!(builds)
+    selector.merge!(refBuilds)
     selector
   end
   def extract_column(type)
@@ -103,17 +104,16 @@ module GlobalVariables
     end
   end
   def run_RApp(app_name = self.class.to_s[0].downcase+self.class.to_s[1,20])
-    command = "/usr/local/ngseq/bin/R --vanilla --slave<<  EOT\n"
-    command << "GLOBAL_VARIABLES <<- '#{GLOBAL_VARIABLES}'\n"
-    command << "R_SCRIPT_DIR <<- '#{R_SCRIPT_DIR}'\n"
-    command<<  "source(file.path(R_SCRIPT_DIR, 'init.R'))\n"
-    command << "config = list()\n"
-    config = @params
-    config.keys.each do |key|
-      command << "config[['#{key}']] = '#{config[key]}'\n"
+    command = "#{R_COMMAND} --vanilla --slave<<  EOT\n"
+    command << "EZ_GLOBAL_VARIABLES <<- '#{EZ_GLOBAL_VARIABLES}'\n"
+    command<<  "library(ezRun)\n"
+    command << "param = list()\n"
+    param = @params
+    param.keys.each do |key|
+      command << "param[['#{key}']] = '#{param[key]}'\n"
     end
-    command << "config[['dataRoot']] = '#{@gstore_dir}'\n"
-    command << "config[['resultDir']] = '#{@result_dir}'\n"
+    command << "param[['dataRoot']] = '#{@gstore_dir}'\n"
+    command << "param[['resultDir']] = '#{@result_dir}'\n"
     command << "output = list()\n"
     output = next_dataset
     output.keys.each do |key|
@@ -128,7 +128,7 @@ module GlobalVariables
         command << "input[['#{key}']] = '#{input[key]}'\n" 
       end
     end
-    command<<  "runApp('#{app_name}', input=input, output=output, config=config)\n"
+    command<<  "ezRunApp(#{app_name}, input=input, output=output, param=param)\n"
     command<<  "EOT\n"
     command
   end

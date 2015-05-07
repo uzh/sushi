@@ -11,13 +11,13 @@ class BWAApp < SushiFabric::SushiApp
     @name = 'BWA'
     @analysis_category = 'Map'
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['build','paired']
+    @required_params = ['refBuild','paired']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
     @params['scratch'] = '100'
-    @params['build'] = ref_selector
-    @params['build', 'description'] = 'the genome build and annotation to use as reference. If human variant calling is the main goal, please use hg_19_karyotypic.'
+    @params['refBuild'] = ref_selector
+    @params['refBuild', 'description'] = 'the genome refBuild and annotation to use as reference. If human variant calling is the main goal, please use hg_19_karyotypic.'
     @params['paired'] = false
     @params['algorithm'] = ['aln', 'mem', 'bwasw']
     @params['cmdOptions'] = ''
@@ -41,13 +41,13 @@ class BWAApp < SushiFabric::SushiApp
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'Species'=>@dataset['Species'],
-     'build'=>@params['build'],
+     'refBuild'=>@params['refBuild'],
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
-    run_RApp("mapBWAApp")
+    run_RApp("ezAppBWA")
   end
 end
 

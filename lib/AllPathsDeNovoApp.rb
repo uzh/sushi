@@ -45,7 +45,7 @@ EOS
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
 #  def set_default_parameters
-#    @params['build'] = @dataset[0]['build']
+#    @params['refBuild'] = @dataset[0]['refBuild']
 #  end
 
   def commands

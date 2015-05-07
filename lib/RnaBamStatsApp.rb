@@ -11,15 +11,15 @@ class RnaBamStatsApp <  SushiFabric::SushiApp
     @name = 'RNA BamStats'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
-    @required_columns = ['Name','BAM','BAI', 'build']
+    @required_columns = ['Name','BAM','BAI', 'refBuild']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
     @params['ram'] = '50'
     @params['scratch'] = '100'
     @params['paired'] = false
     @params['name'] = 'RNA_BAM_Statistics'
-    @params['build'] = ref_selector
-    @params['featureFile'] = 'genes.gtf'
+    @params['refBuild'] = ref_selector
+    @params['refFeatureFile'] = 'genes.gtf'
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['specialOptions'] = ''
     @params['mail'] = ""
@@ -30,14 +30,14 @@ class RnaBamStatsApp <  SushiFabric::SushiApp
      'Report [File]'=>report_dir,
      'Html [Link]'=>File.join(report_dir, '00index.html'),
      'Species'=>@dataset['Species'],
-     'build'=>@params['build'],
-     'featureFile'=>@params['featureFile']
+     'refBuild'=>@params['refBuild'],
+     'refFeatureFile'=>@params['refFeatureFile']
     }
   end
   def set_default_parameters
-    @params['build'] = @dataset[0]['build']
-    if dataset_has_column?('featureFile')
-      @params['featureFile'] = @dataset[0]['featureFile']
+    @params['refBuild'] = @dataset[0]['refBuild']
+    if dataset_has_column?('refFeatureFile')
+      @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
     end
     if dataset_has_column?('paired')
       @params['paired'] = @dataset[0]['paired']
@@ -48,7 +48,7 @@ class RnaBamStatsApp <  SushiFabric::SushiApp
   end
 
   def commands
-    run_RApp
+    run_RApp("ezAppRnaBamStats")
   end
 end
 
@@ -61,7 +61,7 @@ if __FILE__ == $0
   # set user parameter
   # for GUI sushi
   #usecase.params['process_mode'].value = 'SAMPLE'
-  #usecase.params['build'] = 'TAIR10'
+  #usecase.params['refBuild'] = 'TAIR10'
   #usecase.params['paired'] = true
   #usecase.params['cores'] = 2
   #usecase.params['node'] = 'fgcz-c-048'

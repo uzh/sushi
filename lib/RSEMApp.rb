@@ -22,10 +22,10 @@ EOS
     @params['cores'] = '8'
     @params['ram'] = '30'
     @params['scratch'] = '100'
-    @params['build'] = ref_selector
+    @params['refBuild'] = ref_selector
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
-    @params['featureFile'] = 'genes.gtf'
+    @params['refFeatureFile'] = 'genes.gtf'
     @params['bowtie-e'] = '200'
     @params['bowtie-e', 'description'] = 'maximum sum of base qualities at mismatching positions'
     @params['cmdOptions'] = ' --calc-ci '
@@ -36,6 +36,8 @@ EOS
     @params['minTailQuality'] = 0
     @params['minAvgQuality'] = 20
     @params['specialOptions'] = ''
+    @params['trinityFasta'] = ''
+    @params['trinityFasta', 'description'] = 'give full path of trinity assembled fasta output file; in that case the build is ignored'
     @params['mail'] = ""
   end
   def preprocess
@@ -56,9 +58,9 @@ EOS
        'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
        'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
        'Species'=>@dataset['Species'],
-       'build'=>@params['build'],
+       'refBuild'=>@params['refBuild'],
        'featureLevel'=>'isoform',
-       'featureFile'=>@params['featureFile'],
+       'refFeatureFile'=>@params['refFeatureFile'],
        'strandMode'=>@params['strandMode'],
        'paired'=>@params['paired'],
        'Read Count'=>@dataset['Read Count']
@@ -67,9 +69,9 @@ EOS
       {'Name'=>@dataset['Name'],
        'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
        'Species'=>@dataset['Species'],
-       'build'=>@params['build'],
+       'refBuild'=>@params['refBuild'],
        'featureLevel'=>'isoform',
-       'featureFile'=>@params['featureFile'],
+       'refFeatureFile'=>@params['refFeatureFile'],
        'strandMode'=>@params['strandMode'],
        'paired'=>@params['paired'],
        'Read Count'=>@dataset['Read Count']
@@ -77,7 +79,7 @@ EOS
     end
   end
   def commands
-    run_RApp("countRsemApp")
+    run_RApp("ezAppRSEM")
   end
 end
 

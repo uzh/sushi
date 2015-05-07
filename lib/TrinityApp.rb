@@ -32,7 +32,7 @@ class TrinityApp < SushiFabric::SushiApp
     }
   end
   def commands
-    run_RApp
+    run_RApp('ezAppTrinity')
   end
 end
 
@@ -45,7 +45,7 @@ if __FILE__ == $0
   # set user parameter
   # for GUI sushi
   #usecase.params['process_mode'].value = 'SAMPLE'
-  usecase.params['build'] = 'mm10'
+  usecase.params['refBuild'] = 'mm10'
   usecase.params['paired'] = true
   usecase.params['strandMode'] = 'both'
   usecase.params['cores'] = 8
