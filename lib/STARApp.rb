@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150226-111433'
+Version = '20150507-090225'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -21,12 +21,12 @@ e.g. the Wheat assembly with 1Mio contigs and --genomeChrBinNbits 10 still takes
 </ul>
 EOS
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['build','paired', 'strandMode']
+    @required_params = ['refBuild','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '40'
     @params['scratch'] = '100'
-    @params['build'] = ref_selector
+    @params['refBuild'] = ref_selector
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['featureFile'] = 'genes.gtf'
@@ -51,15 +51,15 @@ EOS
     end
   end
   def next_dataset
-     if @params['getChimericReads']
+     if @params['getChimericJunctions']
        {'Name'=>@dataset['Name'], 
         'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
         'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
         'IGV Starter [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
         'Species'=>@dataset['Species'],
-        'build'=>@params['build'],
+        'refBuild'=>@params['refBuild'],
         'paired'=>@params['paired'],
-        'featureFile'=>@params['featureFile'],
+        'refFeatureFile'=>@params['refFeatureFile'],
         'strandMode'=>@params['strandMode'],
         'Read Count'=>@dataset['Read Count'],
         'Chimerics [File]'=>File.join(@result_dir, "#{@dataset['Name']}.chimeric"),
@@ -72,9 +72,9 @@ EOS
         'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
         'IGV Starter [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
         'Species'=>@dataset['Species'],
-        'build'=>@params['build'],
+        'refBuild'=>@params['refBuild'],
         'paired'=>@params['paired'],
-        'featureFile'=>@params['featureFile'],
+        'refFeatureFile'=>@params['refFeatureFile'],
         'strandMode'=>@params['strandMode'],
         'Read Count'=>@dataset['Read Count'],
         'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
@@ -83,7 +83,7 @@ EOS
      end
   end
   def commands
-    run_RApp("mapSTARApp")
+    run_RApp("ezAppSTAR")
   end
 end
 

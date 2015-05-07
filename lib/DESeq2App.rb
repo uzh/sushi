@@ -12,14 +12,14 @@ class DESeq2App < SushiFabric::SushiApp
     @name = 'DESeq2'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Differential_Expression'
-    @required_columns = ['Name','Count', 'Species', 'build', 'featureLevel', 'featureFile']
+    @required_columns = ['Name','Count', 'Species', 'refBuild', 'featureLevel', 'refFeatureFile']
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
     # optional params
     @params['cores'] = '1'
     @params['ram'] = '2'
     @params['scratch'] = '10'
-    @params['build'] = ref_selector
-    @params['featureFile'] = 'genes.gtf'
+    @params['refBuild'] = ref_selector
+    @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = ['gene', 'isoform']
     @params['grouping'] = '' 
     @params['sampleGroup'] = '' 
@@ -38,19 +38,19 @@ class DESeq2App < SushiFabric::SushiApp
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@comparison,
      'Species'=>@dataset['Species'],
-     'build'=>@params['build'],
+     'refBuild'=>@params['refBuild'],
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
     }
   end
   def set_default_parameters
-    @params['build'] = @dataset[0]['build']
-    if dataset_has_column?('featureFile')
-      @params['featureFile'] = @dataset[0]['featureFile']
+    @params['refBuild'] = @dataset[0]['refBuild']
+    if dataset_has_column?('refFeatureFile')
+      @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
     end
   end
   def commands
-    run_RApp("DESeq2App")
+    run_RApp("ezAppDeseq2")
   end
 end
 

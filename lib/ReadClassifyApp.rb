@@ -13,16 +13,16 @@ class ReadClassifyApp < SushiFabric::SushiApp
     @description =<<-EOS
 ReadClassifyApp does the mapped read classification depending on the number of mismatch. ReadClassifyApp calls 'read_clasify.py' script.
 Three types of bam files will be generated.<br />
-Panret1Orig: the read mapped on build1 with less mismatch than build2<br />
-Panret1Other: the read mapped on build1 with more mismatch than build2<br />
-Panret1Common: the read mapped on build1 with the same number of mismatch to build2<br />
+Panret1Orig: the read mapped on refBuild1 with less mismatch than refBuild2<br />
+Panret1Other: the read mapped on refBuild1 with more mismatch than refBuild2<br />
+Panret1Common: the read mapped on refBuild1 with the same number of mismatch to refBuild2<br />
 Panret2XX: vice versa<br />
 Panret1Common and Parent2Common should be the same but Parent1Orig and Panret2Other are usually different.<br />
 http://seselab.org/homeoroq/
     EOS
 
     @analysis_category = 'Demo'
-    @required_columns = ['Name','BAM1','BAM2','build1','build2','Species']
+    @required_columns = ['Name','BAM1','BAM2','refBuild1','refBuild2','Species']
     @required_params = []
     # optional params
     @params['cores'] = '1'

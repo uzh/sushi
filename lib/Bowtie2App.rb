@@ -17,13 +17,13 @@ Fast and sensitive read alignment. Supports local and end-to-end mode<br/>
 EOS
     
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['build','paired']
+    @required_params = ['refBuild','paired']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
     @params['scratch'] = '100'
-    @params['build'] = ref_selector
-    @params['build', 'description'] = 'the genome build and annotation to use as reference. If human variant calling is the main goal, please use hg_19_karyotypic.'
+    @params['refBuild'] = ref_selector
+    @params['refBuild', 'description'] = 'the genome refBuild and annotation to use as reference. If human variant calling is the main goal, please use hg_19_karyotypic.'
     @params['paired'] = false
     @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
     @params['cmdOptions'] = '--no-unal'
@@ -54,7 +54,7 @@ EOS
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'IGV Starter [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
      'Species'=>@dataset['Species'],
-     'build'=>@params['build'],
+     'refBuild'=>@params['refBuild'],
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count'],
      'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
@@ -62,7 +62,7 @@ EOS
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
-    run_RApp("mapBowtie2App")
+    run_RApp("ezAppBowtie2")
   end
 end
 
@@ -76,7 +76,7 @@ if __FILE__ == $0
   # set user parameter
   # for GUI sushi
   #usecase.params['process_mode'].value = 'SAMPLE'
-  #usecase.params['build'] = 'mm10'
+  #usecase.params['refBuild'] = 'mm10'
   #usecase.params['paired'] = true
   #usecase.params['strandMode'] = 'both'
   #usecase.params['cores'] = 8

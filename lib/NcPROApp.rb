@@ -25,7 +25,7 @@ EOS
     @params['cores'] = '8'
     @params['ram'] = '16'
     @params['scratch'] = '100'
-    @params['build'] = ref_selector
+    @params['refBuild'] = ref_selector
     #@params['paired'] = false
     #@params['paired', 'description'] = 'whether the reads are paired end; must be false since ncPRO-seq does not support paired-end'
     @params['name'] = 'ncPRO_Result'
@@ -41,14 +41,14 @@ EOS
     report_link = File.join(report_file, 'ncpro/report.html')
     {'Name'=>@params['name'],
      'Species'=>@dataset['Species'],
-     'build'=>@params['build'],
+     'refBuild'=>@params['refBuild'],
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
      'TrimCounts [Link]'=>File.join(report_file, 'trimCounts-barplot.png')
     }
   end
   def commands
-    run_RApp("ncproApp")
+    run_RApp("ezAppNcpro")
   end
 end
 
