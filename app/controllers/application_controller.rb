@@ -43,26 +43,42 @@ class ApplicationController < ActionController::Base
     end
     sushi_apps
   end
-  def runnable_application(data_set_headers)
-    sushi_apps = all_sushi_applications
+  def refresh_sushi_application
 
-    # filter application with data_set#required_columns
+    # new check
+    sushi_apps = all_sushi_applications
     lib_dir = File.expand_path('../../../lib', __FILE__)
-    sushi_apps = sushi_apps.sort.select do |script|
-      class_name = ''
-      if script =~ /\.rb/
-        class_name = script.gsub(/\.rb/,'')
-        #require class_name
-      elsif script =~ /\.sh/
-        class_name = script.gsub(/\.sh/,'')
-        #sushi_wrap = SushiWrap.new(File.join(lib_dir, script))
-        #sushi_wrap.define_class
+    sushi_apps.select{|app| app =~ /\.rb$/}.each do |app|
+      class_name = app.gsub(/\.rb/,'')
+      updated_at = File.stat(File.join(lib_dir, app)).mtime
+      unless sushi_app = SushiApplication.find_by_class_name(class_name) and updated_at < sushi_app.updated_at
+        if sushi_app 
+          load File.join(lib_dir, app)
+        end
+        sushi_app_instance = eval(class_name).new
+        sushi_app_instance.instance_variable_set(:@dataset, {})
+        sushi_app_instance.instance_variable_set(:@result_dir, '')
+        sushi_app_entry = (sushi_app || SushiApplication.new)
+        sushi_app_entry.class_name = class_name
+        sushi_app_entry.analysis_category = sushi_app_instance.analysis_category
+        sushi_app_entry.required_columns = sushi_app_instance.required_columns
+        sushi_app_entry.next_dataset_keys = sushi_app_instance.next_dataset.keys
+        sushi_app_entry.save
       end
-      sushi_app = eval(class_name).new
-      required_columns = sushi_app.required_columns
-      (required_columns - data_set_headers.map{|colname| colname.to_s.gsub(/\[.+\]/,'').strip}).empty?
     end
-    sushi_apps
+
+    # delete check
+    delete_apps = SushiApplication.all.map{|app| app.class_name} - sushi_apps.map{|app| app.gsub(/\.rb/,'').gsub(/\.sh/,'')}
+    delete_apps.each do |class_name|
+      app = SushiApplication.find_by_class_name(class_name)
+      SushiApplication.delete(app)
+    end
+  end
+  def runnable_application(data_set_headers)
+    refresh_sushi_application
+    sushi_apps = SushiApplication.all.select do |app|
+      (app.required_columns - data_set_headers.map{|colname| colname.to_s.gsub(/\[.+\]/,'').strip}).empty?
+    end
   end
   def sample_path(data_set)
     paths = []
