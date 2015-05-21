@@ -43,7 +43,11 @@ SushiFabric::Application.routes.draw do
     end
   end
 
-  resources :sushi_application, :only => [:index]
+  resources :sushi_application, :only => [:index] do
+    collection do
+      post :refresh
+    end
+  end
 
   get "/api/:method" => "api#index"
   post "/api/:method" => "api#index"
