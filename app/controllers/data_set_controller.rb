@@ -38,12 +38,11 @@ class DataSetController < ApplicationController
   def set_runnable_apps
     if @data_set = DataSet.find_by_id(params[:id]) or (@data_set_id and @data_set = DataSet.find_by_id(@data_set_id))
       sushi_apps = runnable_application(@data_set.headers)
-      sushi_apps = sushi_apps.map{|app| eval(app.gsub(/\.rb/,'').gsub(/\.sh/,'')).new}
       @sushi_apps_category = sushi_apps.map{|app| app.analysis_category}.uniq.sort
       @sushi_apps = {}
-      sushi_apps.sort_by{|app| app.class.to_s}.each do |app|
+      sushi_apps.sort_by{|app| app.class_name.to_s}.each do |app|
         @sushi_apps[app.analysis_category] ||= []
-        @sushi_apps[app.analysis_category] << app.class.to_s
+        @sushi_apps[app.analysis_category] << app.class_name.to_s
       end
       @data_set.runnable_apps = @sushi_apps
       @data_set.save
