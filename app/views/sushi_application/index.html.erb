@@ -1,16 +1,15 @@
 <h1>Project <%= session[:project] %></h1>
 <hr />
 <h3>Applications</h3>
+<%= button_to "Refresh", "/sushi_application/refresh" %>
 <table>
   <tr><th>Name</th><th>Analysis Category</th><th>Required Columns</th><th>Next DataSet Columns</th></tr>
   <% @sushi_apps.each do |app| %>
     <tr>
-      <td><%= app.class %></td>
+      <td><%= app.class_name %></td>
       <td><%= app.analysis_category %></td>
       <td><%= app.required_columns.join(', ') %></td>
-      <% app.instance_variable_set(:@dataset, {}) %>
-      <% app.instance_variable_set(:@result_dir, '') %>
-      <td><%= app.next_dataset.keys.join(', ') %></td>
+      <td><%= app.next_dataset_keys.join(', ') %></td>
     </tr>
   <% end %>
 </table>
