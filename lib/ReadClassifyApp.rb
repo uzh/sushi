@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150427-134606'
+Version = '20150524-210956'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -56,11 +56,15 @@ http://seselab.org/homeoroq/
     out1_prefix = "#{@dataset['Name']}_parent1_genome"
     out2_prefix = "#{@dataset['Name']}_parent2_genome"
     command = "mkdir tmp\n"
+    command << "grep 'version' /usr/local/ngseq/stow/read_classify-2.1.0/bin/read_classify.py\n"
+    command << "/usr/local/ngseq/bin/python --version\n"
     command << "samtools view -h #{bam1} > #{sam1}\n"
     command << "samtools view -h #{bam2} > #{sam2}\n"
-    command << "read_classify.py #{sam1} #{sam2} #{out1_prefix} #{out2_prefix}\n"
-    command << "samtools index #{bam1}\n" 
-    command << "samtools index #{bam2}\n" 
+    command << "/usr/local/ngseq/bin/python /usr/local/ngseq/stow/read_classify-2.1.0/bin/read_classify.py #{sam1} #{sam2} #{out1_prefix} #{out2_prefix}\n"
+    ["orig", "other", "common"].each do |type|
+      command << "samtools index #{out1_prefix}_#{type}.bam\n" 
+      command << "samtools index #{out2_prefix}_#{type}.bam\n" 
+    end
     command
   end
 end
