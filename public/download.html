@@ -288,51 +288,30 @@ img {
 <ul>
 	<li>Workflow manager: <a href="http://rubygems.org/gems/workflow_manager">http://rubygems.org/gems/workflow_manager</a></li>
 	<li>Sushi (Ruby Gem): <a href="http://rubygems.org/gems/sushi_fabric">http://rubygems.org/gems/sushi_fabric</a></li>
-	<li>Sushi (Ruby on Rails appliction): <a href="http://fgcz-sushi.uzh.ch/sushi_20140908.tgz">http://fgcz-sushi.uzh.ch/sushi_20140908.tgz</a></li>
+	<li>Sushi (Ruby on Rails appliction): <a href="http://fgcz-sushi.uzh.ch/sushi_20150605.tgz">http://fgcz-sushi.uzh.ch/sushi_20150605.tgz</a></li>
 	<li>FGCZ Sushi Application Library: <a href="http://fgcz-sushi.uzh.ch/fgcz_sushi_apps.tgz" >http://fgcz-sushi.uzh.ch/fgcz_sushi_apps.tgz</a></li>
 </ul>
 
 <h2>Hard- and software requirements</h2>
-<p>The sushi framework has been successfully deployed and run on Max OSX 10.7 and on the Linux distribution Debian 7. We do not have experience with Windows OS.
-If you experience problems please contact Hubert.Rehrauer/at/fgcz.uzh.ch.</p>
-
-<!--
-<h2>0. Prerequisites</h2>
-<ul>
-  <li>Ruby (>=1.9.3)</li>
-  <li>Ruby on Rails (>= 3.2.9)</li>
-  <li>libsqlite3-dev (to build the gem)</li>
-  <li>libxml2-dev (to build a gem)</li>
-  <li>libxslt1-dev (to build a gem)</li>
-  <li>node.js (installed from source, http://nodejs.org/)</li>
-</ul>
-Note
-<ul>
-  <li>Ruby 1.8.7 does not work</li>
-  <li>Ruby 2.1 is not checked yet</li>
-  <li>Ruby on Rails 4.1 is not checked yet</li>
-  <li>More details for gem libraries refer to Gemfile.lock</li>
-</ul>
--->
+<p>The sushi framework has been successfully deployed and run on Max OSX 10.9 and on the Linux distribution Debian 7. We do not have experience with Windows OS. If you experience problems please contact Hubert.Rehrauer/at/fgcz.uzh.ch.</p>
 
 <h2>Installation Steps</h2>
 <ol>
   <li>Install Ruby</li>
-  <li>Install bundle (gem)</li>
-  <li>Install workflow_manager (gem)</li>
-  <li>Install sushi_fabric (gem)</li>
-  <li>Download sushi_2014xxxx.tgz (Ruby on Rails application)</li>
+  <li>Install bundle (gem install)</li>
+  <li>Install workflow_manager (gem install)</li>
+  <li>Download sushi_20xxxxxx.tgz (Ruby on Rails application)</li>
   <li>Install required libraries (bundle install)</li>
   <li>Setup database (rake db:migrate)</li>
   <li>Run (rails server)</li>
 </ol>
 
 <h2>Install Ruby</h2>
-Check if Ruby 1.9.3 or later is installed on your computer
+Check if Ruby 1.9.3 is installed on your computer
 <pre>
   $ ruby -v
 </pre>
-If Ruby is NOT installed or Ruby version is under 1.9, then follow the instructions to download and install Ruby from
+If Ruby is NOT installed or Ruby version is either under 1.9 or over 2.0, then follow the instructions to download and install Ruby version 1.9.3 from
 <a href="https://www.ruby-lang.org/en/downloads/">https://www.ruby-lang.org/en/downloads/</a><br />
 <ul>
   <li>Mac OSX: Needs XCode or at least the command-line tools found here: https://developer.apple.com/downloads/</li>
@@ -340,9 +319,9 @@ If Ruby is NOT installed or Ruby version is under 1.9, then follow the instructi
 
 Typical commands to install Ruby
 <pre>
-  $ wget http://cache.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p545.tar.gz
-  $ tar zxvf ruby-1.9.3-p545.tar.gz
-  $ cd ruby-1.9.3-p545
+  $ wget http://cache.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p551.tar.gz
+  $ tar zxvf ruby-1.9.3-p551.tar.gz
+  $ cd ruby-1.9.3-p551
   $ ./configure
   $ make
   $ sudo make install
@@ -360,20 +339,20 @@ Note
   <li>wget is not installed in Mac OSX as a default. You can use 'curl' command instead.</li>
 </ul>
 
-<h2>Install bundle</h2>
+<h2>Install bundler</h2>
 Check if <i>bundle</i> command is installed on your system.
 <pre>
   $ which bundle
 </pre>
-If it is not installed, if the command answers <i>bundle is not found</i>, you need to install bundle RubyGem library as follows:  
+If it is not installed, if the command answers <i>bundle is not found</i>, you need to install bundler RubyGem library as follows:  
 <pre>
-  $ gem install bundle
+  $ gem install bundler
 </pre>
 
 Note
 <ul>
   <li>RubGem(<i>gem</i>) is a Ruby library manager, and it downloads and installs a library from http://rubygems.org/</li>
-  <li>bundle is a Ruby library version manager that manages specific library versions for an application</li>
+  <li>bundler is a Ruby library version manager that manages specific library versions for an application</li>
   <li>All gem installations may need sudo permissions (if you installed Ruby in a system directory but you can change the gem directory with setting GEM_HOME environmental variable. see below.)</li>
   <li>Gem library installtion directory can be set with the environment variable:</li>
   <pre>
@@ -402,21 +381,14 @@ To eliminate this warning, please install libyaml and reinstall your ruby.
   <li>WorkflowManager client commands will installed under $GEM_HOME/bin directory. If <i>workflow_manager</i> command is not available, please check your $PATH setting, and add $GEM_HOME/bin to $PATH environmental variable.</li>
 	</ul>
 
-<h2>Install sushi_fabric (core code of Sushi)</h2>
-
-<pre>
-  $ gem install sushi_fabric
-</pre>
-
-
 <h2>Download Sushi (Ruby on Rails code)</h2>
 
 <pre>
-  $ wget http://fgcz-sushi.uzh.ch/sushi_20140814.tgz
+  $ wget http://fgcz-sushi.uzh.ch/sushi_20150605.tgz
 </pre>
 or
 <pre>
-  $ curl -O http://fgcz-sushi.uzh.ch/sushi_20140814.tgz
+  $ curl -O http://fgcz-sushi.uzh.ch/sushi_20150605.tgz
 </pre>
 
   <p>Tar and bundle install<br></p><pre>
@@ -425,17 +397,22 @@ or
   $ bundle install
 </pre><p></p>
 
+Note
+	<ul>
+	<li>If you want to install the gem libraries in the local directory, you can use --path option to set the install location:<br><pre>$ bundle install --path vendor/bundler
+</pre></li>
+	</ul>
 
 <h2>Set up database for Ruby on Rails</h2>
 
 <p>Go to the Sushi directory, then</p>
 
 <pre>
-  $ bundle exec rake db:migrate
+  $ bundle exec rake db:migrate RAILS_ENV=production
 </pre>
 
   <p>Start Ruby on Rails server<br></p><pre>
-  $ rails server
+  $ rails server -e production
 </pre><p></p>
 
 
@@ -443,22 +420,38 @@ Note
 	<ul>
 	<li>And then, try to access <strong><a class="external" href="http://localhost:3000/">http://localhost:3000</a></strong></li>
 		<li>If you can see the top menu of Sushi, it scceeded in installing.</li>
-		<li>In order to stop it, Ctrl + C</li>
+		<li>Ctrl + C, to stop the server.</li>
 	</ul>
 
 
 <h2>Configuration</h2>
-<p>There are two configuration files, one for workflow_manager and one for sushi_fabric</p>
 
-Configuration file
+	<ol>
+    <li>make a symbolic link to public/gstore/projects directory</li>
+		<li>workflow manager configuration</li>
+		<li>sushi server configuration</li>
+	</ol>
+
+  <h3>Symbolic link to projects folder</h3>
+  After test running of sushi server, a new directory
+  <pre>
+  public/gstore/projects
+  </pre>
+  is created. Next, make a symbolic link to public/gstore/projects in public folder:
+  <pre>
+    $ cd public
+    $ ln -s gstore/projects
+  </pre>
+  This anable you to see a static file in gstore directory.
+
+  <h3>Workflow Manager configuration</h3>
+
+  After the running of workflow_manager, the following default configuration file is created.
+
 	<ul>
 	<li>config/environments/development.rb</li>
 	</ul>
-
 <pre>
-  #!/usr/bin/env ruby
-  # encoding: utf-8
-
   WorkflowManager::Server.configure do |config|
     config.log_dir = 'logs'
     config.db_dir = 'dbs'
@@ -470,37 +463,36 @@ Configuration file
 
 Note
 <ul>
-    <li>A new cluster class should inherit WorkflowManager::Cluster Class and define (overwrite) the following 4 methods:</li>
-    <li>In more detail, you can refer to $GEM_HOME/**/workflow_manager/lib/workflow_manager/cluster.rb</li>
+    <li>dir_log: workflow manager log directory</li>
+    <li>db_log: workflow manager database directory</li>
+    <li>interval: the interval (second) to check a submitted job if it is running/finished/failed</li>
+    <li>resubit: the number of resumit times when a submitted job failed</li>
+    <li>cluster: cluster class</li>
+    <li>As a default, the sushi server computer becomes the calculation server, in other words, a subitted job runs on the same computer as the sushi (Ruby on Rails) server is running.</li>
+    <li>A new cluster, i.e. another calculation server, requires a new definition of the Cluster class.</li>
 </ul>
-<p>Cluster Class<br></p>
-<pre>
-    class Cluster
-    def submit_job(script_file, script_content, option='')
-    end
-    def job_running?(job_id)
-    end
-    def job_ends?(log_file)
-    end
-    def copy_commands(org_dir, dest_parent_dir)
-    end
-  end
-</pre><p></p>
 
-<p>Default sushi_fabric parameters (config/environments/development.rb)<br></p><pre>SushiFabric::Application.configure do
-  # sushi_fabric
+<h3>Sushi configuration</h3>
+<p>Default Sushi configuration file is located at<br></p>
+	<ul>
+	<li>config/environments/development.rb</li>
+	<li>config/environments/production.rb</li>
+	</ul>
+  If you want to change parameters from the default (below), add some of the followings:
+
+<pre>
   config.workflow_manager = 'druby://localhost:12345'
   config.gstore_dir = File.join(Dir.pwd, 'public/gstore/projects')
   config.sushi_app_dir = Dir.pwd
   config.scratch_dir = '/tmp/scratch'
-end
 </pre><p></p>
 
 Note
 	<ul>
-	<li>If you want to change the parameters, make <strong>config/environments/development.rb</strong> like above.</li>
-		<li>workflow_manager and sushi_fabric configurations are totally independent.</li>
-		<li>Usually, Ruby on Rails has a configuration file with the same file name (in development mode), and you can add the above 4 additional parameters in the file.</li>
+    <li>workflow_manager: Workflow Manager druby address</li>
+    <li>gstore_dir: the directory where the result of job is stored</li>
+    <li>sushi_app_dir: Sushi application directory</li>
+    <li>scratch_dir: working directory when a job is running. The final ouput is copied from scratch_dir to gstore_dir.</li>
 	</ul>
 
 
