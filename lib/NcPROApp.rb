@@ -17,6 +17,7 @@ Uses ncPRO-seq for a complete analysis of small-RNA-seq. ncPRO-seq considers per
 It considers various species of small RNA.<br />
 <a href='https://ncpro.curie.fr/index.html'>https://ncpro.curie.fr/index.html/</a>
 ncPRO can only process single-end stranded RNA.
+<strong>IMPORTANT: ncPRO does not run on the virtual nodes!!!!</strong>
 EOS
 
     @required_columns = ['Name','Read1', 'Adapter1', 'Species']
