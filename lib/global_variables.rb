@@ -1,11 +1,14 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
+GENOME_REF_DIR = '/srv/GT/reference'
+EZ_GLOBAL_VARIABLES = '/usr/local/ngseq/opt/EZ_GLOBAL_VARIABLES.txt'
+R_COMMAND = '/usr/local/ngseq/stow/R-3.2.0/bin/R'
+
+# compatible method to R vector, c(x,x,x) 
 def c(*list)
   list
 end
-EZ_GLOBAL_VARIABLES = '/usr/local/ngseq/opt/EZ_GLOBAL_VARIABLES.txt'
-R_COMMAND = '/usr/local/ngseq/stow/R-3.2.0/bin/R'
 load EZ_GLOBAL_VARIABLES
 
 module GlobalVariables
@@ -30,15 +33,17 @@ module GlobalVariables
   def ref_selector
     selector = {'select'=>''}
 
-    base_pattern = "/srv/GT/reference/*/*/*"
-    shown_replace_pattern = {/\/srv\/GT\/reference\//=>''}
-    value_replace_pattern = {/\/srv\/GT\/reference\//=>''}
+    base_pattern = "#{GENOME_REF_DIR}/*/*/*"
+    shown_replace_regexp = /#{GENOME_REF_DIR+"/"}/
+    value_replace_regexp = /#{GENOME_REF_DIR+"/"}/
+    shown_replace_pattern = {shown_replace_regexp=>''}
+    value_replace_pattern = {value_replace_regexp=>''}
     refBuilds = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
-    base_pattern = "/srv/GT/reference/*/*/*/Annotation/Version*"
+    base_pattern = "#{GENOME_REF_DIR}/*/*/*/Annotation/Version*"
     versions = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
-    base_pattern = "/srv/GT/reference/*/*/*/Sequence"
+    base_pattern = "#{GENOME_REF_DIR}/*/*/*/Sequence"
     sequences = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
     refBuilds.keys.each do |refBuild_key|
