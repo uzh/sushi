@@ -31,7 +31,7 @@ EOS
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['refFeatureFile'] = 'genes.gtf'
     @params['cmdOptions'] = '--outFilterType BySJout --outFilterMatchNmin 30 --outFilterMismatchNmax 10 --outFilterMismatchNoverLmax 0.05 --alignSJDBoverhangMin 1 --alignSJoverhangMin 8 --alignIntronMax 1000000 --alignMatesGapMax 1000000  --outFilterMultimapNmax 50 --chimSegmentMin 15 --chimJunctionOverhangMin 15 --chimScoreMin 15 --chimScoreSeparation 10 --outSAMstrandField intronMotif'
-    @params['getChimericReads'] = false
+    @params['getChimericJunctions'] = false
     @params['trimAdapter'] = false
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
