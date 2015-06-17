@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150617-032557'
+Version = '20150617-033042'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -12,7 +12,7 @@ class HTSeqApp < SushiFabric::SushiApp
     @name = 'HTSeq'
     @analysis_category = 'Count'
     @required_columns = ['Name','BAM','BAI', 'refBuild']
-    @required_params = ['build','paired', 'strandMode']
+    @required_params = ['refBuild','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
@@ -27,7 +27,7 @@ class HTSeqApp < SushiFabric::SushiApp
     @params['mail'] = ""
   end
   def set_default_parameters
-    @params['build'] = @dataset[0]['build']
+    @params['refBuild'] = @dataset[0]['refBuild']
     if dataset_has_column?('refFeatureFile')
       @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
     end
@@ -43,7 +43,7 @@ class HTSeqApp < SushiFabric::SushiApp
     {'Name'=>@dataset['Name'], 
      'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"), 
      'Species'=>@dataset['Species'],
-     'build'=>@params['build'],
+     'refBuild'=>@params['refBuild'],
      'featureLevel'=>@params['featureLevel'],
      'refFeatureFile'=>@params['refFeatureFile'],
      'strandMode'=>@params['strandMode'],
@@ -65,7 +65,7 @@ if __FILE__ == $0
   # set user parameter
   # for GUI sushi
   #usecase.params['process_mode'].value = 'SAMPLE'
-  usecase.params['build'] = 'mm10'
+  usecase.params['refBuild'] = 'mm10'
   usecase.params['paired'] = true
   usecase.params['strandMode'] = 'both'
   usecase.params['cores'] = 8
