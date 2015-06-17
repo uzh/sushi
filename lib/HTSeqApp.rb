@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150226-111207'
+Version = '20150617-032557'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -11,13 +11,13 @@ class HTSeqApp < SushiFabric::SushiApp
     super
     @name = 'HTSeq'
     @analysis_category = 'Count'
-    @required_columns = ['Name','BAM','BAI', 'build']
+    @required_columns = ['Name','BAM','BAI', 'refBuild']
     @required_params = ['build','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
     @params['scratch'] = '100'
-    @params['build'] = ref_selector
+    @params['refBuild'] = ref_selector
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['refFeatureFile'] = 'genes.gtf'
