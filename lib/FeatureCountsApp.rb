@@ -6,31 +6,31 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class CountOverlapsApp < SushiFabric::SushiApp
+class FeatureCountsApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'CountOverlaps'
+    @name = 'FeatureCounts'
     @analysis_category = 'Count'
     @required_columns = ['Name','BAM','BAI', 'refBuild']
     @required_params = ['refBuild','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '32'
-    @params['scratch'] = '100'
+    @params['ram'] = '20'
+    @params['scratch'] = '10'
     @params['refBuild'] = ref_selector
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = 'gene'
-    @params['countNonredundant'] = true
-    @params['countNonredundant', 'description'] = "downweights alignments by the number of different genomic alignments"
+    @params['allowMultiOverlap' = true
+    @params['allowMultiOverlap', 'description'] = "count alignments that fall in a region where multipe features are annotated"
+    @params['countPrimaryAlignmentsOnly'] = true
     @params['minFeatureOverlap'] = 10
     @params['minFeatureOverlap', 'description'] = "minimum overlap of a read with a transcript feature"
     @params['countTrimmedTranscripts'] = false
     @params['trimmedMaxLength'] = 200
     @params['minMapQuality'] = 10
     @params['keepMultiHits'] = true
-    @params['cmdOptions'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end
@@ -60,7 +60,7 @@ class CountOverlapsApp < SushiFabric::SushiApp
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
-    run_RApp("ezAppCountOverlaps")
+    run_RApp("ezAppFeatureCounts")
   end
 end
 
