@@ -11,6 +11,11 @@ class FeatureCountsApp < SushiFabric::SushiApp
     super
     @name = 'FeatureCounts'
     @analysis_category = 'Count'
+ @description =<<-EOS
+    Multi-purpose read counting with Rsubread::featureCounts<br/>
+<a href='http://www.bioconductor.org/packages/release/bioc/manuals/Rsubread/man/Rsubread.pdf'>manual</a><br/>
+Consider default values as suggestions. They are subject to change!
+EOS
     @required_columns = ['Name','BAM','BAI', 'refBuild']
     @required_params = ['refBuild','paired', 'strandMode']
     # optional params
@@ -22,13 +27,11 @@ class FeatureCountsApp < SushiFabric::SushiApp
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = 'gene'
-    @params['allowMultiOverlap' = true
+    @params['allowMultiOverlap'] = true
     @params['allowMultiOverlap', 'description'] = "count alignments that fall in a region where multipe features are annotated"
     @params['countPrimaryAlignmentsOnly'] = true
     @params['minFeatureOverlap'] = 10
     @params['minFeatureOverlap', 'description'] = "minimum overlap of a read with a transcript feature"
-    @params['countTrimmedTranscripts'] = false
-    @params['trimmedMaxLength'] = 200
     @params['minMapQuality'] = 10
     @params['keepMultiHits'] = true
     @params['specialOptions'] = ''
