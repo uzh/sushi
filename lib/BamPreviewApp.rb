@@ -8,7 +8,7 @@ include GlobalVariables
 class BamPreviewApp <  SushiFabric::SushiApp
   def initialize
     super
-    @name = 'Mapping Preview'
+    @name = 'BAM Preview'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
 @description =<<-EOS
@@ -21,7 +21,7 @@ class BamPreviewApp <  SushiFabric::SushiApp
 <li> bwa-mem: ''</li>
 </ul>
 EOS
-    @required_columns = ['Name','Read 1']
+    @required_columns = ['Name','Read1']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
     @params['ram'] = '50'
@@ -53,10 +53,6 @@ EOS
     }
   end
   def set_default_parameters
-    @params['refBuild'] = @dataset[0]['refBuild']
-    if dataset_has_column?('refFeatureFile')
-      @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
-    end
     if dataset_has_column?('paired')
       @params['paired'] = @dataset[0]['paired']
     end
