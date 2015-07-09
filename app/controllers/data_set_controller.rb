@@ -8,19 +8,6 @@ class DataSetController < ApplicationController
     @data_sets = []
     if @project and  data_sets = @project.data_sets
       @data_sets = data_sets.reverse[0, n_dataset]
-      @data_sets.each do |data_set|
-        data_set.samples.each do |sample|
-          flag = true
-          sample.to_hash.each do |header, file|
-            if header and header.tag?('File') and file and file_path = File.join(SushiFabric::GSTORE_DIR, file) and !File.exist?(file_path)
-              flag = false
-              break
-            end
-          end
-          @sample_available[data_set] ||= 0
-          @sample_available[data_set] += 1 if flag
-        end
-      end
     end
   end
   def index
