@@ -5,6 +5,7 @@ end
 require 'csv' 
 require 'sushi_fabric'
 require 'SushiWrap'
+require 'drb/drb'
 
 # TODO: why also has to force it from here?
 module Savon
@@ -26,6 +27,7 @@ class ApplicationController < ActionController::Base
   if `hostname`.chomp =~ /fgcz-s-034/
     before_filter :authenticate_user!
   end
+  @@workflow_manager = DRbObject.new_with_uri(SushiFabric::WORKFLOW_MANAGER)
 
   def all_sushi_applications
     non_sushi_apps = ['SushiWrap.rb', 'optparse_ex.rb', 'global_variables.rb']
