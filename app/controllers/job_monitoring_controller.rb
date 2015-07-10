@@ -3,9 +3,9 @@ class JobMonitoringController < ApplicationController
     public_dir = File.expand_path('../../../public', __FILE__)
     @job_list = if option=params[:option] and option[:all_job_list]
                   @all_job_list=true
-                  `#{public_dir}/wfm_job_list -d #{SushiFabric::WORKFLOW_MANAGER}`
+                  @@workflow_manager.job_list(false, nil)
                 else
-                  `#{public_dir}/wfm_job_list -d #{SushiFabric::WORKFLOW_MANAGER} -p #{session[:project]}`
+                  @@workflow_manager.job_list(false, session[:project])
                 end
     @job_list = @job_list.split(/\n/).map{|job| job.split(/,/)}
     @total = @job_list.length
@@ -33,34 +33,32 @@ class JobMonitoringController < ApplicationController
   end
   def print_log
     public_dir = File.expand_path('../../../public', __FILE__)
-    text = `#{public_dir}/wfm_get_log #{params[:job_id]} :with_err #{SushiFabric::WORKFLOW_MANAGER}`
+    text = @@workflow_manager.get_log(params[:job_id], :with_err)
     render :text => text.gsub(/\n/,'<br />')
   end
   def print_script
     public_dir = File.expand_path('../../../public', __FILE__)
-    text = `#{public_dir}/wfm_get_script #{params[:job_id]} #{SushiFabric::WORKFLOW_MANAGER}`
+    text = @@workflow_manager.get_script(params[:job_id])
     render :text => text.gsub(/\n/,'<br />')
   end
   def kill_job
     @status = 'kill job failed'
     if @job_id = params[:id]
       public_dir = File.expand_path('../../../public', __FILE__)
-      @command = "#{public_dir}/wfm_kill_job -i #{@job_id} -d #{SushiFabric::WORKFLOW_MANAGER}"
-      @status = `#{@command}`
+      @status = @@workflow_manager.kill_job(@job_id)
       @command = "wfm_kill_job -i #{@job_id} -d #{SushiFabric::WORKFLOW_MANAGER}"
     end
   end
   def change_status
     if @job_id = params[:id]
       public_dir = File.expand_path('../../../public', __FILE__)
-      @command = "#{public_dir}/wfm_status #{@job_id} #{SushiFabric::WORKFLOW_MANAGER}"
-      @status = `#{@command}`.split(',').first
-      if @status == 'success'
-        @command = "#{public_dir}/wfm_status #{@job_id} #{SushiFabric::WORKFLOW_MANAGER} fail"
-        `#{@command}`
-      elsif @status == 'fail'
-        @command = "#{public_dir}/wfm_status #{@job_id} #{SushiFabric::WORKFLOW_MANAGER} success"
-        `#{@command}`
+      status = @@workflow_manager.status(@job_id)
+      if status and @status = status.split(',').first
+        if @status == 'success'
+          @@workflow_manager.status(@job_id, "fail")
+        elsif @status == 'fail'
+          @@workflow_manager.status(@job_id, "success")
+        end
       end
     end
     redirect_to :controller => "job_monitoring"
