@@ -64,7 +64,14 @@ $(function(){
     <td><%= data_set.id %></td>
     <td><%= link_to td(data_set.name), "/data_set/#{data_set.id}" %></td> 
     <td class='check_box'><%= check_box "delete_flag", "#{data_set.id}", {:class=>'target'}, true, false %></td>
-    <td><%= data_set.samples.length %></td>
+    <td>
+      <% if @sample_available[data_set] and @sample_available[data_set] < data_set.samples.length %>
+        <span class="alert"><%= @sample_available[data_set] %></span>
+      <% else %>
+        <%= @sample_available[data_set] %>
+      <% end %>
+      /<%= data_set.samples.length %>
+    </td>
     <td><%= link_to data_set.parent_id, "/data_set/#{data_set.parent_id}" if data_set.data_set %></td>
     <td>
       <% data_set.data_sets.each do |child| %>
