@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150217-152505'
+Version = '20150710-112224'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -28,14 +28,15 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     @params['illuminaclip'] = {
       'none' => '',
       'All Illumina Adapter' => '/srv/GT/reference/contaminants/illuminaContaminants.fa',
+      'FastQC checking Adapter' => '/srv/GT/reference/adapter/adapter_list.fa',
       #'Original Adapter' => 'under construction'
     }
     @params['seed_mismatchs'] = '1'
     @params['seed_mismatchs', 'description'] = 'Specifies the maximum mismatch count which will still allow a full match to be performed'
     @params['palindrome_clip_threshold'] = '30'
-    @params['palindrome_clip_threshold', 'description'] = 'Specifies how accurate the match between the two _adapter ligated_ reads must be for PE palindrome read alignment'
+    @params['palindrome_clip_threshold', 'description'] = 'THIS IS NOT USED. In order to use this method, adapter name should start with Prefix in the fast file. Specifies how accurate the match between the two _adapter ligated_ reads must be for PE palindrome read alignment'
     @params['simple_clip_threshold'] = '10'
-    @params['simple_clip_threshold', 'description'] = 'Specifies how accurate the match between any adapter etc. sequence must be against a read'
+    @params['simple_clip_threshold', 'description'] = 'Specifies how accurate the match between any adapter etc. sequence must be against a read. It will change depending on the adapter length. For FastQC checking adapter, 7 may be proper.'
     @params['leading'] = '5'
     @params['leading', 'description'] = 'Cut bases off the start of a read, if below a threshold quality'
     @params['trailing'] = '5'
