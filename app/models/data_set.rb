@@ -30,4 +30,11 @@ class DataSet < ActiveRecord::Base
     end
     string
   end
+  def samples_length
+    unless self.num_samples
+      self.num_samples=self.samples.length
+      self.save
+    end
+    self.num_samples
+  end
 end
