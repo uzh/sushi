@@ -42,6 +42,7 @@ class RunApplicationController < ApplicationController
     class_name = params[:app]
     require class_name
     @sushi_app = eval(class_name).new
+    @sushi_app.workflow_manager = @@workflow_manager
     data_set_id = params[:data_set][:id]
     @data_set = DataSet.find(data_set_id.to_i)
 
@@ -79,6 +80,7 @@ class RunApplicationController < ApplicationController
                                end
     end
     if @sushi_app.params['node'].empty?
+      @sushi_app.workflow_manager = @@workflow_manager
       @sushi_app.params['node'] = @sushi_app.default_node
     end
     @sushi_app.params.each do |key, value|
@@ -94,6 +96,7 @@ class RunApplicationController < ApplicationController
     class_name = params[:sushi_app][:class]
     require class_name
     @sushi_app = eval(class_name).new
+    @sushi_app.workflow_manager = @@workflow_manager
     @sushi_app.user = if current_user 
                         current_user.login
                       else
