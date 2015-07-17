@@ -3,22 +3,22 @@ class DataSetController < ApplicationController
   def top(n_dataset=1000)
     @project = Project.find_by_number(session[:project].to_i)
 
-    @sample_available = {}
-
     @data_sets = []
     if @project and  data_sets = @project.data_sets
       @data_sets = data_sets.reverse[0, n_dataset]
       @data_sets.each do |data_set|
-        data_set.samples.each do |sample|
-          flag = true
-          sample.to_hash.each do |header, file|
-            if header and header.tag?('File') and file and file_path = File.join(SushiFabric::GSTORE_DIR, file) and !File.exist?(file_path)
-              flag = false
-              break
+        if data_set.completed_samples.to_i < data_set.samples_length.to_i
+          sample_available = 0
+          data_set.samples.each do |sample|
+            if sample_file = sample.to_hash.select{|header, file| header.tag?('File')}.first
+              file_path = File.join(SushiFabric::GSTORE_DIR, sample_file.last) 
+              if File.exist?(file_path)
+                sample_available+=1
+              end
             end
           end
-          @sample_available[data_set] ||= 0
-          @sample_available[data_set] += 1 if flag
+          data_set.completed_samples = sample_available
+          data_set.save
         end
       end
     end
@@ -73,8 +73,10 @@ class DataSetController < ApplicationController
     @file_exist = {}
     @sample_path = []
     @sample_invalid_name = {}
+    sample_count = 0
     if @data_set
       @data_set.samples.each do |sample|
+        sample_count+=1
         sample.to_hash.each do |header, file|
           if header and (header.tag?('File') or header.tag?('Link')) 
             if file
@@ -94,6 +96,12 @@ class DataSetController < ApplicationController
       end
     end
     @sample_path.uniq!
+
+    # update num_samples
+    if @data_set.num_samples.to_i != sample_count
+      @data_set.num_samples = sample_count
+    end
+
 
     if !@data_set.refreshed_apps and @data_set.runnable_apps.empty?
       @data_set.refreshed_apps = true
