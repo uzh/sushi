@@ -4,7 +4,6 @@ tmp/sockets/*
 tmp/cache/*
 tmp/cache/sass/*
 log/*
-db/*
 log/development.log
 coverage
 lib/*.yml
