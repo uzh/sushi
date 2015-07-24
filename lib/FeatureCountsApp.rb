@@ -52,7 +52,8 @@ EOS
 
   def next_dataset
     {'Name'=>@dataset['Name'], 
-     'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"), 
+     'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
+     'Stats [File]'=>File.join(@result_dir, "#{@dataset['Name']}-stats.txt"),
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'featureLevel'=>@params['featureLevel'],
