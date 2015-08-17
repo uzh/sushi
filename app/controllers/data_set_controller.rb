@@ -10,7 +10,7 @@ class DataSetController < ApplicationController
         if data_set.completed_samples.to_i < data_set.samples_length.to_i
           sample_available = 0
           data_set.samples.each do |sample|
-            if sample_file = sample.to_hash.select{|header, file| header.tag?('File')}.first
+            if sample_file = sample.to_hash.select{|header, file| header and header.tag?('File')}.first
               file_path = File.join(SushiFabric::GSTORE_DIR, sample_file.last) 
               if File.exist?(file_path)
                 sample_available+=1
