@@ -24,6 +24,10 @@ class DataSetController < ApplicationController
     end
   end
   def index
+    if warning = session['import_fail']
+      @warning = warning
+      session['import_fail'] = nil
+    end
     top(20)
   end
   def index_full
@@ -185,7 +189,11 @@ class DataSetController < ApplicationController
           elsif !row.empty?
             rows << row
           else
-            @data_set_id = save_data_set(data_set, headers, rows)
+            unless headers.include?(nil)
+              @data_set_id = save_data_set(data_set, headers, rows)
+            else
+              session['import_fail'] = 'There must be a blank column. Please check it. Import is incomplete.'
+            end
           end
           if row.empty?
             data_set = []
@@ -206,7 +214,11 @@ class DataSetController < ApplicationController
         data_set_tsv.each do |row|
           rows << row.fields
         end
-        @data_set_id = save_data_set(data_set, headers, rows)
+        unless headers.include?(nil)
+          @data_set_id = save_data_set(data_set, headers, rows)
+        else
+          session['import_fail'] = 'There must be a blank column. Please check it. Import is incomplete.'
+        end
       end
 
       if @data_set_id
@@ -250,7 +262,11 @@ class DataSetController < ApplicationController
             elsif !row.empty?
               rows << row
             else
-              @data_set_id = save_data_set(data_set, headers, rows)
+              unless headers.include?(nil)
+                @data_set_id = save_data_set(data_set, headers, rows)
+              else
+                @warning = 'There must be a blank column. Please check it. Import is incomplete.'
+              end
             end
             if row.empty?
               data_set = []
@@ -277,7 +293,11 @@ class DataSetController < ApplicationController
           data_set_tsv.each do |row|
             rows << row.fields
           end
-          @data_set_id = save_data_set(data_set, headers, rows)
+            unless headers.include?(nil)
+              @data_set_id = save_data_set(data_set, headers, rows)
+            else
+              @warning = 'There must be a blank column. Please check it. Import is incomplete.'
+            end
         end
       end
 

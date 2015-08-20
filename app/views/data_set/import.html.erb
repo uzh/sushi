@@ -1,4 +1,16 @@
+<script type="text/javascript">
+$(function(){
+  var msg = $('#import').data('complete');
+  if(msg != ''){
+    alert(msg);
+  }
+});
+
+</script>
+
+<div id="import" data-complete="<%= @warning %>"></div>
 <%= render 'shared/td' %>
+
 <h1>Project <%= session[:project] %></h1>
 <h3>Import DataSet</h3>
 <h4>File selection</h4>
