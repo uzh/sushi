@@ -39,7 +39,18 @@ $(function(){
     }
   });
 })
+
+$(function(){
+  var msg = $('#import').data('complete');
+  if(msg != ''){
+    alert(msg);
+  }
+})
+
+
 </script>
+
+<div id="import" data-complete="<%= @warning %>"></div>
 
 <%= render 'shared/td' %>
 
