@@ -27,6 +27,8 @@ EOS
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = 'gene'
+    @params['gtfFeatureType'] = 'exon'
+    @params['gtfFeatureType', 'description'] = "which atomic features of the gtf should be used to define the meta-features; see featureLevel"
     @params['allowMultiOverlap'] = true
     @params['allowMultiOverlap', 'description'] = "count alignments that fall in a region where multipe features are annotated"
     @params['countPrimaryAlignmentsOnly'] = true
