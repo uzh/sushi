@@ -72,7 +72,7 @@ production:
   attribute: CN
   group_base: OU=OU_Employees,OU=OU_Accounts,DC=FGCZ-NET,DC=unizh,DC=ch
   required_groups: OU=OU_Employees,OU=OU_Accounts,DC=FGCZ-NET,DC=unizh,DC=ch
-  base: OU=OU_Employees,OU=OU_Accounts,DC=FGCZ-NET,DC=unizh,DC=ch
+  base: ["OU=OU_Employees,OU=OU_Accounts,DC=FGCZ-NET,DC=unizh,DC=ch", "OU=OU_Users,OU=OU_Accounts,DC=FGCZ-NET,DC=unizh,DC=ch"]
   admin_user: CN=trxcopy,OU=OU_Applications,OU=OU_Accounts,DC=FGCZ-NET,DC=unizh,DC=ch
   admin_password: fXSC7o8g
   # <<: *AUTHORIZATIONS
