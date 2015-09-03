@@ -37,7 +37,11 @@ gem 'jquery-rails'
 # To use debugger
 # gem 'debugger'
 gem 'devise'
+if `hostname`.chomp =~ /fgcz-s-034/
+gem 'devise_ldap_authenticatable', '>= 0.6.1.1', :path => '/srv/SushiFabric/Gems/devise_ldap_authenticatable'
+else
 gem 'devise_ldap_authenticatable'
+end
 gem 'hpricot'
 gem 'ruby_parser'
 
