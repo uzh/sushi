@@ -1,4 +1,11 @@
 PATH
+  remote: /srv/SushiFabric/Gems/devise_ldap_authenticatable
+  specs:
+    devise_ldap_authenticatable (0.6.1.1)
+      devise (>= 2.0.0)
+      net-ldap (~> 0.2.2)
+
+PATH
   remote: /srv/SushiFabric/Gems/fgcz
   specs:
     fgcz (0.0.1)
@@ -53,9 +60,6 @@ GEM
       orm_adapter (~> 0.1)
       railties (~> 3.1)
       warden (~> 1.2.1)
-    devise_ldap_authenticatable (0.6.1.1)
-      devise (>= 2.0.0)
-      net-ldap (~> 0.2.2)
     diff-lcs (1.2.4)
     erubis (2.7.0)
     execjs (1.4.0)
@@ -175,7 +179,7 @@ DEPENDENCIES
   chartkick
   coffee-rails (~> 3.2.1)
   devise
-  devise_ldap_authenticatable
+  devise_ldap_authenticatable (>= 0.6.1.1)!
   fgcz!
   hpricot
   jquery-rails
