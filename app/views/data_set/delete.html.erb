@@ -12,8 +12,12 @@ $(document).ready(function(){
 <%= form_tag(@data_set.id.to_s, :method=>:delete) do %>
   <%= radio_button 'option', 'delete', "only_sushi", {:checked => true} %> Delete <span class="alert">ONLY</span> entry in <span class="alert">Sushi DB</span><br />
   <% if @sample_path.first and File.exist?(File.join(SushiFabric::GSTORE_DIR, @sample_path.first)) and @data_set and @data_set.parent_id %>
-  <%= radio_button 'option', 'delete', "also_gstore" %> Delete <span style="color:red;font-weight:bold;">BOTH</span> entry in <span class="alert">Sushi DB</span> and data in <span class="alert">GStore</span> <br /><br />
+    <%= radio_button 'option', 'delete', "also_gstore" %> Delete <span style="color:red;font-weight:bold;">BOTH</span> entry in <span class="alert">Sushi DB</span> and data in <span class="alert">GStore</span> <br />
+  <% else %>
+    <br />
+    Note: You cannot delete <span class="alert">original dataset</span> file(s) in <span class="alert">GStore</span> <br />
   <% end %>
+  <br />
   <%= submit_tag 'delete', :confirm=>"Are you sure you want to delete the '#{@data_set.name}'?" %>
 <% end %>
 <hr />
