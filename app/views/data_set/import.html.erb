@@ -24,12 +24,17 @@ Parent DataSet ID: <%= text_field :parent, :id, :size=>10 %>
 <hr />
 <h4>All DataSets ( Project <%= session[:project] %> )</h4>
 <table>
-  <tr><th>ID</th><th>Name</th><th>MD5</th><th>ParentID</th><th>Created</th></tr>
+  <tr><th>ID</th><th>Name</th><th>MD5</th><th>ParentID</th><th>Who</th><th>Created</th></tr>
 <% @project.data_sets.reverse.each do |data_set| %>
   <tr>
     <td><%= data_set.id %></td>
     <td><%= link_to td(data_set.name), "/data_set/#{data_set.id}" %></td>
     <td><%= data_set.md5 %></td><td><%= data_set.parent_id %></td>
+    <% if user = data_set.user %>
+      <td><%= user.login %></td>
+    <% else %>
+      <td>sushi_lover</td>
+    <% end %>
     <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
 <% end %>
 </table>
