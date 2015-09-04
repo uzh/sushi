@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150717141155) do
+ActiveRecord::Schema.define(:version => 20150904091250) do
 
   create_table "data_sets", :force => true do |t|
     t.integer  "project_id"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 20150717141155) do
     t.boolean  "refreshed_apps"
     t.integer  "num_samples"
     t.integer  "completed_samples"
+    t.integer  "user_id"
   end
 
   create_table "jobs", :force => true do |t|

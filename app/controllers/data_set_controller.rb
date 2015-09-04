@@ -190,7 +190,7 @@ class DataSetController < ApplicationController
             rows << row
           else
             unless headers.include?(nil)
-              @data_set_id = save_data_set(data_set, headers, rows)
+              @data_set_id = save_data_set(data_set, headers, rows, current_user)
             else
               session['import_fail'] = 'There must be a blank column. Please check it. Import is incomplete.'
             end
@@ -215,7 +215,7 @@ class DataSetController < ApplicationController
           rows << row.fields
         end
         unless headers.include?(nil)
-          @data_set_id = save_data_set(data_set, headers, rows)
+          @data_set_id = save_data_set(data_set, headers, rows, current_user)
         else
           session['import_fail'] = 'There must be a blank column. Please check it. Import is incomplete.'
         end
@@ -263,7 +263,7 @@ class DataSetController < ApplicationController
               rows << row
             else
               unless headers.include?(nil)
-                @data_set_id = save_data_set(data_set, headers, rows)
+                @data_set_id = save_data_set(data_set, headers, rows, current_user)
               else
                 @warning = 'There must be a blank column. Please check it. Import is incomplete.'
               end
@@ -294,7 +294,7 @@ class DataSetController < ApplicationController
             rows << row.fields
           end
             unless headers.include?(nil)
-              @data_set_id = save_data_set(data_set, headers, rows)
+              @data_set_id = save_data_set(data_set, headers, rows, current_user)
             else
               @warning = 'There must be a blank column. Please check it. Import is incomplete.'
             end
