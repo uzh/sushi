@@ -4,7 +4,14 @@
 <h2>Select</h2>
 <%= form_tag(:action=>:multi_destroy, :method=>:post) do %>
   <%= radio_button 'option', 'delete', "only_sushi", {:checked => true} %> Delete <span class="alert">ONLY</span> entry in <span class="alert">Sushi DB</span><br />
+  <% if @orig_datasets.empty? %>
   <%= radio_button 'option', 'delete', "also_gstore" %> Delete <span style="color:red;font-weight:bold;">BOTH</span> entry in <span class="alert">Sushi DB</span> and data in <span class="alert">GStore</span> <br /><br />
+  <% else %>
+    <br />
+    Note: You cannot delete <span class="alert">original dataset</span> file(s) in <span class="alert">GStore</span>: 
+    <%= @orig_datasets.map{|data_set| data_set.id}.join(", ") %> <br />
+  <% end %>
+  <br /> 
   <%= hidden_field :option, :data_set_ids, :value=>@data_set_ids.join(',') %>
   <%= submit_tag 'delete', :confirm=>"Are you sure you want to delete the following DataSets?" %>
 <% end %>
