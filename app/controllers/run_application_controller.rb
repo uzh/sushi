@@ -125,6 +125,7 @@ class RunApplicationController < ApplicationController
       @sushi_app.project = 'p' + project_number.to_s
     end
     @sushi_app.dataset_sushi_id = data_set_id.to_i
+    @sushi_app.current_user = current_user
     @sushi_app.run
   end
 end
