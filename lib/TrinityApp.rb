@@ -11,21 +11,36 @@ class TrinityApp < SushiFabric::SushiApp
     @name = 'Trinity'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Assemble'
-    @required_columns = ['Name','Read1', 'Species', ]
+    @required_columns = ['Name', 'Read1', 'Species']
     @required_params = ['name']
     # optional params
     @params['cores'] = '12'
     @params['ram'] = '220'
     @params['scratch'] = '1000'
     @params['name'] = "Trinity_Assembly"
-    @params['paired'] = ['false', 'true']
+    @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
-    @params['prinseqOpt'] = '-trim_qual_left 20 -trim_qual_right 20 -min_qual_mean 25 -min_len 50'
-    @params['flexbarOpt'] = '--adapter-min-overlap 10 -at 1 --min-read-length 50'
+    @params['trimAdapter'] = true
+    @params['trimLeft'] = 5 
+    @params['trimRight'] = 5
+    @params['minTailQuality'] = 20
+    @params['minAvgQuality'] = 20
+    @params['minReadLength'] = 36
     @params['trinityOpt'] = '--min_kmer_cov 2'
     @params['specialOptions'] = ''
     @params['mail'] = ""
  end
+  def preprocess
+    if @params['paired']
+      @required_columns << 'Read2'
+    end
+  end
+  def set_default_parameters
+    @params['paired'] = dataset_has_column?('Read2')
+    if dataset_has_column?('strandMode')
+      @params['strandMode'] = @dataset[0]['strandMode']
+    end
+  end
   def next_dataset
     {'Name'=>@params['name'],
      'Fasta [File]'=>File.join(@result_dir, "#{@params['name']}.fasta")
@@ -37,7 +52,7 @@ class TrinityApp < SushiFabric::SushiApp
 end
 
 if __FILE__ == $0
-  usecase = EdgeRApp.new
+  #usecase = EdgeRApp.new
 
   usecase.project = "p1001"
   usecase.user = 'masamasa'
