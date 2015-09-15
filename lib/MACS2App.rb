@@ -38,6 +38,8 @@ class MACS2App < SushiFabric::SushiApp
   def next_dataset
     bw_link = File.join(@result_dir, "#{@dataset['Name']}.bw")
     peakfile_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.xls")
+    bedfile_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.bed")
+    peakseq_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.fa")
 
     {'Name'=>@dataset['Name'], 
      'Species'=>@dataset['Species'],
@@ -45,8 +47,10 @@ class MACS2App < SushiFabric::SushiApp
      'refFeatureFile'=>@params['refFeatureFile'],
      'paired'=>@params['paired'],
      'CalledPeaks [File]'=>peakfile_link,
-      'BigWigFile [File]'=>bw_link
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+     'BED [File]'=>bedfile_link,
+     'PeakSequences [File]'=>peakseq_link,
+     'BigWigFile [File]'=>bw_link
+    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric")).merge(extract_column("ChIP"))
   end
   def commands
     run_RApp("ezAppMacs2")
