@@ -371,7 +371,7 @@ class DataSetController < ApplicationController
       @data_set_ids.each do |id|
         data_set = DataSet.find_by_id(id)
         @data_sets << data_set
-        if data_set.parent_id
+        unless data_set.parent_id
           @orig_datasets << data_set
         end
       end
