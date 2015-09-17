@@ -1,4 +1,4 @@
-== SUSHI: Supporing User for SHell script Integration
+== SUSHI: Supporting User for SHell script Integration
 
 Process your raw data, without cooking it!
 
