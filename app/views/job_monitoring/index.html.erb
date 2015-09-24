@@ -1,9 +1,16 @@
 <%= render 'shared/td' %>
 <h1>Project <%= session[:project] %></h1>
 <% if session[:employee] %>
-  <%= form_tag(:action => "index") do %>
-    <%= submit_tag 'All Job List' %>
-    <%= hidden_field :option, :all_job_list, :value=>true %>
+  <% unless session[:all_job_list] %>
+    <%= form_tag(:action => "index") do %>
+      <%= submit_tag 'All Job List' %>
+      <%= hidden_field :option, :all_job_list, :value=>true %>
+    <% end %>
+  <% else %>
+    <%= form_tag(:action => "index") do %>
+      <%= submit_tag 'Project Job List' %>
+      <%= hidden_field :option, :project_job_list, :value=>true %>
+    <% end %>
   <% end %>
 <% end %>
 <hr />
