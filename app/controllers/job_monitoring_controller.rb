@@ -3,9 +3,13 @@ class JobMonitoringController < ApplicationController
     public_dir = File.expand_path('../../../public', __FILE__)
     @job_list = if option=params[:option] and option[:all_job_list]
                   @all_job_list=true
-                  @@workflow_manager.job_list(false, nil)
+                  #@@workflow_manager.job_list(false, nil)
+                  command = "wfm_job_list -d #{SushiFabric::WORKFLOW_MANAGER}"
+                  `#{command}`
                 else
-                  @@workflow_manager.job_list(false, session[:project])
+                  #@@workflow_manager.job_list(false, session[:project])
+                  command = "wfm_job_list -p #{session[:project]} -d #{SushiFabric::WORKFLOW_MANAGER}"
+                  `#{command}`
                 end
     @job_list = @job_list.split(/\n/).map{|job| job.split(/,/)}
     @total = @job_list.length
