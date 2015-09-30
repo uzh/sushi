@@ -9,7 +9,7 @@ class WordCountApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'Word_Count'
-    @description = "test applicaiton #{GlobalVariables::SUSHI}"
+    @description = "aa  test applicaiton #{GlobalVariables::SUSHI}"
     @analysis_category = 'Stats'
     @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
