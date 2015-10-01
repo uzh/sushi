@@ -50,7 +50,7 @@ class DESeq2App < SushiFabric::SushiApp
     end
   end
   def commands
-    run_RApp("ezAppDeseq2")
+    run_RApp("EzAppDeseq2")
   end
 end
 

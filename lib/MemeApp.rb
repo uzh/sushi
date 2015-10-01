@@ -31,7 +31,7 @@ class MemeApp <  SushiFabric::SushiApp
     end
 
   def commands
-    run_RApp("ezAppMEME")
+    run_RApp("EzAppMEME")
   end
 end
 

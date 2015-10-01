@@ -48,7 +48,7 @@ class RnaBamStatsApp <  SushiFabric::SushiApp
   end
 
   def commands
-    run_RApp("ezAppRnaBamStats")
+    run_RApp("EzAppRnaBamStats")
   end
 end
 

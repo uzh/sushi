@@ -49,7 +49,7 @@ EOS
     }
   end
   def commands
-    run_RApp("ezAppNcpro")
+    run_RApp("EzAppNcpro")
   end
 end
 

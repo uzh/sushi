@@ -79,7 +79,7 @@ EOS
     end
   end
   def commands
-    run_RApp("ezAppRSEM")
+    run_RApp("EzAppRSEM")
   end
 end
 
