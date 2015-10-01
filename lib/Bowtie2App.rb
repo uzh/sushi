@@ -28,7 +28,7 @@ EOS
     @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
     @params['cmdOptions'] = '--no-unal'
     @params['cmdOptions', 'description'] = 'specify the commandline options for bowtie2; do not specify any option that is already covered by the dedicated input fields'
-    @params['trimAdapter'] = false
+    @params['trimAdapter'] = true
     @params['trimAdapter', 'description'] = 'if adapters should be trimmed'
     @params['trimLeft'] = 0
     @params['trimLeft', 'description'] = 'fixed trimming at the "left" i.e. 5-prime end of the read'
@@ -36,6 +36,8 @@ EOS
     @params['trimRight', 'description'] = 'fixed trimming at the "right" i.e. 3-prime end of the read'
     @params['minTailQuality'] = 0
     @params['minTailQuality', 'description'] = 'if above zero, then reads are trimmed as soon as 4 consecutive bases have lower mean quality'
+    @params['minAvgQuality'] = 10
+    @params['minReadLength'] = 20
     @params['specialOptions'] = ''
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""

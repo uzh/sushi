@@ -30,7 +30,7 @@ EOS
     @params['bowtie-e', 'description'] = 'maximum sum of base qualities at mismatching positions'
     @params['cmdOptions'] = ' --calc-ci '
     @params['keepBam'] = false
-    @params['trimAdapter'] = false
+    @params['trimAdapter'] = true
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
     @params['minTailQuality'] = 0
