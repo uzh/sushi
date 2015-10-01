@@ -56,6 +56,8 @@ $(function(){
 
 <h1>Project <%= session[:project] %></h1>
 <h3>DataSet</h3>
+<%= button_to "Report", "/data_set/report" %>
+
 <% if @project %>
   <% if data_sets = @project.data_sets and data_sets.length == @data_sets.length %>
     <ul id="data_set_tree" class="filetree"></ul>

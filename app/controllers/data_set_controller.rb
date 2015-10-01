@@ -34,6 +34,42 @@ class DataSetController < ApplicationController
     top
     render action: "index"
   end
+#  caches_action :report
+#  caches_page :report
+  def report
+    @project = Project.find_by_number(session[:project].to_i)
+    @tree = []
+    node_list = {}
+    @root = []
+    top_nodes = []
+    @project.data_sets.each do |data_set|
+      report_link = ""
+      if i = data_set.headers.index{|header| header.tag?("Link")} 
+        report_base = data_set.samples.first.to_hash[data_set.headers[i]]
+        base = File.basename(report_base)
+        report_link = if data_set.completed_samples.to_i == data_set.samples_length
+                        report_url = File.join('http://fgcz-gstore.uzh.ch/projects', report_base)
+                        "<a href='#{report_url}'>#{base}</a>"
+                      else 
+                        base
+                      end
+      end
+      node = {"id" => data_set.id, 
+              "text" => " <a href='/data_set/#{data_set.id}'>"+data_set.name+'</a> '+ data_set.comment.to_s + report_link,
+              "children" => []}
+      node_list[data_set.id] = node
+      if parent = data_set.data_set
+        node_list[parent.id]['children'] << node
+      else
+        top_nodes << node
+      end
+      if data_set.id == params[:format].to_i
+        @root << node
+      end
+    end
+    @root = top_nodes.reverse if @root.empty?
+    @tree.concat @root
+  end
   def script_log
     @data_set = if id = params[:format]
                   DataSet.find_by_id(id)

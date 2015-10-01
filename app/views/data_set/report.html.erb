@@ -1,0 +1,6 @@
+<h1>Project <%= session[:project] %></h1>
+<h3>DataSet Report</h3>
+
+<table>
+  <%= dataset_tree(0, @root).html_safe %>
+</table>
