@@ -62,7 +62,7 @@ EOS
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
-    run_RApp("ezAppBowtie2")
+    run_RApp("EzAppBowtie2")
   end
 end
 

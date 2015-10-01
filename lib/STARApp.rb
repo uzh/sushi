@@ -85,7 +85,7 @@ EOS
      end
   end
   def commands
-    run_RApp("ezAppSTAR")
+    run_RApp("EzAppSTAR")
   end
 end
 

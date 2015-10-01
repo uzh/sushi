@@ -41,7 +41,7 @@ class GatkRnaSeqHaplotyperApp <  SushiFabric::SushiApp
   end
 
   def commands
-    run_RApp('gatkRnaSeqHaplotyperApp')
+    run_RApp('EzAppGatkRnaSeqHaplotyper')
   end
 end
 

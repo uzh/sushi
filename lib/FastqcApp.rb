@@ -44,7 +44,7 @@ EOS
     }
   end
   def commands
-    run_RApp("ezAppFastQC")
+    run_RApp("EzAppFastqc")
   end
 end
 

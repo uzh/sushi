@@ -42,7 +42,7 @@ class TeqcApp <  SushiFabric::SushiApp
     }
   end
   def commands
-    run_RApp("ezAppTeqc")
+    run_RApp("EzAppTeqc")
   end
 end
 
