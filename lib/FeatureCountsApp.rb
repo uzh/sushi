@@ -66,7 +66,7 @@ EOS
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
-    run_RApp("ezAppFeatureCounts")
+    run_RApp("EzAppFeatureCounts")
   end
 end
 

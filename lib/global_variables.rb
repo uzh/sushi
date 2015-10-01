@@ -132,7 +132,7 @@ module GlobalVariables
         command << "input[['#{key}']] = '#{input[key]}'\n" 
       end
     end
-    command<<  "ezRunApp(#{app_name}, input=input, output=output, param=param)\n"
+    command<<  "#{app_name}$new()$run(input=input, output=output, param=param)\n"
     command<<  "EOT\n"
     command
   end

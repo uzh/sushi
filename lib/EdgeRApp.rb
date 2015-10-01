@@ -52,7 +52,7 @@ class EdgeRApp < SushiFabric::SushiApp
     end
   end
   def commands
-    run_RApp("ezAppEdger")
+    run_RApp("EzAppEdger")
   end
 end
 

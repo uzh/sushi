@@ -53,7 +53,7 @@ class TophatApp < SushiFabric::SushiApp
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
-    run_RApp("ezAppTophat")
+    run_RApp("EzAppTophat")
   end
 end
 

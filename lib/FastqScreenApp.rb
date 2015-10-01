@@ -51,7 +51,7 @@ EOS
     }
   end
   def commands
-    run_RApp("ezAppFastqScreen")
+    run_RApp("EzAppFastqScreen")
   end
 end
 
