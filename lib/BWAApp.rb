@@ -21,10 +21,12 @@ class BWAApp < SushiFabric::SushiApp
     @params['paired'] = false
     @params['algorithm'] = ['aln', 'mem', 'bwasw']
     @params['cmdOptions'] = ''
-    @params['trimAdapter'] = false
+    @params['trimAdapter'] = true
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
     @params['minTailQuality'] = 0
+    @params['minAvgQuality'] = 10
+    @params['minReadLength'] = 20
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end
@@ -40,10 +42,15 @@ class BWAApp < SushiFabric::SushiApp
     {'Name'=>@dataset['Name'], 
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-     'Species'=>@dataset['Species'],
-     'refBuild'=>@params['refBuild'],
-     'paired'=>@params['paired'],
-     'Read Count'=>@dataset['Read Count']
+        'IGV Starter [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
+        'Species'=>@dataset['Species'],
+        'refBuild'=>@params['refBuild'],
+        'paired'=>@params['paired'],
+        'refFeatureFile'=>@params['refFeatureFile'],
+        'strandMode'=>@params['strandMode'],
+        'Read Count'=>@dataset['Read Count'],
+        'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
+        'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml")
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
