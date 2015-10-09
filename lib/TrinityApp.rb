@@ -47,7 +47,7 @@ class TrinityApp < SushiFabric::SushiApp
     }
   end
   def commands
-    run_RApp('ezAppTrinity')
+    run_RApp('EzAppTrinity')
   end
 end
 

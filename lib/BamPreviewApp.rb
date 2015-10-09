@@ -62,7 +62,7 @@ EOS
   end
 
   def commands
-    run_RApp("ezAppBamPreview")
+    run_RApp("EzAppBamPreview")
   end
 end
 

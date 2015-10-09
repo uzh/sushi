@@ -53,7 +53,7 @@ class MACS2App < SushiFabric::SushiApp
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric")).merge(extract_column("ChIP"))
   end
   def commands
-    run_RApp("ezAppMacs2")
+    run_RApp("EzAppMacs2")
   end
 end
 

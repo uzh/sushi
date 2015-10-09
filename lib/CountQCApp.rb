@@ -45,7 +45,7 @@ class CountQCApp < SushiFabric::SushiApp
     end
   end
   def commands
-    run_RApp("ezAppCountQC")
+    run_RApp("EzAppCountQC")
   end
 end
 

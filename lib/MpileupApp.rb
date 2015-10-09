@@ -59,7 +59,7 @@ EOS
   end
 
   def commands
-    run_RApp("ezAppMpileup")
+    run_RApp("EzAppMpileup")
   end
 end
 

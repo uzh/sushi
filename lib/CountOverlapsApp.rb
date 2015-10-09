@@ -60,7 +60,7 @@ class CountOverlapsApp < SushiFabric::SushiApp
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
-    run_RApp("ezAppCountOverlaps")
+    run_RApp("EzAppCountOverlaps")
   end
 end
 
