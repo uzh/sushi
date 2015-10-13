@@ -9,7 +9,6 @@ PATH
   remote: /srv/SushiFabric/Gems/fgcz
   specs:
     fgcz (0.0.1)
-      rails (~> 3.2.9)
 
 GEM
   remote: https://rubygems.org/
@@ -170,7 +169,7 @@ GEM
     wasabi (2.5.1)
       httpi (~> 1.0)
       nokogiri (>= 1.4.0)
-    workflow_manager (0.2.3)
+    workflow_manager (0.2.4)
 
 PLATFORMS
   ruby
