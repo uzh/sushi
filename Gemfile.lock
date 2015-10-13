@@ -170,7 +170,7 @@ GEM
     wasabi (2.5.1)
       httpi (~> 1.0)
       nokogiri (>= 1.4.0)
-    workflow_manager (0.2.1)
+    workflow_manager (0.2.3)
 
 PLATFORMS
   ruby
