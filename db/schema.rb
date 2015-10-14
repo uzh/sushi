@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(:version => 20150904091250) do
   end
 
   create_table "samples", :force => true do |t|
-    t.string   "key_value"
+    t.text     "key_value"
     t.integer  "data_set_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
