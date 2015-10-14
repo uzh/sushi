@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.9'
+gem 'rails', '3.2.22'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -66,3 +66,7 @@ end
 gem 'workflow_manager'
 gem 'sushi_fabric'
 gem 'chartkick'
+#gem 'mysql2'
+gem 'mysql2', '~> 0.3.20'
+#gem 'activerecord-mysql2-adapter'
+gem 'yaml_db'
