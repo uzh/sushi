@@ -10,3 +10,5 @@ lib/*.yml
 config/environments/development.rb
 .bundle/
 config/ldap.yml
+config/database.yml
+config/initializers/devise.rb

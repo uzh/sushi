@@ -51,7 +51,7 @@ class RunApplicationController < ApplicationController
     @sushi_app.set_default_parameters
     @nodes = @sushi_app.cluster_nodes
     if `hostname`.chomp =~ /fgcz-s-034/ and !session['employee']
-      @nodes = @nodes.select{|node| node =~ /fgcz-h/}
+      @nodes = @nodes.select{|node| node =~ /fgcz-h/ or node =~ /fgcz-c-065/}
     end
 		unless @factors
 			#init_factor('Condition')
