@@ -2,17 +2,101 @@
 
 Process your raw data, without cooking it!
 
-SUSHI is defined as
-* Sequence analysis of Useless Staff with Highly Integrated system, or 
-* Super Useful System for HIgh-throughput data, or
-* Super Ultra Special Hyper Incredible system, or something else.
-
-Please send an email to masaomi.hatakeyama@fgcz.uzh.ch if you have better/cooler acronym. 
-
-Namely, it is a sort of pipeline framework, in partiular, for big data process. An instance is working at FGCZ in order to process the next genration sequence data for over 1000 projects. There have been some similar frameworks published such as Galaxy, Chipstar, and GeneProof. It is noteworthy that SUSHI is developed in Ruby on Rails, so that updating and installing is in quite simple manner.
+SUSHI is defined as an acronym of Supporting User for SHell script Integration, but some one might say, it is a Super Ultra Special Hyper Incredible system. Namely, it is a sort of pipeline framework in order to share useful pipeline script developed on Ruby on Rails. An instance is working at FGCZ in order to process the next genration sequence data for over 1000 projects. There have been some similar frameworks published such as Galaxy, Chipstar, and GeneProof. It is noteworthy that SUSHI is developed in Ruby on Rails, so that updating and installing is in quite simple manner.
 
 == Getting Started
 
+Just access and play around with the demo SUSHI server: fgcz-sushi-demo.uzh.ch. Basic operation is described here: http://fgcz-sushi.uzh.ch/usage.html 
+
+== Installation
+
+= Requirements
+
+* Ruby (>= 1.9.3)
+* Ruby on Rails (>= ver.3.2.9, < 4.0)
+* git
+* bundler (RubyGem)
+
+Note
+* The current version fo SUSHI does not work in Ruby on Rails version 4
+* It will be upgraded soon
+
+= Download and configration
+
+  $ git clone https://github.com/uzh/sushi.git
+  $ cd sushi/
+  $ bundle install 
+  $ bundle exec rake secret
+
+then, you can see the secret key and paste it in /config/initilizer/devise.rb as follows:
+
+    config.secret_key = 'xxxxx'
+
+xxxxx is your secret key.
+
+  $ bundle exec rake db:migrate RAILS_ENV=production
+
+
+Note
+* If you fail in the step of bundle install, please make sure that 'bundle' command is installed in your system.
+* If it is not installed, just type 'gem install bundler' to install bundler.
+
+= Install EzRun package
+
 TODO
+
+== Start SUSHI server
+
+1. Start workflow_manager
+
+  $ mkdir workflow_manager
+  $ cd workflow_manager/
+  $ workflow_manager -m production
+  version = X.X.X
+  mode = production
+  DB = PStore
+  Cluster = local_computer
+  druby://localhost:12345
+
+
+Note
+* Keep the druby address of the workflow manager
+* If you have installed KyotoCabinet gem, KyotoCabinet is used as a DB system
+
+2. Start SUSHI server
+
+  $ bundle exec rails server -e production
+
+Note
+* SUSHI (Ruby on Rails) server should run in a different folder from the workflow manager
+* The rails server command starts a WEBRick webserver daemon, which is implemented in Ruby
+* As a default, SUSHI uses SQLite3 DBMS.
+* If you need the response to be faster, you can replace the DBMS to MySQL and the webserver application to Apache (+passenger module). Please refer to a lot of Rails documents on the web. 
+
+== Set your NGS Data and DataSet file
+
+TODO
+
+== Add a new SUSHI application
+
+TODO
+
+== Add a new cluster
+
+TODO
+
+== How to migrate SQLite3 to MySQL
+
+TODO
+
+== How to migrate WEBRick to Apache + passenger
+
+TODO
+
+== SUSHI framework background
+
+TODO
+
+
 
 
