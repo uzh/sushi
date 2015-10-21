@@ -2,15 +2,15 @@
 
 Process your raw data, without cooking it!
 
-SUSHI is defined as an acronym of Supporting User for SHell script Integration, but some one might say, it is a Super Ultra Special Hyper Incredible system. Namely, it is a sort of pipeline framework in order to share useful pipeline script developed on Ruby on Rails. An instance is working at FGCZ in order to process the next genration sequence data for over 1000 projects. There have been some similar frameworks published such as Galaxy, Chipstar, and GeneProof. It is noteworthy that SUSHI is developed in Ruby on Rails, so that updating and installing is in quite simple manner.
+SUSHI is defined as an acronym of Supporting User for SHell script Integration, but some one might say, it is a Super Ultra Special Hyper Incredible system. Namely, it is a sort of pipeline framework developed in Ruby on Rails in order to share useful pipeline scripts. An instance is now running at FGCZ to process the next genration sequence data for over 1000 projects. There have been some similar frameworks published such as Galaxy, Chipstar, and GeneProof. It is noteworthy that SUSHI is developed in Ruby on Rails, so that updating and installing is in quite simple manner.
 
 == Getting Started
 
-Just access and play around with the demo SUSHI server: fgcz-sushi-demo.uzh.ch. Basic operation is described here: http://fgcz-sushi.uzh.ch/usage.html 
+Just access and play around with the demo SUSHI server: http://fgcz-sushi-demo.uzh.ch , and see and feel what SUSHI looks like. Basic usage is described here: http://fgcz-sushi.uzh.ch/usage.html 
 
 == Installation
 
-= Requirements
+=== Requirements
 
 * Ruby (>= 1.9.3)
 * Ruby on Rails (>= ver.3.2.9, < 4.0)
@@ -18,10 +18,10 @@ Just access and play around with the demo SUSHI server: fgcz-sushi-demo.uzh.ch. 
 * bundler (RubyGem)
 
 Note
-* The current version fo SUSHI does not work in Ruby on Rails version 4
+* The current version of SUSHI does not work in Ruby on Rails version 4
 * It will be upgraded soon
 
-= Download and configration
+=== Download and configration
 
   $ git clone https://github.com/uzh/sushi.git
   $ cd sushi/
@@ -41,7 +41,7 @@ Note
 * If you fail in the step of bundle install, please make sure that 'bundle' command is installed in your system.
 * If it is not installed, just type 'gem install bundler' to install bundler.
 
-= Install EzRun package
+=== Install ezRun package
 
 TODO
 
