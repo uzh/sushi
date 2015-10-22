@@ -2,7 +2,7 @@
 
 Process your raw data, without cooking it!
 
-SUSHI is defined as an acronym of Supporting User for SHell script Integration, but some one might say, it is a Super Ultra Special Hyper Incredible system. Namely, it is a sort of pipeline framework developed in Ruby on Rails in order to share useful pipeline scripts. An instance is now running at FGCZ to process the next genration sequence data for over 1000 projects. There have been some similar frameworks published such as Galaxy, Chipstar, and GeneProof. It is noteworthy that SUSHI is developed in Ruby on Rails, so that updating and installing is in quite simple manner.
+SUSHI is defined as an acronym of Supporting User for SHell script Integration, but some one might say, it is a Super Ultra Special Hyper Incredible system. Anyway, it is a sort of pipeline framework developed in Ruby on Rails in order to share useful pipeline scripts. An instance is now running at FGCZ to process the next genration sequence data for over 1000 projects. There have been some similar frameworks published such as Galaxy, Chipstar, and GeneProof. It is noteworthy that SUSHI is developed in Ruby on Rails, so that updating and installing is in quite simple manner.
 
 == Getting Started
 
@@ -10,16 +10,38 @@ Just access and play around with the demo SUSHI server: http://fgcz-sushi-demo.u
 
 == Installation
 
+First of all, let me introduce quickly the main components composing the SUSHI system. There are mainly 3 components:
+
+# SUSHI server (GUI, Ruby on Rails)
+# SUSHI application (sushi_fabric.gem)
+# Workflow manager (workflow_manager.gem)
+
+SUSHI server is the user interface and some requests are sent to a SUSHI application, and the SUSHI application calls an job submission command of the Worlflow manager that manages and observes each submitted job. All the components will be installed at the same time by bundle command (see the next section) but note that the workflow manager is working as an independent process from SUSHI server (Ruby on Rails) process. Namely, the workflow manager process must run first and then SUSHI server (Ruby on Rails) should start, and both processes must be kept running in background. 
+
 === Requirements
 
 * Ruby (>= 1.9.3)
-* Ruby on Rails (>= ver.3.2.9, < 4.0)
-* git
+* Git
 * bundler (RubyGem)
+* (Ruby on Rails (>= ver.3.2.9, < 4.0))
+
+Just confirm first to check if the required applications are installed in your system as follows:
+
+  $ ruby -v
+  $ git --version
+  $ bundle -v
+
+If you get 'Command not found'-like message, you have to install the application before going on to the next step.
 
 Note
-* The current version of SUSHI does not work in Ruby on Rails version 4
-* It will be upgraded soon
+* The current version of SUSHI does not work in Ruby on Rails version 4 (but it will be upgraded soon)
+* Ruby on Rails will be installed in the following steps by bundler
+* Please refer to the following sites for the other application installation
+** Ruby https://www.ruby-lang.org/en/
+** Git https://git-scm.com/
+* To instal 'bundler', just type the following command after you install Ruby:
+
+  $ gem install bundler
 
 === Download and configration
 
@@ -36,15 +58,6 @@ xxxxx is your secret key.
 
   $ bundle exec rake db:migrate RAILS_ENV=production
 
-
-Note
-* If you fail in the step of bundle install, please make sure that 'bundle' command is installed in your system.
-* If it is not installed, just type 'gem install bundler' to install bundler.
-
-=== Install ezRun package
-
-TODO
-
 == Start SUSHI server
 
 1. Start workflow_manager
@@ -58,20 +71,24 @@ TODO
   Cluster = local_computer
   druby://localhost:12345
 
-
 Note
-* Keep the druby address of the workflow manager
-* If you have installed KyotoCabinet gem, KyotoCabinet is used as a DB system
+* The final line shows the druby address of the workflow manager
+* If KyotoCabinet (gem) is installed in your system, KyotoCabinet is automatically selected as a DB system rather than PSotre
 
 2. Start SUSHI server
 
   $ bundle exec rails server -e production
 
 Note
-* SUSHI (Ruby on Rails) server should run in a different folder from the workflow manager
+* SUSHI (Ruby on Rails) server should run in a different folder from the workflow manager folder
 * The rails server command starts a WEBRick webserver daemon, which is implemented in Ruby
-* As a default, SUSHI uses SQLite3 DBMS.
-* If you need the response to be faster, you can replace the DBMS to MySQL and the webserver application to Apache (+passenger module). Please refer to a lot of Rails documents on the web. 
+* SUSHI server uses SQLite3 DBMS as a default
+* You can replace the DBMS to MySQL and the webserver application to Apache (+passenger module) if you need
+* Please refer to a lot of Rails documents on the web
+
+=== Install ezRun package
+
+TODO
 
 == Set your NGS Data and DataSet file
 
@@ -90,6 +107,14 @@ TODO
 TODO
 
 == How to migrate WEBRick to Apache + passenger
+
+TODO
+
+== Workflow manager configuration
+
+TODO
+
+== SUSHI configuration
 
 TODO
 
