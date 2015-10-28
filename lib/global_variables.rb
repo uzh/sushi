@@ -9,7 +9,9 @@ R_COMMAND = '/usr/local/ngseq/stow/R-3.2.0/bin/R'
 def c(*list)
   list
 end
-load EZ_GLOBAL_VARIABLES
+if File.exist?(EZ_GLOBAL_VARIABLES)
+  load EZ_GLOBAL_VARIABLES
+end
 
 module GlobalVariables
   SUSHI = 'Supercalifragilisticexpialidocious!!'
