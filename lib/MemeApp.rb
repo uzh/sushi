@@ -16,7 +16,7 @@ class MemeApp <  SushiFabric::SushiApp
     @params['ram'] = '10'
     @params['scratch'] = '20'
     @params['name'] = 'MotifCheck_MEME'
-    @params['motifDB'] = '-db /usr/local/ngseq/stow/meme_4.10.1/db/motif_databases/JASPAR/JASPAR_CORE_2014_vertebrates.meme -db /usr/local/ngseq/stow/meme_4.10.1/db/motif_databases_12.7/MULTI/jolma2013.meme -db /usr/local/ngseq/stow/meme_4.10.1/db/motif_databases/MOUSE/uniprobe_mouse.meme'
+    @params['motifDB'] = '-db /usr/local/ngseq/stow/meme_4.10.2/db/motif_databases/JASPAR/JASPAR_CORE_2014_vertebrates.meme -db /usr/local/ngseq/stow/meme_4.10.2/db/motif_databases_12.7/MULTI/jolma2013.meme -db /usr/local/ngseq/stow/meme_4.10.2/db/motif_databases/MOUSE/uniprobe_mouse.meme'
     @params['cmdOptions'] = '-meme-mod zoops -meme-minw 6 -meme-maxw 30 -meme-nmotifs 3 -dreme-e 0.05 -centrimo-score 5.0 -centrimo-ethresh 10.0'
     @params['mail'] = ''
   end
