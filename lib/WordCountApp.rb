@@ -17,7 +17,7 @@ class WordCountApp < SushiFabric::SushiApp
     @params['count_option'] = ['', '-c', '-l', '-m', '-w']
     @params['hoge'] = '' 
     @required_columns = ['Name', 'Read1']
-    @required_params = ['count_option']
+    #@required_params = ['count_option']
   end
   def next_dataset
     {
