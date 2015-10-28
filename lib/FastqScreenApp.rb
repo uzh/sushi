@@ -27,8 +27,10 @@ EOS
     @params['minAlignmentScore'] = '-20'
     @params['minAlignmentScore', 'description'] = 'the alignment score for bowtie2; can be negative'
     @params['confFile'] = {'select'=>''}
-    Dir["#{FASTQSCREEN_CONF_DIR}/*.conf"].sort.select{|conf| File.file?(conf)}.each do |file|
-      @params['confFile'][File.basename(file)] = File.basename(file)
+    if defined?(FASTQSCREEN_CONF_DIR)
+      Dir["#{FASTQSCREEN_CONF_DIR}/*.conf"].sort.select{|conf| File.file?(conf)}.each do |file|
+        @params['confFile'][File.basename(file)] = File.basename(file)
+      end
     end
 
     @params['cmdOptions'] = "-k 10 --trim5 4 --trim3 4 --very-sensitive"
