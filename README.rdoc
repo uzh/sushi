@@ -12,9 +12,9 @@ Just access and play around with the demo SUSHI server: http://fgcz-sushi-demo.u
 
 First of all, let me introduce quickly the main components composing the SUSHI system. There are mainly 3 components:
 
-# SUSHI server (GUI, Ruby on Rails)
-# SUSHI application (sushi_fabric.gem)
-# Workflow manager (workflow_manager.gem)
+1. SUSHI server (GUI, Ruby on Rails)
+2. SUSHI application (sushi_fabric.gem)
+3. Workflow manager (workflow_manager.gem)
 
 SUSHI server is the user interface and some requests are sent to a SUSHI application, and the SUSHI application calls an job submission command of the Worlflow manager that manages and observes each submitted job. All the components will be installed at the same time by bundle command (see the next section) but note that the workflow manager is working as an independent process from SUSHI server (Ruby on Rails) process. Namely, the workflow manager process must run first and then SUSHI server (Ruby on Rails) should start, and both processes must be kept running in background. 
 
@@ -86,39 +86,77 @@ Note
 * You can replace the DBMS to MySQL and the webserver application to Apache (+passenger module) if you need
 * Please refer to a lot of Rails documents on the web
 
-=== Install ezRun package
+== Set your first NGS Data and DataSet file
+
+You need to import a DataSet file (.tsv) to SUSHI database.
+
+All Sushi applications take a DataSet, which is meta-information set of actual data, as an input, and sushi applications produce another DataSet as an output. The DataSet is identified as a .tsv (Tab-Separated-Value) text file, and it includes all input/output actual data file location (path). All DataSet file (.tsv) should be located in your project directory, the default project path becomes $RAILS_ROOT/public/gstore/projects/p1001, which directory will be automatically generated at the first running of the SUSHI server. 
+
+Sample DataSet
+* http://localhost:3000/ventricles_100k.tgz
+
+You can download it from your SUSHI server, or you can copy it from $RAIL_ROOT/public/ventricles_100k.tgz. After you decompress the archive file, move the folder in the project directory, $RAILS_ROOT/public/gstore/projects/p1001/
+
+then you can find it from the SUSHI server by clicking 'gStore' of the main menu. To click the "+"(plus) button next to 'dataset.tsv' file under the ventricles_100k directory from the gStore view imports it as a SUSHI DataSet to SUSHI database, and a new DataSet, ventricles_100k, will show up in 'DataSet' view.
+ 
+== How to run a SUSHI application
+
+The procedure is as follows:
+
+1. Select a DataSet
+2. Select a SUSHI applicaiton
+3. Set parameters
+4. Click 'submit' button
+
+Note
+* Initially, only 'WordCountApp' is available, though other SUSHI application buttons appear in DataSet view. 
+* After installing ezRun package and installing corresponding applications in your system, the other SUSHI applications will work. See the following steps.
+
+== Install ezRun package
+
+Please refer to https://github.com/uzh/ezRun
+
+And set the following constants in lib/global_variables.rb approplicately:
+
+  EZ_GLOBAL_VARIABLES = '/usr/local/ngseq/opt/EZ_GLOBAL_VARIABLES.txt'
+  R_COMMAND = '/usr/local/ngseq/stow/R-3.2.0/bin/R'
+
+== Install iGenome reference
+
+TODO
+* GENOME_REF_DIR = '/srv/GT/reference'
+
+== Advanced SUSHI configuration
+
+=== How to add a new cluster
 
 TODO
 
-== Set your NGS Data and DataSet file
+=== How to make/add a new SUSHI application
 
 TODO
 
-== Add a new SUSHI application
+== How to generate SUSHI applications workflow pipeline
 
 TODO
 
-== Add a new cluster
+=== How to migrate SQLite3 to MySQL
 
 TODO
 
-== How to migrate SQLite3 to MySQL
+=== How to migrate WEBRick to Apache + passenger
 
 TODO
 
-== How to migrate WEBRick to Apache + passenger
+=== Workflow manager configuration
 
 TODO
 
-== Workflow manager configuration
+=== SUSHI configuration
 
 TODO
 
-== SUSHI configuration
-
-TODO
-
-== SUSHI framework background
+=== SUSHI framework background
 
 TODO
 
