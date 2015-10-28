@@ -15,7 +15,7 @@ class WordCountApp < SushiFabric::SushiApp
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
     @params['refGroup'] = '' ## TODO: this should be a value from the selected column
     @params['count_option'] = ['', '-c', '-l', '-m', '-w']
-    @params['hoge'] = '' 
+    @params['note'] = '' 
     @required_columns = ['Name', 'Read1']
     #@required_params = ['count_option']
   end
@@ -26,7 +26,7 @@ class WordCountApp < SushiFabric::SushiApp
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def set_default_parameters
-    @params['hoge'] = @dataset[0]['Read1 [File]']
+    @params['note'] = @dataset[0]['Read1 [File]']
   end
   def preprocess
     if @factors = get_columns_with_tag('Factor') and @factors.first
