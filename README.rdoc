@@ -127,6 +127,12 @@ And set the following constants in lib/global_variables.rb appropriately:
   EZ_GLOBAL_VARIABLES = '/usr/local/ngseq/opt/EZ_GLOBAL_VARIABLES.txt'
   R_COMMAND = '/usr/local/ngseq/stow/R-3.2.0/bin/R'
 
+You can find the EZ_GLOBAL_VARIABLES.txt location in your system by loading ezRun package 
+
+  > library(ezRun)
+
+in the R environment console.
+ 
 == Install iGenome reference
 
 In the case of using alignment tools, such as STARApp and BowtieApp, you need reference genome sequence(s). We use iGenome format for the reference data. If you can find an insteresting species in the site of Illumina/iGenome, you can download it in your system as a reference of SUSHI application. The current all SUSHI applciations refer to the following environment variable:
