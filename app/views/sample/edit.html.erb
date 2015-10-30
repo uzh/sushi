@@ -4,6 +4,7 @@
 <hr />
 <h3>Samples</h3>
 <% if @data_set %>
+    <div style="width:830px; overflow-x:scroll;">
   <%= form_tag({:controller => 'sample',:action => 'show'}) do %>
     <table>
       <tr>
@@ -59,6 +60,7 @@
         </tr>
       <% end %>
     </table>
+  </div>
     <%= submit_tag 'ok', :name=>'edit' %>
   <% end %>
 <% end %>
