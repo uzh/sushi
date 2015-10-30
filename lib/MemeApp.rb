@@ -21,7 +21,7 @@ class MemeApp <  SushiFabric::SushiApp
     @params['mail'] = ''
   end
   def next_dataset
-    meme_link = File.join(@result_dir, "#{@dataset['Name']}._meme-chip.html")
+    meme_link = File.join(@result_dir, "#{@dataset['Name']}/#{@dataset['Name']}_meme-chip.html")
     {'Name'=>@dataset['Name'],
      'MEME Result [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
      'MEME Report [Link]'=>meme_link,
