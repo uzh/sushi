@@ -132,17 +132,37 @@ You can find the EZ_GLOBAL_VARIABLES.txt location in your system by loading ezRu
   > library(ezRun)
 
 in the R environment console.
- 
+
+== Install third party applications and configure EZ_GLOBAL_VARIABLES.txt
+
+ezRun package bundles a sort of wrapper applications to call a thrid party application. For example, FastQCApp calles fastqc command. In other words, FastQCApp does not work without installation of FastQC command. All the application paths are defined in EZ_GLOBAL_VARIABLES.txt. Please check the applications defined in EZ_GLOBAL_VARIABLES.txt one by one and set the correct path installed in your environement. If an appropriate application is not found, the corresponding SUSHI application will stop with an error, though the application button appears.
+
 == Install iGenome reference
 
-In the case of using alignment tools, such as STARApp and BowtieApp, you need reference genome sequence(s). We use iGenome format for the reference data. If you can find an insteresting species in the site of Illumina/iGenome, you can download it in your system as a reference of SUSHI application. The current all SUSHI applciations refer to the following environment variable:
+In the case of using alignment tools, such as STARApp and BowtieApp, you need reference genome sequence(s). We use iGenome format for the reference data. If you can find your target species in the site of Illumina/iGenome, you can download it in your system as a reference of SUSHI application. The current all SUSHI applciations refer to the following environment variable 
 
 * GENOME_REF_DIR = '/srv/GT/reference'
 
-Please set the GENOME_REF_DIR path accordingly to the local iGenome folders in your system.
+in lib/global_variables.rb and
+
+* GENOMES_ROOT = '/srv/GT/reference'
+
+in EZ_GLOBAL_VARIABLES.txt. Please set the GENOME_REF_DIR and GENOMES_ROOT path accordingly to the local iGenome folders in your system.
 
 Reference
 * iGenome: https://support.illumina.com/sequencing/sequencing_software/igenome.html
+
+== Final small configuration
+
+Please make a symbolic link to gstore directory in public directory, namely just run the following command in public/ directory:
+
+  $ ln -s gstore/public
+
+and set the following environment variable 
+
+* PROJECT_BASE_URL="http://localhost:3000/projects" 
+
+in EZ_GLOBAL_VARIABLES.txt
 
 == Advanced SUSHI configuration
 
