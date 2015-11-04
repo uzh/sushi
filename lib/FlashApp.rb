@@ -17,7 +17,7 @@ Fast Length Adjustment of SHort reads
 EOS
     
     @required_columns = ['Name','Read1','Read2']
-    # @required_params = ['paired']
+    @required_params = ['paired']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '30'
@@ -40,18 +40,18 @@ EOS
     @params['mail'] = ""
   end
   def preprocess
-  #  if @params['paired']
-  #    @required_columns << 'Read2'
-  #  end
+    if @params['paired']
+      @required_columns << 'Read2'
+    end
   end
  def set_default_parameters
-   # @params['paired'] = dataset_has_column?('Read2')
+    @params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
      'Reads [File]'=>File.join(@result_dir, "#{@dataset['Name']}.extendedFrags.fastq.gz"), 
      'FlashLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_flash.log"),
-      'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_trimmomatic.log"),
+     'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_trimmomatic.log"),
      'Species'=>@dataset['Species'],
      'Read Count'=>@dataset['Read Count'],
      
