@@ -30,14 +30,15 @@ EOS
     @params['bowtie-e', 'description'] = 'maximum sum of base qualities at mismatching positions'
     @params['cmdOptions'] = ' --calc-ci '
     @params['keepBam'] = false
+    @params['keepBam', 'description'] = 'converts the transcript alignments into genome coordinates and reports them as a BAM file'
     @params['trimAdapter'] = true
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
     @params['minTailQuality'] = 0
     @params['minAvgQuality'] = 20
     @params['specialOptions'] = ''
-    @params['trinityFasta'] = ''
-    @params['trinityFasta', 'description'] = 'give full path of trinity assembled fasta output file; in that case the build is ignored'
+    @params['transcriptFasta'] = ''
+    @params['transcriptFasta', 'description'] = 'give full path of transcript fasta file; in that case the build is ignored; if it comes from trinity assembly the gene-isoform associations will be extracted and used'
     @params['mail'] = ""
   end
   def preprocess
