@@ -26,6 +26,8 @@ EOS
     @params['refBuild', 'description'] = 'the genome refBuild and annotation to use as reference.'
     @params['paired'] = false
     @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
+    @params['deduplicate'] = true
+    @params['deduplicate', 'description'] = 'Removal of PCR duplicates. Not recommended for RRBS-Seq (Enzymatic digestion)'
     @params['cmdOptions'] = '-bowtie2'
     @params['cmdOptions', 'description'] = 'specify the commandline options for bismark; do not specify any option that is already covered by the dedicated input fields'
     @params['trimAdapter'] = true
@@ -55,6 +57,9 @@ EOS
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'TxtReport [File]'=>File.join(@result_dir, "#{@dataset['Name']}.report.txt"),
+     'M-Bias_R1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.M-bias_R1.png"),
+     'M-Bias_R2 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.M-bias_R2.png"),
+     'CpG_Context [File]'=>File.join(@result_dir, "#{@dataset['Name']}.CpG_context.txt"),
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'paired'=>@params['paired'],
