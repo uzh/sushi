@@ -16,7 +16,8 @@ class STARFeatureCountsApp < SushiFabric::SushiApp
     @apps = sushi_apps.map{|klass| klass.new}
     @name = self.class.to_s
     @description = @apps.map{|app| app.description}.join("\n")
-    @analysis_category = @apps.map{|app| app.analysis_category}.join
+    #@analysis_category = @apps.map{|app| app.analysis_category}.join
+    @analysis_category = "Demo"
 
     @params = @apps.first.params
     @apps.last.params.each do |key, value|
