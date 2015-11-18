@@ -11,12 +11,15 @@ class MergeDataSetApp < SushiFabric::SushiApp
     @name = 'Merge_DataSet'
     @description = ""
     @description =<<-EOS
-Merging two DataSets
-For the moment, assuming that it works only on STARApp result datasets.
+Merging two DataSets<br /><br />
+For the moment, assuming that it works only on STARApp result datasets.<br />
+<br />
 Note
-* The number of samples between the two dataset should be same (not checked in the code).
-* The sample name should be same, namely the source dataset of STARApp should be same.
-* Actually, this is made for the input dataset of ReadClassifyApp.
+<ol>
+<li>The number of samples between the two dataset should be same (not checked in the code).</li>
+<li>The sample name should be same, namely the source dataset of STARApp should be same.</li>
+<li>Actually, this is made for the input dataset of ReadClassifyApp.</li>
+</ol>
     EOS
     @analysis_category = 'Demo'
     @params['DataSet'] = []
