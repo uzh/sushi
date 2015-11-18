@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150524-210956'
+Version = '20151118-093049'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -17,7 +17,8 @@ Panret1Orig: the read mapped on refBuild1 with less mismatch than refBuild2<br /
 Panret1Other: the read mapped on refBuild1 with more mismatch than refBuild2<br />
 Panret1Common: the read mapped on refBuild1 with the same number of mismatch to refBuild2<br />
 Panret2XX: vice versa<br />
-Panret1Common and Parent2Common should be the same but Parent1Orig and Panret2Other are usually different.<br />
+The reads included in Panret1Common and Parent2Common should be same but the reference information is different in the BAM files<br />
+Parent1Orig and Parent2Other, Parent1Other and Parent2Orig, are as well<br />
 http://seselab.org/homeoroq/
     EOS
 
