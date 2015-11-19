@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151119-071823'
+Version = '20151119-094208'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -50,14 +50,14 @@ http://seselab.org/homeoroq/
      'Parent1OtherBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent1_genome}_other.bam.bai"), 
      'Parent1CommonBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent1_genome}_common.bam"), 
      'Parent1CommonBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent1_genome}_common.bam.bai"), 
-     'build1'=>@dataset['build1'],
+     'refBuild1'=>@dataset['refBuild1'],
      'Parent2OrigBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_orig.bam"), 
      'Parent2OrigBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_orig.bam.bai"), 
      'Parent2OtherBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_other.bam"), 
      'Parent2OtherBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_other.bam.bai"), 
      'Parent2CommonBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_common.bam"), 
      'Parent2CommonBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_common.bam.bai"), 
-     'build2'=>@dataset['build2'],
+     'refBuild2'=>@dataset['refBuild2'],
      'Species'=>@dataset['Species'],
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
