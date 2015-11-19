@@ -9,7 +9,6 @@ class MergeDataSetApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'Merge_DataSet'
-    @description = ""
     @description =<<-EOS
 Merging two DataSets<br /><br />
 For the moment, assuming that it works only on STARApp result datasets.<br />
@@ -29,11 +28,12 @@ Note
   def next_dataset
     {
       'Name'=>@dataset['Name'],
-      'BAM1 [File]'=>@dataset['BAM'],
-      'BAM2 [File]'=>@dataset['BAM2'],
+      'BAM1'=>@dataset['BAM'],
+      'BAM2'=>@dataset['BAM2'],
       'refBuild1'=>@dataset['refBuild'],
       'refBuild2'=>@dataset['refBuild2'],
-      'Species'=>@dataset['Species']
+      'Species'=>@dataset['Species'],
+      'dummy [File]'=>File.join(@result_dir, "#{@dataset['Name']}_dummy.txt")
     }
   end
   def set_default_parameters
@@ -61,6 +61,9 @@ Note
     end
   end
   def commands
-    "echo '#{GlobalVariables::SUSHI}'\n"
+    coms = ""
+    coms << "echo '#{GlobalVariables::SUSHI}'\n"
+    coms << "echo '#{GlobalVariables::SUSHI}' > #{@dataset['Name']}_dummy.txt\n"
+    coms
   end
 end
