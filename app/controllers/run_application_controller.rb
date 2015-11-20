@@ -99,6 +99,7 @@ class RunApplicationController < ApplicationController
     class_name = params[:sushi_app][:class]
     require class_name
     @sushi_app = eval(class_name).new
+    @sushi_app.logger = logger
     @sushi_app.workflow_manager = @@workflow_manager
     @sushi_app.user = if current_user 
                         current_user.login
