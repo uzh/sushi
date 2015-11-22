@@ -51,8 +51,8 @@ QUALIMAP=#{QUALIMAP}
 PICARD_DIR=#{PICARD_DIR}
 BAM_FILE=#{File.join(@gstore_dir, @dataset['BAM'])}
 ###samstat
-$SAMSTAT -n #{@dataset['Name']}.samstat $BAM_FILE > samstat.out
-###qualimap
+### $SAMSTAT -n #{@dataset['Name']}.samstat $BAM_FILE > samstat.out
+$SAMSTAT $BAM_FILE > samstat.out                                                              ###qualimap
 unset DISPLAY ; $QUALIMAP bamqc -bam  $BAM_FILE -c -nt #{@params['cores']} --java-mem-size=10G -outdir #{@dataset['Name']} > qualimap.out
 #rm #{@dataset['Name']}/coverage.txt
 echo Display=$DISPLAY
