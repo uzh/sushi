@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151123-105408'
+Version = '20151123-135329'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -62,7 +62,7 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
         new_dataset_hash << new_sample_common
       end
     end
-    @dataset_hash = new_dataset_hash
+    @dataset_hash = new_dataset_hash.sort_by{|row| row['Name']}
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
