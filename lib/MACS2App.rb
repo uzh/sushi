@@ -10,7 +10,7 @@ class MACS2App < SushiFabric::SushiApp
   def initialize
     super
     @name = 'MACS2'
-    @analysis_category = 'PeakCalling'
+    @analysis_category = 'Peaks'
     @required_columns = ['Name','BAM','BAI', 'refBuild','Control']
     @required_params = ['refBuild','paired']
     # optional params

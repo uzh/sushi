@@ -9,7 +9,7 @@ class MemeApp <  SushiFabric::SushiApp
   def initialize
     super
     @name = 'MemeApp'
-    @analysis_category = 'MotifDiscovery'
+    @analysis_category = 'Motif'
     @required_columns = ['Name','PeakSequences']
     @required_params = ['name']
     @params['cores'] = '1'

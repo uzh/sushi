@@ -10,7 +10,7 @@ class FlashApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'Flash'
-    @analysis_category = 'Preprocessing'
+    @analysis_category = 'Prep'
     @description =<<-EOS
 Fast Length Adjustment of SHort reads
 <a href='http://ccb.jhu.edu/software/FLASH/'>http://ccb.jhu.edu/software/FLASH/</a>

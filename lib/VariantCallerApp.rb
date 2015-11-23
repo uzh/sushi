@@ -9,7 +9,7 @@ class VariantCallerApp < SushiFabric::SushiApp
  def initialize
     super
     @name = 'VariantCaller'
-    @analysis_category = 'Variant_Analysis'
+    @analysis_category = 'Variants'
 @description =<<-EOS
 Variant caller and variant annotator starting from a bam file. 
 For calling variants, one can choose to using <a href="http://samtools.sourceforge.net/samtools.shtml">samtools+mpileup+bcftools</a> or <a href="http://www.broadinstitute.org/gatk/">GATK</a>.

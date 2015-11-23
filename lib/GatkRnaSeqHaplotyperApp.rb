@@ -10,7 +10,7 @@ class GatkRnaSeqHaplotyperApp <  SushiFabric::SushiApp
     super
     @name = 'GATK RNA-Seq Haplotyper'
     @params['process_mode'] = 'DATASET'
-    @analysis_category = 'Variant_Analysis'
+    @analysis_category = 'Variants'
     @required_columns = ['Name','BAM','BAI', 'build']
     @required_params = ['name', 'paired']
     @params['cores'] = '24'

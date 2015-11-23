@@ -10,7 +10,7 @@ class MpileupApp <  SushiFabric::SushiApp
     super
     @name = 'samtools mpileup'
     @params['process_mode'] = 'DATASET'
-    @analysis_category = 'Variant_Analysis'
+    @analysis_category = 'Variants'
     @description =<<-EOS
 Variant analysis with samtools/bcftools.<br/>
 The analysis runs the 3 commands: samtools mpileup, bcftools call, bcftools filter<br/>

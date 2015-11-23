@@ -5,7 +5,7 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class AllPathsDeNovoApp < SushiFabric::SushiApp
+class AllPathsApp < SushiFabric::SushiApp
   def initialize
     super
 @description =<<-EOS
@@ -16,7 +16,7 @@ All the details about the in_libs.csv file and the various AllPaths options are 
 EOS
     @params['process_mode'] = 'DATASET'
     @name = 'AllPaths'
-    @analysis_category = 'DeNovoAssembler'
+    @analysis_category = 'Assemble'
     @required_columns = ['file','library_name','project_name','organism_name','type','paired','frag_size','frag_stddev','insert_size','insert_stddev','read_orientation','genomic_start','genomic_end']
     @required_params = ['Estimated_Genome_Size','Estimated_Coverage_From_Fragment_Libraries','Estimated_Coverage_From_Jump_Libraries']
     # optional params

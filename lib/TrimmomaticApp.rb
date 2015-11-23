@@ -10,7 +10,7 @@ class TrimmomaticApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'Trimmomatic'
-    @analysis_category = 'QC'
+    @analysis_category = 'Prep'
     @description =<<-EOS
 Trimmomatic performs a variety of useful trimming tasks for illumina paired-end and single ended data.The selection of trimming steps and their associated parameters are supplied on the command line.
 Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usadellab.org/cms/?page=trimmomatic</a>
