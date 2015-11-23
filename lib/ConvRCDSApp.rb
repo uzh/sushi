@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151122-215452'
+Version = '20151123-105408'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -14,33 +14,53 @@ class ConvRCDSApp < SushiFabric::SushiApp
 This converts the result DataSet of ReadClassifyApp to an input DataSet of CountQCApp.
     EOS
     @analysis_category = 'Demo'
-    @required_columns = ['Name','Species']
-    @required_params = []
+    @required_columns = ['Name','Species','dummy']
+    @required_params = ['parent','type']
     # optional params
     @params['cores'] = '1'
     @params['ram'] = '10'
     @params['scratch'] = '10'
+    @params['parent'] = ['1', '2']
+    @params['type'] = ['all','w/o common','orig','other']
   end
   def preprocess
     dataset_hash = @dataset_hash.clone
     new_dataset_hash = []
     dataset_hash.each do |sample|
       new_sample_orig = {
-        'Name'=>File.basename(sample['Parent1OrigBAM [File]']).gsub(/.bam/, ''),
-        'BAM'=>sample['Parent1OrigBAM [File]'],
-        'BAI'=>sample['Parent1OrigBAI [File]'],
-        'refBuild'=>sample['refBuild1'],
-        'Species'=>sample['Species']
+        'Name'=>File.basename(sample["Parent#{@params['parent']}OrigBAM [File]"]).gsub(/.bam/, ''),
+        'BAM'=>sample["Parent#{@params['parent']}OrigBAM [File]"],
+        'BAI'=>sample["Parent#{@params['parent']}OrigBAI [File]"],
+        'refBuild'=>sample["refBuild#{@params['parent']}"],
+        'Species'=>sample['Species'],
+        'dummy'=>sample['dummy [File]']
       }
       new_sample_other = {
-        'Name'=>File.basename(sample['Parent1OtherBAM [File]']).gsub(/.bam/, ''),
-        'BAM'=>sample['Parent1OtherBAM [File]'],
-        'BAI'=>sample['Parent1OtherBAI [File]'],
-        'refBuild'=>sample['refBuild1'],
-        'Species'=>sample['Species']
+        'Name'=>File.basename(sample["Parent#{@params['parent']}OtherBAM [File]"]).gsub(/.bam/, ''),
+        'BAM'=>sample["Parent#{@params['parent']}OtherBAM [File]"],
+        'BAI'=>sample["Parent#{@params['parent']}OtherBAI [File]"],
+        'refBuild'=>sample["refBuild#{@params['parent']}"],
+        'Species'=>sample['Species'],
+        'dummy'=>sample['dummy [File]']
       }
-      new_dataset_hash << new_sample_orig
-      new_dataset_hash << new_sample_other
+      new_sample_common = {
+        'Name'=>File.basename(sample["Parent#{@params['parent']}CommonBAM [File]"]).gsub(/.bam/, ''),
+        'BAM'=>sample["Parent#{@params['parent']}CommonBAM [File]"],
+        'BAI'=>sample["Parent#{@params['parent']}CommonBAI [File]"],
+        'refBuild'=>sample["refBuild#{@params['parent']}"],
+        'Species'=>sample['Species'],
+        'dummy'=>sample['dummy [File]']
+      }
+
+      unless @params['type'] == 'other'
+        new_dataset_hash << new_sample_orig
+      end
+      unless @params['type'] == 'orig'
+        new_dataset_hash << new_sample_other
+      end
+      if @params['type'] == 'all'
+        new_dataset_hash << new_sample_common
+      end
     end
     @dataset_hash = new_dataset_hash
   end

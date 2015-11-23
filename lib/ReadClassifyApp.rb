@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151119-094208'
+Version = '20151123-104440'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -59,6 +59,7 @@ http://seselab.org/homeoroq/
      'Parent2CommonBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_common.bam.bai"), 
      'refBuild2'=>@dataset['refBuild2'],
      'Species'=>@dataset['Species'],
+     'dummy [File]'=>File.join(@result_dir, "#{@dataset['Name']}_dummy.txt")
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
@@ -80,6 +81,7 @@ http://seselab.org/homeoroq/
       command << "samtools index #{out1_prefix}_#{type}.bam\n" 
       command << "samtools index #{out2_prefix}_#{type}.bam\n" 
     end
+    command << "echo '#{GlobalVariables::SUSHI}' > #{@dataset['Name']}_dummy.txt\n"
     command
   end
 end
