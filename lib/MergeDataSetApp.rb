@@ -34,7 +34,7 @@ Note
       'refBuild2'=>@dataset['refBuild2'],
       'Species'=>@dataset['Species'],
       'dummy [File]'=>File.join(@result_dir, "#{@dataset['Name']}_dummy.txt")
-    }
+    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def set_default_parameters
     if data_set = DataSet.find_by_id(@dataset_sushi_id)
@@ -59,6 +59,7 @@ Note
       @dataset_hash[i]['BAM2'] = dataset_hash2[name]['BAM [File]']
       @dataset_hash[i]['refBuild2'] = dataset_hash2[name]['refBuild']
     end
+    @dataset_hash.sort_by!{|row| row['Name']}
   end
   def commands
     coms = ""
