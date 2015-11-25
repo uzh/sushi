@@ -2,7 +2,7 @@
 
 Process your raw data, without cooking it!
 
-SUSHI is defined as an acronym of Supporting User for SHell script Integration, but some one might say, it is a Super Ultra Special Hyper Incredible system. Anyway, it is a sort of pipeline framework developed in Ruby on Rails in order to share useful pipeline scripts. An instance is now running at FGCZ to process the next genration sequence data for over 1000 projects. There have been some similar frameworks published such as Galaxy, Chipstar, and GeneProof. It is noteworthy that SUSHI is developed in Ruby on Rails, so that updating and installing is in quite simple manner.
+SUSHI can Support Users for SHell script Integration defined as a recursive acronym, but some one might say, SUSHI is a Super Ultra Special Hyper Incredible system!! Anyway, it is a sort of pipeline framework developed in Ruby on Rails in order to share useful pipeline scripts. An instance is now running at FGCZ to process the next genration sequence data for over 1000 projects. There have been some similar frameworks published such as Galaxy, Chipstar, and GeneProof. It is noteworthy that SUSHI is developed in Ruby on Rails, so that updating and installing is in quite simple manner.
 
 == Getting Started
 
