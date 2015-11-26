@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151123-135329'
+Version = '20151126-094053'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -14,7 +14,7 @@ class ConvRCDSApp < SushiFabric::SushiApp
 This converts the result DataSet of ReadClassifyApp to an input DataSet of CountQCApp.
     EOS
     @analysis_category = 'Demo'
-    @required_columns = ['Name','Species','dummy']
+    @required_columns = ['Name','Species','dummy','grouping']
     @required_params = ['parent','type']
     # optional params
     @params['cores'] = '1'
@@ -33,7 +33,8 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
         'BAI'=>sample["Parent#{@params['parent']}OrigBAI [File]"],
         'refBuild'=>sample["refBuild#{@params['parent']}"],
         'Species'=>sample['Species'],
-        'dummy'=>sample['dummy [File]']
+        'dummy'=>sample['dummy [File]'],
+        'grouping'=>sample['grouping [Factor]']
       }
       new_sample_other = {
         'Name'=>File.basename(sample["Parent#{@params['parent']}OtherBAM [File]"]).gsub(/.bam/, ''),
@@ -41,7 +42,8 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
         'BAI'=>sample["Parent#{@params['parent']}OtherBAI [File]"],
         'refBuild'=>sample["refBuild#{@params['parent']}"],
         'Species'=>sample['Species'],
-        'dummy'=>sample['dummy [File]']
+        'dummy'=>sample['dummy [File]'],
+        'grouping'=>sample['grouping [Factor]']
       }
       new_sample_common = {
         'Name'=>File.basename(sample["Parent#{@params['parent']}CommonBAM [File]"]).gsub(/.bam/, ''),
@@ -49,7 +51,8 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
         'BAI'=>sample["Parent#{@params['parent']}CommonBAI [File]"],
         'refBuild'=>sample["refBuild#{@params['parent']}"],
         'Species'=>sample['Species'],
-        'dummy'=>sample['dummy [File]']
+        'dummy'=>sample['dummy [File]'],
+        'grouping'=>sample['grouping [Factor]']
       }
 
       unless @params['type'] == 'other'
