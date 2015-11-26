@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151126-094638'
+Version = '20151126-095653'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -73,7 +73,8 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
      'BAI'=>@dataset['BAI'],
      'refBuild'=>@dataset['refBuild'],
      'Species'=>@dataset['Species'],
-     'dummy [File]'=>File.join(@result_dir, "#{@dataset['Name']}_dummy.txt")
+     'dummy [File]'=>File.join(@result_dir, "#{@dataset['Name']}_dummy.txt"),
+     'grouping [Factor]'=>@dataset['grouping']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
