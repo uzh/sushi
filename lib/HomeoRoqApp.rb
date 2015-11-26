@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151126-144345'
+Version = '20151126-160659'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -77,7 +77,7 @@ http://seselab.org/homeoroq/
     @params['iteration'].to_i.times do |i|
       command << "/usr/local/ngseq/stow/R-3.2.2/bin/R --vanilla --slave --args homeoroq_results/tpms_pval_run#{i}.txt #{@params['tpm_txt']} index.csv #{@params['cores']} < /usr/local/ngseq/src/HomeoRoq-1.0/lib/calcpval_one.R\n"
     end
-    command << "/usr/local/ngseq/stow/R-3.2.2/bin/Rscript /usr/local/ngseq/src/HomeoRoq-1.0/lib/calcpval_mean.R homeoroq_results"
+    command << "/usr/local/ngseq/stow/R-3.2.2/bin/Rscript /usr/local/ngseq/src/HomeoRoq-1.0/lib/calcpval_mean.R homeoroq_results\n"
     control = @params['control_orig'].gsub(/_orig/, '')
     target = @params['target_orig'].gsub(/_orig/, '')
     command << "Rscript /usr/local/ngseq/src/HomeoRoq-1.0/lib/plot_homeoroq.R homeoroq_results/pval_mean.xls #{control} #{target}\n"
