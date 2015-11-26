@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151126-094649'
+Version = '20151126-144345'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -14,7 +14,7 @@ class HomeoRoqApp < SushiFabric::SushiApp
 HomeoRoq detects the significant genes that homeolog ratio changes in a target condition.<br />
 Note<br />
 <ol>
-<li>The first character of column name in Count_QC-rpkm.txt should not be a number. R data.frame puts X prefix if it is a number character.</li>
+<li>The first character of column name in Count_QC-tpm.txt should not be a number. R data.frame puts X prefix if it is a number character.</li>
 </ol>
 
 http://seselab.org/homeoroq/
@@ -30,7 +30,7 @@ http://seselab.org/homeoroq/
     @params['scratch'] = '10'
     @params['name'] = 'HomeoRoq'
     @params['iteration'] = '10'
-    @params['rpkm_txt'] = ''
+    @params['tpm_txt'] = ''
     @params['input_dataset_tsv'] = ''
     @params['control_orig'] = ''
     @params['control_other'] = ''
@@ -39,12 +39,12 @@ http://seselab.org/homeoroq/
   end
   def set_default_parameters
     count_qc_dir = @dataset_hash.first['Report [File]']
-    rpkm_txt = File.join(count_qc_dir, "Count_QC-rpkm.txt")
-    rpkm_txt = File.join(@gstore_dir, rpkm_txt)
+    tpm_txt = File.join(count_qc_dir, "Count_QC-tpm.txt")
+    tpm_txt = File.join(@gstore_dir, tpm_txt)
     input_dataset_tsv = File.join(count_qc_dir, "../input_dataset.tsv")
     input_dataset_tsv = File.join(@gstore_dir, input_dataset_tsv)
     @params['input_dataset_tsv'] = input_dataset_tsv
-    @params['rpkm_txt'] = rpkm_txt
+    @params['tpm_txt'] = tpm_txt
     groups = []
     CSV.foreach(input_dataset_tsv, :headers=>true, :col_sep=>"\t") do |row|
       groups <<  row["grouping [Factor]"]
@@ -75,7 +75,7 @@ http://seselab.org/homeoroq/
     command << "cp index.csv homeoroq_results/\n"
     # calcpval_one.R
     @params['iteration'].to_i.times do |i|
-      command << "/usr/local/ngseq/stow/R-3.2.2/bin/R --vanilla --slave --args homeoroq_results/rpkms_pval_run#{i}.txt #{@params['rpkm_txt']} index.csv #{@params['cores']} < /usr/local/ngseq/src/HomeoRoq-1.0/lib/calcpval_one.R\n"
+      command << "/usr/local/ngseq/stow/R-3.2.2/bin/R --vanilla --slave --args homeoroq_results/tpms_pval_run#{i}.txt #{@params['tpm_txt']} index.csv #{@params['cores']} < /usr/local/ngseq/src/HomeoRoq-1.0/lib/calcpval_one.R\n"
     end
     command << "/usr/local/ngseq/stow/R-3.2.2/bin/Rscript /usr/local/ngseq/src/HomeoRoq-1.0/lib/calcpval_mean.R homeoroq_results"
     control = @params['control_orig'].gsub(/_orig/, '')
