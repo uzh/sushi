@@ -87,7 +87,7 @@ class RunApplicationController < ApplicationController
       @sushi_app.params['node'] = @sushi_app.default_node
     end
     @sushi_app.params.each do |key, value|
-      if @sushi_app.required_params.include?(key) and value.to_s.empty? 
+      if @sushi_app.required_params and @sushi_app.required_params.include?(key) and value.to_s.empty? 
         @requires ||= {}
         @requires[key] = true 
       end
