@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151126-094053'
+Version = '20151126-094638'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -13,7 +13,7 @@ class ConvRCDSApp < SushiFabric::SushiApp
     @description =<<-EOS
 This converts the result DataSet of ReadClassifyApp to an input DataSet of CountQCApp.
     EOS
-    @analysis_category = 'Demo'
+    @analysis_category = 'Polyploid'
     @required_columns = ['Name','Species','dummy','grouping']
     @required_params = ['parent','type']
     # optional params

@@ -20,7 +20,7 @@ Note
 <li>Actually, this is made for the input dataset of ReadClassifyApp.</li>
 </ol>
     EOS
-    @analysis_category = 'Demo'
+    @analysis_category = 'Polyploid'
     @params['DataSet'] = []
     @required_columns = ['Name', 'BAM', 'refBuild', 'Species']
     @required_params = ['DataSet']

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151123-104440'
+Version = '20151126-094617'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -22,7 +22,7 @@ Parent1Orig and Parent2Other, Parent1Other and Parent2Orig, are as well<br />
 http://seselab.org/homeoroq/
     EOS
 
-    @analysis_category = 'Demo'
+    @analysis_category = 'Polyploid'
     @required_columns = ['Name','BAM1','BAM2','refBuild1','refBuild2','Species']
     @required_params = []
     # optional params
