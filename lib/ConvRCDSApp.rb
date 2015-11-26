@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151126-095653'
+Version = '20151126-100748'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -34,7 +34,7 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
         'refBuild'=>sample["refBuild#{@params['parent']}"],
         'Species'=>sample['Species'],
         'dummy'=>sample['dummy [File]'],
-        'grouping'=>sample['grouping [Factor]']
+        'grouping'=>"#{sample['grouping [Factor]']}_orig"
       }
       new_sample_other = {
         'Name'=>File.basename(sample["Parent#{@params['parent']}OtherBAM [File]"]).gsub(/.bam/, ''),
@@ -43,7 +43,7 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
         'refBuild'=>sample["refBuild#{@params['parent']}"],
         'Species'=>sample['Species'],
         'dummy'=>sample['dummy [File]'],
-        'grouping'=>sample['grouping [Factor]']
+        'grouping'=>"#{sample['grouping [Factor]']}_other"
       }
       new_sample_common = {
         'Name'=>File.basename(sample["Parent#{@params['parent']}CommonBAM [File]"]).gsub(/.bam/, ''),
@@ -52,7 +52,7 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
         'refBuild'=>sample["refBuild#{@params['parent']}"],
         'Species'=>sample['Species'],
         'dummy'=>sample['dummy [File]'],
-        'grouping'=>sample['grouping [Factor]']
+        'grouping'=>"#{sample['grouping [Factor]']}_common"
       }
 
       unless @params['type'] == 'other'
