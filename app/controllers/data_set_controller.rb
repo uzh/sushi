@@ -170,7 +170,8 @@ class DataSetController < ApplicationController
     @project.data_sets.each do |data_set|
       node = {"id" => data_set.id, 
               "text" => data_set.data_sets.length.to_s+
-              " <a href='/data_set/#{data_set.id}'>"+data_set.name+'</a>',
+              " <a href='/data_set/#{data_set.id}'>"+data_set.name+'</a>'+
+              ' <span style="color:gray;font-size:smaller">'+data_set.comment.to_s+'</span>',
               'path' => '', 
               "expanded" => false, 
               "classes" => 'file', 
