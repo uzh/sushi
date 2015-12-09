@@ -166,38 +166,15 @@ in EZ_GLOBAL_VARIABLES.txt
 
 == Advanced SUSHI configuration
 
-=== How to add a new cluster
-
 TODO
 
-=== How to make/add a new SUSHI application
-
-TODO
-
-== How to generate SUSHI applications workflow pipeline
-
-TODO
-
-=== How to migrate SQLite3 to MySQL
-
-TODO
-
-=== How to migrate WEBRick to Apache + passenger
-
-TODO
-
-=== Workflow manager configuration
-
-TODO
-
-=== SUSHI configuration
-
-TODO
-
-=== SUSHI framework background
-
-TODO
-
-
+* How to add a new cluster
+* How to make/add a new SUSHI application
+* How to generate SUSHI applications workflow pipeline
+* How to migrate SQLite3 to MySQL
+* How to migrate WEBRick to Apache + passenger
+* Workflow manager configuration
+* SUSHI configuration
+* SUSHI framework background
 
 
