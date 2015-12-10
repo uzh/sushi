@@ -50,13 +50,13 @@ $(document).ready(function(){
   <% end %>
 <table>
   <tr>
-    <% @data_set.headers.each do |header| %>
+    <% @data_set.factor_first_headers.each do |header| %>
       <th><%= header %></th>
     <% end %>
   </tr>
   <% @data_set.samples.each do |sample| %>
     <tr>
-      <% @data_set.headers.each do |header| %>
+      <% @data_set.factor_first_headers.each do |header| %>
         <td>
           <% unless @file_exist[sample.to_hash[header].to_s] %>
             <font color=red><%= File.basename(sample.to_hash[header].to_s) %></font>
