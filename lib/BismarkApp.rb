@@ -16,7 +16,7 @@ A tool to map bisulfite converted sequence reads and determine cytosine methylat
 <a href='http://www.bioinformatics.babraham.ac.uk/projects/bismark/'>http://www.bioinformatics.babraham.ac.uk/projects/bismark</a>
 EOS
     
-    @required_columns = ['Name','Read1','Species']
+    @required_columns = ['Name','Read1','Adapter1','Species']
     @required_params = ['refBuild','paired']
     # optional params
     @params['cores'] = '8'
@@ -60,6 +60,8 @@ EOS
      'M-Bias_R1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.M-bias_R1.png"),
      'M-Bias_R2 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.M-bias_R2.png"),
      'CpG_Context [File]'=>File.join(@result_dir, "#{@dataset['Name']}.CpG_context.txt"),
+     'COV [File]'=>File.join(@result_dir, "#{@dataset['Name']}.gz.bismark.cov.gz"),
+     'BedGraph [File]'=>File.join(@result_dir, "#{@dataset['Name']}.gz"),
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'paired'=>@params['paired'],
