@@ -8,7 +8,7 @@
 <table>
   <tr>
     <th></th>
-    <% @data_set.headers.each_with_index do |header, i| %>
+    <% @data_set.factor_first_headers.each_with_index do |header, i| %>
       <th>
         <%= form_tag({:controller => 'sample',:action => 'edit'}) do %>
           <%= header %>
@@ -32,7 +32,7 @@
           <%= image_submit_tag 'minus.png', :name=>'edit' %>
         <% end %>
       </td>
-      <% @data_set.headers.each do |header| %>
+      <% @data_set.factor_first_headers.each do |header| %>
         <td>
           <% file_path = sample.to_hash[header].to_s %>
           <% file_name = File.basename(file_path) %>

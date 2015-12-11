@@ -8,7 +8,7 @@
   <%= form_tag({:controller => 'sample',:action => 'show'}) do %>
     <table>
       <tr>
-        <% @data_set.headers.each_with_index do |header, j| %>
+        <% @data_set.factor_first_headers.each_with_index do |header, j| %>
           <th>
             <% if !@edit_option %>
               <%= text_field "sample_headers", header.to_s.split.first, :size=>15, :value=>header %>
@@ -27,7 +27,7 @@
       </tr>
       <% @data_set.samples.each_with_index do |sample, i| %>
         <tr>
-          <% @data_set.headers.each_with_index do |header, j| %>
+          <% @data_set.factor_first_headers.each_with_index do |header, j| %>
             <td>
               <% file_path = sample.to_hash[header].to_s %>
               <% if !@edit_option %>
@@ -52,7 +52,7 @@
       <% end %>
       <% if @edit_option and @edit_option[:add]=='row' %>
         <tr>
-          <% @data_set.headers.each do |header| %>
+          <% @data_set.factor_first_headers.each do |header| %>
             <td>
               <%= text_field "sample_new", header.to_s.split.first, :size=>15, :value=>'' %>
             </td>
