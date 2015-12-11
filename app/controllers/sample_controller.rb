@@ -1,8 +1,10 @@
 class SampleController < ApplicationController
+  include SushiFabric
   def show
     @data_set = DataSet.find_by_id(params[:id])
 
     # update values
+    samples = []
     @data_set.samples.each_with_index do |sample, i|
       current_sample = Hash[*sample.to_hash.map{|key, value| [key.split.first,value]}.flatten]
       if edit_sample = params["sample_#{i}"] and current_sample.to_s!=edit_sample.to_s
@@ -11,11 +13,30 @@ class SampleController < ApplicationController
           header_without_tag = header.to_s.split.first 
           new_sample[header] = edit_sample[header_without_tag]
         end
-        @data_set.samples[i].key_value = new_sample.to_s
-        @data_set.samples[i].save
-        @data_set.md5 = @data_set.md5hexdigest
-        @data_set.save
+        if params[:edit]
+          @data_set.samples[i].key_value = new_sample.to_s
+          @data_set.samples[i].save
+          @data_set.md5 = @data_set.md5hexdigest
+          @data_set.save
+        elsif params[:edit_save_as_child]
+          samples << new_sample.values
+        end
+      elsif params[:edit_save_as_child]
+        samples << sample.to_hash.values
       end
+    end
+
+    # save as a child dataset
+    if params[:edit_save_as_child]    
+      data_set = []
+      data_set << "DataSetName"
+      data_set << "Child_#{@data_set.name}"
+      project = Project.find_by_number(session[:project].to_i)
+      data_set << "ProjectNumber" << project.number
+      data_set << "ParentID" << @data_set.id 
+      headers = @data_set.headers
+      data_set_id = save_data_set(data_set, headers, samples, current_user)
+      @data_set = DataSet.find_by_id(data_set_id)
     end
 
     # add new row
