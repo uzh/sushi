@@ -17,6 +17,10 @@ class DataSet < ActiveRecord::Base
       v = header.delete_at(i)
       header.unshift(v)
     end
+    if i = header.index{|col| col == "Name"}
+      v = header.delete_at(i)
+      header.unshift(v)
+    end
     header 
   end
   def saved?
