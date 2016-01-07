@@ -12,3 +12,7 @@ config/environments/development.rb
 config/ldap.yml
 config/database.yml
 config/initializers/devise.rb
+.Rproj.user
+.Rhistory
+*.Rproj
+
