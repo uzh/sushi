@@ -24,7 +24,7 @@ EOS
     @required_params = ['name', 'cores', 'ram', 'scratch']
 
     @params['cores'] = '8'
-    @params['ram'] = '16'
+    @params['ram'] = '40'
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     #@params['paired'] = false
