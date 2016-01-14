@@ -65,6 +65,7 @@ class ApplicationController < ActionController::Base
         sushi_app_entry.analysis_category = sushi_app_instance.analysis_category
         sushi_app_entry.required_columns = sushi_app_instance.required_columns
         sushi_app_entry.next_dataset_keys = sushi_app_instance.next_dataset.keys
+        sushi_app_entry.description = sushi_app_instance.description
         sushi_app_entry.save
       end
     end
