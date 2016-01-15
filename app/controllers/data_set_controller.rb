@@ -89,7 +89,7 @@ class DataSetController < ApplicationController
     end
   end
   def show
-    @fgcz = (`hostname`.chomp =~ /fgcz-s-034/)
+    @fgcz = SushiFabric::Application.config.fgcz?
     # switch project (from job_monitoring)
     if project = params[:project]
       session[:project] = project.to_i
@@ -414,7 +414,7 @@ class DataSetController < ApplicationController
     end
   end
   def destroy
-    @fgcz = (`hostname` =~ /fgcz-s-034/)
+    @fgcz = SushiFabric::Application.config.fgcz?
     if @data_set = DataSet.find_by_id(params[:id])
       @option = params[:option]
 

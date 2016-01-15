@@ -1,5 +1,5 @@
 require 'savon'
-if `hostname`.chomp =~ /fgcz-s-034/
+if SushiFabric::Application.config.fgcz?
 require 'fgcz'
 end
 require 'csv' 
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   end
   protect_from_forgery
   
-  if `hostname`.chomp =~ /fgcz-s-034/
+  if SushiFabric::Application.config.fgcz?
     before_filter :authenticate_user!
   end
   @@workflow_manager = DRbObject.new_with_uri(SushiFabric::WORKFLOW_MANAGER)

@@ -1,10 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @fgcz = if `hostname`.chomp =~ /fgcz-s-034/
-              true
-            else
-              false
-            end
+    @fgcz = SushiFabric::Application.config.fgcz?
     session[:employee] = true if @fgcz and FGCZ.get_user_groups(current_user.login).include?('Employees')
     session[:projects] = if @fgcz 
                            FGCZ.get_user_projects(current_user.login).map{|project| project.gsub(/p/,'').to_i}.sort
@@ -78,11 +74,7 @@ class HomeController < ApplicationController
       end
     end
     @files = @files[start..last]
-    @fgcz = if `hostname`.chomp =~ /fgcz-s-034/
-              true
-            else
-              false
-            end
+    @fgcz = SushiFabric::Application.config.fgcz?
     if @fgcz and !@files
       redirect_to "http://fgcz-gstore.uzh.ch/projects/#{@path}.#{params[:format]}"
     end

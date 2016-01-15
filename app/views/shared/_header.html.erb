@@ -14,7 +14,7 @@
       <%= select :select_project, :number, session[:projects], :prompt=>'project list' %>
       <%= submit_tag "Go" %>
     <% end %>
-  <% elsif `hostname`.chomp !~ /fgcz-s-034/ %>
+  <% elsif !SushiFabric::Application.config.fgcz? %>
     <%= link_to "Today's Menu", "/" %>
 		-
     <%= link_to "SushiApp List", "/sushi_application" %>

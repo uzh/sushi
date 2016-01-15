@@ -69,8 +69,12 @@ SushiFabric::Application.configure do
   config.logger = Logger.new("log/production.log", 5, 10 * 1024 * 1024)
   config.logger.level = Logger::ERROR
 
+  def config.fgcz?
+    @fgcz ||= (`hostname`.chomp =~ /fgcz-s-034/)
+  end
+
   # fgcz
-  if `hostname`.chomp =~ /fgcz-s-034/
+  if config.fgcz?
     #config.workflow_manager = "druby://fgcz-s-034:40001" # development
     config.workflow_manager = "druby://fgcz-s-034:50001" # production
     config.scratch_dir = "/scratch"
