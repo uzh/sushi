@@ -37,7 +37,8 @@ gem 'jquery-rails'
 # To use debugger
 # gem 'debugger'
 gem 'devise'
-if `hostname`.chomp =~ /fgcz-s-034/
+fgcz = File.readlines("./config/environments/production.rb").to_a.grep(/chomp/).first.to_s.chomp.strip
+if eval(fgcz)
 gem 'devise_ldap_authenticatable', '>= 0.6.1.1', :path => '/srv/SushiFabric/Gems/devise_ldap_authenticatable'
 else
 gem 'devise_ldap_authenticatable'
@@ -52,7 +53,7 @@ gem 'ruby_parser'
 # C) source 'https://gems-fgcz.uzh.ch:8888'
 #    gem 'fgcz'
 gem 'savon'
-if `hostname`.chomp =~ /fgcz-s-034/
+if eval(fgcz)
 gem 'fgcz', :path => '/srv/SushiFabric/Gems/fgcz'
 end
 
