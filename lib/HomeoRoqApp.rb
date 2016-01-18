@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160118-142621'
+Version = '20160118-144023'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -77,7 +77,7 @@ http://seselab.org/homeoroq/
     # filtering
     tpm_txt = @params['tpm_txt']
     command = "mkdir homeoroq_results\n"
-    command << "HomeoRoq version:\n"
+    command << "echo 'HomeoRoq version:'\n"
     command << "ls -l /usr/local/ngseq/bin/make_index_csv.rb\n"
     if @params['cds_filtering'] 
       # output[['refBuild']] = 'Cardamine_hirsuta/KEN/DENOVO/Annotation/Version-2014-06-29'
