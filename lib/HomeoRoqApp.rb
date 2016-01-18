@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151208-164137'
+Version = '20160118-142621'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -77,6 +77,8 @@ http://seselab.org/homeoroq/
     # filtering
     tpm_txt = @params['tpm_txt']
     command = "mkdir homeoroq_results\n"
+    command << "HomeoRoq version:\n"
+    command << "ls -l /usr/local/ngseq/bin/make_index_csv.rb\n"
     if @params['cds_filtering'] 
       # output[['refBuild']] = 'Cardamine_hirsuta/KEN/DENOVO/Annotation/Version-2014-06-29'
       # ruby scripts/filter_tpm_by_cds_obh.rb -t data/Count_QC-tpm.txt -1 references/chir_genes.gtf -2 references/cama_genes.gtf -a references/chir_genome.fa -b references/cama_genome.fa
@@ -89,11 +91,11 @@ http://seselab.org/homeoroq/
         p1_genome = File.join(p1_genome_dir, "genome.fa")
         p2_genome_dir = File.expand_path('../../Sequence/WholeGenomeFasta', p2_ref)
         p2_genome = File.join(p2_genome_dir, "genome.fa")
-        command << "ruby /usr/local/ngseq/src/HomeoRoq-1.0/lib/filter_tpm_by_cds_obh.rb -t #{@params['tpm_txt']} -1 #{p1_gtf} -2 #{p2_gtf} -a #{p1_genome} -b #{p2_genome}\n"
+        command << "ruby /usr/local/ngseq/lib/filter_tpm_by_cds_obh.rb -t #{@params['tpm_txt']} -1 #{p1_gtf} -2 #{p2_gtf} -a #{p1_genome} -b #{p2_genome}\n"
         command << "cp out.tsv homeoroq_results/filtered_tpm.txt\n"
         tpm_txt = "out.tsv"
       else
-        command << "ruby /usr/local/ngseq/src/HomeoRoq-1.0/lib/filter_tpm_by_cds_obh.rb -t #{@params['tpm_txt']} -1 #{p1_gtf} --no-obh-filtering\n"
+        command << "ruby /usr/local/ngseq/lib/filter_tpm_by_cds_obh.rb -t #{@params['tpm_txt']} -1 #{p1_gtf} --no-obh-filtering\n"
         command << "cp out.tsv homeoroq_results/filtered_tpm.txt\n"
         tpm_txt = "out.tsv"
       end
@@ -108,21 +110,21 @@ http://seselab.org/homeoroq/
         p2_genome_dir = File.expand_path('../../Sequence/WholeGenomeFasta', p2_ref)
         p2_genome = File.join(p2_genome_dir, "genome.fa")
 
-        command << "ruby /usr/local/ngseq/src/HomeoRoq-1.0/lib/filter_tpm_by_cds_obh.rb -t #{@params['tpm_txt']} -1 #{p1_gtf} -2 #{p2_gtf} -a #{p1_genome} -b #{p2_genome} --no-cds-filtering\n"
+        command << "ruby /usr/local/ngseq/lib/filter_tpm_by_cds_obh.rb -t #{@params['tpm_txt']} -1 #{p1_gtf} -2 #{p2_gtf} -a #{p1_genome} -b #{p2_genome} --no-cds-filtering\n"
         command << "cp out.tsv homeoroq_results/filtered_tpm.txt\n"
         tpm_txt = "out.tsv"
       end
     end
-    command << "ruby /usr/local/ngseq/src/HomeoRoq-1.0/bin/make_index_csv.rb #{input_dataset_tsv} #{co} #{ct} #{to} #{tt}\n"
+    command << "ruby /usr/local/ngseq/bin/make_index_csv.rb #{input_dataset_tsv} #{co} #{ct} #{to} #{tt}\n"
     command << "cp index.csv homeoroq_results/\n"
     # calcpval_one.R
     @params['iteration'].to_i.times do |i|
-      command << "/usr/local/ngseq/stow/R-3.2.2/bin/R --vanilla --slave --args homeoroq_results/tpms_pval_run#{i}.txt #{tpm_txt} index.csv #{@params['cores']} < /usr/local/ngseq/src/HomeoRoq-1.0/lib/calcpval_one.R\n"
+      command << "/usr/local/ngseq/stow/R-3.2.2/bin/R --vanilla --slave --args homeoroq_results/tpms_pval_run#{i}.txt #{tpm_txt} index.csv #{@params['cores']} < /usr/local/ngseq/lib/calcpval_one.R\n"
     end
-    command << "/usr/local/ngseq/stow/R-3.2.2/bin/Rscript /usr/local/ngseq/src/HomeoRoq-1.0/lib/calcpval_mean.R homeoroq_results\n"
+    command << "/usr/local/ngseq/stow/R-3.2.2/bin/Rscript /usr/local/ngseq/lib/calcpval_mean.R homeoroq_results\n"
     control = @params['control_orig'].gsub(/_orig/, '')
     target = @params['target_orig'].gsub(/_orig/, '')
-    command << "Rscript /usr/local/ngseq/src/HomeoRoq-1.0/lib/plot_homeoroq.R homeoroq_results/pval_mean.xls #{control} #{target}\n"
+    command << "Rscript /usr/local/ngseq/lib/plot_homeoroq.R homeoroq_results/pval_mean.xls #{control} #{target}\n"
     command
   end
 end
