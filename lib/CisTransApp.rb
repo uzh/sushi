@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151203-034735'
+Version = '20160119-055705'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -42,6 +42,7 @@ http://seselab.org/homeoroq/
     @params['pval_mean_xls'] = ''
 
     @params['DataSet'] = []
+    @params['DataSet', 'description'] = "EdgeR result between homeologs"
     @required_params = ['DataSet']
   end
   def set_default_parameters

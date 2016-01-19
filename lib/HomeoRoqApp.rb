@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160118-144023'
+Version = '20160119-055831'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -55,9 +55,13 @@ http://seselab.org/homeoroq/
     end
     groups.uniq!
     @params['control_orig'] = groups
+    @params['control_orig', 'description'] = "Diploid orig"
     @params['control_other'] = groups
+    @params['control_other', 'description'] = "Diploid other"
     @params['target_orig'] = groups
+    @params['target_orig', 'description'] = "Polyploid orig"
     @params['target_other'] = groups
+    @params['target_other', 'description'] = "Polyploid other"
   end
   def preprocess
   end
