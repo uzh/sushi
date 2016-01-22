@@ -222,7 +222,7 @@ class DataSetController < ApplicationController
             data_set = row
           elsif headers.empty?
             headers = row
-          elsif !row.empty?
+          elsif !row.empty? and !row.join.strip.empty?
             rows << row
           else
             unless headers.include?(nil)
@@ -248,7 +248,9 @@ class DataSetController < ApplicationController
         data_set << items[-2]
         data_set << "ProjectNumber" << @project.number
         data_set_tsv.each do |row|
-          rows << row.fields
+          unless row.fields.join.strip.empty?
+            rows << row.fields
+          end
         end
         unless headers.include?(nil)
           @data_set_id = save_data_set(data_set, headers, rows, current_user)
@@ -295,7 +297,7 @@ class DataSetController < ApplicationController
               data_set = row
             elsif headers.empty?
               headers = row
-            elsif !row.empty?
+            elsif !row.empty? and !row.join.strip.empty?
               rows << row
             else
               unless headers.include?(nil)
@@ -327,7 +329,9 @@ class DataSetController < ApplicationController
             data_set << "ParentID" << parent_data_set.id
           end
           data_set_tsv.each do |row|
-            rows << row.fields
+            unless row.fields.join.strip.empty?
+              rows << row.fields
+            end
           end
             unless headers.include?(nil)
               @data_set_id = save_data_set(data_set, headers, rows, current_user)
