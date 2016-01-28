@@ -11,40 +11,120 @@
     root=''>
     </head>
 
-<xmp theme="Spacelab" style="display:none;">
-# Home
+<script src="Images/lightbox/js/jquery-1.11.0.min.js"></script>
+<script src="Images/lightbox/js/lightbox.min.js"></script>
+<link href="Images/lightbox/css/lightbox.css" rel="stylesheet" />
 
-Get started at [fgcz-sushi.uzh.ch](http://fgcz-sushi.uzh.ch), go to **Today's Menu** and select your project number and then **DataSet** to start analyzing data or viewing analysis results.
+<xmp theme="Spacelab" style="display:none;" toc toc-top-link>
+
+# 1. Getting started
+
+***Process your raw data, without cooking it!***
+
+**SUSHI** can **S**upport **U**sers for **SH**ell script **I**ntegration, defined as a recursive acronym, but someone might say after using it, SUSHI is a Super Ultra Special Hyper Incredible system!! Anyway, it is a sort of pipeline framework developed in Ruby on Rails in order to share useful pipeline scripts and it also provides both Web-based front end and command line interface. An instance is now running at [Functional Genomics Center Zurich](http://www.fgcz.ch/) to process the next genration sequence data for over 1000 projects. There have been some similar frameworks published such as [Galaxy](https://usegalaxy.org/), [Chipstar](), and [GeneProof](), but it is noteworthy that SUSHI is developed in Ruby on Rails, so that the updating and installing is in a quite simple manner following the Ruby on Rails conventional way.
+
+Getting started at the demo SUSHI server: [fgcz-sushi-demo.uzh.ch](http://fgcz-sushi-demo.uzh.ch), just go and play around with it, and feel what SUSHI tastes like. Go to **Today's Menu** and select your project number and then **DataSet** to start analyzing data or viewing analysis results. You can find the basic usage here: [fgcz-sushi.uzh.ch/usage.html](http://fgcz-sushi.uzh.ch/usage.html).
+
+
+# 2. Download&Installation
+
+Source code
+* [github.com/uzh/sushi](github.com/uzh/sushi)
+
+Installation
+* [README.rdoc](https://github.com/uzh/sushi/blob/master/README.rdoc)
+
+Demo
+* [demo SUSHI](http://fgcz-sushi-demo.uzh.ch)
+
+Presentation at ECCB'14 (The 13th European Conference on Computational Biology)
+* [Sushi_Demo_ECCB14.pptx](http://fgcz-sushi.uzh.ch/Sushi_Demo_ECCB14.pptx)
+
+# 3. How to use
+
+## Login
+
+[fgcz-sushi.uzh.ch](http://fgcz-sushi.uzh.ch)
+<a href="Images/login_form.png" data-lightbox="login_form" data-title="Login Form">
+  <img class="shadow_box" width="500px" src="Images/login_form.png" />
+</a>
+* You need to get an account of [B-Fabric](http://fgcz-bfabric.uzh.ch/) in advance
+* The same account and password is valid also in SUSHI
+
+## Top menu
+
+Center
+* *DataSet*: see, edit and delete your DataSet
+* *Import DataSet*: import a DataSet from .tsv file
+* *Check Jobs*: check your submitted jobs and status
+* *gStore*: browse reslut files
+
+Top right
+* *Sign out*: logout from Sushi
+* *Today's Menu*: go back to the top menu
+* *SushiApp List*: show all available SUSHI Applications
+* *Help*: Sushi Documentation (this document)
+* *Project*: select your project, and click 'GO' button
+
 
 
 ## DataSet Listing
 
 The available DataSets are listed as a tree structure and as a simple table with the newest DataSets at the top.
 
-<img src=Images/datasetListing.png width="600">
+<a href="Images/datasetListing.png" data-lightbox="login_form" data-title="DataSet Listing">
+  <img class="shadow_box" width="500px" src="Images/datasetListing.png" />
+</a>
 
+The **DataSet** in SUSHI means a set of meta-information regarding processed data, which is simply import/export-able with .tsv (tab-separated-value) formated text file. The colum header should the category of meta-information, and the row header should be sample name.
 
 ## DataSet Inspection
 
 Click on a Dataset to view the details. The **Samples** table shows the meta-information about the samples and reference to data files and links to browsable reports (if available).
+
+<a href="Images/samples.png" data-lightbox="login_form" data-title="Samples">
+  <img class="shadow_box" width="500px" src="Images/samples.png" />
+</a>
 
 ## DataSet Analysis
 
 At the bottom of every DataSet page there is the list of **Applications** that are compataible that DataSet. 
 Select a DataSet by clicking on it. This will bring up the DataSet page where you can analyze the DataSet by selecting any of the available **Applications** listed at the bottom. You will be asked to fill in the options and confirm your selections.
 
-<img src=Images/datasetDetail.png width="600">
+<a href="Images/applications.png" data-lightbox="login_form" data-title="Applications">
+  <img class="shadow_box" width="500px" src="Images/applications.png" />
+</a>
+
+## Import DataSet
+
+Normally, DataSet is automatically imported in SUSHI after the sequencing at [FGCZ](http://www.fgcz.ch/). If you would like to import a custom DataSet (.tsv), go to **Import DataSet** from the top menu, select the .tsv file from your computer, put an appropriate DataSet Name, and click **load** button. Note that the same DataSet cannot be imported again.
+
+## Usacase
+
+In this secion, a typical usage of SUSHI after we get the next generation sequence data is described below.
 
 
+# 4. SUSHI Applications
 
+[http://fgcz-sushi.uzh.ch/sushi_application](http://fgcz-sushi.uzh.ch/sushi_application)
+(You need to login first)
 
+### FastQCApp
+
+### FastqScreenApp
+
+### STARApp
+### RSEMApp
+
+### CountFeatureApp
 
 </xmp>
 
-<script src="http://smzg.github.io/strapdown/example/config/strapdown.js"></script>"
+<script src="http://ndossougbe.github.io/strapdown/dist/strapdown.js"></script>
 </html>
 
 
 <!-- 
+<script src="http://smzg.github.io/strapdown/example/config/strapdown.js"></script>"
 <script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
 -->
