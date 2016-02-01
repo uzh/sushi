@@ -27,7 +27,7 @@
   <% @data_set.samples.each_with_index do |sample, i| %>
     <tr>
       <td>
-        <%= form_tag({:controller => 'sample',:action => 'edit'}) do %>
+        <%= form_tag({:controller => 'sample',:action => 'multiedit'}) do %>
           <%= hidden_field :edit_option, :del_row, :value=>i.to_s %> 
           <%= image_submit_tag 'minus.png', :name=>'edit' %>
         <% end %>

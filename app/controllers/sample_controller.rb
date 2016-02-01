@@ -60,8 +60,10 @@ class SampleController < ApplicationController
     end
 
     # del row
-    if edit_option = params[:edit_option] and row = edit_option[:del_row]
-      @data_set.samples[row.to_i].delete
+    if (params[:edit_save] or params[:edit_save_as_child]) and del_rows = session[:del_rows]
+      del_rows.sort.reverse.each do |i|
+        @data_set.samples[i].delete
+      end
       @data_set.md5 = @data_set.md5hexdigest
       @data_set.save
       @data_set = DataSet.find_by_id(params[:id])
@@ -113,9 +115,23 @@ class SampleController < ApplicationController
       @data_set.md5 = @data_set.md5hexdigest
       @data_set.save
     end
+
+    # delete rows session clear
+    if session[:del_rows]
+      session[:del_rows] = nil
+    end
   end
   def edit
     @data_set = DataSet.find_by_id(params[:id])
     @edit_option = params[:edit_option]
+  end
+  def multiedit
+    @data_set = DataSet.find_by_id(params[:id])
+    @edit_option = params[:edit_option]
+    if del_row = @edit_option[:del_row]
+      session[:del_rows] ||= []
+      session[:del_rows] << del_row.to_i
+      session[:del_rows].uniq!
+    end
   end
 end

@@ -41,6 +41,7 @@ SushiFabric::Application.routes.draw do
     member do
       post :show
       post :edit
+      post :multiedit
     end
   end
 
