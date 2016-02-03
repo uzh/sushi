@@ -12,16 +12,15 @@ class DataSet < ActiveRecord::Base
     self.samples.map{|sample| sample.to_hash.keys}.flatten.uniq
   end
   def factor_first_headers
-    header = headers
-    if i = header.index{|col| col.tag?('Factor')}
-      v = header.delete_at(i)
-      header.unshift(v)
+    headers.sort_by do |col| 
+      if col == 'Name' 
+        0
+      elsif col.scan(/\[(.*)\]/).flatten.join =~ /Factor/
+        1
+      else
+        2
+      end
     end
-    if i = header.index{|col| col == "Name"}
-      v = header.delete_at(i)
-      header.unshift(v)
-    end
-    header 
   end
   def saved?
     if DataSet.find_by_md5(md5hexdigest)
