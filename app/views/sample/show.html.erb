@@ -1,6 +1,6 @@
 <h1>Project <%= session[:project] %></h1>
 <%= image_tag('back.gif') %>
-<%= link_to "Backto DataSet #{@data_set.name}", "/data_set/#{@data_set.id}", :method=>:get %>
+<%= link_to "Backto DataSet #{@data_set.name}", "/data_set/p#{session[:project]}/#{@data_set.id}", :method=>:get %>
 <hr />
 <h3>Samples</h3>
 <% if @data_set %>

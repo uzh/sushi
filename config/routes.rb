@@ -36,7 +36,11 @@ SushiFabric::Application.routes.draw do
       post :report
     end
   end
-  
+  # aliases
+  #get "/data_set/:project_id/index" => "data_set#index"
+  #get "/data_set/:project_id/index_full" => "data_set#index_full"
+  get "/data_set/:project_id/:id(.:format)" => "data_set#show"
+
   resources :sample, :only => [] do
     member do
       post :show

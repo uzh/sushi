@@ -18,6 +18,11 @@ module ApplicationHelper
                               current_user.selected_project = number
                               current_user.save
                               number.to_i
+                            elsif project_id = params[:project_id]
+                              number = project_id.gsub(/p/,'')
+                              current_user.selected_project = number
+                              current_user.save
+                              number.to_i
                             elsif current_user.selected_project != -1
                               current_user.selected_project
                             else

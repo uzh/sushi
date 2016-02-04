@@ -1,6 +1,7 @@
 class DataSetController < ApplicationController
   include SushiFabric
   def top(n_dataset=1000)
+    view_context.project_init
     @project = Project.find_by_number(session[:project].to_i)
 
     @data_sets = []
@@ -89,6 +90,7 @@ class DataSetController < ApplicationController
     end
   end
   def show
+    view_context.project_init
     @fgcz = SushiFabric::Application.config.fgcz?
     # switch project (from job_monitoring)
     if project = params[:project]
@@ -170,7 +172,7 @@ class DataSetController < ApplicationController
     @project.data_sets.each do |data_set|
       node = {"id" => data_set.id, 
               "text" => data_set.data_sets.length.to_s+
-              " <a href='/data_set/#{data_set.id}'>"+data_set.name+'</a>'+
+              " <a href='/data_set/p#{@project.number}/#{data_set.id}'>"+data_set.name+'</a>'+
               ' <span style="color:gray;font-size:smaller">'+data_set.comment.to_s+'</span>',
               'path' => '', 
               "expanded" => false, 

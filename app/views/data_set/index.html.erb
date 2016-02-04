@@ -53,7 +53,6 @@ $(function(){
 <div id="import" data-complete="<%= @warning %>"></div>
 
 <%= render 'shared/td' %>
-
 <h1>Project <%= session[:project] %></h1>
 <h3>DataSet</h3>
 <%= button_to "Report", "/data_set/report" %>
@@ -75,7 +74,7 @@ $(function(){
 <% @data_sets.each do |data_set| %>
   <tr>
     <td><%= data_set.id %></td>
-    <td><%= link_to td(data_set.name), "/data_set/#{data_set.id}" %></td> 
+    <td><%= link_to td(data_set.name), "/data_set/p#{@project.number}/#{data_set.id}" %></td> 
     <td class='check_box'><%= check_box "delete_flag", "#{data_set.id}", {:class=>'target'}, true, false %></td>
     <td>
       <%= data_set.completed_samples.to_i %> / <%= data_set.samples_length %>
