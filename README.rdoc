@@ -1,22 +1,20 @@
-== SUSHI: Supporting User for SHell script Integration
+== Getting started
 
-Process your raw data, without cooking it!
+***Process your raw data, without cooking it!***
 
-SUSHI can Support Users for SHell script Integration defined as a recursive acronym, but some one might say, SUSHI is a Super Ultra Special Hyper Incredible system!! Anyway, it is a sort of pipeline framework developed in Ruby on Rails in order to share useful pipeline scripts. An instance is now running at FGCZ to process the next genration sequence data for over 1000 projects. There have been some similar frameworks published such as Galaxy, Chipstar, and GeneProof. It is noteworthy that SUSHI is developed in Ruby on Rails, so that updating and installing is in quite simple manner.
+**SUSHI** can **S**upport **U**sers for **SH**ell script **I**ntegration, defined as a recursive acronym as usual, but someone might say after using it, SUSHI is a Super Ultra Special Hyper Incredible system!! Anyway, it is a sort of pipeline framework developed in Ruby on Rails in order to share useful pipeline scripts. SUSHI provides both Web-based front end and command line interface. An instance is now running at [Functional Genomics Center Zurich](http://www.fgcz.ch/) to process the next genration sequence data for over 1000 projects. There have been some similar frameworks published such as [Galaxy](https://usegalaxy.org/), [Chipster](http://chipster.csc.fi/), and [GeneProf](http://www.geneprof.org/GeneProf/), but it is noteworthy that SUSHI is developed in Ruby on Rails, so that the updating and installing is in a quite simple manner following the Ruby on Rails conventional way.
 
-== Getting Started
-
-Just access and play around with the demo SUSHI server: http://fgcz-sushi-demo.uzh.ch , and see and feel what SUSHI looks like. Basic usage is described here: http://fgcz-sushi.uzh.ch/usage.html 
+Getting started at the demo SUSHI server: [fgcz-sushi-demo.uzh.ch](http://fgcz-sushi-demo.uzh.ch), just go and play around with it, and feel what SUSHI tastes like. Go to **Today's Menu** and select your project number and then **DataSet** to start analyzing data or viewing analysis results. You can find the basic usage here: [fgcz-sushi.uzh.ch/usage.html](http://fgcz-sushi.uzh.ch/usage.html).
 
 == Installation
 
-First of all, let me introduce quickly the main components composing the SUSHI system. There are mainly 3 components:
+First of all, let me introduce quickly main SUSHI components:
 
-1. SUSHI server (GUI, Ruby on Rails)
+1. SUSHI server (Web-based front-end, Ruby on Rails)
 2. SUSHI application (sushi_fabric.gem)
 3. Workflow manager (workflow_manager.gem)
 
-SUSHI server is the user interface and some requests are sent to a SUSHI application, and the SUSHI application calls an job submission command of the Worlflow manager that manages and observes each submitted job. All the components will be installed at the same time by bundle command (see the next section) but note that the workflow manager is working as an independent process from SUSHI server (Ruby on Rails) process. Namely, the workflow manager process must run first and then SUSHI server (Ruby on Rails) should start, and both processes must be kept running in background. 
+SUSHI server is the user interface and some requests are sent to a SUSHI application, and the SUSHI application calls an job submission command of the Worlflow manager that manages and observes each submitted job by creating a worker process. All the components will be installed at once by using bundle command (see the next section). Note that the workflow manager is working as an independent process from SUSHI server (Ruby on Rails) process. In other words, the workflow manager process must run first and then next the SUSHI server (Ruby on Rails) process should start. Both processes do not have to run on a same computer node (they communicate each other using dRuby).
 
 === Requirements
 
@@ -58,6 +56,8 @@ xxxxx is your secret key.
 
   $ bundle exec rake db:migrate RAILS_ENV=production
 
+This command initializes the database appropriately.
+
 == Start SUSHI server
 
 1. Start workflow_manager
@@ -72,8 +72,9 @@ xxxxx is your secret key.
   druby://localhost:12345
 
 Note
-* The final line shows the druby address of the workflow manager
+* The final line shows the dRuby address of the workflow manager
 * If KyotoCabinet (gem) is installed in your system, KyotoCabinet is automatically selected as a DB system rather than PSotre
+* KyotoCabinet: http://fallabs.com/kyotocabinet/pkg/
 
 2. Start SUSHI server
 
@@ -83,14 +84,14 @@ Note
 * SUSHI (Ruby on Rails) server should run in a different folder from the workflow manager folder
 * The rails server command starts a WEBRick webserver daemon, which is implemented in Ruby
 * SUSHI server uses SQLite3 DBMS as a default
-* You can replace the DBMS to MySQL and the webserver application to Apache (+passenger module) if you need
-* Please refer to a lot of Rails documents on the web
+* You can replace the DBMS to MySQL and the webserver application to Apache (+passenger module) if you need, then SUSHI will be much faster and more stable
+* Please refer to a lot of Rails documents on the web to do it
 
 == Set your first NGS Data and DataSet file
 
 You need to import a DataSet file (.tsv) to SUSHI database.
 
-All Sushi applications take a DataSet, which is meta-information set of actual data, as an input, and sushi applications produce another DataSet as an output. The DataSet is identified as a .tsv (Tab-Separated-Value) text file, and it includes all input/output actual data file location (path). All DataSet file (.tsv) should be located in your project directory, the default project path becomes $RAILS_ROOT/public/gstore/projects/p1001, which directory will be automatically generated at the first running of the SUSHI server. 
+All SUSHI applications take a DataSet, which is meta-information set of actual data, as an input, and a SUSHI applications produces another DataSet as an output. The DataSet is identified as a .tsv (Tab-Separated-Value) text file, and it includes all input/output actual data file location (path). All DataSet file (.tsv) should be located in your project directory, the default project path becomes $RAILS_ROOT/public/gstore/projects/p1001, which directory will be automatically generated at the first running of the SUSHI server. 
 
 Sample DataSet
 * http://localhost:3000/ventricles_100k.tgz
@@ -101,10 +102,10 @@ then you can find it from the SUSHI server by clicking 'gStore' of the main menu
  
 == How to run a SUSHI application
 
-The procedure is as follows:
+You can run a SUSHI application after selecting a DataSet:
 
 1. Select a DataSet
-2. Select a SUSHI applicaiton
+2. Click a SUSHI applicaiton button
 3. Set parameters
 4. Click 'submit' button
 
@@ -135,7 +136,7 @@ in the R environment console.
 
 == Install third party applications and configure EZ_GLOBAL_VARIABLES.txt
 
-ezRun package bundles a sort of wrapper applications to call a thrid party application. For example, FastQCApp calles fastqc command. In other words, FastQCApp does not work without installation of FastQC command. All the application paths are defined in EZ_GLOBAL_VARIABLES.txt. Please check the applications defined in EZ_GLOBAL_VARIABLES.txt one by one and set the correct path installed in your environement. If an appropriate application is not found, the corresponding SUSHI application will stop with an error, though the application button appears.
+ezRun package bundles a sort of wrapper applications to call a thrid party application. For example, FastQCApp (SUSHI application) calles EzAppFastqc method in ezRun package, and subsequently it calls 'fastqc' command defined in EZ_GLOBAL_VARIABLES.txt. In other words, FastQCApp does not work without installation of FastQC application software. All the application paths are defined in EZ_GLOBAL_VARIABLES.txt explicitly. Please check the applications defined in EZ_GLOBAL_VARIABLES.txt one by one and set the correct path installed in your environement. If an appropriate application is not found, the corresponding SUSHI application will stop with an error, though the application button appears. SUSHI does not check if the third party application software is installed in your computer.
 
 == Install iGenome reference
 
@@ -166,15 +167,68 @@ in EZ_GLOBAL_VARIABLES.txt
 
 == Advanced SUSHI configuration
 
+=== SUSHI configuration
+
+Usually Ruby on Railes uses either configuration file depending on the Rails mode (development or production):
+
+* config/environments/development.rb
+* config/environments/production.rb
+
+in these files, the following four properties are used in SUSHI:
+
+1. config.workflow_manager = 'druby://localhost:12345'
+2. config.gstore_dir = '/sushi/public/gstore/projects'
+3. config.sushi_app_dir = '/sushi'
+4. config.scratch_dir = '/tmp/scratch'
+
+config.workflow_manager is the hostname and port number of which the workflow manager is working. config.gstore_dir is the path to the actual project folder where input and result data is stored. config.sushi_app_dir is the location of SUSHI server (Ruby on Rails) installation. config.scratch_dir is used by actuall shell script as a temporary directory. After a job finished, all the data is copied to config.gstore_dir from config.scratch_dir. config.scratch_dir should be enough disk space for every job calculation, otherwise a job will stop due to no disk space.
+
+=== How to make/add a new SUSHI application
+
+All SUSHI applications (classes) inherit SushiApp class that is defined in sushi_fabric.gem. At the moment, we must make a SUSHI application class file manually and import it in *lib* directory. You can refer to many existing application files in lib directory. lib/otherApps/WordCountApp.rb is so smallest application that you can refer to for the first time when you create a new SUSHI Application.
+
+Template of SUSHI application
+
+  #!/usr/bin/env ruby
+  # encoding: utf-8
+
+  require 'sushiApp'
+
+  class YourSushiApplication < SushiApp
+    def initialize
+      super
+      @name = 'Application_Name'      # No Space
+      @analysis_category = 'Category' # No Space
+      @required_columns = ['Name', 'Read1']
+      @required_params = []
+    end
+    def next_dataset
+      {'Name'=>@dataset['Name'],
+       'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats')
+      }
+      # [File] tag value (as a file) will be exported in gStore directory
+    end
+    def preprocess
+    end
+    def commands
+      'echo hoge'
+    end
+  end
+
+Note
+* The important methods required to define are *initialize*, *next_dataset*, and *commands* 
+* The *preprocess* method is not required but it will be executed before calling *commands* method
+* The *next_dataset* method must return Hash type data, the key will be column name and the value will be corresponding value to the column name
+* The *commands* method must return String type data that will become actual script commands
+* \@name and \@analysis_category instance variable is required and no space must be inserted
+
+After you make your new SUSHI application code, put it in lib/ directory and restart the SUSHI server. The SUSHI application button will appear in DataSet view if the DataSet has the required columns defined in your SUSHI applicaiton.
+
 TODO
 
-* How to add a new cluster
-* How to make/add a new SUSHI application
-* How to generate SUSHI applications workflow pipeline
 * How to migrate SQLite3 to MySQL
 * How to migrate WEBRick to Apache + passenger
 * Workflow manager configuration
-* SUSHI configuration
-* SUSHI framework background
+* How to add a new cluster
 
 
