@@ -111,6 +111,13 @@ class DataSetController < ApplicationController
 
     @data_set = DataSet.find_by_id(params[:id])
 
+    # check session[:project]
+    unless session[:project] == @data_set.project.number
+      session[:project] = @data_set.project.number 
+      current_user.selected_project = session[:project]
+      current_user.save
+    end
+
     # check real data
     @file_exist = {}
     @sample_path = []
