@@ -3,7 +3,7 @@ module ApplicationHelper
     text.gsub(/\r\n|\r|\n/, "<br />")
   end
   def project_init
-    unless session[:projects]
+    if !session[:projects] or params[:select_project]
       @fgcz = SushiFabric::Application.config.fgcz?
       session[:employee] = true if @fgcz and FGCZ.get_user_groups(current_user.login).include?('Employees')
       session[:projects] = if @fgcz 
