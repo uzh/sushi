@@ -21,7 +21,7 @@
 
 ***Process your raw data, without cooking it!***
 
-**SUSHI** can **S**upport **U**sers for **SH**ell script **I**ntegration, defined as a recursive acronym as usual, but someone might say after using it, SUSHI is a Super Ultra Special Hyper Incredible system!! Anyway, it is a sort of pipeline framework developed in Ruby on Rails in order to share useful pipeline scripts. SUSHI provides both Web-based front end and command line interface. An instance is now running at [Functional Genomics Center Zurich](http://www.fgcz.ch/) to process the next genration sequence data for over 1000 projects. There have been some similar frameworks published such as [Galaxy](https://usegalaxy.org/), [Chipstar](), and [GeneProof](), but it is noteworthy that SUSHI is developed in Ruby on Rails, so that the updating and installing is in a quite simple manner following the Ruby on Rails conventional way.
+**SUSHI** can **S**upport **U**sers for **SH**ell script **I**ntegration, defined as a recursive acronym as usual, but someone might say after using it, SUSHI is a Super Ultra Special Hyper Incredible system!! Anyway, it is a sort of pipeline framework developed in Ruby on Rails in order to share useful pipeline scripts. SUSHI provides both Web-based front end and command line interface. An instance is now running at [Functional Genomics Center Zurich](http://www.fgcz.ch/) to process the next genration sequence data for over 1000 projects. There have been some similar frameworks published such as [Galaxy](https://usegalaxy.org/), [Chipster](http://chipster.csc.fi/), and [GeneProf](http://www.geneprof.org/GeneProf/), but it is noteworthy that SUSHI is developed in Ruby on Rails, so that the updating and installing is in a quite simple manner following the Ruby on Rails conventional way.
 
 Getting started at the demo SUSHI server: [fgcz-sushi-demo.uzh.ch](http://fgcz-sushi-demo.uzh.ch), just go and play around with it, and feel what SUSHI tastes like. Go to **Today's Menu** and select your project number and then **DataSet** to start analyzing data or viewing analysis results. You can find the basic usage here: [fgcz-sushi.uzh.ch/usage.html](http://fgcz-sushi.uzh.ch/usage.html).
 
@@ -76,11 +76,11 @@ The available DataSets are listed as a tree structure and as a simple table with
   <img class="shadow_box" width="500px" src="Images/datasetListing.png" />
 </a>
 
-The **DataSet** in SUSHI means a set of meta-information regarding processed data, which is simply import/export-able with .tsv (tab-separated-value) formated text file. The colum header should the category of meta-information, and the row header should be sample name.
+The **DataSet** in SUSHI means a set of meta-information regarding processed data, which is simply import/export-able with .tsv (tab-separated-value) formated text file. The column header should the category of meta-information, and the row header should be sample name.
 
 ## DataSet Inspection
 
-Click on a Dataset to view the details. The **Samples** table shows the meta-information about the samples and reference to data files and links to browsable reports (if available).
+Click on a DataSet to view the details. The **Samples** table shows the meta-information about the samples and reference to data files and links to browsable reports (if available).
 
 <a href="Images/samples.png" data-lightbox="login_form" data-title="Samples">
   <img class="shadow_box" width="500px" src="Images/samples.png" />
@@ -88,8 +88,8 @@ Click on a Dataset to view the details. The **Samples** table shows the meta-inf
 
 ## DataSet Analysis
 
-At the bottom of every DataSet page there is the list of **Applications** that are compataible that DataSet. 
-Select a DataSet by clicking on it. This will bring up the DataSet page where you can analyze the DataSet by selecting any of the available **Applications** listed at the bottom. You will be asked to fill in the options and confirm your selections.
+At the bottom of every DataSet view there is the list of **SUSHI Applications** that are computable on the DataSet. 
+Select a DataSet by clicking on it. This will bring up the DataSet page where you can analyze the DataSet by selecting any of the available **SUSHI Applications** listed at the bottom. You will be asked to fill in the options and confirm your selections.
 
 <a href="Images/applications.png" data-lightbox="login_form" data-title="Applications">
   <img class="shadow_box" width="500px" src="Images/applications.png" />
@@ -99,15 +99,16 @@ Select a DataSet by clicking on it. This will bring up the DataSet page where yo
 
 Normally, DataSet is automatically imported in SUSHI after the sequencing at [FGCZ](http://www.fgcz.ch/). If you would like to import a custom DataSet (.tsv), go to **Import DataSet** from the top menu, select the .tsv file from your computer, put an appropriate DataSet Name, and click **load** button. Note that the same DataSet cannot be imported again.
 
+<!-- 
 ## Usacase
 
 In this secion, a typical usage of SUSHI after we get the next generation sequence data is described below.
 
+-->
 
 # 4. SUSHI Applications
 
 [http://fgcz-sushi-demo.uzh.ch/sushi_application](http://fgcz-sushi-demo.uzh.ch/sushi_application)
-(You need to login first)
 
 <!-- 
 ### FastQCApp
