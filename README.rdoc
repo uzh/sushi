@@ -1,12 +1,12 @@
-== Getting started
+== 1. Getting started
 
 *Process your raw data, without cooking it!*
 
-*SUSHI* can *S*upport *U*sers for *SH*ell script *I*ntegration, defined as a recursive acronym as usual, but someone might say after using it, SUSHI is a Super Ultra Special Hyper Incredible system!! SUSHI is an agile and extensible data analysis framework that brings innovative concepts to Next Generation Sequencing bioinformatics. SUSHI lets bioinformaticians wrap open source tools like e.g. bowtie, STAR or GATK into apps and provides natively a commandline and a web interface to run these apps. Users can script their analysis as well as do an analysis-by-clicking in their browser. When running an SUSHI application SUSHI takes care of all aspects of documentation: Input data, parameters, software tools and versions are stored persistently. SUSHI accepts meta-information on samples and processing and lets the user define the meta-information she/he needs in a tabular format. Finally, all results, the associated logs, all parameters and all meta-information is stored in a single, self-contained directory that can be shared with collaborators. Altogether, SUSHI as a framework truly supports collaborative, reproducible data analysis and research. At the Functional Genomics Center, SUSHI is tightly integrated with [B-Fabric](http://fgcz-bfabric.uzh.ch) and shares the authentication, sample information and the storage. The production version of SUSHI is currently being further integrated in the overall B-Fabric framework.
+*SUSHI* can *S*upport *U*sers for *SH*ell script *I*ntegration, defined as a recursive acronym as usual, but someone might say after using it, SUSHI is a Super Ultra Special Hyper Incredible system!! SUSHI is an agile and extensible data analysis framework that brings innovative concepts to Next Generation Sequencing bioinformatics. SUSHI lets bioinformaticians wrap open source tools like e.g. bowtie, STAR or GATK into apps and provides natively a commandline and a web interface to run these apps. Users can script their analysis as well as do an analysis-by-clicking in their browser. When running an SUSHI application SUSHI takes care of all aspects of documentation: Input data, parameters, software tools and versions are stored persistently. SUSHI accepts meta-information on samples and processing and lets the user define the meta-information she/he needs in a tabular format. Finally, all results, the associated logs, all parameters and all meta-information is stored in a single, self-contained directory that can be shared with collaborators. Altogether, SUSHI as a framework truly supports collaborative, reproducible data analysis and research. At the Functional Genomics Center, SUSHI is tightly integrated with B-Fabric(http://fgcz-bfabric.uzh.ch) and shares the authentication, sample information and the storage. The production version of SUSHI is currently being further integrated in the overall B-Fabric framework.
 
-Getting started at the demo SUSHI server: [fgcz-sushi-demo.uzh.ch](http://fgcz-sushi-demo.uzh.ch), just go and play around with it, and feel what SUSHI tastes like. Go to **Today's Menu** and select your project number and then **DataSet** to start analyzing data or viewing analysis results. You can find the basic usage here: [fgcz-sushi.uzh.ch/usage.html](http://fgcz-sushi.uzh.ch/usage.html).
+Getting started at the demo SUSHI server: http://fgcz-sushi-demo.uzh.ch, just go and play around with it, and feel what SUSHI tastes like. Go to **Today's Menu** and select your project number and then **DataSet** to start analyzing data or viewing analysis results. You can find the basic usage here: http://fgcz-sushi.uzh.ch/usage.html
 
-== Installation
+== 2. Installation
 
 First of all, let me introduce quickly main SUSHI components:
 
@@ -16,7 +16,7 @@ First of all, let me introduce quickly main SUSHI components:
 
 SUSHI server is the user interface and some requests are sent to a SUSHI application, and the SUSHI application calls an job submission command of the Worlflow manager that manages and observes each submitted job by creating a worker process. All the components will be installed at once by using bundle command (see the next section). Note that the workflow manager is working as an independent process from SUSHI server (Ruby on Rails) process. In other words, the workflow manager process must run first and then next the SUSHI server (Ruby on Rails) process should start. Both processes do not have to run on a same computer node (they communicate each other using dRuby).
 
-=== Requirements
+=== 2.1. Requirements
 
 * Ruby (>= 1.9.3)
 * Git
@@ -35,13 +35,13 @@ Note
 * The current version of SUSHI does not work in Ruby on Rails version 4 (but it will be upgraded soon)
 * Ruby on Rails will be installed in the following steps by bundler
 * Please refer to the following sites for the other application installation
-** Ruby https://www.ruby-lang.org/en/
-** Git https://git-scm.com/
+* Ruby https://www.ruby-lang.org/en
+* Git https://git-scm.com
 * To instal 'bundler', just type the following command after you install Ruby:
 
   $ gem install bundler
 
-=== Download and configration
+=== 2.2. Download and configration
 
   $ git clone https://github.com/uzh/sushi.git
   $ cd sushi/
@@ -58,9 +58,9 @@ xxxxx is your secret key.
 
 This command initializes the database appropriately.
 
-== Start SUSHI server
+== 3. Start SUSHI server
 
-1. Start workflow_manager
+=== 3.1. Start workflow_manager
 
   $ mkdir workflow_manager
   $ cd workflow_manager/
@@ -74,9 +74,9 @@ This command initializes the database appropriately.
 Note
 * The final line shows the dRuby address of the workflow manager
 * If KyotoCabinet (gem) is installed in your system, KyotoCabinet is automatically selected as a DB system rather than PSotre
-* KyotoCabinet: http://fallabs.com/kyotocabinet/pkg/
+* KyotoCabinet: http://fallabs.com/kyotocabinet/pkg
 
-2. Start SUSHI server
+=== 3.2. Start SUSHI server
 
   $ bundle exec rails server -e production
 
@@ -87,7 +87,7 @@ Note
 * You can replace the DBMS to MySQL and the webserver application to Apache (+passenger module) if you need, then SUSHI will be much faster and more stable
 * Please refer to a lot of Rails documents on the web to do it
 
-== Set your first NGS Data and DataSet file
+== 4. Set your first NGS Data and DataSet file
 
 You need to import a DataSet file (.tsv) to SUSHI database.
 
@@ -100,7 +100,7 @@ You can download it from your SUSHI server, or you can copy it from $RAIL_ROOT/p
 
 then you can find it from the SUSHI server by clicking 'gStore' of the main menu. To click the "+"(plus) button next to 'dataset.tsv' file under the ventricles_100k directory from the gStore view imports it as a SUSHI DataSet to SUSHI database, and a new DataSet, ventricles_100k, will show up in 'DataSet' view.
  
-== How to run a SUSHI application
+== 5. How to run a SUSHI application
 
 You can run a SUSHI application after selecting a DataSet:
 
@@ -113,7 +113,7 @@ Note
 * Initially, only 'WordCountApp' is available, though other SUSHI application buttons appear in DataSet view. 
 * After installing ezRun package and installing corresponding applications in your system, the other SUSHI applications will work. See the following steps.
 
-== Install ezRun package
+== 6. Install ezRun package
 
 Please refer to https://github.com/uzh/ezRun in detail.
 
@@ -134,11 +134,11 @@ You can find the EZ_GLOBAL_VARIABLES.txt location in your system by loading ezRu
 
 in the R environment console.
 
-== Install third party applications and configure EZ_GLOBAL_VARIABLES.txt
+== 7. Install third party applications and configure EZ_GLOBAL_VARIABLES.txt
 
 ezRun package bundles a sort of wrapper applications to call a thrid party application. For example, FastQCApp (SUSHI application) calles EzAppFastqc method in ezRun package, and subsequently it calls 'fastqc' command defined in EZ_GLOBAL_VARIABLES.txt. In other words, FastQCApp does not work without installation of FastQC application software. All the application paths are defined in EZ_GLOBAL_VARIABLES.txt explicitly. Please check the applications defined in EZ_GLOBAL_VARIABLES.txt one by one and set the correct path installed in your environement. If an appropriate application is not found, the corresponding SUSHI application will stop with an error, though the application button appears. SUSHI does not check if the third party application software is installed in your computer.
 
-== Install iGenome reference
+== 8. Install iGenome reference
 
 In the case of using alignment tools, such as STARApp and BowtieApp, you need reference genome sequence(s). We use iGenome format for the reference data. If you can find your target species in the site of Illumina/iGenome, you can download it in your system as a reference of SUSHI application. The current all SUSHI applciations refer to the following environment variable 
 
@@ -153,7 +153,7 @@ in EZ_GLOBAL_VARIABLES.txt. Please set the GENOME_REF_DIR and GENOMES_ROOT path 
 Reference
 * iGenome: https://support.illumina.com/sequencing/sequencing_software/igenome.html
 
-== Final small configuration
+== 9. Final small configuration
 
 Please make a symbolic link to gstore directory in public directory, namely just run the following command in public/ directory:
 
@@ -165,9 +165,9 @@ and set the following environment variable
 
 in EZ_GLOBAL_VARIABLES.txt
 
-== Advanced SUSHI configuration
+== 10. Advanced SUSHI configuration
 
-=== SUSHI configuration
+=== 10.1. SUSHI configuration
 
 Usually Ruby on Railes uses either configuration file depending on the Rails mode (development or production):
 
@@ -183,7 +183,7 @@ in these files, the following four properties are used in SUSHI:
 
 config.workflow_manager is the hostname and port number of which the workflow manager is working. config.gstore_dir is the path to the actual project folder where input and result data is stored. config.sushi_app_dir is the location of SUSHI server (Ruby on Rails) installation. config.scratch_dir is used by actuall shell script as a temporary directory. After a job finished, all the data is copied to config.gstore_dir from config.scratch_dir. config.scratch_dir should be enough disk space for every job calculation, otherwise a job will stop due to no disk space.
 
-=== How to make/add a new SUSHI application
+=== 10.2. How to make/add a new SUSHI application
 
 All SUSHI applications (classes) inherit SushiApp class that is defined in sushi_fabric.gem. At the moment, we must make a SUSHI application class file manually and import it in *lib* directory. You can refer to many existing application files in lib directory. lib/otherApps/WordCountApp.rb is so smallest application that you can refer to for the first time when you create a new SUSHI Application.
 
@@ -224,11 +224,73 @@ Note
 
 After you make your new SUSHI application code, put it in lib/ directory and restart the SUSHI server. The SUSHI application button will appear in DataSet view if the DataSet has the required columns defined in your SUSHI applicaiton.
 
-TODO
+=== 10.3. Workflow Manager configuration
 
-* How to migrate SQLite3 to MySQL
-* How to migrate WEBRick to Apache + passenger
-* Workflow manager configuration
-* How to add a new cluster
+As well as SUSHI configuration, there are two configuration files depending on running mode (development/production):
+
+* config/environments/development.rb
+* config/environments/production.rb
+
+These files are generated automatically with default setting at the first run of Workflow Manager.
+
+  WorkflowManager::Server.configure do |config|
+    config.log_dir = '/home/workflow_manager/logs'
+    config.db_dir = '/home/workflow_manager/dbs'
+    config.interval = 30
+    config.resubmit = 0
+    config.cluster = WorkflowManager::LocalComputer.new('local_computer')
+  end
+
+config.log_dir is the log directory path, and config.db_dir is the database directory path. config.interval means the interval time (seconds) to check a running job whether it is running, finished, or failed. When config.resubmit > 0, a failed job is resubmitted again. config.cluster sets a cluster class which has several method definitions depending on the cluster on which a job will actually run. For more details to set/customize/add a cluster, refer to the next section.
+
+=== 10.4. How to add a new cluster
+
+For example, WorkflowManager::LocalComputer class, inheriting WorkflowManager::Cluster class, defines (overwrites) the following methods:
+
+1. submit_job
+2. job_running?
+3. job_ends?
+4. copy_commands
+5. kill_command
+6. delete_command
+7. cluster_nodes
+
+When you add or customize your cluster system (which has calculation node(s)), you need to add a new cluser class and define (overwrite) these methods. Even though you have only one laptop computer, it is regonized as a 'cluster'. These methods are called from SUSHI server via WorkflowManager instance and SUSHI manages the job submission. The Workflow Manager instance should run in the cluster system, but it is not required if the submission and job managing commands are available from the node where the Workflow Manager instance is running on.
+
+Actually, although the WorkflowManager::LocalComputer class file is located in 
+
+  {workflow_manager gem installed directory}/lib/workflow_manager/cluster.rb
+
+, you can make a new class definition in the Workflow Manager configuration file (the following Ruby source code file):
+
+* config/environments/development.rb
+* config/environments/production.rb
+
+An example to add a new cluster node is shown below:
+
+  #!/usr/bin/env ruby
+  # encoding: utf-8
+
+  class WorkflowManager::FGCZCluster
+    alias :cluster_nodes_orig :cluster_nodes
+    def cluster_nodes
+      nodes = cluster_nodes_orig
+      nodes.merge!({
+        'fgcz-h-007: cpu 16,mem 61GB,scr 350GB' => 'fgcz-h-007',
+        'fgcz-h-008: cpu 16,mem 61GB,scr 350GB' => 'fgcz-h-008',
+      })
+      Hash[*nodes.sort.flatten]
+    end
+  end
+
+  WorkflowManager::Server.configure do |config|
+    config.log_dir = '/srv/GT/analysis/masaomi/workflow_manager/run_workflow_manager/logs'
+    config.db_dir = '/srv/GT/analysis/masaomi/workflow_manager/run_workflow_manager/dbs'
+    config.interval = 30
+    config.resubmit = 0
+    config.cluster = WorkflowManager::FGCZCluster.new('FGCZ Cluster')
+  end
+
+The other methods can be updated as well accordingly to your environment. Please refer to the WorkflowManager::LocalComputer class source code for more details.
 
 
