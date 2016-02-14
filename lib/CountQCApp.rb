@@ -11,6 +11,9 @@ class CountQCApp < SushiFabric::SushiApp
     super
     @name = 'CountQC'
     @analysis_category = 'QC'
+    @description =<<-EOS
+Quality control after counting reads<br/>
+    EOS
     @params['process_mode'] = 'DATASET'
     @required_columns = ['Name','Count', 'Species', 'refBuild', 'featureLevel', 'refFeatureFile']
     @required_params = []

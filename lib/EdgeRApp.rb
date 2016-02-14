@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150226-111032'
+Version = '20160215-003245'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -12,6 +12,10 @@ class EdgeRApp < SushiFabric::SushiApp
     @name = 'EdgeR'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Differential_Expression'
+    @description =<<-EOS
+    Empirical analysis of digital gene expression data in R<br/>
+<a href='https://bioconductor.org/packages/release/bioc/html/edgeR.html'>edgeR</a><br/>
+    EOS
     @required_columns = ['Name','Count', 'Species', 'refBuild', 'featureLevel', 'refFeatureFile']
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
     # optional params

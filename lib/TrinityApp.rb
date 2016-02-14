@@ -11,6 +11,10 @@ class TrinityApp < SushiFabric::SushiApp
     @name = 'Trinity'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Assemble'
+    @description =<<-EOS
+    RNA-seq de novo Assembly<br/>
+<a href='https://github.com/trinityrnaseq/trinityrnaseq/wiki'>Trinity</a><br/>
+    EOS
     @required_columns = ['Name', 'Read1', 'Species']
     @required_params = ['name']
     # optional params

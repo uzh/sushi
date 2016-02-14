@@ -10,6 +10,10 @@ class BWAApp < SushiFabric::SushiApp
     super
     @name = 'BWA'
     @analysis_category = 'Map'
+    @description =<<-EOS
+    Burrows-Wheeler Aligner<br/>
+<a href='http://bio-bwa.sourceforge.net/'>BWA</a><br/>
+    EOS
     @required_columns = ['Name','Read1','Species']
     @required_params = ['refBuild','paired']
     # optional params

@@ -10,6 +10,10 @@ class MemeApp <  SushiFabric::SushiApp
     super
     @name = 'MemeApp'
     @analysis_category = 'Motif'
+    @description =<<-EOS
+Perform motif discovery on DNA, RNA or protein datasets<br/>
+<a href='http://meme-suite.org/tools/meme'>http://meme-suite.org/tools/meme</a>
+    EOS
     @required_columns = ['Name','PeakSequences']
     @required_params = ['name']
     @params['cores'] = '1'

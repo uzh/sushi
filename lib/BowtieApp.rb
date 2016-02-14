@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150226-110822'
+Version = '20160215-003903'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -11,6 +11,10 @@ class BowtieApp < SushiFabric::SushiApp
     super
     @name = 'Bowtie'
     @analysis_category = 'Map'
+    @description =<<-EOS
+Fast and memory-efficient short read aligner<br/>
+<a href='http://bowtie-bio.sourceforge.net/index.shtml'>manual</a>
+    EOS
     @required_columns = ['Name','Read1','Species']
     @required_params = ['refBuild','paired']
     # optional params

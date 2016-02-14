@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150226-111227'
+Version = '20160215-004949'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -11,6 +11,10 @@ class MACS2App < SushiFabric::SushiApp
     super
     @name = 'MACS2'
     @analysis_category = 'Peaks'
+    @description =<<-EOS
+Capturing the influence of genome complexity to evaluate the significance of enriched ChIP regions<br/>
+<a href='http://liulab.dfci.harvard.edu/MACS/00README.html'>http://liulab.dfci.harvard.edu/MACS/00README.html</a>
+    EOS
     @required_columns = ['Name','BAM','BAI', 'refBuild','Control']
     @required_params = ['refBuild','paired']
     # optional params

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150226-111457'
+Version = '20160215-004046'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -11,6 +11,10 @@ class TophatApp < SushiFabric::SushiApp
     super
     @name = 'Tophat'
     @analysis_category = 'Map'
+    @description =<<-EOS
+A spliced read mapper for RNA-Seq<br/>
+<a href='https://ccb.jhu.edu/software/tophat/index.shtml'>manual</a>
+    EOS
     @required_columns = ['Name','Read1','Species']
     @required_params = ['refBuild','paired', 'strandMode']
     # optional params

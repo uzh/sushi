@@ -11,6 +11,10 @@ class GatkRnaSeqHaplotyperApp <  SushiFabric::SushiApp
     @name = 'GATK RNA-Seq Haplotyper'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Variants'
+    @description =<<-EOS
+Haplotype calling for RNA-seq<br/>
+<a href='https://www.broadinstitute.org/gatk/guide/tooldocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php'>HaplotypeCaller</a>
+    EOS
     @required_columns = ['Name','BAM','BAI', 'build']
     @required_params = ['name', 'paired']
     @params['cores'] = '24'

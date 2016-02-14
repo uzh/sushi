@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150226-111005'
+Version = '20160215-003128'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -12,6 +12,10 @@ class DESeq2App < SushiFabric::SushiApp
     @name = 'DESeq2'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Differential_Expression'
+    @description =<<-EOS
+    Differential gene expression analysis based on the negative binomial distribution<br/>
+<a href='https://bioconductor.org/packages/release/bioc/html/DESeq2.html'>DESeq2</a><br/>
+    EOS
     @required_columns = ['Name','Count', 'Species', 'refBuild', 'featureLevel', 'refFeatureFile']
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
     # optional params

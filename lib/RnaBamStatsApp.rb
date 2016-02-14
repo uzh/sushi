@@ -11,6 +11,9 @@ class RnaBamStatsApp <  SushiFabric::SushiApp
     @name = 'RNA BamStats'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
+    @description =<<-EOS
+Quality control after the alignment of RNAseq reads<br/>
+    EOS
     @required_columns = ['Name','BAM','BAI', 'refBuild']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'

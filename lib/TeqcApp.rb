@@ -11,6 +11,10 @@ class TeqcApp <  SushiFabric::SushiApp
     @name = 'Teqc'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
+    @description =<<-EOS
+Quality control for target capture experiments<br/>
+<a href='http://www.bioconductor.org/packages/release/bioc/html/TEQC.html'>manual</a>
+    EOS
     @required_columns = ['Name','BAM','BAI', 'refBuild']
     @required_params = ['name', 'paired']
     @params['cores'] = '4'
