@@ -19,7 +19,7 @@ class SplitAndClusterApp < SushiFabric::SushiApp
     @required_columns = ['Name','Read1', 'Read2']
     @required_params = ["forwardPrimerFile", "reversePrimerFile"]
     # optional params
-    @params['cores'] = '8'
+    @params['cores'] = '2'
     @params['ram'] = '16'
     @params['scratch'] = '100'
     @params['paired'] = true
