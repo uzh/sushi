@@ -16,7 +16,7 @@ class SplitAndClusterApp < SushiFabric::SushiApp
     Finally the resulting file is clustered with CD-Hit.<br>
     Use for p1871
     EOS
-    @required_columns = ['Name','Read1', 'Read2'
+    @required_columns = ['Name','Read1', 'Read2']
     @required_params = ["forwardPrimerFile", "reversePrimerFile"]
     # optional params
     @params['cores'] = '8'
