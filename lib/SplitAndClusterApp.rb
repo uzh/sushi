@@ -45,6 +45,7 @@ class SplitAndClusterApp < SushiFabric::SushiApp
   end
   def commands
     run_RApp("EzAppSplitAndCluster")
+  end
 end
 
 if __FILE__ == $0
