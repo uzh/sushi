@@ -39,13 +39,12 @@ class SplitAndClusterApp < SushiFabric::SushiApp
   end
   def next_dataset
     nds = {'Name'=>@dataset['Name']}
-    nds['Clustered [File]'] = File.join(@result_dir, "#{@dataset['Name']}_result")
+    nds['Clustered [File]'] = File.join(@result_dir, "#{@dataset['Name']}_cdHit")
     nds.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
     nds
   end
   def commands
     run_RApp("EzAppSplitAndCluster")
-  end
 end
 
 if __FILE__ == $0
