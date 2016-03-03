@@ -5,10 +5,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class GatkRnaSeqHaplotyperApp <  SushiFabric::SushiApp
+class GatkRnaHaplotyperApp <  SushiFabric::SushiApp
   def initialize
     super
-    @name = 'GATK RNA-Seq Haplotyper'
+    @name = 'GatkRnaHaplotyper'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Variants'
     @description =<<-EOS
@@ -21,7 +21,7 @@ Haplotype calling for RNA-seq<br/>
     @params['ram'] = '100'
     @params['scratch'] = '500'
     @params['paired'] = false
-    @params['name'] = 'GATK_RnaSeqVariants'
+    @params['name'] = 'GATK_RnaVariants'
     @params['build'] = ref_selector
     @params['specialOptions'] = ''
     @params['mail'] = ""
@@ -45,7 +45,7 @@ Haplotype calling for RNA-seq<br/>
   end
 
   def commands
-    run_RApp('EzAppGatkRnaSeqHaplotyper')
+    run_RApp('EzAppGatkRnaHaplotyper')
   end
 end
 
