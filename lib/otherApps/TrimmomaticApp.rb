@@ -27,8 +27,9 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     @params['quality_type', 'description'] = 'Fastq quality score type, if you use Illumina HiSeq or MySeq, chose phred33'
     @params['illuminaclip'] = {
       'none' => '',
-      'All Illumina Adapter' => '/srv/GT/reference/contaminants/illuminaContaminants.fa',
-      'FastQC checking Adapter' => '/srv/GT/reference/adapter/adapter_list.fa',
+      'allIllumina-forTrimmomatic-20160202.fa' => '/srv/GT/databases/contaminants/allIllumina-forTrimmomatic-20160202.fa',
+      'All Illumina Adapter' => '/srv/GT/databases/contaminants/illuminaContaminants.fa',
+      'FastQC checking Adapter' => '/srv/GT/databases/adapter/adapter_list.fa',
       #'Original Adapter' => 'under construction'
     }
     @params['seed_mismatchs'] = '1'
