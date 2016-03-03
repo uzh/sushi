@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150710-112224'
+Version = '20160303-094633'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -45,6 +45,7 @@ class SplitAndClusterApp < SushiFabric::SushiApp
   end
   def commands
     run_RApp("EzAppSplitAndCluster")
+  end
 end
 
 if __FILE__ == $0
