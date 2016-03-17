@@ -78,7 +78,11 @@ class RunApplicationController < ApplicationController
     end
     params[:parameters].each do |key, value|
       @sushi_app.params[key] = if key == 'node'
-                                 value.map{|v| v.chomp}.join(',')
+                                 if value.instance_of?(Array)
+                                   value.map{|v| v.chomp}.join(',')
+                                 else
+                                   value
+                                 end
                                elsif @sushi_app.params.data_type(key) == String
                                  value
                                else

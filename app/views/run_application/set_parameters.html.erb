@@ -39,10 +39,11 @@
           <% when 'node' %>
             <% if session['employee'] %>
             <%= select_tag "parameters[#{key}]", options_for_select(@nodes), :multiple => true, :size => 10 %><br />
-          <% else %>
-            <%= select_tag "parameters[#{key}]", options_for_select(@nodes, :selected => @nodes.first.last), :multiple => true, :size => 10 %><br />
-          <% end %>
             (Grid Engine Status: <%= link_to 'http://fgcz-s-021.uzh.ch/cgi-bin/fgcz_ge_info.py', 'http://fgcz-s-021.uzh.ch/cgi-bin/fgcz_ge_info.py' %>)
+          <% else %>
+            <%= @nodes.values.join(',') %>
+            <%= hidden_field :parameters, :node, :value => @nodes.values.join(',') %>
+          <% end %>
           <% else %>
             <% if @factors and key=='grouping' %>
               <%= select :parameters, :grouping, options_for_select(@factor_colums.keys.map{|factor| [factor.split.first, factor.split.first]}, params[:grouping]),  :prompt => "select please" %>
