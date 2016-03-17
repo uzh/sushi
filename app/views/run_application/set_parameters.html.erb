@@ -50,7 +50,7 @@
               <%= render :partial => '/run_application/select_sample_group' %>
             <% elsif @factors and key=='refGroup' %>
               <%= render :partial => '/run_application/select_ref_group' %>
-            <% elsif key=='refBuild' and value.instance_of?(Array) %>
+            <% elsif key=='refBuild' and value.instance_of?(Hash) %>
               <%= select :parameters, key.to_sym, value.map{|k,v| [k.to_s.split(//)[0,90].join, v]}, :selected => '' %>
             <% elsif value.instance_of?(TrueClass) or value.instance_of?(FalseClass) %>
               <%= select :parameters, key.to_sym, ['true', 'false'], :selected => value.to_s %>
