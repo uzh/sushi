@@ -98,7 +98,7 @@ $(document).ready(function(){
     <li><%= file %></li>
   <% end %>
   </ul>
-<% else %>
+<% end %>
   <%= button_to "Go gstore", File.join("/projects/", @sample_path.first) if @sample_path.length == 1 %>
   <% @sample_path.sort.each do |path| %>
     <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
@@ -135,7 +135,6 @@ $(document).ready(function(){
     <% end %>
   <% end %>
 
-<% end %>
 <hr />
 <%= button_to 'Go Job Script&Log', "/data_set/script_log.#{@data_set.id}", :method=>:get %>
 <%= button_to 'Show Job Parameter', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>
