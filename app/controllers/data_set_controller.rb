@@ -8,7 +8,7 @@ class DataSetController < ApplicationController
     if @project and  data_sets = @project.data_sets
       @data_sets = data_sets.reverse[0, n_dataset]
       @data_sets.each do |data_set|
-        if data_set.completed_samples.to_i < data_set.samples_length.to_i
+        unless data_set.completed_samples.to_i == data_set.samples_length.to_i
           sample_available = 0
           data_set.samples.each do |sample|
             if sample_file = sample.to_hash.select{|header, file| header and header.tag?('File')}.first

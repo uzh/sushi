@@ -26,6 +26,12 @@ class SampleController < ApplicationController
       end
     end
 
+    if params[:edit_save_as_child] and del_rows = session[:del_rows]
+      del_rows.sort.reverse.each do |i|
+        samples.delete_at(i)
+      end
+    end
+
     # save as a child dataset
     if params[:edit_save_as_child]    
       data_set = []
@@ -35,8 +41,9 @@ class SampleController < ApplicationController
       data_set << "ProjectNumber" << project.number
       data_set << "ParentID" << @data_set.id 
       headers = @data_set.headers
-      data_set_id = save_data_set(data_set, headers, samples, current_user)
-      @data_set = DataSet.find_by_id(data_set_id)
+      if data_set_id = save_data_set(data_set, headers, samples, current_user)
+        @data_set = DataSet.find_by_id(data_set_id)
+      end
     end
 
     # add new row
@@ -60,13 +67,13 @@ class SampleController < ApplicationController
     end
 
     # del row
-    if (params[:edit_save] or params[:edit_save_as_child]) and del_rows = session[:del_rows]
+    if params[:edit_save] and del_rows = session[:del_rows]
       del_rows.sort.reverse.each do |i|
         @data_set.samples[i].delete
       end
+      @data_set.num_samples = @data_set.samples.length - del_rows.length
       @data_set.md5 = @data_set.md5hexdigest
       @data_set.save
-      @data_set = DataSet.find_by_id(params[:id])
     end
 
     # update column names
