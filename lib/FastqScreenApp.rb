@@ -34,6 +34,7 @@ EOS
     end
 
     @params['cmdOptions'] = "-k 10 --trim5 4 --trim3 4 --very-sensitive"
+    @params['specialOptions'] = ''
     @params['mail'] = ""
   end
  def set_default_parameters
