@@ -26,8 +26,8 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
     @params['library_type', 'description'] = 'strand specificity of hte library'
     @params['paired'] = false
     @params['paired', 'description'] = 'either the reads are paired-end or single-end'
-    @params['bowtie2_index'] = ['GRCh38/BOWTIE2Index/genome', 'hg19/BOWTIE2Index/genome', 'GRCm38/BOWTIE2Index/genome', 'mm10/BOWTIE2Index/genome']
-    @params['bowtie2_index', 'description'] = 'bowtie2 index of reference build'
+    @params['build'] = ['GRCh38', 'hg19', 'GRCm38/BOWTIE2Index/genome', 'mm10/BOWTIE2Index/genome']
+    @params['build', 'description'] = 'bowtie2 index of reference build'
     @params['tophat_options'] = ""
     @params['tophat_options', 'description' = "other options that will be directly pasted to tophats command line"
   end
