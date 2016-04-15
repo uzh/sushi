@@ -1,0 +1,953 @@
+diff --git master/Gemfile.lock master/Gemfile.lock
+index a704c8d..1513ea3 100644
+--- master/Gemfile.lock
++++ master/Gemfile.lock
+@@ -1,15 +1,3 @@
+-PATH
+-  remote: /srv/SushiFabric/Gems/devise_ldap_authenticatable
+-  specs:
+-    devise_ldap_authenticatable (0.6.1.1)
+-      devise (>= 2.0.0)
+-      net-ldap (~> 0.2.2)
+-
+-PATH
+-  remote: /srv/SushiFabric/Gems/fgcz
+-  specs:
+-    fgcz (0.0.1)
+-
+ GEM
+   remote: https://rubygems.org/
+   specs:
+@@ -61,6 +49,9 @@ GEM
+       responders
+       thread_safe (~> 0.1)
+       warden (~> 1.2.3)
++    devise_ldap_authenticatable (0.8.5)
++      devise (>= 3.4.1)
++      net-ldap (>= 0.6.0, <= 0.11)
+     diff-lcs (1.2.5)
+     docile (1.1.5)
+     erubis (2.7.0)
+@@ -84,7 +75,7 @@ GEM
+     mini_portile (0.6.2)
+     multi_json (1.11.2)
+     mysql2 (0.3.20)
+-    net-ldap (0.2.2)
++    net-ldap (0.11)
+     nokogiri (1.6.6.2)
+       mini_portile (~> 0.6.0)
+     nori (2.6.0)
+@@ -173,456 +164,6 @@ GEM
+     tilt (1.4.1)
+     treetop (1.4.15)
+       polyglot
+-      polyglot
+-      polyglot
+-      polyglot
+-      polyglot
+-      polyglot
+-      polyglot
+-      polyglot
+-      polyglot
+-      polyglot
+-      polyglot
+-      polyglot
+-      polyglot
+-      polyglot
+-      polyglot
+-      polyglot
+-      polyglot
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+-      polyglot (>= 0.3.1)
+       polyglot (>= 0.3.1)
+     tzinfo (0.3.45)
+     uglifier (2.7.2)
+@@ -645,8 +186,7 @@ DEPENDENCIES
+   chartkick
+   coffee-rails (~> 3.2.1)
+   devise
+-  devise_ldap_authenticatable (>= 0.6.1.1)!
+-  fgcz!
++  devise_ldap_authenticatable
+   hpricot
+   jquery-rails
+   mysql2 (~> 0.3.20)
+@@ -663,3 +203,6 @@ DEPENDENCIES
+   uglifier (>= 1.0.3)
+   workflow_manager
+   yaml_db
++
++BUNDLED WITH
++   1.10.6
+diff --git master/app/controllers/application_controller.rb master/app/controllers/application_controller.rb
+index a98b861..a70562c 100644
+--- master/app/controllers/application_controller.rb
++++ master/app/controllers/application_controller.rb
+@@ -19,14 +19,14 @@ module Savon
+ end
+ 
+ class ApplicationController < ActionController::Base
+-  rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
+-    render :text => exception, :status => 500
+-  end
++#  rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
++#    render :text => exception, :status => 500
++#  end
+   protect_from_forgery
+   
+-  if SushiFabric::Application.config.fgcz?
++#  if SushiFabric::Application.config.fgcz?
+     before_filter :authenticate_user!
+-  end
++#  end
+   @@workflow_manager = DRbObject.new_with_uri(SushiFabric::WORKFLOW_MANAGER)
+ 
+   def all_sushi_applications
+diff --git master/app/models/user.rb master/app/models/user.rb
+index dfc7799..5f27a0c 100644
+--- master/app/models/user.rb
++++ master/app/models/user.rb
+@@ -2,10 +2,12 @@ class User < ActiveRecord::Base
+   # Include default devise modules. Others available are:
+   # :token_authenticatable, :confirmable,
+   # :lockable, :timeoutable and :omniauthable
+-  devise :ldap_authenticatable, :rememberable, :trackable
++#  devise :ldap_authenticatable, :rememberable, :trackable
++  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
+ 
+   # Setup accessible (or protected) attributes for your model
+-  attr_accessible :login, :password, :password_confirmation, :remember_me, :selected_project
++#  attr_accessible :login, :password, :password_confirmation, :remember_me, :selected_project
++  attr_accessible :email, :password, :password_confirmation, :remember_me, :selected_project
+   # attr_accessible :title, :body
+   has_many :data_sets
+ end
+diff --git master/app/views/devise/confirmations/new.html.erb master/app/views/devise/confirmations/new.html.erb
+index 81e4472..826672f 100644
+--- master/app/views/devise/confirmations/new.html.erb
++++ master/app/views/devise/confirmations/new.html.erb
+@@ -1,12 +1,16 @@
+ <h2>Resend confirmation instructions</h2>
+ 
+-<%= form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f| %>
++<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+   <%= devise_error_messages! %>
+ 
+-  <div><%= f.label :email %><br />
+-  <%= f.email_field :email %></div>
++  <div class="field">
++    <%= f.label :email %><br />
++    <%= f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %> 
++  </div>
+ 
+-  <div><%= f.submit "Resend confirmation instructions" %></div>
++  <div class="actions">
++    <%= f.submit "Resend confirmation instructions" %>
++  </div>
+ <% end %>
+ 
+ <%= render "devise/shared/links" %>
+diff --git master/app/views/devise/mailer/confirmation_instructions.html.erb master/app/views/devise/mailer/confirmation_instructions.html.erb
+index a5c4585..dc55f64 100644
+--- master/app/views/devise/mailer/confirmation_instructions.html.erb
++++ master/app/views/devise/mailer/confirmation_instructions.html.erb
+@@ -1,5 +1,5 @@
+-<p>Welcome <%= @resource.email %>!</p>
++<p>Welcome <%= @email %>!</p>
+ 
+ <p>You can confirm your account email through the link below:</p>
+ 
+-<p><%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
++<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+diff --git master/app/views/devise/mailer/reset_password_instructions.html.erb master/app/views/devise/mailer/reset_password_instructions.html.erb
+index ae9e888..f667dc1 100644
+--- master/app/views/devise/mailer/reset_password_instructions.html.erb
++++ master/app/views/devise/mailer/reset_password_instructions.html.erb
+@@ -1,8 +1,8 @@
+ <p>Hello <%= @resource.email %>!</p>
+ 
+-<p>Someone has requested a link to change your password, and you can do this through the link below.</p>
++<p>Someone has requested a link to change your password. You can do this through the link below.</p>
+ 
+-<p><%= link_to 'Change my password', edit_password_url(@resource, :reset_password_token => @resource.reset_password_token) %></p>
++<p><%= link_to 'Change my password', edit_password_url(@resource, reset_password_token: @token) %></p>
+ 
+ <p>If you didn't request this, please ignore this email.</p>
+ <p>Your password won't change until you access the link above and create a new one.</p>
+diff --git master/app/views/devise/mailer/unlock_instructions.html.erb master/app/views/devise/mailer/unlock_instructions.html.erb
+index 2263c21..41e148b 100644
+--- master/app/views/devise/mailer/unlock_instructions.html.erb
++++ master/app/views/devise/mailer/unlock_instructions.html.erb
+@@ -1,7 +1,7 @@
+ <p>Hello <%= @resource.email %>!</p>
+ 
+-<p>Your account has been locked due to an excessive amount of unsuccessful sign in attempts.</p>
++<p>Your account has been locked due to an excessive number of unsuccessful sign in attempts.</p>
+ 
+ <p>Click the link below to unlock your account:</p>
+ 
+-<p><%= link_to 'Unlock my account', unlock_url(@resource, :unlock_token => @resource.unlock_token) %></p>
++<p><%= link_to 'Unlock my account', unlock_url(@resource, unlock_token: @token) %></p>
+diff --git master/app/views/devise/passwords/edit.html.erb master/app/views/devise/passwords/edit.html.erb
+index fe620ef..6a796b0 100644
+--- master/app/views/devise/passwords/edit.html.erb
++++ master/app/views/devise/passwords/edit.html.erb
+@@ -1,16 +1,25 @@
+ <h2>Change your password</h2>
+ 
+-<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
++<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+   <%= devise_error_messages! %>
+   <%= f.hidden_field :reset_password_token %>
+ 
+-  <div><%= f.label :password, "New password" %><br />
+-  <%= f.password_field :password %></div>
++  <div class="field">
++    <%= f.label :password, "New password" %><br />
++    <% if @minimum_password_length %>
++      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
++    <% end %>
++    <%= f.password_field :password, autofocus: true, autocomplete: "off" %>
++  </div>
+ 
+-  <div><%= f.label :password_confirmation, "Confirm new password" %><br />
+-  <%= f.password_field :password_confirmation %></div>
++  <div class="field">
++    <%= f.label :password_confirmation, "Confirm new password" %><br />
++    <%= f.password_field :password_confirmation, autocomplete: "off" %>
++  </div>
+ 
+-  <div><%= f.submit "Change my password" %></div>
++  <div class="actions">
++    <%= f.submit "Change my password" %>
++  </div>
+ <% end %>
+ 
+ <%= render "devise/shared/links" %>
+diff --git master/app/views/devise/passwords/new.html.erb master/app/views/devise/passwords/new.html.erb
+index 2350164..3d6d11a 100644
+--- master/app/views/devise/passwords/new.html.erb
++++ master/app/views/devise/passwords/new.html.erb
+@@ -1,12 +1,16 @@
+ <h2>Forgot your password?</h2>
+ 
+-<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
++<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+   <%= devise_error_messages! %>
+ 
+-  <div><%= f.label :email %><br />
+-  <%= f.email_field :email %></div>
++  <div class="field">
++    <%= f.label :email %><br />
++    <%= f.email_field :email, autofocus: true %>
++  </div>
+ 
+-  <div><%= f.submit "Send me reset password instructions" %></div>
++  <div class="actions">
++    <%= f.submit "Send me reset password instructions" %>
++  </div>
+ <% end %>
+ 
+ <%= render "devise/shared/links" %>
+diff --git master/app/views/devise/registrations/edit.html.erb master/app/views/devise/registrations/edit.html.erb
+index ebca9ed..3ea40f0 100644
+--- master/app/views/devise/registrations/edit.html.erb
++++ master/app/views/devise/registrations/edit.html.erb
+@@ -1,25 +1,39 @@
+ <h2>Edit <%= resource_name.to_s.humanize %></h2>
+ 
+-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
++<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+   <%= devise_error_messages! %>
+ 
+-  <div><%= f.label :email %><br />
+-  <%= f.email_field :email %></div>
+-
+-  <div><%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+-  <%= f.password_field :password, :autocomplete => "off" %></div>
+-
+-  <div><%= f.label :password_confirmation %><br />
+-  <%= f.password_field :password_confirmation %></div>
+-
+-  <div><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+-  <%= f.password_field :current_password %></div>
+-
+-  <div><%= f.submit "Update" %></div>
++  <div class="field">
++    <%= f.label :email %><br />
++    <%= f.email_field :email, autofocus: true %>
++  </div>
++
++  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
++    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
++  <% end %>
++
++  <div class="field">
++    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
++    <%= f.password_field :password, autocomplete: "off" %>
++  </div>
++
++  <div class="field">
++    <%= f.label :password_confirmation %><br />
++    <%= f.password_field :password_confirmation, autocomplete: "off" %>
++  </div>
++
++  <div class="field">
++    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
++    <%= f.password_field :current_password, autocomplete: "off" %>
++  </div>
++
++  <div class="actions">
++    <%= f.submit "Update" %>
++  </div>
+ <% end %>
+ 
+ <h3>Cancel my account</h3>
+ 
+-<p>Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete %>.</p>
++<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+ 
+ <%= link_to "Back", :back %>
+diff --git master/app/views/devise/registrations/new.html.erb master/app/views/devise/registrations/new.html.erb
+index 9703db3..5a238ce 100644
+--- master/app/views/devise/registrations/new.html.erb
++++ master/app/views/devise/registrations/new.html.erb
+@@ -1,18 +1,29 @@
+ <h2>Sign up</h2>
+ 
+-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
++<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+   <%= devise_error_messages! %>
+ 
+-  <div><%= f.label :email %><br />
+-  <%= f.email_field :email %></div>
++  <div class="field">
++    <%= f.label :email %><br />
++    <%= f.email_field :email, autofocus: true %>
++  </div>
+ 
+-  <div><%= f.label :password %><br />
+-  <%= f.password_field :password %></div>
++  <div class="field">
++    <%= f.label :password %>
++    <% if @minimum_password_length %>
++    <em>(<%= @minimum_password_length %> characters minimum)</em>
++    <% end %><br />
++    <%= f.password_field :password, autocomplete: "off" %>
++  </div>
+ 
+-  <div><%= f.label :password_confirmation %><br />
+-  <%= f.password_field :password_confirmation %></div>
++  <div class="field">
++    <%= f.label :password_confirmation %><br />
++    <%= f.password_field :password_confirmation, autocomplete: "off" %>
++  </div>
+ 
+-  <div><%= f.submit "Sign up" %></div>
++  <div class="actions">
++    <%= f.submit "Sign up" %>
++  </div>
+ <% end %>
+ 
+ <%= render "devise/shared/links" %>
+diff --git master/app/views/devise/sessions/new.html.erb master/app/views/devise/sessions/new.html.erb
+index b776e84..0576da8 100644
+--- master/app/views/devise/sessions/new.html.erb
++++ master/app/views/devise/sessions/new.html.erb
+@@ -3,36 +3,36 @@
+     <div id="info">
+       <h1>Sign in to <em>Sushi</em></h1>
+       
+-      <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+-        <p>
+-          <input id="user_login" name="user[login]"
+-                 size="30" type="text" value=""
+-                 placeholder="Username"/>
+-        </p>
++<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
++  <div class="field">
++    <%= f.label :email %><br />
++    <%= f.email_field :email, autofocus: true %>
++  </div>
+ 
+-        <p>
+-          <input id="user_password" name="user[password]"
+-                 size="30" type="password"
+-                 placeholder="Password"/>
+-        </p>
+-        <p>
+-          <input name="user[remember_me]" type="hidden" value="0" />
+-          <input id="user_remember_me" name="user[remember_me]" type="checkbox" value="1" />
+-          <label for="user_remember_me">Remember me on this computer</label>
+-        </p>
+-          <p><%= f.submit "Sign in" %></p>
+-      <% end %>
+-    </div>
+-    <%= button_to "Guest Login", "http://fgcz-sushi-demo.uzh.ch" %> 
+-    <div id="links">
+-        <p><a href="/sushi_doc_md.html">SUSHI Documentation</a></p>
+-        <p>Google search keyword hint: <a href="https://www.google.com/#q=sushi+fgcz">Sushi FGCZ</a></p>
++  <div class="field">
++    <%= f.label :password %><br />
++    <%= f.password_field :password, autocomplete: "off" %>
++  </div>
++
++  <% if devise_mapping.rememberable? -%>
++    <div class="field">
++      <%= f.check_box :remember_me %>
++      <%= f.label :remember_me %>
+     </div>
+-<!--
+-    <div id="links">
+-      <p>If you don't have an account <a href="/users/sign_up">sign up</a> now.</p>
+-      <p><a href="/users/password/new">Forgot your password</a>?</p>
++  <% end -%>
++
++  <div class="actions">
++    <p><%= f.submit "Sign in" %></p>
++  </div>
++<% end %>
++
++<%= button_to "Guest Login", "http://fgcz-sushi-demo.uzh.ch" %> 
++<div id="links">
++    <p><a href="/sushi_doc_md.html">SUSHI Documentation</a></p>
++    <p>Google search keyword hint: <a href="https://www.google.com/#q=sushi+fgcz">Sushi FGCZ</a></p>
++</div>
++
+     </div>
+--->
+   </div>
+ </div>
++<%= render "devise/shared/links" %>
+diff --git master/app/views/devise/unlocks/new.html.erb master/app/views/devise/unlocks/new.html.erb
+index e55e82e..16586bc 100644
+--- master/app/views/devise/unlocks/new.html.erb
++++ master/app/views/devise/unlocks/new.html.erb
+@@ -1,12 +1,16 @@
+ <h2>Resend unlock instructions</h2>
+ 
+-<%= form_for(resource, :as => resource_name, :url => unlock_path(resource_name), :html => { :method => :post }) do |f| %>
++<%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
+   <%= devise_error_messages! %>
+ 
+-  <div><%= f.label :email %><br />
+-  <%= f.email_field :email %></div>
++  <div class="field">
++    <%= f.label :email %><br />
++    <%= f.email_field :email, autofocus: true %>
++  </div>
+ 
+-  <div><%= f.submit "Resend unlock instructions" %></div>
++  <div class="actions">
++    <%= f.submit "Resend unlock instructions" %>
++  </div>
+ <% end %>
+ 
+ <%= render "devise/shared/links" %>
+diff --git master/app/views/layouts/application.html.erb master/app/views/layouts/application.html.erb
+index f35fd6b..225c275 100644
+--- master/app/views/layouts/application.html.erb
++++ master/app/views/layouts/application.html.erb
+@@ -13,6 +13,9 @@
+ </head>
+ <body>
+ 
++         <p class="notice"><%= notice %></p>
++         <p class="alert"><%= alert %></p>
++
+   <div id="wrapper">
+     <%= render 'shared/header' %>
+     <div id="contents">
+diff --git master/config/environments/production.rb master/config/environments/production.rb
+index a5b70ea..f71b3c3 100644
+--- master/config/environments/production.rb
++++ master/config/environments/production.rb
+@@ -83,4 +83,5 @@ SushiFabric::Application.configure do
+     config.sushi_app_dir = Dir.pwd
+   end
+ 
++  config.action_mailer.default_url_options = { :host => 'localhost:4000' }
+ end
+diff --git master/config/initializers/devise.rb master/config/initializers/devise.rb
+index 056c80f..05f86ff 100644
+--- master/config/initializers/devise.rb
++++ master/config/initializers/devise.rb
+@@ -33,7 +33,7 @@ Devise.setup do |config|
+   # session. If you need permissions, you should implement that in a before filter.
+   # You can also supply a hash where the value is a boolean determining whether
+   # or not authentication should be aborted when the value is not present.
+-  config.authentication_keys = [ :login ]
++  #config.authentication_keys = [ :login ]
+ 
+   # Configure parameters from the request object used for authentication. Each entry
+   # given should be a request method and it will automatically be passed to the
+@@ -239,4 +239,5 @@ Devise.setup do |config|
+   # When using omniauth, Devise cannot automatically set Omniauth path,
+   # so you need to do it manually. For the users scope, it would be:
+   # config.omniauth_path_prefix = "/my_engine/users/auth"
++  config.secret_key = 'f15f7e54c22918089c753c224b1428e88c6ca5a15e94d5f0b0f028ef8146442f7fc6fa91d60d4d59e8b72d296ca498b9ec8ae056f76108b6518694fce7397ed3'
+ end
+diff --git master/db/migrate/20121106235337_devise_create_users.rb master/db/migrate/20121106235337_devise_create_users.rb
+index 89edfae..2287834 100644
+--- master/db/migrate/20121106235337_devise_create_users.rb
++++ master/db/migrate/20121106235337_devise_create_users.rb
+@@ -2,12 +2,12 @@ class DeviseCreateUsers < ActiveRecord::Migration
+   def change
+     create_table(:users) do |t|
+       ## Database authenticatable
+-      #t.string :email,              :null => false, :default => ""
+-      #t.string :encrypted_password, :null => false, :default => ""
++      t.string :email,              :null => false, :default => ""
++      t.string :encrypted_password, :null => false, :default => ""
+ 
+       ## Recoverable
+-      #t.string   :reset_password_token
+-      #t.datetime :reset_password_sent_at
++      t.string   :reset_password_token
++      t.datetime :reset_password_sent_at
+ 
+       ## Rememberable
+       #t.datetime :remember_created_at
+@@ -38,8 +38,8 @@ class DeviseCreateUsers < ActiveRecord::Migration
+       t.timestamps
+     end
+ 
+-    #add_index :users, :email,                :unique => true
+-    #add_index :users, :reset_password_token, :unique => true
++    add_index :users, :email,                :unique => true
++    add_index :users, :reset_password_token, :unique => true
+     # add_index :users, :confirmation_token,   :unique => true
+     # add_index :users, :unlock_token,         :unique => true
+     # add_index :users, :authentication_token, :unique => true
