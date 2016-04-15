@@ -44,7 +44,7 @@ Note
 === 2.2. Download and configration
 
   $ git clone https://github.com/uzh/sushi.git
-  $ cd sushi/
+  $ cd sushi/master
   $ bundle install 
   $ bundle exec rake secret
 
