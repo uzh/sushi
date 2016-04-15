@@ -293,4 +293,10 @@ An example to add a new cluster node is shown below:
 
 The other methods can be updated as well accordingly to your environment. Please refer to the WorkflowManager::LocalComputer class source code for more details.
 
+=== 10.5. Local user authentification
+
+As default, there is no user authentification. Please apply the patch, local_devise.20160415.patch, under master directory before executing DB migration (rake db:migrate) as follows:
+
+  $ patch -p0 > local_devise.20160415.patch
+
 
