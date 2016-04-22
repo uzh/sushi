@@ -6,10 +6,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class FastqcExample < SushiFabric::SushiApp
+class FastqcExample1 < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'FastqcExample'
+    @name = 'FastqcExample1'
     @analysis_category = 'Map'
     @description =<<-EOS
 
