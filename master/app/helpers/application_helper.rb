@@ -5,7 +5,7 @@ module ApplicationHelper
   def project_init
     if !session[:projects] or params[:select_project]
       @fgcz = SushiFabric::Application.config.fgcz?
-      session[:employee] = (@fgcz and FGCZ.get_user_groups(current_user.login).include?('Employees'))
+      session[:employee] = (@fgcz and current_user and FGCZ.get_user_groups(current_user.login).include?('Employees'))
       session[:projects] = if @fgcz 
                              FGCZ.get_user_projects(current_user.login).map{|project| project.gsub(/p/,'').to_i}.sort
                            else
