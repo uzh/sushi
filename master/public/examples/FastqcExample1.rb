@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20140317-142505'
+Version = '20160425-055647'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -41,9 +41,8 @@ class FastqcExample1 < SushiFabric::SushiApp
   def commands
     cmd = "fastqc --extract -o . -t #{@params['cores']} #{@dataset['Read1']}"
     cmd << "\n"
-    fastqcDir = "#{File.basename(@dataset['Read1'].to_s).gsub('.fastq.gz','_fastqc')
+    fastqcDir = File.basename(@dataset['Read1'].to_s).gsub('.fastq.gz','_fastqc')
     cmd << "mv #{fastqcDir} #{@dataset['Name']}"
     cmd << "\n"
-    cmd
   end
 end
