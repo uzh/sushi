@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20140317-142505'
+Version = '20160425-062350'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -29,7 +29,7 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
     @params['build'] = ['GRCh38', 'hg19', 'GRCm38', 'mm10']
     @params['build', 'description'] = 'build id of the genome assembly'
     @params['tophat_options'] = ""
-    @params['tophat_options', 'description' = "other options that will be directly pasted to tophats command line"
+    @params['tophat_options', 'description'] = "other options that will be directly pasted to tophats command line"
   end
   def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
@@ -58,7 +58,7 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
     end 
   end
   def commands
-    cmd = "tophat -o . #{num_threads} --library_type #{library_type} #{@params['tophat_options']} #{bowtie2_index} #{@gstore_dir}/#{@dataset['Read1']}"
+    cmd = "tophat -o . #{num_threads} --library_type #{@params['library_type']} #{@params['tophat_options']} #{bowtie2_index} #{@gstore_dir}/#{@dataset['Read1']}"
     if @params['paired']
       cmd << ",#{@gstore_dir}/#{@dataset['Read2']}"
     end
