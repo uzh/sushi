@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160425-060626'
+Version = '20160425-070243'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -40,7 +40,7 @@ class FastqcExample2 < SushiFabric::SushiApp
   end
   def commands
         command =<<-EOS
-CORE=#{@params['cores']}
+CORES=#{@params['cores']}
 READS=#{@gstore_dir}/#{@dataset['Read1']}
 NAME=#{@dataset['Name']}
 FILENAME=${READS##*/}
