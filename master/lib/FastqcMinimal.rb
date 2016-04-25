@@ -13,7 +13,7 @@ class FastqcMinimal < SushiFabric::SushiApp
   def next_dataset
     {
      'Name'=>@dataset['Name'], 
-     'Report [Link, File]'=>File.join(@result_dir, @dataset['Read1'].to_s.gsub('.fastq.gz', '_fastqc.zip'))
+     'Report [Link, File]'=>File.join(@result_dir, File.basename(@dataset['Read1'].to_s).gsub('.fastq.gz', '_fastqc.zip'))
     }
   end
   def commands
