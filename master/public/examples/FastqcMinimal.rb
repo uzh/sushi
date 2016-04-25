@@ -8,7 +8,8 @@ class FastqcMinimal < SushiFabric::SushiApp
     @name = 'FastqcMinimal'
     @analysis_category = 'QC'
     @required_columns = ['Name','Read1']
-    @required_params = []
+    @required_params = ['cores']
+    @params['cores'] = 1
   end
   def next_dataset
     {
