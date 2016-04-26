@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160425-063839'
+Version = '20160426-053404'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -58,13 +58,13 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
     end 
   end
   def commands
-    cmd = "tophat -o . #{num_threads} --library-type #{@params['library_type']} #{@params['tophat_options']} #{bowtie2_index} #{@gstore_dir}/#{@dataset['Read1']}"
+    cmd = "which tophat; tophat -v\n"
+    cmd << "tophat -o . #{num_threads} --library-type #{@params['library_type']} #{@params['tophat_options']} #{bowtie2_index} #{@gstore_dir}/#{@dataset['Read1']}"
     if @params['paired']
       cmd << ",#{@gstore_dir}/#{@dataset['Read2']}"
     end
     cmd << "\n"
     cmd << "mv accepted_hits.bam #{@dataset['Name']}.bam\n"
     cmd << "samtools index #{@dataset['Name']}.bam\n"
-    cmd
   end
 end
