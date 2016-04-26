@@ -18,6 +18,10 @@ class FastqcMinimal < SushiFabric::SushiApp
     }
   end
   def commands
-    "fastqc --extract -o . -t #{@params['cores']} #{@gstore_dir}/#{@dataset['Read1']}"
+    <<-EOS
+which fastqc
+fastqc -v
+fastqc --extract -o . -t #{@params['cores']} #{@gstore_dir}/#{@dataset['Read1']}
+    EOS
   end
 end
