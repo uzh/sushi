@@ -297,6 +297,6 @@ The other methods can be updated as well accordingly to your environment. Please
 
 As default, there is no user authentification. Please apply the patch, local_devise.20160415.patch, before executing DB migration (rake db:migrate) as follows:
 
-  $ patch -p0 < master/local_devise.20160415.patch
+  $ patch -p0 < master/local_devise.patch
 
 
