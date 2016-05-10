@@ -61,8 +61,8 @@
       <% end %>
     </table>
   </div>
-    <%= submit_tag 'save', :name=>'edit' %>
-    <%= submit_tag 'save as child', :name=>'edit_save_as_child' %>
+    <%= submit_tag 'save', :name=>'edit' %><br />
+    <%= submit_tag 'save as child', :name=>'edit_save_as_child' %> Child DataSet name: <%= text_field :child_dataset, :name, :value=>"Child_#{@data_set.name}", :size=>30 %>
   <% end %>
 <% end %>
 <hr />
