@@ -36,7 +36,11 @@ class SampleController < ApplicationController
     if params[:edit_save_as_child]    
       data_set = []
       data_set << "DataSetName"
-      data_set << "Child_#{@data_set.name}"
+      data_set << if child_dataset = params[:child_dataset] and child_name = child_dataset[:name]
+                    child_name
+                  else
+                    "Child_#{@data_set.name}"
+                  end
       project = Project.find_by_number(session[:project].to_i)
       data_set << "ProjectNumber" << project.number
       data_set << "ParentID" << @data_set.id 
