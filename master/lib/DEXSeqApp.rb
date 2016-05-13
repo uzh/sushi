@@ -6,10 +6,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class EdgeRApp < SushiFabric::SushiApp
+class DEXSeqApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'DEXSeq'
+    @name = 'DEXSeqApp'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Alternative_Splicing'
     @description =<<-EOS
