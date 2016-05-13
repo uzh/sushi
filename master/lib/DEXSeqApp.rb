@@ -16,8 +16,8 @@ class EdgeRApp < SushiFabric::SushiApp
     Inference of differential exon usage in RNA-Seq<br/>
 <a href='https://bioconductor.org/packages/release/bioc/html/DEXSeq.html'>DEXSeq</a><br/>
     EOS
-    @required_columns = ['Name','BAM','BAI', 'Species','refBuild', 'featureLevel', 'refFeatureFile']
-    @required_params = ['grouping', 'sampleGroup', 'refGroup']
+    @required_columns = ['Name','BAM','BAI', 'Species','refBuild', 'refFeatureFile']
+    @required_params = ['grouping', 'sampleGroup', 'refGroup','refBuild']
     # optional params
     @params['cores'] = '1'
     @params['ram'] = '2'
