@@ -67,7 +67,8 @@ EOS
      'refBuild'=>@params['refBuild'],
      'paired'=>@params['paired'],
      'refFeatureFile'=>@params['refFeatureFile'],
-     'Read Count'=>@dataset['Read Count'],
+     'strandMode'=>@params['strandMode'],
+     'Read Count'=>@dataset['Read Count']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
