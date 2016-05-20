@@ -27,7 +27,7 @@ EOS
     @params['minReadLength'] = 28
     @params['maxReadLength'] = 32
     @params['getCoverageByReadLength'] = true
-    @params['readStartOnlyCoverage'] = true
+    @params['coverageType'] = ['readStart', 'fullRead']
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end
@@ -51,9 +51,11 @@ EOS
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile'],
+     'featureLevel'=>'isoform',
      'strandMode'=>@params['strandMode'],
      'paired'=>@params['paired'],
-     'Read Count'=>@dataset['Read Count']
+     'Read Count'=>@dataset['Read Count'],
+     'coverageType'=>@params['coverageType']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
