@@ -47,6 +47,8 @@ class SampleController < ApplicationController
       headers = @data_set.headers
       if data_set_id = save_data_set(data_set, headers, samples, current_user)
         @data_set = DataSet.find_by_id(data_set_id)
+        @data_set.child = true
+        @data_set.save
       end
     end
 
