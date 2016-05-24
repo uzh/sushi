@@ -4,12 +4,21 @@
 <h2>Select</h2>
 <%= form_tag(:action=>:multi_destroy, :method=>:post) do %>
   <%= radio_button 'option', 'delete', "only_sushi", {:checked => true} %> Delete <span class="alert">ONLY</span> entry in <span class="alert">Sushi DB</span><br />
-  <% if @orig_datasets.empty? %>
+  <% if @gstore_dataset_deletable %>
   <%= radio_button 'option', 'delete', "also_gstore" %> Delete <span style="color:red;font-weight:bold;">BOTH</span> entry in <span class="alert">Sushi DB</span> and data in <span class="alert">GStore</span> <br /><br />
   <% else %>
     <br />
-    Note: You cannot delete <span class="alert">original dataset</span> file(s) in <span class="alert">GStore</span>: 
-    <%= @orig_datasets.map{|data_set| data_set.id}.join(", ") %> <br />
+    Note:
+    <ul>
+    <% unless @orig_datasets.empty? %>
+      <li>You cannot delete <span class="alert">original dataset</span> file(s) in <span class="alert">GStore</span>:</li> 
+      <%= @orig_datasets.map{|data_set| data_set.id}.join(", ") %> <br />
+    <% end %>
+    <% unless @child_datasets.empty? %>
+      <li>You cannot delete <span class="alert">child dataset(s)</span> file(s) in <span class="alert">GStore</span> which may be shared with parental dataset(s):</li>
+      <%= @child_datasets.map{|data_set| data_set.id}.join(", ") %> <br />
+    <% end %>
+    </ul>
   <% end %>
   <br /> 
   <%= hidden_field :option, :data_set_ids, :value=>@data_set_ids.join(',') %>
