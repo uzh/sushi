@@ -393,6 +393,7 @@ class DataSetController < ApplicationController
     @data_set_ids = if flag=params[:delete_flag]
                       flag.keys
                     end
+    @gstore_dataset_deletable = false
     if @data_set_ids.length == 1
       # same as delete action
       @data_set = DataSet.find_by_id(@data_set_ids.first)
@@ -412,17 +413,27 @@ class DataSetController < ApplicationController
         end
       end
       @sample_path.uniq!
+      if @data_set.parent_id and @data_set.child == false
+        @gstore_dataset_deletable = true
+      end
       render action: "delete"
     else
       # @data_set_ids.length should_be > 1
       @data_sets = []
       @orig_datasets = []
+      @child_datasets = []
       @data_set_ids.each do |id|
         data_set = DataSet.find_by_id(id)
         @data_sets << data_set
         unless data_set.parent_id
           @orig_datasets << data_set
         end
+        if data_set.child
+          @child_datasets << data_set
+        end
+      end
+      if @orig_datasets.empty? and @child_datasets.empty?
+        @gstore_dataset_deletable = true
       end
     end
   end
