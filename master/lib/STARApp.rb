@@ -24,7 +24,7 @@ EOS
     @required_params = ['refBuild','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '40'
+    @params['ram'] = '30'
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['paired'] = false
