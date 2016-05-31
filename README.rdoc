@@ -157,7 +157,7 @@ Reference
 
 Please make a symbolic link to gstore directory in public directory, namely just run the following command in public/ directory:
 
-  $ ln -s gstore/public
+  $ ln -s gstore/projects
 
 and set the following environment variable 
 
