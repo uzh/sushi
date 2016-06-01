@@ -19,14 +19,15 @@ class DEXSeqApp < SushiFabric::SushiApp
     @required_columns = ['Name','BAM','BAI', 'Species','refBuild', 'refFeatureFile']
     @required_params = ['grouping', 'sampleGroup', 'refGroup','refBuild']
     # optional params
-    @params['cores'] = '1'
-    @params['ram'] = '2'
+    @params['cores'] = '8'
+    @params['ram'] = '20'
     @params['scratch'] = '10'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['grouping'] = '' 
     @params['sampleGroup'] = '' 
-    @params['refGroup'] = '' 
+    @params['refGroup'] = ''
+    @params['fdr'] = '0.1' 
     @params['expressionName'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
