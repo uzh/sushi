@@ -17,17 +17,25 @@ class DEXSeqApp < SushiFabric::SushiApp
 <a href='https://bioconductor.org/packages/release/bioc/html/DEXSeq.html'>DEXSeq</a><br/>
     EOS
     @required_columns = ['Name','BAM','BAI', 'Species','refBuild', 'refFeatureFile']
-    @required_params = ['grouping', 'sampleGroup', 'refGroup','refBuild']
+    @required_params = ['grouping', 'sampleGroup', 'refGroup','refBuild','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '20'
     @params['scratch'] = '10'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['paired'] = false
+    @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['grouping'] = '' 
     @params['sampleGroup'] = '' 
     @params['refGroup'] = ''
-    @params['fdr'] = '0.1' 
+    @params['fdr'] = '0.1'
+    @params['minGeneExprCount'] = '20'
+    @params['minGeneExprCount', 'description'] = "minimal expression count to define a gene as present"
+    @params['minExonExprCount'] = '10'
+    @params['minExonExprCount', 'description'] = "minimal expression count to define an exon as present"
+    @params['minExonLog2Ratio'] = '0.5'
+    @params['minExonLog2Ratio', 'description'] = "Exon logRatio threshold for candidate selection"
     @params['expressionName'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
