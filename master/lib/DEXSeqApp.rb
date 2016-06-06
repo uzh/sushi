@@ -58,6 +58,12 @@ class DEXSeqApp < SushiFabric::SushiApp
     if dataset_has_column?('refFeatureFile')
       @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
     end
+    if dataset_has_column?('paired')
+      @params['paired'] = @dataset[0]['paired']
+    end
+    if dataset_has_column?('strandMode')
+      @params['strandMode'] = @dataset[0]['strandMode']
+    end
   end
   def commands
     run_RApp("EzAppDEXSeqAnalysis")
