@@ -22,6 +22,8 @@ Quality control for target capture experiments<br/>
     @params['scratch'] = '100'
     @params['paired'] = false
     @params['name'] = 'TEQC_Result'
+    @params['refBuild'] = ref_selector
+    @params['refFeatureFile'] = 'genes.gtf'
     @params['designFile'] = {'select'=>''}
     Dir["/srv/GT/databases/targetEnrichment_designs/*"].sort.select{|design| File.directory?(design)}.each do |dir|
       @params['designFile'][File.basename(dir)] = File.basename(dir)
@@ -33,6 +35,10 @@ Quality control for target capture experiments<br/>
     @params['mail'] = ""
   end
  def set_default_parameters
+   @params['refBuild'] = @dataset[0]['refBuild']
+   if dataset_has_column?('refFeatureFile')
+     @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
+   end
    if dataset_has_column?('paired')
       @params['paired'] = @dataset[0]['paired']
     end
