@@ -18,55 +18,76 @@
 
 [I am missing ...](mailto:sequencing@fgcz.ethz.ch?subject=I am missing ...)
 
-# NGS analysis workflows
+## Data analysis workflows
 
 http://fgcz-sushi.uzh.ch provides access NGS data analysis apps where you can analyze your NGS data using the S3IT cloud infra-structure.
 Available apps are listed at http://fgcz-sushi.uzh.ch/sushi_application . New apps will be added on request.
 
 All analysis results are fully documented. All results are fully downloadable for further use.
 
-# Interactive web-based plots and analyses
+## Interactive plots and analyses
 http://fgcz-shiny.uzh.ch lets you generate heatmaps, Venn diagrams, and other R-based visualization with a few clicks in your web-browser.
 
 Additionally, you can interactively explore, filter and visualize your RNA-seq results generated with SUSHI.
 
-# R it yourself
+## RStudio for you
 http://fgcz-rstudio.uzh.ch lets you run R scripts on FGCZ hardware. Everything you need is a browser and a B-Fabric username/password.
 
 Useful information:
-* if you work in project p123, then all your NGS data is available at /srv/gstore4users/p123
-* your home directory has a quota of max. 10GB. If you need to do have I/O, we will setup a larger folder for you at /srv/localdata/p123. Please note that this is intended for short term storage below 100GB. If you need bigger or long-term storage [e-mail us](mailto:sequencing@fgcz.ethz.ch?subject=Rstudio storage).
+* if you work in project p123, then all your NGS data is available at */srv/gstore4users/p123*
+* your home directory has a quota of max. 10GB. If you need to do have I/O, we will setup a larger folder for you at */srv/localdata/p123*. Please note that this is intended for short term storage below 100GB. If you need bigger or long-term storage [e-mail us](mailto:sequencing@fgcz.ethz.ch?subject=Rstudio storage).
 
-# Commandline access
+## Commandline access
 
 For commandline based analysis, you can access our user-server with
     
     ssh your_b-fabric_username@fgcz-176.uzh.ch
 
 The file locations are  
-* data for project p123: /srv/gstore4users/p123
-* all software (more than 1000 cmds available): /usr/local/ngseq/bin
-* all reference genomes: /srv/GT/reference
-* more useful reference database: /srv/GT/databases
+* data for project p123 is found at */srv/gstore4users/p123*
+* all software is at (more than 1000 commands available) */usr/local/ngseq/bin*
+* all reference genomes are found in */srv/GT/reference*
+* additional reference databases: */srv/GT/databases*
 
 This node is shared with other users. Be thoughtful with the use of resources. If you need more resources, please see the next section.
 
-# Personal virtual node
+## Personal virtual node
 
-You can get access to a virtual fully equipped with the NGS software installed at FGCZ computers. Please follow the instructions in our wiki: http://fgcz-intranet.uzh.ch/tiki-index.php?page=user.fgcz-sciencecloud
+You can get access to a virtual node at the S3IT ScienceCloud where all NGS tools installed at FGCZ is available. Please follow the instructions in our wiki: http://fgcz-intranet.uzh.ch/tiki-index.php?page=user.fgcz-sciencecloud
 
-[E-mail us for details and assistance.](mailto:sequencing@fgcz.ethz.ch?subject=Virtual Node).
+[E-mail us for details and assistance](mailto:sequencing@fgcz.ethz.ch?subject=Virtual Node).
 
 
-# Reference Genomes and Indices
+## Reference genomes and indices
 http://fgcz-gstore.uzh.ch/reference holds reference genome sequences and indices for mappers for all genomes in use at the FGCZ. If you need an additional genome [e-mail us](mailto:sequencing@fgcz.ethz.ch?subject=Additional genome).
 
-All genomes have the same structure. We do keep different versions of the genomes and genome annotation. The Version folders (e.g. http://fgcz-gstore.uzh.ch/reference/Homo_sapiens/Ensembl/GRCh38.PatchesSkipped/Annotation/Version-2015-07-05/) indicate the data the genome annotation was downloaded.
+All genomes have a standard structure, e.g.:
 
-We can generate a reference genome folder from a gff/gtf file and a fasta file.
+    Homo_sapiens
+      Ensembl
+        GRCh38
+          Annotation
+            Version-2015-07-05
+              Genes
+                genes.gtf
+                genes_STARIndex
+                genes_annotation.txt
+          Sequence
+            WholeGenomeFasta
+               genome.fa
+               genome.fa.fai
+            Chromosomes
+            BOWTIE2Index
+          
+Note: Indices for mappers are automatically created on demand.
 
 
-# Submitting data to a public repository
+We do keep different versions of the genomes and genome annotation. The version folders (e.g. http://fgcz-gstore.uzh.ch/reference/Homo_sapiens/Ensembl/GRCh38.PatchesSkipped/Annotation/Version-2015-07-05/) indicate the data the genome annotation was downloaded.
+
+We do generate a reference genome folder from a gff/gtf file and a fasta file.
+
+
+## Submitting data to a public repository
 
 We recommend submission to the ENA (European Nucleotide Archive) which is mirrored at the SRA (Short Read Archive). The instructions are
 
@@ -98,7 +119,7 @@ To compute md5sums:
 
 
 
-# Data storage policy
+## Data storage policy
 
 We keep secured and backup storage for 
 * 3 months for all data that is order as data delivery only.
@@ -106,7 +127,7 @@ We keep secured and backup storage for
 
 Storage extensions are subject to individual agreements.
 
-# Data access
+## Data access
 Please consult our wiki page for all information regarding data access
 
 # ezRun
