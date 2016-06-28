@@ -39,8 +39,8 @@ Quality control after counting reads<br/>
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'Static Report [Link]'=>report_link,
-     'Live Report [Link]'=>File.join(report_file, 'counts-', random_string, '-EzResult.RData')
-     'Report [File]'=>report_file
+     'Live Report [Link]'=>File.join(report_file, 'counts-', random_string, '-EzResult.RData'),
+     'Report [File]'=>report_file,
     }
   end
   def set_default_parameters
