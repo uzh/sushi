@@ -64,7 +64,9 @@ $(document).ready(function(){
             <% file_path = sample.to_hash[header].to_s %>
             <% file_name = File.basename(file_path) %>
             <% if header.tag?('Link') %>
-              <% if @fgcz %>
+              <% if file_path =~ /^http/ %>
+                <%= link_to td(file_name), file_path %>
+              <% elsif @fgcz %>
                 <%= link_to td(file_name), File.join('http://fgcz-gstore.uzh.ch/projects', file_path) %>
               <% else %>
                 <%= link_to td(file_name), File.join('/projects', file_path) %>
