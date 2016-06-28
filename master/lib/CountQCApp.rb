@@ -34,11 +34,13 @@ Quality control after counting reads<br/>
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
+    random_string = (0...12).map { ('a'..'z').to_a[rand(26)] }.join
     {'Name'=>@params['name'],
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
-     'Report [File]'=>report_file,
-     'Html [Link]'=>report_link,
+     'Static Report [Link]'=>report_link,
+     'Live Report [Link]'=>File.join(report_file, 'counts-', random_string, '-EzResult.RData')
+     'Report [File]'=>report_file
     }
   end
   def set_default_parameters
