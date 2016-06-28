@@ -127,7 +127,7 @@ class DataSetController < ApplicationController
       @data_set.samples.each do |sample|
         sample_count+=1
         sample.to_hash.each do |header, file|
-          if header and (header.tag?('File') or header.tag?('Link')) 
+          if header and (header.tag?('File') or header.tag?('Link') and file !~ /^http/)
             if file
               file_path = File.join(SushiFabric::GSTORE_DIR, file)
               @sample_path << File.dirname(file)
