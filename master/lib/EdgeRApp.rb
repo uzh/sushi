@@ -40,13 +40,15 @@ class EdgeRApp < SushiFabric::SushiApp
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"
     @params['comparison'] = @comparison
     @params['name'] = @comparison
+    random_string = (0...12).map { ('a'..'z').to_a[rand(26)] }.join
     report_file = File.join(@result_dir, "#{@name}--#{@params['name']}")
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@comparison,
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
-     'Report [File]'=>report_file,
-     'Html [Link]'=>report_link,
+     'Static Report [Link]'=>report_link,
+     'Live Report [Link]'=>File.join(report_file, 'result-', @comparison, '-', random_string, '-EzResult.RData')
+     'Report [File]'=>report_file
     }
   end
   def set_default_parameters
