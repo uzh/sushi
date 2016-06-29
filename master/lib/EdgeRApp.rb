@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160215-003245'
+Version = '20160629-113956'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -47,7 +47,7 @@ class EdgeRApp < SushiFabric::SushiApp
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'Static Report [Link]'=>report_link,
-     'Live Report [Link]'=>"#{SHINY_EXPLORE_DE}?data=#{report_file}/result-#{@comparison}-#{random_string}-EzResult.RData'",
+     'Live Report [Link]'=>"#{SHINY_EXPLORE_DE}?data=#{report_file}/result-#{@comparison}-#{random_string}-EzResult.RData",
      'Report [File]'=>report_file,
     }
   end
