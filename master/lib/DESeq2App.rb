@@ -34,18 +34,20 @@ class DESeq2App < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end
+  def preprocess
+    @random_string = (1..12).map{[*('a'..'z')].sample}.join
+  end
   def next_dataset
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"
     @params['comparison'] = @comparison
     @params['name'] = @comparison
     report_file = File.join(@result_dir, "#{@name}--#{@params['name']}")
     report_link = File.join(report_file, '00index.html')
-    random_string = (0...12).map { ('a'..'z').to_a[rand(26)] }.join
     {'Name'=>@comparison,
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'Static Report [Link]'=>report_link,
-     'Live Report [Link]'=>"#{SHINY_EXPLORE_DE}?data=#{report_file}/result-#{@comparison}-#{random_string}-EzResult.RData",
+     'Live Report [Link]'=>"#{SHINY_EXPLORE_DE}?data=#{report_file}/result-#{@comparison}-#{@random_string}-EzResult.RData",
      'Report [File]'=>report_file,
     }
   end
