@@ -31,15 +31,17 @@ Quality control after counting reads<br/>
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end
+  def preprocess
+    @random_string = (1..12).map{[*('a'..'z')].sample}.join
+  end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
-    random_string = (0...12).map { ('a'..'z').to_a[rand(26)] }.join
     {'Name'=>@params['name'],
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'Static Report [Link]'=>report_link,
-     'Live Report [Link]'=>"#{SHINY_EXPLORE_COUNTS}?data=#{report_file}/counts-#{random_string}-EzResult.RData",
+     'Live Report [Link]'=>"#{SHINY_EXPLORE_COUNTS}?data=#{report_file}/counts-#{@random_string}-EzResult.RData",
      'Report [File]'=>report_file,
     }
   end
