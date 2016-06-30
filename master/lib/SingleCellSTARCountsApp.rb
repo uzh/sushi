@@ -53,7 +53,6 @@ EOS
      'paired'=>@params['paired'],
      'refFeatureFile'=>@params['refFeatureFile'],
       }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
-     end
   end
   def commands
     command = "#{R_COMMAND} --vanilla --slave<<  EOT\n"
