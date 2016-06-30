@@ -47,7 +47,7 @@ EOS
   def next_dataset
     {'Name'=>@dataset['Name'],
      'CountFolder [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
-     'CountDataset [File]'=>File.join(@result_dir, "#{@dataset['Name']}/#{@dataset['Name']}-dataset.tsv"),
+     'CountDataset [Link]'=>File.join(@result_dir, "#{@dataset['Name']}/#{@dataset['Name']}-dataset.tsv"),
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'paired'=>@params['paired'],
