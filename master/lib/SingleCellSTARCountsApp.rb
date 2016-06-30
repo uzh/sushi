@@ -65,7 +65,7 @@ EOS
     end
     command << "param[['dataRoot']] = '#{@gstore_dir}'\n"
     command << "param[['resultDir']] = '#{@result_dir}'\n"
-    command << "param[['writeIgvSessionLink']] = FALSE"
+    command << "param[['writeIgvSessionLink']] = FALSE\n"
     command << "output = list()\n"
     output = next_dataset
     output.keys.each do |key|
