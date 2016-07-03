@@ -31,6 +31,8 @@ class DESeq2App < SushiFabric::SushiApp
     #@params['normMethod'] = 'logMean'
     @params['runGO'] = ['false', 'true']
     @params['expressionName'] = ''
+    @params['batchGrouping'] = ''
+    @params['batchGrouping', 'description'] = 'in case your experiment has a second factor, specify the column name here'
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end
