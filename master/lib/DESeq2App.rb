@@ -32,7 +32,7 @@ class DESeq2App < SushiFabric::SushiApp
     @params['runGO'] = ['false', 'true']
     @params['expressionName'] = ''
     @params['batchGrouping'] = ''
-    @params['batchGrouping', 'description'] = 'in case your experiment has a second factor, specify the column name here'
+    @params['batchGrouping', 'description'] = 'in case your experiment has a second factor, that should enter the linear model for differential expression, specify the column name here'
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end
