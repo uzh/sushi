@@ -95,7 +95,7 @@ EOS
     command << "bamDs = EzDataset(meta=meta)\n"
     command << "meta[['Count [File]']] = paste0(rownames(meta), '.txt')\n"
     command << "meta[['Stats [File]']] = paste0(rownames(meta), '-stats.txt')\n"
-    command << "ezWrite.table(meta, file=file.path(countDir, basename(output[['CountDataset [File]']])), head='Name')\n"
+    command << "ezWrite.table(meta, file=file.path(countDir, basename(output[['CountDataset [Link]']])), head='Name')\n"
     command << "countDs = EzDataset(meta=meta)\n"
     command << "for (nm in readDs\\$getNames()){\n"
     command << "  message(nm)\n" 
