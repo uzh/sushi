@@ -112,9 +112,9 @@ EOS
     command << "    countI\\$setColumn('Stats', paste0(nm, '-', param\\$strandMode, '-stats.txt'))\n"
     command << "    EzAppFeatureCounts\\$new()\\$run(input=bamI, output=countI, param=param)\n"
     command << "  }\n"
-    command << "          file.copy(list.files('.', paste0(nm, '.*txt')), countDir)\n"
+    command << "  file.copy(list.files('.', paste0(nm, '.*txt')), countDir)\n"
     command << "  setwd('..')\n"
-    command << "  unlink(nm)\n"
+    command << "  unlink(nm, recursive=TRUE, force=TRUE)\n"
     command << "}\n"
     command <<  "EOT\n"
     command
