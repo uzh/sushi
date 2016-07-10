@@ -120,7 +120,7 @@ EOS
     command << "}\n"
     command << "if (ezValidMail(mailAddress)){\n"
     command << "  ezMail(subject=paste(basename(dsDir), ' -- single cell counts done'), text=paste(basename(dsDir), ' -- single cell counts done'), to=mailAddress)\n"
-    command << "}\n
+    command << "}\n"
     command <<  "EOT\n"
     command
   end
