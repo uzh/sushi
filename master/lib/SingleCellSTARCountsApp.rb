@@ -97,6 +97,8 @@ EOS
     command << "meta[['Stats [File]']] = paste0(rownames(meta), '-stats.txt')\n"
     command << "ezWrite.table(meta, file=file.path(countDir, basename(output[['CountDataset [Link]']])), head='Name')\n"
     command << "countDs = EzDataset(meta=meta)\n"
+    command << "mailAddress = param[['mail']]\n"
+    command << "param[['mail']]  = ''\n"
     command << "for (nm in readDs\\$getNames()){\n"
     command << "  message(nm)\n" 
     command << "  setwdNew(nm)\n"
@@ -116,6 +118,9 @@ EOS
     command << "  setwd('..')\n"
     command << "  unlink(nm, recursive=TRUE, force=TRUE)\n"
     command << "}\n"
+    command << "if (ezValidMail(mailAddress)){\n"
+    command << "  ezMail(subject=paste(basename(dsDir), ' -- single cell counts done'), text=paste(basename(dsDir), ' -- single cell counts done'), to=mailAddress)\n"
+    command << "}\n
     command <<  "EOT\n"
     command
   end
