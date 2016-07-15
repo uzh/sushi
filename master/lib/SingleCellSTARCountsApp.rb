@@ -24,7 +24,7 @@ EOS
     @params['paired'] = false
 #    @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['cmdOptions'] = '--outFilterType BySJout --outFilterMatchNmin 30 --outFilterMismatchNmax 10 --outFilterMismatchNoverLmax 0.05 --alignSJDBoverhangMin 1 --alignSJoverhangMin 8 --alignIntronMax 1000000 --alignMatesGapMax 1000000  --outFilterMultimapNmax 50 --chimSegmentMin 15 --chimJunctionOverhangMin 15 --chimScoreMin 15 --chimScoreSeparation 10 --outSAMstrandField intronMotif'
+    @params['cmdOptions'] = '--genomeLoad LoadAndKeep --outFilterType BySJout --outFilterMatchNmin 30 --outFilterMismatchNmax 10 --outFilterMismatchNoverLmax 0.05 --alignSJDBoverhangMin 1 --alignSJoverhangMin 8 --alignIntronMax 1000000 --alignMatesGapMax 1000000  --outFilterMultimapNmax 50 --chimSegmentMin 15 --chimJunctionOverhangMin 15 --chimScoreMin 15 --chimScoreSeparation 10 --outSAMstrandField intronMotif'
     @params['getChimericJunctions'] = false
     @params['trimAdapter'] = true
     @params['trimLeft'] = 3
@@ -99,6 +99,10 @@ EOS
     command << "countDs = EzDataset(meta=meta)\n"
     command << "mailAddress = param[['mail']]\n"
     command << "param[['mail']]  = ''\n"
+    command << "# copy the index locally\n"
+    command << "#refDir = sub('.gtf$', '_STARIndex', param$ezRef['refFeatureFile'])\n"
+    command << "#ezSystem(paste('cp -r', refDir, basename(refDir)))\n"
+    command << "#param$ezRef['refIndex'] = file.path(getwd(), basename(refDir))\n"
     command << "for (nm in readDs\\$getNames()){\n"
     command << "  message(nm)\n" 
     command << "  setwdNew(nm)\n"
@@ -118,6 +122,7 @@ EOS
     command << "  setwd('..')\n"
     command << "  unlink(nm, recursive=TRUE, force=TRUE)\n"
     command << "}\n"
+    command << "ezSystem(paste(STAR, '--genomeLoad Remove'))\n"
     command << "if (ezValidMail(mailAddress)){\n"
     command << "  ezMail(subject=paste(basename(dsDir), ' -- single cell counts done'), text=paste(basename(dsDir), ' -- single cell counts done'), to=mailAddress)\n"
     command << "}\n"
