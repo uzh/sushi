@@ -21,7 +21,7 @@ $(document).ready(function(){
     </ul>
   <% end %>
   <br />
-  <%= submit_tag 'delete', :confirm=>"Are you sure you want to delete the '#{@data_set.name}'?" %>
+  <%= submit_tag 'delete', :data=>{:confirm=>"Are you sure you want to delete the '#{@data_set.name}'?"} %>
 <% end %>
 <hr />
 <h3>DataSet</h3>
