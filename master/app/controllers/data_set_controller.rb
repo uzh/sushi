@@ -170,35 +170,47 @@ class DataSetController < ApplicationController
   def edit
     show
   end
-  def treeviews
-    @project = Project.find_by_number(session[:project].to_i)
-    tree = []
-    node_list = {}
+  def trace_treeviews(root, data_set, parent_id, project_number)
+    data_set_id = data_set.id
+    node = {"id" => data_set_id, 
+            "text" => data_set.data_sets.length.to_s+" "+data_set.name,
+            "parent" => parent_id,
+            "a_attr" => {"href"=>"/data_set/p#{project_number}/#{data_set_id}", 
+                         "onclick"=>"location.href='/data_set/p#{project_number}/#{data_set_id}'"}
+            }
+    root << node
+    data_set.data_sets.each do |child|
+      trace_treeviews(root, child, data_set.id, project_number)
+    end
+  end
+  def partial_treeviews
     root = []
-    top_nodes = []
-    @project.data_sets.each do |data_set|
-      node = {"id" => data_set.id, 
-              "text" => data_set.data_sets.length.to_s+
-              " <a href='/data_set/p#{@project.number}/#{data_set.id}'>"+data_set.name+'</a>'+
-              ' <span style="color:gray;font-size:smaller">'+data_set.comment.to_s+'</span>',
-              'path' => '', 
-              "expanded" => false, 
-              "classes" => 'file', 
-              "hasChildren" => false, 
-              "children" => []}
-      node_list[data_set.id] = node
-      if parent = data_set.data_set
-        node_list[parent.id]['children'] << node
-      else
-        top_nodes << node
-      end
-      if data_set.id == params[:format].to_i
-        root << node
+    if top_data_set_id = params[:format]
+      data_set = DataSet.find_by_id(top_data_set_id.to_i)
+      if children = data_set.data_sets and children.length > 0
+        trace_treeviews(root, data_set, "#", data_set.project.number)
       end
     end
-    root = top_nodes.reverse if root.empty?
-    tree.concat root
-    render :json => tree
+    render :json => root
+  end
+  def whole_treeviews
+    @project = Project.find_by_number(session[:project].to_i)
+    root = []
+    @project.data_sets.each do |data_set|
+      node = {"id" => data_set.id, 
+              "text" => data_set.data_sets.length.to_s+" "+data_set.name,
+              "a_attr" => {"href"=>"/data_set/p#{@project.number}/#{data_set.id}", 
+                           "onclick"=>"location.href='/data_set/p#{@project.number}/#{data_set.id}'"}
+              }
+      if parent = data_set.data_set
+        node["parent"] = parent.id
+      else
+        node["parent"] = "#"
+      end
+      root << node
+    end
+    
+    render :json => root
   end
   def import_from_gstore
     params[:project] = session[:project]

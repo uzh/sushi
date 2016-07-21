@@ -2,6 +2,7 @@ SushiFabric::Application.routes.draw do
   get "sushi_application/index"
 
   root :to => "home#index"
+  post "/" => "home#index"
   
   devise_for :users
   
@@ -25,7 +26,8 @@ SushiFabric::Application.routes.draw do
       get :refresh_apps
     end
     collection do
-      get :treeviews
+      get :whole_treeviews
+      get :partial_treeviews
       post :import
       post :delete
       get :script_log
@@ -69,10 +71,10 @@ SushiFabric::Application.routes.draw do
   end
 
   #get "/projects/:project_id" => redirect("http://fgcz-gstore.uzh.ch/projects/%{project_id}")
-  match "/projects/:project_id(/*dirs)" => "home#gstore"
-  match "/check_sushi_constants" => "home#sushi_constants"
-  match "/import/*dataset" => "data_set#import_from_gstore"
-  match "/sushi_rank" => "home#sushi_rank"
+  get "/projects/:project_id(/*dirs)" => "home#gstore"
+  get "/check_sushi_constants" => "home#sushi_constants"
+  get "/import/*dataset" => "data_set#import_from_gstore"
+  get "/sushi_rank" => "home#sushi_rank"
 
 
 #	match "/city_select" => "run_application#city_select"
