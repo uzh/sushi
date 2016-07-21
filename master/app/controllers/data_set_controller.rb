@@ -173,7 +173,7 @@ class DataSetController < ApplicationController
   def trace_treeviews(root, data_set, parent_id, project_number)
     data_set_id = data_set.id
     node = {"id" => data_set_id, 
-            "text" => data_set.data_sets.length.to_s+" "+data_set.name,
+            "text" => data_set.data_sets.length.to_s+" "+data_set.name+" "+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>",
             "parent" => parent_id,
             "a_attr" => {"href"=>"/data_set/p#{project_number}/#{data_set_id}", 
                          "onclick"=>"location.href='/data_set/p#{project_number}/#{data_set_id}'"}
@@ -198,7 +198,7 @@ class DataSetController < ApplicationController
     root = []
     @project.data_sets.each do |data_set|
       node = {"id" => data_set.id, 
-              "text" => data_set.data_sets.length.to_s+" "+data_set.name,
+              "text" => data_set.data_sets.length.to_s+" "+data_set.name+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>",
               "a_attr" => {"href"=>"/data_set/p#{@project.number}/#{data_set.id}", 
                            "onclick"=>"location.href='/data_set/p#{@project.number}/#{data_set.id}'"}
               }
