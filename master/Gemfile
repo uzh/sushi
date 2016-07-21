@@ -72,3 +72,4 @@ gem 'mysql2'
 gem 'yaml_db'
 #gem 'jquery-turbolinks'
 gem "jstree-rails-4"
+gem 'therubyracer'
