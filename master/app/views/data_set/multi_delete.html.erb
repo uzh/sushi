@@ -22,7 +22,7 @@
   <% end %>
   <br /> 
   <%= hidden_field :option, :data_set_ids, :value=>@data_set_ids.join(',') %>
-  <%= submit_tag 'delete', :confirm=>"Are you sure you want to delete the following DataSets?" %>
+  <%= submit_tag 'delete', :data=>{:confirm=>"Are you sure you want to delete the following DataSets?"} %>
 <% end %>
 <hr />
 
