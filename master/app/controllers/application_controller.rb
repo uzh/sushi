@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   
   if SushiFabric::Application.config.fgcz?
-    before_filter :authenticate_user!
+    before_action :authenticate_user!
   end
   @@workflow_manager = DRbObject.new_with_uri(SushiFabric::WORKFLOW_MANAGER)
 
