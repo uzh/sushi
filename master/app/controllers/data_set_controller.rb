@@ -191,7 +191,7 @@ class DataSetController < ApplicationController
         trace_treeviews(root, data_set, "#", data_set.project.number)
       end
     end
-    render :json => root
+    render :json => root.reverse
   end
   def whole_treeviews
     @project = Project.find_by_number(session[:project].to_i)
@@ -210,7 +210,7 @@ class DataSetController < ApplicationController
       root << node
     end
     
-    render :json => root
+    render :json => root.reverse
   end
   def import_from_gstore
     params[:project] = session[:project]
