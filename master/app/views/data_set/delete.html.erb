@@ -92,11 +92,12 @@ $(document).ready(function(){
   <% end %>
   </ul>
 <% else %>
-  <%= button_to "Go gstore", File.join("/projects/", @sample_path.first) if @sample_path.length == 1 %>
-  <% @sample_path.sort.each do |path| %>
-    <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
+  <% if @sample_path.length == 1 %>
+    <%= button_to "Go gstore", File.join("/projects/", @sample_path.first), :method=>:get %>
+    <% @sample_path.sort.each do |path| %>
+      <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
+    <% end %>
   <% end %>
-
 <% end %>
 
 
