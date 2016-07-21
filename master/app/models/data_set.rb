@@ -1,5 +1,5 @@
 class DataSet < ActiveRecord::Base
-  attr_accessible :name, :md5, :comment
+#  attr_accessible :name, :md5, :comment
   has_many :samples
   has_many :jobs, :foreign_key => :next_dataset_id
   belongs_to :project
