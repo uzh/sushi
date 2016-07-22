@@ -300,6 +300,7 @@ class DataSetController < ApplicationController
         @project.number = session[:project].to_i
         @project.save
       end
+      @data_set_ids = @project.data_sets.map{|data_set| data_set.id}.push('').reverse
 
       if file = params[:file] and tsv = file[:name]
         multi_data_sets = false
