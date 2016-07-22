@@ -43,6 +43,7 @@ class DataSetController < ApplicationController
     node_list = {}
     @root = []
     top_nodes = []
+    project_dataset_ids = Hash[*(@project.data_sets.map{|data_set| [data_set.id, true]}.flatten)]
     @project.data_sets.each do |data_set|
       report_link = ""
       if i = data_set.headers.index{|header| header.tag?("Link")} 
@@ -59,7 +60,7 @@ class DataSetController < ApplicationController
               "text" => " <a href='/data_set/#{data_set.id}'>"+data_set.name+'</a> '+ data_set.comment.to_s + report_link,
               "children" => []}
       node_list[data_set.id] = node
-      if parent = data_set.data_set
+      if parent = data_set.data_set and project_dataset_ids[parent.id]
         node_list[parent.id]['children'] << node
       else
         top_nodes << node
@@ -180,7 +181,9 @@ class DataSetController < ApplicationController
             }
     root << node
     data_set.data_sets.each do |child|
-      trace_treeviews(root, child, data_set.id, project_number)
+      if child.project.number==project_number
+        trace_treeviews(root, child, data_set.id, project_number)
+      end
     end
   end
   def partial_treeviews
@@ -196,13 +199,14 @@ class DataSetController < ApplicationController
   def whole_treeviews
     @project = Project.find_by_number(session[:project].to_i)
     root = []
+    project_dataset_ids = Hash[*(@project.data_sets.map{|data_set| [data_set.id, true]}.flatten)]
     @project.data_sets.each do |data_set|
       node = {"id" => data_set.id, 
               "text" => data_set.data_sets.length.to_s+" "+data_set.name+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>",
               "a_attr" => {"href"=>"/data_set/p#{@project.number}/#{data_set.id}", 
                            "onclick"=>"location.href='/data_set/p#{@project.number}/#{data_set.id}'"}
               }
-      if parent = data_set.data_set
+      if parent = data_set.data_set and project_dataset_ids[parent.id]
         node["parent"] = parent.id
       else
         node["parent"] = "#"
