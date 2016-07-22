@@ -52,7 +52,7 @@ class RunApplicationController < ApplicationController
     @nodes = @sushi_app.cluster_nodes
     if SushiFabric::Application.config.fgcz? and !session['employee']
       @nodes = @nodes.select{|node| node =~ /fgcz-h/ or node =~ /fgcz-c-065/}
-      if FGCZ.get_user_projects(current_user.login).include?('p1535')
+      if current_user and FGCZ.get_user_projects(current_user.login).include?('p1535')
         @nodes['fgcz-c-047: cpu 32,mem   1 TB,scr  28T'] = 'fgcz-c-047'
       end
     end
