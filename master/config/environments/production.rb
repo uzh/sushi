@@ -80,9 +80,11 @@ SushiFabric::Application.configure do
   if config.fgcz?
     #config.workflow_manager = "druby://fgcz-c-043:40001" # development
     config.workflow_manager = "druby://fgcz-c-043:50001" # production
+    #config.workflow_manager = "druby://fgcz-c-043:70001" # demo
     config.scratch_dir = "/scratch"
     #config.gstore_dir = File.join(Dir.pwd, 'public/gstore/projects')
-    config.gstore_dir = "/srv/gstore/projects"
+    config.gstore_dir = "/srv/gstore/projects" # production
+    #config.gstore_dir = "/srv/GT/analysis/course_sushi/public/gstore/projects" # demo
     config.sushi_app_dir = Dir.pwd
   end
 
