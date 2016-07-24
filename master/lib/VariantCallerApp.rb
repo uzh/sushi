@@ -44,8 +44,8 @@ EOS
   def next_dataset
     {'Name'=>@dataset['Name'], 
      'VCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf"),
-      'BAM [File]'=>"#{@dataset['Name']}.bam",
-      'BAI [File]'=>"#{@dataset['Name']}.bam.bai",
+     'BAM [File]'=>File.join(@result_dir,"#{@dataset['Name']}.bam"),
+     'BAI [File]'=>File.join(@result_dir,"#{@dataset['Name']}.bam.bai"),
      'Gene_summary [File]'=>File.join(@result_dir, "#{@dataset['Name']}.genes.txt"),
      'Html [Link,File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
      'refBuild'=>@params['refBuild']
