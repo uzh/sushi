@@ -34,7 +34,7 @@
   </tr>
 </table>
 <hr />
-<%= form_tag(["/projects", params[:project_id],params[:dirs].to_s].join("/")) do %>
+<%= form_tag(["/projects", params[:project_id],params[:dirs].to_s].join("/"), {:method=>:get}) do %>
 <table>
   <tr>
     <td>
