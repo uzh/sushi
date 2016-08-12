@@ -49,4 +49,38 @@ class DataSet < ActiveRecord::Base
     end
     self.num_samples
   end
+  def register_bfabric
+    if SushiFabric::Application.config.fgcz? and !self.bfabric_id
+      base = "public/register_sushi_dataset_into_bfabric"
+      dataset_tsv = nil
+
+      if sample = self.samples.first
+        sample.to_hash.each do |header, file|
+          if header and file and header.tag?('File')
+            file_path = File.join(SushiFabric::GSTORE_DIR, file)
+            dir_path = File.dirname(file_path)
+            dataset_tsv = File.join(dir_path, "dataset.tsv")
+          end
+        end
+      end
+      puts dataset_tsv
+      command = if dataset_tsv and File.exist?(dataset_tsv)
+                  if parent_dataset = self.data_set and bfabric_id = parent_dataset.bfabric_id
+                    [base, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id].join(" ")
+                  else
+                    [base, "p#{self.project.number}", dataset_tsv, self.name, self.id].join(" ")
+                  end
+                end
+      if command and bfabric_id = `#{command}`
+        puts command
+        self.bfabric_id = bfabric_id.chomp.to_i
+        self.save
+      end
+      if child_data_sets = self.data_sets
+        child_data_sets.each do |child_data_set|
+          child_data_set.register_bfabric
+        end
+      end
+    end
+  end
 end

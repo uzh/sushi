@@ -14,7 +14,7 @@ $(document).ready(function(){
 <hr />
 <h3>DataSet</h3>
 <table>
-  <tr><th>ID</th><th>Name</th><th>Samples</th><th>Parent</th><th>Child(ren)IDs</th><th>Created</th></tr>
+  <tr><th>ID</th><th>Name</th><th>Samples</th><th>Parent</th><th>Child(ren)IDs</th><th>Created</th><th>BFabricID</th></tr>
   <% if @data_set %>
   <tr>
     <td><%= @data_set.id %></td>
@@ -28,6 +28,7 @@ $(document).ready(function(){
       <% end %>
     </td>
     <td><%= @data_set.created_at.to_s.gsub(/UTC/,'') %></td>
+    <td><%= @data_set.bfabric_id %></td>
   </tr>
   <% end %>
 </table>
