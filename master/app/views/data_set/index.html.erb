@@ -73,7 +73,7 @@ $(function(){
 <% end %>
 <%= form_tag('/data_set/multi_delete', :id=>"multi_delete") do %>
 <table>
-  <tr><th>ID</th><th>Name</th><th nowrap><button type="button" id="btn_multi_delete">delete</button> all<%= check_box 'delete_all_flag', 'all', {:id=>'checkall'}, true, false %></th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th>Who</th><th>Created</th></tr>
+  <tr><th>ID</th><th>Name</th><th nowrap><button type="button" id="btn_multi_delete">delete</button> all<%= check_box 'delete_all_flag', 'all', {:id=>'checkall'}, true, false %></th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th>Who</th><th>Created</th><th>BFabricID</th></tr>
 <% if @project %>
 <% @data_sets.each do |data_set| %>
   <tr>
@@ -96,6 +96,7 @@ $(function(){
       <td>sushi_lover</td>
     <% end %>
     <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
+    <td><%= data_set.bfabric_id %></td>
   </tr>
 <% end %>
 <% end %>
