@@ -87,12 +87,14 @@ class ApplicationController < ActionController::Base
     paths = []
     data_set.samples.each do |sample|
       sample.to_hash.each do |header, file|
-        if header.tag?('File') or header.tag?('Link')
+        if (header.tag?('File') or header.tag?('Link')) and file !~ /http/
           paths << File.dirname(file)
         end
       end
     end
     paths.uniq!
-    paths.first
+    if path = paths.first
+      path.split('/')[0,2].join('/')
+    end
   end
 end
