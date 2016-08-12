@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160524125842) do
+ActiveRecord::Schema.define(version: 20160805133105) do
 
   create_table "data_sets", force: :cascade do |t|
     t.integer  "project_id"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20160524125842) do
     t.integer  "completed_samples"
     t.integer  "user_id"
     t.boolean  "child",             default: false, null: false
+    t.integer  "bfabric_id"
   end
 
   create_table "jobs", force: :cascade do |t|
