@@ -63,7 +63,6 @@ class DataSet < ActiveRecord::Base
           end
         end
       end
-      puts dataset_tsv
       command = if dataset_tsv and File.exist?(dataset_tsv)
                   if parent_dataset = self.data_set and bfabric_id = parent_dataset.bfabric_id
                     [base, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id].join(" ")
@@ -72,8 +71,9 @@ class DataSet < ActiveRecord::Base
                   end
                 end
       if command and bfabric_id = `#{command}`
-        puts command
+        puts "$ #{command}"
         self.bfabric_id = bfabric_id.chomp.to_i
+        puts "# BFabricID: #{self.bfabric_id}"
         self.save
       end
       if child_data_sets = self.data_sets
