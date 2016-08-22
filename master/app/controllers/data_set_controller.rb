@@ -37,6 +37,13 @@ class DataSetController < ApplicationController
   end
 #  caches_action :report
 #  caches_page :report
+  def bfabric
+    @project = Project.find_by_number(session[:project].to_i)
+    op = params[:parameters][:bfabric_option]
+    @project.register_bfabric(op)
+    index
+    render action: "index"
+  end
   def report
     @project = Project.find_by_number(session[:project].to_i)
     @tree = []
