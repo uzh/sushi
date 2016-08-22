@@ -59,6 +59,12 @@ $(function(){
 <%= render 'shared/td' %>
 <h1>Project <%= session[:project] %></h1>
 <h3>DataSet</h3>
+<% if session[:employee] %>
+  <%= form_tag(:action => 'bfabric') do %>
+    <%= submit_tag 'BFabric', :data=>{:confirm=>"Are you sure you want to register datasets in BFabric?"} %>
+    <%= select :parameters, :bfabric_option, ['new', 'update', 'renewal'], :selected => 'new' %>
+  <% end %>
+<% end %>
 <%= button_to "Report", "/data_set/report" %>
 
 <% if @project %>

@@ -36,6 +36,7 @@ SushiFabric::Application.routes.draw do
       post :multi_destroy
       get :index_full
       post :report
+      post :bfabric
     end
   end
   # aliases

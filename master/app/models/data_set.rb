@@ -49,11 +49,11 @@ class DataSet < ActiveRecord::Base
     end
     self.num_samples
   end
-  def register_bfabric
-    if SushiFabric::Application.config.fgcz? and !self.bfabric_id
-      base = "public/register_sushi_dataset_into_bfabric"
+  def register_bfabric(op = 'new')
+    base = "public/register_sushi_dataset_into_bfabric"
+    check = "public/check_dataset_bfabric"
+    if SushiFabric::Application.config.fgcz? and File.exist?(base) and File.exist?(check)
       dataset_tsv = nil
-
       if sample = self.samples.first
         sample.to_hash.each do |header, file|
           if header and file and header.tag?('File')
@@ -63,14 +63,26 @@ class DataSet < ActiveRecord::Base
           end
         end
       end
+      option_check = if op == 'new' and !self.bfabric_id
+                       true
+                     elsif op == 'update' and bfabric_id = self.bfabric_id
+                       com = "#{check} #{bfabric_id}"
+                       if out = `#{com}`
+                         eval(out.chomp.downcase)
+                       end
+                     elsif op == 'renewal'
+                       true
+                     end
       command = if dataset_tsv and File.exist?(dataset_tsv)
-                  if parent_dataset = self.data_set and bfabric_id = parent_dataset.bfabric_id
-                    [base, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id].join(" ")
+                  if parent_dataset = self.data_set
+                    if bfabric_id = parent_dataset.bfabric_id
+                      [base, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id].join(" ")
+                    end
                   else
                     [base, "p#{self.project.number}", dataset_tsv, self.name, self.id].join(" ")
                   end
                 end
-      if command and bfabric_id = `#{command}`
+      if option_check and command and bfabric_id = `#{command}`
         puts "$ #{command}"
         self.bfabric_id = bfabric_id.chomp.to_i
         puts "# BFabricID: #{self.bfabric_id}"
@@ -78,7 +90,7 @@ class DataSet < ActiveRecord::Base
       end
       if child_data_sets = self.data_sets
         child_data_sets.each do |child_data_set|
-          child_data_set.register_bfabric
+          child_data_set.register_bfabric(op)
         end
       end
     end
