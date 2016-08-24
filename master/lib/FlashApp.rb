@@ -49,7 +49,7 @@ EOS
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
-     'Reads [File]'=>File.join(@result_dir, "#{@dataset['Name']}.extendedFrags.fastq.gz"), 
+     'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.extendedFrags.fastq.gz"), 
      'FlashLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_flash.log"),
      'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_trimmomatic.log"),
      'Species'=>@dataset['Species'],

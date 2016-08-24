@@ -66,7 +66,9 @@ EOS
         'Read Count'=>@dataset['Read Count'],
         'Chimerics [File]'=>File.join(@result_dir, "#{@dataset['Name']}.chimeric"),
         'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
-        'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml")
+        'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml"),
+        'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_trimmomatic.log"),
+        'FlexbarLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_flexbar.log"),        
       }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
      else 
        {'Name'=>@dataset['Name'],
@@ -80,7 +82,9 @@ EOS
         'strandMode'=>@params['strandMode'],
         'Read Count'=>@dataset['Read Count'],
         'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
-        'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml")
+        'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml"),
+        'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_trimmomatic.log"),
+        'FlexbarLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_flexbar.log")
       }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
      end
   end
