@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160215-003128'
+Version = '20160901-134047'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -27,7 +27,9 @@ class DESeq2App < SushiFabric::SushiApp
     @params['featureLevel'] = ['gene', 'isoform']
     @params['grouping'] = '' 
     @params['sampleGroup'] = '' 
+    @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup' 
     @params['refGroup'] = ''
+    @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     #@params['normMethod'] = 'logMean'
     @params['runGO'] = ['false', 'true']
     @params['expressionName'] = ''
