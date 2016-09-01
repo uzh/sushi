@@ -1,1 +1,1 @@
-<div id='factor_ref_group' style="display: inline-block;"><%= select :parameters, :refGroup, options_for_select(@factors.map{|v| [v, v]}, params[:refGroup]),  :prompt => "select please" %></div>
+<div id='factor_ref_group' style="display: inline-block;"><%= select :parameters, :refGroup, options_for_select(@option_list, :selected=>"please select") %></div>
