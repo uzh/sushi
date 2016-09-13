@@ -60,7 +60,8 @@ EOS
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count'],
      'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
-     'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml")
+     'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml"),
+     'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")      
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands

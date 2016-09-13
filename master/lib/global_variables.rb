@@ -3,6 +3,7 @@
 
 GENOME_REF_DIR = '/srv/GT/reference'
 EZ_GLOBAL_VARIABLES = '/usr/local/ngseq/opt/EZ_GLOBAL_VARIABLES.txt'
+#EZ_GLOBAL_VARIABLES = '/usr/local/ngseq/opt/EZ_GLOBAL_VARIABLES_DEMO.txt'
 R_COMMAND = '/usr/local/ngseq/stow/R-3.3.0/bin/R'
 
 # compatible method to R vector, c(x,x,x) 

@@ -17,7 +17,7 @@ $(function(){
 <%= form_tag('/data_set/import', :multipart => true) do %>
 <%= file_field :file, :name %>
 DataSet Name: <%= text_field :dataset, :name, :size=>10 %>
-Parent DataSet ID: <%= text_field :parent, :id, :size=>10 %>
+Parent DataSet ID: <%= select :parent, :id, @data_set_ids, :selected => '' %>
 <%= submit_tag 'load' %>
 <% end %>
 

@@ -44,6 +44,8 @@ EOS
   def next_dataset
     {'Name'=>@dataset['Name'], 
      'VCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf"),
+     'BAM [File]'=>File.join(@result_dir,"#{@dataset['Name']}.bam"),
+     'BAI [File]'=>File.join(@result_dir,"#{@dataset['Name']}.bam.bai"),
      'Gene_summary [File]'=>File.join(@result_dir, "#{@dataset['Name']}.genes.txt"),
      'Html [Link,File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
      'refBuild'=>@params['refBuild']
@@ -122,6 +124,8 @@ echo "CAZ"
   ### DETECTING VARIANTS BCFTOOLS ###
   $SAMTOOLS mpileup $MPILEUP_OPTIONS -uf $REF.fa clipped_overl.bam | $BCFTOOLS view -bvcg - > internal.bcf  
   $BCFTOOLS view  $BCF_OPTIONS  internal.bcf  > final.output.vcf 
+  cp $MY_BAM #{@dataset['Name']}.bam                                                                                            
+  $SAMTOOLS index #{@dataset['Name']}.bam 
  else
 
  ### USE GATK ###
@@ -162,6 +166,9 @@ echo "CAZ"
      -I $MY_BAM.real.trans.bam \
      -BQSR recal_data.table \
      -o $MY_BAM.real.bam
+        
+     cp $MY_BAM.real.bam #{@dataset['Name']}.bam
+     $SAMTOOLS index #{@dataset['Name']}.bam
 
      ### DETECTING VARIANTS GATK  ###
      java -Xmx8g -jar $GATK_DIR/GenomeAnalysisTK.jar \
