@@ -66,7 +66,7 @@ EOS
      'refBuild'=>@params['refBuild'],
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count'],
-     
+     'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
      
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end

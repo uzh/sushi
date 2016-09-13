@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160513'
+Version = '20160901-134110'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -28,7 +28,9 @@ class DEXSeqApp < SushiFabric::SushiApp
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['grouping'] = '' 
     @params['sampleGroup'] = '' 
+    @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup' 
     @params['refGroup'] = ''
+    @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     @params['fdr'] = '0.1'
     @params['minGeneExprCount'] = '20'
     @params['minGeneExprCount', 'description'] = "minimal expression count to define a gene as present"

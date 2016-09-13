@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160629-113956'
+Version = '20160901-112246'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -28,7 +28,9 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['testMethod'] = ['glm', 'exactTest']
     @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
+    @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup' 
     @params['refGroup'] = '' ## TODO: this should be a value from the selected column
+    @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     @params['normMethod'] = ['TMM', 'RLE', 'upperquartile', 'none']
     @params['normMethod', 'description'] = "see http://www.bioconductor.org/packages/2.13/bioc/html/edgeR.html"
     @params['runGO'] = ['false', 'true']
