@@ -84,9 +84,15 @@ class DataSet < ActiveRecord::Base
                 end
       if option_check and command and bfabric_id = `#{command}`
         puts "$ #{command}"
-        self.bfabric_id = bfabric_id.chomp.to_i
-        puts "# BFabricID: #{self.bfabric_id}"
-        self.save
+        puts "# mode: #{op}"
+        if bfabric_id.split(/\n/).uniq.length < 2
+          self.bfabric_id = bfabric_id.chomp.to_i
+          puts "# BFabricID: #{self.bfabric_id}"
+          self.save
+        else
+          puts "# Not executed properly:"
+          puts bfabric_id
+        end
       end
       if child_data_sets = self.data_sets
         child_data_sets.each do |child_data_set|
