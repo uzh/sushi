@@ -9,70 +9,71 @@
 # from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
-# It's strongly recommended to check this file into your version control system.
+# It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160524125842) do
+ActiveRecord::Schema.define(version: 20160805133105) do
 
-  create_table "data_sets", :force => true do |t|
+  create_table "data_sets", force: :cascade do |t|
     t.integer  "project_id"
     t.integer  "parent_id"
     t.string   "name"
     t.string   "md5"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "comment"
     t.text     "runnable_apps"
     t.boolean  "refreshed_apps"
     t.integer  "num_samples"
     t.integer  "completed_samples"
     t.integer  "user_id"
-    t.boolean  "child",             :default => false, :null => false
+    t.boolean  "child",             default: false, null: false
+    t.integer  "bfabric_id"
   end
 
-  create_table "jobs", :force => true do |t|
+  create_table "jobs", force: :cascade do |t|
     t.integer  "submit_job_id"
     t.integer  "input_dataset_id"
     t.integer  "next_dataset_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "projects", :force => true do |t|
+  create_table "projects", force: :cascade do |t|
     t.integer  "number"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "samples", :force => true do |t|
+  create_table "samples", force: :cascade do |t|
     t.text     "key_value"
     t.integer  "data_set_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "sushi_applications", :force => true do |t|
+  create_table "sushi_applications", force: :cascade do |t|
     t.string   "class_name"
     t.string   "analysis_category"
     t.text     "required_columns"
     t.text     "next_dataset_keys"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "description"
   end
 
-  create_table "users", :force => true do |t|
-    t.integer  "sign_in_count",       :default => 0
+  create_table "users", force: :cascade do |t|
+    t.integer  "sign_in_count",       default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.integer  "selected_project",    :default => -1
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
+    t.integer  "selected_project",    default: -1
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "remember_created_at"
-    t.string   "login",               :default => "", :null => false
+    t.string   "login",               default: "", null: false
   end
 
-  add_index "users", ["login"], :name => "index_users_on_login", :unique => true
+  add_index "users", ["login"], name: "index_users_on_login", unique: true
 
 end

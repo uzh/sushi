@@ -1,8 +1,12 @@
 <script type="text/javascript">
 $(document).ready(function(){
-  $("#data_set_tree").treeview({
-      url: "/data_set/treeviews"
-    });
+  $("#data_set_tree").jstree({
+    'core':{
+      'data':{
+        url:'/data_set/whole_treeviews'
+      }
+    }
+  });
 });
 
 $(document).ready(function() {
@@ -55,6 +59,12 @@ $(function(){
 <%= render 'shared/td' %>
 <h1>Project <%= session[:project] %></h1>
 <h3>DataSet</h3>
+<% if session[:employee] %>
+  <%= form_tag(:action => 'bfabric') do %>
+    <%= submit_tag 'BFabric', :data=>{:confirm=>"Are you sure you want to register datasets in BFabric?"} %>
+    <%= select :parameters, :bfabric_option, ['new', 'update', 'renewal'], :selected => 'new' %>
+  <% end %>
+<% end %>
 <%= button_to "Report", "/data_set/report" %>
 
 <% if @project %>
@@ -69,7 +79,7 @@ $(function(){
 <% end %>
 <%= form_tag('/data_set/multi_delete', :id=>"multi_delete") do %>
 <table>
-  <tr><th>ID</th><th>Name</th><th nowrap><button type="button" id="btn_multi_delete">delete</button> all<%= check_box 'delete_all_flag', 'all', {:id=>'checkall'}, true, false %></th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th>Who</th><th>Created</th></tr>
+  <tr><th>ID</th><th>Name</th><th nowrap><button type="button" id="btn_multi_delete">delete</button> all<%= check_box 'delete_all_flag', 'all', {:id=>'checkall'}, true, false %></th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th>Who</th><th>Created</th><th>BFabricID</th></tr>
 <% if @project %>
 <% @data_sets.each do |data_set| %>
   <tr>
@@ -92,6 +102,11 @@ $(function(){
       <td>sushi_lover</td>
     <% end %>
     <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
+    <% if data_set.bfabric_id %>
+      <td><%= link_to data_set.bfabric_id, "http://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{data_set.bfabric_id}&tab=details" %></td>
+    <% else %>
+      <td></td>
+    <% end %>
   </tr>
 <% end %>
 <% end %>
