@@ -46,7 +46,7 @@
           <% end %>
           <% else %>
             <% if @factors and key=='grouping' %>
-              <%= select :parameters, :grouping, options_for_select(@factor_colums.keys.map{|factor| [factor.split.first, factor.split.first]}, params[:grouping]),  :prompt => "select please" %>
+              <%= select :parameters, :grouping, options_for_select(@factor_colums.keys.map{|factor| [factor.split.first, factor.split.first]}, params[:grouping]),  :prompt => "please select" %>
             <% elsif @factors and key=='sampleGroup' %>
               <%= render :partial => '/run_application/select_sample_group' %>
             <% elsif @factors and key=='refGroup' %>
@@ -87,6 +87,15 @@
            $.get("/run_application/factor_select?grouping=" + group_name + "&data_set_id=" + data_set_id);
        })
    });
+   //$(function(){
+   //    $('#factor_ref_group').change(function(){
+   //        var group_name = $("#parameters_grouping").val();
+	 //				 var data_set_id = $("#data_set_id").val();
+   //        var ref_sample = $("#parameters_refGroup").val();
+	 //				 alert(ref_sample);
+           //$.get("/run_application/factor_select?grouping=" + group_name + "&data_set_id=" + data_set_id + "&ref_sample=" + ref_sample);
+   //    })
+   //});
 </script>
 
 

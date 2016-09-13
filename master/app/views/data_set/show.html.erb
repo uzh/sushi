@@ -1,8 +1,12 @@
 <script type="text/javascript">
 $(document).ready(function(){
-  $("#data_set_tree").treeview({
-    url: "/data_set/treeviews.<%= params[:id] %>"
-    });
+  $("#data_set_tree").jstree({
+    'core':{
+      'data':{
+        url: "/data_set/partial_treeviews.<%= params[:id] %>"
+      }
+    }
+  });
 });
 </script>
 <%= render 'shared/td' %>
@@ -10,7 +14,7 @@ $(document).ready(function(){
 <hr />
 <h3>DataSet</h3>
 <table>
-  <tr><th>ID</th><th>Name</th><th>Samples</th><th>Parent</th><th>Child(ren)IDs</th><th>Created</th></tr>
+  <tr><th>ID</th><th>Name</th><th>Samples</th><th>Parent</th><th>Child(ren)IDs</th><th>Created</th><th>BFabricID</th></tr>
   <% if @data_set %>
   <tr>
     <td><%= @data_set.id %></td>
@@ -24,6 +28,11 @@ $(document).ready(function(){
       <% end %>
     </td>
     <td><%= @data_set.created_at.to_s.gsub(/UTC/,'') %></td>
+    <% if @data_set.bfabric_id %>
+      <td><%= link_to @data_set.bfabric_id, "http://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{@data_set.bfabric_id}&tab=details" %></td>
+    <% else %>
+      <td></td>
+    <% end %>
   </tr>
   <% end %>
 </table>
@@ -93,7 +102,9 @@ $(document).ready(function(){
 <hr />
 
 <% unless @file_exist.values.inject{|a,b| a and b}%>
-  <%= button_to "Go gstore", File.join("/projects/", @sample_path.first) if @sample_path.length == 1 %>
+  <% if @sample_path.length == 1 %>
+    <%= button_to "Go gstore", File.join("/projects/", @sample_path.first), :method=>:get %>
+  <% end %>
   <font color=red>RED file(s) or the following does not exist in gstore:</font> <%= SushiFabric::GSTORE_DIR %><br />
   <ul>
   <% @file_exist.select{|file, exist| !exist}.each do |file, exist| %>
@@ -101,7 +112,9 @@ $(document).ready(function(){
   <% end %>
   </ul>
 <% end %>
-  <%= button_to "Go gstore", File.join("/projects/", @sample_path.first) if @sample_path.length == 1 %>
+<% if @sample_path.length == 1 %>
+  <%= button_to "Go gstore", File.join("/projects/", @sample_path.first), :method=>:get %>
+<% end %>
   <% @sample_path.sort.each do |path| %>
     <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
   <% end %>

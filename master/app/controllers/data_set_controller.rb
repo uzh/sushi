@@ -37,12 +37,20 @@ class DataSetController < ApplicationController
   end
 #  caches_action :report
 #  caches_page :report
+  def bfabric
+    @project = Project.find_by_number(session[:project].to_i)
+    op = params[:parameters][:bfabric_option]
+    @project.register_bfabric(op)
+    index
+    render action: "index"
+  end
   def report
     @project = Project.find_by_number(session[:project].to_i)
     @tree = []
     node_list = {}
     @root = []
     top_nodes = []
+    project_dataset_ids = Hash[*(@project.data_sets.map{|data_set| [data_set.id, true]}.flatten)]
     @project.data_sets.each do |data_set|
       report_link = ""
       if i = data_set.headers.index{|header| header.tag?("Link")} 
@@ -59,7 +67,7 @@ class DataSetController < ApplicationController
               "text" => " <a href='/data_set/#{data_set.id}'>"+data_set.name+'</a> '+ data_set.comment.to_s + report_link,
               "children" => []}
       node_list[data_set.id] = node
-      if parent = data_set.data_set
+      if parent = data_set.data_set and project_dataset_ids[parent.id]
         node_list[parent.id]['children'] << node
       else
         top_nodes << node
@@ -170,35 +178,50 @@ class DataSetController < ApplicationController
   def edit
     show
   end
-  def treeviews
-    @project = Project.find_by_number(session[:project].to_i)
-    tree = []
-    node_list = {}
-    root = []
-    top_nodes = []
-    @project.data_sets.each do |data_set|
-      node = {"id" => data_set.id, 
-              "text" => data_set.data_sets.length.to_s+
-              " <a href='/data_set/p#{@project.number}/#{data_set.id}'>"+data_set.name+'</a>'+
-              ' <span style="color:gray;font-size:smaller">'+data_set.comment.to_s+'</span>',
-              'path' => '', 
-              "expanded" => false, 
-              "classes" => 'file', 
-              "hasChildren" => false, 
-              "children" => []}
-      node_list[data_set.id] = node
-      if parent = data_set.data_set
-        node_list[parent.id]['children'] << node
-      else
-        top_nodes << node
-      end
-      if data_set.id == params[:format].to_i
-        root << node
+  def trace_treeviews(root, data_set, parent_id, project_number)
+    data_set_id = data_set.id
+    node = {"id" => data_set_id, 
+            "text" => data_set.data_sets.length.to_s+" "+data_set.name+" "+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>",
+            "parent" => parent_id,
+            "a_attr" => {"href"=>"/data_set/p#{project_number}/#{data_set_id}", 
+                         "onclick"=>"location.href='/data_set/p#{project_number}/#{data_set_id}'"}
+            }
+    root << node
+    data_set.data_sets.each do |child|
+      if child.project.number==project_number
+        trace_treeviews(root, child, data_set.id, project_number)
       end
     end
-    root = top_nodes.reverse if root.empty?
-    tree.concat root
-    render :json => tree
+  end
+  def partial_treeviews
+    root = []
+    if top_data_set_id = params[:format]
+      data_set = DataSet.find_by_id(top_data_set_id.to_i)
+      if children = data_set.data_sets and children.length > 0
+        trace_treeviews(root, data_set, "#", data_set.project.number)
+      end
+    end
+    render :json => root.reverse
+  end
+  def whole_treeviews
+    @project = Project.find_by_number(session[:project].to_i)
+    root = []
+    project_dataset_ids = Hash[*(@project.data_sets.map{|data_set| [data_set.id, true]}.flatten)]
+    @project.data_sets.each do |data_set|
+      node = {"id" => data_set.id, 
+              "text" => data_set.data_sets.length.to_s+" "+data_set.name+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>",
+              "a_attr" => {"href"=>"/data_set/p#{@project.number}/#{data_set.id}", 
+                           "onclick"=>"location.href='/data_set/p#{@project.number}/#{data_set.id}'"}
+              }
+      if parent = data_set.data_set and project_dataset_ids[parent.id]
+        node["parent"] = parent.id
+      else
+        node["parent"] = "#"
+      end
+      root << node
+    end
+    
+    render :json => root.reverse
   end
   def import_from_gstore
     params[:project] = session[:project]
@@ -284,6 +307,7 @@ class DataSetController < ApplicationController
         @project.number = session[:project].to_i
         @project.save
       end
+      @data_set_ids = @project.data_sets.map{|data_set| data_set.id}.push('').reverse
 
       if file = params[:file] and tsv = file[:name]
         multi_data_sets = false
