@@ -102,7 +102,11 @@ $(function(){
       <td>sushi_lover</td>
     <% end %>
     <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
-    <td><%= data_set.bfabric_id %></td>
+    <% if data_set.bfabric_id %>
+      <td><%= link_to data_set.bfabric_id, "http://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{data_set.bfabric_id}&tab=details" %></td>
+    <% else %>
+      <td></td>
+    <% end %>
   </tr>
 <% end %>
 <% end %>
