@@ -20,7 +20,15 @@ sushi_app class <%= @sushi_app.class %><br /><br />
       <li>Parameter <b><font color=red><%= required %></font></b> is required</li>
     <% end %>
     </ul>
-    <%= button_to_function 'Back', "history.back()" %>
+    <%= button_to 'Back', "#", :id=>"history_back" %>
+
+    <%= javascript_tag do %>
+      $("#history_back").click(function() {
+        history.back()
+        return false;
+      });
+    <% end %>
+
   <% else %>
     <%= submit_tag 'Submit' unless @required %>
   <% end %>
