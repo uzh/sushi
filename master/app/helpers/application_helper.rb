@@ -6,12 +6,12 @@ module ApplicationHelper
     if !session[:projects] or params[:select_project]
       @fgcz = SushiFabric::Application.config.fgcz?
       session[:employee] = (@fgcz and current_user and FGCZ.get_user_groups(current_user.login).include?('Employees'))
-      session[:projects] = if @fgcz 
+      session[:projects] = if @fgcz and current_user
                              FGCZ.get_user_projects(current_user.login).map{|project| project.gsub(/p/,'').to_i}.sort
                            else
                              [1001]
                            end
-      session[:project] = if @fgcz
+      session[:project] = if @fgcz and current_user
                             if project=params[:select_project] and number=project[:number] and number.to_i!=0 or
                                project=params[:project] and number=project[:number] and number.to_i!=0 and 
                                (session[:employee] or session[:projects].include?(number.to_i))
@@ -29,9 +29,17 @@ module ApplicationHelper
                               session[:projects].first
                             end
                           else
-                            session[:projects].first
+                            if project=params[:select_project] and number=project[:number] and number.to_i!=0 or
+                               project=params[:project] and number=project[:number] and number.to_i!=0 and 
+                               session[:projects].include?(number.to_i)
+                               number.to_i
+                            elsif session[:project]
+                               session[:project]
+                            else
+                               session[:projects].first
+                            end
                           end
-      if @fgcz and current_user.selected_project == -1
+      if @fgcz and current_user and current_user.selected_project == -1
         current_user.selected_project = session[:project]
         current_user.save
       end

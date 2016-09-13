@@ -1,5 +1,5 @@
 class Sample < ActiveRecord::Base
-  attr_accessible :key_value
+#  attr_accessible :key_value
   belongs_to :data_set
 
   def to_hash
