@@ -53,16 +53,11 @@ class DataSet < ActiveRecord::Base
     base = "public/register_sushi_dataset_into_bfabric"
     check = "public/check_dataset_bfabric"
     if SushiFabric::Application.config.fgcz? and File.exist?(base) and File.exist?(check)
-      dataset_tsv = nil
-      if sample = self.samples.first
-        sample.to_hash.each do |header, file|
-          if header and file and header.tag?('File')
-            file_path = File.join(SushiFabric::GSTORE_DIR, file)
-            dir_path = File.dirname(file_path)
-            dataset_tsv = File.join(dir_path, "dataset.tsv")
-          end
-        end
-      end
+      dataset_tsv = File.join(SushiFabric::Application.config.scratch_dir, "dataset.tsv")
+      open(dataset_tsv, "w") do |out|
+        out.print self.tsv_string
+      end 
+      puts "# created: #{dataset_tsv}"
       option_check = if op == 'new' and !self.bfabric_id
                        true
                      elsif op == 'update' and bfabric_id = self.bfabric_id
@@ -93,6 +88,8 @@ class DataSet < ActiveRecord::Base
           puts "# Not executed properly:"
           puts bfabric_id
         end
+        File.unlink dataset_tsv
+        puts "# removed: #{dataset_tsv}"
       end
       if child_data_sets = self.data_sets
         child_data_sets.each do |child_data_set|
