@@ -47,8 +47,8 @@ EOS
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
-     'CountDataset [File]'=>File.join(@result_dir, "#{@dataset['Name']}/#{@dataset['Name']}-dataset.tsv"),
-     'CountMatrix [File]'=>File.join(@result_dir, "#{@dataset['Name']}/#{@dataset['Name']}-counts.txt"),
+     'CountDataset [File]'=>File.join(@result_dir, "#{@dataset['Name']}-dataset.tsv"),
+     'CountMatrix [File]'=>File.join(@result_dir, "#{@dataset['Name']}-counts.txt"),
      'CountFolder [File]'=>File.join(@result_dir, "#{@dataset['Name']}-Counts"),
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
