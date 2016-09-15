@@ -10,7 +10,7 @@ class SingleCellCountsApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'SingleCellCountsApp'
-    @analysis_category = 'Count'
+    @analysis_category = 'SingleCell'
     @description =<<-EOS
     Maps all read files specified by the dataset file generates stats and expression counts with featureCounts
 EOS
