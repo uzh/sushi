@@ -10,7 +10,7 @@ class ScaterApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'ScaterApp'
-    @analysis_category = 'Count'
+    @analysis_category = 'SingleCell'
     @description =<<-EOS
     Maps all read files specified by the dataset file generates stats and expression counts with featureCounts
 EOS
@@ -20,7 +20,7 @@ EOS
     @params['cores'] = '1'
     @params['ram'] = '8'
     @params['scratch'] = '10'
-    @params['name'] = 'Count_QC'
+    @params['name'] = 'Scater_QC'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = ['gene', 'isoform']
