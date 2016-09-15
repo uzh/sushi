@@ -14,7 +14,7 @@ class ScaterApp < SushiFabric::SushiApp
     @description =<<-EOS
     Maps all read files specified by the dataset file generates stats and expression counts with featureCounts
 EOS
-    @required_columns = ['Name','ReadDataset','Species']
+    @required_columns = ['Name','CountDataset', 'CountMatrix', 'Species']
     @required_params = ['refBuild','paired']
     # optional params
     @params['cores'] = '1'
