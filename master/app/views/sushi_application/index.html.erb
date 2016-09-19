@@ -1,12 +1,3 @@
-<script type="text/javascript">
-   $(function(){
-       $('#refresh_sushi_table').click(function(){
-           alert("Updating table will some seconds. Please do not click refresh button many times quickly.");
-           $.get("/sushi_application/refresh_table");
-       })
-   });
-</script>
-
 <h1>SUSHI Applications</h1>
 <form>
   <button type="button" id="refresh_sushi_table">refresh</button>
