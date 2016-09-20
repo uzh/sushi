@@ -3,7 +3,7 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 
-$ ->
-  $("#refresh_sushi_table").click ->
-    alert("Updating table will take some seconds. Please do not click refresh button many times quickly.")
-    $.get("/sushi_application/refresh_table")
+#$ ->
+#  $("#refresh_sushi_table").click ->
+#    alert("Updating table will take some seconds. Please do not click refresh button many times quickly.")
+#    $.get("/sushi_application/refresh_table")
