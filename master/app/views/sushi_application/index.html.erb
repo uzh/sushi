@@ -1,16 +1,59 @@
+<style type="text/css">
+#loading{
+    border:1px dashed #999;
+    padding:15px;
+    position: fixed;
+    top:50%;
+    left:50%;
+    background-color:#FFF;
+    filter: alpha(opacity=85);
+    -moz-opacity:0.85;
+    opacity:0.85;
+}
+ 
+#loading .loadingMsg{
+    text-align:center;
+    padding-top:100px;
+    width:100px;
+    background-image:url("/assets/loading.gif");
+    background-position: center top;
+    background-repeat: no-repeat;
+    font-family: "メイリオ"!important;
+}
+</style>
+<script type="text/javascript">
+$(function(){
+    $("#refresh_sushi_table").click( function() {
+        dispLoading("updating...");
+        $.ajax({
+           url:"/sushi_application/refresh_table",
+           type:"GET",
+           complete : function(data) {
+               removeLoading();
+           }
+        });
+    });
+});
+
+function dispLoading(msg){
+    var dispMsg = "";
+ 
+    if( msg != "" ){
+        dispMsg = "<div class='loadingMsg'>" + msg + "</div>";
+    }
+    if($("#loading").size() == 0){
+        $("body").append("<div id='loading'>" + dispMsg + "</div>");
+    } 
+}
+
+function removeLoading(){
+ $("#loading").remove();
+}
+</script>
 <h1>SUSHI Applications</h1>
+<form>
+  <button type="button" id="refresh_sushi_table">refresh</button>
+</form>
 <hr />
-<%= button_to "Refresh", "/sushi_application/refresh" %>
-<table>
-  <tr><th>Name</th><th>Analysis Category</th><th>Description</th><th>Required Columns</th><th>Next DataSet Columns</th></tr>
-  <% @sushi_apps.each do |app| %>
-    <tr>
-      <td><%= app.class_name %></td>
-      <td><%= app.analysis_category %></td>
-      <td><%= app.description.to_s.split(/\n/).first.to_s.html_safe %></td>
-      <td><%= app.required_columns.join(', ') %></td>
-      <td><%= app.next_dataset_keys.join(', ') %></td>
-    </tr>
-  <% end %>
-</table>
+<%= render :partial => '/sushi_application/sushi_application_table' %>
 
