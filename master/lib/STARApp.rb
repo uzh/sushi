@@ -47,6 +47,9 @@ EOS
     end
   end
   def set_default_parameters
+    if dataset_has_column?('refBuild')
+      @params['refBuild'] = @dataset[0]['refBuild']
+    end
     @params['paired'] = dataset_has_column?('Read2')
     if dataset_has_column?('strandMode')
       @params['strandMode'] = @dataset[0]['strandMode']
