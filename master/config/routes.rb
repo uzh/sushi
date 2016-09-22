@@ -55,6 +55,7 @@ SushiFabric::Application.routes.draw do
   resources :sushi_application, :only => [:index] do
     collection do
       post :refresh
+      get :refresh_table
     end
   end
 
