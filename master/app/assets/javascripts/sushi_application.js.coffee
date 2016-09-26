@@ -2,8 +2,22 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
+$ -> 
+    $("#refresh_sushi_table").click ->
+        dispLoading("updating...")
+        $.ajax "/sushi_application/refresh_table",
+           type:"GET"
+           complete:(data) ->
+               removeLoading()
 
-#$ ->
-#  $("#refresh_sushi_table").click ->
-#    alert("Updating table will take some seconds. Please do not click refresh button many times quickly.")
-#    $.get("/sushi_application/refresh_table")
+
+dispLoading = (msg) ->
+    dispMsg = ""
+    if( msg != "" )
+        dispMsg = "<div class='loadingMsg'>" + msg + "</div>"
+    if($("#loading").size() == 0)
+        $("body").append("<div id='loading'>" + dispMsg + "</div>")
+
+removeLoading = () ->
+    $("#loading").remove()
+
