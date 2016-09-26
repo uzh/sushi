@@ -1,32 +1,3 @@
-<script type="text/javascript">
-$(function(){
-    $("#refresh_sushi_table").click( function() {
-        dispLoading("updating...");
-        $.ajax({
-           url:"/sushi_application/refresh_table",
-           type:"GET",
-           complete : function(data) {
-               removeLoading();
-           }
-        });
-    });
-});
-
-function dispLoading(msg){
-    var dispMsg = "";
- 
-    if( msg != "" ){
-        dispMsg = "<div class='loadingMsg'>" + msg + "</div>";
-    }
-    if($("#loading").size() == 0){
-        $("body").append("<div id='loading'>" + dispMsg + "</div>");
-    } 
-}
-
-function removeLoading(){
- $("#loading").remove();
-}
-</script>
 <h1>SUSHI Applications</h1>
 <form>
   <button type="button" id="refresh_sushi_table">refresh</button>
