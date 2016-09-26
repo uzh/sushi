@@ -16,6 +16,7 @@ $(document).ready(function(){
 <table>
   <tr><th>ID</th><th>Name</th><th>Samples</th><th>Parent</th><th>Child(ren)IDs</th><th>Created</th><th>BFabricID</th></tr>
   <% if @data_set %>
+  <%= hidden_field :data_set, :id, :value => @data_set.id %>
   <tr>
     <td><%= @data_set.id %></td>
     <td><%= td @data_set.name %></td>
@@ -127,27 +128,8 @@ $(document).ready(function(){
       <li>Invalid characters: !@#$%^&*()<>{}[]/:;"='+| and SPACE</li>
     </ul>
   <% elsif @sushi_apps %>
-    <%= button_to 'Refresh', "/data_set/#{@data_set.id}/refresh_apps", :method=>:get %>
-    <% if @sushi_apps.empty? %>
-      <font color=red>No Available Application for this DataSet</font><br />
-      <%= button_to 'Back', '/run_application', :method=>:get %>
-    <% else %>
-      <%= form_tag(:controller => 'run_application', :action => 'set_parameters') do %>
-        <%= hidden_field :data_set, :id, :value=>@data_set.id %>
-        <table>
-          <th>Category</th><th>Application</th>
-        <% @sushi_apps_category.each do |category| %>
-          <tr><td><%= category %></td>
-            <td>
-              <% @sushi_apps[category].each do |app| %>
-                <%= submit_tag app.to_s, :name=>'app' %>
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-        </table>
-      <% end %>
-    <% end %>
+    <form> <button type="button" id="refresh_sushi_list">refresh</button> </form>
+    <%= render :partial => '/data_set/sushi_application_list' %>
   <% end %>
 
 <hr />

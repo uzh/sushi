@@ -173,7 +173,6 @@ class DataSetController < ApplicationController
   def refresh_apps
     set_runnable_apps
     show
-    render :action => "show"
   end
   def edit
     show
