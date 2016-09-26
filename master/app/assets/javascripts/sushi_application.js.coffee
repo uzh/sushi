@@ -10,14 +10,3 @@ $ ->
            complete:(data) ->
                removeLoading()
 
-
-dispLoading = (msg) ->
-    dispMsg = ""
-    if( msg != "" )
-        dispMsg = "<div class='loadingMsg'>" + msg + "</div>"
-    if($("#loading").size() == 0)
-        $("body").append("<div id='loading'>" + dispMsg + "</div>")
-
-removeLoading = () ->
-    $("#loading").remove()
-
