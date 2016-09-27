@@ -30,7 +30,7 @@ $(document).ready(function(){
     </td>
     <td><%= @data_set.created_at.to_s.gsub(/UTC/,'') %></td>
     <% if @data_set.bfabric_id %>
-      <td><%= link_to @data_set.bfabric_id, "http://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{@data_set.bfabric_id}&tab=details" %></td>
+      <td><%= link_to @data_set.bfabric_id, "http://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{@data_set.bfabric_id}&tab=details", target: "_blank" %></td>
     <% else %>
       <td></td>
     <% end %>
@@ -75,9 +75,9 @@ $(document).ready(function(){
             <% file_name = File.basename(file_path) %>
             <% if header.tag?('Link') %>
               <% if file_path =~ /^http/ %>
-                <%= link_to td(file_name), file_path %>
+                <%= link_to td(file_name), file_path, target: "_blank" %>
               <% elsif @fgcz %>
-                <%= link_to td(file_name), File.join('http://fgcz-gstore.uzh.ch/projects', file_path) %>
+                <%= link_to td(file_name), File.join('http://fgcz-gstore.uzh.ch/projects', file_path), target: "_blank" %>
               <% else %>
                 <%= link_to td(file_name), File.join('/projects', file_path) %>
               <% end %>
