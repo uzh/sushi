@@ -179,9 +179,15 @@ class DataSetController < ApplicationController
   end
   def trace_treeviews(root, data_set, parent_id, project_number)
     data_set_id = data_set.id
+    node_text = if root.empty?
+             "<b>" + data_set.data_sets.length.to_s+" "+data_set.name+"</b> "+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>"
+           else
+              data_set.data_sets.length.to_s+" "+data_set.name+" "+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>"
+           end
     node = {"id" => data_set_id, 
-            "text" => data_set.data_sets.length.to_s+" "+data_set.name+" "+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>",
+            "text" => node_text,
             "parent" => parent_id,
+            "state" => {"opened":true},
             "a_attr" => {"href"=>"/data_set/p#{project_number}/#{data_set_id}", 
                          "onclick"=>"location.href='/data_set/p#{project_number}/#{data_set_id}'"}
             }
