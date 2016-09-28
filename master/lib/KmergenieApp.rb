@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160330-100221'
+Version = '20160928-201346'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -35,8 +35,8 @@ Kmergenie calculates kmer distribution, and it estimates the best kmer size and 
     @params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
-    {'Name'=>@dataset['Name'], 
-     'Report [Html]'=>File.join(@result_dir, "kmergenie_results/histograms_report.html"),
+    {'Name'=>'Kmergenie_Result',
+     'Report [Link]'=>File.join(@result_dir, "kmergenie_results/histograms_report.html"),
      'Results [File]'=>File.join(@result_dir, "kmergenie_results")
     }
   end
