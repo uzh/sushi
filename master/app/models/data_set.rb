@@ -37,7 +37,9 @@ class DataSet < ActiveRecord::Base
     string = CSV.generate(:col_sep=>"\t") do |out|
       out << headers
       self.samples.each do |sample|
-        out << headers.map{|header| sample.to_hash[header]}
+        out << headers.map{|header| 
+          val = sample.to_hash[header]
+          val.to_s.empty? ? nil:val}
       end
     end
     string
