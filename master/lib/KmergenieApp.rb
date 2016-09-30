@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160928-201346'
+Version = '20160930-113920'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -24,6 +24,8 @@ Kmergenie calculates kmer distribution, and it estimates the best kmer size and 
     @params['scratch'] = '100'
     @params['model'] = ['diploid', 'haploid']
     @params['paired'] = false
+    @params['sampling'] = 'all'
+    @params['sampling', 'description'] = 'all: use all reads, number: use the number of random sampled reads'
     @params['cmdOptions'] = ''
   end
   def preprocess
@@ -49,10 +51,23 @@ Kmergenie calculates kmer distribution, and it estimates the best kmer size and 
             else
               ''
             end
-    @dataset_hash.each do |hash|
-      hash.each do |k, v|
-        if k =~ /\[File/
-          command << "echo '#{File.join(@gstore_dir, v)}' >> read_file.txt\n"
+    if  num_reads = @params['sampling'] and num_reads == 'all'
+      @dataset_hash.each do |hash|
+        hash.each do |k, v|
+          if k =~ /\[File/
+            command << "echo '#{File.join(@gstore_dir, v)}' >> read_file.txt\n"
+          end
+        end
+      end
+    else
+      num_lines = num_reads.to_i * 4
+      @dataset_hash.each do |hash|
+        hash.each do |k, v|
+          if k =~ /\[File/
+            out_fastq = File.basename(v).gsub(/.gz/, '')
+            command << "zcat #{File.join(@gstore_dir, v)}|sort -R|tail -#{num_lines} > #{out_fastq}\n"
+            command << "echo '#{out_fastq}' >> read_file.txt\n"
+          end
         end
       end
     end
