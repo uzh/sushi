@@ -21,7 +21,7 @@ Haplotype calling for DNA-seq<br/>
     @params['ram'] = '50'
     @params['scratch'] = '100'
     @params['name'] = 'GATK_DnaVariants'
-    @params['build'] = ref_selector
+    @params['refBuild'] = ref_selector
     @params['targetFile'] = '/srv/GT/analysis/lopitz/GATK-tutorial_data/intervals/test.bed'
     @params['getRealignedBam'] = true
     @params['specialOptions'] = ''
