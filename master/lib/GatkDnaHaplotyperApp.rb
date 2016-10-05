@@ -34,7 +34,7 @@ Haplotype calling for DNA-seq<br/>
     {'Name'=>@dataset['Name'],
      'GVCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}-HC_calls.g.vcf"),
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}-realigned.bam"),
-     'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}-realigned.bam.bai"),
+     'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}-realigned.bai"),
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
