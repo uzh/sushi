@@ -9,7 +9,6 @@ class GatkDnaHaplotyperApp <  SushiFabric::SushiApp
   def initialize
     super
     @name = 'GatkDnaHaplotyper'
-    @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'Variants'
     @description =<<-EOS
 Haplotype calling for DNA-seq<br/>
