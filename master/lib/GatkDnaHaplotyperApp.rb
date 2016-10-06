@@ -17,13 +17,14 @@ Haplotype calling for DNA-seq<br/>
     @required_columns = ['Name','BAM','BAI', 'refBuild']
     @required_params = ['name']
     @params['cores'] = '8'
-    @params['ram'] = '100'
+    @params['ram'] = '50'
     @params['scratch'] = '100'
     @params['name'] = 'GATK_DnaVariants'
     @params['refBuild'] = ref_selector
     @params['targetFile'] = '/srv/GT/analysis/lopitz/GATK-tutorial_data/intervals/test.bed'
     @params['getRealignedBam'] = true
     @params['markDuplicates'] = false
+    @params['addReadGroup'] = false
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end
@@ -32,7 +33,7 @@ Haplotype calling for DNA-seq<br/>
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
-     'GVCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}-HC_calls.g.vcf"),
+     'GVCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}-HC_calls.g.vcf.gz"),
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}-realigned.bam"),
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}-realigned.bai"),
      'Species'=>@dataset['Species'],
