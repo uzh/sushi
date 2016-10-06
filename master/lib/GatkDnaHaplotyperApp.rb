@@ -17,12 +17,13 @@ Haplotype calling for DNA-seq<br/>
     @required_columns = ['Name','BAM','BAI', 'refBuild']
     @required_params = ['name']
     @params['cores'] = '8'
-    @params['ram'] = '50'
+    @params['ram'] = '100'
     @params['scratch'] = '100'
     @params['name'] = 'GATK_DnaVariants'
     @params['refBuild'] = ref_selector
     @params['targetFile'] = '/srv/GT/analysis/lopitz/GATK-tutorial_data/intervals/test.bed'
     @params['getRealignedBam'] = true
+    @params['markDuplicates'] = false
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end
