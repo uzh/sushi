@@ -1,0 +1,29 @@
+<h1>Project <%= session[:project] %> <span style="color:gray;font-size:medium">Delete DataSet</span></h1>
+<hr />
+<h3>Log</h3>
+<% unless @command.empty? %>
+  <% if @option[:delete] == 'also_gstore' %>
+    The following command have been executed
+    <pre>
+    <%= @command %>
+    </pre>
+    The followings are the command logs
+    <pre>
+    <% @command_logs.each do |log| %>
+      <%= log %>
+    <% end %>
+    </pre>
+  <% end %>
+<% end %>
+<table>
+<hr />
+<%= button_to "Go gstore", "/projects/p#{session[:project]}", :method=>:get %>
+<%= link_to "/projects/p#{session[:project]}","/projects/p#{session[:project]}" %>
+
+
+
+
+
+
+
+
