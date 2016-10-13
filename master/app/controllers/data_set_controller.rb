@@ -169,6 +169,7 @@ class DataSetController < ApplicationController
       @sushi_apps = @data_set.runnable_apps
       @sushi_apps_category = @sushi_apps.keys.sort
     end
+    @top_node_data_set = @data_set.data_set
   end
   def refresh_apps
     set_runnable_apps
@@ -538,5 +539,41 @@ class DataSetController < ApplicationController
         @parameters[header] = values.join(" ")
       end
     end
+  end
+  def project_paths(data_set)
+    paths = []
+    if sample = data_set.samples.first
+      sample.to_hash.each do |header, file|
+        if header and (header.tag?('File') or header.tag?('Link') and file !~ /^http/) and file
+          project_path = file.split('/')[0,3].join('/')
+          file_path = File.join(SushiFabric::GSTORE_DIR, project_path)
+          paths << File.dirname(file_path)
+        end
+      end
+    end
+    paths.uniq!
+    paths
+  end
+  def delete_candidates(data_set)
+    @delete_candidates = []
+    project_paths(@data_set).each do |dir|
+      Dir[File.join(dir, "*.*")].sort.each do |file|
+        unless file =~ /.tsv/ or File.ftype(file) == "directory"
+          @delete_candidates << file
+        end
+      end
+    end
+    @delete_candidates
+  end
+  def confirm_delete_only_data_files
+    @data_set = DataSet.find_by_id(params[:id])
+    delete_candidates(@data_set)
+  end
+  def run_delete_only_data_files
+    @data_set = DataSet.find_by_id(params[:id])
+    @delete_files = delete_candidates(@data_set)
+    target = @delete_files.join(" ")
+    @command = @@workflow_manager.delete_command(target)
+    @command_log = `#{@command}`
   end
 end

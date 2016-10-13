@@ -72,6 +72,9 @@ $(document).ready(function(){
   <%= submit_tag 'edit name', :name=>'edit_option' %>
 <% end %>
 <%= button_to "download as tsv", "/data_set/#{@data_set.id}/save_as_tsv", :method => :get %>
+<% if session[:employee] and @top_node_data_set %>
+  <%= button_to "delete only data files", "/data_set/#{@data_set.id}/confirm_delete_only_data_files", :method => :get %>
+<% end %>
 
 <hr />
 <h3>Samples <button id="hide">Hide</button></h3>
