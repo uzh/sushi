@@ -72,7 +72,7 @@ $(document).ready(function(){
   <%= submit_tag 'edit name', :name=>'edit_option' %>
 <% end %>
 <%= button_to "download as tsv", {:action=>"save_as_tsv", :id=>@data_set.id} %>
-<% if session[:employee] and @top_node_data_set %>
+<% if session[:employee] and @data_set.parent_id and @data_set.child == false %>
   <%= button_to "delete only data files", {:action=>"confirm_delete_only_data_files", :id=>@data_set.id} %>
 <% end %>
 
