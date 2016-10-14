@@ -77,8 +77,10 @@ class ApplicationController < ActionController::Base
       SushiApplication.delete(app)
     end
   end
-  def runnable_application(data_set_headers)
-    refresh_sushi_application
+  def runnable_application(data_set_headers, refresh = true)
+    if refresh
+      refresh_sushi_application
+    end
     sushi_apps = SushiApplication.all.select do |app|
       (app.required_columns - data_set_headers.map{|colname| colname.to_s.gsub(/\[.+\]/,'').strip}).empty?
     end
