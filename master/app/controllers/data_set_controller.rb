@@ -572,7 +572,8 @@ class DataSetController < ApplicationController
   def run_delete_only_data_files
     @data_set = DataSet.find_by_id(params[:id])
     @delete_files = delete_candidates(@data_set)
-    target = @delete_files.join(" ")
+    file_exts = @delete_files.map{|file| File.join(File.dirname(file), "*." + file.split('.').last)}.uniq.sort
+    target = file_exts.join(" ")
     @command = @@workflow_manager.delete_command(target)
     @command_log = `#{@command}`
   end
