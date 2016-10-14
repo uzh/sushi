@@ -22,9 +22,9 @@ SushiFabric::Application.routes.draw do
   resources :data_set, :only => [:index, :show, :destroy] do
     member do
       post :edit
-      get :save_as_tsv
+      post :save_as_tsv
       get :refresh_apps
-      get :confirm_delete_only_data_files
+      post :confirm_delete_only_data_files
       post :run_delete_only_data_files
     end
     collection do
