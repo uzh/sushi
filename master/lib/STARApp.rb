@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20161014-104728'
+Version = '20161014-112045'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -56,7 +56,7 @@ EOS
     end
   end
   def next_dataset
-     dataset1 = {
+     dataset = {
         'Name'=>@dataset['Name'], 
         'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
         'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
@@ -67,20 +67,15 @@ EOS
         'refFeatureFile'=>@params['refFeatureFile'],
         'strandMode'=>@params['strandMode'],
         'Read Count'=>@dataset['Read Count'],
-     }
-     dataset2 = {
         'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
         'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml"),
         'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
      }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
 
-     dataset3 = if @params['getChimericJunctions']
-                  dataset1.merge({ 
-                   'Chimerics [File]'=>File.join(@result_dir, "#{@dataset['Name']}.chimeric"),
-                  }).merge(dataset2)
-                else
-                  dataset1.merge(dataset2)
-                end
+     if @params['getChimericJunctions']
+       dataset['Chimerics [File]'] = File.join(@result_dir, "#{@dataset['Name']}.chimeric")
+     end
+     dataset
   end
   def commands
     run_RApp("EzAppSTAR")
