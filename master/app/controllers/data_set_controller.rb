@@ -84,9 +84,9 @@ class DataSetController < ApplicationController
                   DataSet.find_by_id(id)
                 end
   end
-  def set_runnable_apps
+  def set_runnable_apps(refresh = true)
     if @data_set = DataSet.find_by_id(params[:id]) or (@data_set_id and @data_set = DataSet.find_by_id(@data_set_id))
-      sushi_apps = runnable_application(@data_set.headers)
+      sushi_apps = runnable_application(@data_set.headers, refresh)
       @sushi_apps_category = sushi_apps.map{|app| app.analysis_category}.uniq.sort
       @sushi_apps = {}
       sushi_apps.sort_by{|app| app.class_name.to_s}.each do |app|
@@ -163,7 +163,7 @@ class DataSetController < ApplicationController
     if !@data_set.refreshed_apps and @data_set.runnable_apps.empty?
       @data_set.refreshed_apps = true
       @data_set.save
-      set_runnable_apps
+      set_runnable_apps(false)
     end
     if @file_exist.values.inject{|a,b| a and b}
       @sushi_apps = @data_set.runnable_apps
@@ -298,7 +298,7 @@ class DataSetController < ApplicationController
       end
 
       if @data_set_id
-        set_runnable_apps
+        set_runnable_apps(false)
       end
     end
 
@@ -381,7 +381,7 @@ class DataSetController < ApplicationController
       end
 
       if @data_set_id
-        set_runnable_apps
+        set_runnable_apps(false)
       end
     end
   end
