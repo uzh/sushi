@@ -60,7 +60,7 @@ $(document).ready(function(){
   <% end %>
 </table>
 <ul id="data_set_tree" class="filetree"></ul>
-<%= form_tag(:controller => 'data_set',:action => 'edit') do %>
+<%= form_tag({:action => 'edit'}, {:class=>"button_to"}) do %>
   <% if @data_set.comment %>
     <%= @data_set.comment %><br />
     <%= submit_tag 'edit comment', :name=>'edit_option' %>
@@ -71,9 +71,9 @@ $(document).ready(function(){
   <%= hidden_field :data_set, :id, :value=>@data_set.id %>
   <%= submit_tag 'edit name', :name=>'edit_option' %>
 <% end %>
-<%= button_to "download as tsv", "/data_set/#{@data_set.id}/save_as_tsv", :method => :get %>
+<%= button_to "download as tsv", {:action=>"save_as_tsv", :id=>@data_set.id} %>
 <% if session[:employee] and @top_node_data_set %>
-  <%= button_to "delete only data files", "/data_set/#{@data_set.id}/confirm_delete_only_data_files", :method => :get %>
+  <%= button_to "delete only data files", {:action=>"confirm_delete_only_data_files", :id=>@data_set.id} %>
 <% end %>
 
 <hr />
