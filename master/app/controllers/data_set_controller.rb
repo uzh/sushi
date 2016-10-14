@@ -169,7 +169,6 @@ class DataSetController < ApplicationController
       @sushi_apps = @data_set.runnable_apps
       @sushi_apps_category = @sushi_apps.keys.sort
     end
-    @top_node_data_set = @data_set.data_set
   end
   def refresh_apps
     set_runnable_apps
@@ -556,7 +555,7 @@ class DataSetController < ApplicationController
   end
   def delete_candidates(data_set)
     @delete_candidates = []
-    project_paths(@data_set).each do |dir|
+    project_paths(data_set).each do |dir|
       Dir[File.join(dir, "*.*")].sort.each do |file|
         unless file =~ /.tsv/ or File.ftype(file) == "directory"
           @delete_candidates << file
@@ -577,4 +576,17 @@ class DataSetController < ApplicationController
     @command = @@workflow_manager.delete_command(target)
     @command_log = `#{@command}`
   end
+=begin
+  def confirm_delete_only_data_files_in_project
+    @project = Project.find_by_number(session[:project].to_i)
+    @delete_candidates_all = []
+    @project.data_sets.each do |data_set|
+      @delete_candidates_all.concat(delete_candidates(data_set))
+    end
+    require 'pp'
+    pp @delete_candidates_all
+  end
+  def run_delete_only_data_files_in_project
+  end
+=end
 end
