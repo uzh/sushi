@@ -2,18 +2,9 @@
 <hr />
 <h3>Log</h3>
 <% unless @command.empty? %>
-  <% if @option[:delete] == 'also_gstore' %>
-    The following command have been executed
-    <pre>
-    <%= @command %>
-    </pre>
-    The followings are the command logs
-    <pre>
-    <% @command_logs.each do |log| %>
-      <%= log %>
-    <% end %>
-    </pre>
-  <% end %>
+  The following command have been executed<br />
+<br />
+<%= @command %>
 <% end %>
 <table>
 <hr />
