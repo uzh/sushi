@@ -48,6 +48,7 @@ Haplotype calling for DNA-seq<br/>
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    end
   end
   def commands
     run_RApp("EzAppGatkDnaHaplotyper")
