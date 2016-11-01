@@ -40,6 +40,7 @@ class DESeq2App < SushiFabric::SushiApp
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
+    @name = "#{@name}_#{@params['sampleGroup']}--over--#{@params['refGroup']}"
   end
   def next_dataset
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"
