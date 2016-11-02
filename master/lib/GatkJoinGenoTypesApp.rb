@@ -22,7 +22,7 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['name'] = 'GATK_Genotyping'
     @params['refBuild'] = ref_selector
     @params['grouping'] = ''
-    @param['targetFile'] = '/srv/GT/analysis/lopitz/GATK-tutorial_data/intervals/test.bed'
+    @params['targetFile'] = '/srv/GT/analysis/lopitz/GATK-tutorial_data/intervals/test.bed'
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end
