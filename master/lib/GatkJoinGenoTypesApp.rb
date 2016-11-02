@@ -29,7 +29,7 @@ genotype,merge and annotate gvcf-Files<br/>
     report_dir = File.join(@result_dir, @params['name'])
     {'Name'=>@params['name'],
      'Report [File]'=>report_dir,
-q#     'Html [Link]'=>File.join(report_dir, '00index.html'),
+#     'Html [Link]'=>File.join(report_dir, '00index.html'),
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'] 
     }
