@@ -14,8 +14,8 @@ class GatkJoinGenoTypesApp <  SushiFabric::SushiApp
     @description =<<-EOS
 genotype,merge and annotate gvcf-Files<br/>
     EOS
-    @required_columns = ['Name','GVCF','GVCFINDEX','Species','refBuild','grouping']
-    @required_params = ['name']
+    @required_columns = ['Name','GVCF','GVCFINDEX','Species','refBuild']
+    @required_params = ['name','grouping']
     @params['cores'] = '8'
     @params['ram'] = '50'
     @params['scratch'] = '100'
