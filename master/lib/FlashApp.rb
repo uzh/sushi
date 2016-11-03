@@ -51,7 +51,7 @@ EOS
     {'Name'=>@dataset['Name'], 
      'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.extendedFrags.fastq.gz"), 
      'FlashLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_flash.log"),
-     'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_trimmomatic.log"),
+     'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
      'Species'=>@dataset['Species'],
      'Read Count'=>@dataset['Read Count'],
      
