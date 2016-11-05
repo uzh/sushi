@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160119-055831'
+Version = '20161105-073426'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -71,6 +71,7 @@ http://seselab.org/homeoroq/
     }
   end
   def commands
+    genomes_root = "/srv/GT/reference"
     # make index.csv
     input_dataset_tsv = @params['input_dataset_tsv']
     co = @params['control_orig']
@@ -86,10 +87,10 @@ http://seselab.org/homeoroq/
     if @params['cds_filtering'] 
       # output[['refBuild']] = 'Cardamine_hirsuta/KEN/DENOVO/Annotation/Version-2014-06-29'
       # ruby scripts/filter_tpm_by_cds_obh.rb -t data/Count_QC-tpm.txt -1 references/chir_genes.gtf -2 references/cama_genes.gtf -a references/chir_genome.fa -b references/cama_genome.fa
-      p1_ref = File.join(GENOMES_ROOT, @params['p1_ref'])
+      p1_ref = File.join(genomes_root, @params['p1_ref'])
       p1_gtf = File.join(p1_ref, "Genes/genes.gtf")
       if @params['obh_filtering']
-        p2_ref = File.join(GENOMES_ROOT, @params['p2_ref'])
+        p2_ref = File.join(genomes_root, @params['p2_ref'])
         p2_gtf = File.join(p2_ref, "Genes/genes.gtf")
         p1_genome_dir = File.expand_path('../../Sequence/WholeGenomeFasta', p1_ref)
         p1_genome = File.join(p1_genome_dir, "genome.fa")
@@ -105,9 +106,9 @@ http://seselab.org/homeoroq/
       end
     else
       if @params['obh_filtering']
-        p1_ref = File.join(GENOMES_ROOT, @params['p1_ref'])
+        p1_ref = File.join(genomes_root, @params['p1_ref'])
         p1_gtf = File.join(p1_ref, "Genes/genes.gtf")
-        p2_ref = File.join(GENOMES_ROOT, @params['p2_ref'])
+        p2_ref = File.join(genomes_root, @params['p2_ref'])
         p2_gtf = File.join(p2_ref, "Genes/genes.gtf")
         p1_genome_dir = File.expand_path('../../Sequence/WholeGenomeFasta', p1_ref)
         p1_genome = File.join(p1_genome_dir, "genome.fa")
