@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160119-055705'
+Version = '20161105-122326'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -52,7 +52,7 @@ http://seselab.org/homeoroq/
     @params['pval_mean_xls'] = pval_mean_xls
 
     if data_set = DataSet.find_by_id(@dataset_sushi_id)
-      @params['DataSet'] = Hash[*data_set.project.data_sets.map{|d| [d.name, d.id]}.flatten]
+      @params['DataSet'] = Hash[*data_set.project.data_sets.map{|d| [d.name, d.id]}.flatten].to_a.reverse
     end
   end
   def preprocess
