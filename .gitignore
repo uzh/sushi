@@ -15,4 +15,4 @@ master/config/initializers/devise.rb
 master/.Rproj.user
 master/.Rhistory
 master/*.Rproj
-
+.DS_Store
