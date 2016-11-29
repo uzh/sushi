@@ -11,7 +11,7 @@
            var sample_group = $("#parameters_sampleGroup").val();
            var ref_group = $("#parameters_refGroup").val();
            if(sample_group != '' && ref_group != ''){
-             next_dataset_name = next_dataset_name.replace(/_[0-9a-zA-Z]+?--over--.+/g, '');
+             next_dataset_name = next_dataset_name.replace(/_[0-9a-zA-Z-]+?--over--.+/g, '');
              next_dataset_name = next_dataset_name + "_" + sample_group + "--over--" + ref_group;
              $('#next_dataset_name').val(next_dataset_name);
            }
