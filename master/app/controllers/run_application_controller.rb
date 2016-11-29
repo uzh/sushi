@@ -131,7 +131,9 @@ class RunApplicationController < ApplicationController
                                        eval(value)
                                      end
     end
-    if project_number = session[:project] and project = Project.find_by_number(project_number.to_i)
+    if current_data_set = DataSet.find_by_id(data_set_id.to_i) and
+       project = current_data_set.project and
+       project_number = project.number
       @sushi_app.project = 'p' + project_number.to_s
     end
     @sushi_app.dataset_sushi_id = data_set_id.to_i
