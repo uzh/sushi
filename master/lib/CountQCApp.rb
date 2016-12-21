@@ -26,9 +26,11 @@ Quality control after counting reads<br/>
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = ['gene', 'isoform']
     @params['normMethod'] = 'logMean'
-    @params['expressionName'] = ''
-    @params['runGO'] = false
+    @params['runGO'] = ['false', 'true']
+    @params['backgroundExpression'] = 10
+    @params['backgroundExpression', "description"] = "counts to be added to shrink estimated log2 ratios"
     @params['specialOptions'] = ''
+    @params['expressionName'] = ''
     @params['mail'] = ""
   end
   def preprocess
