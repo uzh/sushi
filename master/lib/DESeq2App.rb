@@ -32,10 +32,12 @@ class DESeq2App < SushiFabric::SushiApp
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     #@params['normMethod'] = 'logMean'
     @params['runGO'] = ['false', 'true']
-    @params['expressionName'] = ''
     @params['grouping2'] = ''
     @params['grouping2', 'description'] = 'specify the column name of your secondary factor --only in case your experiment has a second factor, that should enter the linear model for differential expression!'
+    @params['backgroundExpression'] = 10
+    @params['backgroundExpression', "description"] = "counts to be added to shrink estimated log2 ratios"
     @params['specialOptions'] = ''
+    @params['expressionName'] = ''
     @params['mail'] = ""
   end
   def preprocess
