@@ -35,7 +35,7 @@ EOS
     @params['subsampleReads', 'description'] = 'take only every nth read'
     @params['mapMethod'] = ['STAR', 'bowtie', 'bowtie2', 'tophat', 'bwa-mem']
     @params['mapOptions'] = ''
-    @params['trimAdapter'] = false
+    @params['trimAdapter'] = true
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
     @params['minTailQuality'] = 0
