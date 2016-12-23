@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20161105-073426'
+Version = '20161223-092434'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -22,7 +22,7 @@ http://seselab.org/homeoroq/
 
     @analysis_category = 'Polyploid'
     @params['process_mode'] = 'DATASET'
-    @required_columns = ['Name','Report']
+    @required_columns = ['Name','Report', 'Dummy']
     @required_params = []
     # optional params
     @params['cores'] = '8'
