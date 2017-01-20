@@ -105,7 +105,7 @@ then you can find it from the SUSHI server by clicking 'gStore' of the main menu
 You can run a SUSHI application after selecting a DataSet:
 
 1. Select a DataSet
-2. Click a SUSHI applicaiton button
+2. Click a SUSHI application button
 3. Set parameters
 4. Click 'submit' button
 
