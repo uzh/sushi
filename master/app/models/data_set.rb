@@ -82,13 +82,14 @@ class DataSet < ActiveRecord::Base
       if option_check and command and bfabric_id = `#{command}`
         puts "$ #{command}"
         puts "# mode: #{op}"
-        if bfabric_id.split(/\n/).uniq.length < 2
+        puts "bfabric_id: #{bfabric_id}"
+        if bfabric_id.split(/\n/).uniq.length < 2 and bfabric_id.chomp.to_i > 0
           self.bfabric_id = bfabric_id.chomp.to_i
           puts "# BFabricID: #{self.bfabric_id}"
           self.save
         else
           puts "# Not executed properly:"
-          puts bfabric_id
+          puts "# BFabricID: #{bfabric_id}"
         end
         File.unlink dataset_tsv
         puts "# removed: #{dataset_tsv}"
