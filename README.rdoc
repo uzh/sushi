@@ -102,8 +102,7 @@ Sample DataSet
 
 You can download it from your SUSHI server, or you can copy it from $RAIL_ROOT/public/ventricles_100k.tgz. After you decompress the archive file, move the folder in the project directory, $RAILS_ROOT/public/gstore/projects/p1001/
 
-# Currently, SUSHI does not have a function to upload the data itself.
-# It is the SUSHI framework concept, SUSHI does not manage data itself, but SUSHI does manage the meta-information, called DataSet.
+# Currently, SUSHI does not have a function to upload the data itself. It is the SUSHI framework concept, SUSHI does not manage data itself, but SUSHI does manage only the meta-information, called DataSet.
 
 then you can find it from the SUSHI server by clicking 'gStore' of the main menu, and you can find 'ventricles_100k' directory. Double click the directory and you will find 'dataset.tsv' file in the ventricles_100k directory. By clickking the "+"(plus) button next to 'dataset.tsv' file under the ventricles_100k directory imports it as a SUSHI DataSet to SUSHI database, and a new DataSet, ventricles_100k, will show up in 'DataSet' view (automatically jump to 'DataSet' view and also you can select 'DataSet' menu from the top menu).
  
