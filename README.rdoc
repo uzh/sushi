@@ -18,10 +18,10 @@ SUSHI server is the user interface and it send some requests to SUSHI applicatio
 
 === 2.1. Requirements
 
-* Ruby (>= 1.9.3)
-* Git
-* bundler (RubyGem)
-* (Ruby on Rails (>= ver.3.2.9, < 4.0))
+* Ruby (>= v2.2.3)
+* Git (>= v2.10.2)
+* bundler (RubyGem, >= v1.10.6)
+* (Ruby on Rails (>= v4.2.6) this wll be automatically installed through bundler)
 
 Just confirm first to check if the required applications are installed in your system as follows:
 
@@ -29,10 +29,9 @@ Just confirm first to check if the required applications are installed in your s
   $ git --version
   $ bundle -v
 
-If you get 'Command not found'-like message, you have to install the application before going on to the next step.
+If you get 'Command not found'-like message, you have to install the applications before going on to the next step.
 
 Note
-* The current version of SUSHI does not work in Ruby on Rails version 4 (but it will be upgraded soon)
 * Ruby on Rails will be installed in the following steps by bundler
 * Please refer to the following sites for the other application installation
 * Ruby https://www.ruby-lang.org/en
@@ -48,11 +47,15 @@ Note
   $ bundle install 
   $ bundle exec rake secret
 
-then, you can see the secret key and paste it in /config/initilizer/devise.rb as follows:
+if you do not want to install the gem libraries in your GEM PATHS directories you can use --path option to specifiy the gem library directory like:
+
+  $ bundle install --path vendor/bundle
+
+'rake secret' command gives you the secret key and paste it in /config/initilizer/devise.rb as follows:
 
     config.secret_key = 'xxxxx'
 
-xxxxx is your secret key.
+# xxxxx is your secret key. Next, 
 
   $ bundle exec rake db:migrate RAILS_ENV=production
 
@@ -78,6 +81,7 @@ Note
 
 === 3.2. Start SUSHI server
 
+  $ cd master/
   $ bundle exec rails server -e production
 
 Note
@@ -85,20 +89,23 @@ Note
 * The rails server command starts a WEBRick webserver daemon, which is implemented in Ruby
 * SUSHI server uses SQLite3 DBMS as a default
 * You can replace the DBMS to MySQL and the webserver application to Apache (+passenger module) if you need, then SUSHI will be much faster and more stable
-* Please refer to a lot of Rails documents on the web to do it
+* Please search google and refer to a lot of Rails documents on the web for it
 
 == 4. Set your first NGS Data and DataSet file
 
 You need to import a DataSet file (.tsv) to SUSHI database.
 
-All SUSHI applications take a DataSet, which is meta-information set of actual data, as an input, and a SUSHI applications produces another DataSet as an output. The DataSet is identified as a .tsv (Tab-Separated-Value) text file, and it includes all input/output actual data file location (path). All DataSet file (.tsv) should be located in your project directory, the default project path becomes $RAILS_ROOT/public/gstore/projects/p1001, which directory will be automatically generated at the first running of the SUSHI server. 
+A SUSHI application takes a DataSet, which is meta-information set of actual data, as an input, and a SUSHI application produces another DataSet as a result. The DataSet is identified as a .tsv (Tab-Separated-Value) text file, and it includes all input/output actual data file location (path). All DataSet file (.tsv) should be located in your project directory, the default project path becomes $RAILS_ROOT/public/gstore/projects/p1001, which directory will be automatically generated at the first running of the SUSHI server. 
 
 Sample DataSet
 * http://localhost:3000/ventricles_100k.tgz
 
 You can download it from your SUSHI server, or you can copy it from $RAIL_ROOT/public/ventricles_100k.tgz. After you decompress the archive file, move the folder in the project directory, $RAILS_ROOT/public/gstore/projects/p1001/
 
-then you can find it from the SUSHI server by clicking 'gStore' of the main menu. To click the "+"(plus) button next to 'dataset.tsv' file under the ventricles_100k directory from the gStore view imports it as a SUSHI DataSet to SUSHI database, and a new DataSet, ventricles_100k, will show up in 'DataSet' view.
+# Currently, SUSHI does not have a function to upload the data itself.
+# It is the SUSHI framework concept, SUSHI does not manage data itself, but SUSHI does manage the meta-information, called DataSet.
+
+then you can find it from the SUSHI server by clicking 'gStore' of the main menu, and you can find 'ventricles_100k' directory. Double click the directory and you will find 'dataset.tsv' file in the ventricles_100k directory. By clickking the "+"(plus) button next to 'dataset.tsv' file under the ventricles_100k directory imports it as a SUSHI DataSet to SUSHI database, and a new DataSet, ventricles_100k, will show up in 'DataSet' view (automatically jump to 'DataSet' view and also you can select 'DataSet' menu from the top menu).
  
 == 5. How to run a SUSHI application
 
