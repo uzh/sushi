@@ -159,7 +159,6 @@ class DataSetController < ApplicationController
       @data_set.num_samples = sample_count
     end
 
-
     if !@data_set.refreshed_apps and @data_set.runnable_apps.empty?
       @data_set.refreshed_apps = true
       @data_set.save
@@ -297,7 +296,12 @@ class DataSetController < ApplicationController
       end
 
       if @data_set_id
-        set_runnable_apps(false)
+        refresh = if SushiApplication.count == 0
+                    true
+                  else
+                    false
+                  end
+        set_runnable_apps(refresh)
       end
     end
 
