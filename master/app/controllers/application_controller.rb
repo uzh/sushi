@@ -57,16 +57,21 @@ class ApplicationController < ActionController::Base
         if sushi_app 
           load File.join(lib_dir, app)
         end
-        sushi_app_instance = eval(class_name).new
-        sushi_app_instance.instance_variable_set(:@dataset, {})
-        sushi_app_instance.instance_variable_set(:@result_dir, '')
-        sushi_app_entry = (sushi_app || SushiApplication.new)
-        sushi_app_entry.class_name = class_name
-        sushi_app_entry.analysis_category = sushi_app_instance.analysis_category
-        sushi_app_entry.required_columns = sushi_app_instance.required_columns
-        sushi_app_entry.next_dataset_keys = sushi_app_instance.next_dataset.keys
-        sushi_app_entry.description = sushi_app_instance.description
-        sushi_app_entry.save
+        begin
+          sushi_app_instance = eval(class_name).new
+          sushi_app_instance.instance_variable_set(:@dataset, {})
+          sushi_app_instance.instance_variable_set(:@result_dir, '')
+          sushi_app_entry = (sushi_app || SushiApplication.new)
+          sushi_app_entry.class_name = class_name
+          sushi_app_entry.analysis_category = sushi_app_instance.analysis_category
+          sushi_app_entry.required_columns = sushi_app_instance.required_columns
+          sushi_app_entry.next_dataset_keys = sushi_app_instance.next_dataset.keys
+          sushi_app_entry.description = sushi_app_instance.description
+          sushi_app_entry.save
+        rescue => err
+          warn err
+          warn "#{class_name} cannot be imported"
+        end
       end
     end
 
