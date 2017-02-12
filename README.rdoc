@@ -138,11 +138,15 @@ You can find the EZ_GLOBAL_VARIABLES.txt location in your system by loading ezRu
 
   > library(ezRun)
 
-in the R environment console.
+in the R environment console, and R path for
+
+  $ which R
+
+in shell command terminal.
 
 == 7. Install third party applications and configure EZ_GLOBAL_VARIABLES.txt
 
-ezRun package bundles a sort of wrapper applications to call a thrid party application. For example, FastQCApp (SUSHI application) calles EzAppFastqc method in ezRun package, and subsequently it calls 'fastqc' command defined in EZ_GLOBAL_VARIABLES.txt. In other words, FastQCApp does not work without installation of FastQC application software. All the application paths are defined in EZ_GLOBAL_VARIABLES.txt explicitly. Please check the applications defined in EZ_GLOBAL_VARIABLES.txt one by one and set the correct path installed in your environement. If an appropriate application is not found, the corresponding SUSHI application will stop with an error, though the application button appears. SUSHI does not check if the third party application software is installed in your computer.
+ezRun package bundles a sort of wrapper applications to call a thrid party application software. For example, FastQCApp (SUSHI application) calles EzAppFastqc method in ezRun package, and subsequently it calls 'fastqc' command defined in EZ_GLOBAL_VARIABLES.txt. In other words, FastQCApp does not work without the installation of FastQC application software. All the application paths are defined in EZ_GLOBAL_VARIABLES.txt explicitly. Please check the application paths defined in EZ_GLOBAL_VARIABLES.txt one by one and set the correct path installed in your environement. If an appropriate application software is not found, the corresponding SUSHI application will stop with an error, though the SUSHI application button in DataSet view appears. SUSHI does not check if the third party application software is installed in your computer.
 
 == 8. Install iGenome reference
 
