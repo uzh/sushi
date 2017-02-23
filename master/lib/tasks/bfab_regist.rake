@@ -5,20 +5,34 @@ namespace :bfab_regist do
     project_number = ENV['project_number']
     puts "project_number: #{project_number}"
     if project = Project.find_by_number(project_number.to_i)
-      if data_sets = project.data_sets 
-        t = Time.new(2016)
-        data_sets.each do |data_set|
-          if data_set.data_set.nil? and data_set.created_at >= t
-            p [data_set.name, data_set.created_at]
-          end
-        end
-      end
+      project.register_bfabric
     else
       puts "There is no such project: p#{project_number.to_i}"
     end
   end
 
-  task count_registable_datasets: :environment do
+  task run: :environment do
+    total_registered_data_sets = 0
+    t = Time.new(2016)
+    Project.all.sort_by{|project| project.number}.each do |project|
+      data_set_count = 0
+      project.data_sets.each do |data_set| 
+        if data_set.created_at >= t
+          data_set_count += 1
+        end
+      end
+      total_registered_data_sets += data_set_count
+      puts "project_number: #{project.number}, data_sets: #{data_set_count}"
+      if project.number == 1535
+        project.register_bfabric
+      end
+      #project.register_bfabric
+    end
+    puts "total_registered_data_sets: #{total_registered_data_sets}"
+  end
+
+
+  task count_importable_datasets: :environment do
     t = Time.new(2016)
     counts = {}
     counts_total = 0
