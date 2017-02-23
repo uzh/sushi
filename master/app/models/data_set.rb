@@ -56,10 +56,6 @@ class DataSet < ActiveRecord::Base
     check = "public/check_dataset_bfabric"
     if SushiFabric::Application.config.fgcz? and File.exist?(base) and File.exist?(check)
       dataset_tsv = File.join(SushiFabric::Application.config.scratch_dir, "dataset.tsv")
-      open(dataset_tsv, "w") do |out|
-        out.print self.tsv_string
-      end 
-      puts "# created: #{dataset_tsv}"
       option_check = if op == 'new' and !self.bfabric_id
                        true
                      elsif op == 'update' and bfabric_id = self.bfabric_id
@@ -70,7 +66,7 @@ class DataSet < ActiveRecord::Base
                      elsif op == 'renewal'
                        true
                      end
-      command = if dataset_tsv and File.exist?(dataset_tsv)
+      command = if dataset_tsv
                   if parent_dataset = self.data_set
                     if bfabric_id = parent_dataset.bfabric_id
                       [base, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id].join(" ")
@@ -79,19 +75,25 @@ class DataSet < ActiveRecord::Base
                     [base, "p#{self.project.number}", dataset_tsv, self.name, self.id].join(" ")
                   end
                 end
-      if option_check and command and bfabric_id = `#{command}`
-        puts "$ #{command}"
-        puts "# mode: #{op}"
-        if bfabric_id.split(/\n/).uniq.length < 2 and bfabric_id.chomp.to_i > 0
-          self.bfabric_id = bfabric_id.chomp.to_i
-          puts "# BFabricID: #{self.bfabric_id}"
-          self.save
-        else
-          puts "# Not executed properly:"
-          puts "# BFabricID: #{bfabric_id}"
+      if option_check and command
+        open(dataset_tsv, "w") do |out|
+          out.print self.tsv_string
+        end 
+        puts "# created: #{dataset_tsv}"
+        if File.exist?(dataset_tsv) and bfabric_id = `#{command}`
+          puts "$ #{command}"
+          puts "# mode: #{op}"
+          if bfabric_id.split(/\n/).uniq.length < 2 and bfabric_id.chomp.to_i > 0
+            self.bfabric_id = bfabric_id.chomp.to_i
+            puts "# BFabricID: #{self.bfabric_id}"
+            self.save
+          else
+            puts "# Not executed properly:"
+            puts "# BFabricID: #{bfabric_id}"
+          end
+          File.unlink dataset_tsv
+          puts "# removed: #{dataset_tsv}"
         end
-        File.unlink dataset_tsv
-        puts "# removed: #{dataset_tsv}"
       end
       if child_data_sets = self.data_sets
         child_data_sets.each do |child_data_set|
