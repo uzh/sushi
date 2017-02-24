@@ -55,7 +55,8 @@ class DataSet < ActiveRecord::Base
     base = "public/register_sushi_dataset_into_bfabric"
     check = "public/check_dataset_bfabric"
     if SushiFabric::Application.config.fgcz? and File.exist?(base) and File.exist?(check)
-      dataset_tsv = File.join(SushiFabric::Application.config.scratch_dir, "dataset.tsv")
+      time = Time.new.strftime("%Y%m%d-%H%M%S")
+      dataset_tsv = File.join(SushiFabric::Application.config.scratch_dir, "dataset.#{self.id}_#{time}.tsv")
       option_check = if op == 'new' and !self.bfabric_id
                        true
                      elsif op == 'update' and bfabric_id = self.bfabric_id
