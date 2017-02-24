@@ -1,7 +1,7 @@
 namespace :bfab_regist do
 
   desc "Registration DataSet to B-Fabric"
-  task test: :environment do
+  task run: :environment do
     project_number = ENV['project_number']
     puts "project_number: #{project_number}"
     if project = Project.find_by_number(project_number.to_i)
@@ -11,7 +11,7 @@ namespace :bfab_regist do
     end
   end
 
-  task run: :environment do
+  task check_importable_datasets: :environment do
     total_registered_data_sets = 0
     t = Time.new(2016)
     Project.all.sort_by{|project| project.number}.each do |project|
@@ -23,10 +23,10 @@ namespace :bfab_regist do
       end
       total_registered_data_sets += data_set_count
       puts "project_number: #{project.number}, data_sets: #{data_set_count}"
-      if project.number == 1535
-        project.register_bfabric
-      end
-      #project.register_bfabric
+      #if project.number == 1535
+      #  project.register_bfabric
+      #end
+      project.register_bfabric
     end
     puts "total_registered_data_sets: #{total_registered_data_sets}"
   end
