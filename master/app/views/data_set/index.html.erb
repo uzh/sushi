@@ -103,7 +103,7 @@ $(function(){
     <% end %>
     <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
     <% if data_set.bfabric_id %>
-      <td><%= link_to data_set.bfabric_id, "http://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{data_set.bfabric_id}&tab=details" %></td>
+      <td><%= link_to data_set.bfabric_id, "http://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{data_set.bfabric_id}&tab=details", target: "_blank" %></td>
     <% else %>
       <td></td>
     <% end %>
