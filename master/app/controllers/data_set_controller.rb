@@ -302,6 +302,14 @@ class DataSetController < ApplicationController
                     false
                   end
         set_runnable_apps(refresh)
+
+        data_set = DataSet.find_by_id(@data_set_id)
+        pid = Process.fork do
+          Process.fork do
+            data_set.register_bfabric
+          end # grand-child process
+        end # child process
+        Process.waitpid pid
       end
     end
 
@@ -385,6 +393,14 @@ class DataSetController < ApplicationController
 
       if @data_set_id
         set_runnable_apps(false)
+
+        data_set = DataSet.find_by_id(@data_set_id)
+        pid = Process.fork do
+          Process.fork do
+            data_set.register_bfabric
+          end # grand-child process
+        end # child process
+        Process.waitpid pid
       end
     end
   end
