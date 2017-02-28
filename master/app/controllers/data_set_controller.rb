@@ -401,6 +401,8 @@ class DataSetController < ApplicationController
           end # grand-child process
         end # child process
         Process.waitpid pid
+      elsif file = params[:file] and tsv = file[:name]
+        @warning = "There might be the same DataSet that has exactly same samples saved in SUSHI. Please check it."
       end
     end
   end
