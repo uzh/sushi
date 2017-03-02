@@ -303,13 +303,15 @@ class DataSetController < ApplicationController
                   end
         set_runnable_apps(refresh)
 
-        data_set = DataSet.find_by_id(@data_set_id)
-        pid = Process.fork do
-          Process.fork do
-            data_set.register_bfabric
-          end # grand-child process
-        end # child process
-        Process.waitpid pid
+        unless session[:off_bfabric_registration]
+          data_set = DataSet.find_by_id(@data_set_id)
+          pid = Process.fork do
+            Process.fork do
+              data_set.register_bfabric
+            end # grand-child process
+          end # child process
+          Process.waitpid pid
+        end
       end
     end
 
@@ -394,13 +396,15 @@ class DataSetController < ApplicationController
       if @data_set_id
         set_runnable_apps(false)
 
-        data_set = DataSet.find_by_id(@data_set_id)
-        pid = Process.fork do
-          Process.fork do
-            data_set.register_bfabric
-          end # grand-child process
-        end # child process
-        Process.waitpid pid
+        unless session[:off_bfabric_registration]
+          data_set = DataSet.find_by_id(@data_set_id)
+          pid = Process.fork do
+            Process.fork do
+              data_set.register_bfabric
+            end # grand-child process
+          end # child process
+          Process.waitpid pid
+        end
       elsif file = params[:file] and tsv = file[:name]
         @warning = "There might be the same DataSet that has exactly same samples saved in SUSHI. Please check it."
       end
