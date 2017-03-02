@@ -13,6 +13,9 @@
       Project 
       <%= text_field :project, :number, :value=>"#{session[:project]}", :size=>10 %>
       <%= select :select_project, :number, session[:projects], :prompt=>'project list' %>
+      <% if session[:employee] %>
+      BF<%= select :bfabric_registration, :off, ["ON", "OFF"], :selected=>(session[:off_bfabric_registration] ? 'OFF' : 'ON') %>
+      <% end %>
       <%= submit_tag "Go" %>
     <% end %>
   <% elsif !SushiFabric::Application.config.fgcz? %>
