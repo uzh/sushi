@@ -26,6 +26,7 @@ SushiFabric::Application.routes.draw do
       get :refresh_apps
       post :confirm_delete_only_data_files
       post :run_delete_only_data_files
+      post :register_bfabric
     end
     collection do
       get :whole_treeviews

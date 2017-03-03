@@ -119,6 +119,21 @@ class DataSetController < ApplicationController
 
     @data_set = DataSet.find_by_id(params[:id])
 
+    # check some properties
+    if session[:employee]
+      if parent_dataset = @data_set.data_set
+        if @data_set.child == false
+          @can_delete_data_files = true
+        end
+        if parent_dataset.bfabric_id and !@data_set.bfabric_id
+          @can_register_bfabric = true
+        end
+      else
+        unless @data_set.bfabric_id
+          @can_register_bfabric = true
+        end
+      end
+    end
     # check session[:project]
     unless session[:project] == @data_set.project.number
       session[:project] = @data_set.project.number 
@@ -602,17 +617,14 @@ class DataSetController < ApplicationController
     @command = @@workflow_manager.delete_command(target)
     @command_log = `#{@command}`
   end
-=begin
-  def confirm_delete_only_data_files_in_project
-    @project = Project.find_by_number(session[:project].to_i)
-    @delete_candidates_all = []
-    @project.data_sets.each do |data_set|
-      @delete_candidates_all.concat(delete_candidates(data_set))
-    end
-    require 'pp'
-    pp @delete_candidates_all
+  def register_bfabric
+    data_set = DataSet.find_by_id(params[:id])
+    pid = Process.fork do
+      Process.fork do
+        data_set.register_bfabric("only_one")
+      end # grand-child process
+    end # child process
+    Process.waitpid pid
+    redirect_to :controller => "data_set", :action => "show"
   end
-  def run_delete_only_data_files_in_project
-  end
-=end
 end
