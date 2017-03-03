@@ -59,15 +59,15 @@ class DataSet < ActiveRecord::Base
       if SushiFabric::Application.config.fgcz? and File.exist?(base) and File.exist?(check)
         time = Time.new.strftime("%Y%m%d-%H%M%S")
         dataset_tsv = File.join(SushiFabric::Application.config.scratch_dir, "dataset.#{self.id}_#{time}.tsv")
-        option_check = if op == 'new' and !self.bfabric_id
+        option_check = if ((op == 'new' or op == 'only_one') and !self.bfabric_id) or op == 'renewal'
                          true
                        elsif op == 'update' and bfabric_id = self.bfabric_id
                          com = "#{check} #{bfabric_id}"
+                         puts "$ #{com}"
                          if out = `#{com}`
+                           puts "# returned: #{out.chomp.downcase}"
                            eval(out.chomp.downcase)
                          end
-                       elsif op == 'renewal'
-                         true
                        end
         command = if parent_dataset and bfabric_id = parent_dataset.bfabric_id
                     [base, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id].join(" ")
@@ -94,9 +94,11 @@ class DataSet < ActiveRecord::Base
             puts "# removed: #{dataset_tsv}"
           end
         end
-        if child_data_sets = self.data_sets
-          child_data_sets.each do |child_data_set|
-            child_data_set.register_bfabric(op)
+        unless op == 'only_one'
+          if child_data_sets = self.data_sets
+            child_data_sets.each do |child_data_set|
+              child_data_set.register_bfabric(op)
+            end
           end
         end
       end
