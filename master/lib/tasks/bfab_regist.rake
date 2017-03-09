@@ -31,7 +31,6 @@ namespace :bfab_regist do
     puts "total_registered_data_sets: #{total_registered_data_sets}"
   end
 
-
   task count_importable_datasets: :environment do
     t = Time.new(2016)
     counts = {}
@@ -44,6 +43,29 @@ namespace :bfab_regist do
         counts_total += 1
       end
     end
+    counts.keys.sort.each do |project_number|
+      puts "p#{project_number}: #{counts[project_number]}"
+    end
+    puts
     puts "total importable datasets : #{counts_total}"
   end
+
+  task count_imported_datasets: :environment do
+    counts = {}
+    counts_total = 0
+    DataSet.all.each do |data_set|
+      if data_set.bfabric_id
+        project_number = data_set.project.number
+        counts[project_number] ||= 0
+        counts[project_number] += 1
+        counts_total += 1
+      end
+    end
+    counts.keys.sort.each do |project_number|
+      puts "p#{project_number}: #{counts[project_number]}"
+    end
+    puts
+    puts "total imported datasets : #{counts_total}"
+  end
+
 end
