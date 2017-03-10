@@ -21,9 +21,12 @@ EOS
     @params['cores'] = '8'
     @params['ram'] = '50'
     @params['scratch'] = '100'
-    
+    @params['spadesBasicOpt'] = ''
+    @params['spadesBasicOpt', 'description'] = 'SPAdes basic options: --sc --meta, --rna, --plasmid, Default is empty for genome assembly without MDA' 
+    @params['spadesPipeOpt'] = '--careful'
+    @params['spadesPipeOpt', 'description'] = 'SPAdes pipeline options: --only-assembler, --careful'
     @params['cmdOptions'] = ''
-    @params['cmdOptions', 'description'] = 'specify the commandline options for SPAdes; do not specify any option that is already covered by the dedicated input fields'
+    @params['cmdOptions', 'description'] = 'specify other commandline options for SPAdes; do not specify any option that is already covered by the dedicated input fields'
     @params['trimAdapter'] = true
     @params['trimAdapter', 'description'] = 'if adapters should be trimmed'
     @params['trimLeft'] = 0
