@@ -13,7 +13,7 @@ class SpadesApp < SushiFabric::SushiApp
     @analysis_category = 'Assemble'
     @description =<<-EOS
 SPAdes genome assembler
-<a href='http://cab.spbu.ru/software/spades/'</a>
+<a href='http://cab.spbu.ru/software/spades/'>http://cab.spbu.ru/software/spades/</a>
 EOS
     
     @required_columns = ['Name','Read1']
