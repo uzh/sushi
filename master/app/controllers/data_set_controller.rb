@@ -40,7 +40,13 @@ class DataSetController < ApplicationController
   def bfabric
     @project = Project.find_by_number(session[:project].to_i)
     op = params[:parameters][:bfabric_option]
-    @project.register_bfabric(op)
+    pid = Process.fork do
+      Process.fork do
+        @project.register_bfabric(op)
+      end # grand-child process
+    end # child process
+    Process.waitpid pid
+
     index
     render action: "index"
   end
