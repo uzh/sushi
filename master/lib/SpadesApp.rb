@@ -17,6 +17,7 @@ SPAdes genome assembler
 EOS
     
     @required_columns = ['Name','Read1']
+    @required_params = ['name', 'cores', 'ram', 'scratch']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '50'
