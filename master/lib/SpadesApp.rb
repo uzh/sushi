@@ -22,6 +22,7 @@ EOS
     @params['cores'] = '8'
     @params['ram'] = '50'
     @params['scratch'] = '100'
+    @params['paired'] = true
     @params['spadesBasicOpt'] = ''
     @params['spadesBasicOpt', 'description'] = 'SPAdes basic options: --sc --meta, --rna, --plasmid, Default is empty for genome assembly without MDA' 
     @params['spadesPipeOpt'] = '--careful'
