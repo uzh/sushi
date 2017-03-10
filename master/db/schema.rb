@@ -11,69 +11,70 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160805133105) do
+ActiveRecord::Schema.define(version: 20170117102820) do
 
   create_table "data_sets", force: :cascade do |t|
-    t.integer  "project_id"
-    t.integer  "parent_id"
-    t.string   "name"
-    t.string   "md5"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "comment"
-    t.text     "runnable_apps"
+    t.integer  "project_id",        limit: 4
+    t.integer  "parent_id",         limit: 4
+    t.string   "name",              limit: 255
+    t.string   "md5",               limit: 255
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.string   "comment",           limit: 255
+    t.text     "runnable_apps",     limit: 65535
     t.boolean  "refreshed_apps"
-    t.integer  "num_samples"
-    t.integer  "completed_samples"
-    t.integer  "user_id"
-    t.boolean  "child",             default: false, null: false
-    t.integer  "bfabric_id"
+    t.integer  "num_samples",       limit: 4
+    t.integer  "completed_samples", limit: 4
+    t.integer  "user_id",           limit: 4
+    t.boolean  "child",                           default: false, null: false
+    t.integer  "bfabric_id",        limit: 4
   end
 
   create_table "jobs", force: :cascade do |t|
-    t.integer  "submit_job_id"
-    t.integer  "input_dataset_id"
-    t.integer  "next_dataset_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "submit_job_id",    limit: 4
+    t.integer  "input_dataset_id", limit: 4
+    t.integer  "next_dataset_id",  limit: 4
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   create_table "projects", force: :cascade do |t|
-    t.integer  "number"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "number",        limit: 4
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.text     "data_set_tree", limit: 16777215
   end
 
   create_table "samples", force: :cascade do |t|
-    t.text     "key_value"
-    t.integer  "data_set_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.text     "key_value",   limit: 65535
+    t.integer  "data_set_id", limit: 4
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "sushi_applications", force: :cascade do |t|
-    t.string   "class_name"
-    t.string   "analysis_category"
-    t.text     "required_columns"
-    t.text     "next_dataset_keys"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "description"
+    t.string   "class_name",        limit: 255
+    t.string   "analysis_category", limit: 255
+    t.text     "required_columns",  limit: 65535
+    t.text     "next_dataset_keys", limit: 65535
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.text     "description",       limit: 65535
   end
 
   create_table "users", force: :cascade do |t|
-    t.integer  "sign_in_count",       default: 0
+    t.integer  "sign_in_count",       limit: 4,   default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.integer  "selected_project",    default: -1
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "current_sign_in_ip",  limit: 255
+    t.string   "last_sign_in_ip",     limit: 255
+    t.integer  "selected_project",    limit: 4,   default: -1
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.datetime "remember_created_at"
-    t.string   "login",               default: "", null: false
+    t.string   "login",               limit: 255, default: "", null: false
   end
 
-  add_index "users", ["login"], name: "index_users_on_login", unique: true
+  add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
 
 end
