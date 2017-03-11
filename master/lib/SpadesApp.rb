@@ -50,7 +50,8 @@ EOS
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
-     'Fasta [File]'=>File.join(@result_dir, "#{@dataset['Name']}.fasta"),
+     'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.fasta"),
+     'SpadesOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
      'SpadesLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_spades.log"),
      'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
      'Species'=>@dataset['Species'],
