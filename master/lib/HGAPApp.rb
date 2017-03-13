@@ -6,10 +6,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class CanuApp < SushiFabric::SushiApp
+class HGAPApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'Canu'
+    @name = 'HGAP'
     @analysis_category = 'Assemble'
     @description =<<-EOS
 Canu long read genome assembler
@@ -17,34 +17,31 @@ Canu long read genome assembler
 EOS
     
     @required_columns = ['Name','Reads']
-    @required_params = ['canuReadOpt', 'canuGenomeSize']
+    @required_params = ['genomeSize', 'xCoverage']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '50'
     @params['scratch'] = '400'
-    @params['canuReadOpt'] = '-pacbio-raw'
-    @params['canuReadOpt', 'description'] = 'input read types: -pacbio-raw, -pacbio-corrected, -nanopore-raw, -nanopore-corrected. Default is pacbio raw data' 
-    @params['canuGenomeSize'] = '5000'
-    @params['canuGenomeSize', 'description'] = 'estimated genome size in Kbp'
-    @params['cmdOptions'] = 'useGrid=false gnuplotTested=true'
-    @params['cmdOptions', 'description'] = 'specify other commandline options for Canu; do not specify any option that is already covered by the dedicated input fields'
+    @params['genomeSize'] = '5000000'
+    @params['genomeSize', 'description'] = 'The approximate genome size, in base pairs.' 
+    @params['xCoverage'] = '25'
+    @params['xCoverage', 'description'] = 'Fold coverage to target for when picking the minimum fragment length for assembly; typically 15 to 25.'
     @params['mail'] = ""
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
      'Reads'=>@dataset['Reads'], 
-     'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}", "#{@dataset['Name']}.contigs.fasta"),
-     'CanuOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
-     'CanuLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_canu.log"),
+     'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}", "data", "polished_assembly.fasta.gz"),	
+     'HGAPOut [Html]'=>File.join(@result_dir, "#{@dataset['Name']}"),
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
-    run_RApp("EzAppCanu")
+    run_RApp("EzAppHGAP")
   end
 end
 
 if __FILE__ == $0
-  run CanuApp
+  run HGAPApp
   #usecase = Bowtie2App.new
 
   #usecase.project = "p1001"
