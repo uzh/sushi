@@ -32,8 +32,8 @@ EOS
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
-     'Reads'=>@dataset['Reads'], 
-     'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}", "#{@dataset['Name']}.contigs.fasta"),
+     'Reads'=>@dataset['Reads'],
+     'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),
      'CanuOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
      'CanuLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_canu.log"),
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
