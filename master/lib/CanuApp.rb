@@ -26,7 +26,7 @@ EOS
     @params['canuReadOpt', 'description'] = 'input read types: -pacbio-raw, -pacbio-corrected, -nanopore-raw, -nanopore-corrected. Default is pacbio raw data' 
     @params['canuGenomeSize'] = '5000'
     @params['canuGenomeSize', 'description'] = 'estimated genome size in Kbp'
-    @params['cmdOptions'] = 'useGrid=false gnuplotTested=true'
+    @params['cmdOptions'] = 'useGrid=false'
     @params['cmdOptions', 'description'] = 'specify other commandline options for Canu; do not specify any option that is already covered by the dedicated input fields'
     @params['mail'] = ""
   end
