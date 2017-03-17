@@ -57,7 +57,6 @@ EOS
      'Reads'=>@dataset['Reads'], 
      'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),	
      'HGAPOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
-     'HGAPOut [Html]'=>File.join(@result_dir, "#{@dataset['Name']}"),
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
