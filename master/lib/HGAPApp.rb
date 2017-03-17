@@ -12,8 +12,8 @@ class HGAPApp < SushiFabric::SushiApp
     @name = 'HGAP'
     @analysis_category = 'Assemble'
     @description =<<-EOS
-Canu long read genome assembler
-<a href='http://canu.readthedocs.io/en/latest/quick-start.html'>http://canu.readthedocs.io/en/latest/quick-start.html</a>
+The Hierarchical Genome Assembly Process (HGAP) from SMRT Analysis
+<a href='https://github.com/PacificBiosciences/SMRT-Analysis/wiki'>https://github.com/PacificBiosciences/SMRT-Analysis/wiki</a>
 EOS
     
     @required_columns = ['Name','Reads']
@@ -55,7 +55,7 @@ EOS
   def next_dataset
     {'Name'=>@dataset['Name'], 
      'Reads'=>@dataset['Reads'], 
-     'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}", "data", "polished_assembly.fasta.gz"),	
+     'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),	
      'HGAPOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
      'HGAPOut [Html]'=>File.join(@result_dir, "#{@dataset['Name']}"),
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
