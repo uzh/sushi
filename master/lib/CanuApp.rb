@@ -35,7 +35,7 @@ EOS
      'Reads'=>@dataset['Reads'],
      'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),
      'CanuOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
-     'CanuLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_canu.log"),
+     'CanuOut [Html]'=>File.join(@result_dir, "#{@dataset['Name']}"),
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
