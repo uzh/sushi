@@ -23,7 +23,7 @@ EOS
     @params['RefFile'][ecoli] = "common/userdata.d/references/ecoli"
     @params['RefFile'][bsubtilis] = "common/userdata.d/references/B_subtilis_v1"
     @params['RefFile'][yeast] = "common/userdata.d/references/s_cerevisiae"
-
+    @params['RefFile'][yhalotolerans] = "common/userdata.d/references/yhalotolerans"
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '50'
@@ -47,7 +47,8 @@ EOS
      'VCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf.gz"),
      'VCFINDEX [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf.gz.tbi"),
      'Consensus [File]'=>File.join(@result_dir, "#{@dataset['Name']}.polished.fasta"),	
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+     'ResequencingOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),  
+  }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
     run_RApp("EzAppResequencing")
