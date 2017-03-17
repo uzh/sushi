@@ -32,10 +32,8 @@ EOS
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
-     'Reads'=>@dataset['Reads'], 
      'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.filtered_subreads.fastq.gz"),	
      'SubreadsOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
-     'SubreadsOut [Html]'=>File.join(@result_dir, "#{@dataset['Name']}"),
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
