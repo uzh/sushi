@@ -53,6 +53,7 @@ class RunApplicationController < ApplicationController
     @sushi_app.set_default_parameters
     @nodes = @sushi_app.cluster_nodes
     if SushiFabric::Application.config.fgcz? and !session['employee']
+      # Comment-out the next line if you want to activate all nodes in a course
       @nodes = @nodes.select{|node| node =~ /fgcz-h/ or node =~ /fgcz-c-065/}
       if current_user and FGCZ.get_user_projects(current_user.login).include?('p1535')
         @nodes['fgcz-c-047: cpu 32,mem   1 TB,scr  28T'] = 'fgcz-c-047'
