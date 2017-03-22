@@ -43,7 +43,7 @@ module GlobalVariables
     value_replace_pattern = {value_replace_regexp=>''}
     refBuilds = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
-    base_pattern = "#{GENOME_REF_DIR}/*/*/*/Annotation/Version*"
+    base_pattern = "#{GENOME_REF_DIR}/*/*/*/Annotation/Version*\0#{GENOME_REF_DIR}/*/*/*/Annotation/Release*"
     versions = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
     base_pattern = "#{GENOME_REF_DIR}/*/*/*/Sequence"
