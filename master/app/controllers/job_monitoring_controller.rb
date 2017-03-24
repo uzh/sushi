@@ -54,8 +54,14 @@ class JobMonitoringController < ApplicationController
     render :text => text.gsub(/\n/,'<br />')
   end
   def print_script
-    public_dir = File.expand_path('../../../public', __FILE__)
-    text = @@workflow_manager.get_script(params[:job_id])
+    text = 'no script found'
+    if sushi_job_id = params[:sushi_job_id] and
+      job = Job.find_by_id(sushi_job_id.to_i) and
+      script_path = job.script_path and File.exist?(script_path)
+      text = File.read(script_path)
+    else
+      text = @@workflow_manager.get_script(params[:job_id])
+    end
     render :text => text.gsub(/\n/,'<br />')
   end
   def kill_job

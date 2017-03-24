@@ -30,7 +30,8 @@ sushi_app class <%= @sushi_app.class %><br /><br />
     <% end %>
 
   <% else %>
-    <%= submit_tag 'Submit' unless @required %>
+    <%= submit_tag 'Submit', :name=>'submit_type' %>
+    <%= submit_tag 'MockRun', :name=>'submit_type' %>
   <% end %>
 <% end %>
 
