@@ -7,7 +7,7 @@
   <% @data_set.jobs.each do |job| %>
   <tr>
     <td><%= job.submit_job_id %></td>
-    <td><%= link_to 'JobScript', "/job_monitoring/print_script?job_id=#{job.submit_job_id}" %></td>
+    <td><%= link_to 'JobScript', "/job_monitoring/print_script?job_id=#{job.submit_job_id}&sushi_job_id=#{job.id}" %></td>
     <td><%= link_to 'Log', "/job_monitoring/print_log?job_id=#{job.submit_job_id}" %></td>
   </tr>
   <% end %>
