@@ -534,7 +534,7 @@ class DataSetController < ApplicationController
       if @sample_path.first
         target = File.join(SushiFabric::GSTORE_DIR, @sample_path.first)
         @command = @@workflow_manager.delete_command(target)
-        if @option[:delete] == 'also_gstore'
+        if @option[:delete] == 'only_gstore' or @option[:delete] == 'also_gstore'
           @command_log = `#{@command}`
           if request = @command_log.split and request_no = request[4]
             @greq_status_command = "g-req status #{request_no}"
@@ -543,11 +543,14 @@ class DataSetController < ApplicationController
       end
 
       # delete data in sushi
-      @data_set.samples.each do |sample|
-        sample.delete
+      if @option[:delete] == 'only_sushi' or @option[:delete] == 'also_gstore'
+        @data_set.samples.each do |sample|
+          sample.delete
+        end
+        @deleted_data_set = @data_set.delete
+      else
+        @deleted_data_set = @data_set
       end
-      @deleted_data_set = @data_set.delete
-
     end
   end
   def multi_destroy
