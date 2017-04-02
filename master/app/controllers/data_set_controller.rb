@@ -63,7 +63,7 @@ class DataSetController < ApplicationController
         report_base = data_set.samples.first.to_hash[data_set.headers[i]]
         base = File.basename(report_base)
         report_link = if data_set.completed_samples.to_i == data_set.samples_length
-                        report_url = File.join('http://fgcz-gstore.uzh.ch/projects', report_base)
+                        report_url = File.join('/projects', report_base)
                         "<a href='#{report_url}'>#{base}</a>"
                       else 
                         base
