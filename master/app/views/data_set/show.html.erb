@@ -106,8 +106,6 @@ $(document).ready(function(){
             <% if header.tag?('Link') %>
               <% if file_path =~ /^http/ %>
                 <%= link_to td(file_name), file_path, target: "_blank" %>
-              <% elsif @fgcz %>
-                <%= link_to td(file_name), File.join('http://fgcz-gstore.uzh.ch/projects', file_path), target: "_blank" %>
               <% else %>
                 <%= link_to td(file_name), File.join('/projects', file_path) %>
               <% end %>
