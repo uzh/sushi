@@ -83,8 +83,9 @@ SushiFabric::Application.configure do
     config.workflow_manager = "druby://fgcz-c-043:70001" # demo
     config.scratch_dir = "/scratch"
     #config.gstore_dir = File.join(Dir.pwd, 'public/gstore/projects')
-    config.gstore_dir = "/srv/gstore/projects" # production
+    #config.gstore_dir = "/srv/gstore/projects" # production
     #config.gstore_dir = "/srv/GT/analysis/course_sushi/public/gstore/projects" # demo
+    config.gstore_dir = "/srv/kenlab/shared_sib_sushi/gstore/projects" # sib_dev
     config.sushi_app_dir = Dir.pwd
   end
 
