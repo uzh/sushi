@@ -1,12 +1,12 @@
 PATH
-  remote: /srv/SushiFabric/Gems/devise_ldap_authenticatable
+  remote: /srv/kenlab/shared_sib_sushi/Gems/devise_ldap_authenticatable
   specs:
     devise_ldap_authenticatable (0.6.1.1)
       devise (>= 2.0.0)
       net-ldap (~> 0.2.2)
 
 PATH
-  remote: /srv/SushiFabric/Gems/fgcz
+  remote: /srv/kenlab/shared_sib_sushi/Gems/fgcz
   specs:
     fgcz (0.0.1)
 
