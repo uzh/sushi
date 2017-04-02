@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160805133105) do
+ActiveRecord::Schema.define(version: 20170324100938) do
 
   create_table "data_sets", force: :cascade do |t|
     t.integer  "project_id"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20160805133105) do
     t.integer  "next_dataset_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "script_path"
   end
 
   create_table "projects", force: :cascade do |t|
