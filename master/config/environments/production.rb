@@ -73,14 +73,14 @@ SushiFabric::Application.configure do
   config.eager_load = true
 
   def config.fgcz?
-    @fgcz ||= (`hostname`.chomp =~ /fgcz-c-043/)
+    @fgcz ||= (`hostname`.chomp =~ /fgcz-c-047/)
   end
 
   # fgcz
   if config.fgcz?
     #config.workflow_manager = "druby://fgcz-c-043:40001" # development
-    config.workflow_manager = "druby://fgcz-c-043:50001" # production
-    #config.workflow_manager = "druby://fgcz-c-043:70001" # demo
+    #config.workflow_manager = "druby://fgcz-c-043:50001" # production
+    config.workflow_manager = "druby://fgcz-c-043:70001" # demo
     config.scratch_dir = "/scratch"
     #config.gstore_dir = File.join(Dir.pwd, 'public/gstore/projects')
     config.gstore_dir = "/srv/gstore/projects" # production
