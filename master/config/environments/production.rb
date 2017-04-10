@@ -86,6 +86,7 @@ SushiFabric::Application.configure do
     config.gstore_dir = "/srv/gstore/projects" # production
     #config.gstore_dir = "/srv/GT/analysis/course_sushi/public/gstore/projects" # demo
     config.sushi_app_dir = Dir.pwd
+    config.module_source = "/usr/share/lmod/lmod/init/profile"
   end
 
 end
