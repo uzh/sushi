@@ -1,17 +1,13 @@
-body {
-  height: 100%;
-  font-family: museo300, Arial, sans-serif;
-  background-color: #082a4c;
-  background-image: url(/assets/background.png);
-  background-repeat: repeat-x;
+body{
+    height:100%;
+    background: linear-gradient(0deg, #122D4A,#9ECBD3) fixed no-repeat;
+    font-family: museo300, Arial, sans-serif;
 }
 
 div#wrapper {
-  width: 1500px;
   min-height: 800px;
   margin: 0px auto;
   background-color: transparent;
-  background-image: url(/assets/xplosion.png);
   background-repeat: no-repeat;
   background-position: 85px 5px;
 }
@@ -34,7 +30,6 @@ div#header h1 {
 
 div#header nav {
   float: right;
-  margin-top: 55px;
   padding: 4px;
   background-color: white;
   border: 1px solid white;
@@ -51,22 +46,22 @@ div#header nav a:hover {
 
 div#header, div#footer {
   width: 860px;
-  color: #666;
-  margin: 0px auto;
+  margin: -55px auto;
 }
 
 div#footer {
+  color: lightgrey;
   text-align: center;
-  margin: 5px auto;
+  margin-top: 10px;
 }
 
 div#contents {
-  width: 830px;
-  min-height: 360px;
+  width: 80%;
+  min-height: 480px;
   background-color: #fff;
   color: #000;
-  margin: 0px auto;
-  padding: 15px;
+  margin: 100px auto 0px auto;
+  padding: 30px 15px 15px 15px;
   border: solid 1px #ccc;
 }
 
@@ -165,13 +160,4 @@ table tr:nth-child(even) {
 #login_form #links p {
   font-size: small;
   margin: 0em;
-}
-
-#login_form #links p a, #login_form #links p a:visited {
-  text-decoration: none;
-  color: blue;
-}
-
-#login_form #links p a:hover {
-  color: red;
 }
