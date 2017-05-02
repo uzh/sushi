@@ -1,30 +1,52 @@
 <div id="header">
-  <nav id="login">
-  <% if user_signed_in? %>
-    <% project_init %>
-    <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
-    -
-    <%= link_to "Today's Menu", "/" %>
-		-
-    <%= link_to "SushiApp List", "/sushi_application" %>
-    -
-    <%= link_to "Help", "/sushi_doc_md.html" %>
-    <%= form_tag(:action => "index", :controller => "home") do %>
-      Project 
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+      <%= link_to "/", :method => :get, :class => 'navbar-brand' do %>
+      <%= image_tag "sushifabric.png", class: "img-responsive" %>
+      <% end %>
+
+        </div>
+        <!-- menu navigation bar -->
+        <div id="navbar" class="navbar-collapse collapse list-inline">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Help<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/sushi_application">SushiApp List</a></li>
+                        <li><a href="/sushi_doc_md.html">Documentation</a></li>
+                    </ul>
+                </li>
+            </ul>
+<% if user_signed_in? %>
+<% project_init %>
+    <%= form_tag({:action => "index", :controller => "home"}, {:class => "navbar-form navbar-left", :style => "padding-top: 5px"}) do %>
+        <div class="form-group">
+      Project
       <%= text_field :project, :number, :value=>"#{session[:project]}", :size=>10 %>
       <%= select :select_project, :number, session[:projects], :prompt=>'project list' %>
       <% if session[:employee] %>
       BF<%= select :bfabric_registration, :off, ["ON", "OFF"], :selected=>(session[:off_bfabric_registration] ? 'OFF' : 'ON') %>
       <% end %>
-      <%= submit_tag "Go" %>
+        </div>
+      <%= submit_tag("Search", :class=>"btn btn-default btn-xs") %>
     <% end %>
-  <% elsif !SushiFabric::Application.config.fgcz? %>
-    <%= link_to "Today's Menu", "/" %>
-		-
-    <%= link_to "SushiApp List", "/sushi_application" %>
-    -
-    <%= link_to "Help", "/sushi_doc_md.html" %>
-  <% end %>
-  </nav>
-  <h1>SushiFabric</h1>
+
+            <ul class="nav navbar-nav navbar-right list-inline" style="margin-right: 60px">
+		<li>
+		<%= link_to "Sign out", destroy_user_session_path, :method => :delete, :class => 'homelinks' %>
+		</li>
+	    </ul>
+ <% end %>
+	</div>
+        <!-- END menu navigation bar -->
+    </div>
+</nav>
 </div>
