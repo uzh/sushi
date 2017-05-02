@@ -11,8 +11,11 @@
  *= require_self
  *= require_tree .
  *= require jstree-default
+ *= require bootstrap.min
  */
-
+a { 
+  color: #337ab7;
+}
 p.notice, p.alert {
   position: absolute;
   top: 0;
