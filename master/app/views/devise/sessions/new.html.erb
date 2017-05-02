@@ -20,14 +20,14 @@
           <input id="user_remember_me" name="user[remember_me]" type="checkbox" value="1" />
           <label for="user_remember_me">Remember me on this computer</label>
         </p>
-          <p><%= f.submit "Sign in" %></p>
+          <p><%= f.submit "Sign in", :class => 'btn btn-primary' %></p>
       <% end %>
     </div>
     <div id="links">
         <p><a href="/sushi_doc_md.html">SUSHI Documentation</a></p>
         <p>Google search keyword hint: <a href="https://www.google.com/#q=sushi+fgcz">Sushi FGCZ</a></p>
     </div>
-    <%= button_to "Guest Login", "http://fgcz-sushi-demo.uzh.ch" %>
+    <%= button_to "View Demo", "http://fgcz-sushi-demo.uzh.ch", :class => 'btn btn-info' %>
 <!--
     <div id="links">
       <p>If you don't have an account <a href="/users/sign_up">sign up</a> now.</p>
