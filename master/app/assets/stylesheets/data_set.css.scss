@@ -12,7 +12,7 @@ blockquote {
 }
 
 td:hover {
-  background:#ffffff; 
+  /* background:#ffffff;*/ 
   text-decoration:none;
 }
 td.data_set_header {
@@ -20,7 +20,7 @@ td.data_set_header {
   font-size:smaller;
 }
 
-td.check_box {
+td.check_box, th.check_box {
   text-align: center;
 }
 
