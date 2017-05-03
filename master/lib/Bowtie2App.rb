@@ -62,7 +62,7 @@ EOS
      'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
      'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml"),
      'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
-     'Bowtie2Log [File]'=>File.join(@result_dir, "#{@dataset['Name']}_bowtie2.err")
+     'Bowtie2Log [File]'=>File.join(@result_dir, "#{@dataset['Name']}_bowtie2.log")
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
