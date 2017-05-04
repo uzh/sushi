@@ -22,7 +22,7 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['name'] = 'GATK_Genotyping'
     @params['refBuild'] = ref_selector
     @params['grouping'] = ''
-    @params['targetFile'] = '/srv/GT/analysis/lopitz/GATK-tutorial_data/intervals/test.bed'
+    @params['targetFile'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end
@@ -37,6 +37,10 @@ genotype,merge and annotate gvcf-Files<br/>
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
+    if dataset_has_column?('targetFile')
+      @params['targetFile'] = @dataset[0]['targetFile']
+    end
+    
   end
 
   def commands
