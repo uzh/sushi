@@ -26,6 +26,7 @@ Haplotype calling for DNA-seq<br/>
       Dir["#{TARGET_ENRICHMENT_DESIGN_DIR}/*.bed"].sort.select{|bed| File.file?(bed)}.each do |file|
         @params['targetFile'][File.basename(file)] = File.basename(file)
       end
+    end
     @params['getRealignedBam'] = false
     @params['markDuplicates'] = false
     @params['addReadGroup'] = false
