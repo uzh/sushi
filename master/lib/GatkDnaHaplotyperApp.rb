@@ -42,7 +42,7 @@ Haplotype calling for DNA-seq<br/>
       'GVCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}-HC_calls.g.vcf.gz"),
       'GVCFINDEX [File]'=>File.join(@result_dir, "#{@dataset['Name']}-HC_calls.g.vcf.gz.tbi"),
       'Species'=>@dataset['Species'],
-      'targetFile'=>@dataset['targetFile'],
+      'targetFile'=>@params['targetFile'],
       'refBuild'=>@params['refBuild']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
 
