@@ -21,8 +21,12 @@ Haplotype calling for DNA-seq<br/>
     @params['scratch'] = '100'
     @params['name'] = 'GATK_DnaVariants'
     @params['refBuild'] = ref_selector
-    @params['targetFile'] = '/srv/GT/analysis/lopitz/GATK-tutorial_data/intervals/test.bed'
-    @params['getRealignedBam'] = true
+    @params['targetFile'] = {'select'=>''}
+    if defined?(TARGET_ENRICHMENT_DESIGN_DIR)
+      Dir["#{TARGET_ENRICHMENT_DESIGN_DIR}/*.bed"].sort.select{|bed| File.file?(bed)}.each do |file|
+        @params['targetFile'][File.basename(file)] = File.basename(file)
+      end
+    @params['getRealignedBam'] = false
     @params['markDuplicates'] = false
     @params['addReadGroup'] = false
     @params['specialOptions'] = ''
@@ -37,6 +41,7 @@ Haplotype calling for DNA-seq<br/>
       'GVCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}-HC_calls.g.vcf.gz"),
       'GVCFINDEX [File]'=>File.join(@result_dir, "#{@dataset['Name']}-HC_calls.g.vcf.gz.tbi"),
       'Species'=>@dataset['Species'],
+      'targetFile'=>@dataset['targetFile'],
       'refBuild'=>@params['refBuild']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
 
