@@ -135,22 +135,29 @@ striping:
 
 .arrow-up:after {
     content: "\25B2";
+    font-size: small;
+    color: #94C0C9;
 }
 .arrow-up:after:hover {
     content: "\25B2";
-    color: #000000;
 }
 .arrow-down:after {
     content: "\25BC";
+    font-size: small;
+    color: #94C0C9;
 }
 .arrow-down:after:hover {
     content: "\25BC";
-    color: #000000;
 }
 
-button.btn-link {
+.btn-link, .btn-link:hover, .btn-link:active, .btn-link:focus  {
     background:none;
     border:none;
     color: #94C0C9;
-    text-decoration: underline;
+    text-decoration: none !important;
+    margin-right: 2px;
+    padding: 0;
+    pointer: hand;     
+    font-size: small;
 }
+
