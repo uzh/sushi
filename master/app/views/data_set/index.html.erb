@@ -78,8 +78,10 @@ $(function(){
   <div style="height:800px; overflow-y:scroll;">
 <% end %>
 <%= form_tag('/data_set/multi_delete', :id=>"multi_delete") do %>
-<table class="table-condensed">
+<table class="pure-table pure-table-bordered">
+<thead>
   <tr><th class="check_box"><%= check_box 'delete_all_flag', 'all', {:id=>'checkall'}, true, false %></th><th>ID</th><th>Name</th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th>Who</th><th>Created</th><th>BFabricID</th></tr>
+</thead>
 <% if @project %>
 <% @data_sets.each do |data_set| %>
   <tr>
