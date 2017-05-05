@@ -34,8 +34,10 @@ $(document).ready(function(){
 <h1>Project <%= session[:project] %></h1>
 <hr />
 <h3>DataSet</h3>
-<table>
+<table class="pure-table pure-table-bordered">
+<thead>  
   <tr><th>ID</th><th>Name</th><th>Samples</th><th>Parent</th><th>Child(ren)IDs</th><th>Created</th><th>BFabricID</th></tr>
+</thead>
   <% if @data_set %>
   <%= hidden_field :data_set, :id, :value => @data_set.id %>
   <%= hidden_field :data_set, :samples_length, :value => @data_set.samples.length %>
@@ -84,16 +86,18 @@ $(document).ready(function(){
 
 <div id="hide_show">
 <% if @data_set %>
-    <div style="width:830px; overflow-x:scroll;">
+    <div style="overflow-x:scroll;">
   <% if @data_set.samples.length > 20 %>
-    <div style="height:450px; overflow-y:scroll;">
+    <div style="overflow-y:scroll;">
   <% end %>
-<table>
+<table class="pure-table pure-table-bordered">
+<thead>
   <tr>
     <% @data_set.factor_first_headers.each do |header| %>
       <th><%= header %></th>
     <% end %>
   </tr>
+</thead>
   <% @data_set.samples.each do |sample| %>
     <tr>
       <% @data_set.factor_first_headers.each do |header| %>
