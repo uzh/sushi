@@ -14,19 +14,26 @@ $(document).ready(function(){
     if(parseInt(samples_length) > 5){
       $("#hide_show").hide();
       $("#hide").text("Show");
+      $("#hide_indicator").removeclass("arrow-up").addclass("arrow-down");
+
     }else{
       $("#hide_show").show();
       $("#hide").text("Hide");
+      $("#hide_indicator").removeclass("arrow-down").addclass("arrow-up");
     }
+
     $("#hide").click(function(){
         var text_val=$(this).text();
-        if(text_val.match(/Hide/)){
-	  $("#hide_show").hide(500);
-	  $("#hide").text("Show");
-	}else{
-	  $("#hide_show").show(500);
-	  $("#hide").text("Hide");
-	}
+        $("#hide").hasclass("arrow-up"){
+          $("#hide_show").hide(500);
+          $("#hide").text("Show");
+        }else{
+          $("#hide_show").show(500);
+          $("#hide").text("Hide");
+        }
+
+        $("#hide_indicator").toggleClass("arrow-up arrow-down");
+
     });
 });
 </script>
@@ -82,8 +89,10 @@ $(document).ready(function(){
 <% end %>
 
 <hr />
-<h3>Samples <button id="hide">Hide</button></h3>
-
+<h3>
+Samples <span id="hide" style="pointer: hand; font-size: small;">Hide<span id="hide_indicator" style="margin-left:
+5px;" class="arrow-up"></span></span>
+</h3>
 <div id="hide_show">
 <% if @data_set %>
     <div style="overflow-x:scroll;">
