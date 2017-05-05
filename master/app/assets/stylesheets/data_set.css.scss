@@ -133,3 +133,17 @@ striping:
     border-bottom-width: 0;
 }
 
+.arrow-up:after {
+    content: "\25B2";
+}
+.arrow-up:after:hover {
+    content: "\25B2";
+    color: #000000;
+}
+.arrow-down:after {
+    content: "\25BC";
+}
+.arrow-down:after:hover {
+    content: "\25BC";
+    color: #000000;
+}
