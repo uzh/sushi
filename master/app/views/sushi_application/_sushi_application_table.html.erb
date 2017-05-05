@@ -1,14 +1,18 @@
 <div id='container_sushi_application_table' style="display: inline-block;">
-<table>
-  <tr><th>Name</th><th>Analysis Category</th><th>Description</th><th>Required Columns</th><th>Next DataSet Columns</th></tr>
+<table class="pure-table pure-table-bordered">
+<thead>  
+<tr><th>Name</th><th>Analysis Category</th><th>Description</th><th>Required Columns</th><th>Next DataSet Columns</th></tr>
+</thead>
+<tbody>
   <% @sushi_apps.each do |app| %>
     <tr>
       <td><%= app.class_name %></td>
-      <td><%= app.analysis_category %></td>
+      <td><button class="btn btn-default btn-xs"><%= app.analysis_category %></button></td>
       <td><%= app.description.to_s.split(/\n/).first.to_s.html_safe %></td>
       <td><%= app.required_columns.join(', ') %></td>
       <td><%= app.next_dataset_keys.join(', ') %></td>
     </tr>
   <% end %>
+</tbody>
 </table>
 </div>
