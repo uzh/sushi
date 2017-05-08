@@ -1,3 +1,19 @@
+<script type="text/javascript">
+   $(function(){
+       $('#select_project_number').change(function(){
+         var Idx = this.selectedIndex;
+         var project_number = this.options[Idx].text;
+         $('#project_number').val(project_number);
+         this.form.submit();
+       })
+       $('#bfabric_registration_off').change(function(){
+         var Idx = this.selectedIndex;
+         var on_off = this.options[Idx].text;
+         this.form.submit();
+       })
+
+   });
+</script>
 <div id="header">
   <nav id="login">
   <% if user_signed_in? %>
@@ -16,7 +32,6 @@
       <% if session[:employee] %>
       BF<%= select :bfabric_registration, :off, ["ON", "OFF"], :selected=>(session[:off_bfabric_registration] ? 'OFF' : 'ON') %>
       <% end %>
-      <%= submit_tag "Go" %>
     <% end %>
   <% elsif !SushiFabric::Application.config.fgcz? %>
     <%= link_to "Today's Menu", "/" %>
