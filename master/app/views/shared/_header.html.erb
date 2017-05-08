@@ -1,3 +1,19 @@
+<script type="text/javascript">
+   $(function(){
+       $('#select_project_number').change(function(){
+         var Idx = this.selectedIndex;
+         var project_number = this.options[Idx].text;
+         $('#project_number').val(project_number);
+         this.form.submit();
+       })
+       $('#bfabric_registration_off').change(function(){
+         var Idx = this.selectedIndex;
+         var on_off = this.options[Idx].text;
+         this.form.submit();
+       })
+
+   });
+</script>
 <div id="header">
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -36,7 +52,6 @@
       BF<%= select :bfabric_registration, :off, ["ON", "OFF"], :selected=>(session[:off_bfabric_registration] ? 'OFF' : 'ON') %>
       <% end %>
         </div>
-      <%= submit_tag("Search", :class=>"btn btn-default btn-xs") %>
     <% end %>
 
             <ul class="nav navbar-nav navbar-right list-inline" style="margin-right: 60px">
