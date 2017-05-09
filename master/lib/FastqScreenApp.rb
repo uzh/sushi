@@ -16,7 +16,7 @@ Screen files for contaminations or ribosomal RNA content<br/>
 <a target='_blank' href='http://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/'>fastq_screen web site</a>
 EOS
     @required_columns = ['Name','Read1','Read Count']
-    @required_params = ['name', 'paired','confFile']
+    @required_params = ['name', 'paired']
     @params['cores'] = '8'
     @params['ram'] = '40'
     @params['scratch'] = '100'
@@ -32,12 +32,12 @@ EOS
     @params['nTopSpecies'] = '5'
     @params['minAlignmentScore'] = '-20'
     @params['minAlignmentScore', 'description'] = 'the alignment score for bowtie2; can be negative'
-    @params['confFile'] = {'select'=>''}
-    if defined?(FASTQSCREEN_CONF_DIR)
-      Dir["#{FASTQSCREEN_CONF_DIR}/*.conf"].sort.select{|conf| File.file?(conf)}.each do |file|
-        @params['confFile'][File.basename(file)] = File.basename(file)
-      end
-    end
+    #@params['confFile'] = {'select'=>''}
+    #if defined?(FASTQSCREEN_CONF_DIR)
+    #  Dir["#{FASTQSCREEN_CONF_DIR}/*.conf"].sort.select{|conf| File.file?(conf)}.each do |file|
+    #    @params['confFile'][File.basename(file)] = File.basename(file)
+    #  end
+    #end
 
     @params['cmdOptions'] = "-k 10 --trim5 4 --trim3 4 --very-sensitive"
     @params['specialOptions'] = ''

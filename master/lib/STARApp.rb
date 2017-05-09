@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20161014-112045'
+Version = '20170420-093005'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -40,6 +40,7 @@ EOS
     @params['minReadLength'] = 20
     @params['specialOptions'] = ''
     @params['mail'] = ""
+    @modules = ["Aligner/STAR", "Tools/samtools"]
   end
   def preprocess
     if @params['paired']
