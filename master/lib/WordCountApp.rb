@@ -18,6 +18,7 @@ class WordCountApp < SushiFabric::SushiApp
     @params['note'] = '' 
     @required_columns = ['Name', 'Read1']
     @required_params = []
+    @modules = ["Aligner/STAR", "Tools/samtools"]
   end
   def next_dataset
     {
