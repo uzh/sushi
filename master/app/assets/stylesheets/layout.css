@@ -13,7 +13,7 @@ div#wrapper {
 }
 
 div#header {
-  height: 90px;
+  height: 80px;
   padding: 0px;
 }
 
@@ -45,8 +45,8 @@ div#header nav a:hover {
 }
 
 div#header, div#footer {
-  width: 860px;
-  margin: -55px auto;
+  width: 100%;
+  margin: 0px auto;
 }
 
 div#footer {
@@ -57,12 +57,13 @@ div#footer {
 
 div#contents {
   width: 80%;
-  min-height: 480px;
+  min-height: 450px;
   background-color: #fff;
   color: #000;
-  margin: 100px auto 0px auto;
-  padding: 30px 15px 15px 15px;
+  margin: 25px auto 0px auto;
+  padding: 10px 15px 15px 15px;
   border: solid 1px #ccc;
+  border-radius: 2px;
 }
 
 table {
