@@ -33,8 +33,8 @@
         <!-- menu navigation bar -->
         <div id="navbar" class="navbar-collapse collapse list-inline">
             <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Help<span class="caret"></span></a>
+                <li class="dropdown" style="padding: 0">
+                   <a href="#" style="padding: 0px;line-height:60px;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Help<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/sushi_application">SushiApp List</a></li>
                         <li><a href="/sushi_doc_md.html">Documentation</a></li>
@@ -43,20 +43,23 @@
             </ul>
 <% if user_signed_in? %>
 <% project_init %>
-    <%= form_tag({:action => "index", :controller => "home"}, {:class => "navbar-form navbar-left", :style => "padding-top: 5px"}) do %>
-        <div class="form-group">
-      Project
-      <%= text_field :project, :number, :value=>"#{session[:project]}", :size=>10 %>
+    <%= form_tag({:action => "index", :controller => "home"}, {:class => "navbar-form navbar-left", :style => "padding: 0 15px"}) do %>
+        <div class="form-group" style="line-height:45px;">
+      <%= label(:project, :number, "Project") %>
+      <%= text_field :project, :number, :value=>"#{session[:project]}", :size => 10, :style => "line-height: 16px" %>
       <%= select :select_project, :number, session[:projects], :prompt=>'project list' %>
       <% if session[:employee] %>
       BF<%= select :bfabric_registration, :off, ["ON", "OFF"], :selected=>(session[:off_bfabric_registration] ? 'OFF' : 'ON') %>
       <% end %>
         </div>
     <% end %>
-
-            <ul class="nav navbar-nav navbar-right list-inline" style="margin-right: 60px">
+	<ul class="nav navbar-nav navbar-right">
+           <!--  <ul class="navbar-right list-inline" style="margin-right: 60px"> -->
 		<li>
-		<%= link_to "Sign out", destroy_user_session_path, :method => :delete, :class => 'homelinks' %>
+                    <% if current_user %>
+                    <span style="line-height: 60px;" lass="homelinks">Hi, <%= current_user.login %> | 
+                    <% end %>
+	            <%= link_to "Sign out", destroy_user_session_path, :method => :delete, :class => 'homelinks' %></span>
 		</li>
 	    </ul>
  <% end %>
