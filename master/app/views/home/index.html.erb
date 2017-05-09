@@ -1,11 +1,8 @@
 
-<% if current_user %>
-<span style="color:gray;font-size:medium">Hi, <%= current_user.login %></span>
-<% end %>
-<h1>Project <%= session[:project] %></h1>
+<h1 style="margin: 15px 0 35px 15px;">Project <%= session[:project] %></h1>
 
-<div class="row">
-    <div class="col-sm-6 col-md-4 col-lg-3">
+<div class="row" style="padding: 0 10px;">
+   <div class="col-sm-6 col-md-4 col-lg-3">
       <div class="box">
 
       <%= link_to "/data_set", :method => :get do %>
