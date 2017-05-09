@@ -15,8 +15,13 @@
 <% end %>
 <hr />
 <h3>Job List</h3>
-<table><tr><th>Job ID</th><th>Status</th><th></th><th>User</th><th>JobScript</th><th>Log</th><th>DataSet</th><th>Time (Start/End)</th>
+<table id="job_list" class="dt pure-table pure-table-bordered">
+<thead>
+  <tr>
+    <th>Job ID</th><th>Status</th><th></th><th>User</th><th>JobScript</th><th>Log</th><th>DataSet</th><th>Time (Start/End)</th>
   </tr>
+<thead>
+<tbody>
 <% @job_list.each_with_index do |job, i| %>
   <tr>
     <td><%= job[0] %></td>
@@ -41,6 +46,7 @@
     <td><%= job[3].to_s %></td>
   </tr>
 <% end %>
+</tbody>
 </table>
 <hr />
 <%= form_tag(:action => "index") do %>
