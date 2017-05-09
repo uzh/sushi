@@ -1,5 +1,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
+    $('.dt').DataTable();
+
   $("#data_set_tree").jstree({
     'core':{
       'data':{
@@ -78,11 +80,12 @@ $(function(){
   <div style="height:800px; overflow-y:scroll;">
 <% end %>
 <%= form_tag('/data_set/multi_delete', :id=>"multi_delete") do %>
-<table class="pure-table pure-table-bordered">
+<table id="data_sets" class="dt pure-table pure-table-bordered">
 <thead>
   <tr><th class="check_box"><%= check_box 'delete_all_flag', 'all', {:id=>'checkall'}, true, false %></th><th>ID</th><th>Name</th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th>Who</th><th>Created</th><th>BFabricID</th></tr>
 </thead>
 <% if @project %>
+<tbody>
 <% @data_sets.each do |data_set| %>
   <tr>
     <td class='check_box'><%= check_box "delete_flag", "#{data_set.id}", {:class=>'target'}, true, false %></td>
@@ -112,6 +115,7 @@ $(function(){
     <% end %>
   </tr>
 <% end %>
+</tbody>
 <% end %>
 </table>
 <% if @project and data_sets = @project.data_sets and data_sets.length > @data_sets.length %>
