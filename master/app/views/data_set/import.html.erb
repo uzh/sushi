@@ -1,11 +1,11 @@
 <script type="text/javascript">
-$(function(){
-    $('.dt').DataTable();
-  var msg = $('#import').data('complete');
-  if(msg != ''){
-    alert(msg);
-  }
-});
+    $(function () {
+        $('.dt').DataTable();
+        var msg = $('#import').data('complete');
+        if (msg != '') {
+            alert(msg);
+        }
+    });
 
 </script>
 
@@ -16,33 +16,41 @@ $(function(){
 <h3>Import DataSet</h3>
 <h4>File selection</h4>
 <%= form_tag('/data_set/import', :multipart => true) do %>
-<%= file_field :file, :name %>
-DataSet Name: <%= text_field :dataset, :name, :size=>10 %>
-Parent DataSet ID: <%= select :parent, :id, @data_set_ids, :selected => '' %>
-<%= submit_tag 'load' %>
+<%= file_field :file, :name, :class=>"" %>
+<label>DataSet Name:</label> <%= text_field :dataset, :name, :size=>10, :class=>"input-md" %>
+<label>Parent DataSet ID:</label> <%= select :parent, :id, @data_set_ids, :selected => '', :class=>"form-control input-md" %>
+<%= submit_tag 'load dataset', :class=>"btn btn-sm" %>
 <% end %>
 
-<hr />
+<hr/>
 <h4>All DataSets ( Project <%= session[:project] %> )</h4>
-<table class="dt">
-<thead>
-  <tr><th>ID</th><th>Name</th><th>MD5</th><th>ParentID</th><th>Who</th><th>Created</th></tr>
-</thead
-<tbody>
-<% @project.data_sets.reverse.each do |data_set| %>
-
-  <tr>
-    <td><%= data_set.id %></td>
-    <td><%= link_to td(data_set.name), "/data_set/#{data_set.id}" %></td>
-    <td><%= data_set.md5 %></td><td><%= data_set.parent_id %></td>
-    <% if user = data_set.user %>
-      <td><%= user.login %></td>
-    <% else %>
-      <td>sushi_lover</td>
-    <% end %>
-    <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
+<table class="dt pure-table pure-table-bordered">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>MD5</th>
+        <th>ParentID</th>
+        <th>Who</th>
+        <th>Created</th>
     </tr>
-<% end %>
-</tbody>
+    </thead>
+    <tbody>
+    <% @project.data_sets.reverse.each do |data_set| %>
+
+    <tr>
+        <td><%= data_set.id %></td>
+        <td><%= link_to td(data_set.name), "/data_set/#{data_set.id}" %></td>
+        <td><%= data_set.md5 %></td>
+        <td><%= data_set.parent_id %></td>
+        <% if user = data_set.user %>
+        <td><%= user.login %></td>
+        <% else %>
+        <td>sushi_lover</td>
+        <% end %>
+        <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
+    </tr>
+    <% end %>
+    </tbody>
 </table>
 
