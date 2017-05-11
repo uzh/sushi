@@ -1,7 +1,9 @@
 <%= render 'shared/td' %>
+<script>
 $(document).ready(function(){
     $('.dt').DataTable();
 });
+</script>
 <h1>Project <%= session[:project] %></h1>
 <% if session[:employee] %>
 <% unless session[:all_job_list] %>
