@@ -1,5 +1,6 @@
 <script type="text/javascript">
 $(function(){
+    $('.dt').DataTable();
   var msg = $('#import').data('complete');
   if(msg != ''){
     alert(msg);
@@ -23,9 +24,13 @@ Parent DataSet ID: <%= select :parent, :id, @data_set_ids, :selected => '' %>
 
 <hr />
 <h4>All DataSets ( Project <%= session[:project] %> )</h4>
-<table>
+<table class="dt">
+<thead>
   <tr><th>ID</th><th>Name</th><th>MD5</th><th>ParentID</th><th>Who</th><th>Created</th></tr>
+</thead
+<tbody>
 <% @project.data_sets.reverse.each do |data_set| %>
+
   <tr>
     <td><%= data_set.id %></td>
     <td><%= link_to td(data_set.name), "/data_set/#{data_set.id}" %></td>
@@ -36,6 +41,8 @@ Parent DataSet ID: <%= select :parent, :id, @data_set_ids, :selected => '' %>
       <td>sushi_lover</td>
     <% end %>
     <td><%= data_set.created_at.to_s.gsub(/UTC/,'') %></td>
+    </tr>
 <% end %>
+</tbody>
 </table>
 
