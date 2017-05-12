@@ -116,7 +116,7 @@ class RunApplicationController < ApplicationController
                       else
                         'sushi_lover'
                       end
-    data_set_id = params[:data_set][:id]
+    @data_set_id = params[:data_set][:id]
     if next_dataset = params[:next_dataset] 
       if name = next_dataset[:name] and !name.to_s.strip.empty?
         @sushi_app.next_dataset_name = name.to_s.strip.gsub(/\s/,'_')
@@ -132,12 +132,12 @@ class RunApplicationController < ApplicationController
                                        eval(value)
                                      end
     end
-    if current_data_set = DataSet.find_by_id(data_set_id.to_i) and
+    if current_data_set = DataSet.find_by_id(@data_set_id.to_i) and
        project = current_data_set.project and
        project_number = project.number
       @sushi_app.project = 'p' + project_number.to_s
     end
-    @sushi_app.dataset_sushi_id = data_set_id.to_i
+    @sushi_app.dataset_sushi_id = @data_set_id.to_i
     @sushi_app.current_user = current_user
     @sushi_app.off_bfabric_registration = session[:off_bfabric_registration]
     submit_type = params[:submit_type]
