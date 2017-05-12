@@ -200,7 +200,6 @@ class DataSetController < ApplicationController
   def trace_treeviews(root, data_set, parent_id, project_number, current_data_set, state_opened)
     data_set_id = data_set.id
     node_text = if data_set == current_data_set
-                  state_opened = false
              "<b>" + data_set.data_sets.length.to_s+" "+data_set.name+"</b> "+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>"
            else
               data_set.data_sets.length.to_s+" "+data_set.name+" "+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>"
@@ -219,26 +218,40 @@ class DataSetController < ApplicationController
       end
     end
   end
-  def search_root_parent(current_data_set)
-     root_parent = nil
-     unless parent = current_data_set.data_set
-       root_parent = current_data_set
-     else
-       root_parent = search_root_parent(parent)
-     end
-     root_parent
+  def back_trace_treeviews(tree, data_set)
+    parent_id = if parent = data_set.data_set
+                  parent.id
+                else
+                  "#"
+                end
+    node_text = data_set.data_sets.length.to_s+" "+data_set.name+" "+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>"
+    data_set_id = data_set.id
+    project_number = data_set.project.number
+    node = {"id" => data_set_id, 
+            "text" => node_text,
+            "parent" => parent_id,
+            "state" => {"opened":true},
+            "a_attr" => {"href"=>"/data_set/p#{project_number}/#{data_set_id}", 
+                         "onclick"=>"window.open('/data_set/p#{project_number}/#{data_set_id}')"}
+            }
+    tree << node
+    if parent
+      back_trace_treeviews(tree, parent)
+    end
   end
   def partial_treeviews
     root = []
     if current_data_set_id = params[:format]
       # search root parental dataset
       data_set = DataSet.find_by_id(current_data_set_id.to_i)
-      root_parent = search_root_parent(data_set)
-
-      if children = root_parent.data_sets and children.length > 0
-        state_opened = true
-        trace_treeviews(root, root_parent, "#", data_set.project.number, data_set, state_opened)
-      end
+      parent_id = if parent = data_set.data_set
+                    back_trace_treeviews(root, parent)
+                    parent.id
+                  else
+                    "#"
+                  end
+      state_opened = false
+      trace_treeviews(root, data_set, parent_id, data_set.project.number, data_set, state_opened)
     end
     render :json => root.reverse
   end
