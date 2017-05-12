@@ -218,12 +218,24 @@ class DataSetController < ApplicationController
       end
     end
   end
+  def search_root_parent(current_data_set)
+     root_parent = nil
+     unless parent = current_data_set.data_set
+       root_parent = current_data_set
+     else
+       root_parent = search_root_parent(parent)
+     end
+     root_parent
+  end
   def partial_treeviews
     root = []
-    if top_data_set_id = params[:format]
-      data_set = DataSet.find_by_id(top_data_set_id.to_i)
-      if children = data_set.data_sets and children.length > 0
-        trace_treeviews(root, data_set, "#", data_set.project.number)
+    if current_data_set_id = params[:format]
+      # search root parental dataset
+      data_set = DataSet.find_by_id(current_data_set_id.to_i)
+      root_parent = search_root_parent(data_set)
+
+      if children = root_parent.data_sets and children.length > 0
+        trace_treeviews(root, root_parent, "#", data_set.project.number)
       end
     end
     render :json => root.reverse
