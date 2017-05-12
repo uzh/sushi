@@ -197,9 +197,9 @@ class DataSetController < ApplicationController
   def edit
     show
   end
-  def trace_treeviews(root, data_set, parent_id, project_number)
+  def trace_treeviews(root, data_set, parent_id, project_number, current_data_set)
     data_set_id = data_set.id
-    node_text = if root.empty?
+    node_text = if data_set == current_data_set
              "<b>" + data_set.data_sets.length.to_s+" "+data_set.name+"</b> "+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>"
            else
               data_set.data_sets.length.to_s+" "+data_set.name+" "+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>"
@@ -214,7 +214,7 @@ class DataSetController < ApplicationController
     root << node
     data_set.data_sets.each do |child|
       if child.project.number==project_number
-        trace_treeviews(root, child, data_set.id, project_number)
+        trace_treeviews(root, child, data_set.id, project_number, current_data_set)
       end
     end
   end
@@ -235,7 +235,7 @@ class DataSetController < ApplicationController
       root_parent = search_root_parent(data_set)
 
       if children = root_parent.data_sets and children.length > 0
-        trace_treeviews(root, root_parent, "#", data_set.project.number)
+        trace_treeviews(root, root_parent, "#", data_set.project.number, data_set)
       end
     end
     render :json => root.reverse
