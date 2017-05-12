@@ -26,6 +26,8 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = ['gene', 'isoform']
     @params['testMethod'] = ['glm', 'exactTest']
+    @params['deTest'] = ['QL', 'LR']
+    @params['deTest', 'description'] = 'This option only works for glm method. Quasi-likelihood (QL) F-test or likelihood ratio (LR) test. LR is prefered for single-cell data.'
     @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup' 
