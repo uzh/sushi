@@ -33,7 +33,8 @@ class TrinityApp < SushiFabric::SushiApp
     @params['trinityOpt'] = '--min_kmer_cov 2'
     @params['specialOptions'] = ''
     @params['mail'] = ""
- end
+    @modules = ["Assembly/Trinity", "QC/Trimmomatic", "QC/Flexbar", "Aligner/Salmon"]
+  end
   def preprocess
     if @params['paired']
       @required_columns << 'Read2'
@@ -47,7 +48,12 @@ class TrinityApp < SushiFabric::SushiApp
   end
   def next_dataset
     {'Name'=>@params['name'],
-     'Fasta [File]'=>File.join(@result_dir, "#{@params['name']}.fasta")
+     'Fasta [File]'=>File.join(@result_dir, "#{@params['name']}.fasta"),
+	  'Stats [File]'=>File.join(@result_dir, "assembly_stats.txt"),
+	  'Abundance Counts [File]'=>File.join(@result_dir, "abundance_counts.txt"),
+	  'Abundance TPM [File]'=>File.join(@result_dir, "abundance_TPM.txt"),
+	  'Abundance TMM [File]'=>File.join(@result_dir, "abundance_TMM.txt"),
+	  'ExN50 [File]'=>File.join(@result_dir, "ExN50_stats.txt")
     }
   end
   def commands
