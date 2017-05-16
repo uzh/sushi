@@ -35,6 +35,8 @@ EOS
     @params['bias', 'description'] = 'perform sequence based bias correction'
     @params['pseudobam'] = false
     @params['pseudobam', 'description'] = 'generate a bam file with pseudoalignments'
+    @params['transcriptFasta'] = ''
+    @params['transcriptFasta', 'description'] = 'give full path of transcript fasta file; in that case the build is ignored; if it comes from trinity assembly the gene-isoform associations will be extracted and used'
     @params['trimAdapter'] = true
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
