@@ -41,6 +41,7 @@ EOS
     @params['minTailQuality'] = 0
     @params['specialOptions'] = ''
     @params['mail'] = ""
+    @modules = ["QC/Trimmomatic", "QC/Flexbar", "Tools/samtools", "Aligner/Bowtie2", "Aligner/STAR", ]
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
