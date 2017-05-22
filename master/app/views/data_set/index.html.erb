@@ -60,7 +60,7 @@
 
 <%= render 'shared/td' %>
 <h1>Project <%= session[:project] %></h1>
-<h3>DataSet <span style="font-size: 0.5em;"> <%= link_to "Show report", "/data_set/report" %></span></h3>
+<h3>DataSet <span style="font-size: 0.5em;"> <%= link_to "Show report", "/data_set/report", :method => :post %></span></h3>
 <% if session[:employee] %>
 <%= form_tag(:action => 'bfabric') do %>
 <%= submit_tag 'BFabric', :data=>{:confirm=>"Are you sure you want to register datasets in BFabric?"} %>
