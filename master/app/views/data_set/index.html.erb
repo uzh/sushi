@@ -1,55 +1,57 @@
 <script type="text/javascript">
-$(document).ready(function(){
-  $("#data_set_tree").jstree({
-    'core':{
-      'data':{
-        url:'/data_set/whole_treeviews'
-      }
-    }
-  });
-});
+    $(document).ready(function () {
+        $('.dt').DataTable();
 
-$(document).ready(function() {
-      $('#checkall').click(function(e) {
-        if($(this).prop("checked")){
-            $('.target').each(function() {
-                    $(this).prop("checked", true);
-            });
-          }else{
-            $('.target').each(function() {
-                    $(this).prop("checked", false);
-            });
-          }
-      });
-
-  });
-
-
-$(function(){
-  $('#btn_multi_delete').click(function(){
-    var flag=false;
-    $('.target').each(function() {
-       if($(this).prop("checked")){
-         flag=true;
-         return false;
-       }
+        $("#data_set_tree").jstree({
+            'core': {
+                'data': {
+                    url: '/data_set/whole_treeviews'
+                }
+            }
+        });
     });
-    if(flag==true){
-      // selected at least one
-      $('#multi_delete').submit();
-    }else{
-      // no selected
-      alert('Please select at least one DataSet.');
-    }
-  });
-})
 
-$(function(){
-  var msg = $('#import').data('complete');
-  if(msg != ''){
-    alert(msg);
-  }
-})
+    $(document).ready(function () {
+        $('#checkall').click(function (e) {
+            if ($(this).prop("checked")) {
+                $('.target').each(function () {
+                    $(this).prop("checked", true);
+                });
+            } else {
+                $('.target').each(function () {
+                    $(this).prop("checked", false);
+                });
+            }
+        });
+
+    });
+
+
+    $(function () {
+        $('#btn_multi_delete').click(function () {
+            var flag = false;
+            $('.target').each(function () {
+                if ($(this).prop("checked")) {
+                    flag = true;
+                    return false;
+                }
+            });
+            if (flag == true) {
+                // selected at least one
+                $('#multi_delete').submit();
+            } else {
+                // no selected
+                alert('Please select at least one DataSet.');
+            }
+        });
+    })
+
+    $(function () {
+        var msg = $('#import').data('complete');
+        if (msg != '') {
+            alert(msg);
+        }
+    })
 
 
 </script>
@@ -58,71 +60,86 @@ $(function(){
 
 <%= render 'shared/td' %>
 <h1>Project <%= session[:project] %></h1>
-<h3>DataSet  <span style="font-size: 0.5em;"> <%= link_to "Show report", "/data_set/report" %></span></h3>
+<h3>DataSet <span style="font-size: 0.5em;"> <%= link_to "Show report", "/data_set/report" %></span></h3>
 <% if session[:employee] %>
-  <%= form_tag(:action => 'bfabric') do %>
-    <%= submit_tag 'BFabric', :data=>{:confirm=>"Are you sure you want to register datasets in BFabric?"} %>
-    <%= select :parameters, :bfabric_option, ['new', 'update', 'renewal'], :selected => 'new' %>
-  <% end %>
+<%= form_tag(:action => 'bfabric') do %>
+<%= submit_tag 'BFabric', :data=>{:confirm=>"Are you sure you want to register datasets in BFabric?"} %>
+<%= select :parameters, :bfabric_option, ['new', 'update', 'renewal'], :selected => 'new' %>
+<% end %>
 <% end %>
 
 
 <% if @project %>
-  <% if data_sets = @project.data_sets and data_sets.length == @data_sets.length %>
-    <ul id="data_set_tree" class="filetree"></ul>
-  <% else %>
-    <%= link_to "Tree view...", "/data_set/index_full" %>
-  <% end %>
-<% end %>
-<% if @project and @data_sets.length > 20 %>
-  <div style="height:800px; overflow-y:scroll;">
-<% end %>
-<%= form_tag('/data_set/multi_delete', :id=>"multi_delete") do %>
-<table class="pure-table pure-table-bordered">
-<thead>
-  <tr><th class="check_box"><%= check_box 'delete_all_flag', 'all', {:id=>'checkall'}, true, false %></th><th>ID</th><th>Name</th><th>Samples</th><th>ParentID</th><th>Child(ren)IDs</th><th>Who</th><th>Created</th><th>BFabricID</th></tr>
-</thead>
-<% if @project %>
-<% @data_sets.each do |data_set| %>
-  <tr>
-    <td class='check_box'><%= check_box "delete_flag", "#{data_set.id}", {:class=>'target'}, true, false %></td>
-    <td><%= data_set.id %></td>
-    <td><%= link_to td(data_set.name), "/data_set/p#{@project.number}/#{data_set.id}" %></td> 
-    
-    <td>
-      <%= data_set.completed_samples.to_i %> / <%= data_set.samples_length %>
-    </td>
-    <td><%= link_to data_set.parent_id, "/data_set/#{data_set.parent_id}" if data_set.data_set %></td>
-    <td>
-      <% data_set.data_sets.each do |child| %>
-        <%= link_to child.id, "/data_set/#{child.id}" %>
-        <%= "," unless child == data_set.data_sets.last %>
-      <% end %>
-    </td>
-    <% if user = data_set.user%>
-      <td><%= user.login %></td>
-    <% else %>
-      <td>sushi_lover</td>
-    <% end %>
-    <td><%= data_set.created_at.to_s(:db).gsub(/UTC/,'') %></td>
-    <% if data_set.bfabric_id %>
-      <td><%= link_to data_set.bfabric_id, "http://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{data_set.bfabric_id}&tab=details", target: "_blank" %></td>
-    <% else %>
-      <td></td>
-    <% end %>
-  </tr>
-<% end %>
-<% end %>
-</table>
-<% if @project and data_sets = @project.data_sets and data_sets.length > @data_sets.length %>
-  <%= link_to "More...", "/data_set/index_full" %>
+<% if data_sets = @project.data_sets and data_sets.length == @data_sets.length %>
+<ul id="data_set_tree" class="filetree"></ul>
+<% else %>
+<%= link_to "Tree view...", "/data_set/index_full" %>
 <% end %>
 <% end %>
 <% if @project and @data_sets.length > 20 %>
-  </div/
-<% end %>
+<div style="height:800px; overflow-y:scroll;">
+    <% end %>
+    <%= form_tag('/data_set/multi_delete', :id=>"multi_delete") do %>
+    <table id="data_sets" class="dt pure-table pure-table-bordered">
+        <thead>
+        <tr>
+            <th class="check_box"><%= check_box 'delete_all_flag', 'all', {:id=>'checkall'}, true, false %></th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Samples</th>
+            <th>ParentID</th>
+            <th>Child(ren)IDs</th>
+            <th>Who</th>
+            <th>Created</th>
+            <th>BFabricID</th>
+        </tr>
+        </thead>
+        <% if @project %>
+        <tbody>
+        <% @data_sets.each do |data_set| %>
+        <tr>
+            <td class='check_box'><%= check_box "delete_flag", "#{data_set.id}", {:class=>'target'}, true, false %></td>
+            <td><%= data_set.id %></td>
+            <td><%= link_to td(data_set.name), "/data_set/p#{@project.number}/#{data_set.id}" %></td>
+
+            <td>
+                <%= data_set.completed_samples.to_i %> / <%= data_set.samples_length %>
+            </td>
+            <td><%= link_to data_set.parent_id, "/data_set/#{data_set.parent_id}" if data_set.data_set %></td>
+            <td>
+                <% data_set.data_sets.each do |child| %>
+                <%= link_to child.id, "/data_set/#{child.id}" %>
+                <%= "," unless child == data_set.data_sets.last %>
+                <% end %>
+            </td>
+            <% if user = data_set.user%>
+            <td><%= user.login %></td>
+            <% else %>
+            <td>sushi_lover</td>
+            <% end %>
+            <td><%= data_set.created_at.to_s(:db).gsub(/UTC/,'') %></td>
+            <% if data_set.bfabric_id %>
+            <td><%= link_to data_set.bfabric_id,
+                "http://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{data_set.bfabric_id}&tab=details",
+                target: "_blank" %>
+            </td>
+            <% else %>
+            <td></td>
+            <% end %>
+        </tr>
+        <% end %>
+        </tbody>
+        <% end %>
+    </table>
+    <% if @project and data_sets = @project.data_sets and data_sets.length > @data_sets.length %>
+    <%= link_to "More...", "/data_set/index_full" %>
+    <% end %>
+    <% end %>
+    <% if @project and @data_sets.length > 20 %>
+</div>
+        <% end %>
 <hr>
 <div style="margin: 0;">
-<%= image_tag "sel_arrow.png",size: "20x15" %></i>With selected: <a href="#" id="btn_multi_delete">Delete</a>
+    <%= image_tag "sel_arrow.png",size: "20x15" %></i>With selected: <a href="#" id="btn_multi_delete">Delete</a>
 </div>
 <!-- <th nowrap><button type="button" id="btn_multi_delete">delete</button> all<%= check_box 'delete_all_flag', 'all', {:id=>'checkall'}, true, false %></th> -->
