@@ -89,19 +89,16 @@ table tr:nth-child(even) {
 }
 */
 #login_form_wrapper {
-  width: 800px;
   height: 300px;
+  text-align: center;
   background-image: url(/assets/makisushi.png);
-  background-position: 80px 50px;
+  background-position: 20% 50px;
   background-repeat: no-repeat;
 }
 
 #login_form {
   width: 400px;
-  float: right;
-  margin-right: 60px;
-  margin-top: 20px;
-  text-align: center;
+  margin: 20px auto; 
 }
 
 #login_form #info {
