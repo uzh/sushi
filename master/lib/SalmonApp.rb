@@ -41,6 +41,8 @@ EOS
     @params['posBias', 'description'] = 'enable position bias correction'
 	 @params['specialParams'] = ''
 	 @params['specialParams', 'description'] = 'additional command line parameters to pass to Salmon'
+    @params['transcriptFasta'] = ''
+    @params['transcriptFasta', 'description'] = 'give full path of transcript fasta file; in that case the build is ignored; if it comes from trinity assembly the gene-isoform associations will be extracted and used'
     @params['trimAdapter'] = true
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
@@ -80,7 +82,7 @@ EOS
 end
 
 if __FILE__ == $0
-  run KallistoApp
+  run SalmonApp
 
 end
 
