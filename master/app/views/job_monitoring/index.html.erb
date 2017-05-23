@@ -4,19 +4,23 @@ $(document).ready(function(){
     $('.dt').DataTable();
 });
 </script>
-<h1>Project <%= session[:project] %></h1>
-<% if session[:employee] %>
-<% unless session[:all_job_list] %>
-<%= form_tag(:action => "index") do %>
-<%= submit_tag 'All Job List' %>
-<%= hidden_field :option, :all_job_list, :value=>true %>
-<% end %>
+<% if session[:all_job_list] %>
+   <h1>Project all</h1>
 <% else %>
-<%= form_tag(:action => "index") do %>
-<%= submit_tag 'Project Job List' %>
-<%= hidden_field :option, :project_job_list, :value=>true %>
+   <h1>Project <%= session[:project] %></h1>
 <% end %>
-<% end %>
+<% if session[:employee] %>
+  <% unless session[:all_job_list] %>
+    <%= form_tag(:action => "index") do %>
+      <%= submit_tag 'All Job List' %>
+      <%= hidden_field :option, :all_job_list, :value=>true %>
+    <% end %>
+  <% else %>
+    <%= form_tag(:action => "index") do %>
+      <%= submit_tag 'Project Job List' %>
+      <%= hidden_field :option, :project_job_list, :value=>true %>
+    <% end %>
+  <% end %>
 <% end %>
 <hr/>
 <h3>Job List</h3>
@@ -63,6 +67,6 @@ $(document).ready(function(){
     </tbody>
 </table>
 <hr/>
-Total: <%= @total %> jobs, only recent 100 jobs are shown.
+Total: <%= @total %> jobs, only recent <%= @page_unit %> jobs are shown.
 <hr/>
 
