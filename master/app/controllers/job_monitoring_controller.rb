@@ -1,7 +1,9 @@
 class JobMonitoringController < ApplicationController
   def index
     public_dir = File.expand_path('../../../public', __FILE__)
+    @page_unit = 100
     @job_list = if option=params[:option] and option[:all_job_list] 
+                  @page_unit = 1000
                   @all_job_list=true
                   session[:all_job_list] = true
                   #@@workflow_manager.job_list(false, nil)
@@ -14,6 +16,7 @@ class JobMonitoringController < ApplicationController
                   command = "wfm_job_list -p #{session[:project]} -d #{SushiFabric::WORKFLOW_MANAGER}"
                   `#{command}`
                 elsif session[:all_job_list]
+                  @page_unit = 1000
                   @all_job_list=true
                   session[:all_job_list] = true
                   command = "wfm_job_list -d #{SushiFabric::WORKFLOW_MANAGER}"
@@ -28,13 +31,6 @@ class JobMonitoringController < ApplicationController
     @total = @job_list.length
 
     # pager
-    @page_unit = if page = params[:page] and unit = page[:unit]
-                   session[:job_page_unit] = unit.to_i
-                 elsif unit = session[:job_page_unit]
-                   unit.to_i
-                 else
-                   session[:job_page_unit] = 10
-                 end
     current_page = params[:format]
     @current_page = (current_page||1).to_i
     @page_list = (1..(@job_list.length.to_f/@page_unit).ceil).to_a
