@@ -63,25 +63,6 @@ $(document).ready(function(){
     </tbody>
 </table>
 <hr/>
-<%= form_tag(:action => "index") do %>
-<table>
-    <tr>
-        <td>
-            Total: <%= @total %> jobs,
-            Page:
-            <% @page_list.each do |page| %>
-            <% if page == @current_page.to_i %>
-            <%= page %>
-            <% else %>
-            <%= link_to page, "job_monitoring.#{page}" %>
-            <% end %>
-            <% end %>
-        </td>
-        <td> <%= select :page, :unit, {"10" => 10, "50" => 50, "100" => 100}, :selected => @page_unit %> <%= submit_tag
-            "Reload" %>
-        </td>
-    </tr>
-</table>
-<% end %>
+Total: <%= @total %> jobs, only recent 100 jobs are shown.
 <hr/>
 
