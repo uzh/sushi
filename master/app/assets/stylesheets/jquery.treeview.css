@@ -67,7 +67,7 @@
 	display: block;
 }
 
-.filetree li { padding: 3px 0 2px 16px; }
+.filetree li { padding: 3px 0 2px 0px; }
 .filetree span.folder, .filetree span.file { padding: 1px 0 1px 16px; display: block; }
 .filetree span.folder { background: url(/assets/treeview/folder.gif) 0 0 no-repeat; }
 .filetree li.expandable span.folder { background: url(/assets/treeview/folder-closed.gif) 0 0 no-repeat; }
