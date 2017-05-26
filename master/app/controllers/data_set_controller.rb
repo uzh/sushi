@@ -29,7 +29,7 @@ class DataSetController < ApplicationController
       @warning = warning
       session['import_fail'] = nil
     end
-    top(20)
+    top(100)
   end
   def index_full
     top
