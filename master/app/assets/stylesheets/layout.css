@@ -69,6 +69,11 @@ div#contents {
   border-radius: 2px;
 }
 
+div#scroll {
+  width: 100%;
+  overflow-x:scroll;
+}
+
 table {
   width: 100%;
   border: none;
