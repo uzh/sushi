@@ -7,7 +7,16 @@
                 'data': {
                     url: '/data_set/whole_treeviews'
                 }
-            }
+            },
+            "plugins" : [ "state", "search" ]
+        });
+        var to = false;
+        $('#search_tree').keyup(function () {
+          if(to) { clearTimeout(to); }
+          to = setTimeout(function () {
+            var v = $('#search_tree').val();
+            $('#data_set_tree').jstree(true).search(v);
+          }, 250);
         });
     });
 
@@ -71,6 +80,7 @@
 
 <% if @project %>
 <% if data_sets = @project.data_sets and data_sets.length == @data_sets.length %>
+  Search: <%= text_field :search, :tree %>
 <ul id="data_set_tree" class="filetree"></ul>
 <% else %>
 <%= link_to "Tree view...", "/data_set/index_full" %>
