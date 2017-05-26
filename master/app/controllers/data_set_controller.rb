@@ -259,6 +259,12 @@ class DataSetController < ApplicationController
     @project = Project.find_by_number(session[:project].to_i)
     root = []
     project_dataset_ids = Hash[*(@project.data_sets.map{|data_set| [data_set.id, true]}.flatten)]
+    root_node = {
+      "parent" => "#",
+      "text" => "DataSets",
+      "id" => 0
+    }
+    root << root_node
     @project.data_sets.each do |data_set|
       node = {"id" => data_set.id, 
               "text" => data_set.data_sets.length.to_s+" "+data_set.name+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>",
@@ -268,7 +274,7 @@ class DataSetController < ApplicationController
       if parent = data_set.data_set and project_dataset_ids[parent.id]
         node["parent"] = parent.id
       else
-        node["parent"] = "#"
+        node["parent"] = 0
       end
       root << node
     end
