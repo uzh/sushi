@@ -40,9 +40,8 @@ $(document).ready(function(){
 });
 </script>
 <%= render 'shared/td' %>
-<h1>Project <%= session[:project] %></h1>
-<hr />
-<h3>DataSet</h3>
+<h3>DataSets</h3>
+<ul id="data_set_tree" class="filetree"></ul>
 <table id="datasets" class="dt pure-table pure-table-bordered">
 <thead>  
   <tr><th>ID</th><th>Name</th><th>Samples</th><th>Parent</th><th>Child(ren)IDs</th><th>Created</th><th>BFabricID</th></tr>
@@ -72,7 +71,6 @@ $(document).ready(function(){
   </tbody>
   <% end %>
 </table>
-<ul id="data_set_tree" class="filetree"></ul>
 <%= form_tag({:action => 'edit'}, {:class=>"button_to"}) do %>
   <% if @data_set.comment %>
     <%= @data_set.comment %><br />
