@@ -86,9 +86,6 @@
 <%= link_to "Tree view...", "/data_set/index_full" %>
 <% end %>
 <% end %>
-<% if @project and @data_sets.length > 20 %>
-<div style="height:800px; overflow-y:scroll;">
-    <% end %>
     <%= form_tag('/data_set/multi_delete', :id=>"multi_delete") do %>
     <table id="data_sets" class="dt pure-table pure-table-bordered">
         <thead>
@@ -145,8 +142,5 @@
     <%= link_to "More...", "/data_set/index_full" %>
     <% end %>
     <% end %>
-    <% if @project and @data_sets.length > 20 %>
-</div>
-        <% end %>
 <hr>
 <!-- <th nowrap><button type="button" id="btn_multi_delete">delete</button> all<%= check_box 'delete_all_flag', 'all', {:id=>'checkall'}, true, false %></th> -->
