@@ -1,6 +1,9 @@
 <script type="text/javascript">
 $(document).ready(function(){
   $('.dt').DataTable();
+  $('.dt_no_pager').DataTable({
+    "paging": false
+  });
   $("#data_set_tree").jstree({
     'core':{
       'data':{
@@ -105,7 +108,11 @@ Samples <button class="btn-link" id="hide">Hide</button><span id="hide_indicator
   <% if @data_set.samples.length > 20 %>
     <div style="overflow-y:scroll;">
   <% end %>
+<% if @data_set.samples.length > 10 %>
 <table id="dataset_samples" class="dt pure-table pure-table-bordered">
+<% else %>
+<table id="dataset_samples" class="dt_no_pager pure-table pure-table-bordered">
+<% end %>
 <thead>
   <tr>
     <% @data_set.factor_first_headers.each do |header| %>
