@@ -69,7 +69,7 @@
 
 <%= render 'shared/td' %>
 <h1>Project <%= session[:project] %></h1>
-<h3>DataSet <span style="font-size: 0.5em;"> <%= link_to "Show report", "/data_set/report", :method => :post %></span></h3>
+<h3>DataSet <span style="font-size: 0.5em;"> - <%= link_to "show report", "/data_set/report", :method => :post %> - <a href="#" id="btn_multi_delete">delete</a> with selected</span></h3>
 <% if session[:employee] %>
 <%= form_tag(:action => 'bfabric') do %>
 <%= submit_tag 'BFabric', :data=>{:confirm=>"Are you sure you want to register datasets in BFabric?"} %>
@@ -149,7 +149,4 @@
 </div>
         <% end %>
 <hr>
-<div style="margin: 0;">
-    <%= image_tag "sel_arrow.png",size: "20x15" %></i>With selected: <a href="#" id="btn_multi_delete">Delete</a>
-</div>
 <!-- <th nowrap><button type="button" id="btn_multi_delete">delete</button> all<%= check_box 'delete_all_flag', 'all', {:id=>'checkall'}, true, false %></th> -->
