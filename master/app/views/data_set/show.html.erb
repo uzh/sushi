@@ -11,6 +11,11 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
+    $("#whole_tree").click(function(){
+      $('#data_set_tree').jstree(true).settings.core.data.url = "/data_set/partial_treeviews2.<%= params[:id] %>";
+      $("#data_set_tree").jstree(true).refresh();
+    });
+
     var samples_length = $("#data_set_samples_length").val();
     document.getElementById("hide_indicator").removeAttribute("class");
     if(parseInt(samples_length) > 5){
@@ -40,7 +45,7 @@ $(document).ready(function(){
 });
 </script>
 <%= render 'shared/td' %>
-<h3>DataSets</h3>
+<h3 id="whole_tree">DataSets</h3>
 <ul id="data_set_tree" class="filetree"></ul>
 <table id="datasets" class="dt pure-table pure-table-bordered">
 <thead>  
