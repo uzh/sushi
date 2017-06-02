@@ -185,22 +185,22 @@ Samples <button class="btn-link" id="hide">Hide</button><span id="hide_indicator
   <% end %>
   </ul>
 <% end %>
-<% if @sample_path.length == 1 %>
-  <%= button_to "Go gstore", File.join("/projects/", @sample_path.first), :method=>:get %>
-<% end %>
   <% @sample_path.sort.each do |path| %>
     <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
   <% end %>
 
     <hr />
-    <h3>Applications</h3>
+    <h3 style="display: inline">Applications</h3>
   <% if !@sample_invalid_name.keys.empty? %>
+    <br />
     <ul>
       <li><span class="alert">Invalid character is used in sample name. Please correct it.</span></li>
       <li>Invalid characters: !@#$%^&*()<>{}[]/:;"='+| and SPACE</li>
     </ul>
   <% elsif @sushi_apps %>
-    <form> <button type="button" id="refresh_sushi_list">refresh</button> </form>
+    - <a href="" id="refresh_sushi_list">refresh</a>
+    <br />
+    <br />
     <%= render :partial => '/data_set/sushi_application_list' %>
   <% end %>
 
