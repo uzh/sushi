@@ -15,8 +15,16 @@ $(document).ready(function(){
 
 $(document).ready(function(){
     $("#whole_tree").click(function(){
-      $('#data_set_tree').jstree(true).settings.core.data.url = "/data_set/partial_treeviews2.<%= params[:id] %>";
-      $("#data_set_tree").jstree(true).refresh();
+      var tree_state = $("#tree_state").val();
+      if(tree_state == "partial"){
+        $("#tree_state").val("whole");
+        $('#data_set_tree').jstree(true).settings.core.data.url = "/data_set/partial_treeviews2.<%= params[:id] %>";
+        $("#data_set_tree").jstree(true).refresh();
+      }else{
+        $("#tree_state").val("partial");
+        $('#data_set_tree').jstree(true).settings.core.data.url = "/data_set/partial_treeviews.<%= params[:id] %>";
+        $("#data_set_tree").jstree(true).refresh();
+      }
     });
 
     var samples_length = $("#data_set_samples_length").val();
@@ -68,6 +76,7 @@ $(document).ready(function(){
 </script>
 <%= render 'shared/td' %>
 <h3 id="whole_tree" style="display: inline">DataSets</h3>
+<%= hidden_field :tree, :state, :value=>"partial" %>
 - <%= link_to 'comment', '', :id=>"add_comment" %> 
 - <%= link_to 'name', '', :id=>"edit_name" %>
 <%= hidden_field :data_set, :name, :value=>@data_set.name %>
