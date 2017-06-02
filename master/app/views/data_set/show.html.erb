@@ -80,6 +80,9 @@ $(document).ready(function(){
 <% if session[:employee] and @data_set.parent_id and @data_set.child == false %>
 - <%= link_to "delete data files", {:action=>"confirm_delete_only_data_files", :id=>@data_set.id}, :method=>:post %>
 <% end %>
+<% if @can_register_bfabric %>
+- <%= link_to "register bfabric", {:action=>"register_bfabric", :id=>@data_set.id}, :data=>{:confirm=>"Are you sure you want to register this dataset? DataSet ID:#{@data_set.id}? It will take some seconds."}, :method=>:post %>
+<% end %>
 
 <ul id="data_set_tree" class="filetree"></ul>
 <table id="datasets" class="pure-table pure-table-bordered">
@@ -110,9 +113,6 @@ $(document).ready(function(){
   </tbody>
   <% end %>
 </table>
-<% if @can_register_bfabric %>
-  <%= button_to "register bfabric", {:action=>"register_bfabric", :id=>@data_set.id}, :data=>{:confirm=>"Are you sure you want to register this dataset? DataSet ID:#{@data_set.id}? It will take some seconds."} %>
-<% end %>
 
 <hr />
 <h3>

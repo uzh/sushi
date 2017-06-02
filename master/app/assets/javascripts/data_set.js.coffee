@@ -3,7 +3,8 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 $ ->
-    $("#refresh_sushi_list").click ->
+    $("#refresh_sushi_list").click (event) ->
+        event.preventDefault()
         data_set_id = $("#data_set_id").val()
         dispLoading("updating...")
         $.ajax "/data_set/"+data_set_id+"/refresh_apps",
