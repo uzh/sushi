@@ -45,10 +45,42 @@ $(document).ready(function(){
         $("#hide_indicator").toggleClass("arrow-up arrow-down");
 
     });
+    $("#add_comment").click(function(){
+      var data_set_id = $("#data_set_id").val();
+      var old_comment = $("#data_set_comment").val();
+      var new_comment = prompt("add comment", old_comment);
+
+      if (data_set_id != null && new_comment != null) {
+        $.post('/data_set/add_comment', {'data_set_id':data_set_id, 'data_set_comment':new_comment});
+      }
+    });
+    $("#edit_name").click(function(){
+      var data_set_id = $("#data_set_id").val();
+      var old_name = $("#data_set_name").val();
+      var new_name = prompt("edit name", old_name);
+
+      if (data_set_id != null && new_name != null) {
+        $.post('/data_set/edit_name', {'data_set_id':data_set_id, 'data_set_name':new_name});
+      }
+    });
+
 });
 </script>
 <%= render 'shared/td' %>
-<h3 id="whole_tree">DataSets</h3>
+<h3 id="whole_tree" style="display: inline">DataSets</h3>
+- <%= link_to 'comment', '', :id=>"add_comment" %> 
+- <%= link_to 'name', '', :id=>"edit_name" %>
+<%= hidden_field :data_set, :name, :value=>@data_set.name %>
+<%= hidden_field :data_set, :id, :value=>@data_set.id %>
+<%= hidden_field :data_set, :comment, :value=>@data_set.comment.to_s %>
+- <%= link_to "download", {:action=>"save_as_tsv", :id=>@data_set.id}, :method=>:post %>
+- <%= link_to 'samples', "/sample/#{@data_set.id}", :method=>:post %>
+- <%= link_to 'scripts', "/data_set/script_log.#{@data_set.id}", :method=>:get %>
+- <%= link_to 'parameters', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>
+<% if session[:employee] and @data_set.parent_id and @data_set.child == false %>
+- <%= link_to "delete data files", {:action=>"confirm_delete_only_data_files", :id=>@data_set.id}, :method=>:post %>
+<% end %>
+
 <ul id="data_set_tree" class="filetree"></ul>
 <table id="datasets" class="pure-table pure-table-bordered">
 <thead>  
