@@ -190,6 +190,23 @@ class DataSetController < ApplicationController
       @sushi_apps_category = @sushi_apps.keys.sort
     end
   end
+  def add_comment
+    if id = params[:data_set_id] and comment = params[:data_set_comment]
+      data_set = DataSet.find_by_id(id)
+      data_set.comment = comment
+      data_set.save
+    end 
+    redirect_to(:action => "show") and return
+  end
+  def edit_name
+    if id = params[:data_set_id] and name = params[:data_set_name]
+      data_set = DataSet.find_by_id(id)
+      data_set.name = name
+      data_set.save
+      session[:latest_data_set_id] = data_set.id
+    end
+    redirect_to(:action => "show") and return
+  end
   def refresh_apps
     set_runnable_apps
     show
