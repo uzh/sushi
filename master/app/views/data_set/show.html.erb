@@ -87,7 +87,6 @@ $(document).ready(function(){
   <tr><th>ID</th><th>Name</th><th>Samples</th><th>Parent</th><th>Child(ren)IDs</th><th>Created</th><th>BFabricID</th></tr>
 </thead>
   <% if @data_set %>
-  <%= hidden_field :data_set, :id, :value => @data_set.id %>
   <%= hidden_field :data_set, :samples_length, :value => @data_set.samples.length %>
   <tbody>
   <tr>
@@ -111,21 +110,6 @@ $(document).ready(function(){
   </tbody>
   <% end %>
 </table>
-<%= form_tag({:action => 'edit'}, {:class=>"button_to"}) do %>
-  <% if @data_set.comment %>
-    <%= @data_set.comment %><br />
-    <%= submit_tag 'edit comment', :name=>'edit_option' %>
-  <% else %>
-    <%= submit_tag 'add comment', :name=>'edit_option' %>
-  <% end %>
-
-  <%= hidden_field :data_set, :id, :value=>@data_set.id %>
-  <%= submit_tag 'edit name', :name=>'edit_option' %>
-<% end %>
-<%= button_to "download as tsv", {:action=>"save_as_tsv", :id=>@data_set.id} %>
-<% if @can_delete_data_files %>
-  <%= button_to "delete only data files", {:action=>"confirm_delete_only_data_files", :id=>@data_set.id} %>
-<% end %>
 <% if @can_register_bfabric %>
   <%= button_to "register bfabric", {:action=>"register_bfabric", :id=>@data_set.id}, :data=>{:confirm=>"Are you sure you want to register this dataset? DataSet ID:#{@data_set.id}? It will take some seconds."} %>
 <% end %>
@@ -186,7 +170,6 @@ Samples <button class="btn-link" id="hide">Hide</button><span id="hide_indicator
     </div>
   <% end %>
     </div>
-<%= button_to 'edit sample', "/sample/#{@data_set.id}" %>
 <% end %>
 </div>
 <hr />
@@ -222,5 +205,3 @@ Samples <button class="btn-link" id="hide">Hide</button><span id="hide_indicator
   <% end %>
 
 <hr />
-<%= button_to 'Go Job Script&Log', "/data_set/script_log.#{@data_set.id}", :method=>:get %>
-<%= button_to 'Show Job Parameter', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>
