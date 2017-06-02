@@ -1,7 +1,6 @@
 <div id='container_sushi_application_list' style="display: inline-block;">
   <% if @sushi_apps.empty? %>
     <span class="alert">No Available Application for this DataSet</span><br />
-    <%= button_to 'Back', '/run_application', :method=>:get %>
   <% else %>
     <%= form_tag(:controller => 'run_application', :action => 'set_parameters') do %>
       <%= hidden_field :data_set, :id, :value=>@data_set.id %>
