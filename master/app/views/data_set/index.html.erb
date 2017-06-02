@@ -68,7 +68,6 @@
 <div id="import" data-complete="<%= @warning %>"></div>
 
 <%= render 'shared/td' %>
-<h1>Project <%= session[:project] %></h1>
 <h3>DataSet <span style="font-size: 0.5em;"> - <%= link_to "show report", "/data_set/report", :method => :post %> - <a href="#" id="btn_multi_delete">delete</a> with selected</span></h3>
 <% if session[:employee] %>
 <%= form_tag(:action => 'bfabric') do %>
