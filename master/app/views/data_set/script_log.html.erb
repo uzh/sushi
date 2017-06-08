@@ -1,14 +1,14 @@
 <h1>Project <%= session[:project] %></h1>
 <hr />
 <h3>Job Script</h3>
-<% if @data_set %>
+<% if @job_list %>
 <table>
   <tr><th>Job ID</th><th>Script</th><th>Log</th>
-  <% @data_set.jobs.each do |job| %>
+  <% @job_list.each do |job| %>
   <tr>
-    <td><%= job.submit_job_id %></td>
-    <td><%= link_to 'JobScript', "/job_monitoring/print_script?job_id=#{job.submit_job_id}&sushi_job_id=#{job.id}" %></td>
-    <td><%= link_to 'Log', "/job_monitoring/print_log?job_id=#{job.submit_job_id}" %></td>
+    <td><%= job[0] %></td>
+    <td><%= link_to job[2], "/job_monitoring/print_script?job_id=#{job[0]}&sushi_job_id=#{@sushi_job_ids[job[0]]}" %></td>
+    <td><%= link_to job[2].gsub(/.sh/, '.log'), "/job_monitoring/print_log?job_id=#{job[0]}" %></td>
   </tr>
   <% end %>
   </tr>
