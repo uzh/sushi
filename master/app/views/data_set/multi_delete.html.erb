@@ -3,10 +3,9 @@
 <hr />
 <h2>Select</h2>
 <%= form_tag(:action=>:multi_destroy, :method=>:post) do %>
-  <%= radio_button 'option', 'delete', "only_sushi", {:checked => true} %> Delete data only<br />
+  <%= radio_button 'option', 'delete', "only_sushi", {:checked => true} %> Delete database entry<br />
   <% if @gstore_dataset_deletable %>
-  <%= radio_button 'option', 'delete', "only_gstore" %> Delete in database <br />
-  <%= radio_button 'option', 'delete', "also_gstore" %> Delete both<br />
+  <%= radio_button 'option', 'delete', "also_gstore" %> Delete data<br />
   <% else %>
     <br />
     Note:
