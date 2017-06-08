@@ -3,10 +3,10 @@
 <hr />
 <h2>Select</h2>
 <%= form_tag(:action=>:multi_destroy, :method=>:post) do %>
-  <%= radio_button 'option', 'delete', "only_sushi", {:checked => true} %> Delete <span class="alert">ONLY</span> entry in <span class="alert">Sushi DB</span><br />
+  <%= radio_button 'option', 'delete', "only_sushi", {:checked => true} %> Delete data only<br />
   <% if @gstore_dataset_deletable %>
-  <%= radio_button 'option', 'delete', "only_gstore" %> Delete <span style="color:red;font-weight:bold;">ONLY</span> data in <span class="alert">GStore</span> <br />
-  <%= radio_button 'option', 'delete', "also_gstore" %> Delete <span style="color:red;font-weight:bold;">BOTH</span> entry in <span class="alert">Sushi DB</span> and data in <span class="alert">GStore</span> <br />
+  <%= radio_button 'option', 'delete', "only_gstore" %> Delete in database <br />
+  <%= radio_button 'option', 'delete', "also_gstore" %> Delete both<br />
   <% else %>
     <br />
     Note:
@@ -23,7 +23,8 @@
   <% end %>
   <br /> 
   <%= hidden_field :option, :data_set_ids, :value=>@data_set_ids.join(',') %>
-  <%= submit_tag 'delete', :data=>{:confirm=>"Are you sure you want to delete the following DataSets?"} %>
+  <%= submit_tag 'delete' %>
+  <%= button_to 'back', "#", :id=>"history_back" %>
 <% end %>
 <hr />
 
@@ -45,5 +46,10 @@
   </tr>
 <% end %>
 </table>
-
+<%= javascript_tag do %>
+  $("#history_back").click(function() {
+    history.back()
+    return false;
+  });
+<% end %>
 
