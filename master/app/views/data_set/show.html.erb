@@ -1,6 +1,5 @@
 <script type="text/javascript">
 $(document).ready(function(){
-  $( document ).tooltip();
   var document_width=$("#contents").width();
   var table_width=$("#dataset_samples").width();
   if(table_width>document_width){
@@ -87,7 +86,6 @@ $(document).ready(function(){
 
 });
 </script>
-<%= render 'shared/td' %>
 <h3 id="whole_tree" style="display: inline">DataSets</h3>
 <%= hidden_field :tree, :state, :value=>"partial" %>
 - <%= link_to 'comment', '', :id=>"add_comment" %> 
@@ -182,7 +180,7 @@ Samples <button class="btn-link" id="hide">Hide</button><span id="hide_indicator
             <% elsif @sample_invalid_name[file_name] %>
                <span class="alert"><%= td file_name %></span>
             <% else %>
-               <%= td2 file_path %>
+               <%= td file_path %>
             <% end %>
           <% end %>
         </td>

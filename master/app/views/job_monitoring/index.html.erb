@@ -1,7 +1,7 @@
-<%= render 'shared/td' %>
 <script>
 $(document).ready(function(){
-    $('.dt').DataTable();
+  $(document).tooltip();
+  $('.dt').DataTable();
 });
 </script>
 <% if session[:all_job_list] %>

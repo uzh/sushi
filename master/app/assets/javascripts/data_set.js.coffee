@@ -3,6 +3,7 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 $ ->
+    $(document).tooltip()
     $("#refresh_sushi_list").click (event) ->
         event.preventDefault()
         data_set_id = $("#data_set_id").val()
