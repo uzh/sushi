@@ -1,9 +1,21 @@
 <script type="text/javascript">
 $(document).ready(function(){
-  $('.dt').DataTable();
-  $('.dt_no_pager').DataTable({
-    "paging": false
-  });
+  var document_width=$("#contents").width();
+  var table_width=$("#dataset_samples").width();
+  if(table_width>document_width){
+    $('.dt').DataTable({
+      "scrollX": true,
+    });
+    $('.dt_no_pager').DataTable({
+      "scrollX": true,
+      "paging": false
+    });
+  }else{
+    $('.dt').DataTable();
+    $('.dt_no_pager').DataTable({
+      "paging": false
+    });
+  }
   $("#data_set_tree").jstree({
     'core':{
       'data':{
