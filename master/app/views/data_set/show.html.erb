@@ -5,15 +5,28 @@ $(document).ready(function(){
   if(table_width>document_width){
     $('.dt').DataTable({
       "scrollX": true,
+      "columnDefs": [
+        { "width": "100pt", "targets": 0 }
+      ]
     });
     $('.dt_no_pager').DataTable({
       "scrollX": true,
-      "paging": false
+      "paging": false,
+      "columnDefs": [
+        { "width": "100pt", "targets": 0 }
+      ]
     });
   }else{
-    $('.dt').DataTable();
+    $('.dt').DataTable({
+      "columnDefs": [
+        { "width": "100pt", "targets": 0 }
+      ]
+    });
     $('.dt_no_pager').DataTable({
-      "paging": false
+      "paging": false,
+      "columnDefs": [
+        { "width": "100pt", "targets": 0 }
+      ]
     });
   }
   $("#data_set_tree").jstree({
