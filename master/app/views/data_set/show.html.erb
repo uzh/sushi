@@ -1,5 +1,6 @@
 <script type="text/javascript">
 $(document).ready(function(){
+  $( document ).tooltip();
   var document_width=$("#contents").width();
   var table_width=$("#dataset_samples").width();
   if(table_width>document_width){
@@ -181,7 +182,7 @@ Samples <button class="btn-link" id="hide">Hide</button><span id="hide_indicator
             <% elsif @sample_invalid_name[file_name] %>
                <span class="alert"><%= td file_name %></span>
             <% else %>
-               <%= td file_path %>
+               <%= td2 file_path %>
             <% end %>
           <% end %>
         </td>
