@@ -28,6 +28,17 @@
         <div id="navbar" class="navbar-collapse collapse list-inline">
             <ul class="nav navbar-nav" style="float: left !important;margin: 0 5px !important;">
                 <li class="dropdown" style="padding: 0">
+                   <a href="#" style="padding: 0px;line-height:60px;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><%= link_to 'DataSet', '/data_set', :method => :get %></li>
+                      <li><%= link_to 'Import', '/data_set/import', :method => :post %></li>
+                      <li><%= link_to 'Jobs', '/job_monitoring' %></li>
+                      <li><%= link_to 'gStore', "/projects/p#{session[:project]}" %></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav" style="float: left !important;margin: 0 5px !important;">
+                <li class="dropdown" style="padding: 0">
                    <a href="#" style="padding: 0px;line-height:60px;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Help<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/sushi_application">SushiApp List</a></li>
