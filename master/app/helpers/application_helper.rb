@@ -46,7 +46,7 @@ module ApplicationHelper
     end
   end
   def td(str)
-    if str.to_s.length >= 16
+    if str.to_s.length > 16
       str="<span title='"+str+"'>"+str.to_s.split(//)[0,16].join+"...</span>"
     end
     str.to_s.html_safe
