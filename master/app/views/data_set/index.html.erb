@@ -1,14 +1,14 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('.dt').DataTable();
-
         $("#data_set_tree").jstree({
             'core': {
                 'data': {
                     url: '/data_set/whole_treeviews'
                 }
             },
-            "plugins" : [ "state", "search" ]
+            "plugins" : [ "state", "search", "checkbox" ],
+            checkbox: { cascade: "", three_state: false, tie_selection : false, whole_node: false }
         });
         var to = false;
         $('#search_tree').keyup(function () {
@@ -21,6 +21,47 @@
     });
 
     $(document).ready(function () {
+      var count = 0;
+      var countup = function(){
+        count++;
+        var id = setTimeout(countup, 1000);
+        if(count > 2){　
+          clearTimeout(id);
+        }
+      }
+      countup();
+      $("#data_set_tree")
+        .on('check_node.jstree', function(e, data){
+              var all_checked = data.instance.get_checked();
+              var delete_flag_checked = $.map(all_checked, function(n, i){
+                  return ("delete_flag_" + n);
+              });
+              $('.target').each(function () {
+                if($.inArray(this.id, delete_flag_checked)>=0){
+                  $(this).prop("checked", true);
+                }else{
+                  $(this).prop("checked", false);
+                }
+              });
+        })
+        .on('uncheck_node.jstree', function(e, data){
+              var all_checked = data.instance.get_checked();
+              var delete_flag_checked = $.map(all_checked, function(n, i){
+                  return ("delete_flag_" + n);
+              });
+              $('.target').each(function () {
+                if($.inArray(this.id, delete_flag_checked)>=0){
+                  $(this).prop("checked", true);
+                }else{
+                  $(this).prop("checked", false);
+                }
+              });
+        })
+        .on('select_node.jstree', function(e, data){
+          if(count>1){
+            window.location.href = data.node.a_attr.href;
+          }
+        });
         $('#checkall').click(function (e) {
             if ($(this).prop("checked")) {
                 $('.target').each(function () {
@@ -39,15 +80,28 @@
     $(function () {
         $('#btn_multi_delete').click(function () {
             var flag = false;
+            var jstree_selected = [];
+            if($("#data_set_tree").length){
+              var tree = $("#data_set_tree").jstree(true);
+              var jstree_selected = tree._data.checkbox.selected;
+            }
             $('.target').each(function () {
                 if ($(this).prop("checked")) {
                     flag = true;
                     return false;
                 }
             });
-            if (flag == true) {
-                // selected at least one
-                $('#multi_delete').submit();
+            alert(flag);
+            alert(jstree_selected.length);
+            if ((flag == true) || (jstree_selected.length>0)) {
+                var form = $('#multi_delete');
+                // jstree checkbox search
+                if(jstree_selected.length>0){
+                  $.each(tree._data.checkbox.selected, function(i, val){
+                    form.append($('<input/>', {'type': 'hidden', 'id': 'delete_flag_'+val, 'name': "delete_flag["+val+"]", 'value': 'true'}));
+                  });
+                }
+                form.submit();
             } else {
                 // no selected
                 alert('Please select at least one DataSet.');
