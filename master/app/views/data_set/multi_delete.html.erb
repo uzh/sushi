@@ -1,16 +1,5 @@
 <script type="text/javascript">
   $(document).ready(function () {
-    $('#option_delete_only_gstore').click(function (e) {
-      if($(this).prop("checked")){
-        $("#option_delete_data_files").prop("checked", true);
-      }
-    });
-    $('#option_delete_data_files').click(function (e) {
-      if(!$(this).prop("checked")){
-        $("#option_delete_only_gstore").prop("checked", false);
-      }
-    });
-
     $('#btn_delete').click(function (e) {
       var flag = false;
       $('.checking').each(function () {
@@ -30,7 +19,6 @@
 <h2>Select</h2>
 <%= form_tag(:action=>:multi_destroy, :method=>:post) do %>
   <%= check_box :option_delete, :only_sushi, {:class=>"checking"} %> <%= tooltip("Delete database entry", "SUSHI database entry will be removed") %><br />
-  <%= check_box :option_delete, :data_files, {:class=>"checking"} %> <%= tooltip("Delete gStore data files", "Other data than .tsv and sub-directories will be removed from gStore") %><br />
   <% if @gstore_dataset_deletable %>
     <%= check_box :option_delete, :only_gstore, {:class=>["target", "checking"]} %> <%= tooltip("Delete gStore complete data", "All data files will be remove from gStore") %><br />
   <% else %>
