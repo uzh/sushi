@@ -610,7 +610,7 @@ class DataSetController < ApplicationController
   def destroy
     @fgcz = SushiFabric::Application.config.fgcz?
     if @data_set = DataSet.find_by_id(params[:id])
-      @option = params[:option]
+      @option = params[:option_delete]
 
       # check real data
       @sample_path = []
@@ -628,7 +628,7 @@ class DataSetController < ApplicationController
       if @sample_path.first
         target = File.join(SushiFabric::GSTORE_DIR, @sample_path.first)
         @command = @@workflow_manager.delete_command(target)
-        if @option[:delete] == 'only_gstore' or @option[:delete] == 'also_gstore'
+        if @option[:only_gstore] == "1"
           @command_log = `#{@command}`
           if request = @command_log.split and request_no = request[4]
             @greq_status_command = "g-req status #{request_no}"
@@ -637,7 +637,7 @@ class DataSetController < ApplicationController
       end
 
       # delete data in sushi
-      if @option[:delete] == 'only_sushi' or @option[:delete] == 'also_gstore'
+      if @option[:only_sushi] == "1"
         @data_set.samples.each do |sample|
           sample.delete
         end
