@@ -93,7 +93,7 @@ $(document).ready(function(){
   </ul>
 <% else %>
   <% if @sample_path.length == 1 %>
-    <%= button_to "Go gstore", File.join("/projects/", @sample_path.first), :method=>:get %>
+    <%= button_to "Show gStore", File.join("/projects/", @sample_path.first), :method=>:get %>
     <% @sample_path.sort.each do |path| %>
       <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
     <% end %>
