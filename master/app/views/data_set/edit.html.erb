@@ -63,7 +63,7 @@ $(document).ready(function(){
     <% end %>
     </tr>
   </table>
-  <%= button_to 'Go Job List', '/job_monitoring' %>
+  <%= button_to 'Show Job List', '/job_monitoring' %>
 <% end %>
 <hr />
 <h3>Samples</h3>
@@ -109,7 +109,7 @@ $(document).ready(function(){
   <% end %>
   </ul>
 <% else %>
-  <%= button_to "Go gstore", File.join("/projects/", @sample_path.first) if @sample_path.length == 1 %>
+  <%= button_to "Show gStore", File.join("/projects/", @sample_path.first) if @sample_path.length == 1 %>
   <% @sample_path.sort.each do |path| %>
     <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
   <% end %>
