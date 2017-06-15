@@ -645,6 +645,13 @@ class DataSetController < ApplicationController
       else
         @deleted_data_set = @data_set
       end
+
+      # delete data files
+      if @option[:data_files] == '1'
+        @data_set = DataSet.find_by_id(params[:id])
+        delete_candidates(@data_set)
+        render action: "confirm_delete_only_data_files"
+      end
     end
   end
   def multi_destroy
