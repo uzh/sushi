@@ -1,14 +1,16 @@
 <h1>Project <%= session[:project] %> <span style="color:gray;font-size:medium">Delete DataSet</span></h1>
 <hr />
 <h3>Log</h3>
+<% if @option[:only_sushi] == '1' %>
 The following DataSets are removed from Sushi DataBase..
 <ul>
   <% @deleted_data_sets.each do |deleted_data_set| %>
    <li><b><%= deleted_data_set.id %>.[<%= deleted_data_set.name %>]</b></li>
   <% end %>
 </ul>
+<% end %>
 <% unless @commands.empty? %>
-  <% if @option[:delete] == 'also_gstore' %>
+  <% if @option[:only_gstore] == '1' %>
     The following commands have been executed
     <pre>
     <% @commands.each do |command| %>
@@ -27,11 +29,4 @@ The following DataSets are removed from Sushi DataBase..
 <hr />
 <%= button_to "Show gStore", "/projects/p#{session[:project]}", :method=>:get %>
 <%= link_to "/projects/p#{session[:project]}","/projects/p#{session[:project]}" %>
-
-
-
-
-
-
-
 
