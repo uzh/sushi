@@ -648,6 +648,7 @@ class DataSetController < ApplicationController
     end
   end
   def multi_destroy
+    @option = params[:option_delete]
     @data_set_ids = params[:option][:data_set_ids].split(',')
     @commands = []
     @command_logs = []

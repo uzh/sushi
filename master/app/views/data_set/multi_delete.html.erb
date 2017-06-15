@@ -1,10 +1,38 @@
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('#option_delete_only_gstore').click(function (e) {
+      if($(this).prop("checked")){
+        $("#option_delete_data_files").prop("checked", true);
+      }
+    });
+    $('#option_delete_data_files').click(function (e) {
+      if(!$(this).prop("checked")){
+        $("#option_delete_only_gstore").prop("checked", false);
+      }
+    });
+
+    $('#btn_delete').click(function (e) {
+      var flag = false;
+      $('.checking').each(function () {
+          if ($(this).prop("checked")) {
+              flag = true;
+          }
+      });
+      if ((flag == false)) {
+        alert('Please select at least one option');
+        return false;
+      }
+    });
+  });
+</script>
 <h1>Project <%= session[:project] %> <span style="color:red;font-size:medium">Delete DataSet</span></h1>
 <hr />
 <h2>Select</h2>
 <%= form_tag(:action=>:multi_destroy, :method=>:post) do %>
-  <%= radio_button 'option', 'delete', "only_sushi", {:checked => true} %> Delete database entry<br />
+  <%= check_box :option_delete, :only_sushi, {:class=>"checking"} %> <%= tooltip("Delete database entry", "SUSHI database entry will be removed") %><br />
+  <%= check_box :option_delete, :data_files, {:class=>"checking"} %> <%= tooltip("Delete gStore data files", "Other data than .tsv and sub-directories will be removed from gStore") %><br />
   <% if @gstore_dataset_deletable %>
-  <%= radio_button 'option', 'delete', "also_gstore" %> Delete data<br />
+    <%= check_box :option_delete, :only_gstore, {:class=>["target", "checking"]} %> <%= tooltip("Delete gStore complete data", "All data files will be remove from gStore") %><br />
   <% else %>
     <br />
     Note:
@@ -21,7 +49,7 @@
   <% end %>
   <br /> 
   <%= hidden_field :option, :data_set_ids, :value=>@data_set_ids.join(',') %>
-  <%= submit_tag 'delete' %>
+  <%= submit_tag 'delete', :id=>"btn_delete" %>
   <%= button_to 'back', "#", :id=>"history_back" %>
 <% end %>
 <hr />
