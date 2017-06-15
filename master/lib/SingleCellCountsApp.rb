@@ -44,6 +44,7 @@ EOS
     @params['keepMultiHits'] = true
     @params['specialOptions'] = ''
     @params['mail'] = ""
+    @modules = ["Aligner/STAR", "Tools/samtools"]
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
