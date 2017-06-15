@@ -28,13 +28,13 @@
 <hr />
 <% if !@sample_path.empty? and @option[:delete]=='only_sushi' and File.exist?(File.join(SushiFabric::GSTORE_DIR, @sample_path.first)) %>
   <% if @sample_path.length > 0 %>
-    <%= button_to "Go gstore", File.join("/projects/", @sample_path.first), :method=>:get  %>
+    <%= button_to "Show gStore", File.join("/projects/", @sample_path.first), :method=>:get  %>
     <% @sample_path.sort.each do |path| %>
       <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
     <% end %>
   <% end %>
 <% else %>
-  <%= button_to "Go gstore", "/projects/p#{session[:project]}", :method=>:get %>
+  <%= button_to "Show gStore", "/projects/p#{session[:project]}", :method=>:get %>
   <%= link_to "/projects/p#{session[:project]}","/projects/p#{session[:project]}" %>
 <% end %>
 

@@ -208,7 +208,7 @@ Samples <button class="btn-link" id="hide">Hide</button><span id="hide_indicator
 
 <% unless @file_exist.values.inject{|a,b| a and b}%>
   <% if @sample_path.length == 1 %>
-    <%= button_to "Go gstore", File.join("/projects/", @sample_path.first), :method=>:get %>
+    <%= button_to "Show gStore", File.join("/projects/", @sample_path.first), :method=>:get %>
   <% end %>
   <span class="alert">RED file(s) or the following does not exist in gstore:</span> <%= SushiFabric::GSTORE_DIR %><br />
   <ul>
