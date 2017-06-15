@@ -118,9 +118,6 @@ $(document).ready(function(){
 - <%= link_to 'scripts', "/data_set/script_log.#{@data_set.id}", :method=>:get %>
 - <%= link_to 'parameters', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>
 - <a href="#" id="btn_multi_delete">delete</a>
-<% if session[:employee] and @data_set.parent_id and @data_set.child == false %>
-- <%= link_to "delete data files", {:action=>"confirm_delete_only_data_files", :id=>@data_set.id}, :method=>:post %>
-<% end %>
 <% if @can_register_bfabric %>
 - <%= link_to "register bfabric", {:action=>"register_bfabric", :id=>@data_set.id}, :data=>{:confirm=>"Are you sure you want to register this dataset? DataSet ID:#{@data_set.id}? It will take some seconds."}, :method=>:post %>
 <% end %>
