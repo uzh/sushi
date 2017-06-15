@@ -51,4 +51,9 @@ module ApplicationHelper
     end
     str.to_s.html_safe
   end
+  def tooltip(str, help)
+    str="<span title='"+help+"'>"+str+"</span>"
+    str.to_s.html_safe
+  end
+
 end
