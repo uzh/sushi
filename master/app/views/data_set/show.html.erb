@@ -97,8 +97,16 @@ $(document).ready(function(){
       }
     });
 
+    $('#btn_multi_delete').click(function () {
+       var form = $('#multi_delete');
+       form.submit();
+    });
+
 });
 </script>
+<%= form_tag('/data_set/multi_delete', :id=>"multi_delete") do %>
+  <%= hidden_field "delete_flag", "#{@data_set.id}" %>
+<% end %>
 <h3 id="whole_tree" style="display: inline">DataSets</h3>
 <%= hidden_field :tree, :state, :value=>"partial" %>
 - <%= link_to 'comment', '', :id=>"add_comment" %> 
@@ -109,6 +117,7 @@ $(document).ready(function(){
 - <%= link_to "download", {:action=>"save_as_tsv", :id=>@data_set.id}, :method=>:post %>
 - <%= link_to 'scripts', "/data_set/script_log.#{@data_set.id}", :method=>:get %>
 - <%= link_to 'parameters', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>
+- <a href="#" id="btn_multi_delete">delete</a>
 <% if session[:employee] and @data_set.parent_id and @data_set.child == false %>
 - <%= link_to "delete data files", {:action=>"confirm_delete_only_data_files", :id=>@data_set.id}, :method=>:post %>
 <% end %>
