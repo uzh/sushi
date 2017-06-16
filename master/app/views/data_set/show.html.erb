@@ -107,7 +107,7 @@ $(document).ready(function(){
 <%= form_tag('/data_set/multi_delete', :id=>"multi_delete") do %>
   <%= hidden_field "delete_flag", "#{@data_set.id}" %>
 <% end %>
-<h3 id="whole_tree" style="display: inline">DataSets</h3>
+<h3 id="whole_tree" style="display: inline">DataSet</h3>
 <%= hidden_field :tree, :state, :value=>"partial" %>
 - <%= link_to 'comment', '', :id=>"add_comment" %> 
 - <%= link_to 'name', '', :id=>"edit_name" %>

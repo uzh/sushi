@@ -119,7 +119,7 @@
 
 <div id="import" data-complete="<%= @warning %>"></div>
 
-<h3>DataSet <span style="font-size: 0.5em;"> - <%= link_to "show report", "/data_set/report", :method => :post %> - <a href="#" id="btn_multi_delete">delete</a> with selected</span></h3>
+<h3>DataSets <span style="font-size: 0.5em;"> - <%= link_to "show report", "/data_set/report", :method => :post %> - <a href="#" id="btn_multi_delete">delete</a> with selected</span></h3>
 <% if session[:employee] %>
 <%= form_tag(:action => 'bfabric') do %>
 <%= submit_tag 'BFabric', :data=>{:confirm=>"Are you sure you want to register datasets in BFabric?"} %>
