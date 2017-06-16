@@ -6,7 +6,7 @@
   </ul>
 <% else %>
   <%= form_tag(:action=>"run_delete_only_data_files", :id=>@data_set.id.to_s) do %>
-    <%= submit_tag 'delete', :data=>{:confirm=>"Are you sure you want to delete the data files??"} %>
+    <%= submit_tag 'delete', :data=>{:confirm=>"Are you sure you want to delete the data files??"}, :class=>"btn btn-info btn-sm raised" %>
   <% end %>
   <h3>Data files</h3>
   <ol>
