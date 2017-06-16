@@ -1,19 +1,46 @@
 <script type="text/javascript">
-$(document).ready(function(){
-  $("#data_set_tree").treeview({
-    url: "/data_set/treeviews.<%= params[:id] %>"
+  $(document).ready(function () {
+    $('#option_delete_only_gstore').click(function (e) {
+      if($(this).prop("checked")){
+        $("#option_delete_data_files").prop("checked", false);
+      }
     });
-});
+    $('#option_delete_only_sushi').click(function (e) {
+      if($(this).prop("checked")){
+        $("#option_delete_data_files").prop("checked", false);
+      }
+    });
+    $('#option_delete_data_files').click(function (e) {
+      if($(this).prop("checked")){
+        $("#option_delete_only_gstore").prop("checked", false);
+        $("#option_delete_only_sushi").prop("checked", false);
+      }
+    });
+
+    $('#btn_delete').click(function (e) {
+      var flag = false;
+      $('.checking').each(function () {
+          if ($(this).prop("checked")) {
+              flag = true;
+          }
+      });
+      if ((flag == false)) {
+        alert('Please select at least one option');
+        return false;
+      }
+    });
+  });
 </script>
-<%= render 'shared/td' %>
 <h1>Project <%= session[:project] %> <span style="color:red;font-size:medium">Delete DataSet</span></h1>
 <hr />
 <h2>Select</h2>
 <%= form_tag(@data_set.id.to_s, :method=>:delete) do %>
-  <%= radio_button 'option', 'delete', "only_sushi", {:checked => true} %> Delete <span class="alert">ONLY</span> entry in <span class="alert">Sushi DB</span><br />
+  <%= check_box :option_delete, :only_sushi, {:class=>"checking"} %> <%= tooltip("Delete database entry", "SUSHI database entry will be removed") %><br />
+  <% if session[:employee] and @data_set.parent_id and @data_set.child == false %>
+    <%= check_box :option_delete, :data_files, {:class=>"checking"} %> <%= tooltip("Delete gStore data files", "Other data than .tsv and sub-directories will be removed from gStore") %><br />
+  <% end %>
   <% if @gstore_dataset_deletable %>
-    <%= radio_button 'option', 'delete', "only_gstore" %> Delete <span style="color:red;font-weight:bold;">ONLY</span> data in <span class="alert">GStore</span> <br />
-    <%= radio_button 'option', 'delete', "also_gstore" %> Delete <span style="color:red;font-weight:bold;">BOTH</span> entry in <span class="alert">Sushi DB</span> and data in <span class="alert">GStore</span> <br />
+    <%= check_box :option_delete, :only_gstore, {:class=>["target", "checking"]} %> <%= tooltip("Delete gStore complete data", "All data files will be remove from gStore") %><br />
   <% else %>
     <br />
     Note: 
@@ -22,7 +49,8 @@ $(document).ready(function(){
     </ul>
   <% end %>
   <br />
-  <%= submit_tag 'delete', :data=>{:confirm=>"Are you sure you want to delete the '#{@data_set.name}'?"} %>
+  <%= submit_tag 'delete', :id=>"btn_delete" %>
+  <%= button_to 'back', "#", :id=>"history_back" %>
 <% end %>
 <hr />
 <h3>DataSet</h3>
@@ -44,11 +72,10 @@ $(document).ready(function(){
   </tr>
   <% end %>
 </table>
-<ul id="data_set_tree" class="filetree"></ul>
 <hr />
 <h3>Samples</h3>
 <% if @data_set %>
-    <div style="width:830px; overflow-x:scroll;">
+    <div id="scroll">
   <% if @data_set.samples.length > 20 %>
     <div style="height:450px; overflow-y:scroll;">
   <% end %>
@@ -63,7 +90,7 @@ $(document).ready(function(){
       <% @data_set.headers.each do |header| %>
         <td>
           <% unless @file_exist[sample.to_hash[header].to_s] %>
-            <font color=red><%= td(File.basename(sample.to_hash[header].to_s)) %></font>
+            <span class="alert"><%= td(File.basename(sample.to_hash[header].to_s)) %></span>
           <% else %>
             <% file_path = sample.to_hash[header].to_s %>
             <% file_name = File.basename(file_path) %>
@@ -86,7 +113,7 @@ $(document).ready(function(){
 <hr />
 
 <% unless @file_exist.values.inject{|a,b| a and b}%>
-  <font color=red>The RED file(s) does not exist in gstore:</font> <%= SushiFabric::GSTORE_DIR %><br />
+  <span class="alert">The RED file(s) does not exist in gstore:</span> <%= SushiFabric::GSTORE_DIR %><br />
   <ul>
   <% @file_exist.select{|file, exist| !exist}.each do |file, exist| %>
     <li><%= file %></li>
@@ -94,11 +121,17 @@ $(document).ready(function(){
   </ul>
 <% else %>
   <% if @sample_path.length == 1 %>
-    <%= button_to "Go gstore", File.join("/projects/", @sample_path.first), :method=>:get %>
+    <%= button_to "Show gStore", File.join("/projects/", @sample_path.first), :method=>:get %>
     <% @sample_path.sort.each do |path| %>
       <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
     <% end %>
   <% end %>
+<% end %>
+<%= javascript_tag do %>
+  $("#history_back").click(function() {
+    history.back()
+    return false;
+  });
 <% end %>
 
 

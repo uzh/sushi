@@ -45,5 +45,15 @@ module ApplicationHelper
       end
     end
   end
+  def td(str)
+    if str.to_s.length > 16
+      str="<span title='"+str+"'>"+str.to_s.split(//)[0,16].join+"...</span>"
+    end
+    str.to_s.html_safe
+  end
+  def tooltip(str, help)
+    str="<span title='"+help+"'>"+str+"</span>"
+    str.to_s.html_safe
+  end
 
 end

@@ -1,5 +1,34 @@
 <script type="text/javascript">
 $(document).ready(function(){
+  var document_width=$("#contents").width();
+  var table_width=$("#dataset_samples").width();
+  if(table_width>document_width){
+    $('.dt').DataTable({
+      "scrollX": true,
+      "columnDefs": [
+        { "width": "100pt", "targets": 0 }
+      ]
+    });
+    $('.dt_no_pager').DataTable({
+      "scrollX": true,
+      "paging": false,
+      "columnDefs": [
+        { "width": "100pt", "targets": 0 }
+      ]
+    });
+  }else{
+    $('.dt').DataTable({
+      "columnDefs": [
+        { "width": "100pt", "targets": 0 }
+      ]
+    });
+    $('.dt_no_pager').DataTable({
+      "paging": false,
+      "columnDefs": [
+        { "width": "100pt", "targets": 0 }
+      ]
+    });
+  }
   $("#data_set_tree").jstree({
     'core':{
       'data':{
@@ -10,35 +39,97 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
+    $("#whole_tree").click(function(){
+      var tree_state = $("#tree_state").val();
+      if(tree_state == "partial"){
+        $("#tree_state").val("whole");
+        $('#data_set_tree').jstree(true).settings.core.data.url = "/data_set/partial_treeviews2.<%= params[:id] %>";
+        $("#data_set_tree").jstree(true).refresh();
+      }else{
+        $("#tree_state").val("partial");
+        $('#data_set_tree').jstree(true).settings.core.data.url = "/data_set/partial_treeviews.<%= params[:id] %>";
+        $("#data_set_tree").jstree(true).refresh();
+      }
+    });
+
     var samples_length = $("#data_set_samples_length").val();
+    document.getElementById("hide_indicator").removeAttribute("class");
     if(parseInt(samples_length) > 5){
       $("#hide_show").hide();
-      $("#hide").text("Show");
+      $("#hide").html("Show");
+      $("#hide_indicator").addClass("arrow-down");
+
     }else{
       $("#hide_show").show();
       $("#hide").text("Hide");
+      $("#hide_indicator").addClass("arrow-up");
     }
+
     $("#hide").click(function(){
-        var text_val=$(this).text();
-        if(text_val.match(/Hide/)){
-	  $("#hide_show").hide(500);
-	  $("#hide").text("Show");
-	}else{
-	  $("#hide_show").show(500);
-	  $("#hide").text("Hide");
-	}
+
+        if ($("#hide_indicator").hasClass("arrow-up")){
+          $("#hide_show").hide(500);
+          $("#hide").text("Show");
+        } else {
+          $("#hide_show").show(500);
+          $("#hide").text("Hide");
+        }
+
+        $("#hide_indicator").toggleClass("arrow-up arrow-down");
+
     });
+    $("#add_comment").click(function(){
+      var data_set_id = $("#data_set_id").val();
+      var old_comment = $("#data_set_comment").val();
+      var new_comment = prompt("add comment", old_comment);
+
+      if (data_set_id != null && new_comment != null) {
+        $.post('/data_set/add_comment', {'data_set_id':data_set_id, 'data_set_comment':new_comment});
+      }
+    });
+    $("#edit_name").click(function(){
+      var data_set_id = $("#data_set_id").val();
+      var old_name = $("#data_set_name").val();
+      var new_name = prompt("edit name", old_name);
+
+      if (data_set_id != null && new_name != null) {
+        $.post('/data_set/edit_name', {'data_set_id':data_set_id, 'data_set_name':new_name});
+      }
+    });
+
+    $('#btn_multi_delete').click(function () {
+       var form = $('#multi_delete');
+       form.submit();
+    });
+
 });
 </script>
-<%= render 'shared/td' %>
-<h1>Project <%= session[:project] %></h1>
-<hr />
-<h3>DataSet</h3>
-<table>
+<%= form_tag('/data_set/multi_delete', :id=>"multi_delete") do %>
+  <%= hidden_field "delete_flag", "#{@data_set.id}" %>
+<% end %>
+<h3 id="whole_tree" style="display: inline">DataSets</h3>
+<%= hidden_field :tree, :state, :value=>"partial" %>
+- <%= link_to 'comment', '', :id=>"add_comment" %> 
+- <%= link_to 'name', '', :id=>"edit_name" %>
+<%= hidden_field :data_set, :name, :value=>@data_set.name %>
+<%= hidden_field :data_set, :id, :value=>@data_set.id %>
+<%= hidden_field :data_set, :comment, :value=>@data_set.comment.to_s %>
+- <%= link_to "download", {:action=>"save_as_tsv", :id=>@data_set.id}, :method=>:post %>
+- <%= link_to 'scripts', "/data_set/script_log.#{@data_set.id}", :method=>:get %>
+- <%= link_to 'parameters', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>
+- <a href="#" id="btn_multi_delete">delete</a>
+<% if @can_register_bfabric %>
+- <%= link_to "register bfabric", {:action=>"register_bfabric", :id=>@data_set.id}, :data=>{:confirm=>"Are you sure you want to register this dataset? DataSet ID:#{@data_set.id}? It will take some seconds."}, :method=>:post %>
+<% end %>
+
+<ul id="data_set_tree" class="filetree"></ul>
+<table id="datasets" class="pure-table pure-table-bordered">
+<thead>  
   <tr><th>ID</th><th>Name</th><th>Samples</th><th>Parent</th><th>Child(ren)IDs</th><th>Created</th><th>BFabricID</th></tr>
+</thead>
   <% if @data_set %>
-  <%= hidden_field :data_set, :id, :value => @data_set.id %>
   <%= hidden_field :data_set, :samples_length, :value => @data_set.samples.length %>
+  <tbody>
   <tr>
     <td><%= @data_set.id %></td>
     <td><%= td @data_set.name %></td>
@@ -57,64 +148,56 @@ $(document).ready(function(){
       <td></td>
     <% end %>
   </tr>
+  </tbody>
   <% end %>
 </table>
-<ul id="data_set_tree" class="filetree"></ul>
-<%= form_tag({:action => 'edit'}, {:class=>"button_to"}) do %>
-  <% if @data_set.comment %>
-    <%= @data_set.comment %><br />
-    <%= submit_tag 'edit comment', :name=>'edit_option' %>
-  <% else %>
-    <%= submit_tag 'add comment', :name=>'edit_option' %>
+<% if @data_set.comment %>
+  <br />
+  <p><%= @data_set.comment %></p>
+<% end %>
+<br />
+<br />
+<h3 style="display: inline">
+Samples <button class="btn-link" id="hide">Hide</button><span id="hide_indicator" class="arrow-up"></span>
+</h3>
+- <%= link_to 'edit', "/sample/#{@data_set.id}", :method=>:post %>
+  <% @sample_path.sort.each do |path| %>
+    - <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
   <% end %>
-
-  <%= hidden_field :data_set, :id, :value=>@data_set.id %>
-  <%= submit_tag 'edit name', :name=>'edit_option' %>
-<% end %>
-<%= button_to "download as tsv", {:action=>"save_as_tsv", :id=>@data_set.id} %>
-<% if @can_delete_data_files %>
-  <%= button_to "delete only data files", {:action=>"confirm_delete_only_data_files", :id=>@data_set.id} %>
-<% end %>
-<% if @can_register_bfabric %>
-  <%= button_to "register bfabric", {:action=>"register_bfabric", :id=>@data_set.id}, :data=>{:confirm=>"Are you sure you want to register this dataset? DataSet ID:#{@data_set.id}? It will take some seconds."} %>
-<% end %>
-
-<hr />
-<h3>Samples <button id="hide">Hide</button></h3>
-
 <div id="hide_show">
 <% if @data_set %>
-    <div style="width:830px; overflow-x:scroll;">
-  <% if @data_set.samples.length > 20 %>
-    <div style="height:450px; overflow-y:scroll;">
-  <% end %>
-<table>
+<% if @data_set.samples.length > 10 %>
+<table id="dataset_samples" class="dt pure-table pure-table-bordered">
+<% else %>
+<table id="dataset_samples" class="dt_no_pager pure-table pure-table-bordered">
+<% end %>
+<thead>
   <tr>
     <% @data_set.factor_first_headers.each do |header| %>
       <th><%= header %></th>
     <% end %>
   </tr>
+</thead>
+<tbody>
   <% @data_set.samples.each do |sample| %>
     <tr>
       <% @data_set.factor_first_headers.each do |header| %>
         <td>
           <% unless @file_exist[sample.to_hash[header].to_s] %>
-            <font color=red><%= File.basename(sample.to_hash[header].to_s) %></font>
+            <span class="alert"><%= File.basename(sample.to_hash[header].to_s) %></span>
           <% else %>
             <% file_path = sample.to_hash[header].to_s %>
             <% file_name = File.basename(file_path) %>
             <% if header.tag?('Link') %>
               <% if file_path =~ /^http/ %>
                 <%= link_to td(file_name), file_path, target: "_blank" %>
-              <% elsif @fgcz %>
-                <%= link_to td(file_name), File.join('http://fgcz-gstore.uzh.ch/projects', file_path), target: "_blank" %>
               <% else %>
                 <%= link_to td(file_name), File.join('/projects', file_path) %>
               <% end %>
             <% elsif header.tag?('File') %>
                <%= td file_name %>
             <% elsif @sample_invalid_name[file_name] %>
-               <font color=red><%= td file_name %></font>
+               <span class="alert"><%= td file_name %></span>
             <% else %>
                <%= td file_path %>
             <% end %>
@@ -123,46 +206,37 @@ $(document).ready(function(){
       <% end %>
     </tr>
   <% end %>
+</tbody>
 </table>
-  <% if @data_set.samples.length > 20 %>
-    </div>
-  <% end %>
-    </div>
-<%= button_to 'edit sample', "/sample/#{@data_set.id}" %>
 <% end %>
 </div>
 <hr />
 
 <% unless @file_exist.values.inject{|a,b| a and b}%>
   <% if @sample_path.length == 1 %>
-    <%= button_to "Go gstore", File.join("/projects/", @sample_path.first), :method=>:get %>
+    <%= button_to "Show gStore", File.join("/projects/", @sample_path.first), :method=>:get %>
   <% end %>
-  <font color=red>RED file(s) or the following does not exist in gstore:</font> <%= SushiFabric::GSTORE_DIR %><br />
+  <span class="alert">RED file(s) or the following does not exist in gstore:</span> <%= SushiFabric::GSTORE_DIR %><br />
   <ul>
   <% @file_exist.select{|file, exist| !exist}.each do |file, exist| %>
     <li><%= file %></li>
   <% end %>
   </ul>
-<% end %>
-<% if @sample_path.length == 1 %>
-  <%= button_to "Go gstore", File.join("/projects/", @sample_path.first), :method=>:get %>
-<% end %>
-  <% @sample_path.sort.each do |path| %>
-    <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
-  <% end %>
-
     <hr />
-    <h3>Applications</h3>
+<% end %>
+
+    <h3 style="display: inline">Applications</h3>
   <% if !@sample_invalid_name.keys.empty? %>
+    <br />
     <ul>
-      <li><font color=red>Invalid character is used in sample name. Please correct it.</font></li>
+      <li><span class="alert">Invalid character is used in sample name. Please correct it.</span></li>
       <li>Invalid characters: !@#$%^&*()<>{}[]/:;"='+| and SPACE</li>
     </ul>
   <% elsif @sushi_apps %>
-    <form> <button type="button" id="refresh_sushi_list">refresh</button> </form>
+    - <a href="" id="refresh_sushi_list">refresh</a>
+    <br />
+    <br />
     <%= render :partial => '/data_set/sushi_application_list' %>
   <% end %>
 
 <hr />
-<%= button_to 'Go Job Script&Log', "/data_set/script_log.#{@data_set.id}", :method=>:get %>
-<%= button_to 'Show Job Parameter', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>

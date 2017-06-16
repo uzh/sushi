@@ -1,23 +1,22 @@
-body {
-  height: 100%;
-  font-family: museo300, Arial, sans-serif;
-  background-color: #082a4c;
-  background-image: url(/assets/background.png);
-  background-repeat: repeat-x;
+body{
+    height:100%;
+    width: 100%;
+    padding-top: 80px;
+    background: linear-gradient(0deg, #122D4A,#9ECBD3) fixed no-repeat;
+    font-family: museo300, Arial, sans-serif;
 }
 
 div#wrapper {
-  width: 1500px;
-  min-height: 800px;
+  min-height: 500px;
+  min-width: 970px;
   margin: 0px auto;
   background-color: transparent;
-  background-image: url(/assets/xplosion.png);
   background-repeat: no-repeat;
   background-position: 85px 5px;
 }
 
 div#header {
-  height: 90px;
+  height: 80px;
   padding: 0px;
 }
 
@@ -34,7 +33,6 @@ div#header h1 {
 
 div#header nav {
   float: right;
-  margin-top: 55px;
   padding: 4px;
   background-color: white;
   border: 1px solid white;
@@ -50,24 +48,30 @@ div#header nav a:hover {
 }
 
 div#header, div#footer {
-  width: 860px;
-  color: #666;
+  width: 100%;
   margin: 0px auto;
 }
 
 div#footer {
+  color: lightgrey;
   text-align: center;
-  margin: 5px auto;
+  margin-top: 10px;
 }
 
 div#contents {
-  width: 830px;
-  min-height: 360px;
+  width: 90%;
+  min-height: 450px;
   background-color: #fff;
   color: #000;
-  margin: 0px auto;
-  padding: 15px;
+  margin: 0 auto 0px auto;
+  padding: 10px 15px 15px 15px;
   border: solid 1px #ccc;
+  border-radius: 2px;
+}
+
+div#scroll {
+  width: 100%;
+  overflow-x:scroll;
 }
 
 table {
@@ -84,24 +88,22 @@ table tr th {
   border-bottom: 2px solid black;
 }
 
+/*
 table tr:nth-child(even) {
 	background: #bed2df;
 }
-
+*/
 #login_form_wrapper {
-  width: 800px;
   height: 300px;
+  text-align: center;
   background-image: url(/assets/makisushi.png);
-  background-position: 80px 50px;
+  background-position: 20% 50px;
   background-repeat: no-repeat;
 }
 
 #login_form {
   width: 400px;
-  float: right;
-  margin-right: 60px;
-  margin-top: 20px;
-  text-align: center;
+  margin: 20px auto; 
 }
 
 #login_form #info {
@@ -125,53 +127,273 @@ table tr:nth-child(even) {
   font-weight: bold;
 }
 
-#login_form input {
-  font-size: 1.2em;
-  padding: 0.2em;
-}
-
-#login_form input[type=submit] {
-	-moz-box-shadow:inset 0px 1px 5px 0px #bbdaf7;
-	-webkit-box-shadow:inset 0px 1px 5px 0px #bbdaf7;
-	box-shadow:inset 0px 1px 5px 0px #bbdaf7;
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #378de5) );
-	background:-moz-linear-gradient( center top, #79bbff 5%, #378de5 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#378de5');
-	background-color:#79bbff;
-	-moz-border-radius:6px;
-	-webkit-border-radius:6px;
-	border-radius:6px;
-	border:1px solid #84bbf3;
-	display:inline-block;
-	color:#ffffff;
-	font-family:arial;
-	font-size:15px;
-	font-weight:bold;
-	padding:6px 10px;
-	text-decoration:none;
-	text-shadow:1px 1px 0px #528ecc;
-}
-#login_form input[type=submit]:hover {
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #378de5), color-stop(1, #79bbff) );
-	background:-moz-linear-gradient( center top, #378de5 5%, #79bbff 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#378de5', endColorstr='#79bbff');
-	background-color:#378de5;
-}
-#login_form input[type=submit]:active {
-	position:relative;
-	top:1px;
-}
-
 #login_form #links p {
   font-size: small;
   margin: 0em;
 }
 
-#login_form #links p a, #login_form #links p a:visited {
-  text-decoration: none;
-  color: blue;
+/* Template-specific stuff
+ *
+ * Customizations just for the template; these are not necessary for anything
+ * with disabling the responsiveness.
+ */
+
+/* Account for fixed navbar */
+body {
+  padding-top: 70px;
+  padding-bottom: 30px;
 }
 
-#login_form #links p a:hover {
-  color: red;
+body,
+.navbar-fixed-top,
+.navbar-fixed-bottom {
+  min-width: 700px;
 }
+
+/* Don't let the lead text change font-size. */
+.lead {
+  font-size: 16px;
+}
+
+/* Finesse the page header spacing */
+.page-header {
+  margin-bottom: 30px;
+}
+.page-header .lead {
+  margin-bottom: 10px;
+}
+
+
+/* Non-responsive overrides
+ *
+ * Utilize the following CSS to disable the responsive-ness of the container,
+ * grid system, and navbar.
+ */
+
+/* Reset the container */
+.container {
+  /* width: 970px; */
+  width: 100%;
+  max-width: none !important;
+}
+
+/* Demonstrate the grids */
+/*
+.col-xs-4 {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: #eee;
+  background-color: rgba(86,61,124,.15);
+  border: 1px solid #ddd;
+  border: 1px solid rgba(86,61,124,.2);
+}
+*/
+.container .navbar-header,
+.container .navbar-collapse {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+/* Always float the navbar header */
+.navbar-header {
+  float: left;
+}
+
+/* Undo the collapsing navbar */
+.navbar-collapse {
+  display: block !important;
+  height: auto !important;
+  padding-bottom: 0;
+  overflow: visible !important;
+  visibility: visible !important;
+}
+
+.navbar-toggle {
+  display: none;
+}
+.navbar-collapse {
+  border-top: 0;
+}
+
+.navbar-brand {
+  margin-left: -15px;
+}
+
+/* Always apply the floated nav */
+.navbar-nav {
+  float: left;
+  margin: 0;
+}
+.navbar-nav > li {
+  float: left;
+}
+.navbar-nav > li > a {
+  padding: 15px;
+}
+
+/* Redeclare since we override the float above */
+.navbar-nav.navbar-right {
+  float: right;
+}
+
+/* Undo custom dropdowns */
+.navbar .navbar-nav .open .dropdown-menu {
+  position: absolute;
+  float: left;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, .15);
+  border-width: 0 1px 1px;
+  border-radius: 0 0 4px 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+  color: #333;
+}
+.navbar .navbar-nav .open .dropdown-menu > li > a:hover,
+.navbar .navbar-nav .open .dropdown-menu > li > a:focus,
+.navbar .navbar-nav .open .dropdown-menu > .active > a,
+.navbar .navbar-nav .open .dropdown-menu > .active > a:hover,
+.navbar .navbar-nav .open .dropdown-menu > .active > a:focus {
+  color: #fff !important;
+  background-color: #428bca !important;
+}
+.navbar .navbar-nav .open .dropdown-menu > .disabled > a,
+.navbar .navbar-nav .open .dropdown-menu > .disabled > a:hover,
+.navbar .navbar-nav .open .dropdown-menu > .disabled > a:focus {
+  color: #999 !important;
+  background-color: transparent !important;
+}
+
+/* Undo form expansion */
+.navbar-form {
+  float: left;
+  width: auto;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-right: 0;
+  margin-left: 0;
+  border: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+/* Copy-pasted from forms.less since we mixin the .form-inline styles. */
+.navbar-form .form-group {
+  display: inline-block;
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+
+.navbar-form .form-control {
+  display: inline-block;
+  width: auto;
+  vertical-align: middle;
+}
+
+.navbar-form .form-control-static {
+  display: inline-block;
+}
+
+.navbar-form .input-group {
+  display: inline-table;
+  vertical-align: middle;
+}
+
+.navbar-form .input-group .input-group-addon,
+.navbar-form .input-group .input-group-btn,
+.navbar-form .input-group .form-control {
+  width: auto;
+}
+
+.navbar-form .input-group > .form-control {
+  width: 100%;
+}
+
+.navbar-form .control-label {
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+
+.navbar-form .radio,
+.navbar-form .checkbox {
+  display: inline-block;
+  margin-top: 0;
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+
+.navbar-form .radio label,
+.navbar-form .checkbox label {
+  padding-left: 0;
+}
+
+.navbar-form .radio input[type="radio"],
+.navbar-form .checkbox input[type="checkbox"] {
+  position: relative;
+  margin-left: 0;
+}
+
+.navbar-form .has-feedback .form-control-feedback {
+  top: 0;
+}
+
+/* Undo inline form compaction on small screens */
+.form-inline .form-group {
+  display: inline-block;
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+
+.form-inline .form-control {
+  display: inline-block;
+  width: auto;
+  vertical-align: middle;
+}
+
+.form-inline .form-control-static {
+  display: inline-block;
+}
+
+.form-inline .input-group {
+  display: inline-table;
+  vertical-align: middle;
+}
+.form-inline .input-group .input-group-addon,
+.form-inline .input-group .input-group-btn,
+.form-inline .input-group .form-control {
+  width: auto;
+}
+
+.form-inline .input-group > .form-control {
+  width: 100%;
+}
+
+.form-inline .control-label {
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+
+.form-inline .radio,
+.form-inline .checkbox {
+  display: inline-block;
+  margin-top: 0;
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+.form-inline .radio label,
+.form-inline .checkbox label {
+  padding-left: 0;
+}
+
+.form-inline .radio input[type="radio"],
+.form-inline .checkbox input[type="checkbox"] {
+  position: relative;
+  margin-left: 0;
+}
+
+.form-inline .has-feedback .form-control-feedback {
+  top: 0;
+}
+
