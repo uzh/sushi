@@ -37,8 +37,8 @@
   <% end %>
   <br /> 
   <%= hidden_field :option, :data_set_ids, :value=>@data_set_ids.join(',') %>
-  <%= submit_tag 'delete', :id=>"btn_delete" %>
-  <%= button_to 'back', "#", :id=>"history_back" %>
+  <%= submit_tag 'delete', :id=>"btn_delete", :class=>"btn btn-danger btn-sm raised" %>
+  <%= button_to 'back', "#", :id=>"history_back", :class=>"btn btn-info btn-sm raised" %>
 <% end %>
 <hr />
 
