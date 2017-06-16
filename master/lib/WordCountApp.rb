@@ -17,6 +17,7 @@ class WordCountApp < SushiFabric::SushiApp
     @params['count_option'] = ['', '-c', '-l', '-m', '-w']
     @params['test_option'] = ['option1', 'option2', 'option3']
     @params['test_option', 'multi_selection'] = true
+    @params['test_option2'] = ''
     @params['note'] = '' 
     @required_columns = ['Name', 'Read1']
     @required_params = []
@@ -25,11 +26,13 @@ class WordCountApp < SushiFabric::SushiApp
   def next_dataset
     {
       'Name'=>@dataset['Name'],
-      'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats')
+      'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats'),
+      'Options' => @params['test_option']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def set_default_parameters
     @params['note'] = @dataset[0]['Read1 [File]']
+    @params['test_option2'] = @dataset[0]['Options'].to_s.split(',')
   end
   def preprocess
     if @factors = get_columns_with_tag('Factor') and @factors.first
