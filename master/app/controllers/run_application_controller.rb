@@ -80,7 +80,7 @@ class RunApplicationController < ApplicationController
       end
     end
     params[:parameters].each do |key, value|
-      @sushi_app.params[key] = if key == 'node'
+      @sushi_app.params[key] = if key == 'node' or @sushi_app.params[key, "multi_selection"]
                                  if value.instance_of?(Array)
                                    value.map{|v| v.chomp}.join(',')
                                  else

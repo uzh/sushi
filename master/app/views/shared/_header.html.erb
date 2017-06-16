@@ -14,32 +14,62 @@
 
    });
 </script>
-<div id="header">
-  <nav id="login">
-  <% if user_signed_in? %>
-    <% project_init %>
-    <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
-    -
-    <%= link_to "Today's Menu", "/" %>
-		-
-    <%= link_to "SushiApp List", "/sushi_application" %>
-    -
-    <%= link_to "Help", "/sushi_doc_md.html" %>
-    <%= form_tag(:action => "index", :controller => "home") do %>
-      Project 
-      <%= text_field :project, :number, :value=>"#{session[:project]}", :size=>10 %>
+
+<nav class="navbar navbar-default navbar-fixed-top" style="height: 65px !important;">
+    <div class="container">
+<!--         <div class="navbar-header"> -->
+
+      <%= link_to "/", :method => :get, :class => 'navbar-brand', :style => "margin-left: 0" do %>
+      <%= image_tag "sushifabric.png", class: "img-responsive" %>
+      <% end %>
+
+        <!-- </div> -->
+        <!-- menu navigation bar -->
+        <div id="navbar" class="navbar-collapse collapse list-inline">
+            <ul class="nav navbar-nav" style="float: left !important;margin: 0 5px !important;">
+                  <li style="padding: 0px 3px;line-height:60px;">-</li>
+                  <li><%= link_to 'DataSet', '/data_set', :method => :get, :style => "padding: 0px 3px;line-height:60px;" %></li>
+                  <li style="padding: 0px 3px;line-height:60px;">-</li>
+                  <li><%= link_to 'Import', '/data_set/import', :method => :post, :style => "padding: 0px 3px;line-height:60px;" %></li>
+                  <li style="padding: 0px 3px;line-height:60px;">-</li>
+                  <li><%= link_to 'Jobs', '/job_monitoring', :style => "padding: 0px 3px;line-height:60px;" %></li>
+                  <li style="padding: 0px 3px;line-height:60px;">-</li>
+                  <li><%= link_to 'gStore', "/projects/p#{session[:project]}", :style => "padding: 0px 3px;line-height:60px;" %></li>
+                  <li style="padding: 0px 3px;line-height:60px;">-</li>
+            </ul>
+
+            <ul class="nav navbar-nav" style="float: left !important;margin: 0 5px !important;">
+                <li class="dropdown" style="padding: 0">
+                   <a href="#" style="padding: 0px;line-height:60px;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Help<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/sushi_application">SushiApp List</a></li>
+                        <li><a href="/sushi_doc_md.html">Documentation</a></li>
+                    </ul>
+                </li>
+            </ul>
+        <% if user_signed_in? %>
+        <% project_init %>
+        <%= form_tag({:action => "index", :controller => "home"}, {:class => "navbar-form navbar-left", :style => "padding: 0 15px"}) do %>
+        <div class="form-group" style="line-height:45px;">
+      <%= label(:project, :number, "Project") %>
+      <%= text_field :project, :number, :value=>"#{session[:project]}", :size => 10, :style => "line-height: 16px" %>
       <%= select :select_project, :number, session[:projects], :prompt=>'project list' %>
       <% if session[:employee] %>
       BF<%= select :bfabric_registration, :off, ["ON", "OFF"], :selected=>(session[:off_bfabric_registration] ? 'OFF' : 'ON') %>
       <% end %>
+        </div>
     <% end %>
-  <% elsif !SushiFabric::Application.config.fgcz? %>
-    <%= link_to "Today's Menu", "/" %>
-		-
-    <%= link_to "SushiApp List", "/sushi_application" %>
-    -
-    <%= link_to "Help", "/sushi_doc_md.html" %>
-  <% end %>
-  </nav>
-  <h1>SushiFabric</h1>
-</div>
+	<ul class="nav navbar-nav navbar-right" style="margin-right: 0">
+		<li>
+        <% if current_user %>
+            <span style="line-height: 60px;" lass="homelinks">Hi, <%= current_user.login %> | 
+        <% end %>
+        <%= link_to "Sign out", destroy_user_session_path, :method => :delete, :class => 'homelinks' %></span>
+		</li>
+	    </ul>
+ <% end %>
+	</div>
+        <!-- END menu navigation bar -->
+    </div>
+</nav>
+

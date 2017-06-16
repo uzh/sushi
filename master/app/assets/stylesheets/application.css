@@ -11,8 +11,11 @@
  *= require_self
  *= require_tree .
  *= require jstree-default
+ *= require bootstrap.min
  */
-
+a { 
+  color: #337ab7;
+}
 p.notice, p.alert {
   position: absolute;
   top: 0;
@@ -43,18 +46,5 @@ p.notice {
   border-color: #41A317;
   color: #348017;
   font-weight: bold;
-}
-
-td span {
-  display:none; 
-  padding:0px 3px; 
-  margin-left:8px;
-}
-td:hover span.tooltip {
-  display:inline; 
-  position:absolute; 
-  background:#ffffff; 
-  border:1px solid #cccccc; 
-  color:#6c6c6c;
 }
 

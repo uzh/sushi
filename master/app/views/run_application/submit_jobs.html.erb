@@ -1,9 +1,14 @@
-<meta http-equiv="refresh" content="7;URL=/data_set/p<%= session[:project] %>/<%= @data_set_id %>">
 <script type="text/javascript">
+  function gobackDataset(){
+    var project_number = $("#project_number").val();
+    var data_set_id = $("#data_set_id").val();
+    window.location.href = "/data_set/p" + project_number + "/" + data_set_id
+  }
   dispLoading("submitting...");
+  setTimeout("gobackDataset()", 7000);
 </script>
-<h1>Project <%= session[:project] %></h1>
-<hr />
 <h2>Submit Jobs</h2>
+<%= hidden_field :project, :number, :value=>session[:project] %>
+<%= hidden_field :data_set, :id, :value=>@data_set_id %>
 Now job(s) are being submitted...and automatically back to DataSet view
 <p class="alert">DO NOT close this window please</p>

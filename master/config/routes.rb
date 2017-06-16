@@ -31,6 +31,7 @@ SushiFabric::Application.routes.draw do
     collection do
       get :whole_treeviews
       get :partial_treeviews
+      get :partial_treeviews2
       post :import
       post :delete
       get :script_log
@@ -40,6 +41,8 @@ SushiFabric::Application.routes.draw do
       get :index_full
       post :report
       post :bfabric
+      post :add_comment
+      post :edit_name
     end
   end
   # aliases
