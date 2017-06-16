@@ -36,6 +36,8 @@ EOS
     @params['minFeatureOverlap', 'description'] = "minimum overlap of a read with a transcript feature"
     @params['minMapQuality'] = 10
     @params['keepMultiHits'] = true
+    @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
+    @params['transcriptTypes', 'multi_selection'] = true
     @params['specialOptions'] = ''
     @params['mail'] = ""
   end
@@ -62,7 +64,8 @@ EOS
      'refFeatureFile'=>@params['refFeatureFile'],
      'strandMode'=>@params['strandMode'],
      'paired'=>@params['paired'],
-     'Read Count'=>@dataset['Read Count']
+     'Read Count'=>@dataset['Read Count'],
+     'transcriptTypes'=>@params['transcriptTypes']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
