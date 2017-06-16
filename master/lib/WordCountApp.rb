@@ -15,6 +15,8 @@ class WordCountApp < SushiFabric::SushiApp
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
     @params['refGroup'] = '' ## TODO: this should be a value from the selected column
     @params['count_option'] = ['', '-c', '-l', '-m', '-w']
+    @params['test_option'] = ['option1', 'option2', 'option3']
+    @params['test_option', 'multi_selection'] = true
     @params['note'] = '' 
     @required_columns = ['Name', 'Read1']
     @required_params = []
@@ -39,6 +41,7 @@ class WordCountApp < SushiFabric::SushiApp
     commands << "gunzip -c $GSTORE_DIR/#{@dataset['Read1']} |wc > #{@dataset['Name']}.stats\n"
     commands << "echo 'Factor columns: [#{@factor_cols.join(',')}]'\n"
     commands << "echo 'Factors: [#{@factors.join(',')}]'\n"
+    commands << "echo 'test_option: #{@params["test_option"]}'\n"
     commands << "echo '#{GlobalVariables::SUSHI}'\n"
     commands << "echo '#{SUSHI}'\n"
     commands
