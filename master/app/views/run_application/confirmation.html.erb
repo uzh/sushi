@@ -1,5 +1,3 @@
-<h1>Project <%= session[:project] %></h1>
-<hr />
 <h2>Confirmation</h2>
 <!--
 <h3> debug print </h3>
@@ -47,7 +45,7 @@ sushi_app class <%= @sushi_app.class %><br /><br />
   </tr>
 </table>
 <h2>Input DataSet</h2>
-<div style="width:830px; overflow-x:scroll;">
+<div id="scroll">
 <table>
   <tr>
     <% @data_set.headers.each do |header| %>

@@ -5,7 +5,8 @@ File: <%= @parameters_tsv.to_s %>
 <% unless File.exist?(@parameters_tsv.to_s) %>
   does not exist.
 <% end %>
-<table>
+<table id="job_parameter" class="dt">
+<tbody>
   <tr><th>Parameter</th><th>Value</th>
   <% if File.exist?(@parameters_tsv.to_s) %>
     <% @parameters.each do |header, value| %>
@@ -15,6 +16,7 @@ File: <%= @parameters_tsv.to_s %>
     <% end %>
   <% end %>
   </tr>
+</tbody>
 </table>
 <hr />
 <%= button_to 'Back to DataSet', "/data_set/#{@data_set.id}", :method=>:get %>

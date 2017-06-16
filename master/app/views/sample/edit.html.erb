@@ -4,8 +4,8 @@
 <hr />
 <h3>Samples</h3>
 <% if @data_set %>
-    <div style="width:830px; overflow-x:scroll;">
   <%= form_tag({:controller => 'sample',:action => 'show'}) do %>
+    <div id="scroll">
     <table>
       <tr>
         <% @data_set.factor_first_headers.each_with_index do |header, j| %>
@@ -60,7 +60,7 @@
         </tr>
       <% end %>
     </table>
-  </div>
+    </div>
     <%= submit_tag 'save', :name=>'edit' %><br />
     <%= submit_tag 'save as child', :name=>'edit_save_as_child' %> Child DataSet name: <%= text_field :child_dataset, :name, :value=>"Child_#{@data_set.name}", :size=>30 %>
   <% end %>
