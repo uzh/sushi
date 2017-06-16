@@ -140,7 +140,7 @@ table tr:nth-child(even) {
 
 /* Account for fixed navbar */
 body {
-  padding-top: 70px;
+  padding-top: 80px;
   padding-bottom: 30px;
 }
 
