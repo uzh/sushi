@@ -29,6 +29,8 @@ Quality control after counting reads<br/>
     @params['runGO'] = ['false', 'true']
     @params['backgroundExpression'] = 10
     @params['backgroundExpression', "description"] = "counts to be added to shrink estimated log2 ratios"
+    @params['transcriptTypes'] = ''
+    @params['transcriptTypes', 'multi_selection'] = true
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
@@ -52,6 +54,7 @@ Quality control after counting reads<br/>
     if dataset_has_column?('refFeatureFile')
       @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
     end
+    @params['transcriptTypes'] = @dataset[0]['transcriptTypes'].to_s.split(',')
   end
   def commands
     run_RApp("EzAppCountQC")

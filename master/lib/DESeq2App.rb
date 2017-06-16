@@ -36,6 +36,8 @@ class DESeq2App < SushiFabric::SushiApp
     @params['grouping2', 'description'] = 'specify the column name of your secondary factor --only in case your experiment has a second factor, that should enter the linear model for differential expression!'
     @params['backgroundExpression'] = 10
     @params['backgroundExpression', "description"] = "counts to be added to shrink estimated log2 ratios"
+    @params['transcriptTypes'] = ''
+    @params['transcriptTypes', 'multi_selection'] = true
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
@@ -63,6 +65,7 @@ class DESeq2App < SushiFabric::SushiApp
     if dataset_has_column?('refFeatureFile')
       @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
     end
+    @params['transcriptTypes'] = @dataset[0]['transcriptTypes'].to_s.split(',')
   end
   def commands
     run_RApp("EzAppDeseq2")
