@@ -141,7 +141,7 @@ $(document).ready(function(){
         <%= "," unless child == @data_set.data_sets.last %>
       <% end %>
     </td>
-    <td><%= @data_set.created_at.to_s.gsub(/UTC/,'') %></td>
+    <td><%= @data_set.created_at.strftime("%Y-%b-%d %X ") + SushiFabric::Application.config.time_zone.split('/').last %></td>
     <% if @data_set.bfabric_id %>
       <td><%= link_to @data_set.bfabric_id, "http://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{@data_set.bfabric_id}&tab=details", target: "_blank" %></td>
     <% else %>
