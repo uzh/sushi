@@ -51,7 +51,7 @@
           <% when 'scratch' %>
             <%= text_field :parameters, key.to_sym, :value => "#{value}" %> GB
           <% when 'process_mode' %>
-            <% if value.kind_of?(Array)%>
+            <% if value.kind_of?(Array) %>
               <%= select :parameters, key.to_sym, value %>
             <% else %>
               <%= text_field :parameters, key.to_sym, :value => value, :disabled => true %>
@@ -76,7 +76,11 @@
             <% elsif value.instance_of?(TrueClass) or value.instance_of?(FalseClass) %>
               <%= select :parameters, key.to_sym, ['true', 'false'], :selected => value.to_s %>
             <% elsif value.instance_of?(Array) %>
-              <%= select :parameters, key.to_sym, value, :selected => value.first %>
+              <% if @sushi_app.params[key, "multi_selection"] %>
+                <%= select_tag "parameters[#{key}]", options_for_select(value), :multiple => true, :size=>value.length %><br />
+              <% else  %>
+                <%= select :parameters, key.to_sym, value, :selected => value.first %>
+              <% end %>
             <% elsif value.instance_of?(Hash) %>
               <%= select :parameters, key.to_sym, value, :selected => '' %>
             <% else %>
