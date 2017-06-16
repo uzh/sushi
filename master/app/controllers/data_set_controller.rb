@@ -279,7 +279,7 @@ class DataSetController < ApplicationController
       state_opened = false
       trace_treeviews(root, data_set, parent_id, data_set.project.number, data_set, state_opened)
     end
-    render :json => root.sort_by{|node| node["id"]}
+    render :json => root.sort_by{|node| node["id"]}.reverse
   end
   def partial_treeviews2
     root = []
@@ -315,7 +315,7 @@ class DataSetController < ApplicationController
       end
     end
  
-    render :json => root.sort_by{|node| node["id"]}
+    render :json => root.sort_by{|node| node["id"]}.reverse
   end
   def whole_treeviews
     @project = Project.find_by_number(session[:project].to_i)
@@ -341,7 +341,7 @@ class DataSetController < ApplicationController
       root << node
     end
     
-    render :json => root.sort_by{|node| node["id"]}
+    render :json => root.sort_by{|node| node["id"]}.reverse
   end
   def import_from_gstore
     params[:project] = session[:project]
