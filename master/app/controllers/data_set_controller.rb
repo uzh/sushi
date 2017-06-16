@@ -324,7 +324,8 @@ class DataSetController < ApplicationController
     root_node = {
       "parent" => "#",
       "text" => "DataSets",
-      "id" => 0
+      "id" => 0,
+      "state" => { "checkbox_disabled" => true }
     }
     root << root_node
     @project.data_sets.each do |data_set|
