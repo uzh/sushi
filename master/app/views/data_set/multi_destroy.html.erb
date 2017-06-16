@@ -5,7 +5,7 @@
 The following DataSets are removed from Sushi DataBase..
 <ul>
   <% @deleted_data_sets.each do |deleted_data_set| %>
-   <li><b><%= deleted_data_set.id %>.[<%= deleted_data_set.name %>]</b></li>
+    <li><b><%= deleted_data_set.id %>.[<%= deleted_data_set.name %>]</b></li>
   <% end %>
 </ul>
 <% end %>
@@ -27,6 +27,6 @@ The following DataSets are removed from Sushi DataBase..
 <% end %>
 <table>
 <hr />
-<%= button_to "Show gStore", "/projects/p#{session[:project]}", :method=>:get %>
+<%= button_to "Show gStore", "/projects/p#{session[:project]}", :method=>:get, :class=>"btn btn-info btn-sm raised" %>
 <%= link_to "/projects/p#{session[:project]}","/projects/p#{session[:project]}" %>
 

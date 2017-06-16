@@ -653,6 +653,7 @@ class DataSetController < ApplicationController
         delete_candidates(@data_set)
         render action: "confirm_delete_only_data_files"
       end
+      @deleted_data_set
     end
   end
   def multi_destroy
