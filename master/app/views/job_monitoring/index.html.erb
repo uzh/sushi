@@ -12,12 +12,12 @@ $(document).ready(function(){
 <% if session[:employee] %>
   <% unless session[:all_job_list] %>
     <%= form_tag(:action => "index") do %>
-      <%= submit_tag 'All Job List' %>
+      <%= submit_tag 'All Job List', :class=>"btn btn-info btn-sm raised" %>
       <%= hidden_field :option, :all_job_list, :value=>true %>
     <% end %>
   <% else %>
     <%= form_tag(:action => "index") do %>
-      <%= submit_tag 'Project Job List' %>
+      <%= submit_tag 'Project Job List', :class=>"btn btn-info btn-sm raised" %>
       <%= hidden_field :option, :project_job_list, :value=>true %>
     <% end %>
   <% end %>

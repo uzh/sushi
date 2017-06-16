@@ -49,8 +49,8 @@
     </ul>
   <% end %>
   <br />
-  <%= submit_tag 'delete', :id=>"btn_delete" %>
-  <%= button_to 'back', "#", :id=>"history_back" %>
+  <%= submit_tag 'delete', :id=>"btn_delete", :class=>"btn btn-danger btn-sm raised" %>
+  <%= button_to 'back', "#", :id=>"history_back", :class=>"btn btn-info btn-sm raised" %>
 <% end %>
 <hr />
 <h3>DataSet</h3>
@@ -121,7 +121,7 @@
   </ul>
 <% else %>
   <% if @sample_path.length == 1 %>
-    <%= button_to "Show gStore", File.join("/projects/", @sample_path.first), :method=>:get %>
+    <%= button_to "Show gStore", File.join("/projects/", @sample_path.first), :method=>:get, :class=>"btn btn-info btn-sm raised" %>
     <% @sample_path.sort.each do |path| %>
       <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
     <% end %>

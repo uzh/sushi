@@ -48,7 +48,7 @@
         <% end %>
       <% end %>
     </td>
-    <td> <%= select :page, :unit, {"10" => 10, "50" => 50, "100" => 100}, :selected => @page_unit %> <%= submit_tag "Reload" %></td>
+    <td> <%= select :page, :unit, {"10" => 10, "50" => 50, "100" => 100}, :selected => @page_unit %> <%= submit_tag "Reload", :class=>"btn btn-info btn-sm raised" %></td>
   </tr>
 </table>
 <% end %>
