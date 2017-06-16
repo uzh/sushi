@@ -2,9 +2,11 @@
 <hr />
 <h3>Log</h3>
 <ul>
-  <li><b><%= @deleted_data_set.id %>.[<%= @deleted_data_set.name %>]</b> is removed from Sushi DataBase.</li>
+  <% if @option[:only_sushi]=='1' %>
+    <li><b><%= @deleted_data_set.id %>.[<%= @deleted_data_set.name %>]</b> is removed from Sushi DataBase.</li>
+  <% end %>
   <% unless @sample_path.empty? %>
-    <% if @option[:delete] == 'also_gstore' %>
+    <% if @option[:only_gstore] == '1' %>
       <li>The files in <b><%= @sample_path.first %></b> are removed from GStore.</li>
       <li>The following command has been executed
       <pre><%= @command %></pre>
@@ -15,7 +17,7 @@
         </li>
       <% end %>
     <% elsif File.exist?(File.join(SushiFabric::GSTORE_DIR, @sample_path.first)) %>
-      <li>The files in <b><%= @sample_path.first %> still <font color=red>remain in gStore</font></b>.</li>
+      <li>The files in <b><%= @sample_path.first %> still <span class="alert">remain in gStore</span></b>.</li>
       <% if @fgcz %>
         <li>If you want to delete the files too, run
         <pre><%= @command %></pre>
@@ -26,15 +28,15 @@
 </ul>
 <table>
 <hr />
-<% if !@sample_path.empty? and @option[:delete]=='only_sushi' and File.exist?(File.join(SushiFabric::GSTORE_DIR, @sample_path.first)) %>
+<% if !@sample_path.empty? and @option[:only_sushi]=='1' and File.exist?(File.join(SushiFabric::GSTORE_DIR, @sample_path.first)) %>
   <% if @sample_path.length > 0 %>
-    <%= button_to "Go gstore", File.join("/projects/", @sample_path.first), :method=>:get  %>
+    <%= button_to "Show gStore", File.join("/projects/", @sample_path.first), :method=>:get  %>
     <% @sample_path.sort.each do |path| %>
       <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
     <% end %>
   <% end %>
 <% else %>
-  <%= button_to "Go gstore", "/projects/p#{session[:project]}", :method=>:get %>
+  <%= button_to "Show gStore", "/projects/p#{session[:project]}", :method=>:get %>
   <%= link_to "/projects/p#{session[:project]}","/projects/p#{session[:project]}" %>
 <% end %>
 

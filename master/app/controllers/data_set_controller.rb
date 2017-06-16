@@ -29,7 +29,7 @@ class DataSetController < ApplicationController
       @warning = warning
       session['import_fail'] = nil
     end
-    top(20)
+    top(100)
   end
   def index_full
     top
@@ -63,7 +63,7 @@ class DataSetController < ApplicationController
         report_base = data_set.samples.first.to_hash[data_set.headers[i]]
         base = File.basename(report_base)
         report_link = if data_set.completed_samples.to_i == data_set.samples_length
-                        report_url = File.join('http://fgcz-gstore.uzh.ch/projects', report_base)
+                        report_url = File.join('/projects', report_base)
                         "<a href='#{report_url}'>#{base}</a>"
                       else 
                         base
@@ -86,9 +86,16 @@ class DataSetController < ApplicationController
     @tree.concat @root
   end
   def script_log
-    @data_set = if id = params[:format]
-                  DataSet.find_by_id(id)
+    data_set = if id = params[:format]
+                 DataSet.find_by_id(id)
+               end
+    @job_list = if job_ids = data_set.jobs.map{|job| job.submit_job_id} and
+                   project = session[:project]
+                  job_ids = job_ids.join(",")
+                  @@workflow_manager.job_list(false, session[:project], job_ids:job_ids)
                 end
+    @sushi_job_ids = Hash[*data_set.jobs.map{|job| [job.submit_job_id.to_s, job.id]}.flatten]
+    @job_list = @job_list.split(/\n/).map{|job| job.split(/,/)}
   end
   def set_runnable_apps(refresh = true)
     if @data_set = DataSet.find_by_id(params[:id]) or (@data_set_id and @data_set = DataSet.find_by_id(@data_set_id))
@@ -190,6 +197,23 @@ class DataSetController < ApplicationController
       @sushi_apps_category = @sushi_apps.keys.sort
     end
   end
+  def add_comment
+    if id = params[:data_set_id] and comment = params[:data_set_comment]
+      data_set = DataSet.find_by_id(id)
+      data_set.comment = comment
+      data_set.save
+    end 
+    redirect_to(:action => "show") and return
+  end
+  def edit_name
+    if id = params[:data_set_id] and name = params[:data_set_name]
+      data_set = DataSet.find_by_id(id)
+      data_set.name = name
+      data_set.save
+      session[:latest_data_set_id] = data_set.id
+    end
+    redirect_to(:action => "show") and return
+  end
   def refresh_apps
     set_runnable_apps
     show
@@ -197,7 +221,7 @@ class DataSetController < ApplicationController
   def edit
     show
   end
-  def trace_treeviews(root, data_set, parent_id, project_number, current_data_set, state_opened)
+  def trace_treeviews(root, data_set, parent_id, project_number, current_data_set, state_opened, data_set_ids={})
     data_set_id = data_set.id
     node_text = if data_set == current_data_set
              "<b>" + data_set.data_sets.length.to_s+" "+data_set.name+"</b> "+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>"
@@ -209,16 +233,17 @@ class DataSetController < ApplicationController
             "parent" => parent_id,
             "state" => {"opened":state_opened},
             "a_attr" => {"href"=>"/data_set/p#{project_number}/#{data_set_id}", 
-                         "onclick"=>"window.open('/data_set/p#{project_number}/#{data_set_id}')"}
+                         "onclick"=>"location.href = '/data_set/p#{project_number}/#{data_set_id}'"}
             }
     root << node
+    data_set_ids[data_set_id] = true
     data_set.data_sets.each do |child|
       if child.project.number==project_number
-        trace_treeviews(root, child, data_set.id, project_number, current_data_set, state_opened)
+        trace_treeviews(root, child, data_set.id, project_number, current_data_set, state_opened, data_set_ids)
       end
     end
   end
-  def back_trace_treeviews(tree, data_set)
+  def back_trace_treeviews(tree, data_set, data_set_ids={})
     parent_id = if parent = data_set.data_set
                   parent.id
                 else
@@ -232,11 +257,12 @@ class DataSetController < ApplicationController
             "parent" => parent_id,
             "state" => {"opened":true},
             "a_attr" => {"href"=>"/data_set/p#{project_number}/#{data_set_id}", 
-                         "onclick"=>"window.open('/data_set/p#{project_number}/#{data_set_id}')"}
+                         "onclick"=>"location.href = '/data_set/p#{project_number}/#{data_set_id}'"}
             }
     tree << node
+    data_set_ids[data_set_id] = true
     if parent
-      back_trace_treeviews(tree, parent)
+      back_trace_treeviews(tree, parent, data_set_ids)
     end
   end
   def partial_treeviews
@@ -253,27 +279,69 @@ class DataSetController < ApplicationController
       state_opened = false
       trace_treeviews(root, data_set, parent_id, data_set.project.number, data_set, state_opened)
     end
-    render :json => root.reverse
+    render :json => root.sort_by{|node| node["id"]}.reverse
+  end
+  def partial_treeviews2
+    root = []
+    data_set_ids = {}
+    if current_data_set_id = params[:format]
+      # search root parental dataset
+      data_set = DataSet.find_by_id(current_data_set_id.to_i)
+      parent_id = if parent = data_set.data_set
+                    back_trace_treeviews(root, parent, data_set_ids)
+                    parent.id
+                  else
+                    "#"
+                  end
+      state_opened = false
+      trace_treeviews(root, data_set, parent_id, data_set.project.number, data_set, state_opened, data_set_ids)
+    end
+
+    @project = Project.find_by_number(session[:project].to_i)
+    project_dataset_ids = Hash[*(@project.data_sets.map{|data_set| [data_set.id, true]}.flatten)]
+    @project.data_sets.each do |data_set|
+      unless data_set_ids[data_set.id]
+        node = {"id" => data_set.id, 
+                "text" => data_set.data_sets.length.to_s+" "+data_set.name+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>",
+                "a_attr" => {"href"=>"/data_set/p#{@project.number}/#{data_set.id}", 
+                             "onclick"=>"location.href = '/data_set/p#{@project.number}/#{data_set.id}'"}
+                }
+        if parent = data_set.data_set and project_dataset_ids[parent.id]
+          node["parent"] = parent.id
+        else
+          node["parent"] = "#"
+        end
+        root << node
+      end
+    end
+ 
+    render :json => root.sort_by{|node| node["id"]}.reverse
   end
   def whole_treeviews
     @project = Project.find_by_number(session[:project].to_i)
     root = []
     project_dataset_ids = Hash[*(@project.data_sets.map{|data_set| [data_set.id, true]}.flatten)]
+    root_node = {
+      "parent" => "#",
+      "text" => "DataSets",
+      "id" => 0,
+      "state" => { "checkbox_disabled" => true }
+    }
+    root << root_node
     @project.data_sets.each do |data_set|
       node = {"id" => data_set.id, 
               "text" => data_set.data_sets.length.to_s+" "+data_set.name+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>",
-              "a_attr" => {"href"=>"/data_set/p#{@project.number}/#{data_set.id}", 
-                           "onclick"=>"window.open('/data_set/p#{@project.number}/#{data_set.id}')"}
+              "a_attr" => {"href"=>"/data_set/p#{@project.number}/#{data_set.id}"}
               }
       if parent = data_set.data_set and project_dataset_ids[parent.id]
         node["parent"] = parent.id
       else
-        node["parent"] = "#"
+        node["parent"] = 0
       end
       root << node
     end
     
-    render :json => root.reverse
+    render :json => root.sort_by{|node| node["id"]}.reverse
   end
   def import_from_gstore
     params[:project] = session[:project]
@@ -543,7 +611,7 @@ class DataSetController < ApplicationController
   def destroy
     @fgcz = SushiFabric::Application.config.fgcz?
     if @data_set = DataSet.find_by_id(params[:id])
-      @option = params[:option]
+      @option = params[:option_delete]
 
       # check real data
       @sample_path = []
@@ -561,7 +629,7 @@ class DataSetController < ApplicationController
       if @sample_path.first
         target = File.join(SushiFabric::GSTORE_DIR, @sample_path.first)
         @command = @@workflow_manager.delete_command(target)
-        if @option[:delete] == 'only_gstore' or @option[:delete] == 'also_gstore'
+        if @option[:only_gstore] == "1"
           @command_log = `#{@command}`
           if request = @command_log.split and request_no = request[4]
             @greq_status_command = "g-req status #{request_no}"
@@ -570,7 +638,7 @@ class DataSetController < ApplicationController
       end
 
       # delete data in sushi
-      if @option[:delete] == 'only_sushi' or @option[:delete] == 'also_gstore'
+      if @option[:only_sushi] == "1"
         @data_set.samples.each do |sample|
           sample.delete
         end
@@ -578,9 +646,17 @@ class DataSetController < ApplicationController
       else
         @deleted_data_set = @data_set
       end
+
+      # delete data files
+      if @option[:data_files] == '1'
+        @data_set = DataSet.find_by_id(params[:id])
+        delete_candidates(@data_set)
+        render action: "confirm_delete_only_data_files"
+      end
     end
   end
   def multi_destroy
+    @option = params[:option_delete]
     @data_set_ids = params[:option][:data_set_ids].split(',')
     @commands = []
     @command_logs = []

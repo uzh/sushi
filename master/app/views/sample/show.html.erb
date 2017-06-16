@@ -4,7 +4,7 @@
 <hr />
 <h3>Samples</h3>
 <% if @data_set %>
-    <div style="width:830px; overflow-x:scroll;">
+  <div id="scroll">
 <table>
   <tr>
     <th></th>
@@ -42,7 +42,7 @@
     </tr>
   <% end %>
 </table>
-</div>
+  </div>
   <%= form_tag({:controller => 'sample',:action => 'edit'}) do %>
     <%= hidden_field :edit_option, :add, :value=>'row' %> 
     <%= image_submit_tag 'add.png', :name=>'edit' %>

@@ -1,52 +1,60 @@
+<h1 style="margin: 15px 0 35px 15px;">Project <%= session[:project] %></h1>
 
-<% if current_user %>
-<span style="color:gray;font-size:medium">Hi, <%= current_user.login %></span>
-<% end %>
-<h1>Project <%= session[:project] %> <span style="color:gray;font-size:medium">Today's Menu</span></h1>
-<table class="pages_presentation">
-  <tr>
-    <td class="page">
-      <%= link_to image_tag('sushi_icons/tamago.png'), "/data_set", :method => :get %>
-      <h1><%= link_to 'DataSet', "/data_set", :method => :get %></h1>
-      <p>
-      You can see, edit and delete data set.<br />
-      You can execute sushi application.
-      </p>
-    </td>
-    <td class="page">
-      <%= link_to image_tag('sushi_icons/tako.png'), '/data_set/import', :method => :post %>
-      <h1><%= link_to 'Import DataSet', '/data_set/import', :method => :post %></h1>
-      <p>
-        Import DataSet from .tsv file.
-      </p>
-    </td>
-  </tr>
-  <tr>
-    <td class="page">
-      <%= link_to image_tag('sushi_icons/maguro.png'), '/job_monitoring' %>
-      <h1><%= link_to 'Check Jobs', '/job_monitoring' %></h1>
-      <p>
-        Check your submitted jobs and the status.
-      </p>
-    </td>
-    <td class="page">
-      <%= link_to image_tag('sushi_icons/uni.png'), "/projects/p#{session[:project]}" %>
-      <h1><%= link_to 'gStore', "/projects/p#{session[:project]}" %></h1>
-      <p>
-        Go directly to result folder.
-        You can see and download files of result data.
-      </p>
-    </td>
-  </tr>
-<!--
-  <tr>
-    <td class="page">
-      <%= link_to image_tag('sushi_icons/californiaroll.png'), "/sushi_application" %>
-      <h1><%= link_to 'Sushi Application List', "/sushi_application" %></h1>
-      <p>
-        You can see all sushi applications.
-      </p>
-    </td>
-  </tr>
--->
-</table>
+<div class="row" style="padding: 0 10px;">
+    <div class="col-xs-6 col-md-3">
+        <div class="box">
+            <%= link_to "/data_set", :method => :get do %>
+            <%= image_tag "sushi_icons/tamago.png" %>
+            <div class="caption">
+                <h3><%= link_to 'DataSet', "/data_set", :method => :get %></h3>
+                <p>
+                    You can see, edit and delete data set.<br/>
+                    You can execute sushi application.
+                </p>
+            </div>
+            <% end %>
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-3">
+        <div class="box">
+            <%= link_to '/data_set/import', :method => :post do %>
+            <%= image_tag "sushi_icons/tako.png" %>
+
+            <div class="caption">
+                <h3><%= link_to 'Import DataSet', '/data_set/import', :method => :post %></h3>
+                <p>
+                    Import DataSet from .tsv file.
+                </p>
+            </div>
+            <% end %>
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-3">
+        <div class="box">
+            <%= link_to '/job_monitoring' do %>
+            <%= image_tag "sushi_icons/maguro.png" %>
+            <div class="caption">
+                <h3><%= link_to 'Check Jobs', '/job_monitoring' %></h3>
+                <p>
+                    Check your submitted jobs and the status.
+                </p>
+            </div>
+            <% end %>
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-3">
+        <div class="box">
+            <%= link_to "/projects/p#{session[:project]}" do %>
+            <%= image_tag "sushi_icons/uni.png" %>
+            <div class="caption">
+                <h3><%= link_to 'gStore', "/projects/p#{session[:project]}" %></h3>
+                <p>
+                    Show result folder.
+                    You can see and download files of result data.
+                </p>
+            </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
