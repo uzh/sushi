@@ -15,9 +15,10 @@ class WordCountApp < SushiFabric::SushiApp
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
     @params['refGroup'] = '' ## TODO: this should be a value from the selected column
     @params['count_option'] = ['', '-c', '-l', '-m', '-w']
-    @params['test_option'] = ['option1', 'option2', 'option3']
-    @params['test_option', 'multi_selection'] = true
+    @params['test_option1'] = ['option1', 'option2', 'option3']
+    @params['test_option1', 'multi_selection'] = true
     @params['test_option2'] = ''
+    @params['test_option2', 'multi_selection'] = true
     @params['note'] = '' 
     @required_columns = ['Name', 'Read1']
     @required_params = []
@@ -27,12 +28,12 @@ class WordCountApp < SushiFabric::SushiApp
     {
       'Name'=>@dataset['Name'],
       'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats'),
-      'Options' => @params['test_option']
+      'Options' => @params['test_option1']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def set_default_parameters
+    @params['test_option2'] = @dataset[0]['Options'].split(',')
     @params['note'] = @dataset[0]['Read1 [File]']
-    @params['test_option2'] = @dataset[0]['Options'].to_s.split(',')
   end
   def preprocess
     if @factors = get_columns_with_tag('Factor') and @factors.first
@@ -44,7 +45,8 @@ class WordCountApp < SushiFabric::SushiApp
     commands << "gunzip -c $GSTORE_DIR/#{@dataset['Read1']} |wc > #{@dataset['Name']}.stats\n"
     commands << "echo 'Factor columns: [#{@factor_cols.join(',')}]'\n"
     commands << "echo 'Factors: [#{@factors.join(',')}]'\n"
-    commands << "echo 'test_option: #{@params["test_option"]}'\n"
+    commands << "echo 'test_option1: #{@params["test_option1"]}'\n"
+    commands << "echo 'test_option2: #{@params["test_option2"]}'\n"
     commands << "echo '#{GlobalVariables::SUSHI}'\n"
     commands << "echo '#{SUSHI}'\n"
     commands

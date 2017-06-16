@@ -92,6 +92,11 @@ class RunApplicationController < ApplicationController
                                  eval(value)
                                end
     end
+    @sushi_app.params.each do |key, value|
+      if @sushi_app.params[key, "multi_selection"] and !params[:parameters][key]
+        @sushi_app.params[key] = ''
+      end
+    end
     if @sushi_app.params['node'].empty?
       @sushi_app.workflow_manager = @@workflow_manager
       @sushi_app.params['node'] = @sushi_app.default_node
