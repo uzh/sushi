@@ -8,9 +8,9 @@
         <th>Category</th><th>Application</th>
       <% @sushi_apps_category.each do |category| %>
         <tr><td><%= category %></td>
-          <td>
+          <td style="padding: 2px;">
             <% @sushi_apps[category].each do |app| %>
-              <%= submit_tag app.to_s, :name=>'app', :class=>"btn btn-info btn-sm raised" %>
+              <%= submit_tag app.to_s, :name=>'app', :class=>"btn btn-info btn-sm raised", :style=>"padding: 2px" %>
             <% end %>
           </td>
         </tr>
