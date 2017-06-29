@@ -5,19 +5,7 @@
 					 var data_set_id = $("#data_set_id").val();
            $.get("/run_application/factor_select?grouping=" + group_name + "&data_set_id=" + data_set_id);
        })
-
-       $('#parameters_sampleGroup, #parameters_refGroup').change(function(){
-           var next_dataset_name = $("#next_dataset_name").val();
-           var sample_group = $("#parameters_sampleGroup").val();
-           var ref_group = $("#parameters_refGroup").val();
-           if(sample_group != '' && ref_group != ''){
-             next_dataset_name = next_dataset_name.replace(/_[0-9a-zA-Z-]+?--over--.+/g, '');
-             next_dataset_name = next_dataset_name + "_" + sample_group + "--over--" + ref_group;
-             $('#next_dataset_name').val(next_dataset_name);
-           }
-       })
    });
-
 </script>
 
 <h2><%= @sushi_app.class %> <span style="color:gray;font-size:medium">Set Parameters</span></h2>
