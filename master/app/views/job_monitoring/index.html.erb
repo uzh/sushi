@@ -1,7 +1,9 @@
 <script>
 $(document).ready(function(){
   $(document).tooltip();
-  $('.dt').DataTable();
+  $('.dt').DataTable(
+      {"order":[[ 0, "desc" ]]}
+      );
 });
 </script>
 <% if session[:all_job_list] %>
