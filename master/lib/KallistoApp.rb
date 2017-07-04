@@ -43,6 +43,7 @@ EOS
     @params['minTailQuality'] = 0
     @params['minAvgQuality'] = 20
     @params['mail'] = ""
+    @modules = ["Tools/samtools", "Aligner/kallisto", "QC/Flexbar", "QC/Trimmomatic"]
   end
   def preprocess
     if @params['paired']
@@ -59,14 +60,14 @@ EOS
   end
   def next_dataset
     ds = {
-      'Name'=>@dataset['Name'], 
+      'Name'=>@dataset['Name'],
       'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
       'bootstrappedCount [File]'=>File.join(@result_dir, "#{@dataset['Name']}.h5"),
       'runInfo [File]'=>File.join(@result_dir, "#{@dataset['Name']}.json")
     }
     if @params['pseudobam']
       ds.merge!(
-       'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+       'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
        'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai")
       )
     end
@@ -89,4 +90,3 @@ if __FILE__ == $0
   run KallistoApp
 
 end
-

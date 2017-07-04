@@ -28,6 +28,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @params['cmdOptions'] = '--nomodel --extsize 147 -g hs --bw 200'
     @params['specialOptions'] = ''
     @params['mail'] = ''
+    @modules = ["Tools/UCSC", "Tools/BEDTools"]
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
@@ -36,7 +37,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     end
     if dataset_has_column?('paired')
       @params['paired'] = @dataset[0]['paired']
-    end                               
+    end
  end
 
   def next_dataset
@@ -45,7 +46,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     bedfile_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.bed")
     peakseq_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.fa")
 
-    {'Name'=>@dataset['Name'], 
+    {'Name'=>@dataset['Name'],
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile'],
@@ -64,4 +65,3 @@ end
 if __FILE__ == $0
 
 end
-

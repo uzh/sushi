@@ -15,14 +15,14 @@ class FlashApp < SushiFabric::SushiApp
 Fast Length Adjustment of SHort reads
 <a href='http://ccb.jhu.edu/software/FLASH/'>http://ccb.jhu.edu/software/FLASH/</a>
 EOS
-    
+
     @required_columns = ['Name','Read1','Read2']
     @required_params = ['paired']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '30'
     @params['scratch'] = '100'
-    
+
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify the commandline options for flash; do not specify any option that is already covered by the dedicated input fields'
     @params['trimAdapter'] = true
@@ -38,6 +38,7 @@ EOS
     @params['specialOptions'] = ''
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
+    @modules = ["QC/Flexbar", "Tools/FLASH", "QC/Trimmomatic"]
   end
   def preprocess
     if @params['paired']
@@ -48,14 +49,14 @@ EOS
     @params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
-    {'Name'=>@dataset['Name'], 
-     'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.extendedFrags.fastq.gz"), 
+    {'Name'=>@dataset['Name'],
+     'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.extendedFrags.fastq.gz"),
      'FlashLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_flash.log"),
      'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
      'Species'=>@dataset['Species'],
      'Read Count'=>@dataset['Read Count'],
-     
-     
+
+
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
@@ -96,4 +97,3 @@ if __FILE__ == $0
   #usecase.test_run
 
 end
-

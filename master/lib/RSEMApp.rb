@@ -40,6 +40,7 @@ EOS
     @params['transcriptFasta'] = ''
     @params['transcriptFasta', 'description'] = 'give full path of transcript fasta file; in that case the build is ignored; if it comes from trinity assembly the gene-isoform associations will be extracted and used'
     @params['mail'] = ""
+    @modules = ["Tools/samtools", "Aligner/Bowtie", "Aligner/RSEM", "QC/Flexbar", "QC/Trimmomatic"]
   end
   def preprocess
     if @params['paired']
@@ -54,9 +55,9 @@ EOS
   end
   def next_dataset
     if @params['keepBam']
-      {'Name'=>@dataset['Name'], 
+      {'Name'=>@dataset['Name'],
        'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
-       'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+       'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
        'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
        'Species'=>@dataset['Species'],
        'refBuild'=>@params['refBuild'],
@@ -66,7 +67,7 @@ EOS
        'paired'=>@params['paired'],
        'Read Count'=>@dataset['Read Count']
       }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
-    else 
+    else
       {'Name'=>@dataset['Name'],
        'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
        'Species'=>@dataset['Species'],
@@ -89,4 +90,3 @@ if __FILE__ == $0
   run RSEMApp
 
 end
-

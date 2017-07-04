@@ -49,6 +49,7 @@ EOS
     @params['minTailQuality'] = 0
     @params['minAvgQuality'] = 20
     @params['mail'] = ""
+    @modules = ["Aligner/Salmon", "QC/Flexbar", "QC/Trimmomatic"]
   end
   def preprocess
     if @params['paired']
@@ -65,7 +66,7 @@ EOS
   end
   def next_dataset
     {
-      'Name'=>@dataset['Name'], 
+      'Name'=>@dataset['Name'],
       'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
       'Species'=>@dataset['Species'],
       'refBuild'=>@params['refBuild'],
@@ -85,4 +86,3 @@ if __FILE__ == $0
   run SalmonApp
 
 end
-

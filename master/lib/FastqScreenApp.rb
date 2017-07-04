@@ -42,6 +42,7 @@ EOS
     @params['cmdOptions'] = "-k 10 --trim5 4 --trim3 4 --very-sensitive"
     @params['specialOptions'] = ''
     @params['mail'] = ""
+    @modules = ["Aligner/Bowtie2", "QC/Flexbar", "QC/FastQScreen", "QC/Trimmomatic"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
@@ -96,4 +97,3 @@ if __FILE__ == $0
   #usecase.test_run
 
 end
-

@@ -40,7 +40,8 @@ EOS
     @params['minReadLength'] = 20
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Aligner/STAR", "Tools/samtools"]
+    # Python2 is required because of RSeQC package
+    @modules = ["Aligner/STAR", "Tools/samtools", "QC/Flexbar", "Dev/jdk", "Tools/Picard", "QC/Trimmomatic", "Dev/Python2"]
   end
   def preprocess
     if @params['paired']
@@ -58,8 +59,8 @@ EOS
   end
   def next_dataset
      dataset = {
-        'Name'=>@dataset['Name'], 
-        'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+        'Name'=>@dataset['Name'],
+        'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
         'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
         'IGV Starter [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
         'Species'=>@dataset['Species'],
@@ -88,4 +89,3 @@ if __FILE__ == $0
   run STARApp
 
 end
-

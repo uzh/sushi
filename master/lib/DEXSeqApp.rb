@@ -26,9 +26,9 @@ class DEXSeqApp < SushiFabric::SushiApp
     @params['refFeatureFile'] = 'genes.gtf'
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
-    @params['grouping'] = '' 
-    @params['sampleGroup'] = '' 
-    @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup' 
+    @params['grouping'] = ''
+    @params['sampleGroup'] = ''
+    @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
     @params['refGroup'] = ''
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     @params['fdr'] = '0.1'
@@ -41,6 +41,7 @@ class DEXSeqApp < SushiFabric::SushiApp
     @params['expressionName'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
+    @modules = ["Dev/Python2", "Tools/samtools"]
   end
   def next_dataset
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"
@@ -75,4 +76,3 @@ end
 if __FILE__ == $0
 
 end
-

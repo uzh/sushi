@@ -32,6 +32,7 @@ Haplotype calling for DNA-seq<br/>
     @params['addReadGroup'] = false
     @params['specialOptions'] = ''
     @params['mail'] = ""
+    @modules = ["Tools/samtools", "Dev/jdk", "Variants/GATK", "Tools/Picard", "Tools/htslib"]
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']

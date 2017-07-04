@@ -33,6 +33,7 @@ Quality control for target capture experiments<br/>
     @params['duplicatesPlot'] = true
     @params['cmdOptions'] = ""
     @params['mail'] = ""
+    @modules = ["Tools/samtools"]
   end
  def set_default_parameters
    @params['refBuild'] = @dataset[0]['refBuild']
@@ -88,4 +89,3 @@ if __FILE__ == $0
   #usecase.test_run
 
 end
-

@@ -25,9 +25,9 @@ class DESeq2App < SushiFabric::SushiApp
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = ['gene', 'isoform']
-    @params['grouping'] = '' 
-    @params['sampleGroup'] = '' 
-    @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup' 
+    @params['grouping'] = ''
+    @params['sampleGroup'] = ''
+    @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
     @params['refGroup'] = ''
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     #@params['normMethod'] = 'logMean'
@@ -41,6 +41,7 @@ class DESeq2App < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
+    @modules = ["Tools/samtools", "Tools/GFOLD"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
@@ -75,4 +76,3 @@ end
 if __FILE__ == $0
 
 end
-
