@@ -15,7 +15,7 @@ class BismarkApp < SushiFabric::SushiApp
 A tool to map bisulfite converted sequence reads and determine cytosine methylation states<br/>
 <a href='http://www.bioinformatics.babraham.ac.uk/projects/bismark/'>http://www.bioinformatics.babraham.ac.uk/projects/bismark</a>
 EOS
-    
+
     @required_columns = ['Name','Read1','Adapter1','Species']
     @required_params = ['refBuild','paired']
     # optional params
@@ -43,6 +43,7 @@ EOS
     @params['specialOptions'] = ''
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
+    @modules = ["Tools/samtools", "Aligner/Bowtie2", "Aligner/Bismark", "QC/Flexbar", "QC/Trimmomatic"]
   end
   def preprocess
     if @params['paired']
@@ -53,8 +54,8 @@ EOS
     @params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
-    {'Name'=>@dataset['Name'], 
-     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+    {'Name'=>@dataset['Name'],
+     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'TxtReport [File]'=>File.join(@result_dir, "#{@dataset['Name']}.report.txt"),
      'M-Bias_R1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.M-bias_R1.png"),
@@ -67,7 +68,7 @@ EOS
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count'],
      'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
-     
+
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
@@ -108,4 +109,3 @@ if __FILE__ == $0
   #usecase.test_run
 
 end
-

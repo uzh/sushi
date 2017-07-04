@@ -32,6 +32,7 @@ Fast and memory-efficient short read aligner<br/>
     @params['minReadLength'] = 20
     @params['specialOptions'] = ''
     @params['mail'] = ""
+    @modules = ["Tools/samtools", "Aligner/Bowtie", "QC/Flexbar", "QC/Trimmomatic"]
   end
   def preprocess
     if @params['paired']
@@ -52,7 +53,7 @@ Fast and memory-efficient short read aligner<br/>
      'Read Count'=>@dataset['Read Count'],
      'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
      'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml"),
-     'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")      
+     'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
@@ -64,4 +65,3 @@ if __FILE__ == $0
   #run BowtieApp
 
 end
-

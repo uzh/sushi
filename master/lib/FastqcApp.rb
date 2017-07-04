@@ -26,6 +26,7 @@ EOS
     @params['name'] = 'FastQC_Result'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
+    @modules = ["QC/FastQC"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
@@ -79,4 +80,3 @@ if __FILE__ == $0
   #usecase.test_run
 
 end
-

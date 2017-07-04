@@ -25,6 +25,7 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['targetFile'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
+    @modules = ["Dev/jdk", "Variants/GATK", "Tools/Picard", "Variants/SnpEff"]
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
@@ -32,7 +33,7 @@ genotype,merge and annotate gvcf-Files<br/>
      'Report [File]'=>report_dir,
 #     'Html [Link]'=>File.join(report_dir, '00index.html'),
      'Species'=>@dataset['Species'],
-     'refBuild'=>@params['refBuild'] 
+     'refBuild'=>@params['refBuild']
     }
   end
   def set_default_parameters
@@ -40,11 +41,10 @@ genotype,merge and annotate gvcf-Files<br/>
     if dataset_has_column?('targetFile')
       @params['targetFile'] = @dataset[0]['targetFile']
     end
-    
+
   end
 
   def commands
    run_RApp("EzAppJoinGenoTypes")
   end
       end
-      

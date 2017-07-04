@@ -19,7 +19,7 @@ For expression estimation of RNA-seq data we recommend using the RSEM counting A
 For bowtie2 options see:<br/>
 <a href='http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml'>http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml/</a>
 EOS
-    
+
     @required_columns = ['Name','Read1','Species']
     @required_params = ['refBuild','paired']
     # optional params
@@ -47,6 +47,7 @@ EOS
     @params['specialOptions'] = ''
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
+    @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/Flexbar", "QC/Trimmomatic"]
   end
   def preprocess
     if @params['paired']
@@ -60,8 +61,8 @@ EOS
     end
   end
   def next_dataset
-    {'Name'=>@dataset['Name'], 
-     'trBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+    {'Name'=>@dataset['Name'],
+     'trBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
      'trBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
@@ -75,4 +76,3 @@ EOS
     run_RApp("EzAppBowtie2Transcriptome")
   end
 end
-
