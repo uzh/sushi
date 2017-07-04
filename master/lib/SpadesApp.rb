@@ -15,7 +15,7 @@ class SpadesApp < SushiFabric::SushiApp
 SPAdes genome assembler
 <a href='http://cab.spbu.ru/software/spades/'>http://cab.spbu.ru/software/spades/</a>
 EOS
-    
+
     @required_columns = ['Name','Read1']
     @required_params = ['cores', 'ram', 'scratch']
     # optional params
@@ -24,7 +24,7 @@ EOS
     @params['scratch'] = '100'
     @params['paired'] = true
     @params['spadesBasicOpt'] = ''
-    @params['spadesBasicOpt', 'description'] = 'SPAdes basic options: --sc --meta, --rna, --plasmid, Default is empty for genome assembly without MDA' 
+    @params['spadesBasicOpt', 'description'] = 'SPAdes basic options: --sc --meta, --rna, --plasmid, Default is empty for genome assembly without MDA'
     @params['spadesPipeOpt'] = '--careful'
     @params['spadesPipeOpt', 'description'] = 'SPAdes pipeline options: --only-assembler, --careful'
     @params['cmdOptions'] = ''
@@ -40,6 +40,7 @@ EOS
     @params['minAvgQuality'] = 20
     @params['minReadLength'] = 50
     @params['mail'] = ""
+    @modules = ["QC/Flexbar", "Assembly/SPAdes", "QC/Trimmomatic"]
   end
   def preprocess
     if @params['paired']
@@ -47,7 +48,7 @@ EOS
     end
   end
   def next_dataset
-    {'Name'=>@dataset['Name'], 
+    {'Name'=>@dataset['Name'],
      'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.fasta"),
      'SpadesOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
      'SpadesLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_spades.log"),
@@ -94,4 +95,3 @@ if __FILE__ == $0
   #usecase.test_run
 
 end
-

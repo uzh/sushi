@@ -15,7 +15,7 @@ class QuastApp < SushiFabric::SushiApp
 QUAST (Quality Assessment Tool for Genome Assemblies)
 <a href='http://bioinf.spbau.ru/quast'>http://bioinf.spbau.ru/quast</a>
 EOS
-    
+
     @required_columns = ['Name','Draft']
     @required_params = ['cores', 'ram', 'scratch']
     # optional params
@@ -23,15 +23,16 @@ EOS
     @params['ram'] = '30'
     @params['scratch'] = '50'
     @params['refGenome'] = ''
-    @params['refGenome', 'description'] = 'full path to a reference genome as a multi-fasta file' 
+    @params['refGenome', 'description'] = 'full path to a reference genome as a multi-fasta file'
     @params['refGene'] = ''
     @params['refGene', 'description'] = 'full path to a gene annotation file of the reference genome. Must be in gff or bed format'
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for QUAST; do not specify any option that is already covered by the dedicated input fields'
     @params['mail'] = ""
+    @modules = ["QC/QUAST"]
   end
   def next_dataset
-    {'Name'=>@dataset['Name'], 
+    {'Name'=>@dataset['Name'],
      'QuastReport [Link]'=>File.join(@result_dir, "#{@dataset['Name']}", 'report.html'),
      'QuastOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
      'Species'=>@dataset['Species'],
@@ -75,4 +76,3 @@ if __FILE__ == $0
   #usecase.test_run
 
 end
-

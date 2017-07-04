@@ -40,6 +40,7 @@ EOS
     @params['transcriptTypes', 'multi_selection'] = true
     @params['specialOptions'] = ''
     @params['mail'] = ""
+    @modules = ["Tools/samtools"]
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
@@ -48,14 +49,14 @@ EOS
     end
     if dataset_has_column?('paired')
       @params['paired'] = @dataset[0]['paired']
-    end                               
+    end
     if dataset_has_column?('strandMode')
       @params['strandMode'] = @dataset[0]['strandMode']
-    end                               
+    end
   end
 
   def next_dataset
-    {'Name'=>@dataset['Name'], 
+    {'Name'=>@dataset['Name'],
      'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
      'Stats [File]'=>File.join(@result_dir, "#{@dataset['Name']}-stats.txt"),
      'Species'=>@dataset['Species'],
@@ -76,4 +77,3 @@ end
 if __FILE__ == $0
 
 end
-
