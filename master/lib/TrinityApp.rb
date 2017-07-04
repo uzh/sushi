@@ -25,7 +25,7 @@ class TrinityApp < SushiFabric::SushiApp
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['trimAdapter'] = true
-    @params['trimLeft'] = 5 
+    @params['trimLeft'] = 5
     @params['trimRight'] = 5
     @params['minTailQuality'] = 20
     @params['minAvgQuality'] = 20
@@ -93,4 +93,3 @@ if __FILE__ == $0
   #usecase.test_run
 
 end
-

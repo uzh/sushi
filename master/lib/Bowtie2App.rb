@@ -15,7 +15,7 @@ class Bowtie2App < SushiFabric::SushiApp
 Fast and sensitive read alignment. Supports local and end-to-end mode<br/>
 <a href='http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml'>http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml/</a>
 EOS
-    
+
     @required_columns = ['Name','Read1','Species']
     @required_params = ['refBuild','paired']
     # optional params
@@ -41,6 +41,7 @@ EOS
     @params['specialOptions'] = ''
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
+    @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/Flexbar", "QC/Trimmomatic"]
   end
   def preprocess
     if @params['paired']
@@ -51,8 +52,8 @@ EOS
     @params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
-    {'Name'=>@dataset['Name'], 
-     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+    {'Name'=>@dataset['Name'],
+     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'IGV Starter [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
      'Species'=>@dataset['Species'],
@@ -103,4 +104,3 @@ if __FILE__ == $0
   #usecase.test_run
 
 end
-

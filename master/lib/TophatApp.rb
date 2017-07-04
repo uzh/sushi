@@ -34,6 +34,8 @@ A spliced read mapper for RNA-Seq<br/>
     @params['minReadLength'] = 20
     @params['specialOptions'] = ''
     @params['mail'] = ""
+    # Python2 is required because of RSeQC package
+    @modules = ["Tools/samtools", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat", "QC/Flexbar", "QC/Trimmomatic", "Dev/Python2"]
   end
   def preprocess
     if @params['paired']
@@ -47,8 +49,8 @@ A spliced read mapper for RNA-Seq<br/>
     end
   end
   def next_dataset
-    {'Name'=>@dataset['Name'], 
-     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+    {'Name'=>@dataset['Name'],
+     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'IGV Starter [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
      'Species'=>@dataset['Species'],
@@ -70,4 +72,3 @@ end
 if __FILE__ == $0
   run TophatApp
 end
-

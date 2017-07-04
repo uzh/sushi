@@ -44,7 +44,7 @@ EOS
     @params['keepMultiHits'] = true
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Aligner/STAR", "Tools/samtools"]
+    @modules = ["Aligner/STAR", "Tools/samtools", "Aligner/BWA", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat"]
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
@@ -61,4 +61,3 @@ EOS
     run_RApp("EzAppSingleCellCounts")
   end
 end
-

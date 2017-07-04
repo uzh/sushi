@@ -30,7 +30,7 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['deTest', 'description'] = 'This option only works for glm method. Quasi-likelihood (QL) F-test or likelihood ratio (LR) test. LR is prefered for single-cell data.'
     @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
-    @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup' 
+    @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
     @params['refGroup'] = '' ## TODO: this should be a value from the selected column
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     @params['normMethod'] = ['TMM', 'RLE', 'upperquartile', 'none']
@@ -45,6 +45,7 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
+    @modules = ["Tools/GFOLD"]
   end
    def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
@@ -78,4 +79,3 @@ end
 if __FILE__ == $0
 
 end
-

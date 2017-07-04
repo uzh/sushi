@@ -15,7 +15,7 @@ class CanuApp < SushiFabric::SushiApp
 Canu long read genome assembler
 <a href='http://canu.readthedocs.io/en/latest/quick-start.html'>http://canu.readthedocs.io/en/latest/quick-start.html</a>
 EOS
-    
+
     @required_columns = ['Name','Reads']
     @required_params = ['canuReadOpt', 'canuGenomeSize']
     # optional params
@@ -23,15 +23,16 @@ EOS
     @params['ram'] = '50'
     @params['scratch'] = '400'
     @params['canuReadOpt'] = '-pacbio-raw'
-    @params['canuReadOpt', 'description'] = 'input read types: -pacbio-raw, -pacbio-corrected, -nanopore-raw, -nanopore-corrected. Default is pacbio raw data' 
+    @params['canuReadOpt', 'description'] = 'input read types: -pacbio-raw, -pacbio-corrected, -nanopore-raw, -nanopore-corrected. Default is pacbio raw data'
     @params['canuGenomeSize'] = '5000'
     @params['canuGenomeSize', 'description'] = 'estimated genome size in Kbp'
     @params['cmdOptions'] = 'useGrid=false'
     @params['cmdOptions', 'description'] = 'specify other commandline options for Canu; do not specify any option that is already covered by the dedicated input fields'
     @params['mail'] = ""
+    @modules = ["Assembly/Canu"]
   end
   def next_dataset
-    {'Name'=>@dataset['Name'], 
+    {'Name'=>@dataset['Name'],
      'Reads'=>@dataset['Reads'],
      'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),
      'CanuOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
@@ -75,4 +76,3 @@ if __FILE__ == $0
   #usecase.test_run
 
 end
-

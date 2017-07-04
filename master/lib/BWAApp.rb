@@ -33,6 +33,7 @@ class BWAApp < SushiFabric::SushiApp
     @params['minReadLength'] = 20
     @params['specialOptions'] = ''
     @params['mail'] = ""
+    @modules = ["Tools/samtools", "Aligner/BWA", "QC/Flexbar", "QC/Trimmomatic"]
   end
   def preprocess
     if @params['paired']
@@ -43,8 +44,8 @@ class BWAApp < SushiFabric::SushiApp
     @params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
-    {'Name'=>@dataset['Name'], 
-     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
+    {'Name'=>@dataset['Name'],
+     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
         'IGV Starter [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
         'Species'=>@dataset['Species'],
@@ -66,4 +67,3 @@ end
 if __FILE__ == $0
 
 end
-
