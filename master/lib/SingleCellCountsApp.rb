@@ -44,7 +44,7 @@ EOS
     @params['keepMultiHits'] = true
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Aligner/STAR", "Tools/samtools", "Aligner/BWA", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat"]
+    @modules = ["Dev/jdk", "Aligner/STAR", "Tools/samtools", "Aligner/BWA", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat", "QC/Trimmomatic", "QC/Flexbar", "Tools/Picard", "Dev/Python2"]
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
