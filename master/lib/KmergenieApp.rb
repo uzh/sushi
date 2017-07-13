@@ -27,6 +27,7 @@ Kmergenie calculates kmer distribution, and it estimates the best kmer size and 
     @params['sampling'] = 'all'
     @params['sampling', 'description'] = 'all: use all reads, number: use the number of random sampled reads'
     @params['cmdOptions'] = ''
+	 @modules = ["Assembly/KmerGenie"]
   end
   def preprocess
     if @params['paired']
@@ -44,8 +45,6 @@ Kmergenie calculates kmer distribution, and it estimates the best kmer size and 
   end
   def commands
     command = "mkdir kmergenie_results\n"
-    command << "echo 'Kmergenie version:'\n"
-    command << "ls -l `which kmergenie`|rev|cut -f 1 -d ' '|rev\n"
     model = if @params['model'] == 'diploid'
               '--diploid'
             else
