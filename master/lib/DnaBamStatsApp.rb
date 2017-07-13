@@ -23,6 +23,7 @@ EOS
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['sortedBam'] = true
+	 @modules = ["Tools/Picard", "QC/Qualimap", "QC/SAMStat"]
   end
   def next_dataset
     samstat_link = File.join(@result_dir, "#{@dataset['Name']}.samstat.html")
@@ -45,21 +46,16 @@ EOS
 #echo Display=$DISPLAY
 set -x
 REF=/srv/GT/reference/#{@params['refBuild']}/../../Sequence/WholeGenomeFasta/genome.fa
-SAMTOOLS=#{SAMTOOLS}
-SAMSTAT=#{SAMSTAT}
-QUALIMAP=#{QUALIMAP}
-PICARD_DIR=#{PICARD_DIR}
 BAM_FILE=#{File.join(@gstore_dir, @dataset['BAM'])}
+FN=$(basename $BAM_FILE)
 ###samstat
-### $SAMSTAT -n #{@dataset['Name']}.samstat $BAM_FILE > samstat.out
-### $SAMSTAT $BAM_FILE > samstat.out   
-$SAMTOOLS view -ub $BAM_FILE | $SAMSTAT -f bam -n #{@dataset['Name']}.samstat
+cp -a $BAM_FILE .
+samstat $FN
+mv {$FN,#{@dataset['Name']}}.samstat.html
 ###qualimap
-unset DISPLAY ; $QUALIMAP bamqc -bam  $BAM_FILE -c -nt #{@params['cores']} --java-mem-size=10G -outdir #{@dataset['Name']} > qualimap.out
-#rm #{@dataset['Name']}/coverage.txt
-echo Display=$DISPLAY
+unset DISPLAY ; qualimap bamqc -bam $FN -c -nt #{@params['cores']} --java-mem-size=10G -outdir #{@dataset['Name']} > qualimap.out
 ###picard 
-java -Xmx10g -jar $PICARD_DIR/CollectGcBiasMetrics.jar OUTPUT=#{@dataset['Name']}.gc.dat SUMMARY_OUTPUT=#{@dataset['Name']}.gc.sum.dat INPUT=$BAM_FILE CHART_OUTPUT=#{@dataset['Name']}.picard.pdf ASSUME_SORTED=#{@params['sortedBam']} REFERENCE_SEQUENCE=$REF VALIDATION_STRINGENCY=LENIENT > picard.out 2> picard.err
+java -Xmx10g -jar $Picard_jar CollectGcBiasMetrics OUTPUT=#{@dataset['Name']}.gc.dat SUMMARY_OUTPUT=#{@dataset['Name']}.gc.sum.dat INPUT=$FN CHART_OUTPUT=#{@dataset['Name']}.picard.pdf ASSUME_SORTED=#{@params['sortedBam']} REFERENCE_SEQUENCE=$REF VALIDATION_STRINGENCY=LENIENT > picard.out 2> picard.err
 EOS
     command
   end
