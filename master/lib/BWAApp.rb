@@ -23,7 +23,7 @@ class BWAApp < SushiFabric::SushiApp
     @params['refBuild'] = ref_selector
     @params['refBuild', 'description'] = 'the genome refBuild and annotation to use as reference. If human variant calling is the main goal, please use hg_19_karyotypic.'
     @params['paired'] = false
-    @params['algorithm'] = ['aln', 'mem', 'bwasw']
+    @params['algorithm'] = ['mem', 'aln', 'bwasw']
     @params['cmdOptions'] = ''
     @params['trimAdapter'] = true
     @params['trimLeft'] = 0
