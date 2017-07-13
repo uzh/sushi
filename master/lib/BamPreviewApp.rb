@@ -41,7 +41,7 @@ EOS
     @params['minTailQuality'] = 0
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["QC/Trimmomatic", "QC/Flexbar", "Tools/samtools", "Aligner/Bowtie2", "Aligner/STAR"]
+    @modules = ["QC/Trimmomatic", "QC/Flexbar", "Tools/samtools", "Aligner/Bowtie2", "Aligner/STAR", "Dev/Python2"]
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
@@ -54,9 +54,7 @@ EOS
     }
   end
   def set_default_parameters
-    if dataset_has_column?('paired')
-      @params['paired'] = @dataset[0]['paired']
-    end
+    @params['paired'] = dataset_has_column?('Read2')
     if dataset_has_column?('strandMode')
       @params['strandMode'] = @dataset[0]['strandMode']
     end
