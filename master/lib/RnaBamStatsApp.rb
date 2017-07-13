@@ -26,7 +26,7 @@ Quality control after the alignment of RNAseq reads<br/>
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools"]
+    @modules = ["Tools/samtools", "Dev/Python2"]
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
