@@ -28,7 +28,7 @@ EOS
     @params['refFeatureFile'] = 'genes.gtf'
     @params['bowtie-e'] = '200'
     @params['bowtie-e', 'description'] = 'maximum sum of base qualities at mismatching positions'
-    @params['cmdOptions'] = ' --calc-ci '
+    @params['cmdOptions'] = ' --calc-ci --sort-bam-by-read-name'
     @params['keepBam'] = false
     @params['keepBam', 'description'] = 'converts the transcript alignments into genome coordinates and reports them as a BAM file'
     @params['trimAdapter'] = true
@@ -40,7 +40,10 @@ EOS
     @params['transcriptFasta'] = ''
     @params['transcriptFasta', 'description'] = 'give full path of transcript fasta file; in that case the build is ignored; if it comes from trinity assembly the gene-isoform associations will be extracted and used'
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/Bowtie", "Aligner/RSEM", "QC/Flexbar", "QC/Trimmomatic"]
+	 # Bowtie >=1.2.0 may return interleaving mates which trips RSEM (as of v1.3.0) as it expects
+	 # each read to be followed by a mate.
+	 # Also, as of v1.3.0, it only supports samtools v1.3.1
+	 @modules = ["Tools/samtools/1.3.1", "Aligner/Bowtie/1.1.2", "Aligner/Bowtie2", "Aligner/STAR", "Aligner/RSEM", "QC/Flexbar", "QC/Trimmomatic"]
   end
   def preprocess
     if @params['paired']
