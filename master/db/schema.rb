@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20170324100938) do
     t.integer  "number"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "data_set_tree", limit: 16777215
   end
 
   create_table "samples", force: :cascade do |t|
