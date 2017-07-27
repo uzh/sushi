@@ -28,7 +28,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @params['cmdOptions'] = '--nomodel --extsize 147 -g hs --bw 200'
     @params['specialOptions'] = ''
     @params['mail'] = ''
-    @modules = ["Tools/UCSC", "Tools/BEDTools"]
+    @modules = ["Tools/UCSC", "Tools/BEDTools", "Tools/MACS2"]
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
