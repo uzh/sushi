@@ -54,7 +54,7 @@ class EdgeRApp < SushiFabric::SushiApp
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"
     @params['comparison'] = @comparison
     @params['name'] = @comparison
-    report_file = File.join(@result_dir, "#{@name}--#{@params['name']}")
+    report_file = File.join(@result_dir, "#{@params['comparison']}")
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@comparison,
      'Species'=>@dataset['Species'],
