@@ -1,4 +1,13 @@
-
+<script type="text/javascript">
+   $(function(){
+       $('#page_unit').change(function(){
+         var idx = this.selectedIndex;
+         var page_number = this.options[idx].text;
+         $('#page_unit').val(page_number);
+         this.form.submit();
+       })
+   });
+</script>
 <h2>Index of <%= File.join(@base, @path) %></h2>
 <table>
 <hr />
@@ -48,7 +57,7 @@
         <% end %>
       <% end %>
     </td>
-    <td> <%= select :page, :unit, {"10" => 10, "50" => 50, "100" => 100}, :selected => @page_unit %> <%= submit_tag "Reload", :class=>"btn btn-info btn-sm raised" %></td>
+    <td> <%= select :page, :unit, {"10" => 10, "50" => 50, "100" => 100}, :selected => @page_unit %></td>
   </tr>
 </table>
 <% end %>
