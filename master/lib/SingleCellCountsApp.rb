@@ -51,6 +51,7 @@ EOS
      'CountDataset [File]'=>File.join(@result_dir, "#{@dataset['Name']}-dataset.tsv"),
      'CountMatrix [File]'=>File.join(@result_dir, "#{@dataset['Name']}-counts.txt"),
      'CountFolder [File]'=>File.join(@result_dir, "#{@dataset['Name']}-Counts"),
+	  'CellCyclePhase [File]'=>File.join(@result_dir, "#{@dataset['Name']}-CellCyclePhase.txt"),
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'paired'=>@params['paired'],
