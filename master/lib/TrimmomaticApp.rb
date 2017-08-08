@@ -59,22 +59,14 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
   end
   def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
-    if dataset_has_column?('Adapter')
-      @params['illuminaclip']['Adapters'] = 'adapters.fa'
-    end
   end
   def next_dataset
     nds = {'Name'=>@dataset['Name']}
     nds['Read1 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")
-    #nds = {'Name'=>@dataset['Name'], 
-    # 'Read1 [File]' => File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}"),
-    #}
     if @params['paired'] 
       nds['Read2 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read2'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")
     end
-    if @dataset['Adapter1']
-      nds['Adapters [File]'] = File.join(@result_dir, "#{@dataset['Name']}_adapters.fa")
-    end
+    nds['Adapters [File]'] = File.join(@result_dir, "#{@dataset['Name']}_adapters.fa")
     pds = @dataset.clone
     pds.delete("Read1")
     pds.delete("Read2")
@@ -88,16 +80,17 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     command = ""
     command << "source /usr/local/ngseq/etc/lmod_profile\n"
     command << "module add QC/Trimmomatic/0.36\n"
+    adapters_fa = "#{@dataset['Name']}_adapters.fa"
     if @dataset['Adapter1']
-      adapters_fa = "#{@dataset['Name']}_adapters.fa"
-      scratch_dir = @scratch_dir.to_s
       command << "echo '>Adapter1' > #{adapters_fa}\n"
       command << "echo '#{@dataset["Adapter1"]}' >> #{adapters_fa}\n"
       if @dataset['Adapter2']
         command << "echo '>Adapter2' >> #{adapters_fa}\n"
         command << "echo #{@dataset['Adapter2']} >> #{adapters_fa}\n"
       end
-      command << "ln -s #{adapters_fa} adapters.fa\n"
+    end
+    unless @params['illuminaclip'].to_s.empty?
+        command << "cat #{@params['illuminaclip']} >> #{adapters_fa}\n"
     end
     command << "java -jar $Trimmomatic_jar #{se_pe} -threads #{@params['cores']} -#{@params['quality_type']} #{File.join(SushiFabric::GSTORE_DIR, @dataset['Read1'])}"
     if @params['paired']
@@ -114,9 +107,7 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
       output_unpared_R2 = File.basename(@dataset['Read2']).gsub('fastq.gz', 'unpaired.fastq.gz')
       command << " #{output_R2} #{output_unpared_R2}"
     end
-    unless @params['illuminaclip'].to_s.empty?
-      command << " ILLUMINACLIP:#{@params['illuminaclip']}:#{@params['seed_mismatchs']}:#{@params['palindrome_clip_threshold']}:#{@params['simple_clip_threshold']}"
-    end
+    command << " ILLUMINACLIP:#{adapters_fa}:#{@params['seed_mismatchs']}:#{@params['palindrome_clip_threshold']}:#{@params['simple_clip_threshold']}"
     command << " LEADING:#{@params['leading']} TRAILING:#{@params['trailing']} SLIDINGWINDOW:#{@params['slidingwindow']} AVGQUAL:#{@params['avgqual']} HEADCROP:#{@params['headcrop']} MINLEN:#{@params['minlen']}"
     command
   end
