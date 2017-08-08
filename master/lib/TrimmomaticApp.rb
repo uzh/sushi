@@ -86,8 +86,8 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
   end
   def commands
     command = ""
-    command << "source /usr/local/ngseq/etc/lmod_profile"
-    command << "module add QC/Trimmomatic/0.36"
+    command << "source /usr/local/ngseq/etc/lmod_profile\n"
+    command << "module add QC/Trimmomatic/0.36\n"
     if @dataset['Adapter1']
       adapters_fa = "#{@dataset['Name']}_adapters.fa"
       scratch_dir = @scratch_dir.to_s
