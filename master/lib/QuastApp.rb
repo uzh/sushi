@@ -13,7 +13,7 @@ class QuastApp < SushiFabric::SushiApp
     @analysis_category = 'QC'
     @description =<<-EOS
 QUAST (Quality Assessment Tool for Genome Assemblies)
-<a href='http://bioinf.spbau.ru/quast'>http://bioinf.spbau.ru/quast</a>
+<a href='http://quast.bioinf.spbau.ru/manual.html '>http://quast.bioinf.spbau.ru/manual.html</a>
 EOS
 
     @required_columns = ['Name','Draft']
