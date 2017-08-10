@@ -68,6 +68,32 @@ class JobMonitoringController < ApplicationController
       @command = "wfm_kill_job -i #{@job_id} -d #{SushiFabric::WORKFLOW_MANAGER}"
     end
   end
+  def resubmit_job
+    if @job_id = params[:id]
+      gstore_script_dir = if job = Job.find_by_submit_job_id(@job_id)
+                            data_set = job.data_set
+                            @data_set_id = data_set.id
+                            File.dirname(job.script_path)
+                          end
+      script_content = @@workflow_manager.get_script(@job_id)
+      script_path = @@workflow_manager.get_script_path(@job_id)
+      script_path = script_path.split('.sh').first + ".sh"
+      project_number = session[:project]
+      gsub_options = []
+      #gsub_options << "-c #{@params['cores']}" unless @params['cores'].to_s.empty?
+      #gsub_options << "-n #{@params['node']}" unless @params['node'].to_s.empty?
+      #gsub_options << "-r #{@params['ram']}" unless @params['ram'].to_s.empty?
+      #gsub_options << "-s #{@params['scratch']}" unless @params['scratch'].to_s.empty?
+      gsub_options << "-c 2"
+      if script_path and current_user and script_content and project_number and gstore_script_dir and @data_set_id
+        job_id = @@workflow_manager.start_monitoring(script_path, current_user.login, 0, script_content, project_number, gsub_options.join(' '), gstore_script_dir)
+        puts "job_id: #{job_id}"
+        puts "SUBMITTED"
+      else
+        raise "SOMETHING WRONG"
+      end
+    end
+  end
   def change_status
     if @job_id = params[:id]
       public_dir = File.expand_path('../../../public', __FILE__)
