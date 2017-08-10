@@ -83,7 +83,6 @@ class JobMonitoringController < ApplicationController
       end 
       script_content = @@workflow_manager.get_script(@job_id)
       script_path = @@workflow_manager.get_script_path(@job_id)
-      script_path = script_path.split('.sh').first + ".sh"
       project_number = session[:project]
       gsub_options = []
       gsub_options << "-c #{prev_params['cores']}" unless prev_params['cores'].to_s.empty?
@@ -93,7 +92,7 @@ class JobMonitoringController < ApplicationController
       if script_path and current_user and script_content and project_number and gstore_script_dir and @data_set_id and File.exist?(parameters_tsv)
         job_id = @@workflow_manager.start_monitoring(script_path, current_user.login, 0, script_content, project_number, gsub_options.join(' '), gstore_script_dir)
         puts "job_id: #{job_id}"
-        puts "SUBMITTED"
+        puts "RESUBMITTED"
       else
         raise "SOMETHING WRONG"
       end
