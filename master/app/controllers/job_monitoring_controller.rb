@@ -75,17 +75,22 @@ class JobMonitoringController < ApplicationController
                             @data_set_id = data_set.id
                             File.dirname(job.script_path)
                           end
+      parameters_tsv = File.join(File.dirname(gstore_script_dir), "parameters.tsv")
+      prev_params = {}
+      File.readlines(parameters_tsv).each do |line|
+        name, value = line.chomp.split
+        prev_params[name] = value.delete('"')
+      end 
       script_content = @@workflow_manager.get_script(@job_id)
       script_path = @@workflow_manager.get_script_path(@job_id)
       script_path = script_path.split('.sh').first + ".sh"
       project_number = session[:project]
       gsub_options = []
-      #gsub_options << "-c #{@params['cores']}" unless @params['cores'].to_s.empty?
-      #gsub_options << "-n #{@params['node']}" unless @params['node'].to_s.empty?
-      #gsub_options << "-r #{@params['ram']}" unless @params['ram'].to_s.empty?
-      #gsub_options << "-s #{@params['scratch']}" unless @params['scratch'].to_s.empty?
-      gsub_options << "-c 2"
-      if script_path and current_user and script_content and project_number and gstore_script_dir and @data_set_id
+      gsub_options << "-c #{prev_params['cores']}" unless prev_params['cores'].to_s.empty?
+      gsub_options << "-n #{prev_params['node']}" unless prev_params['node'].to_s.empty?
+      gsub_options << "-r #{prev_params['ram']}" unless prev_params['ram'].to_s.empty?
+      gsub_options << "-s #{prev_params['scratch']}" unless prev_params['scratch'].to_s.empty?
+      if script_path and current_user and script_content and project_number and gstore_script_dir and @data_set_id and File.exist?(parameters_tsv)
         job_id = @@workflow_manager.start_monitoring(script_path, current_user.login, 0, script_content, project_number, gsub_options.join(' '), gstore_script_dir)
         puts "job_id: #{job_id}"
         puts "SUBMITTED"
