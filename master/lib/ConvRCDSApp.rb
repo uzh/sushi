@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151126-100748'
+Version = '20170811-103230'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -14,7 +14,7 @@ class ConvRCDSApp < SushiFabric::SushiApp
 This converts the result DataSet of ReadClassifyApp to an input DataSet of CountQCApp.
     EOS
     @analysis_category = 'Polyploid'
-    @required_columns = ['Name','Species','dummy','grouping']
+    @required_columns = ['Name','Species','dummy','Condition']
     @required_params = ['parent','type']
     # optional params
     @params['cores'] = '1'
@@ -34,7 +34,7 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
         'refBuild'=>sample["refBuild#{@params['parent']}"],
         'Species'=>sample['Species'],
         'dummy'=>sample['dummy [File]'],
-        'grouping'=>"#{sample['grouping [Factor]']}_orig"
+        'Condition'=>"#{sample['Condition [Factor]']}_orig"
       }
       new_sample_other = {
         'Name'=>File.basename(sample["Parent#{@params['parent']}OtherBAM [File]"]).gsub(/.bam/, ''),
@@ -43,7 +43,7 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
         'refBuild'=>sample["refBuild#{@params['parent']}"],
         'Species'=>sample['Species'],
         'dummy'=>sample['dummy [File]'],
-        'grouping'=>"#{sample['grouping [Factor]']}_other"
+        'Condition'=>"#{sample['Condition [Factor]']}_other"
       }
       new_sample_common = {
         'Name'=>File.basename(sample["Parent#{@params['parent']}CommonBAM [File]"]).gsub(/.bam/, ''),
@@ -52,7 +52,7 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
         'refBuild'=>sample["refBuild#{@params['parent']}"],
         'Species'=>sample['Species'],
         'dummy'=>sample['dummy [File]'],
-        'grouping'=>"#{sample['grouping [Factor]']}_common"
+        'Conditin'=>"#{sample['Condition [Factor]']}_common"
       }
 
       unless @params['type'] == 'other'
@@ -74,7 +74,7 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
      'refBuild'=>@dataset['refBuild'],
      'Species'=>@dataset['Species'],
      'dummy [File]'=>File.join(@result_dir, "#{@dataset['Name']}_dummy.txt"),
-     'grouping [Factor]'=>@dataset['grouping']
+     'Condition [Factor]'=>@dataset['Condition']
     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
