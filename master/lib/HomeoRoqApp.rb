@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170812-110334'
+Version = '20170812-140906'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -15,6 +15,8 @@ HomeoRoq detects the significant genes that homeolog ratio changes in a target c
 Note<br />
 <ol>
 <li>The first character of column name in Count_QC-tpm.txt should not be a number. R data.frame puts X prefix if it is a number character.</li>
+<li>Sample name should not have space or -, because it will be '.' in R.</li>
+<li>In case of failure, just try again without cds and obh filtering.</li>
 </ol>
 
 http://seselab.org/homeoroq/
