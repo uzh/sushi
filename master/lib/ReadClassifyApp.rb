@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151126-094617'
+Version = '20170812-030650'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -29,6 +29,7 @@ http://seselab.org/homeoroq/
     @params['cores'] = '1'
     @params['ram'] = '16'
     @params['scratch'] = '100'
+    @params['paired'] = false
   end
   def preprocess
     @parent1_genome = if samp = @dataset_hash.first and ref_path = samp['refBuild1'] and dirs = ref_path.split('/') and spc = dirs.first and sub = spc.split('_')
@@ -43,20 +44,20 @@ http://seselab.org/homeoroq/
                    end
   end
   def next_dataset
-    {'Name'=>@dataset['Name'], 
-     'Parent1OrigBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent1_genome}_orig.bam"), 
-     'Parent1OrigBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent1_genome}_orig.bam.bai"), 
-     'Parent1OtherBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent1_genome}_other.bam"), 
-     'Parent1OtherBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent1_genome}_other.bam.bai"), 
-     'Parent1CommonBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent1_genome}_common.bam"), 
-     'Parent1CommonBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent1_genome}_common.bam.bai"), 
+    {'Name'=>@dataset['Name'],
+     'Parent1OrigBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent1_genome}_orig.bam"),
+     'Parent1OrigBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent1_genome}_orig.bam.bai"),
+     'Parent1OtherBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent1_genome}_other.bam"),
+     'Parent1OtherBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent1_genome}_other.bam.bai"),
+     'Parent1CommonBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent1_genome}_common.bam"),
+     'Parent1CommonBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent1_genome}_common.bam.bai"),
      'refBuild1'=>@dataset['refBuild1'],
-     'Parent2OrigBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_orig.bam"), 
-     'Parent2OrigBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_orig.bam.bai"), 
-     'Parent2OtherBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_other.bam"), 
-     'Parent2OtherBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_other.bam.bai"), 
-     'Parent2CommonBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_common.bam"), 
-     'Parent2CommonBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_common.bam.bai"), 
+     'Parent2OrigBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_orig.bam"),
+     'Parent2OrigBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_orig.bam.bai"),
+     'Parent2OtherBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_other.bam"),
+     'Parent2OtherBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_other.bam.bai"),
+     'Parent2CommonBAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_common.bam"),
+     'Parent2CommonBAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}_#{@parent2_genome}_common.bam.bai"),
      'refBuild2'=>@dataset['refBuild2'],
      'Species'=>@dataset['Species'],
      'dummy [File]'=>File.join(@result_dir, "#{@dataset['Name']}_dummy.txt")
@@ -69,6 +70,10 @@ http://seselab.org/homeoroq/
     sam2 = File.join("tmp", File.basename(bam2).gsub(/.bam/, '_parent2.sam'))
     out1_prefix = "#{@dataset['Name']}_#{@parent1_genome}"
     out2_prefix = "#{@dataset['Name']}_#{@parent2_genome}"
+    if out1_prefix == out2_prefix
+      command << "echo 'ERROR: the top 3 chars of subspecies name of two parental reference folder should be different'"
+      command << "exit"
+    end
     command = "mkdir tmp\n"
     command << "grep 'version' /usr/local/ngseq/stow/read_classify-2.1.0/bin/read_classify.py\n"
     command << "/usr/local/ngseq/bin/python --version\n"
@@ -76,10 +81,15 @@ http://seselab.org/homeoroq/
     command << "env|grep PYTHON\n"
     command << "samtools view -h #{bam1} > #{sam1}\n"
     command << "samtools view -h #{bam2} > #{sam2}\n"
-    command << "/usr/local/ngseq/bin/python /usr/local/ngseq/stow/read_classify-2.1.0/bin/read_classify.py #{sam1} #{sam2} #{out1_prefix} #{out2_prefix}\n"
+
+    if @params['paired']
+      command << "/usr/local/ngseq/bin/python /usr/local/ngseq/stow/read_classify-2.1.0/bin/read_classify.py #{sam1} #{sam2} #{out1_prefix} #{out2_prefix}\n"
+    else
+      command << "/usr/local/ngseq/bin/python /usr/local/ngseq/stow/read_classify-2.1.0/bin/read_classify_single_end.py #{sam1} #{sam2} #{out1_prefix} #{out2_prefix}\n"
+    end
     ["orig", "other", "common"].each do |type|
-      command << "samtools index #{out1_prefix}_#{type}.bam\n" 
-      command << "samtools index #{out2_prefix}_#{type}.bam\n" 
+      command << "samtools index #{out1_prefix}_#{type}.bam\n"
+      command << "samtools index #{out2_prefix}_#{type}.bam\n"
     end
     command << "echo '#{GlobalVariables::SUSHI}' > #{@dataset['Name']}_dummy.txt\n"
     command
