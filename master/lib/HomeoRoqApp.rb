@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20161223-092434'
+Version = '20170812-110334'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -51,7 +51,7 @@ http://seselab.org/homeoroq/
     @params['tpm_txt'] = tpm_txt
     groups = []
     CSV.foreach(input_dataset_tsv, :headers=>true, :col_sep=>"\t") do |row|
-      groups <<  row["grouping [Factor]"]
+      groups <<  row["Condition [Factor]"]
     end
     groups.uniq!
     @params['control_orig'] = groups
