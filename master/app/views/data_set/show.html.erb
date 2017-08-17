@@ -125,7 +125,7 @@ $(document).ready(function(){
 <ul id="data_set_tree" class="filetree"></ul>
 <table id="datasets" class="pure-table pure-table-bordered">
 <thead>  
-  <tr><th>ID</th><th>Name</th><th>Samples</th><th>Parent</th><th>Child(ren)IDs</th><th>Created</th><th>BFabricID</th></tr>
+  <tr><th>ID</th><th>Name</th><th>SushiApp</th><th>Samples</th><th>Parent</th><th>Child(ren)IDs</th><th>Created</th><th>BFabricID</th></tr>
 </thead>
   <% if @data_set %>
   <%= hidden_field :data_set, :samples_length, :value => @data_set.samples.length %>
@@ -133,6 +133,7 @@ $(document).ready(function(){
   <tr>
     <td><%= @data_set.id %></td>
     <td><%= td @data_set.name %></td>
+    <td><%= @data_set.sushi_app_name.to_s %></td>
     <td><%= @data_set.samples.length %></td>
     <td><%= link_to td(@data_set.data_set.name), "/data_set/p#{session[:project]}/#{@data_set.parent_id}" if @data_set.data_set %></td>
     <td>
