@@ -143,6 +143,7 @@
             <th class="check_box"><%= check_box 'delete_all_flag', 'all', {:id=>'checkall'}, true, false %></th>
             <th>ID</th>
             <th>Name</th>
+            <th>SushiApp</th>
             <th>Samples</th>
             <th>ParentID</th>
             <th>Child(ren)IDs</th>
@@ -158,7 +159,7 @@
             <td class='check_box'><%= check_box "delete_flag", "#{data_set.id}", {:class=>'target'}, true, false %></td>
             <td><%= data_set.id %></td>
             <td><%= link_to td(data_set.name), "/data_set/p#{@project.number}/#{data_set.id}" %></td>
-
+            <td><%= data_set.sushi_app_name %>
             <td>
                 <%= data_set.completed_samples.to_i %> / <%= data_set.samples_length %>
             </td>
