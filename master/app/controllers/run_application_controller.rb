@@ -45,12 +45,38 @@ class RunApplicationController < ApplicationController
     require class_name
     @sushi_app = eval(class_name).new
     @sushi_app.workflow_manager = @@workflow_manager
-    data_set_id = params[:data_set][:id]
-    @data_set = DataSet.find(data_set_id.to_i)
-
+    resubmit_data_set_id = nil
+    data_set_id = if data_set = params[:data_set] # usual case
+                    data_set[:id]
+                  elsif id = params[:data_set_id] and resubmit_data_set_id = params[:resubmit_data_set_id] # resubmit case
+                    id
+                  end
+    @data_set = DataSet.find_by_id(data_set_id.to_i)
     @sushi_app.dataset_sushi_id = data_set_id.to_i
     @sushi_app.set_input_dataset
     @sushi_app.set_default_parameters
+    @params_selected = {}
+    if resubmit_data_set_id
+      # load parameters
+      parent_data_set_path = sample_path(@data_set)
+      resubmit_data_set = DataSet.find_by_id(resubmit_data_set_id)
+      resubmit_data_set_path = sample_path(resubmit_data_set)
+      parameters_path = File.join(SushiFabric::GSTORE_DIR, resubmit_data_set_path)
+      parameters_tsv = File.join(parameters_path, "parameters.tsv")
+      parameterset_tsv = CSV.readlines(parameters_tsv, :col_sep=>"\t")
+      parameterset_tsv.each do |row|
+        header, value = row
+        @params_selected[header] = if @sushi_app.params.data_type(header) == String or value == nil
+                                     value
+                                   else
+                                     eval(value)
+                                   end
+        if !@sushi_app.params[header].instance_of?(Array) and
+           !@sushi_app.params[header].instance_of?(Hash)
+          @sushi_app.params[header] = @params_selected[header]
+        end
+      end
+    end
     @nodes = @sushi_app.cluster_nodes
     if SushiFabric::Application.config.fgcz? and !session['employee']
       # Comment-out the next line if you want to activate all nodes in a course
