@@ -37,6 +37,8 @@ EOS
     @params['pseudobam', 'description'] = 'generate a bam file with pseudoalignments'
     @params['transcriptFasta'] = ''
     @params['transcriptFasta', 'description'] = 'give full path of transcript fasta file; in that case the build is ignored; if it comes from trinity assembly the gene-isoform associations will be extracted and used'
+    @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
+    @params['transcriptTypes', 'multi_selection'] = true
     @params['trimAdapter'] = true
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
@@ -78,7 +80,8 @@ EOS
       'refFeatureFile'=>@params['refFeatureFile'],
       'strandMode'=>@params['strandMode'],
       'paired'=>@params['paired'],
-      'Read Count'=>@dataset['Read Count']
+      'Read Count'=>@dataset['Read Count'],
+      'transcriptTypes'=>@params['transcriptTypes']
     ).merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
   end
   def commands
