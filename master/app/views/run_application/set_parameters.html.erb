@@ -50,7 +50,6 @@
           <% when 'node' %>
             <% if session['employee'] %>
             <%= select_tag "parameters[#{key}]", options_for_select(@nodes), :multiple => true, :size => 10 %><br />
-            (Grid Engine Status: <%= link_to 'http://fgcz-s-021.uzh.ch/cgi-bin/fgcz_ge_info.py', 'http://fgcz-s-021.uzh.ch/cgi-bin/fgcz_ge_info.py' %>)
           <% else %>
             <%= @nodes.values.join(',') %>
             <%= hidden_field :parameters, :node, :value => @nodes.values.join(',') %>
