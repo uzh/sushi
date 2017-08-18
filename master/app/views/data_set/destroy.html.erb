@@ -30,7 +30,7 @@
 <hr />
 <% if !@sample_path.empty? and @option[:only_sushi]=='1' and File.exist?(File.join(SushiFabric::GSTORE_DIR, @sample_path.first)) %>
   <% if @sample_path.length > 0 %>
-    <%= button_to "Show gStore", File.join("/projects/", @sample_path.first), :method=>:get  %>
+    <%= button_to "Show gStore", File.join("/projects/", @sample_path.first), :method=>:get, :class=>"btn btn-info btn-sm raised"  %>
     <% @sample_path.sort.each do |path| %>
       <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
     <% end %>
