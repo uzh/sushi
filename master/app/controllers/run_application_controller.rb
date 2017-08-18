@@ -66,14 +66,16 @@ class RunApplicationController < ApplicationController
       parameterset_tsv = CSV.readlines(parameters_tsv, :col_sep=>"\t")
       parameterset_tsv.each do |row|
         header, value = row
-        @params_selected[header] = if @sushi_app.params.data_type(header) == String or value == nil
-                                     value
-                                   else
-                                     eval(value)
-                                   end
-        if !@sushi_app.params[header].instance_of?(Array) and
-           !@sushi_app.params[header].instance_of?(Hash)
-          @sushi_app.params[header] = @params_selected[header]
+        unless header == "sushi_app"
+          @params_selected[header] = if @sushi_app.params.data_type(header) == String or value == nil
+                                       value
+                                     else
+                                       eval(value)
+                                     end
+          if !@sushi_app.params[header].instance_of?(Array) and
+             !@sushi_app.params[header].instance_of?(Hash)
+            @sushi_app.params[header] = @params_selected[header]
+          end
         end
       end
     end
