@@ -30,10 +30,13 @@
   <h3>Parameters</h3>
     <table>
       <% @sushi_app.params.each do |key, value| %>
+        <% selected_value = @params_selected[key] %>
         <tr>
           <th><%= key %></th>
           <td>
           <% case key %>
+          <% when 'cores' %>
+            <%= text_field :parameters, key.to_sym, :value => "#{value}" %> GB
           <% when 'ram' %>
             <%= text_field :parameters, key.to_sym, :value => "#{value}" %> GB
           <% when 'scratch' %>
@@ -60,17 +63,17 @@
             <% elsif @factors and key=='refGroup' %>
               <%= render :partial => '/run_application/select_ref_group' %>
             <% elsif key=='refBuild' and value.instance_of?(Hash) %>
-              <%= select :parameters, key.to_sym, value.map{|k,v| [k.to_s.split(//)[0,90].join, v]}, :selected => '' %>
+              <%= select :parameters, key.to_sym, value.map{|k,v| [k.to_s.split(//)[0,90].join, v]}, :selected => selected_value.to_s %>
             <% elsif value.instance_of?(TrueClass) or value.instance_of?(FalseClass) %>
               <%= select :parameters, key.to_sym, ['true', 'false'], :selected => value.to_s %>
             <% elsif value.instance_of?(Array) %>
               <% if @sushi_app.params[key, "multi_selection"] %>
-                <%= select_tag "parameters[#{key}]", options_for_select(value), :multiple => true, :size=>value.length %><br />
+                <%= select_tag "parameters[#{key}]", options_for_select(value), :multiple => true, :size=>value.length, :selected => selected_value.to_s %><br />
               <% else  %>
-                <%= select :parameters, key.to_sym, value, :selected => value.first %>
+                <%= select :parameters, key.to_sym, value, :selected => selected_value.to_s %>
               <% end %>
             <% elsif value.instance_of?(Hash) %>
-              <%= select :parameters, key.to_sym, value, :selected => '' %>
+              <%= select :parameters, key.to_sym, value, :selected => selected_value.to_s %>
             <% else %>
               <%= text_field :parameters, key.to_sym, :value => "#{value}" %>
             <% end %>
