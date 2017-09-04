@@ -6,6 +6,7 @@ $(document).ready(function(){
 
     if(child_dataset_name.match(prohibit_char)){
       alert("WARNING: Only alphabets, numbers, underscore '_' and hyphen '-' are allowed");
+      $("#child_dataset_name").addClass('attention');
       return false;
     }else if(child_dataset_name != null){
       $("edit_save_as_child").submit();

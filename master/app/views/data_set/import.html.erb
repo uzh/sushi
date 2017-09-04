@@ -11,7 +11,8 @@
           var dataset_name = $("#dataset_name").val();
 
           if(dataset_name.match(prohibit_char)){
-            alert("WARNING: Only alphabets, numbers, underscore '_' and hyphen '-' are allowed for DataSet name");
+            alert("WARNING: Only alphabets, numbers, underscore '_' and hyphen '-' are allowed for DataSet Name");
+            $("#dataset_name").addClass('attention');
             return false;
           }else if(dataset_name != null){
             $("#load_dataset").submit();
