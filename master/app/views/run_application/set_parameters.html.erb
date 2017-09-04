@@ -12,6 +12,7 @@
 
         if(next_dataset_name.match(prohibit_char)){
           alert("WARNING: Only alphabets, numbers, underscore '_' and hyphen '-' are allowed for the Next DataSet name");
+          $("#next_dataset_name").addClass('attention');
           return false;
         }else if(next_dataset_name != null) {
           $("#go_next").submit();
