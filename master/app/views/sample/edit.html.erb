@@ -7,8 +7,8 @@ $(document).ready(function(){
     if(child_dataset_name.match(prohibit_char)){
       alert("WARNING: Only alphabets, numbers, underscore '_' and hyphen '-' are allowed");
       return false;
-    }else if(data_set_id != null && new_name != null) {
-      $("#edit_save_as_child").submit();
+    }else if(child_dataset_name != null){
+      $("edit_save_as_child").submit();
     }
   });
 });
