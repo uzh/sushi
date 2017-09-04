@@ -5,6 +5,19 @@
 					 var data_set_id = $("#data_set_id").val();
            $.get("/run_application/factor_select?grouping=" + group_name + "&data_set_id=" + data_set_id);
        })
+
+      $("#go_next").on('click', function(){
+        var prohibit_char = /[^a-zA-Z0-9_-]/;
+        var next_dataset_name = $("#next_dataset_name").val();
+
+        if(next_dataset_name.match(prohibit_char)){
+          alert("WARNING: Only alphabets, numbers, underscore '_' and hyphen '-' are allowed for the Next DataSet name");
+          return false;
+        }else if(data_set_id != null && new_name != null) {
+          $("#go_next").submit();
+        }
+      });
+
    });
 </script>
 
@@ -88,7 +101,7 @@
     </table>
   <br />
   <br />
-  <%= submit_tag 'Next', :class=>"btn btn-info btn-sm raised" %>
+  <%= submit_tag 'Next', :id=>"go_next", :class=>"btn btn-info btn-sm raised" %>
 <% end %>
 
 
