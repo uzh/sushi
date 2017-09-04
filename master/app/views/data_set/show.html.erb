@@ -91,8 +91,11 @@ $(document).ready(function(){
       var data_set_id = $("#data_set_id").val();
       var old_name = $("#data_set_name").val();
       var new_name = prompt("edit name", old_name);
+      var prohibit_char = /[^a-zA-Z0-9_-]/;
 
-      if (data_set_id != null && new_name != null) {
+      if(new_name.match(prohibit_char)){
+        alert("WARNING: Only alphabets, numbers, underscore '_' and hyphen '-' are allowed");
+      }else if(data_set_id != null && new_name != null) {
         $.post('/data_set/edit_name', {'data_set_id':data_set_id, 'data_set_name':new_name});
       }
     });
