@@ -5,6 +5,18 @@
         if (msg != '') {
             alert(msg);
         }
+
+        $("#load_dataset").on('click', function(){
+          var prohibit_char = /[^a-zA-Z0-9_-]/;
+          var dataset_name = $("#dataset_name").val();
+
+          if(dataset_name.match(prohibit_char)){
+            alert("WARNING: Only alphabets, numbers, underscore '_' and hyphen '-' are allowed for DataSet name");
+            return false;
+          }else if(dataset_name != null){
+            $("#load_dataset").submit();
+          }
+        });
     });
 
 </script>
@@ -17,7 +29,7 @@
 <%= file_field :file, :name, :class=>"" %>
 <label>DataSet Name:</label> <%= text_field :dataset, :name, :size=>10, :class=>"input-md" %>
 <label>Parent DataSet ID:</label> <%= select :parent, :id, @data_set_ids, :selected => '', :class=>"form-control input-md" %>
-<%= submit_tag 'load dataset', :class=>"btn btn-sm btn-info raised" %>
+<%= submit_tag 'load dataset', :id=>"load_dataset", :class=>"btn btn-sm btn-info raised" %>
 <% end %>
 
 <hr/>
