@@ -48,3 +48,6 @@ p.notice {
   font-weight: bold;
 }
 
+.attention {
+  background: #FA5858;
+}
