@@ -1,3 +1,18 @@
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#edit_save_as_child").on('click', function(){
+    var prohibit_char = /[^a-zA-Z0-9_-]/;
+    var child_dataset_name = $("#child_dataset_name").val();
+
+    if(child_dataset_name.match(prohibit_char)){
+      alert("WARNING: Only alphabets, numbers, underscore '_' and hyphen '-' are allowed");
+      return false;
+    }else if(data_set_id != null && new_name != null) {
+      $("#edit_save_as_child").submit();
+    }
+  });
+});
+</script>
 <h1>Project <%= session[:project] %></h1>
 <%= image_tag('back.gif') %>
 <%= link_to "Backto DataSet #{@data_set.name}", "/data_set/#{@data_set.id}", :method=>:get %>
@@ -39,7 +54,7 @@
   </div>
   <%= button_to 'save', "/sample/#{@data_set.id}", :name=>'edit_save' %>
   <%= form_tag({:controller => "sample", :action=>"show", :id=>@data_set.id}) do %>
-    <%= submit_tag 'save as child', :name=>'edit_save_as_child' %> Child DataSet name: <%= text_field :child_dataset, :name, :value=>"Child_#{@data_set.name}", :size=>30 %>
+    <%= submit_tag 'save as child', :name=>'edit_save_as_child', :id=>"edit_save_as_child" %> Child DataSet name: <%= text_field :child_dataset, :name, :value=>"Child_#{@data_set.name}", :size=>30 %>
   <% end %>
 <% end %>
 <hr />
