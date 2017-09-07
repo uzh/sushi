@@ -40,6 +40,60 @@ class RunApplicationController < ApplicationController
                    []
                  end
   end
+  def make_fgcz_node_list
+    node2scr = {}
+    command = "qhost -F scratch"
+    keep = nil
+    IO.popen(command) do |out|
+      while line=out.gets
+        hostname, arch, ncpu, loading, memtot, memuse, *others = line.split
+        if hostname =~ /fgcz/
+          keep = hostname
+        elsif scratch_ = line.chomp.split.last and
+              scratch = scratch_.split('=').last
+          node2scr[keep] = scratch.to_i
+          keep = nil
+        end
+      end
+    end
+
+    node_list = {}
+    keep = nil
+    command = 'qhost -q'
+    IO.popen(command) do |out|
+      while line=out.gets
+        # HOSTNAME                ARCH         NCPU  LOAD  MEMTOT  MEMUSE  SWAPTO  SWAPUS
+        hostname, arch, ncpu, loading, memtot, memuse, *others = line.split
+        if hostname =~ /fgcz/
+          #puts [hostname, ncpu, loading, memtot, memuse].join("\t")
+          mem = memtot.gsub(/G/, '').to_i
+          keep = [hostname, ncpu, "#{mem}G"]
+        elsif hostname == "GT" and keep and cores = line.chomp.split.last and cores !~ /[du]/
+          hostname = keep.shift
+          keep[0] = cores
+          if scr = node2scr[hostname] and scr >= 1000
+            scr = "%.1f" % (scr.to_f / 1000)
+            scr << "T"
+          else
+            scr = scr.to_s + "G"
+          end
+          keep << scr
+          node_list[hostname] = keep 
+          keep = nil
+        end
+      end
+    end
+
+    # reformat
+    nodes = {}
+    node_list.each do |hostname, specs|
+      cores, ram, scr = specs
+      key = "#{hostname}: cores #{cores}, ram #{ram}, scr #{scr}"
+      value = hostname
+      nodes[key] = value
+    end
+    nodes
+  end
   def set_parameters
     class_name = params[:app]
     require class_name
@@ -80,7 +134,11 @@ class RunApplicationController < ApplicationController
         end
       end
     end
-    @nodes = @sushi_app.cluster_nodes
+    @nodes = if SushiFabric::Application.config.fgcz?
+               make_fgcz_node_list
+             else
+               @sushi_app.cluster_nodes
+             end
     if SushiFabric::Application.config.fgcz? and !session['employee']
       # Comment-out the next line if you want to activate all nodes in a course
       @nodes = @nodes.select{|node| node =~ /fgcz-h/ or node =~ /fgcz-c-065/}
