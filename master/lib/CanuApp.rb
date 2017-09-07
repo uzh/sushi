@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170311'
+Version = '20170907-111530'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -30,13 +30,14 @@ EOS
     @params['cmdOptions', 'description'] = 'specify other commandline options for Canu; do not specify any option that is already covered by the dedicated input fields'
     @params['mail'] = ""
     @modules = ["Assembly/Canu"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
      'Reads'=>@dataset['Reads'],
      'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),
      'CanuOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppCanu")

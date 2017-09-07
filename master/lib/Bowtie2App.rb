@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150226-110842'
+Version = '20170907-111051'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -42,6 +42,7 @@ EOS
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/Flexbar", "QC/Trimmomatic"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
     if @params['paired']
@@ -64,7 +65,7 @@ EOS
      'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml"),
      'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
      'Bowtie2Log [File]'=>File.join(@result_dir, "#{@dataset['Name']}_bowtie2.log")
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppBowtie2")

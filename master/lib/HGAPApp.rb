@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170313'
+Version = '20170907-112106'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -51,13 +51,14 @@ EOS
     @params['minAnchorSize'] = '12'
     @params['minAnchorSize', 'description'] = 'The minimum size of the read (in bps) that must match against the reference.'
     @params['mail'] = ""
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
      'Reads'=>@dataset['Reads'], 
      'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),	
      'HGAPOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppHGAP")

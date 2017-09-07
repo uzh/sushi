@@ -35,6 +35,7 @@ EOS
     @params['Haplodify'] = ['False','True']
     @params['Haplodify', 'description'] = 'If the genome is diploid, activate this in case of an expected high level of heterozygosity.'
     @params['Additional_Options'] = ''
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
@@ -42,7 +43,7 @@ EOS
      'Fasta [File]'=>File.join(@result_dir, "final.contigs.fasta"),
      'Report [File]'=>File.join(@result_dir, "assembly.report"),
      'Stats [File]'=>File.join(@result_dir, "assembly_stats.report"),
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
 #  def set_default_parameters
 #    @params['refBuild'] = @dataset[0]['refBuild']

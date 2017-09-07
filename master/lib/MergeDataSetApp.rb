@@ -24,6 +24,7 @@ Note
     @params['DataSet'] = []
     @required_columns = ['Name', 'BAM', 'refBuild', 'Species']
     @required_params = ['DataSet']
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
     {
@@ -34,7 +35,7 @@ Note
       'refBuild2'=>@dataset['refBuild2'],
       'Species'=>@dataset['Species'],
       'dummy [File]'=>File.join(@result_dir, "#{@dataset['Name']}_dummy.txt")
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
     if data_set = DataSet.find_by_id(@dataset_sushi_id)

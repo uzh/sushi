@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160215-004046'
+Version = '20170907-111317'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -36,6 +36,7 @@ A spliced read mapper for RNA-Seq<br/>
     @params['mail'] = ""
     # Python2 is required because of RSeQC package
     @modules = ["Tools/samtools", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat", "QC/Flexbar", "QC/Trimmomatic", "Dev/Python2"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
     if @params['paired']
@@ -62,7 +63,7 @@ A spliced read mapper for RNA-Seq<br/>
      'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
      'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml"),
      'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppTophat")

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160215-004949'
+Version = '20170907-111434'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -29,6 +29,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @params['specialOptions'] = ''
     @params['mail'] = ''
     @modules = ["Tools/UCSC", "Tools/BEDTools", "Tools/MACS2"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
@@ -55,7 +56,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
      'BED [File]'=>bedfile_link,
      'PeakSequences [File]'=>peakseq_link,
      'BigWigFile [File]'=>bw_link
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric")).merge(extract_column("ChIP"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppMacs2")
