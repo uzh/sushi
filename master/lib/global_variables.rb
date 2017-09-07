@@ -73,6 +73,14 @@ module GlobalVariables
   rescue
     {}
   end
+  def extract_columns(tags)
+    dataset = {}
+    tags.each do |tag|
+      additional = extract_column(tag)
+      dataset.merge!(additional)
+    end
+    dataset
+  end
   def factor_dataset
     # deprecated
     # please use extract_column() method

@@ -11,6 +11,9 @@ class WordCountApp < SushiFabric::SushiApp
     @name = 'Word_Count'
     @description = "test applicaiton #{GlobalVariables::SUSHI}"
     @analysis_category = 'Stats'
+    @params['cores'] = '1'
+    @params['ram'] = '10'
+    @params['scratch'] = '10'
     @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
     @params['refGroup'] = '' ## TODO: this should be a value from the selected column
@@ -23,16 +26,19 @@ class WordCountApp < SushiFabric::SushiApp
     @required_columns = ['Name', 'Read1']
     @required_params = []
     @modules = ["Aligner/STAR", "Tools/samtools"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
     {
       'Name'=>@dataset['Name'],
       'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats'),
       'Options' => @params['test_option1']
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
-    @params['test_option2'] = @dataset[0]['Options'].split(',')
+    if @dataset[0]['Options']
+      @params['test_option2'] = @dataset[0]['Options'].split(',')
+    end
     @params['note'] = @dataset[0]['Read1 [File]']
   end
   def preprocess
