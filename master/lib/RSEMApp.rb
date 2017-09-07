@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150226-111524'
+Version = '20170907-112047'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -46,6 +46,7 @@ EOS
 	 # each read to be followed by a mate.
 	 # Also, as of v1.3.0, it only supports samtools v1.3.1
 	 @modules = ["Tools/samtools/1.3.1", "Aligner/Bowtie/1.1.2", "Aligner/Bowtie2", "Aligner/STAR", "Aligner/RSEM", "QC/Flexbar", "QC/Trimmomatic"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
     if @params['paired']
@@ -72,7 +73,7 @@ EOS
        'paired'=>@params['paired'],
        'Read Count'=>@dataset['Read Count'],
        'transcriptTypes'=>@params['transcriptTypes']
-      }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+      }.merge(extract_columns(@inherit_tags))
     else
       {'Name'=>@dataset['Name'],
        'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
@@ -85,7 +86,7 @@ EOS
        'Read Count'=>@dataset['Read Count'],
        'transcriptTypes'=>@params['transcriptTypes'],
        'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
-      }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+      }.merge(extract_columns(@inherit_tags))
     end
   end
   def commands

@@ -46,6 +46,7 @@ EOS
     @params['minAvgQuality'] = 20
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Aligner/kallisto", "QC/Flexbar", "QC/Trimmomatic"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
     if @params['paired']
@@ -82,7 +83,7 @@ EOS
       'paired'=>@params['paired'],
       'Read Count'=>@dataset['Read Count'],
       'transcriptTypes'=>@params['transcriptTypes']
-    ).merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    ).merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppKallisto")

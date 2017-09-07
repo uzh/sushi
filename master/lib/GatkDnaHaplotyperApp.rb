@@ -33,6 +33,7 @@ Haplotype calling for DNA-seq<br/>
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Dev/jdk", "Variants/GATK", "Tools/Picard", "Tools/htslib"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
@@ -45,7 +46,7 @@ Haplotype calling for DNA-seq<br/>
       'Species'=>@dataset['Species'],
       'targetFile'=>@params['targetFile'],
       'refBuild'=>@params['refBuild']
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
 
     if @params['getRealignedBam']
       dataset['BAM [File]'] = File.join(@result_dir, "#{@dataset['Name']}-realigned.bam")

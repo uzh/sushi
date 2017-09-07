@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150226-110907'
+Version = '20170907-111214'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -33,6 +33,7 @@ class CountOverlapsApp < SushiFabric::SushiApp
     @params['cmdOptions'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
@@ -57,7 +58,7 @@ class CountOverlapsApp < SushiFabric::SushiApp
      'strandMode'=>@params['strandMode'],
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count']
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppCountOverlaps")

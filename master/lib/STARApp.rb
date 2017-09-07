@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170420-093005'
+Version = '20170907-111904'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -44,6 +44,7 @@ EOS
     @params['mail'] = ""
     # Python2 is required because of RSeQC package
     @modules = ["Aligner/STAR", "Tools/samtools", "QC/Flexbar", "Dev/jdk", "Tools/Picard", "QC/Trimmomatic", "Dev/Python2"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
     if @params['paired']
@@ -75,8 +76,7 @@ EOS
         'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml"),
         'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
         'STARLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_STAR.log")
-     }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
-
+     }.merge(extract_columns(@inherit_tags))
      if @params['getChimericJunctions']
        dataset['Chimerics [File]'] = File.join(@result_dir, "#{@dataset['Name']}.chimeric")
      end

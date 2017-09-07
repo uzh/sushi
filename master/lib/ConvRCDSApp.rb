@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170811-103230'
+Version = '20170907-112024'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -22,6 +22,7 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
     @params['scratch'] = '10'
     @params['parent'] = ['1', '2']
     @params['type'] = ['all','w/o common','orig','other']
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
     dataset_hash = @dataset_hash.clone
@@ -75,7 +76,7 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
      'Species'=>@dataset['Species'],
      'dummy [File]'=>File.join(@result_dir, "#{@dataset['Name']}_dummy.txt"),
      'Condition [Factor]'=>@dataset['Condition']
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     coms = ""

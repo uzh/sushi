@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170310'
+Version = '20170907-111336'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -41,6 +41,7 @@ EOS
     @params['minReadLength'] = 50
     @params['mail'] = ""
     @modules = ["QC/Flexbar", "Assembly/SPAdes", "QC/Trimmomatic"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
     if @params['paired']
@@ -55,7 +56,7 @@ EOS
      'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
      'Species'=>@dataset['Species'],
      'Read Count'=>@dataset['Read Count'],
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppSpades")
