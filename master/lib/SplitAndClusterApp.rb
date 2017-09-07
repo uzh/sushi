@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160303-094633'
+Version = '20170907-111826'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -28,6 +28,7 @@ class SplitAndClusterApp < SushiFabric::SushiApp
     @params['maxMismatch', 'description'] = 'max number of mismatches in primer identification'
     @params['forwardPrimerFile'] = '/srv/gstore/projects/p1871/forwardPrimers_20160215.fasta'
     @params['reversePrimerFile'] = '/srv/gstore/projects/p1871/reversePrimers_20160215.fasta'
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
     if @params['paired']
@@ -40,7 +41,7 @@ class SplitAndClusterApp < SushiFabric::SushiApp
   def next_dataset
     nds = {'Name'=>@dataset['Name']}
     nds['Clustered [File]'] = File.join(@result_dir, "#{@dataset['Name']}_cdHit")
-    nds.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    nds.merge!(extract_columns(@inherit_tags))
     nds
   end
   def commands

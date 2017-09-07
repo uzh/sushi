@@ -40,6 +40,7 @@ EOS
     @params['bcftoolsOptions'] = ''
     @params['gatk_glm'] = ['SNP','INDEL','BOTH']
     @params['gatkOptions'] = '-baqGOP 30 --min_base_quality_score 15 -stand_call_conf 15'
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
@@ -49,7 +50,7 @@ EOS
      'Gene_summary [File]'=>File.join(@result_dir, "#{@dataset['Name']}.genes.txt"),
      'Html [Link,File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
      'refBuild'=>@params['refBuild']
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']

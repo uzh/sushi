@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170812-030650'
+Version = '20170907-111728'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -29,7 +29,8 @@ http://seselab.org/homeoroq/
     @params['cores'] = '1'
     @params['ram'] = '16'
     @params['scratch'] = '100'
-    @params['paired'] = false
+    @params['paired'] = true
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
     @parent1_genome = if samp = @dataset_hash.first and ref_path = samp['refBuild1'] and dirs = ref_path.split('/') and spc = dirs.first and sub = spc.split('_')
@@ -61,7 +62,7 @@ http://seselab.org/homeoroq/
      'refBuild2'=>@dataset['refBuild2'],
      'Species'=>@dataset['Species'],
      'dummy [File]'=>File.join(@result_dir, "#{@dataset['Name']}_dummy.txt")
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     bam1 = File.join(@gstore_dir, @dataset['BAM1'])

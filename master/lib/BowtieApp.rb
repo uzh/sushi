@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160215-003903'
+Version = '20170907-111355'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -33,6 +33,7 @@ Fast and memory-efficient short read aligner<br/>
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Aligner/Bowtie", "QC/Flexbar", "QC/Trimmomatic"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
     if @params['paired']
@@ -54,7 +55,7 @@ Fast and memory-efficient short read aligner<br/>
      'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
      'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml"),
      'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppBowtie")
