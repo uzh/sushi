@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170318'
+Version = '20170907-111649'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -36,6 +36,7 @@ EOS
     @params['minAnchorSize'] = '12'
     @params['minAnchorSize', 'description'] = 'The minimum size of the read (in bps) that must match against the reference.'
     @params['mail'] = ""
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
     {'Name'=>@dataset['Name'],  
@@ -45,7 +46,7 @@ EOS
      'VCFINDEX [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf.gz.tbi"),
      'Consensus [File]'=>File.join(@result_dir, "#{@dataset['Name']}.polished.fasta"),	
      'ResequencingOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),   
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppResequencing")

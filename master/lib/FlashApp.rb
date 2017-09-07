@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151104'
+Version = '20170907-111152'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -39,6 +39,7 @@ EOS
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
     @modules = ["QC/Flexbar", "Tools/FLASH", "QC/Trimmomatic"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
     if @params['paired']
@@ -55,9 +56,7 @@ EOS
      'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
      'Species'=>@dataset['Species'],
      'Read Count'=>@dataset['Read Count'],
-
-
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppFlash")

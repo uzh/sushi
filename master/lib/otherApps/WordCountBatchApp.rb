@@ -19,12 +19,13 @@ class WordCountBatchApp < SushiFabric::SushiApp
     @params['note'] = '' 
     @required_columns = ['Name', 'Read1']
     @required_params = []
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
     {
       'Name'=>@dataset['Name'],
       'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats')
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
     @params['note'] = @dataset[0]['Read1 [File]']

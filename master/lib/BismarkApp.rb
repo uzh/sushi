@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20151026'
+Version = '20170907-111504'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -44,6 +44,7 @@ EOS
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Aligner/Bowtie2", "Aligner/Bismark", "QC/Flexbar", "QC/Trimmomatic"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
     if @params['paired']
@@ -68,8 +69,7 @@ EOS
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count'],
      'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
-
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppBismark")

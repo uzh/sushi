@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150507-090225'
+Version = '20170907-111632'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -45,6 +45,7 @@ EOS
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/jdk", "Aligner/STAR", "Tools/samtools", "Aligner/BWA", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat", "QC/Trimmomatic", "QC/Flexbar", "Tools/Picard", "Dev/Python2"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
@@ -56,7 +57,7 @@ EOS
      'refBuild'=>@params['refBuild'],
      'paired'=>@params['paired'],
      'refFeatureFile'=>@params['refFeatureFile'],
-      }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppSingleCellCounts")

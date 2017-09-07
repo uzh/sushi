@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150226-110907'
+Version = '20170907-111518'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -41,6 +41,7 @@ EOS
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/samtools"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
@@ -67,7 +68,7 @@ EOS
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count'],
      'transcriptTypes'=>@params['transcriptTypes']
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppFeatureCounts")

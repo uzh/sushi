@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170317'
+Version = '20170907-111422'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -29,12 +29,13 @@ EOS
     @params['minLength'] = '50'
     @params['minLength', 'description'] = 'Minimum Polymerase Read Length. Polymerase reads shorter than this value (in bps) are filtered out and excluded from pre-assembly.'
     @params['mail'] = ""
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
     {'Name'=>@dataset['Name'], 
      'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.filtered_subreads.fastq.gz"),	
      'SubreadsOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
-    }.merge(extract_column("Factor")).merge(extract_column("B-Fabric"))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppSubreads")
