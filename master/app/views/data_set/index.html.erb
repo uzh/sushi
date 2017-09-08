@@ -150,6 +150,7 @@
             <th>Who</th>
             <th>Created</th>
             <th>BFabricID</th>
+            <th>ManGOID</th>
         </tr>
         </thead>
         <% if @project %>
@@ -180,6 +181,13 @@
             <td><%= link_to data_set.bfabric_id,
                 "https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{data_set.bfabric_id}&tab=details",
                 target: "_blank" %>
+            </td>
+            <% else %>
+            <td></td>
+            <% end %>
+            <% if data_set.run_name_order_id %>
+            <td><%= link_to data_set.run_name_order_id,
+                "http://fgcz-mango.uzh.ch/order_files/view/#{data_set.run_name_order_id}", target: "_blank" %>
             </td>
             <% else %>
             <td></td>
