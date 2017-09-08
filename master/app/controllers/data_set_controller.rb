@@ -133,7 +133,10 @@ class DataSetController < ApplicationController
     # search by RunName and OrderID
     @data_set = DataSet.find_by_id(params[:id])
     unless @data_set
-      project_number = session[:project]
+      if project_number = params[:project_id]
+        project_number = project_number.gsub(/p/, '').to_i
+        session[:project] = project_number
+      end
       if data_sets = DataSet.where(run_name_order_id: params[:id])
         if data_sets_ = data_sets.to_a.select{|data_set| data_set.project.number == project_number}
           @data_set = data_sets_.sort_by{|data_set| data_set.created_at}.first
