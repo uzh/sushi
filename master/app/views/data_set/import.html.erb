@@ -1,5 +1,6 @@
 <script type="text/javascript">
     $(function () {
+
         $('.dt').DataTable();
         var msg = $('#import').data('complete');
         if (msg != '') {
@@ -14,12 +15,13 @@
             alert("WARNING: Only alphabets, numbers, underscore '_' and hyphen '-' are allowed for DataSet Name");
             $("#dataset_name").addClass('attention');
             return false;
-          }else if(dataset_name != null){
-            $("#load_dataset").submit();
+          }else if(dataset_name == ""){
+            alert("WARNING: Please input the DataSet name");
+            $("#dataset_name").addClass('attention');
+            return false
           }
         });
     });
-
 </script>
 
 <div id="import" data-complete="<%= @warning %>"></div>
@@ -28,8 +30,9 @@
 <h4>File selection</h4>
 <%= form_tag('/data_set/import', :multipart => true) do %>
 <%= file_field :file, :name, :class=>"" %>
-<label>DataSet Name:</label> <%= text_field :dataset, :name, :size=>10, :class=>"input-md" %>
+<label>DataSet Name:</label> <%= text_field :dataset, :name, :size=>20, :class=>"input-md" %>
 <label>Parent DataSet ID:</label> <%= select :parent, :id, @data_set_ids, :selected => '', :class=>"form-control input-md" %>
+<label>ManGO RunName_oBfabricOrderID:</label> <%= text_field :run, :id, :size=>20, :class=>"input-md" %>
 <%= submit_tag 'load dataset', :id=>"load_dataset", :class=>"btn btn-sm btn-info raised" %>
 <% end %>
 
