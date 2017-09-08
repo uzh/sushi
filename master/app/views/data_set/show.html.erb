@@ -128,7 +128,7 @@ $(document).ready(function(){
 <ul id="data_set_tree" class="filetree"></ul>
 <table id="datasets" class="pure-table pure-table-bordered">
 <thead>  
-  <tr><th>ID</th><th>Name</th><th>SushiApp</th><th>Samples</th><th>Parent</th><th>Child(ren)IDs</th><th>Created</th><th>BFabricID</th><th>RunID</th></tr>
+  <tr><th>ID</th><th>Name</th><th>SushiApp</th><th>Samples</th><th>Parent</th><th>Child(ren)IDs</th><th>Created</th><th>BFabricID</th><th>ManGOID</th></tr>
 </thead>
   <% if @data_set %>
   <%= hidden_field :data_set, :samples_length, :value => @data_set.samples.length %>
@@ -152,7 +152,7 @@ $(document).ready(function(){
       <td></td>
     <% end %>
     <% if @data_set.run_name_order_id %>
-      <td><%= link_to @data_set.run_name_order_id, "http://fgcz-mango.uzh.ch/order_files/view/#{@data_set.run_name_order_id}" %></td>
+      <td><%= link_to @data_set.run_name_order_id, "http://fgcz-mango.uzh.ch/order_files/view/#{@data_set.run_name_order_id}", target: "_blank" %></td>
     <% else %>
       <td></td>
     <% end %>
