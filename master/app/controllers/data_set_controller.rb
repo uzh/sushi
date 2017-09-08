@@ -136,7 +136,7 @@ class DataSetController < ApplicationController
       project_number = session[:project]
       if data_sets = DataSet.where(run_name_order_id: params[:id])
         if data_sets_ = data_sets.to_a.select{|data_set| data_set.project.number == project_number}
-          @data_set = data_sets_.first
+          @data_set = data_sets_.sort_by{|data_set| data_set.created_at}.first
           params[:id] = @data_set.id
         end
       end
@@ -517,6 +517,13 @@ class DataSetController < ApplicationController
               @warning = 'There must be a blank column. Please check it. Import is incomplete.'
             end
         end
+      end
+
+      # ManGO RunName_oBfabricID save
+      if @data_set_id and run = params[:run] and run_id = run[:id]
+        data_set = DataSet.find_by_id(@data_set_id)
+        data_set.run_name_order_id = run_id
+        data_set.save
       end
 
       if @data_set_id
