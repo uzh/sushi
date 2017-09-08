@@ -130,7 +130,17 @@ class DataSetController < ApplicationController
       data_set.save
     end
 
+    # search by RunName and OrderID
     @data_set = DataSet.find_by_id(params[:id])
+    unless @data_set
+      project_number = session[:project]
+      if data_sets = DataSet.where(run_name_order_id: params[:id])
+        if data_sets_ = data_sets.to_a.select{|data_set| data_set.project.number == project_number}
+          @data_set = data_sets_.first
+          params[:id] = @data_set.id
+        end
+      end
+    end
 
     # check some properties
     if session[:employee]
