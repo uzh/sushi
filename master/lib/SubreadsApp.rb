@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170907-111422'
+Version = '20170911-175204'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -32,7 +32,7 @@ EOS
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
-    report_link_1 = File.join(@result_dir, @params['name'])
+    report_link_1 = File.join(@result_dir, @dataset['Name'].to_s)
     report_link = File.join(report_link_1, 'index.html')
     {'Name'=>@dataset['Name'],
      'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.filtered_subreads.fastq.gz"),	
