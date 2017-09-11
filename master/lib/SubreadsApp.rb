@@ -32,7 +32,7 @@ EOS
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
-    report_link = File.join(@result_dir, @params['name'], "index00.html")
+    report_link = File.join(@result_dir, @params['name'], "index.html")
     {'Name'=>@dataset['Name'], 
      'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.filtered_subreads.fastq.gz"),	
      'Static Report [Link]'=>report_link,
