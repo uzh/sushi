@@ -35,6 +35,7 @@ EOS
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@dataset['Name'], 
      'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.filtered_subreads.fastq.gz"),	
+     'Static Report [Link]'=>report_link,
      'SubreadsOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
     }.merge(extract_columns(@inherit_tags))
     
