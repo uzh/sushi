@@ -33,7 +33,7 @@ EOS
   end
   def next_dataset
     report_link_1 = File.join(@result_dir, @params['name'])
-    report_link = File.join(report_link_1, "index.html")
+    report_link = File.join(report_link_1, 'index.html')
     {'Name'=>@dataset['Name'], 
      'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.filtered_subreads.fastq.gz"),	
      'Static Report [Link]'=>report_link,
