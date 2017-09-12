@@ -39,10 +39,13 @@ EOS
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
+    report_link_1 = File.join(@result_dir, @dataset['Name'].to_s)
+    report_link = File.join(report_link_1, 'index.html')
     {'Name'=>@dataset['Name'],  
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"), 
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'VCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf.gz"),
+     'Static Report [Link]'=>report_link,
      'VCFINDEX [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf.gz.tbi"),
      'Consensus [File]'=>File.join(@result_dir, "#{@dataset['Name']}.polished.fasta"),	
      'ResequencingOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),   
