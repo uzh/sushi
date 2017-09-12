@@ -54,8 +54,11 @@ EOS
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
+        report_link_1 = File.join(@result_dir, @dataset['Name'].to_s)
+    report_link = File.join(report_link_1, 'index.html')
     {'Name'=>@dataset['Name'], 
      'Reads'=>@dataset['Reads'], 
+      'Static Report [Link]'=>report_link,
      'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),	
      'HGAPOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
     }.merge(extract_columns(@inherit_tags))
