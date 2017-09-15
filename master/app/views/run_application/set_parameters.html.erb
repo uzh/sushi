@@ -63,7 +63,7 @@
             <% end %>
           <% when 'node' %>
             <% if session['employee'] %>
-            <%= select_tag "parameters[#{key}]", options_for_select(@nodes), :multiple => true, :size => 10 %><br />
+              <%= select_tag "parameters[#{key}]", options_for_select(@nodes), :multiple => true, :size => 5 %><br /> 
           <% else %>
             <%= @nodes.values.join(',') %>
             <%= hidden_field :parameters, :node, :value => @nodes.values.join(',') %>
