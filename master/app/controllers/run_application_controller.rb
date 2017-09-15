@@ -139,6 +139,8 @@ class RunApplicationController < ApplicationController
              else
                @sushi_app.cluster_nodes
              end
+    # Comment-in when course in production
+    #@nodes = @nodes.select{|node| node =~ /fgcz-h-00[89]/}
     if SushiFabric::Application.config.fgcz? and !session['employee']
       # Comment-out the next line if you want to activate all nodes in a course
       @nodes = @nodes.select{|node| node =~ /fgcz-h/ or node =~ /fgcz-c-065/}
