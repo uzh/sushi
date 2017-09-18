@@ -85,6 +85,10 @@ $(document).ready(function(){
 
       if (data_set_id != null && new_comment != null) {
         $.post('/data_set/add_comment', {'data_set_id':data_set_id, 'data_set_comment':new_comment});
+      }else if(data_set_id == null){
+        alert("WARNING: data_set_id is null");
+      }else if(new_comment == null){
+        alert("WARNING: comment is null");
       }
     });
     $("#edit_name").click(function(){
