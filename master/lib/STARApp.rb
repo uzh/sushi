@@ -31,7 +31,8 @@ EOS
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['refFeatureFile'] = 'genes.gtf'
     @params['cmdOptions'] = '--outFilterType BySJout --outFilterMatchNmin 30 --outFilterMismatchNmax 10 --outFilterMismatchNoverLmax 0.05 --alignSJDBoverhangMin 1 --alignSJoverhangMin 8 --alignIntronMax 1000000 --alignMatesGapMax 1000000  --outFilterMultimapNmax 50 --chimSegmentMin 15 --chimJunctionOverhangMin 15 --chimScoreMin 15 --chimScoreSeparation 10 --outSAMstrandField intronMotif'
-    @params['getChimericJunctions'] = false
+    @params['getJunctions'] = false
+    #@params['getChimericJunctions'] = false
     @params['twopassMode'] = true
     @params['twopassMode', 'description'] = 'Per-sample 2-pass mapping or 1-pass mapping in STAR. 2-pass mapping allows to detect more splices reads mapping to novel junctions.'
     @params['trimAdapter'] = true
@@ -76,8 +77,9 @@ EOS
         'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml"),
         'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
         'STARLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_STAR.log")
-     }.merge(extract_columns(@inherit_tags))
-     if @params['getChimericJunctions']
+    }.merge(extract_columns(@inherit_tags))
+     if @params['getJunctions']
+       dataset['Junctions [File]'] = File.join(@result_dir, "#{@dataset['Name']}_SJ.out.tab")
        dataset['Chimerics [File]'] = File.join(@result_dir, "#{@dataset['Name']}.chimeric")
      end
      dataset
