@@ -34,7 +34,7 @@
     <table>
       <tr>
         <th>Name</th>
-        <td><%= text_field :next_dataset, :name, :value => [@sushi_app.name, @data_set.id].join('_').gsub(/\s/,'') %></td>
+        <td><%= text_field :next_dataset, :name, :value => [@sushi_app.name, @data_set.id].join('_').gsub(/\s/,''), :with=>"alphanum" %></td>
       </tr>
       <tr>
         <th>Comment</th>
@@ -50,11 +50,11 @@
           <td>
           <% case key %>
           <% when 'cores' %>
-            <%= text_field :parameters, key.to_sym, :value => "#{value}" %> GB
+            <%= text_field :parameters, key.to_sym, :value => "#{value}", :with=>"numeric" %> GB
           <% when 'ram' %>
-            <%= text_field :parameters, key.to_sym, :value => "#{value}" %> GB
+            <%= text_field :parameters, key.to_sym, :value => "#{value}", :with=>"numeric" %> GB
           <% when 'scratch' %>
-            <%= text_field :parameters, key.to_sym, :value => "#{value}" %> GB
+            <%= text_field :parameters, key.to_sym, :value => "#{value}", :with=>"numeric" %> GB
           <% when 'process_mode' %>
             <% if value.kind_of?(Array) %>
               <%= select :parameters, key.to_sym, value %>
@@ -88,7 +88,7 @@
             <% elsif value.instance_of?(Hash) %>
               <%= select :parameters, key.to_sym, value, :selected => selected_value.to_s %>
             <% else %>
-              <%= text_field :parameters, key.to_sym, :value => "#{value}" %>
+              <%= text_field :parameters, key.to_sym, :value => "#{value}", :with=>"ascii" %>
             <% end %>
           <% end %>
 
