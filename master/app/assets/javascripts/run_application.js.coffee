@@ -4,8 +4,20 @@
 
 $ ->
     $("[with='alphanum']").on "keyup.inputcontrol.alphanum", ->
-            $(this).val($(this).val().replace(/[^0-9a-zA-Z_]/g,""))
+            match_part = $(this).val().match(/[^0-9a-zA-Z_]/)
+            if match_part
+              alert "WARNING: #{match_part} is not allowed"
+              $(this).addClass('attention')
+              $(this).val($(this).val().replace(/[^0-9a-zA-Z_]/g,""))
     $("[with='numeric']").on "keyup.inputcontrol.numeric", ->
-            $(this).val($(this).val().replace(/[^0-9]/g,""))
+            match_part = $(this).val().match(/[^0-9]/)
+            if match_part
+              alert "WARNING: #{match_part} is not allowed"
+              $(this).addClass('attention')
+              $(this).val($(this).val().replace(/[^0-9]/g,""))
     $("[with='ascii']").on "keyup.inputcontrol.ascii", ->
-            $(this).val($(this).val().replace(/[^ -~]/g,""))
+            match_part = $(this).val().match(/[^ -~]|[;\\(){}$%:#!?*]/)
+            if match_part
+              alert "WARNING: #{match_part} is not allowed"
+              $(this).addClass('attention')
+              $(this).val($(this).val().replace(/[^ -~]|[;\\(){}$%:#!?*]/g,""))
