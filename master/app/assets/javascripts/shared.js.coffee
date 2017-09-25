@@ -12,3 +12,6 @@
 @removeLoading = () ->
     $("#loading").remove()
 
+$ ->
+    $("[with='alphanum']").on "keyup.inputcontrol.alphanum", ->
+        $(this).val($(this).val().replace(/[^0-9a-zA-Z_]/g,""))
