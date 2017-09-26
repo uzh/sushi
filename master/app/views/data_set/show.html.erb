@@ -84,11 +84,12 @@ $(document).ready(function(){
       var new_comment = prompt("add comment", old_comment);
 
       if (data_set_id != null && new_comment != null) {
-        $.post('/data_set/add_comment', {'data_set_id':data_set_id, 'data_set_comment':new_comment});
-      }else if(data_set_id == null){
-        alert("WARNING: data_set_id is null");
-      }else if(new_comment == null){
-        alert("WARNING: comment is null");
+        $.ajax({
+               type: 'POST',
+               url: '/data_set/add_comment',
+               data: {'data_set_id':data_set_id, 'data_set_comment':new_comment},
+               async : false
+        });
       }
     });
     $("#edit_name").click(function(){
@@ -100,7 +101,12 @@ $(document).ready(function(){
       if(new_name.match(prohibit_char)){
         alert("WARNING: Only alphabets, numbers, underscore '_' and hyphen '-' are allowed");
       }else if(data_set_id != null && new_name != null) {
-        $.post('/data_set/edit_name', {'data_set_id':data_set_id, 'data_set_name':new_name});
+        $.ajax({
+               type: 'POST',
+               url: '/data_set/edit_name',
+               data: {'data_set_id':data_set_id, 'data_set_name':new_name},
+               async : false
+        });
       }
     });
 
