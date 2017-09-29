@@ -62,7 +62,7 @@
               <%= text_field :parameters, key.to_sym, :value => value, :disabled => true %>
             <% end %>
           <% when 'node' %>
-            <% if session['employee'] %>
+            <% if session['employee'] and !SushiFabric::Application.config.course_mode %>
               <%= select_tag "parameters[#{key}]", options_for_select(@nodes), :multiple => true, :size => 5 %><br /> 
           <% else %>
             <%= @nodes.values.join(',') %>
