@@ -30,6 +30,7 @@ Haplotype calling for DNA-seq<br/>
     @params['getRealignedBam'] = false
     @params['markDuplicates'] = false
     @params['addReadGroup'] = false
+    @params['knownSitesAvailable'] = false
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Dev/jdk", "Variants/GATK", "Tools/Picard", "Tools/htslib"]
