@@ -194,6 +194,9 @@ class DataSetController < ApplicationController
       end
     end
     @sample_path.uniq!
+    if path = @sample_path.first
+      @dataset_path = path.split('/')[0,2].join('/')
+    end
 
     # update num_samples
     if @data_set.num_samples.to_i != sample_count
