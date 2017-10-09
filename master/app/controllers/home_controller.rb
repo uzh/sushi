@@ -54,8 +54,11 @@ class HomeController < ApplicationController
     end
     @files = @files[start..last]
     @fgcz = SushiFabric::Application.config.fgcz?
+    @fgcz_gstore = (SushiFabric::Application.config.gstore_dir =~ /\/srv\/gstore\/projects/)
     if @fgcz and !@files
       redirect_to "https://fgcz-gstore.uzh.ch/projects/#{@path}.#{params[:format]}"
+    elsif @fgcz and @fgcz_gstore and @path =~ /p\d+\/.+/
+      redirect_to "https://fgcz-gstore.uzh.ch/projects/#{@path}"
     end
   end
   def sushi_rank

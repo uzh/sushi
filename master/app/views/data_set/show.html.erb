@@ -158,12 +158,10 @@ $(document).ready(function(){
 <br />
 <br />
 <h3 style="display: inline">
-  <%= tooltip(@data_set.name, "ID:#{@data_set.id}, BID:#{@data_set.bfabric_id}, MID:#{@data_set.run_name_order_id}") %> <button class="btn-link" id="hide">Hide</button><span id="hide_indicator" class="arrow-up"></span>
+  <%= @data_set.name %> <button class="btn-link" id="hide">Hide</button><span id="hide_indicator" class="arrow-up"></span>
 </h3>
 - <%= link_to 'edit', "/sample/#{@data_set.id}", :method=>:post %>
-  <% @sample_path.sort.each do |path| %>
-    - <%= link_to "#{File.join('/projects/',path)}", File.join("/projects/", path) %>
-  <% end %>
+- <%= link_to "data folder", File.join("/projects/", @dataset_path) %>
 <div id="hide_show">
 <% if @data_set %>
 <% if @data_set.samples.length > 10 %>
