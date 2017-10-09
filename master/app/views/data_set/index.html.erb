@@ -138,7 +138,7 @@
 <% end %>
     <%= form_tag('/data_set/multi_delete', :id=>"multi_delete") do %>
     <table id="data_sets" class="dt pure-table pure-table-bordered">
-        <thead>
+        <thead class="dataset">
         <tr>
             <th class="check_box"><%= check_box 'delete_all_flag', 'all', {:id=>'checkall'}, true, false %></th>
             <th>ID</th>
