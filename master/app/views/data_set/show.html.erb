@@ -140,15 +140,18 @@ $(document).ready(function(){
 
 <ul class="datasetlist">
   <li>
-    ID: <b><%= @data_set.id %></b> 
-    Samples: <b><%= @data_set.samples.length %></b>
+    ID:<b><%= @data_set.id %></b> 
+    <% if @data_set.sushi_app_name %>
+    App:<b><%= @data_set.sushi_app_name %></b> 
+    <% end %>
+    Samples:<b><%= @data_set.samples.length %></b> 
     <% if @data_set.bfabric_id %>
-      BFabricID:  
-      <b><%= link_to @data_set.bfabric_id, "https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{@data_set.bfabric_id}&tab=details", target: "_blank" %></b>
+      BFabricID:
+      <b><%= link_to @data_set.bfabric_id, "https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{@data_set.bfabric_id}&tab=details", target: "_blank" %></b> 
     <% end %>
     <% if @data_set.run_name_order_id %>
-      ManGOID: 
-      <b><%= link_to @data_set.run_name_order_id, "http://fgcz-mango.uzh.ch/order_files/view/#{@data_set.run_name_order_id}", target: "_blank" %></b>
+      ManGOID:
+      <b><%= link_to @data_set.run_name_order_id, "http://fgcz-mango.uzh.ch/order_files/view/#{@data_set.run_name_order_id}", target: "_blank" %></b> 
     <% end %>
   </li>
 </ul>
