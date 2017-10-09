@@ -95,6 +95,18 @@ there's a rowspan on the first cell. Case added to the tests. issue#432 */
     text-align: left;
     vertical-align: bottom;
 }
+.pure-table thead.sample {
+    background-color: #1E90FF;
+    color: #000;
+    text-align: left;
+    vertical-align: bottom;
+}
+.pure-table thead.dataset {
+    background-color: #3CB371;
+    color: #000;
+    text-align: left;
+    vertical-align: bottom;
+}
 
 /*
 striping:
@@ -161,3 +173,7 @@ striping:
     font-size: small;
 }
 
+.datasetlist {
+  margin-top: 10px;
+  margin-left: 25px;
+}
