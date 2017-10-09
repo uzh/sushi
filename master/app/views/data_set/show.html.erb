@@ -130,56 +130,35 @@ $(document).ready(function(){
 - <%= link_to "download", {:action=>"save_as_tsv", :id=>@data_set.id}, :method=>:post %>
 - <%= link_to 'scripts', "/data_set/script_log.#{@data_set.id}", :method=>:get %>
 - <%= link_to 'parameters', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>
-- <% if @data_set.data_set and @data_set.sushi_app_name %>
-    <%= link_to "resubmit", {:controller=>"run_application", :action=>"set_parameters", data_set_id: @data_set.data_set.id, resubmit_data_set_id: @data_set.id,  app: @data_set.sushi_app_name}, :method=>:post %>
-  <% end %>
+<% if @data_set.data_set and @data_set.sushi_app_name %>
+-  <%= link_to "resubmit", {:controller=>"run_application", :action=>"set_parameters", data_set_id: @data_set.data_set.id, resubmit_data_set_id: @data_set.id,  app: @data_set.sushi_app_name}, :method=>:post %>
+<% end %>
 - <a href="#" id="btn_multi_delete">delete</a>
 <% if @can_register_bfabric %>
 - <%= link_to "register bfabric", {:action=>"register_bfabric", :id=>@data_set.id}, :data=>{:confirm=>"Are you sure you want to register this dataset? DataSet ID:#{@data_set.id}? It will take some seconds."}, :method=>:post %>
 <% end %>
 
-<ul id="data_set_tree" class="filetree"></ul>
-<table id="datasets" class="pure-table pure-table-bordered">
-<thead>  
-  <tr><th>ID</th><th>Name</th><th>SushiApp</th><th>Samples</th><th>Parent</th><th>Child(ren)IDs</th><th>Created</th><th>BFabricID</th><th>ManGOID</th></tr>
-</thead>
-  <% if @data_set %>
-  <%= hidden_field :data_set, :samples_length, :value => @data_set.samples.length %>
-  <tbody>
-  <tr>
-    <td><%= @data_set.id %></td>
-    <td><%= td @data_set.name %></td>
-    <td><%= @data_set.sushi_app_name.to_s %></td>
-    <td><%= @data_set.samples.length %></td>
-    <td><%= link_to td(@data_set.data_set.name), "/data_set/p#{session[:project]}/#{@data_set.parent_id}" if @data_set.data_set %></td>
-    <td>
-      <% @data_set.data_sets.each do |child| %>
-        <%= link_to child.id, "/data_set/#{child.id}" %>
-        <%= "," unless child == @data_set.data_sets.last %>
-      <% end %>
-    </td>
-    <td><%= @data_set.created_at.strftime("%Y-%b-%d %X ") + SushiFabric::Application.config.time_zone.split('/').last %></td>
+<ul class="datasetlist">
+  <li>
+    ID: <b><%= @data_set.id %></b> 
+    Samples: <b><%= @data_set.samples.length %></b>
     <% if @data_set.bfabric_id %>
-      <td><%= link_to @data_set.bfabric_id, "https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{@data_set.bfabric_id}&tab=details", target: "_blank" %></td>
-    <% else %>
-      <td></td>
+      BFabricID:  
+      <b><%= link_to @data_set.bfabric_id, "https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{@data_set.bfabric_id}&tab=details", target: "_blank" %></b>
     <% end %>
     <% if @data_set.run_name_order_id %>
-      <td><%= link_to @data_set.run_name_order_id, "http://fgcz-mango.uzh.ch/order_files/view/#{@data_set.run_name_order_id}", target: "_blank" %></td>
-    <% else %>
-      <td></td>
+      ManGOID: 
+      <b><%= link_to @data_set.run_name_order_id, "http://fgcz-mango.uzh.ch/order_files/view/#{@data_set.run_name_order_id}", target: "_blank" %></b>
     <% end %>
-  </tr>
-  </tbody>
-  <% end %>
-</table>
-<% if @data_set.comment %>
-  <p style="padding: 10px"><%= @data_set.comment %></p>
-<% end %>
+  </li>
+</ul>
+
+<ul id="data_set_tree" class="filetree"></ul>
+
 <br />
 <br />
 <h3 style="display: inline">
-  <%= @data_set.name %> <button class="btn-link" id="hide">Hide</button><span id="hide_indicator" class="arrow-up"></span>
+  <%= tooltip(@data_set.name, "ID:#{@data_set.id}, BID:#{@data_set.bfabric_id}, MID:#{@data_set.run_name_order_id}") %> <button class="btn-link" id="hide">Hide</button><span id="hide_indicator" class="arrow-up"></span>
 </h3>
 - <%= link_to 'edit', "/sample/#{@data_set.id}", :method=>:post %>
   <% @sample_path.sort.each do |path| %>
@@ -192,7 +171,7 @@ $(document).ready(function(){
 <% else %>
 <table id="dataset_samples" class="dt_no_pager pure-table pure-table-bordered">
 <% end %>
-<thead>
+<thead class="sample">
   <tr>
     <% @data_set.factor_first_headers.each do |header| %>
       <th><%= header %></th>
