@@ -130,6 +130,9 @@ $(document).ready(function(){
 - <%= link_to "download", {:action=>"save_as_tsv", :id=>@data_set.id}, :method=>:post %>
 - <%= link_to 'scripts', "/data_set/script_log.#{@data_set.id}", :method=>:get %>
 - <%= link_to 'parameters', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>
+- <% if @data_set.data_set and @data_set.sushi_app_name %>
+    <%= link_to "resubmit", {:controller=>"run_application", :action=>"set_parameters", data_set_id: @data_set.data_set.id, resubmit_data_set_id: @data_set.id,  app: @data_set.sushi_app_name}, :method=>:post %>
+  <% end %>
 - <a href="#" id="btn_multi_delete">delete</a>
 <% if @can_register_bfabric %>
 - <%= link_to "register bfabric", {:action=>"register_bfabric", :id=>@data_set.id}, :data=>{:confirm=>"Are you sure you want to register this dataset? DataSet ID:#{@data_set.id}? It will take some seconds."}, :method=>:post %>
@@ -244,9 +247,6 @@ Samples <button class="btn-link" id="hide">Hide</button><span id="hide_indicator
 <% end %>
 
     <h3 style="display: inline">Applications</h3>
-    <% if @data_set.data_set and @data_set.sushi_app_name %>
-      <%= button_to "resubmit", "/run_application/set_parameters", :class=>"btn btn-info btn-sm raised", :style=>"padding: 2px", params: {data_set_id: @data_set.data_set.id, resubmit_data_set_id: @data_set.id,  app: @data_set.sushi_app_name} %>
-    <% end %>
     <% if !@sample_invalid_name.keys.empty? %>
     <br />
     <ul>
