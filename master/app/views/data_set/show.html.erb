@@ -138,30 +138,39 @@ $(document).ready(function(){
 - <%= link_to "register bfabric", {:action=>"register_bfabric", :id=>@data_set.id}, :data=>{:confirm=>"Are you sure you want to register this dataset? DataSet ID:#{@data_set.id}? It will take some seconds."}, :method=>:post %>
 <% end %>
 
-<ul class="datasetlist">
+<div id="hogehoge" class="jstree_container">
+<ul id="data_set_tree" class="filetree jstree_box"></ul>
+<ul class="dataset_info_box">
   <li>
-    ID:<b><%= @data_set.id %></b> 
-    <% if @data_set.sushi_app_name %>
-    App:<b><%= @data_set.sushi_app_name %></b> 
-    <% end %>
-    Samples:<b><%= @data_set.samples.length %></b> 
-    <% if @data_set.bfabric_id %>
+    ID: <b><%= @data_set.id %></b>
+  </li>
+  <% if @data_set.sushi_app_name %>
+  <li>
+    App: <b><%= @data_set.sushi_app_name %></b>
+  </li>
+  <% end %>
+  <li>
+    Samples: <b><%= @data_set.samples.length %></b>
+  </li>
+  <% if @data_set.bfabric_id %>
+  <li>
       BFabricID:
       <b><%= link_to @data_set.bfabric_id, "https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?datasetId=#{@data_set.bfabric_id}&tab=details", target: "_blank" %></b> 
-    <% end %>
-    <% if @data_set.run_name_order_id %>
+  </li>
+  <% end %>
+  <% if @data_set.run_name_order_id %>
+  <li>
       ManGOID:
       <b><%= link_to @data_set.run_name_order_id, "http://fgcz-mango.uzh.ch/order_files/view/#{@data_set.run_name_order_id}", target: "_blank" %></b> 
-    <% end %>
   </li>
+  <% end %>
 </ul>
+</div>
 
-<ul id="data_set_tree" class="filetree"></ul>
-
-<br />
+<br class="jstree_container_clear" />
 <br />
 <h3 style="display: inline">
-  <%= @data_set.name %> <button class="btn-link" id="hide">Hide</button><span id="hide_indicator" class="arrow-up"></span>
+  <span id="data_set_title"><%= @data_set.name %></span> <button class="btn-link" id="hide">Hide</button><span id="hide_indicator" class="arrow-up"></span>
 </h3>
 - <%= link_to 'edit', "/sample/#{@data_set.id}", :method=>:post %>
 - <%= link_to "data folder", File.join("/projects/", @dataset_path) %>
@@ -241,3 +250,4 @@ $(document).ready(function(){
   <% end %>
 
 <hr />
+

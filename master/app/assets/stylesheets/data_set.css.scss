@@ -173,7 +173,17 @@ striping:
     font-size: small;
 }
 
-.datasetlist {
+.jstree_container {
+  position: relative;
+}
+.jstree_box{
+  float: left;
+}
+.dataset_info_box{
+  float: left;
   margin-top: 10px;
-  margin-left: 25px;
+  margin-left: 100px;
+}
+.jstree_container_clear{
+  clear: both;
 }
