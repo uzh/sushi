@@ -119,14 +119,7 @@
 
 <div id="import" data-complete="<%= @warning %>"></div>
 
-<h3>DataSets <span style="font-size: 0.5em;"> - <%= link_to "show report", "/data_set/report", :method => :post %> - <a href="#" id="btn_multi_delete">delete</a> with selected</span></h3>
-<% if session[:employee] %>
-<%= form_tag(:action => 'bfabric') do %>
-  <%= submit_tag 'BFabric', :data=>{:confirm=>"Are you sure you want to register datasets in BFabric?"}, :class=>"btn btn-info btn-sm raised" %>
-<%= select :parameters, :bfabric_option, ['new', 'update', 'renewal'], :selected => 'new' %>
-<% end %>
-<% end %>
-
+<h3>DataSets <span style="font-size: 0.5em;"> - <a href="#" id="btn_multi_delete">delete</a> with selected</span></h3>
 
 <% if @project %>
 <% if data_sets = @project.data_sets and data_sets.length == @data_sets.length %>
@@ -202,4 +195,11 @@
     <% end %>
     <% end %>
 <hr>
+<% if session[:employee] %>
+  <%= form_tag({:action => "bfabric"}, {:name => :register_bfabric}) do %>
+   <a href='#' onclick="var ok=confirm('Are you sure you want to register datasets in BFabric?'); if (ok) document.register_bfabric.submit(); return false;" >register bfabric&nbsp;</a>
+   <%= select :parameters, :bfabric_option, ['new', 'update', 'renewal'], :selected => 'new' %>
+ <% end %>
+<% end %>
+
 <!-- <th nowrap><button type="button" id="btn_multi_delete">delete</button> all<%= check_box 'delete_all_flag', 'all', {:id=>'checkall'}, true, false %></th> -->
