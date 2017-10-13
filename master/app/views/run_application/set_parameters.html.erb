@@ -34,7 +34,7 @@
     <table>
       <tr>
         <th>Name</th>
-        <td><%= text_field :next_dataset, :name, :value => [@sushi_app.name, @data_set.id].join('_').gsub(/\s/,''), :with=>"alphanum" %></td>
+        <td><%= text_field :next_dataset, :name, :value => [@sushi_app.name, @data_set.id].join('_').gsub(/\s/,''), :with=>"ascii" %></td>
       </tr>
       <tr>
         <th>Comment</th>
