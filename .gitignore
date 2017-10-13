@@ -1,3 +1,7 @@
+.gitignore
+master/public/check_dataset_bfabric
+master/public/register_sushi_dataset_into_bfabric
+master/vendor/bundle/
 master/tmp/pids/*
 master/tmp/sessions/*
 master/tmp/sockets/*
