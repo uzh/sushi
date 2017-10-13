@@ -123,7 +123,7 @@ $(document).ready(function(){
 <h3 id="whole_tree" style="display: inline">DataSet</h3>
 <%= hidden_field :tree, :state, :value=>"partial" %>
 - <%= link_to 'comment', '', :id=>"add_comment" %> 
-- <%= link_to 'name', '', :id=>"edit_name" %>
+- <%= link_to 'rename', '', :id=>"edit_name" %>
 <%= hidden_field :data_set, :name, :value=>@data_set.name %>
 <%= hidden_field :data_set, :id, :value=>@data_set.id %>
 <%= hidden_field :data_set, :comment, :value=>@data_set.comment.to_s %>
