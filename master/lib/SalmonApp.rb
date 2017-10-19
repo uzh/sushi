@@ -16,7 +16,7 @@ EOS
     @required_columns = ['Name','Read1','Species']
     @required_params = ['paired', 'strandMode']
     @params['paired'] = false
-    @params['strandMode'] = ['sense', 'antisense', 'both']
+    @params['strandMode'] = ['both', 'sense', 'antisense']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '30'
