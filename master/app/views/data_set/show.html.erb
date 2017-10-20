@@ -173,7 +173,14 @@ $(document).ready(function(){
   <span id="data_set_title"><%= @data_set.name %></span> Content <button class="btn-link" id="hide">Hide</button><span id="hide_indicator" class="arrow-up"></span>
 </h3>
 - <%= link_to 'edit', "/sample/#{@data_set.id}", :method=>:post %>
+<% if @sample_path.length > 1 %>
+  - data folder
+  <% @dataset_path.each do |dataset_path| %>
+    - <%= link_to dataset_path, File.join("/projects/", dataset_path) %>
+  <% end %>
+<% else %>
 - <%= link_to "data folder", File.join("/projects/", @dataset_path) %>
+<% end %>
 <div id="hide_show">
 <% if @data_set %>
 <% if @data_set.samples.length > 10 %>
