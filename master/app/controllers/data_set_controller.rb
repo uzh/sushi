@@ -194,8 +194,11 @@ class DataSetController < ApplicationController
       end
     end
     @sample_path.uniq!
-    if path = @sample_path.first
+    if @sample_path.length == 1
+      path = @sample_path.first
       @dataset_path = path.split('/')[0,2].join('/')
+    else
+      @dataset_path = @sample_path.map{|path| path.split('/')[0,2].join('/')}
     end
 
     # update num_samples
