@@ -17,7 +17,7 @@ Virome analysis for the diagnostic use in veterinary virology<br/>
 <a href='https://www.ncbi.nlm.nih.gov/pubmed/25009045'>Reference paper</a>, base on which this pileline is implemented.
 EOS
 
-    @required_columns = ['Name','Read1','Species']
+    @required_columns = ['Name','Read1','Read2','Species']
     @required_params = ['virBuild','hostBuild','paired']
     @params['virBuild'] = ref_selector
     @params['virBuild', 'description'] = 'the viral reference database to use.'
