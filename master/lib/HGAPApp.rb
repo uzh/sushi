@@ -20,8 +20,8 @@ EOS
     @required_params = ['genomeSize', 'xCoverage']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '50'
-    @params['scratch'] = '400'
+    @params['ram'] = '30'
+    @params['scratch'] = '300'
     @params['minSubReadLength'] = '500'
     @params['minSubReadLength', 'description'] = 'Minimum Subread Length. Subreads shorter than this value (in bps) are filtered out and excluded from pre-assembly.'
     @params['readScore'] = '0.8'
