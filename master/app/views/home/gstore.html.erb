@@ -1,13 +1,3 @@
-<script type="text/javascript">
-   $(function(){
-       $('#page_unit').change(function(){
-         var idx = this.selectedIndex;
-         var page_number = this.options[idx].text;
-         $('#page_unit').val(page_number);
-         this.form.submit();
-       })
-   });
-</script>
 <h2>Index of <%= File.join(@base, @path) %></h2>
 <table>
 <hr />
