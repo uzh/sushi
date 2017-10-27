@@ -27,8 +27,8 @@ EOS
     @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '16'
-    @params['scratch'] = '100'
+    @params['ram'] = '30'
+    @params['scratch'] = '150'
     @params['cmdOptionsHost'] = '--very-sensitive'
     @params['cmdOptionsHost', 'description'] = 'specify the commandline options for bowtie2 during mapping to contaminated genome(s); do not specify any option that is already covered by the dedicated input fields'
     @params['cmdOptions'] = '-a --very-sensitive --no-mixed --no-discordant -X 1000'
