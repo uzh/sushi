@@ -31,7 +31,7 @@ class DESeq2App < SushiFabric::SushiApp
     @params['refGroup'] = ''
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     #@params['normMethod'] = 'logMean'
-    @params['runGO'] = ['false', 'true']
+    @params['runGO'] = ['true', 'false']
     @params['grouping2'] = ''
     @params['grouping2', 'description'] = 'specify the column name of your secondary factor --only in case your experiment has a second factor, that should enter the linear model for differential expression!'
     @params['backgroundExpression'] = 10
