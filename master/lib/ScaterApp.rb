@@ -31,9 +31,9 @@ EOS
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
   end
   def next_dataset
-    report_file = File.join(@result_dir, @params['name'])
+    report_file = File.join(@result_dir, "#{@dataset['Name']}_ScaterQC")
     report_link = File.join(report_file, '00index.html')
-    {'Name'=>@params['name'],
+    {'Name'=>@dataset['Name'],
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'Static Report [Link]'=>report_link,
