@@ -35,7 +35,7 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     @params['normMethod'] = ['TMM', 'RLE', 'upperquartile', 'none']
     @params['normMethod', 'description'] = "see http://www.bioconductor.org/packages/2.13/bioc/html/edgeR.html"
-    @params['runGO'] = ['false', 'true']
+    @params['runGO'] = ['true', 'false']
     @params['grouping2'] = ''
     @params['grouping2', 'description'] = 'specify the column name of your secondary factor --only in case your experiment has a second factor, that should enter the linear model for differential expression!'
     @params['backgroundExpression'] = 10
