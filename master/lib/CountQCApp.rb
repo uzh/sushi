@@ -26,7 +26,7 @@ Quality control after counting reads<br/>
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = ['gene', 'isoform']
     @params['normMethod'] = 'logMean'
-    @params['runGO'] = ['false', 'true']
+    @params['runGO'] = ['true', 'false']
     @params['backgroundExpression'] = 10
     @params['backgroundExpression', "description"] = "counts to be added to shrink estimated log2 ratios"
     @params['transcriptTypes'] = ''
