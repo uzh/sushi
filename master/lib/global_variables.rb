@@ -4,7 +4,7 @@
 GENOME_REF_DIR = '/srv/GT/reference'
 EZ_GLOBAL_VARIABLES = '/usr/local/ngseq/opt/EZ_GLOBAL_VARIABLES.txt'
 #EZ_GLOBAL_VARIABLES = '/usr/local/ngseq/opt/EZ_GLOBAL_VARIABLES_DEMO.txt'
-R_COMMAND = '/usr/local/ngseq/packages/Dev/R/3.4.0/bin/R'
+R_COMMAND = '/usr/local/ngseq/packages/Dev/R/3.4.2/bin/R'
 
 # compatible method to R vector, c(x,x,x) 
 def c(*list)
