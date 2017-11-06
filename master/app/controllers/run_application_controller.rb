@@ -143,7 +143,7 @@ class RunApplicationController < ApplicationController
       if session['employee']
         @nodes = @nodes.select{|node| node =~ /fgcz-h-00[89]/} if SushiFabric::Application.config.course_mode
       else
-        @nodes = @nodes.select{|node| node =~ /fgcz-h/ or node =~ /fgcz-c-065/} unless SushiFabric::Application.config.course_mode
+        @nodes = @nodes.select{|node| node =~ /fgcz-h/ or node =~ /fgcz-c-048/} unless SushiFabric::Application.config.course_mode
         if current_user and FGCZ.get_user_projects(current_user.login).include?('p1535')
           @nodes['fgcz-c-047: cpu 32,mem   1 TB,scr  28T'] = 'fgcz-c-047'
         end
