@@ -42,6 +42,8 @@ EOS
     @params['minFeatureOverlap', 'description'] = "minimum overlap of a read with a transcript feature"
     @params['minMapQuality'] = 1
     @params['keepMultiHits'] = true
+    @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
+    @params['transcriptTypes', 'multi_selection'] = true
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/jdk", "Aligner/STAR", "Tools/samtools", "Aligner/BWA", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat", "QC/Trimmomatic", "QC/Flexbar", "Tools/Picard", "Dev/Python2"]
@@ -53,6 +55,7 @@ EOS
      'refBuild'=>@params['refBuild'],
      'paired'=>@params['paired'],
      'refFeatureFile'=>@params['refFeatureFile'],
+     'transcriptTypes'=>@params['transcriptTypes'],
      'CellDataset [File]'=>File.join(@result_dir, "#{@dataset['Name']}-dataset.tsv"),
      'CountMatrix [File]'=>File.join(@result_dir, "#{@dataset['Name']}-counts.txt"),
      'Stats [File]'=>File.join(@result_dir, "#{@dataset['Name']}-stats.txt"),
