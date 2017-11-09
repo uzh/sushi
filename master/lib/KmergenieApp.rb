@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160930-113920'
+Version = '20171109-094757'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -27,7 +27,7 @@ Kmergenie calculates kmer distribution, and it estimates the best kmer size and 
     @params['sampling'] = 'all'
     @params['sampling', 'description'] = 'all: use all reads, number: use the number of random sampled reads'
     @params['cmdOptions'] = ''
-	 @modules = ["Assembly/KmerGenie"]
+	  @modules = ["Assembly/KmerGenie"]
   end
   def preprocess
     if @params['paired']

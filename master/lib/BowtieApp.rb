@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170907-111355'
+Version = '20171109-093717'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -32,7 +32,7 @@ Fast and memory-efficient short read aligner<br/>
     @params['minReadLength'] = 20
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/Bowtie", "QC/Flexbar", "QC/Trimmomatic"]
+    @modules = ["Tools/samtools", "Aligner/Bowtie", "QC/Flexbar", "QC/Trimmomatic", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170812-140906'
+Version = '20171109-094712'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -64,6 +64,7 @@ http://seselab.org/homeoroq/
     @params['target_orig', 'description'] = "Polyploid orig"
     @params['target_other'] = groups
     @params['target_other', 'description'] = "Polyploid other"
+    @modules = ["Dev/R"]
   end
   def preprocess
   end

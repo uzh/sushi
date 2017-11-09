@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170911-175204'
+Version = '20171109-095604'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -30,6 +30,7 @@ EOS
     @params['minLength', 'description'] = 'Minimum Polymerase Read Length. Polymerase reads shorter than this value (in bps) are filtered out and excluded from pre-assembly.'
     @params['mail'] = ""
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
+    @modules = ["Dev/R"]
   end
   def next_dataset
     report_link_1 = File.join(@result_dir, @dataset['Name'].to_s)

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170907-111317'
+Version = '20171109-095657'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -35,7 +35,7 @@ A spliced read mapper for RNA-Seq<br/>
     @params['specialOptions'] = ''
     @params['mail'] = ""
     # Python2 is required because of RSeQC package
-    @modules = ["Tools/samtools", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat", "QC/Flexbar", "QC/Trimmomatic", "Dev/Python2"]
+    @modules = ["Tools/samtools", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat", "QC/Flexbar", "QC/Trimmomatic", "Dev/Python2", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess

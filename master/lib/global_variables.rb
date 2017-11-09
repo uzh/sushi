@@ -4,7 +4,6 @@
 GENOME_REF_DIR = '/srv/GT/reference'
 EZ_GLOBAL_VARIABLES = '/usr/local/ngseq/opt/EZ_GLOBAL_VARIABLES.txt'
 #EZ_GLOBAL_VARIABLES = '/usr/local/ngseq/opt/EZ_GLOBAL_VARIABLES_DEMO.txt'
-R_COMMAND = '/usr/local/ngseq/packages/Dev/R/3.4.2/bin/R'
 
 # compatible method to R vector, c(x,x,x) 
 def c(*list)
@@ -119,7 +118,7 @@ module GlobalVariables
     end
   end
   def run_RApp(app_name = self.class.to_s[0].downcase+self.class.to_s[1,20])
-    command = "#{R_COMMAND} --vanilla --slave<<  EOT\n"
+    command = "R --vanilla --slave<<  EOT\n"
     command << "EZ_GLOBAL_VARIABLES <<- '#{EZ_GLOBAL_VARIABLES}'\n"
     command<<  "library(ezRun)\n"
     command << "param = list()\n"

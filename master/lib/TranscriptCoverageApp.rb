@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170907-111554'
+Version = '20171109-095715'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -31,6 +31,7 @@ EOS
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
+    @modules = ["Dev/R"]
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']

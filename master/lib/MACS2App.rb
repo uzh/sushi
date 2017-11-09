@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170907-111434'
+Version = '20171109-094822'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -28,7 +28,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @params['cmdOptions'] = '--nomodel --extsize 147 -g hs --bw 200'
     @params['specialOptions'] = ''
     @params['mail'] = ''
-    @modules = ["Tools/UCSC", "Tools/BEDTools", "Tools/MACS2"]
+    @modules = ["Tools/UCSC", "Tools/BEDTools", "Tools/MACS2", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters

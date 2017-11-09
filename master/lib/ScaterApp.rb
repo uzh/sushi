@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150507-090225'
+Version = '20171109-095333'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -26,6 +26,7 @@ EOS
     @params['featureLevel'] = ['gene', 'isoform']
     @params['specialOptions'] = ''
     @params['mail'] = ""
+    @modules = ["Dev/R"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join

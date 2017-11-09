@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170907-111904'
+Version = '20171109-095500'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -44,7 +44,7 @@ EOS
     @params['specialOptions'] = ''
     @params['mail'] = ""
     # Python2 is required because of RSeQC package
-    @modules = ["Aligner/STAR", "Tools/samtools", "QC/Flexbar", "Dev/jdk", "Tools/Picard", "QC/Trimmomatic", "Dev/Python2"]
+    @modules = ["Aligner/STAR", "Tools/samtools", "QC/Flexbar", "Dev/jdk", "Tools/Picard", "QC/Trimmomatic", "Dev/Python2", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
