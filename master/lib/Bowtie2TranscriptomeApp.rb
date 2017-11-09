@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170907-111715'
+Version = '20171109-093702'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -47,7 +47,7 @@ EOS
     @params['specialOptions'] = ''
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/Flexbar", "QC/Trimmomatic"]
+    @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/Flexbar", "QC/Trimmomatic", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess

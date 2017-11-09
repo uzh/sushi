@@ -34,6 +34,7 @@ Quality control after counting reads<br/>
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
+    @modules = ["Dev/R"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join

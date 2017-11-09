@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170907-111826'
+Version = '20171109-095440'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -29,6 +29,7 @@ class SplitAndClusterApp < SushiFabric::SushiApp
     @params['forwardPrimerFile'] = '/srv/gstore/projects/p1871/forwardPrimers_20160215.fasta'
     @params['reversePrimerFile'] = '/srv/gstore/projects/p1871/reversePrimers_20160215.fasta'
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
+    @modules = ["Dev/R"]
   end
   def preprocess
     if @params['paired']

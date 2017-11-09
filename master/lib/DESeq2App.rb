@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160901-134047'
+Version = '20171109-094022'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -41,7 +41,7 @@ class DESeq2App < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Tools/GFOLD", "Dev/PhantomJS"]
+    @modules = ["Tools/samtools", "Tools/GFOLD", "Dev/PhantomJS", "Dev/R"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join

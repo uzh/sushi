@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170907-111530'
+Version = '20171109-093844'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -29,7 +29,7 @@ EOS
     @params['cmdOptions'] = 'useGrid=false'
     @params['cmdOptions', 'description'] = 'specify other commandline options for Canu; do not specify any option that is already covered by the dedicated input fields'
     @params['mail'] = ""
-    @modules = ["Assembly/Canu"]
+    @modules = ["Assembly/Canu", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset

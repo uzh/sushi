@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170907-111632'
+Version = '20171109-095406'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -44,7 +44,7 @@ EOS
     @params['keepMultiHits'] = true
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/jdk", "Aligner/STAR", "Tools/samtools", "Aligner/BWA", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat", "QC/Trimmomatic", "QC/Flexbar", "Tools/Picard", "Dev/Python2"]
+    @modules = ["Dev/jdk", "Aligner/STAR", "Tools/samtools", "Aligner/BWA", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat", "QC/Trimmomatic", "QC/Flexbar", "Tools/Picard", "Dev/Python2", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
