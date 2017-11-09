@@ -36,7 +36,7 @@ EOS
     @params['specialOptions'] = ''
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Tools/bcftools", "Dev/jdk", "Tools/Picard"]
+    @modules = ["Tools/samtools", "Tools/bcftools", "Dev/jdk", "Tools/Picard", "Dev/R"]
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])

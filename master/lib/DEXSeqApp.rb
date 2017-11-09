@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20160901-134110'
+Version = '20171109-094037'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -41,7 +41,7 @@ class DEXSeqApp < SushiFabric::SushiApp
     @params['expressionName'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/Python2", "Tools/samtools"]
+    @modules = ["Dev/Python2", "Tools/samtools", "Dev/R"]
   end
   def next_dataset
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"

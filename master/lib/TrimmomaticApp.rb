@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20150710-112224'
+Version = '20171109-095910'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -50,7 +50,7 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     @params['headcrop', 'description'] = 'The number of bases to remove from the start of the read'
     @params['minlen'] = '30'
     @params['minlen', 'description'] = 'Drop the read if it is below a specified length'
-
+    @modules = ["Dev/jdk", "QC/Trimmomatic"]
   end
   def preprocess
     if @params['paired']
@@ -78,8 +78,6 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
   end
   def commands
     command = ""
-    command << "source /usr/local/ngseq/etc/lmod_profile\n"
-    command << "module add QC/Trimmomatic/0.36\n"
     adapters_fa = "#{@dataset['Name']}_adapters.fa"
     if @dataset['Adapter1']
       command << "echo '>Adapter1' > #{adapters_fa}\n"

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170907-111336'
+Version = '20171109-095422'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -40,7 +40,7 @@ EOS
     @params['minAvgQuality'] = 20
     @params['minReadLength'] = 50
     @params['mail'] = ""
-    @modules = ["QC/Flexbar", "Assembly/SPAdes", "QC/Trimmomatic"]
+    @modules = ["QC/Flexbar", "Assembly/SPAdes", "QC/Trimmomatic", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
