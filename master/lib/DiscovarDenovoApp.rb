@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170929-104648'
+Version = '20171109-094054'
 
 require 'sushi_fabric'
 require_relative 'global_variables'

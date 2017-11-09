@@ -33,7 +33,7 @@ class TrinityApp < SushiFabric::SushiApp
     @params['trinityOpt'] = '--min_kmer_cov 2'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Assembly/Trinity", "QC/Trimmomatic", "QC/Flexbar", "Aligner/Bowtie2", "Aligner/Salmon"]
+    @modules = ["Assembly/Trinity", "QC/Trimmomatic", "QC/Flexbar", "Aligner/Bowtie2", "Aligner/Salmon", "Dev/R"]
   end
   def preprocess
     if @params['paired']

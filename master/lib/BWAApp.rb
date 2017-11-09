@@ -33,7 +33,7 @@ class BWAApp < SushiFabric::SushiApp
     @params['minReadLength'] = 20
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/BWA", "QC/Flexbar", "QC/Trimmomatic"]
+    @modules = ["Tools/samtools", "Aligner/BWA", "QC/Flexbar", "QC/Trimmomatic", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess

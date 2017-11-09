@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170907-111518'
+Version = '20171109-094352'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -40,7 +40,7 @@ EOS
     @params['transcriptTypes', 'multi_selection'] = true
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools"]
+    @modules = ["Tools/samtools", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters

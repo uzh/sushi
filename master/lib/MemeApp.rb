@@ -23,7 +23,7 @@ Perform motif discovery on DNA, RNA or protein datasets<br/>
     @params['motifDB'] = '-db /usr/local/ngseq/stow/meme_4.10.2/db/motif_databases/JASPAR/JASPAR_CORE_2014_vertebrates.meme -db /usr/local/ngseq/stow/meme_4.10.2/db/motif_databases_12.7/MULTI/jolma2013.meme -db /usr/local/ngseq/stow/meme_4.10.2/db/motif_databases/MOUSE/uniprobe_mouse.meme'
     @params['cmdOptions'] = '-meme-mod zoops -meme-minw 6 -meme-maxw 30 -meme-nmotifs 3 -dreme-e 0.05 -centrimo-score 5.0 -centrimo-ethresh 10.0'
     @params['mail'] = ''
-    @modules = ['Tools/MEME']
+    @modules = ['Tools/MEME', "Dev/R"]
   end
   def next_dataset
     meme_link = File.join(@result_dir, "#{@dataset['Name']}/#{@dataset['Name']}_meme-chip.html")

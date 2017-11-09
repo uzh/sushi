@@ -51,7 +51,7 @@ EOS
     @params['minTailQuality'] = 0
     @params['minAvgQuality'] = 20
     @params['mail'] = ""
-    @modules = ["Aligner/Salmon", "QC/Flexbar", "QC/Trimmomatic"]
+    @modules = ["Aligner/Salmon", "QC/Flexbar", "QC/Trimmomatic", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
