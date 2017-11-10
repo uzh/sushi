@@ -3,7 +3,6 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 $ -> 
-    $('.dt').DataTable()
     $("#refresh_sushi_table").click ->
         dispLoading("updating...")
         $.ajax "/sushi_application/refresh_table",
