@@ -1,3 +1,11 @@
+<script type="text/javascript">
+$(document).ready(function(){
+    // this cannot be moved to coffee script
+    // it causes warning: Cannot reinitialise DataTable
+    // https://datatables.net/manual/tech-notes/3
+    $('.dt').DataTable();
+});
+</script>
 <h1>SUSHI Applications</h1>
 <form>
   <button type="button" id="refresh_sushi_table" class="btn btn-info btn-sm raised" >refresh</button>
