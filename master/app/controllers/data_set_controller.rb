@@ -139,77 +139,84 @@ class DataSetController < ApplicationController
       end
       if data_sets = DataSet.where(run_name_order_id: params[:id])
         if data_sets_ = data_sets.to_a.select{|data_set| data_set.project.number == project_number}
-          @data_set = data_sets_.sort_by{|data_set| data_set.created_at}.first
-          params[:id] = @data_set.id
+          if @data_set = data_sets_.sort_by{|data_set| data_set.created_at}.first
+            params[:id] = @data_set.id
+          end
         end
       end
     end
 
-    # check some properties
-    if session[:employee]
-      if parent_dataset = @data_set.data_set
-        if @data_set.child == false
-          @can_delete_data_files = true
-        end
-        if parent_dataset.bfabric_id and !@data_set.bfabric_id
-          @can_register_bfabric = true
-        end
-      else
-        unless @data_set.bfabric_id
-          @can_register_bfabric = true
-        end
-      end
-    end
-    # check session[:project]
-    unless session[:project] == @data_set.project.number
-      session[:project] = @data_set.project.number 
-      current_user.selected_project = session[:project]
-      current_user.save
-    end
-
-    # check real data
-    @file_exist = {}
-    @sample_path = []
-    @sample_invalid_name = {}
-    sample_count = 0
     if @data_set
-      @data_set.samples.each do |sample|
-        sample_count+=1
-        sample.to_hash.each do |header, file|
-          if header and (header.tag?('File') or header.tag?('Link') and file !~ /^http/)
-            if file
-              file_path = File.join(SushiFabric::GSTORE_DIR, file)
-              @sample_path << File.dirname(file)
-              @file_exist[file] = File.exist?(file_path)
-            else
-              @file_exist[header] = false
-            end
-          else
-            @file_exist[file] = true
+      # check some properties
+      if session[:employee]
+        if parent_dataset = @data_set.data_set
+          if @data_set.child == false
+            @can_delete_data_files = true
           end
-          if header == 'Name' and file =~ /[!@\#$%^&*\(\)\<\>\{\}\[\]\/:; '"=+\|]/
-            @sample_invalid_name[file] = true
+          if parent_dataset.bfabric_id and !@data_set.bfabric_id
+            @can_register_bfabric = true
+          end
+        else
+          unless @data_set.bfabric_id
+            @can_register_bfabric = true
           end
         end
       end
-    end
-    @sample_path.uniq!
-    @dataset_path = @sample_path.map{|path| path.split('/')[0,2].join('/')}
-    @dataset_path.uniq!
+      # check session[:project]
+      unless session[:project] == @data_set.project.number
+        session[:project] = @data_set.project.number 
+        current_user.selected_project = session[:project]
+        current_user.save
+      end
 
-    # update num_samples
-    if @data_set.num_samples.to_i != sample_count
-      @data_set.num_samples = sample_count
-    end
+      # check real data
+      @file_exist = {}
+      @sample_path = []
+      @sample_invalid_name = {}
+      sample_count = 0
+      if @data_set
+        @data_set.samples.each do |sample|
+          sample_count+=1
+          sample.to_hash.each do |header, file|
+            if header and (header.tag?('File') or header.tag?('Link') and file !~ /^http/)
+              if file
+                file_path = File.join(SushiFabric::GSTORE_DIR, file)
+                @sample_path << File.dirname(file)
+                @file_exist[file] = File.exist?(file_path)
+              else
+                @file_exist[header] = false
+              end
+            else
+              @file_exist[file] = true
+            end
+            if header == 'Name' and file =~ /[!@\#$%^&*\(\)\<\>\{\}\[\]\/:; '"=+\|]/
+              @sample_invalid_name[file] = true
+            end
+          end
+        end
+      end
+      @sample_path.uniq!
+      @dataset_path = @sample_path.map{|path| path.split('/')[0,2].join('/')}
+      @dataset_path.uniq!
 
-    if !@data_set.refreshed_apps and @data_set.runnable_apps.empty?
-      @data_set.refreshed_apps = true
-      @data_set.save
-      set_runnable_apps(false)
-    end
-    if @file_exist.values.inject{|a,b| a and b}
-      @sushi_apps = @data_set.runnable_apps
-      @sushi_apps_category = @sushi_apps.keys.sort
+      # update num_samples
+      if @data_set.num_samples.to_i != sample_count
+        @data_set.num_samples = sample_count
+      end
+
+      if !@data_set.refreshed_apps and @data_set.runnable_apps.empty?
+        @data_set.refreshed_apps = true
+        @data_set.save
+        set_runnable_apps(false)
+      end
+      if @file_exist.values.inject{|a,b| a and b}
+        @sushi_apps = @data_set.runnable_apps
+        @sushi_apps_category = @sushi_apps.keys.sort
+      end
+    else
+      @url_not_found = true
+      index
+      render action: "index"
     end
   end
   def add_comment
