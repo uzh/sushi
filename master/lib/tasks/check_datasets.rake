@@ -1,11 +1,12 @@
 namespace :ds do
 
-  desc "Check only STAR datasets"
-  task star: :environment do
-    puts ["project", "name", "#samples", "created_at"].join("\t")
+  desc "Check STAR BWA Bowtie datasets"
+  task star_bwa_bowtie: :environment do
+    puts ["project", "name", "#samples", "created_at", "link"].join("\t")
     DataSet.all.each do |data_set|
-      if data_set.name =~ /star/i
-        puts [data_set.project.number, data_set.name, data_set.samples.length, data_set.created_at.to_s.split.first].join("\t")
+      if data_set.name =~ /star/i or data_set.name =~ /bwa/i or data_set.name =~ /bowtie/i
+        link = "https://fgcz-sushi.uzh.ch/data_set/p#{data_set.project.number}/#{data_set.id}"
+        puts [data_set.project.number, data_set.name, data_set.samples.length, data_set.created_at.to_s.split.first, link].join("\t")
       end
     end
   end
