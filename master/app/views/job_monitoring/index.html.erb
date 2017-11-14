@@ -45,7 +45,7 @@ $(document).ready(function(){
         <td><%= job[0] %></td>
         <td><%= button_to job[1], "/job_monitoring/#{job[0]}/change_status" %></td>
         <td>
-            <% if job[1]=='running' and current_user and job[4]==current_user.login %>
+            <% if (job[1]=='running' or job[1]=='pending') and current_user and job[4]==current_user.login %>
               <%= button_to 'kill', "/job_monitoring/#{job[0]}/kill_job", data: {confirm: "Are you sure you want to kill the job '#{job[0]}'?"}, :class=>"btn btn-info btn-sm raised" %>
             <% elsif job[1]=='fail' and session['employee'] and current_user %>
               <% if submit_job = @submit_jobs[i] and submit_job.data_set %>
