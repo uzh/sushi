@@ -1,0 +1,20 @@
+<h1>Project <%= session[:project] %></h1>
+<h3>Sequencing Announcement Replacement Setting</h3>
+
+<%= form_tag(:action => 'announce') do %>
+  <table>
+  <% @replaces.each do |key, val| %>
+    <tr>
+      <td><%= key %></td><td><%= text_field :replaces, key, :value => "#{val}", :size=>30 %></td>
+    </tr>
+  <% end %>
+  </table>
+<%= hidden_field :template, :path, :value=>@template_path %>
+<%= submit_tag 'Next', :class=>"btn btn-sm btn-info raised" %>
+<% end %>
+
+<hr>
+<%= @template_path %><br><br>
+<% @template.each do |line| %>
+  <%= line %><br>
+<% end %>
