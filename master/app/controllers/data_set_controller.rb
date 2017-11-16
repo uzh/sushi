@@ -762,4 +762,55 @@ class DataSetController < ApplicationController
     Process.waitpid pid
     redirect_to :controller => "data_set", :action => "show"
   end
+  def announce_template_set
+    @data_set_id = params[:id]
+  end
+  def announce_replace_set
+    @template_path = if template = params[:template]
+                       template[:path]
+                     end
+    id = if data_set = params[:data_set]
+           data_set[:id]
+         end
+    @data_set = DataSet.find_by_id(id)
+    fastqc_data_set = @data_set.data_sets.select{|dataset| dataset.name =~ /Fastqc/}.first
+    @fastqc_link = if fastqc_data_set and sample = fastqc_data_set.samples.first
+                     sample.to_hash["Html [Link]"]
+                   else
+                     "FASTQC_LINK"
+                   end
+    @replaces = {}
+    @template = []
+    File.readlines(@template_path).each do |line|
+      @template << line
+      if matches = line.scan(/[A-Z_]{2,}/)
+        matches.each do |key|
+          case key
+          when "USER_NAME"
+            @replaces[key] = "Project members"
+          when "PROJECT_NUMBER"
+            @replaces[key] = session[:project]
+          when "DATASET_NAME"
+            @replaces[key] = @data_set.name
+          when "MY_NAME"
+            @replaces[key] = current_user.login.capitalize
+          when "FASTQC_LINK"
+            @replaces[key] = @fastqc_link.to_s
+          else
+            @replaces[key] = key
+          end
+        end
+      end
+    end
+  end
+  def announce
+    template_path = if template = params[:template]
+                      template[:path]
+                    end
+    @replaces = params[:replaces]
+    @template = []
+    File.readlines(template_path).each do |line|
+      @template << line.chomp.gsub(/#{@replaces.keys.join("|")}/, @replaces)
+    end
+  end
 end
