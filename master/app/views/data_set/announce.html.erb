@@ -1,0 +1,12 @@
+<h1>Project <%= session[:project] %></h1>
+<h3>Sequencing Announcement</h3>
+
+<% if @bfab_order_number %>
+  BFabric order: <%= link_to @bfab_order_number, "https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-projectorder.html?projectOrderId=#{@bfab_order_number}", target: "_blank" %>
+<% end %>
+<br>
+<textarea cols="200" rows="30" id="template_body">
+<% @template.each do |line| %>
+<%= line %>
+<% end %>
+</textarea>

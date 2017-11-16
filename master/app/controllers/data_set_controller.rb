@@ -812,5 +812,8 @@ class DataSetController < ApplicationController
     File.readlines(template_path).each do |line|
       @template << line.chomp.gsub(/#{@replaces.keys.join("|")}/, @replaces)
     end
+    @bfab_order_number = if @replaces["DATASET_NAME"] =~ /_o(\d+)/
+                         $1
+                       end
   end
 end
