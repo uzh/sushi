@@ -2,7 +2,7 @@
 <h3>Sequencing Announcement Tempalte Setting</h3>
 
 <%= form_tag(:action => 'announce_replace_set') do %>
-Template file <%= text_field :template, :path, :value => "/srv/SushiFabric/announce_template.txt", :size=>70 %><br>
+  Template file <%= select :template, :path, @announce_templates, :selected => "", :class=>"form-control input-md" %><br>
 <%= hidden_field :data_set, :id, :value=>@data_set_id %>
 <%= submit_tag 'Next', :class=>"btn btn-sm btn-info raised" %>
 <% end %>

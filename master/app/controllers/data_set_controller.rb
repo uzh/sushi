@@ -764,6 +764,7 @@ class DataSetController < ApplicationController
   end
   def announce_template_set
     @data_set_id = params[:id]
+    @announce_templates = Dir["/srv/SushiFabric/announce_templates/*.txt"].to_a
   end
   def announce_replace_set
     @template_path = if template = params[:template]
@@ -773,11 +774,17 @@ class DataSetController < ApplicationController
            data_set[:id]
          end
     @data_set = DataSet.find_by_id(id)
-    fastqc_data_set = @data_set.data_sets.select{|dataset| dataset.name =~ /Fastqc/}.first
+    fastqc_data_set = @data_set.data_sets.select{|dataset| dataset.name =~ /Fastqc/i}.first
     @fastqc_link = if fastqc_data_set and sample = fastqc_data_set.samples.first
                      sample.to_hash["Html [Link]"]
                    else
                      "FASTQC_LINK"
+                   end
+    fastqscreen_data_set = @data_set.data_sets.select{|dataset| dataset.name =~ /Fastqscreen/i}.first
+    @fastqscreen_link = if fastqscreen_data_set and sample = fastqscreen_data_set.samples.first
+                     sample.to_hash["Html [Link]"]
+                   else
+                     "FASTQSCREEN_LINK"
                    end
     @replaces = {}
     @template = []
@@ -796,6 +803,8 @@ class DataSetController < ApplicationController
             @replaces[key] = current_user.login.capitalize
           when "FASTQC_LINK"
             @replaces[key] = @fastqc_link.to_s
+          when "FASTQSCREEN_LINK"
+            @replaces[key] = @fastqscreen_link.to_s
           else
             @replaces[key] = key
           end
