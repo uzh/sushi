@@ -1,12 +1,45 @@
 namespace :ds do
 
+  def sample_path(data_set)
+    paths = []
+    data_set.samples.each do |sample|
+      sample.to_hash.each do |header, file|
+        if (header.tag?('File') or header.tag?('Link')) and file !~ /http/
+          paths << File.dirname(file)
+        end
+      end
+    end
+    paths.uniq!
+    paths
+  end
+
   desc "Check STAR BWA Bowtie datasets"
   task star_bwa_bowtie: :environment do
-    puts ["project", "name", "#samples", "created_at", "link"].join("\t")
+    puts ["project", "name", "#samples", "created_at", "link", "gstore_path", "#bams", "size [GB]"].join("\t")
     DataSet.all.each do |data_set|
       if data_set.name =~ /star/i or data_set.name =~ /bwa/i or data_set.name =~ /bowtie/i
         link = "https://fgcz-sushi.uzh.ch/data_set/p#{data_set.project.number}/#{data_set.id}"
-        puts [data_set.project.number, data_set.name, data_set.samples.length, data_set.created_at.to_s.split.first, link].join("\t")
+        paths = sample_path(data_set)
+        paths.delete('.')
+        paths = paths.uniq.compact
+        bams_size_total = 0
+        dir_size_total = 0
+        gstore_paths = []
+        paths.each do |path|
+          gstore_path = File.join("/srv/gstore/projects", path)
+          gstore_paths << gstore_path
+          bams_size = Dir[File.join(gstore_path, "*.bam")].to_a.length
+          bams_size_total += bams_size
+          com = "du -s #{gstore_path}"
+          dir_size = if File.exist?(gstore_path)
+                       `#{com}`.to_i
+                     else
+                       0
+                     end
+          dir_size_total += dir_size
+        end
+        dir_size_total = "%d" % (dir_size_total/1000000.0)
+        puts [data_set.project.number, data_set.name, data_set.samples.length, data_set.created_at.to_s.split.first, link, gstore_paths.join(","), bams_size_total, dir_size_total].join("\t")
       end
     end
   end
