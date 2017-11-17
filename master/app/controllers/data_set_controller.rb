@@ -797,6 +797,12 @@ class DataSetController < ApplicationController
             @replaces[key] = "Project members"
           when "PROJECT_NUMBER"
             @replaces[key] = session[:project]
+          when "ORDER_NUMBER"
+            @replaces[key] = if @data_set.name =~ /_o(\d+)/
+                               $1
+                             else
+                               key
+                             end
           when "DATASET_NAME"
             @replaces[key] = @data_set.name
           when "MY_NAME"
@@ -822,7 +828,7 @@ class DataSetController < ApplicationController
       @template << line.chomp.gsub(/#{@replaces.keys.join("|")}/, @replaces)
     end
     @bfab_order_number = if @replaces["DATASET_NAME"] =~ /_o(\d+)/
-                         $1
-                       end
+                           $1
+                         end
   end
 end
