@@ -6,13 +6,13 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class SubreadsApp < SushiFabric::SushiApp
+class MothurDataCleanApp < SushiFabric::SushiApp
 def initialize
 super
 @name = 'MothurDataClean'
 @analysis_category = 'Metagenomics'
 @description =<<-EOS
-Subreads from SMRT Analysis
+OTU-based metagenomics analysis with Mothur.
 <a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki/MiSeq_SOP</a>
   EOS
 
