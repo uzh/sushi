@@ -18,8 +18,12 @@ OTU-based metagenomics analysis with Mothur.
 
 @required_columns = ['Name', 'Read1', 'Read2']
 @required_params = ['cut-off']
+@params['cores'] = '1'
+@params['ram'] = '8'
+@params['scratch'] = '10'
 @params['cut-off'] = '0.03'
 @params['cut-off', 'description'] = 'Cut-off similarity to cluster OTUss'
+@params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
 end
