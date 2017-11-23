@@ -19,9 +19,9 @@ class DEXSeqApp < SushiFabric::SushiApp
     @required_columns = ['Name','BAM','BAI', 'Species','refBuild', 'refFeatureFile']
     @required_params = ['grouping', 'sampleGroup', 'refGroup','refBuild','paired', 'strandMode']
     # optional params
-    @params['cores'] = '8'
-    @params['ram'] = '20'
-    @params['scratch'] = '10'
+    @params['cores'] = '12'
+    @params['ram'] = '50'
+    @params['scratch'] = '200'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['paired'] = false
