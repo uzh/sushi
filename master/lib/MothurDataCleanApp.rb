@@ -15,14 +15,14 @@ super
 OTU-based metagenomics analysis with Mothur.
 <a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki/MiSeq_SOP</a>
   EOS
-
+@params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'Read1', 'Read2']
 @required_params = ['cut-off']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
-@params['cut-off'] = '0.03'
-@params['cut-off', 'description'] = 'Cut-off similarity to cluster OTUss'
+@params['cutOff'] = '0.03'
+@params['cutOff', 'description'] = 'Cut-off similarity to cluster OTUs'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
