@@ -805,6 +805,8 @@ class DataSetController < ApplicationController
                              end
           when "DATASET_NAME"
             @replaces[key] = @data_set.name
+          when "WORKUNIT_ID"
+            @replaces[key] = (@data_set.workunit_id||key)
           when "MY_NAME"
             @replaces[key] = current_user.login.capitalize
           when "FASTQC_LINK"
