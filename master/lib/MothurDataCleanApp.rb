@@ -16,7 +16,7 @@ OTU-based metagenomics analysis with Mothur.
 <a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki/MiSeq_SOP</a>
   EOS
 @params['process_mode'] = 'DATASET'
-@required_columns = ['Name', 'Read1', 'Read2']
+@required_columns = ['Name', 'Read1']
 @required_params = ['cut-off']
 @params['cores'] = '1'
 @params['ram'] = '8'
