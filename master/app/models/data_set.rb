@@ -104,4 +104,15 @@ class DataSet < ActiveRecord::Base
       end
     end
   end
+  def paths
+    dirs = []
+    samples.each do |sample|
+      sample.to_hash.each do |header, file|
+        if (header.tag?('File') or header.tag?('Link')) and file !~ /http/
+          dirs << File.dirname(file)
+        end
+      end
+    end
+    dirs = dirs.map{|path| path.split('/')[0,2].join('/')}.uniq
+  end
 end
