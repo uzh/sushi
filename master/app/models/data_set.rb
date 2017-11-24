@@ -79,13 +79,19 @@ class DataSet < ActiveRecord::Base
             out.print self.tsv_string
           end
           puts "# created: #{dataset_tsv}"
-          if File.exist?(dataset_tsv) and bfabric_id = `#{command}`
+          if File.exist?(dataset_tsv) and bfabric_ids = `#{command}`
             puts "$ #{command}"
             puts "# mode: #{op}"
-            if bfabric_id.split(/\n/).uniq.length < 2 and bfabric_id.chomp.to_i > 0
-              self.bfabric_id = bfabric_id.chomp.to_i
-              puts "# BFabricID: #{self.bfabric_id}"
-              self.save
+            puts "# bfabric_dis: #{bfabric_ids}"
+            if bfabric_ids.split(/\n/).uniq.length < 2
+              workunit_id, dataset_id = bfabric_ids.chomp.split(',')
+              if workunit_id.to_i > 0
+                self.bfabric_id = dataset_id.to_i
+                self.workunit_id = workunit_id.to_i
+                puts "# DataSetID  (BFabric): #{self.bfabric_id}"
+                puts "# WorkunitID (BFabric): #{self.workunit_id}"
+                self.save
+              end
             else
               puts "# Not executed properly:"
               puts "# BFabricID: #{bfabric_id}"
