@@ -50,6 +50,7 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     @params['headcrop', 'description'] = 'The number of bases to remove from the start of the read'
     @params['minlen'] = '30'
     @params['minlen', 'description'] = 'Drop the read if it is below a specified length'
+    @params['mail'] = ""
     @modules = ["Dev/jdk", "QC/Trimmomatic"]
   end
   def preprocess
