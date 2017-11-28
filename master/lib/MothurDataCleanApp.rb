@@ -17,16 +17,16 @@ OTU-based metagenomics analysis with Mothur.
   EOS
 @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'Read1', 'Technology']
-@required_params = ['cutOff', 'diffsIll','diffsPacBio']
+@required_params = ['cutOff', 'diffs_Illumina','diffs_PacBio']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
 @params['cutOff'] = '80'
 @params['cutOff', 'description'] = 'Cut-off for taxonomy assignment in classify.seqs'
-@params['diffsIllumina'] = '2'
-@params['diffsIllumina', 'description'] = 'Differences allowed in the pre.cluster step. Should be 1 every 100 bases.If the data are only Pacbio, it is ignored'
-@params['diffsPacBio'] = '15'
-@params['diffsPacBio', 'description'] = 'Differences allowed in the pre.cluster step. Should be 1 every 100 bases.If the data are only Illumina, it is ignored'
+@params['diffs_Illumina'] = '2'
+@params['diffs_Illumina', 'description'] = 'Differences allowed in the pre.cluster step. Should be 1 every 100 bases.If the data are only Pacbio, it is ignored'
+@params['diffs_PacBio'] = '15'
+@params['diffs_PacBio', 'description'] = 'Differences allowed in the pre.cluster step. Should be 1 every 100 bases.If the data are only Illumina, it is ignored'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
