@@ -16,24 +16,28 @@ OTU-based metagenomics analysis with Mothur.
 <a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki/MiSeq_SOP</a>
   EOS
 @params['process_mode'] = 'DATASET'
-@required_columns = ['Name', 'Read1']
-@required_params = ['cut-off']
+@required_columns = ['Name', 'Read1', 'Technology']
+@required_params = ['cutOff', 'diffsIll','diffsPacBio']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
-@params['cutOff'] = '0.03'
-@params['cutOff', 'description'] = 'Cut-off similarity to cluster OTUs'
+@params['cutOff'] = '80'
+@params['cutOff', 'description'] = 'Cut-off for taxonomy assignment in classify.seqs'
+@params['diffsIll'] = '2'
+@params['diffsIll', 'description'] = 'Differences allowed in the pre.cluster step. Should be 1 every 100 bases.If the data are only Pacbio, it is ignored'
+@params['diffsPacBio'] = '15'
+@params['diffsPacBio', 'description'] = 'Differences allowed in the pre.cluster step. Should be 1 every 100 bases.If the data are only Illumina, it is ignored'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
 end
 def next_dataset
-report_link_1 = File.join(@result_dir, @dataset['Name'].to_s)
-report_link = File.join(report_link_1, 'index.html')
+report_file = File.join(@result_dir, @params['name'])
+report_link = File.join(report_file, '00index.html')
 {'Name'=>@dataset['Name'],
-#  'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.filtered_subreads.fastq.gz")
-  'Static Report [Link]'=>report_link,
-  'SubreadsOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}")
+  'CountTable [File]'=>File.join(@result_dir, "Mothur.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
+  'PreClusteredFastaFile [File]'=>File.join(@result_dir, "Mothur.good.unique.good.filter.unique.precluster.pick.pick.fasta"),
+  'Static Report [Link]'=>report_link
 }.merge(extract_columns(@inherit_tags))
 
 end
