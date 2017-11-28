@@ -23,8 +23,8 @@ OTU-based metagenomics analysis with Mothur.
 @params['scratch'] = '10'
 @params['cutOff'] = '80'
 @params['cutOff', 'description'] = 'Cut-off for taxonomy assignment in classify.seqs'
-@params['diffsIll'] = '2'
-@params['diffsIll', 'description'] = 'Differences allowed in the pre.cluster step. Should be 1 every 100 bases.If the data are only Pacbio, it is ignored'
+@params['diffsIllumina'] = '2'
+@params['diffsIllumina', 'description'] = 'Differences allowed in the pre.cluster step. Should be 1 every 100 bases.If the data are only Pacbio, it is ignored'
 @params['diffsPacBio'] = '15'
 @params['diffsPacBio', 'description'] = 'Differences allowed in the pre.cluster step. Should be 1 every 100 bases.If the data are only Illumina, it is ignored'
 @params['mail'] = ""
