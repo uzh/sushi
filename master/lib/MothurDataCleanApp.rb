@@ -42,13 +42,13 @@ end
 def next_dataset
 #report_file = File.join(@result_dir, @params['name'])
 report_link = File.join(@result_dir, '00index.html')
-{'Name'=>@dataset['Name'],
+{'Name'=>@params['name'],
   'CountTablePacBio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
   'PreClusteredFastaFilePacbio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.pick.pick.fasta"),
   'CountTableIllumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
   'PreClusteredFastaFileIllumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.pick.pick.fasta"),
   'Static Report [Link]'=>report_link
-}.merge(extract_columns(@inherit_tags))
+}
 
 end
 def commands
