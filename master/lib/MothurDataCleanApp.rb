@@ -40,8 +40,9 @@ OTU-based metagenomics analysis with Mothur.
 @modules = ["Dev/R"]
 end
 def next_dataset
-#report_file = File.join(@result_dir, @params['name'])
-report_link = File.join(@result_dir, '00index.html')
+@params['name'] = "MothurDataClean"
+report_file = File.join(@result_dir, @params['name'])
+report_link = File.join(report_file, '00index.html')
 {'Name'=>@params['name'],
   'CountTablePacBio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
   'PreClusteredFastaFilePacbio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.pick.pick.fasta"),
