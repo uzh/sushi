@@ -49,7 +49,7 @@ report_link = File.join(@result_dir, '00index.html')
   'CountTableIllumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
   'PreClusteredFastaFileIllumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.pick.pick.fasta"),
   'Report [File]'=>report_file,
-  'Static Report [Link]'=>report_link
+  'Static Report [Link]'=>report_link,
   }
 
 end
