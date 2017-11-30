@@ -44,12 +44,13 @@ def next_dataset
 report_file = File.join(@result_dir, @params['name'])
 report_link = File.join(report_file, '00index.html')
 {'Name'=>@params['name'],
-  'CountTablePacBio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
-  'PreClusteredFastaFilePacbio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.pick.pick.fasta"),
-  'CountTableIllumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
-  'PreClusteredFastaFileIllumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.pick.pick.fasta"),
-  'Report [Link]'=>report_link
-}
+  'CountTablePacBio [File]'=>File.join(report_file, "PacBio.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
+  'PreClusteredFastaFilePacbio [File]'=>File.join(report_file, "PacBio.good.unique.good.filter.unique.precluster.pick.pick.fasta"),
+  'CountTableIllumina [File]'=>File.join(report_file, "Illumina.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
+  'PreClusteredFastaFileIllumina [File]'=>File.join(report_file, "Illumina.good.unique.good.filter.unique.precluster.pick.pick.fasta"),
+  'Report [File]'=>report_file,
+  'Static Report [Link]'=>report_link
+  }
 
 end
 def commands
