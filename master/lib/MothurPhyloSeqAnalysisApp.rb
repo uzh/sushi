@@ -28,15 +28,13 @@ super
 @modules = ["Dev/R"]
 end
 def next_dataset
-report_link_1 = File.join(@result_dir, @dataset['Name'].to_s)
-report_link = File.join(report_link_1, 'index.html')
+@params['name'] = "MothurPhyloSeq"
+report_file = File.join(@result_dir, '00index_files')
+report_link = File.join(@result_dir, '00index.html')
 {'Name'=>@dataset['Name'],
-  'OTU_pacbio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.shared"),
-  'Taxonomy_pacbio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.", @params['cutOff'], ".cons.taxonomy"),
-  'OTU_Illumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.shared"),
-  'Taxonomy_Illumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.", @params['cutOff'], ".cons.taxonomy"),
+  'Report [File]'=>report_file,
   'Static Report [Link]'=>report_link
-}.merge(extract_columns(@inherit_tags))
+}
 
 end
 def commands
