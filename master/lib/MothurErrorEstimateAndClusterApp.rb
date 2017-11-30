@@ -35,8 +35,8 @@ def next_dataset
 @params['name'] = "MothurErrorEstAndClustering"
 report_file = File.join(@result_dir, '00index_files')
 report_link = File.join(@result_dir, '00index.html')
-pacbioTaxFile = join("PacBio.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.", @params['cutOff'], ".cons.taxonomy")
-illuminaTaxFile = join("Illumina.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.", @params['cutOff'], ".cons.taxonomy")
+pacbioTaxFile = "PacBio.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc." + @params['cutOff'] + ".cons.taxonomy"
+illuminaTaxFile = "Illumina.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc." + @params['cutOff'] + ".cons.taxonomy"
 {'Name'=>@dataset['Name'],
   'OTU_pacbio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.shared"),
   'Taxonomy_pacbio [File]'=>File.join(@result_dir, pacbioTaxFile),
