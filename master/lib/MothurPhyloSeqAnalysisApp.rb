@@ -33,7 +33,7 @@ report_file = File.join(@result_dir, '00index_files')
 report_link = File.join(@result_dir, '00index.html')
 {'Name'=>@dataset['Name'],
   'Report [File]'=>report_file,
-  'Static Report [Link]'=>report_link
+  'Static Report [Link,File]'=>report_link,
 }
 
 end
@@ -43,35 +43,4 @@ end
 end
 
 if __FILE__ == $0
-run SubreadsApp
-#usecase = Bowtie2App.new
-
-#usecase.project = "p1001"
-#usecase.user = 'masamasa'
-
-# set user parameter
-# for GUI sushi
-#usecase.params['process_mode'].value = 'SAMPLE'
-#usecase.params['refBuild'] = 'mm10'
-#usecase.params['paired'] = true
-#usecase.params['strandMode'] = 'both'
-#usecase.params['cores'] = 8
-#usecase.params['node'] = 'fgcz-c-048'
-
-# also possible to load a parameterset csv file
-# mainly for CUI sushi
-#usecase.parameterset_tsv_file = 'tophat_parameterset.tsv'
-#usecase.parameterset_tsv_file = 'test.tsv'
-
-# set input dataset
-# mainly for CUI sushi
-#usecase.dataset_tsv_file = 'tophat_dataset.tsv'
-
-# also possible to load a input dataset from Sushi DB
-#usecase.dataset_sushi_id = 3
-
-# run (submit to workflow_manager)
-#usecase.run
-#usecase.test_run
-
 end
