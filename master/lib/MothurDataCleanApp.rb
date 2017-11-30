@@ -48,7 +48,7 @@ report_link = File.join(report_file, '00index.html')
   'PreClusteredFastaFilePacbio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.pick.pick.fasta"),
   'CountTableIllumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
   'PreClusteredFastaFileIllumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.pick.pick.fasta"),
-  'Static Report [Link]'=>report_link
+  'Report [Link]'=>report_link
 }
 
 end
