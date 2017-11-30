@@ -18,7 +18,7 @@ OTU-based metagenomics analysis with Mothur.
 @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'CountTablePacBio','PreClusteredFastaFilePacbio','CountTableIllumina','PreClusteredFastaFileIllumina']
 @required_params = ['cutOff']
-@required_params = ['referenceGroup']
+@required_params = ['referenceGroup', 'referenceFasta']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
@@ -26,6 +26,8 @@ OTU-based metagenomics analysis with Mothur.
 @params['cutOff', 'description'] = 'Cut-off similarity to cluster OTUs'
 @params['referenceGroup'] = 'Mock'
 @params['referenceGroup', 'description'] = 'Group of sample against which to estimate error rates'
+@params['referenceFasta'] = ''
+@params['referenceFasta', 'description'] = 'Full path to fasta file for the moc community.'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
