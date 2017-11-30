@@ -17,8 +17,7 @@ OTU-based metagenomics analysis with Mothur.
   EOS
 @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'CountTablePacBio','PreClusteredFastaFilePacbio','CountTableIllumina','PreClusteredFastaFileIllumina']
-@required_params = ['cutOff']
-@required_params = ['referenceGroup', 'referenceFasta']
+@required_params = ['cutOff','referenceGroup', 'referenceFasta']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
@@ -27,7 +26,7 @@ OTU-based metagenomics analysis with Mothur.
 @params['referenceGroup'] = 'Mock'
 @params['referenceGroup', 'description'] = 'Group of sample against which to estimate error rates'
 @params['referenceFasta'] = ''
-@params['referenceFasta', 'description'] = 'Full path to fasta file for the moc community.'
+@params['referenceFasta', 'description'] = 'Full path to fasta file for the mock community.'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
@@ -36,18 +35,20 @@ def next_dataset
 @params['name'] = "MothurErrorEstAndClustering"
 report_file = File.join(@result_dir, '00index_files')
 report_link = File.join(@result_dir, '00index.html')
+pacbioTaxFile = join("PacBio.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.", @params['cutOff'], ".cons.taxonomy")
+illuminaTaxFile = join("Illumina.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.", @params['cutOff'], ".cons.taxonomy")
 {'Name'=>@dataset['Name'],
   'OTU_pacbio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.shared"),
-  'Taxonomy_pacbio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.", @params['cutOff'], ".cons.taxonomy"),
+  'Taxonomy_pacbio [File]'=>File.join(@result_dir, pacbioTaxFile),
   'OTU_Illumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.shared"),
-  'Taxonomy_Illumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.", @params['cutOff'], ".cons.taxonomy"),
+  'Taxonomy_Illumina [File]'=>File.join(@result_dir, illuminaTaxFile),
   'Report [File]'=>report_file,
   'Static Report [Link,File]'=>report_link,
 }
 
 end
 def commands
-run_RApp("EzAppMothurDataClean")
+run_RApp("EzAppMothurErrorEstimateAndCluster")
 end
 end
 
