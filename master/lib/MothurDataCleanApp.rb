@@ -44,8 +44,9 @@ def next_dataset
 report_file = File.join(@result_dir, '00index_files')
 report_link = File.join(@result_dir, '00index.html')
 {'Name'=>@params['name'],
-  'CountTablePacBio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
+  'CountTablePacbio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
   'PreClusteredFastaFilePacbio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.pick.pick.fasta"),
+  'TaxonomyFilePacbio [File]'=>File.join(@result_dir, "PacBio.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy"),
   'CountTableIllumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
   'PreClusteredFastaFileIllumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.pick.pick.fasta"),
   'TaxonomyFileIllumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy"),

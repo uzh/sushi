@@ -16,7 +16,7 @@ OTU-based metagenomics analysis with Mothur.
 <a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki/MiSeq_SOP</a>
   EOS
 @params['process_mode'] = 'DATASET'
-@required_columns = ['Name', 'TaxonomyFileIllumina', 'CountTablePacBio','PreClusteredFastaFilePacbio','CountTableIllumina','PreClusteredFastaFileIllumina']
+@required_columns = ['Name', 'CountTablePacbio','PreClusteredFastaFilePacbio','TaxonomyFilePacbio', 'CountTableIllumina','PreClusteredFastaFileIllumina', 'TaxonomyFileIllumina',]
 @required_params = ['cutOff','referenceGroup', 'referenceFasta']
 @params['cores'] = '1'
 @params['ram'] = '8'
