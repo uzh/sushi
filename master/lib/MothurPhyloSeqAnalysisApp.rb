@@ -17,12 +17,16 @@ super
   EOS
 @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'OTU_pacbio','Taxonomy_pacbio','OTU_Illumina','Taxonomy_Illumina']
-@required_params = ['designMatrix']
+@required_params = ['designMatrix', 'pacbioReprentativeOTUs', 'illuminaoReprentativeOTUs']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
 @params['designMatrix'] = ''
 @params['designMatrix', 'description'] = 'Tab-separated file assigning samples to groups.'
+@params['pacbioReprentativeOTUs'] = ''
+@params['pacbioReprentativeOTUs', 'description'] = 'Number of OTUs representing the Pacbio samples.'
+@params['illuminaoReprentativeOTUs'] = ''
+@params['illuminaoReprentativeOTUs', 'description'] = 'Number of OTUs representing the Illumina samples.'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
