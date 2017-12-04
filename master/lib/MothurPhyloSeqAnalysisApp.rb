@@ -12,17 +12,15 @@ super
 @name = 'MothurPhyloSeqAnalysis'
 @analysis_category = 'Metagenomics'
 @description =<<-EOS
-16S metagenmics visualization with Phyloseq.
+16S metagenomics visualization with Phyloseq.
 <a href='http://joey711.github.io/phyloseq/index.html'>http://joey711.github.io/phyloseq/index.html</a>
   EOS
 @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'OTU_pacbio','Taxonomy_pacbio','OTU_Illumina','Taxonomy_Illumina']
-@required_params = ['designMatrix', 'pacbioReprentativeOTUs', 'illuminaoReprentativeOTUs']
+@required_params = ['pacbioReprentativeOTUs', 'illuminaoReprentativeOTUs']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
-@params['designMatrix'] = ''
-@params['designMatrix', 'description'] = 'Tab-separated file assigning samples to groups.'
 @params['pacbioReprentativeOTUs'] = ''
 @params['pacbioReprentativeOTUs', 'description'] = 'Number of OTUs representing the Pacbio samples.'
 @params['illuminaoReprentativeOTUs'] = ''
