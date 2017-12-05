@@ -23,8 +23,8 @@ super
 @params['scratch'] = '10'
 @params['pacbioRepresentativeOTUs'] = ''
 @params['pacbioRepresentativeOTUs', 'description'] = 'Number of OTUs representing the Pacbio samples.'
-@params['illuminaReprentativeOTUs'] = ''
-@params['illuminaReprentativeOTUs', 'description'] = 'Number of OTUs representing the Illumina samples.'
+@params['illuminaRepresentativeOTUs'] = ''
+@params['illuminaRepresentativeOTUs', 'description'] = 'Number of OTUs representing the Illumina samples.'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
