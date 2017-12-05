@@ -17,7 +17,7 @@ super
   EOS
 @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'OTU_pacbio','Taxonomy_pacbio','OTU_Illumina','Taxonomy_Illumina']
-@required_params = ['pacbioReprentativeOTUs', 'illuminaoReprentativeOTUs']
+@required_params = ['pacbioRepresentativeOTUs', 'illuminaRepresentativeOTUs']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
