@@ -25,7 +25,7 @@ OTU-based metagenomics analysis with Mothur.
 @params['cutOff', 'description'] = 'Cut-off similarity to cluster OTUs'
 @params['referenceGroup'] = 'Mock'
 @params['referenceGroup', 'description'] = 'Group of sample against which to estimate error rates'
-@params['referenceFasta'] = ''
+@params['referenceFasta'] = '/srv/GT/analysis/grusso/courses/metagenomicsCourse/references/bioPoolReference.16S.fasta'
 @params['referenceFasta', 'description'] = 'Full path to fasta file for the mock community.'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
