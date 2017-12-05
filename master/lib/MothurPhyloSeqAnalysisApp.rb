@@ -21,10 +21,10 @@ super
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
-@params['pacbioReprentativeOTUs'] = ''
-@params['pacbioReprentativeOTUs', 'description'] = 'Number of OTUs representing the Pacbio samples.'
-@params['illuminaoReprentativeOTUs'] = ''
-@params['illuminaoReprentativeOTUs', 'description'] = 'Number of OTUs representing the Illumina samples.'
+@params['pacbioRepresentativeOTUs'] = ''
+@params['pacbioRepresentativeOTUs', 'description'] = 'Number of OTUs representing the Pacbio samples.'
+@params['illuminaReprentativeOTUs'] = ''
+@params['illuminaReprentativeOTUs', 'description'] = 'Number of OTUs representing the Illumina samples.'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
