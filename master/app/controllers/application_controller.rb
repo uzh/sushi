@@ -6,6 +6,7 @@ require 'csv'
 require 'sushi_fabric'
 require 'SushiWrap'
 require 'drb/drb'
+require 'tmpdir'
 
 # TODO: why also has to force it from here?
 module Savon
