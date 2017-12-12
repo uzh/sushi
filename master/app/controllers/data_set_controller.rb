@@ -563,6 +563,7 @@ class DataSetController < ApplicationController
   def save_dataset_tsv_in_gstore
     if id = params[:id]
       data_set = DataSet.find_by_id(id)
+      target_dataset_tsv = ''
       Dir.mktmpdir do |dir|
         out_tsv = File.join(dir, "dataset.tsv")
         data_set.save_as_tsv(File.join(dir, "dataset.tsv"))
@@ -578,7 +579,7 @@ class DataSetController < ApplicationController
                          File.join(project, data_set.name)
                        end
         target_dir = File.join(SushiFabric::GSTORE_DIR, dataset_path)
-        target_dataset_tsv = File.join(target_dataset_tsv, "dataset.tsv")
+        target_dataset_tsv = File.join(target_dir, "dataset.tsv")
         # PENDING
         # here: call g-req copynow force
       end
