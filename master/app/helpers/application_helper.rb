@@ -31,7 +31,7 @@ module ApplicationHelper
                           else
                             if project=params[:select_project] and number=project[:number] and number.to_i!=0 or
                                project=params[:project] and number=project[:number] and number.to_i!=0 and 
-                               session[:projects].include?(number.to_i)
+                               session[:projects].flatten.include?(number.to_i)
                                number.to_i
                             elsif session[:project]
                                session[:project]
