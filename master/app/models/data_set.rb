@@ -121,4 +121,8 @@ class DataSet < ActiveRecord::Base
     end
     dirs = dirs.map{|path| path.split('/')[0,2].join('/')}.uniq
   end
+  def save_as_tsv(out_file=nil)
+    file_name = out_file||"#{self.name}_dataset.tsv"
+    File.write(file_name, tsv_string)
+  end
 end
