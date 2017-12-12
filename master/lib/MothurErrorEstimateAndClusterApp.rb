@@ -17,14 +17,12 @@ OTU-based metagenomics analysis with Mothur.
   EOS
 @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'CountTablePacbio','PreClusteredFastaFilePacbio','TaxonomyFilePacbio', 'CountTableIllumina','PreClusteredFastaFileIllumina', 'TaxonomyFileIllumina',]
-@required_params = ['cutOff','referenceGroup', 'referenceFasta']
+@required_params = ['cutOff', 'referenceFasta']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
 @params['cutOff'] = '0.03'
 @params['cutOff', 'description'] = 'Cut-off similarity to cluster OTUs'
-@params['referenceGroup'] = 'Mock'
-@params['referenceGroup', 'description'] = 'Group of sample against which to estimate error rates'
 @params['referenceFasta'] = '/srv/GT/analysis/grusso/courses/metagenomicsCourse/references/bioPoolReference.16S.fasta'
 @params['referenceFasta', 'description'] = 'Full path to fasta file for the mock community.'
 @params['mail'] = ""
