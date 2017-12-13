@@ -26,7 +26,7 @@ EOS
     @params['cores'] = '8'
     @params['ram'] = '40'
     @params['scratch'] = '100'
-    @params['refBuild'] = ref_selector
+    @params['refBuild'] = ['Mus_musculus/UCSC/mm10', 'Homo_sapiens/UCSC/hg19', 'Rattus_norvegicus/UCSC/rn5']
     #@params['paired'] = false
     #@params['paired', 'description'] = 'whether the reads are paired end; must be false since ncPRO-seq does not support paired-end'
     @params['name'] = 'ncPRO_Result'
