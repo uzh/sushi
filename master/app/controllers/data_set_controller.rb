@@ -566,7 +566,7 @@ class DataSetController < ApplicationController
       target_dataset_tsv = ''
       Dir.mktmpdir do |dir|
         out_tsv = File.join(dir, "dataset.tsv")
-        data_set.save_as_tsv(File.join(dir, "dataset.tsv"))
+        data_set.save_as_tsv(out_tsv)
         project_number = session[:project]
         project = "p#{project_number}"
         dataset_path = if dirs = data_set.paths
@@ -581,7 +581,14 @@ class DataSetController < ApplicationController
         target_dir = File.join(SushiFabric::GSTORE_DIR, dataset_path)
         target_dataset_tsv = File.join(target_dir, "dataset.tsv")
         # PENDING
-        # here: call g-req copynow force
+        # HERE: call g-req copynow force
+        print File.read(out_tsv)
+        commands = @@workflow_manager.copy_commands(out_tsv, target_dir, "force")
+        commands.each do |command|
+          puts command
+          #`#{command}`
+        end
+        puts "done"
       end
     end
     render text: "id: #{id}, data_set.name: #{data_set.name}, target_dataset_tsv: #{target_dataset_tsv}"
