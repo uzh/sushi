@@ -115,6 +115,23 @@ $(document).ready(function(){
        form.submit();
     });
 
+    $( "#download_dialog" ).dialog({
+      width: 800,
+      height: 300,
+      position: { my: "left top", at: "left+200 top+100", of: "#whole_tree" },
+      autoOpen: false,
+      show: {
+        effect: "blind",
+        duration: 300
+      },
+      hide: {
+        effect: "explode",
+        duration: 300
+      }
+    });
+    $( "#opener" ).on( "click", function() {
+      $( "#download_dialog" ).dialog( "open" );
+    });
 });
 </script>
 <%= form_tag('/data_set/multi_delete', :id=>"multi_delete") do %>
@@ -127,7 +144,7 @@ $(document).ready(function(){
 <%= hidden_field :data_set, :name, :value=>@data_set.name %>
 <%= hidden_field :data_set, :id, :value=>@data_set.id %>
 <%= hidden_field :data_set, :comment, :value=>@data_set.comment.to_s %>
-- <%= link_to "download", {:action=>"save_as_tsv", :id=>@data_set.id}, :method=>:post %>
+- <a href="#" id="opener">download links</a>
 - <%= link_to 'scripts', "/data_set/script_log.#{@data_set.id}", :method=>:get %>
 - <%= link_to 'parameters', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>
 <% if @data_set.data_set and @data_set.sushi_app_name %>
@@ -140,6 +157,42 @@ $(document).ready(function(){
 <% if session[:employee] and !@data_set.data_set %>
 - <%= link_to "announce", {:action=>"announce_template_set", :id=>@data_set.id}, :method=>:post %>
 <% end %>
+<div id="download_dialog" title="Donwload links">
+  <p>
+    - Java downloader from B-Fabric:
+  <% if @data_set.workunit_id %>
+  <%= link_to "https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-workunit.html?id=#{@data_set.workunit_id}", "https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-workunit.html?id=#{@data_set.workunit_id}", target: "_blank" %>
+  <% else %>
+    not available
+  <% end %>
+  </p><p>
+  - Direct http download:
+  <% if @dataset_path.length > 1 %>
+    <br>
+    <% @dataset_path.each do |dataset_path| %>
+      &nbsp;&nbsp; <%= link_to File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path), File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path), target: "_blank" %><br>
+    <% end %>
+  <% else %>
+    <%= link_to File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first), File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first), target: "_blank" %>
+  <% end %>
+  </p>
+  <% if current_user and current_user.login %>
+  <p>
+  - wget command:
+  <% if @dataset_path.length > 1 %>
+    <br>
+    <% @dataset_path.each do |dataset_path| %>
+      &nbsp;&nbsp; <%= text_field :next_dataset, :comment, :value => "wget -r -nd -l 1 -e robots=off --user=#{current_user.login} --ask-password #{File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path)}", :size => 100 %><br>
+    <% end %>
+  <% else %>
+    <%= text_field :next_dataset, :comment, :value => "wget -r -nd -l 1 -e robots=off --user=#{current_user.login} --ask-password #{File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first)}", :size => 85 %>
+  <% end %>
+  </p>
+  <% end %>
+  <p>
+  - <%= link_to "Download dataset description table (click here)", {:action=>"save_as_tsv", :id=>@data_set.id}, :method=>:post %>
+  </p>
+</div>
 
 <div id="hogehoge" class="jstree_container">
 <ul id="data_set_tree" class="filetree jstree_box"></ul>
