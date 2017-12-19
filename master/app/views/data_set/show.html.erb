@@ -167,28 +167,34 @@ $(document).ready(function(){
   <% end %>
   </p><p>
   - Direct http download:
-  <% if @dataset_path.length > 1 %>
-    <br>
-    <% @dataset_path.each do |dataset_path| %>
-      &nbsp;&nbsp; <%= link_to File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path), File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path), target: "_blank" %><br>
+  <% if @fgcz and current_user and current_user.login %>
+    <% if @dataset_path.length > 1 %>
+      <br>
+      <% @dataset_path.each do |dataset_path| %>
+        &nbsp;&nbsp; <%= link_to File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path), File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path), target: "_blank" %><br>
+      <% end %>
+    <% else %>
+      <%= link_to File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first), File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first), target: "_blank" %>
     <% end %>
   <% else %>
-    <%= link_to File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first), File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first), target: "_blank" %>
+    not available
   <% end %>
   </p>
-  <% if current_user and current_user.login %>
   <p>
   - wget command:
-  <% if @dataset_path.length > 1 %>
-    <br>
-    <% @dataset_path.each do |dataset_path| %>
-      &nbsp;&nbsp; <%= text_field :next_dataset, :comment, :value => "wget -r -nd -l 1 -e robots=off --user=#{current_user.login} --ask-password #{File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path)}", :size => 100 %><br>
+  <% if @fgcz and current_user and current_user.login %>
+    <% if @dataset_path.length > 1 %>
+      <br>
+      <% @dataset_path.each do |dataset_path| %>
+        &nbsp;&nbsp; <%= text_field :wget, :command, :value => "wget --user #{current_user.login} -e robots=off --ask-password -r --no-parent -nH --cut-dirs=2 --reject='index.html*' #{File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path)}", :size => 100 %><br>
+      <% end %>
+    <% else %>
+      <%= text_field :wget, :command, :value => "wget --user #{current_user.login} -e robots=off --ask-password -r --no-parent -nH --cut-dirs=2 --reject='index.html*' #{File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first)}", :size => 85 %>
     <% end %>
   <% else %>
-    <%= text_field :next_dataset, :comment, :value => "wget -r -nd -l 1 -e robots=off --user=#{current_user.login} --ask-password #{File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first)}", :size => 85 %>
+    not available
   <% end %>
   </p>
-  <% end %>
   <p>
   - <%= link_to "Download dataset description table (click here)", {:action=>"save_as_tsv", :id=>@data_set.id}, :method=>:post %>
   </p>
