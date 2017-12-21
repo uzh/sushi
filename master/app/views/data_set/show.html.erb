@@ -109,6 +109,23 @@ $(document).ready(function(){
         });
       }
     });
+    $("#mod_bfab_data_set_id").click(function(){
+      var data_set_id = $("#data_set_id").val();
+      var old_bfab_data_set_id = $("#bfab_data_set_id").val();
+      var new_bfab_data_set_id = prompt("new BFabric DataSetID", old_bfab_data_set_id);
+      var prohibit_char = /[^0-9]/;
+
+      if(new_bfab_data_set_id.match(prohibit_char)){
+        alert("WARNING: Only numbers are allowed");
+      }else if (data_set_id != null && new_bfab_data_set_id != null) {
+        $.ajax({
+               type: 'POST',
+               url: '/data_set/mod_bfab_data_set_id',
+               data: {'data_set_id':data_set_id, 'bfab_data_set_id':new_bfab_data_set_id},
+               async : false
+        });
+      }
+    });
 
     $('#btn_multi_delete').click(function () {
        var form = $('#multi_delete');
@@ -144,6 +161,7 @@ $(document).ready(function(){
 <%= hidden_field :data_set, :name, :value=>@data_set.name %>
 <%= hidden_field :data_set, :id, :value=>@data_set.id %>
 <%= hidden_field :data_set, :comment, :value=>@data_set.comment.to_s %>
+<%= hidden_field :bfab_data_set, :id, :value=>@data_set.bfabric_id.to_s %>
 - <a href="#" id="opener">download links</a>
 - <%= link_to 'scripts', "/data_set/script_log.#{@data_set.id}", :method=>:get %>
 - <%= link_to 'parameters', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>
@@ -154,8 +172,11 @@ $(document).ready(function(){
 <% if @can_register_bfabric %>
 - <%= link_to "register bfabric", {:action=>"register_bfabric", :id=>@data_set.id}, :data=>{:confirm=>"Are you sure you want to register this dataset? DataSet ID:#{@data_set.id}? It will take some seconds."}, :method=>:post %>
 <% end %>
-<% if session[:employee] and !@data_set.data_set %>
-- <%= link_to "announce", {:action=>"announce_template_set", :id=>@data_set.id}, :method=>:post %>
+<% if session[:employee] %>
+- <%= link_to "BFabricID", '', :id=>"mod_bfab_data_set_id" %> 
+  <% if !@data_set.data_set %>
+  - <%= link_to "announce", {:action=>"announce_template_set", :id=>@data_set.id}, :method=>:post %>
+  <% end %>
 <% end %>
 <div id="download_dialog" title="Donwload links">
   <p>
