@@ -45,6 +45,7 @@ SushiFabric::Application.routes.draw do
       post :bfabric
       post :add_comment
       post :edit_name
+      post :mod_bfab_data_set_id
       post :announce_template_set
       post :announce_replace_set
       post :announce
