@@ -236,6 +236,14 @@ class DataSetController < ApplicationController
     end
     redirect_to(:action => "show") and return
   end
+  def mod_bfab_data_set_id
+    if id = params[:data_set_id] and bfabric_id = params[:bfab_data_set_id]
+      data_set = DataSet.find_by_id(id)
+      data_set.bfabric_id = bfabric_id
+      data_set.save
+    end
+    redirect_to(:action => "show") and return
+  end
   def refresh_apps
     set_runnable_apps
     show

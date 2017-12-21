@@ -82,7 +82,7 @@ class DataSet < ActiveRecord::Base
           if File.exist?(dataset_tsv) and bfabric_ids = `#{command}`
             puts "$ #{command}"
             puts "# mode: #{op}"
-            puts "# bfabric_dis: #{bfabric_ids}"
+            puts "# bfabric_ids: #{bfabric_ids}"
             if bfabric_ids.split(/\n/).uniq.length < 2
               workunit_id, dataset_id = bfabric_ids.chomp.split(',')
               if workunit_id.to_i > 0
