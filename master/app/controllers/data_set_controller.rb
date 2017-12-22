@@ -568,39 +568,6 @@ class DataSetController < ApplicationController
      :type => 'text/csv',
      :disposition => "attachment; filename=#{data_set_name}.tsv" 
   end
-  def save_dataset_tsv_in_gstore
-    if id = params[:id]
-      data_set = DataSet.find_by_id(id)
-      target_dataset_tsv = ''
-      Dir.mktmpdir do |dir|
-        out_tsv = File.join(dir, "dataset.tsv")
-        data_set.save_as_tsv(out_tsv)
-        project_number = session[:project]
-        project = "p#{project_number}"
-        dataset_path = if dirs = data_set.paths
-                         if dirs.length > 1
-                           File.join(project, data_set.name)
-                         else
-                           dirs.first
-                         end
-                       else
-                         File.join(project, data_set.name)
-                       end
-        target_dir = File.join(SushiFabric::GSTORE_DIR, dataset_path)
-        target_dataset_tsv = File.join(target_dir, "dataset.tsv")
-        # PENDING
-        # HERE: call g-req copynow force
-        print File.read(out_tsv)
-        commands = @@workflow_manager.copy_commands(out_tsv, target_dir, "force")
-        commands.each do |command|
-          puts command
-          #`#{command}`
-        end
-        puts "done"
-      end
-    end
-    render text: "id: #{id}, data_set.name: #{data_set.name}, target_dataset_tsv: #{target_dataset_tsv}"
-  end
   def delete
     @data_set = DataSet.find_by_id(params[:format])
 
