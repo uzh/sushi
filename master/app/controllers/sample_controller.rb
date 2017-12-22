@@ -1,5 +1,35 @@
 class SampleController < ApplicationController
   include SushiFabric
+  def save_dataset_tsv_in_gstore(data_set)
+    if SushiFabric::Application.config.fgcz?
+      target_dataset_tsv = ''
+      Dir.mktmpdir do |dir|
+        out_tsv = File.join(dir, "dataset.tsv")
+        data_set.save_as_tsv(out_tsv)
+        project_number = session[:project]
+        project = "p#{project_number}"
+        dataset_path = if data_set.child
+                         File.join(project, data_set.name)
+                       elsif dirs = data_set.paths
+                         if dirs.length > 1
+                           File.join(project, data_set.name)
+                         else
+                           dirs.first
+                         end
+                       else
+                         File.join(project, data_set.name)
+                       end
+        target_dir = File.join(SushiFabric::GSTORE_DIR, dataset_path)
+        target_dataset_tsv = File.join(target_dir, "dataset.tsv")
+        #print File.read(out_tsv)
+        commands = @@workflow_manager.copy_commands(out_tsv, target_dir, "force")
+        commands.each do |command|
+          #puts command
+          `#{command}`
+        end
+      end
+    end
+  end
   def show
     @data_set = DataSet.find_by_id(params[:id])
 
@@ -25,6 +55,9 @@ class SampleController < ApplicationController
         samples << sample.to_hash.values
       end
     end
+    if params[:edit]
+      save_dataset_tsv_in_gstore(@data_set)
+    end
 
     if params[:edit_save_as_child] and del_rows = session[:del_rows]
       del_rows.sort.reverse.each do |i|
@@ -49,6 +82,7 @@ class SampleController < ApplicationController
         @data_set = DataSet.find_by_id(data_set_id)
         @data_set.child = true
         @data_set.save
+        save_dataset_tsv_in_gstore(@data_set)
       end
     end
 
@@ -70,16 +104,18 @@ class SampleController < ApplicationController
       @data_set.samples << sample
       @data_set.md5 = @data_set.md5hexdigest
       @data_set.save
+      save_dataset_tsv_in_gstore(@data_set)
     end
 
     # del row
     if params[:edit_save] and del_rows = session[:del_rows]
       del_rows.sort.reverse.each do |i|
-        @data_set.samples[i].delete
+        @data_set.samples.delete(@data_set.samples[i])
       end
       @data_set.num_samples = @data_set.samples.length - del_rows.length
       @data_set.md5 = @data_set.md5hexdigest
       @data_set.save
+      save_dataset_tsv_in_gstore(@data_set)
     end
 
     # update column names
@@ -102,6 +138,7 @@ class SampleController < ApplicationController
       end
       @data_set.md5 = @data_set.md5hexdigest
       @data_set.save
+      save_dataset_tsv_in_gstore(@data_set)
     end
 
     # add new column
@@ -115,6 +152,7 @@ class SampleController < ApplicationController
       end
       @data_set.md5 = @data_set.md5hexdigest
       @data_set.save
+      save_dataset_tsv_in_gstore(@data_set)
     end
 
     # delete column
@@ -127,6 +165,7 @@ class SampleController < ApplicationController
       end
       @data_set.md5 = @data_set.md5hexdigest
       @data_set.save
+      save_dataset_tsv_in_gstore(@data_set)
     end
 
     # delete rows session clear
