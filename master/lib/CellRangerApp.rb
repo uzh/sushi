@@ -26,7 +26,6 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @inherit_tags = ["B-Fabric"]
   end
   def set_default_parameters
-    @params['Species'] = @dataset[0]['Species']
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
