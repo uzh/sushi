@@ -28,9 +28,9 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
   def set_default_parameters
   end
   def next_dataset
-    report_dir = File.join(@result_dir, @params['name'])
+    report_dir = File.join(@result_dir, @dataset['Name'])
     dataset = {
-    'Name'=>@dataset['Name'],
+      'Name'=>@dataset['Name'],
       'ResultDir [File]'=>report_dir,
       'Species'=>@dataset['Species'],
       'reference'=>@params['reference']
