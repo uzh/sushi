@@ -14,7 +14,7 @@ Counted since <%= @first_date %>
     <td>
       <%= i+1 %>
     <% if i==0 %>
-      <font color=red> *<%= "The Sushi Master!" %>*</font>
+      <font color=red> *<%= "The SUSHI Master!" %>*</font>
     <% end %>
     <% if name_count[0] == @mvp %>
       <font color=blue> *<%= "Monthly MVP!" %>*</font>
@@ -28,6 +28,16 @@ Counted since <%= @first_date %>
 </table>
 <%= column_chart @count_month,
   :library => {
-  :hAxis => {:title => "Total Job Submitting"}
-  } 
+  :hAxis => {:title => "Total job submitting"}
+  }
+%>
+<%= column_chart @count_users,
+  :library => {
+  :hAxis => {:title => "New users"}
+  }
+%>
+<%= line_chart @total_users,
+  :library => {
+  :hAxis => {:title => "Total number of users"}
+  }
 %>
