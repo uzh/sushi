@@ -32,6 +32,9 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     dataset = {
       'Name'=>@dataset['Name'],
       'ResultDir [File]'=>report_dir,
+      'Report [Link]'=>File.join(report_dir, 'outs/web_summary.html'),
+      'BAM [File]'=>File.join(report_dir, 'outs/possorted_genome_bam.bam'),
+      'BAI [File]'=>File.join(report_dir, 'outs/possorted_genome_bam.bam.bai'),
       'Species'=>@dataset['Species'],
       'reference'=>@params['reference']
     }.merge(extract_columns(@inherit_tags))
