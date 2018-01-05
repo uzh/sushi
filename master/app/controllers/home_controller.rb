@@ -64,6 +64,8 @@ class HomeController < ApplicationController
     this_month = Time.now.to_s.split.first.split(/-/)[0,2].join('-')
     monthly_mvp = {}
     @count_month = {}
+    @count_users = {}
+    @total_users = []
     job_list = @@workflow_manager.job_list(false, nil)
     job_list.split(/\n/).each do |line|
       # e.g. "564201,fail,QC_sample_dataset.sh,2013-07-12 17:38:21,masaomi,1001\n"
@@ -78,8 +80,19 @@ class HomeController < ApplicationController
       @count_month[date]||=0
       @count_month[date]+=1
       first_date << date
+
+      @count_users[date]||=0
+      if count_name[name] == 1
+        @count_users[date]+=1
+      end
     end
     @count_month = @count_month.to_a.sort
+    @count_users = @count_users.to_a.sort
+    total_users = 0
+    @count_users.each do |date,users|
+      total_users += users.to_i
+      @total_users << [date, total_users]
+    end
     @rank = count_name.sort_by{|name, count| count}.reverse
     @monthly_mvp = monthly_mvp
     @mvp = monthly_mvp.sort_by{|name, count| count}.reverse.first.first
