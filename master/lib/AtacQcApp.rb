@@ -24,7 +24,7 @@ Quality control for ATACSeq  experiments<br/>
     @params['name'] = 'AtacQC_Result'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
-    @param[['minInsert']] = 100
+    @params['minInsert'] = '100'
     @params['ctcfPeakFile'] = ''
     @params['specialOptions'] = ''
     @params['cmdOptions'] = ''
