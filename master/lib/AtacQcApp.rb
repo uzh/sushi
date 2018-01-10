@@ -25,10 +25,7 @@ Quality control for ATACSeq  experiments<br/>
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @param[['minInsert']] = 100
-    @params['ctcfPeakFile'] = {'select'=>''}
-    Dir["/srv/GT/databases/ChIPSeq_public/*"].sort.select{|design| File.directory?(design)}.each do |dir|
-      @params['ctcfPeakFile'][File.basename(dir)] = File.basename(dir)
-    end
+    @params['ctcfPeakFile'] = ''
     @params['specialOptions'] = ''
     @params['cmdOptions'] = ''
     @params['mail'] = ""
