@@ -192,10 +192,10 @@ $(document).ready(function(){
     <% if @dataset_path.length > 1 %>
       <br>
       <% @dataset_path.each do |dataset_path| %>
-        &nbsp;&nbsp; <%= link_to File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path), File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path), target: "_blank" %><br>
+        &nbsp;&nbsp; <%= link_to File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path.to_s), File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path.to_s), target: "_blank" %><br>
       <% end %>
     <% else %>
-      <%= link_to File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first), File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first), target: "_blank" %>
+      <%= link_to File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first.to_s), File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first.to_s), target: "_blank" %>
     <% end %>
   <% else %>
     not available
@@ -207,10 +207,10 @@ $(document).ready(function(){
     <% if @dataset_path.length > 1 %>
       <br>
       <% @dataset_path.each do |dataset_path| %>
-        &nbsp;&nbsp; <%= text_field :wget, :command, :value => "wget --user #{current_user.login} -e robots=off --ask-password -r --no-parent -nH --cut-dirs=2 --reject='index.html*' #{File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path)}", :size => 100 %><br>
+        &nbsp;&nbsp; <%= text_field :wget, :command, :value => "wget --user #{current_user.login} -e robots=off --ask-password -r --no-parent -nH --cut-dirs=2 --reject='index.html*' #{File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path.to_s)}", :size => 100 %><br>
       <% end %>
     <% else %>
-      <%= text_field :wget, :command, :value => "wget --user #{current_user.login} -e robots=off --ask-password -r --no-parent -nH --cut-dirs=2 --reject='index.html*' #{File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first)}", :size => 85 %>
+      <%= text_field :wget, :command, :value => "wget --user #{current_user.login} -e robots=off --ask-password -r --no-parent -nH --cut-dirs=2 --reject='index.html*' #{File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first.to_s)}", :size => 85 %>
     <% end %>
   <% else %>
     not available
@@ -262,10 +262,10 @@ $(document).ready(function(){
 <% if @dataset_path.length > 1 %>
   - data folder
   <% @dataset_path.each do |dataset_path| %>
-    - <%= link_to dataset_path, File.join("/projects/", dataset_path) %>
+    - <%= link_to dataset_path, File.join("/projects/", dataset_path.to_s) %>
   <% end %>
 <% else %>
-- <%= link_to "data folder", File.join("/projects/", @dataset_path.first) %>
+- <%= link_to "data folder", File.join("/projects/", @dataset_path.first.to_s) %>
 <% end %>
 <div id="hide_show">
 <% if @data_set %>
