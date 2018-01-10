@@ -29,7 +29,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @params['specialOptions'] = ''
     @params['mail'] = ''
     @modules = ["Tools/UCSC", "Tools/BEDTools", "Tools/MACS2", "Dev/R"]
-    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic", "File"]
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
