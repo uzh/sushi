@@ -14,7 +14,7 @@ class JunctionSeqApp < SushiFabric::SushiApp
     @analysis_category = 'Alternative_Splicing'
     @description =<<-EOS
     Inference of differential exon or Splice-Junction usage in RNA-Seq<br/>
-<a href='https://bioconductor.org/packages/release/bioc/html/Dhttp://bioconductor.org/packages/release/bioc/html/JunctionSeq.html'>JunctionSeq</a><br/>
+<a href='https://bioconductor.org/packages/release/bioc/html/JunctionSeq.html'>JunctionSeq</a><br/>
     EOS
     @required_columns = ['Name','BAM','BAI', 'Species','refBuild', 'refFeatureFile']
     @required_params = ['grouping', 'sampleGroup', 'refGroup','refBuild','paired', 'strandMode']
@@ -32,7 +32,7 @@ class JunctionSeqApp < SushiFabric::SushiApp
     @params['refGroup'] = ''
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     @params['fdr'] = '0.05'
-    @params['maxReadLength'] = '0.05'
+    @params['maxReadLength'] = '151'
     @params['minCount'] = '6'
     @params['expressionName'] = ''
     @params['specialOptions'] = ''
