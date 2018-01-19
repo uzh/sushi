@@ -44,7 +44,7 @@ class JunctionSeqApp < SushiFabric::SushiApp
     @params['comparison'] = @comparison
     @params['name'] = @comparison
     report_file = File.join(@result_dir, @params['name'])
-    report_link = File.join(@result_dir, 'finalOutput/testForDU.html')
+    report_link = File.join(report_file, 'finalOutput/testForDU.html')
     {'Name'=>@comparison,
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
