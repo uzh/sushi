@@ -35,7 +35,7 @@ A spliced read mapper for RNA-Seq<br/>
     @params['specialOptions'] = ''
     @params['mail'] = ""
     # Python2 is required because of RSeQC package
-    @modules = ["Tools/samtools", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat", "QC/Flexbar", "QC/Trimmomatic", "Dev/Python2", "Dev/R"]
+    @modules = ["Tools/samtools", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat", "QC/Flexbar", "QC/Trimmomatic", "Dev/Python2", "Dev/R", "Tools/sambamba"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
