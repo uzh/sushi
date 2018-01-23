@@ -40,7 +40,7 @@ EOS
     @params['transcriptTypes', 'multi_selection'] = true
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Dev/R"]
+    @modules = ["Tools/samtools", "Dev/R", "Tools/sambamba"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters

@@ -44,7 +44,7 @@ EOS
     @params['specialOptions'] = ''
     @params['mail'] = ""
     # Python2 is required because of RSeQC package
-    @modules = ["Aligner/STAR", "Tools/samtools", "QC/Flexbar", "Dev/jdk", "Tools/Picard", "QC/Trimmomatic", "Dev/Python2", "Dev/R"]
+    @modules = ["Aligner/STAR", "Tools/samtools", "QC/Flexbar", "Dev/jdk", "Tools/Picard", "QC/Trimmomatic", "Dev/Python2", "Dev/R", "Tools/sambamba"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess

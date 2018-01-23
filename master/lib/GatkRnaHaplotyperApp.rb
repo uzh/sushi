@@ -25,7 +25,7 @@ Haplotype calling for RNA-seq<br/>
     @params['build'] = ref_selector
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Dev/jdk", "Variants/GATK", "Tools/Picard", "Dev/R"]
+    @modules = ["Tools/samtools", "Dev/jdk", "Variants/GATK", "Tools/Picard", "Dev/R", "Tools/sambamba"]
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])

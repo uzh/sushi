@@ -32,7 +32,7 @@ Fast and memory-efficient short read aligner<br/>
     @params['minReadLength'] = 20
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/Bowtie", "QC/Flexbar", "QC/Trimmomatic", "Dev/R"]
+    @modules = ["Tools/samtools", "Aligner/Bowtie", "QC/Flexbar", "QC/Trimmomatic", "Dev/R", "Tools/sambamba"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
