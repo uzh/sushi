@@ -15,7 +15,7 @@ class MACS2App < SushiFabric::SushiApp
 Capturing the influence of genome complexity to evaluate the significance of enriched ChIP regions<br/>
 <a href='http://liulab.dfci.harvard.edu/MACS/00README.html'>http://liulab.dfci.harvard.edu/MACS/00README.html</a>
     EOS
-    @required_columns = ['Name','BAM','BAI', 'refBuild','Control']
+    @required_columns = ['Name','BAM','BAI', 'refBuild']
     @required_params = ['refBuild','paired']
     # optional params
     @params['cores'] = '1'
@@ -28,7 +28,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @params['cmdOptions'] = '--nomodel --extsize 147 -g hs --bw 200'
     @params['specialOptions'] = ''
     @params['mail'] = ''
-    @modules = ["Tools/UCSC", "Tools/BEDTools", "Tools/MACS2", "Dev/R"]
+    @modules = ["Tools/UCSC", "Tools/BEDTools", "Tools/MACS2", "Dev/R", "Tools/sambamba"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic", "File"]
   end
   def set_default_parameters
