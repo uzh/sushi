@@ -41,7 +41,7 @@ class DESeq2App < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Tools/GFOLD", "Dev/PhantomJS", "Dev/R"]
+    @modules = ["Tools/samtools", "Tools/GFOLD", "Dev/PhantomJS", "Dev/R", "Tools/sambamba"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
