@@ -48,7 +48,7 @@ EOS
     @params['specialOptions'] = ''
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/Flexbar", "QC/Trimmomatic", "Tools/BEDTools", "Dev/R"]
+    @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/Flexbar", "QC/Trimmomatic", "Tools/BEDTools", "Dev/R", "Tools/sambamba"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
