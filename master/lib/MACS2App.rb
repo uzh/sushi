@@ -18,18 +18,20 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @required_columns = ['Name','BAM','BAI', 'refBuild']
     @required_params = ['refBuild','paired']
     # optional params
-    @params['cores'] = '1'
-    @params['ram'] = '16'
+    @params['cores'] = '4'
+    @params['ram'] = '40'
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['paired'] = false
     @params['useControl'] = true
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['cmdOptions'] = '--nomodel --extsize 147 -g hs --bw 200'
+    @params['mode'] = ['ChIP-seq', 'ATAC-seq']
+    @params['mode', 'description'] = 'Call MACS2 for ChIP-seq or ATAC-seq data.'
+    @params['cmdOptions'] = '--nomodel --bw 200'
     @params['specialOptions'] = ''
     @params['mail'] = ''
     @modules = ["Tools/UCSC", "Tools/BEDTools", "Tools/MACS2", "Dev/R", "Tools/sambamba"]
-    @inherit_tags = ["Factor", "B-Fabric", "Characteristic", "File"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
@@ -43,6 +45,9 @@ Capturing the influence of genome complexity to evaluate the significance of enr
 
   def next_dataset
     bw_link = File.join(@result_dir, "#{@dataset['Name']}.bw")
+    bam_link = File.join(@result_dir, "#{@dataset['Name']}_processed.bam")
+    bai_link = File.join(@result_dir, "#{@dataset['Name']}_processed.bam.bai")
+    
     peakfile_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.xls")
     bedfile_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.bed")
     peakseq_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.fa")
@@ -55,7 +60,9 @@ Capturing the influence of genome complexity to evaluate the significance of enr
      'CalledPeaks [File]'=>peakfile_link,
      'BED [File]'=>bedfile_link,
      'PeakSequences [File]'=>peakseq_link,
-     'BigWigFile [File]'=>bw_link
+     'BigWigFile [File]'=>bw_link,
+     'BAM [File]'=>bam_link,
+     'BAI [File]'=>bai_link
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
