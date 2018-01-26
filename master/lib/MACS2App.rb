@@ -19,11 +19,13 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @required_params = ['refBuild','paired']
     # optional params
     @params['cores'] = '4'
-    @params['ram'] = '40'
+    @params['ram'] = '60'
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['paired'] = false
     @params['useControl'] = true
+    @params['shiftATAC'] = false
+    @params['shiftATAC', 'description'] = 'should all reads aligning to + strand were offset by +4bp, all reads aligning to the - strand are offset -5 bp'
     @params['refFeatureFile'] = 'genes.gtf'
     @params['mode'] = ['ChIP-seq', 'ATAC-seq']
     @params['mode', 'description'] = 'Call MACS2 for ChIP-seq or ATAC-seq data.'
