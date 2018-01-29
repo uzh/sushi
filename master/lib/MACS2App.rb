@@ -32,7 +32,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @params['cmdOptions'] = '--nomodel --bw 200'
     @params['specialOptions'] = ''
     @params['mail'] = ''
-    @modules = ["Tools/UCSC", "Tools/BEDTools", "Tools/MACS2", "Dev/R", "Tools/sambamba"]
+    @modules = ["Tools/UCSC", "Tools/BEDTools", "Dev/Python2", "Tools/MACS2", "Dev/R", "Tools/sambamba"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters
