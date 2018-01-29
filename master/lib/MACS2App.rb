@@ -46,7 +46,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
  end
 
   def next_dataset
-    bw_link = File.join(@result_dir, "#{@dataset['Name']}.bw")
+    bw_link = File.join(@result_dir, "#{@dataset['Name']}_processed.bw")
     bam_link = File.join(@result_dir, "#{@dataset['Name']}_processed.bam")
     bai_link = File.join(@result_dir, "#{@dataset['Name']}_processed.bam.bai")
     
