@@ -102,7 +102,7 @@ GEM
     mini_portile2 (2.3.0)
     minitest (5.10.2)
     mysql2 (0.4.8)
-    net-ldap (0.2.2)
+    net-ldap (0.16.1)
     nokogiri (1.8.1)
       mini_portile2 (~> 2.3.0)
     nori (2.6.0)
@@ -238,7 +238,6 @@ DEPENDENCIES
   hpricot
   jquery-rails
   jstree-rails-4
-  mini_portile2
   mysql2
   rails (= 4.2.6)
   rspec
