@@ -32,7 +32,7 @@ EOS
     @params['refBuildHOMER', 'description'] = 'The current supported genomes from HOMER. More is available.'
     @params['repFoldChange'] = '2'
     @params['repFoldChange', 'description'] = 'Replicate fold change cutoff for peak identification (calculated by DESeq2)'
-    @params['repFDR'] = '0.1'
+    @params['repFDR'] = '0.05'
     @params['repFDR', 'description'] = 'Replicate FDR cutoff for peak identification (calculated by DESeq2)'
     @params['balanced'] = true
     @params['balanced', 'description'] = 'Do not force the use of normalization factors to match total mapped reads.  This can be useful when analyzing differential peaks between similar data (for example H3K27ac) where we expect similar levels in all experiments. Applying this allows the data to essentially be quantile normalized during the differential calculation.'
