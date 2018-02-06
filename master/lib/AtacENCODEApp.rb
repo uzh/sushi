@@ -13,9 +13,7 @@ class AtacENCODEApp <  SushiFabric::SushiApp
     @analysis_category = 'ATAC'
     @description =<<-EOS
     A ATAC-seq and DNase-seq processing pipeline from ENCODE. <br/>
-    Fow now, it only supports human and mouse.
-    When the job fails, please go to Jobs to resubmit the job.
-    It will make sure the jobs reruns from the failed point. <br/>
+    Fow now, it only supports human and mouse. <br/>
 
     <a href='https://github.com/kundajelab/atac_dnase_pipelines'/>Github web-site</a>
     
