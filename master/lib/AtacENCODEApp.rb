@@ -22,9 +22,9 @@ class AtacENCODEApp <  SushiFabric::SushiApp
 EOS
     @required_columns = ['Name','Read1','Read2','Species']
     @required_params = ['name', 'paired']
-    @params['cores'] = '8'
-    @params['ram'] = '16'
-    @params['scratch'] = '100'
+    @params['cores'] = '16'
+    @params['ram'] = '40'
+    @params['scratch'] = '200'
     @params['paired'] = true
     @params['name'] = 'AtacENCODE'
     @params['cmdOptions'] = ""
