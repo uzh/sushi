@@ -54,7 +54,7 @@ EOS
     }
   end
   def commands
-    run_RApp("HomerDiffPeaksApp")
+    run_RApp("EzAppHomerDiffPeaks")
   end
 end
 
