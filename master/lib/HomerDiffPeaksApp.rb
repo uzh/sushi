@@ -47,10 +47,10 @@ EOS
     @params['comparison'] = @comparison
     @params['name'] = @comparison
     report_file = File.join(@result_dir, "#{@params['comparison']}")
-    diffPeak_file = File.join(report_file, 'diffPeaks.txt')
+    diffPeak_link = File.join(report_file, 'diffPeaks.txt')
     {'Name'=>@params['name'],
      'Report [File]'=>report_file,
-     'DiffPeak [File]'=>diffPeak_file,
+     'DiffPeak [Link]'=>diffPeak_link,
     }
   end
   def commands
