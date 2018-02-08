@@ -16,11 +16,12 @@ class AtaqvApp <  SushiFabric::SushiApp
 
     <a href='https://github.com/ParkerLab/ataqv'/>Ataqv web-site</a>
 EOS
-    @required_columns = ['Name','BAM']
+    @required_columns = ['Name','BAM', 'Species', 'refBuild']
     @required_params = ['name']
     @params['cores'] = '8'
     @params['ram'] = '16'
     @params['scratch'] = '50'
+    @params['refBuild'] = ref_selector
     @params['paired'] = true
     @params['name'] = 'Ataqv'
     @params['mail'] = ""
