@@ -74,4 +74,5 @@ gem 'yaml_db'
 gem "jstree-rails-4"
 gem 'therubyracer'
 gem 'thin'
+gem 'google-analytics-rails'
 

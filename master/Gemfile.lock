@@ -78,6 +78,7 @@ GEM
     ffi (1.9.18)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
+    google-analytics-rails (1.1.1)
     gyoku (1.3.1)
       builder (>= 2.1.2)
     hpricot (0.8.6)
@@ -201,7 +202,7 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     sqlite3 (1.3.13)
-    sushi_fabric (0.8.3)
+    sushi_fabric (0.8.4)
     therubyracer (0.12.3)
       libv8 (~> 3.16.14.15)
       ref
@@ -235,6 +236,7 @@ DEPENDENCIES
   devise
   devise_ldap_authenticatable (>= 0.6.1.1)!
   fgcz!
+  google-analytics-rails
   hpricot
   jquery-rails
   jstree-rails-4
