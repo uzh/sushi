@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20171109-094352'
+Version = '20180209-163825'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -38,6 +38,7 @@ EOS
     @params['keepMultiHits'] = true
     @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
     @params['transcriptTypes', 'multi_selection'] = true
+    @params['transcriptTypes', 'selected'] = 'protein_coding'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Dev/R", "Tools/sambamba"]
