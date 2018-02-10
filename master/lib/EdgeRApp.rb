@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20171109-094252'
+Version = '20180209-162653'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -42,6 +42,7 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['backgroundExpression', "description"] = "counts to be added to shrink estimated log2 ratios"
     @params['transcriptTypes'] = ''
     @params['transcriptTypes', 'multi_selection'] = true
+    @params['transcriptTypes', 'selected'] = 0
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
