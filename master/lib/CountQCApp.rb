@@ -31,6 +31,7 @@ Quality control after counting reads<br/>
     @params['backgroundExpression', "description"] = "counts to be added to shrink estimated log2 ratios"
     @params['transcriptTypes'] = ''
     @params['transcriptTypes', 'multi_selection'] = true
+    @params['transcriptTypes', 'selected'] = 0
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
