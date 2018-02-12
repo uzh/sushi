@@ -41,6 +41,7 @@ EOS
     @params['transcriptFasta', 'description'] = 'give full path of transcript fasta file; in that case the build is ignored; if it comes from trinity assembly the gene-isoform associations will be extracted and used'
     @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
     @params['transcriptTypes', 'multi_selection'] = true
+    @params['transcriptTypes', 'selected'] = 'protein_coding'
     @params['mail'] = ""
 	  # Bowtie >=1.2.0 may return interleaving mates which trips RSEM (as of v1.3.0) as it expects
 	  # each read to be followed by a mate.
