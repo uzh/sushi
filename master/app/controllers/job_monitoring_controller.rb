@@ -2,30 +2,25 @@ class JobMonitoringController < ApplicationController
   def index
     public_dir = File.expand_path('../../../public', __FILE__)
     @page_unit = 100
+    workflow_manager = DRbObject.new_with_uri(SushiFabric::WORKFLOW_MANAGER)
     @job_list = if option=params[:option] and option[:all_job_list] 
                   @page_unit = 1000
                   @all_job_list=true
                   session[:all_job_list] = true
-                  #@@workflow_manager.job_list(false, nil)
-                  command = "wfm_job_list -d #{SushiFabric::WORKFLOW_MANAGER}"
-                  `#{command}`
+                  workflow_manager.job_list(false, nil)
                 elsif option=params[:option] and option[:project_job_list] 
                   @all_job_list=false
                   session[:all_job_list] = false
-                  #@@workflow_manager.job_list(false, session[:project])
-                  command = "wfm_job_list -p #{session[:project]} -d #{SushiFabric::WORKFLOW_MANAGER}"
-                  `#{command}`
+                  workflow_manager.job_list(false, session[:project])
                 elsif session[:all_job_list]
                   @page_unit = 1000
                   @all_job_list=true
                   session[:all_job_list] = true
-                  command = "wfm_job_list -d #{SushiFabric::WORKFLOW_MANAGER}"
-                  `#{command}`
+                  workflow_manager.job_list(false, nil)
                 else
                   @all_job_list=false
                   session[:all_job_list] = false
-                  command = "wfm_job_list -p #{session[:project]} -d #{SushiFabric::WORKFLOW_MANAGER}"
-                  `#{command}`
+                  workflow_manager.job_list(false, session[:project])
                 end
     @job_list = @job_list.split(/\n/).map{|job| job.split(/,/)}
     @total = @job_list.length
