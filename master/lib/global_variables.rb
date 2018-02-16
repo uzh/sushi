@@ -117,9 +117,12 @@ module GlobalVariables
       usecase.test_run
     end
   end
-  def run_RApp(app_name = self.class.to_s[0].downcase+self.class.to_s[1,20])
+  def run_RApp(app_name = self.class.to_s[0].downcase+self.class.to_s[1,20], lib_path=nil)
     command = "R --vanilla --slave<<  EOT\n"
     command << "EZ_GLOBAL_VARIABLES <<- '#{EZ_GLOBAL_VARIABLES}'\n"
+    if lib_path
+      command << ".libPaths('#{lib_path}')\n"
+    end
     command<<  "library(ezRun)\n"
     command << "param = list()\n"
     param = @params
