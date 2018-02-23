@@ -55,6 +55,7 @@ EOS
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'paired'=>@params['paired'],
+     'featureLevel'=>@params['featureLevel']
      'refFeatureFile'=>@params['refFeatureFile'],
      'transcriptTypes'=>@params['transcriptTypes'],
      'CellDataset [File]'=>File.join(@result_dir, "#{@dataset['Name']}-dataset.tsv"),
