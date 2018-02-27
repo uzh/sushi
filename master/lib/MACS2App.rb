@@ -19,7 +19,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @required_params = ['refBuild','paired']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '20'
+    @params['ram'] = '40'
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['paired'] = false
