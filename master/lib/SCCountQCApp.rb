@@ -14,12 +14,11 @@ class SCCountQCApp < SushiFabric::SushiApp
     @description =<<-EOS
 Quality control for singel cell alignment and counts<br/>
     EOS
-    @params['process_mode'] = 'DATASET'
-    @required_columns = ['Name', 'refBuild', 'featureLevel', 'refFeatureFile', 'CellDataset', 'CountMatrix', 'BAM', 'STARLog']
-    @required_params = []
+    @required_columns = ['Name', 'Species', 'featureLevel', 'refFeatureFile', 'CellDataset', 'CountMatrix', 'BAM', 'STARLog']
+    @required_params = ['refBuild']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '39'
+    @params['ram'] = '30'
     @params['scratch'] = '100'
     @params['name'] = 'SCCount_QC'
     @params['refBuild'] = ref_selector
@@ -33,9 +32,9 @@ Quality control for singel cell alignment and counts<br/>
     @modules = ["Dev/R", "Dev/jdk", "Tools/Picard", "Tools/samtools"]
   end
   def next_dataset
-    report_file = File.join(@result_dir, @params['name'])
+    report_file = File.join(@result_dir, "#{@dataset['Name']}_SCCountQC")
     report_link = File.join(report_file, '00index.html')
-    {'Name'=>@params['name'],
+    {'Name'=>@dataset['Name'],
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'Static Report [Link]'=>report_link,
