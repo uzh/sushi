@@ -19,7 +19,10 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['ram'] = '32'
     @params['scratch'] = '100'
     @params['name'] = 'CellRangerCount'
-    @params['reference'] = ''#ref_selector
+    @params['reference'] = {'select'=>''}
+    Dir["/srv/GT/databases/10X_References/*"].sort.select{|10X| File.directory?(10X)}.each do |dir|
+      @params['reference'][File.basename(dir)] = File.basename(dir)
+    end
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]
