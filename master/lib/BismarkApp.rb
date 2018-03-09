@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20171109-093618'
+Version = '20180309-155845'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -16,7 +16,7 @@ A tool to map bisulfite converted sequence reads and determine cytosine methylat
 <a href='http://www.bioinformatics.babraham.ac.uk/projects/bismark/'>http://www.bioinformatics.babraham.ac.uk/projects/bismark</a>
 EOS
 
-    @required_columns = ['Name','Read1','Adapter1','Species']
+    @required_columns = ['Name','Read1','Species']
     @required_params = ['refBuild','paired']
     # optional params
     @params['cores'] = '8'
