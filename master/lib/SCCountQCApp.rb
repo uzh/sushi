@@ -18,8 +18,8 @@ Quality control for singel cell alignment and counts<br/>
     @required_params = ['refBuild']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '30'
-    @params['scratch'] = '100'
+    @params['ram'] = '100'
+    @params['scratch'] = '200'
     @params['name'] = 'SCCount_QC'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
