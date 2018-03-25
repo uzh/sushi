@@ -14,7 +14,7 @@ class SCCountsApp < SushiFabric::SushiApp
     @description =<<-EOS
     Maps unmapped bam file with STAR and generates stats and expression counts with featureCounts
 EOS
-    @required_columns = ['Name','Read1','Species', 'CellDataset']
+    @required_columns = ['Name','Species', 'CellDataset']
     @required_params = ['refBuild','paired']
     # optional params
     @params['cores'] = '8'
