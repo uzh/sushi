@@ -22,6 +22,8 @@ Quality control for singel cell alignment and counts<br/>
     @params['scratch'] = '200'
     @params['name'] = 'SCCount_QC'
     @params['refBuild'] = ref_selector
+    @params['paired'] = false
+    @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = ['gene', 'isoform']
     @params['transcriptTypes'] = ''
@@ -47,6 +49,12 @@ Quality control for singel cell alignment and counts<br/>
       @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
     end
     @params['transcriptTypes'] = @dataset[0]['transcriptTypes'].to_s.split(',')
+    if dataset_has_column?('paired')
+      @params['paired'] = @dataset[0]['paired']
+    end
+    if dataset_has_column?('strandMode')
+      @params['strandMode'] = @dataset[0]['strandMode']
+    end
   end
   def commands
     run_RApp("EzAppSCCountQC")
