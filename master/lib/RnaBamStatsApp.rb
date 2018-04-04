@@ -33,7 +33,7 @@ Quality control after the alignment of RNAseq reads<br/>
     {'Name'=>@params['name'],
      'Report [File]'=>report_dir,
      'Html [Link]'=>File.join(report_dir, '00index.html'),
-     'Species'=>@dataset['Species'],
+     'Species'=>@dataset[0]['Species'],
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile']
     }
