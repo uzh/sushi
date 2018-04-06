@@ -29,28 +29,20 @@ class Project < ActiveRecord::Base
       project_dataset_ids = Hash[*(self.data_sets.map{|data_set| [data_set.id, true]}.flatten)]
       node = {"id" => data_set.id,
               "text" => data_set.data_sets.length.to_s+" "+data_set.name+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>",
-
-              "a_attr" => {"href"=>"/data_set/p#{self.number}/#{data_set.id}", 
-                           "onclick"=>"window.open('/data_set/p#{self.number}/#{data_set.id}')"}
+              "a_attr" => {"href"=>"/data_set/p#{self.number}/#{data_set.id}"}
               }
       if parent = data_set.data_set and project_dataset_ids[parent.id]
         node["parent"] = parent.id
       else
-        node["parent"] = 0
+        node["parent"] = "#"
       end
       node
   end
   def construct_data_set_tree
     tree = {}
-    root_node = {
-      "parent" => "#",
-      "text" => "DataSets",
-      "id" => 0
-    }
-    tree[0] = root_node
+    project_dataset_ids = Hash[*(self.data_sets.map{|data_set| [data_set.id, true]}.flatten)]
     self.data_sets.each do |data_set|
-      node = make_tree_node(data_set)
-      tree[data_set.id] = node
+      tree[data_set.id] = make_tree_node(data_set)
     end
     self.data_set_tree = tree
     self.save
