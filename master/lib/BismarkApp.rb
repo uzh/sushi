@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20180309-155845'
+Version = '20180408-135252'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -28,7 +28,7 @@ EOS
     @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
     @params['deduplicate'] = true
     @params['deduplicate', 'description'] = 'Removal of PCR duplicates. Not recommended for RRBS-Seq (Enzymatic digestion)'
-    @params['cmdOptions'] = '-bowtie2'
+    @params['cmdOptions'] = '--bowtie2'
     @params['cmdOptions', 'description'] = 'specify the commandline options for bismark; do not specify any option that is already covered by the dedicated input fields'
     @params['trimAdapter'] = true
     @params['trimAdapter', 'description'] = 'if adapters should be trimmed'
