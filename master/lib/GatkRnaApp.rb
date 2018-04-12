@@ -14,7 +14,7 @@ class GatkRnaApp < SushiFabric::SushiApp
     @description =<<-EOS
 Variant calling for RNA-seq using <a href='https://software.broadinstitute.org/gatk/'>GATK Queue</a> and recommended filtering.
     EOS
-    @required_columns = ['Name', 'BAM', 'BAI', 'refBuild']
+    @required_columns = ['Name', 'BAM', 'BAI', 'refBuild', 'Species']
     @required_params = ['name', 'paired']
     @params['threads'] = '16'
     @params['threads', 'description'] = 'number of data threads for jobs that support -nt'
@@ -40,7 +40,7 @@ Variant calling for RNA-seq using <a href='https://software.broadinstitute.org/g
      'Name'=>@params['name'],
      'VCF [File]'=>File.join(@result_dir, "#{@params['name']}.vcf.gz"),
      'VCF_index [File]'=>File.join(@result_dir, "#{@params['name']}.vcf.gz.tbi"),
-     'Species'=>@dataset['Species'],
+     'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild']
     }
   end

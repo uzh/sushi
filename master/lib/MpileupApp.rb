@@ -17,7 +17,7 @@ The analysis runs the 3 commands: samtools mpileup, bcftools call, bcftools filt
 <a href='http://www.htslib.org/doc/samtools-1.1.html'>samtools manual/</a><br>
 <a href='http://www.htslib.org/doc/bcftools-1.1.html'>bcftools manual/</a><br>
 EOS
-    @required_columns = ['Name','BAM','BAI', 'refBuild']
+    @required_columns = ['Name','BAM','BAI', 'refBuild', 'Species']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
     @params['ram'] = '30'
@@ -46,7 +46,7 @@ EOS
      'IGV Starter [Link]'=>File.join(@result_dir, "#{@params['name']}-igv.jnlp"),
      'Report [File]'=>report_dir,
      'Html [Link]'=>File.join(report_dir, '00index.html'),
-     'Species'=>@dataset['Species'],
+     'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
      'IGV Starter [File]'=>File.join(@result_dir, "#{@params['name']}-igv.jnlp"),
      'IGV Session [File]'=>File.join(@result_dir, "#{@params['name']}-igv.xml")

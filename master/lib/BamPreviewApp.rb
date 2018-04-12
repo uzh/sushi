@@ -21,7 +21,7 @@ class BamPreviewApp <  SushiFabric::SushiApp
 <li> bwa-mem: ''</li>
 </ul>
 EOS
-    @required_columns = ['Name','Read1']
+    @required_columns = ['Name','Read1','Species']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
     @params['ram'] = '50'
@@ -48,7 +48,7 @@ EOS
     {'Name'=>@params['name'],
      'Report [File]'=>report_dir,
      'Html [Link]'=>File.join(report_dir, '00index.html'),
-     'Species'=>@dataset['Species'],
+     'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile']
     }
