@@ -42,7 +42,7 @@ EOS
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, 'ncpro/report.html')
     {'Name'=>@params['name'],
-     'Species'=>@dataset['Species'],
+     'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,

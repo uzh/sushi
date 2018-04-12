@@ -44,7 +44,7 @@ Quality control after counting reads<br/>
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@params['name'],
-     'Species'=>@dataset['Species'],
+     'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
      'Static Report [Link]'=>report_link,
      'Live Report [Link]'=>"#{SHINY_EXPLORE_COUNTS}?data=#{report_file}/counts-#{@random_string}-EzResult.RData",

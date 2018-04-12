@@ -15,7 +15,7 @@ class GatkRnaHaplotyperApp <  SushiFabric::SushiApp
 Haplotype calling for RNA-seq<br/>
 <a href='https://www.broadinstitute.org/gatk/guide/tooldocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php'>HaplotypeCaller</a>
     EOS
-    @required_columns = ['Name','BAM','BAI', 'build']
+    @required_columns = ['Name','BAM','BAI', 'build', 'Species']
     @required_params = ['name', 'paired']
     @params['cores'] = '24'
     @params['ram'] = '100'
@@ -34,7 +34,7 @@ Haplotype calling for RNA-seq<br/>
      'TBI [File]'=>File.join(@result_dir, "#{@params['name']}-haplo.vcf.gz.tbi"),
      'Report [File]'=>report_dir,
      'Html [Link]'=>File.join(report_dir, '00index.html'),
-     'Species'=>@dataset['Species'],
+     'Species'=>(dataset = @dataset.first and dataset['Species']),
      'build'=>@params['build']
     }
   end
