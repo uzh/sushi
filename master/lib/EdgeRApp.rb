@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20180209-162653'
+Version = '20180412-100236'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -58,7 +58,7 @@ class EdgeRApp < SushiFabric::SushiApp
     report_file = File.join(@result_dir, "#{@params['comparison']}")
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@comparison,
-     'Species'=>@dataset['Species'],
+     'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
      'Static Report [Link]'=>report_link,
      'Live Report [Link]'=>"#{SHINY_EXPLORE_DE}?data=#{report_file}/result-#{@comparison}-#{@random_string}-EzResult.RData",

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20171109-094037'
+Version = '20180412-100423'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -46,7 +46,7 @@ class JunctionSeqApp < SushiFabric::SushiApp
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, 'finalOutput/testForDU.html')
     {'Name'=>@comparison,
-     'Species'=>@dataset['Species'],
+     'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
