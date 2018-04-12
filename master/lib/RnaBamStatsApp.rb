@@ -14,7 +14,7 @@ class RnaBamStatsApp <  SushiFabric::SushiApp
     @description =<<-EOS
 Quality control after the alignment of RNAseq reads<br/>
     EOS
-    @required_columns = ['Name','BAM','BAI', 'refBuild']
+    @required_columns = ['Name','BAM','BAI', 'refBuild', 'Species']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
     @params['ram'] = '50'
@@ -33,7 +33,7 @@ Quality control after the alignment of RNAseq reads<br/>
     {'Name'=>@params['name'],
      'Report [File]'=>report_dir,
      'Html [Link]'=>File.join(report_dir, '00index.html'),
-     'Species'=>@dataset[0]['Species'],
+     'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile']
     }
