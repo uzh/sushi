@@ -105,7 +105,7 @@ class ApplicationController < ActionController::Base
       path.split('/')[0,2].join('/')
     end
   end
-  def save_dataset_tsv_in_gstore(data_set)
+  def save_dataset_tsv_in_gstore(data_set, data_set_file_name="dataset.tsv")
     if SushiFabric::Application.config.fgcz?
       target_dataset_tsv = ''
       Dir.mktmpdir do |dir|
@@ -125,7 +125,7 @@ class ApplicationController < ActionController::Base
                          File.join(project, data_set.name)
                        end
         target_dir = File.join(SushiFabric::GSTORE_DIR, dataset_path)
-        target_dataset_tsv = File.join(target_dir, "dataset.tsv")
+        target_dataset_tsv = File.join(target_dir, data_set_file_name)
         #print File.read(out_tsv)
         commands = @@workflow_manager.copy_commands(out_tsv, target_dir, "force")
         commands.each do |command|
