@@ -109,7 +109,7 @@ class ApplicationController < ActionController::Base
     if SushiFabric::Application.config.fgcz?
       target_dataset_tsv = ''
       Dir.mktmpdir do |dir|
-        out_tsv = File.join(dir, "dataset.tsv")
+        out_tsv = File.join(dir, data_set_file_name)
         data_set.save_as_tsv(out_tsv)
         project_number = session[:project]
         project = "p#{project_number}"
