@@ -105,4 +105,34 @@ class ApplicationController < ActionController::Base
       path.split('/')[0,2].join('/')
     end
   end
+  def save_dataset_tsv_in_gstore(data_set)
+    if SushiFabric::Application.config.fgcz?
+      target_dataset_tsv = ''
+      Dir.mktmpdir do |dir|
+        out_tsv = File.join(dir, "dataset.tsv")
+        data_set.save_as_tsv(out_tsv)
+        project_number = session[:project]
+        project = "p#{project_number}"
+        dataset_path = if data_set.child
+                         File.join(project, data_set.name)
+                       elsif dirs = data_set.paths
+                         if dirs.length > 1
+                           File.join(project, data_set.name)
+                         else
+                           dirs.first
+                         end
+                       else
+                         File.join(project, data_set.name)
+                       end
+        target_dir = File.join(SushiFabric::GSTORE_DIR, dataset_path)
+        target_dataset_tsv = File.join(target_dir, "dataset.tsv")
+        #print File.read(out_tsv)
+        commands = @@workflow_manager.copy_commands(out_tsv, target_dir, "force")
+        commands.each do |command|
+          #puts command
+          `#{command}`
+        end
+      end
+    end
+  end
 end
