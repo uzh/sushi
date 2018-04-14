@@ -32,7 +32,8 @@
 <%= file_field :file, :name, :class=>"" %>
 <label>DataSet Name:</label> <%= text_field :dataset, :name, :size=>20, :class=>"input-md" %>
 <label>Parent DataSet ID:</label> <%= select :parent, :id, @data_set_ids, :selected => '', :class=>"form-control input-md" %>
-<label>ManGO RunName_oBfabricOrderID:</label> <%= text_field :run, :id, :size=>20, :class=>"input-md" %>
+<label>ManGO RunName_oBfabricOrderID:</label> <%= text_field :run, :id, :size=>15, :class=>"input-md" %>
+<label>Meta-DataSet:</label> <%= text_field :meta_dataset, :plate_samples, :size=>3, :class=>"input-md" %> samples / plate <br>
 <%= submit_tag 'load dataset', :id=>"load_dataset", :class=>"btn btn-sm btn-info raised" %>
 <% end %>
 
