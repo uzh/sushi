@@ -529,13 +529,15 @@ class DataSetController < ApplicationController
                          else
                            File.join("p#{@project.number}", dataset_name)
                          end
+          plates = data_set_tsv.each_slice(plate_samples).to_a
+          digit = ((Math.log10(plates.length)*10).to_i/10)+1
           data_set_tsv.each.with_index do |row, i|
             if dataset_path.nil? and tag_file = row.select{|k,v| k.tag?("File")} and !tag_file.empty?
               dataset_path = File.dirname(tag_file.first.last)
             end
             plate_number = (i / plate_samples) + 1
             if rows.length < plate_number
-              plate_name = "Plate_#{plate_number}"
+              plate_name = "Plate_#{"%0#{digit}d" % plate_number}"
               plate_file = "#{plate_name}-dataset.tsv"
               rows << [plate_name, species, File.join(dataset_path, plate_file)]
             end
@@ -550,10 +552,9 @@ class DataSetController < ApplicationController
             save_dataset_tsv_in_gstore(data_set, "meta-dataset.tsv")
           end
           # second, mata-dataset.tsv
-          plates = data_set_tsv.each_slice(plate_samples).to_a
           plates.each.with_index do |plate, i|
             plate_number = i + 1
-            plate_name = "Plate_#{plate_number}"
+            plate_name = "Plate_#{"%0#{digit}d" % plate_number}"
             plate_file = "#{plate_name}-dataset.tsv"
             csv_table_plate = CSV::Table.new(plate)
             save_dataset_tsv_in_gstore(csv_table_plate, plate_file)
