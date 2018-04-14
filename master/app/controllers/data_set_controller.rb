@@ -456,6 +456,41 @@ class DataSetController < ApplicationController
 
     redirect_to :controller => "data_set"
   end
+  class CSV::Table
+    # imitate DataSet object for call save_dataset_tsv_in_gstore
+    def tsv_string
+      string = CSV.generate(:col_sep=>"\t") do |out|
+        out << headers
+        each do |sample|
+          out << headers.map{|header|
+            val = sample[header]
+            val.to_s.empty? ? nil:val}
+        end
+      end
+      string
+    end
+    def save_as_tsv(file_name)
+      File.write(file_name, tsv_string)
+    end
+    def child
+      nil
+    end
+    def paths
+      dirs = []
+      each do |sample|
+        sample.each do |header, file|
+          if (header.tag?('File') or header.tag?('Link')) and file !~ /http/
+            dirs << File.dirname(file)
+          end
+        end
+      end
+      dirs = dirs.map{|path| path.split('/')[0,2].join('/')}.uniq
+    end
+    def name
+      "DataSet_#{Time.now.strfime("%Y-%m-%d--%H-%M-%D")}"
+    end
+  end
+
   def import
     params[:project] = session[:project]
 
@@ -468,41 +503,62 @@ class DataSetController < ApplicationController
       @data_set_ids = @project.data_sets.map{|data_set| data_set.id}.push('').reverse
 
       if file = params[:file] and tsv = file[:name]
-        multi_data_sets = false
-        open(tsv.path) do |input|
-          while line=input.gets
-            if line =~ /ProjectNumber/
-              multi_data_sets = true
-              break
-            end
-          end
-        end
-        
-        if multi_data_sets
-          csv = CSV.readlines(tsv.path, :col_sep=>"\t")
+        # check meta-dataset
+        make_meta_dataset = (meta_dataset = params[:meta_dataset] and plate_samples = meta_dataset[:plate_samples].to_i and plate_samples > 0)
+        if make_meta_dataset
+          # first, make plate-dataset.tsv
+          data_set_tsv = CSV.readlines(tsv.path, :headers => true, :col_sep=>"\t")
           data_set = []
-          headers = []
+          headers = ["Name", "Species", "CellDataset [File]"]
           rows = []
-          csv.each do |row|
-            if data_set.empty?
-              data_set = row
-            elsif headers.empty?
-              headers = row
-            elsif !row.empty? and !row.join.strip.empty?
-              rows << row
-            else
-              unless headers.include?(nil)
-                @data_set_id = save_data_set(data_set, headers, rows, current_user)
-              else
-                @warning = 'There must be a blank column. Please check it. Import is incomplete.'
-              end
+          data_set << "DataSetName"
+          dataset_folder_name = if dataset = params[:dataset] and dataset_name = dataset[:name]
+                                  dataset_name
+                                else
+                                  "MetaDataSet_#{Time.now.strftime("%Y%m%d-%H%M%S")}"
+                                end
+          data_set << dataset_folder_name
+          data_set << "ProjectNumber" << @project.number
+          if parent = params[:parent] and parent_id = parent[:id] and parent_data_set = DataSet.find_by_id(parent_id.to_i)
+            data_set << "ParentID" << parent_data_set.id
+          end
+          data_set_first = data_set_tsv.first
+          species = (data_set_first["Species"]||"Unknown")
+          dataset_path = if tag_file = data_set_first.select{|k,v| k.tag?("File")} and !tag_file.empty?
+                           File.dirname(tag_file.first.last)
+                         else
+                           File.join("p#{@project.number}", dataset_name)
+                         end
+          data_set_tsv.each.with_index do |row, i|
+            if dataset_path.nil? and tag_file = row.select{|k,v| k.tag?("File")} and !tag_file.empty?
+              dataset_path = File.dirname(tag_file.first.last)
             end
-            if row.empty?
-              data_set = []
-              headers = []
-              rows = []
+            plate_number = (i / plate_samples) + 1
+            if rows.length < plate_number
+              plate_name = "Plate_#{plate_number}"
+              plate_file = "#{plate_name}-dataset.tsv"
+              rows << [plate_name, species, File.join(dataset_path, plate_file)]
             end
           end
+          unless headers.include?(nil)
+            @data_set_id = save_data_set(data_set, headers, rows, current_user)
+          else
+            @warning = 'There must be a blank column. Please check it. Import is incomplete.'
+          end
+          if @data_set_id
+            data_set = DataSet.find_by_id(@data_set_id)
+            save_dataset_tsv_in_gstore(data_set, "meta-dataset.tsv")
+          end
+          # second, mata-dataset.tsv
+          plates = data_set_tsv.each_slice(plate_samples).to_a
+          plates.each.with_index do |plate, i|
+            plate_number = i + 1
+            plate_name = "Plate_#{plate_number}"
+            plate_file = "#{plate_name}-dataset.tsv"
+            csv_table_plate = CSV::Table.new(plate)
+            save_dataset_tsv_in_gstore(csv_table_plate, plate_file)
+          end
+
         else
           data_set_tsv = CSV.readlines(tsv.path, :headers => true, :col_sep=>"\t")
 
@@ -524,11 +580,11 @@ class DataSetController < ApplicationController
               rows << row.fields
             end
           end
-            unless headers.include?(nil)
-              @data_set_id = save_data_set(data_set, headers, rows, current_user)
-            else
-              @warning = 'There must be a blank column. Please check it. Import is incomplete.'
-            end
+          unless headers.include?(nil)
+            @data_set_id = save_data_set(data_set, headers, rows, current_user)
+          else
+            @warning = 'There must be a blank column. Please check it. Import is incomplete.'
+          end
         end
       end
 
