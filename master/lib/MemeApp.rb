@@ -22,8 +22,11 @@ Perform motif discovery on DNA, RNA or protein datasets<br/>
     @params['name'] = 'MotifCheck_MEME'
     @params['motifDB'] = '-db /srv/GT/databases/meme_db/motif_databases/JASPAR/JASPAR2018_CORE_vertebrates_redundant.meme -db /srv/GT/databases/meme_db/motif_databases/MOUSE/uniprobe_mouse.meme -db /srv/GT/databases/meme_db/motif_databases/HUMAN/HOCOMOCOv9.meme'
     @params['cmdOptions'] = '-meme-mod zoops -meme-minw 6 -meme-maxw 30 -meme-nmotifs 3 -dreme-e 0.05 -centrimo-score 5.0 -centrimo-ethresh 10.0'
+    @params['filterPeaks'] = 'true'
+    @params['specialOptions'] = 'distanceToTSS=2000 minFold=4'
+    @params['refBuild'] = ref_selector
     @params['mail'] = ''
-    @modules = ['Tools/MEME', "Dev/R"]
+    @modules = ['Tools/MEME', "Dev/R", "Tools/bedtools"]
   end
   def next_dataset
     meme_link = File.join(@result_dir, "#{@dataset['Name']}/#{@dataset['Name']}_meme-chip.html")
@@ -33,8 +36,8 @@ Perform motif discovery on DNA, RNA or protein datasets<br/>
     }
   end
   def set_default_parameters
-    end
-
+    @params['refBuild'] = @dataset[0]['refBuild']
+  end
   def commands
     run_RApp("EzAppMEME")
   end
