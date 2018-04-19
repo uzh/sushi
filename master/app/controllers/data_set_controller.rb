@@ -638,6 +638,45 @@ class DataSetController < ApplicationController
      :type => 'text/csv',
      :disposition => "attachment; filename=#{data_set_name}.tsv" 
   end
+  def save_list_as_tsv
+    project = Project.find_by_number(session[:project].to_i)
+    data_sets = if sushi_app_name = params.dig(:select, :sushi_app)
+                   data_sets_ = DataSet.all.select{|data_set|
+                     data_set.sushi_app_name =~ /#{sushi_app_name}/i
+                   }
+                 else
+                   data_sets_ = DataSet.all.sort_by{|data_set| Time.now-data_set.created_at}[0,10]
+                 end
+    headers = ["ID", "Name", "Project", "SushiApp", "Samples", "Who", "Created", "BFabricID", "ManGOID"]
+    tsv_string = CSV.generate("", headers: headers, write_headers: true, col_sep:"\t") do |out|
+      data_sets.each do |data_set|
+        row = []
+        row << data_set.id
+        row << data_set.name
+        row << data_set.project.number
+        row << data_set.sushi_app_name
+        row << "#{data_set.completed_samples.to_i} / #{data_set.samples_length}"
+        row << if user = data_set.user
+          user.login
+        else
+          "sushi_lover"
+        end
+        row << data_set.created_at.strftime("%Y-%b-%d %X ") + SushiFabric::Application.config.time_zone.split('/').last
+        row << data_set.bfabric_id.to_s
+        row << data_set.run_name_order_id.to_s
+        out << row
+      end
+    end
+    data_set_name = if sushi_app = params[:sushi_app]
+                      "#{sushi_app}_datasets"
+                    else
+                      "datasets"
+                    end
+    send_data tsv_string,
+    :type => 'text/csv',
+    :disposition => "attachment; filename=#{data_set_name}.tsv"
+  end
+
   def delete
     @data_set = DataSet.find_by_id(params[:format])
 
