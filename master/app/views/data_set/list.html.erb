@@ -11,9 +11,11 @@
     })
   });
 </script>
-<h3>DataSets (all projects)<span style="font-size: 0.5em;"></h3>
+<h3>DataSets (total: <%= @total.to_s(:delimited) %> in all projects)<span style="font-size: 0.5em;"></h3>
 <%= form_tag('/data_set/list', :multipart => true, :method=>:post) do %>
-  <label>SUSHIApp:</label> <%= select :select, :sushi_app, @sushi_apps, :selected => '', :class=>"form-control input-md" %>
+  <label>SUSHIApp:</label>
+  <%= hidden_field :sushi, :app, :value=>@sushi_app %>
+  <%= select :select, :sushi_app, @sushi_apps, :selected => @sushi_app, :class=>"form-control input-md" %>
 <% end %>
 
 
@@ -68,6 +70,6 @@
         </tbody>
         <% end %>
     </table>
-<%= link_to "Download", {:action=>"save_list_as_tsv", :sushi_app=>nil}, :method=>:post %>
+<%= link_to "Download", {:action=>"save_list_as_tsv", :sushi_app=>@sushi_app}, :method=>:post %>
 <hr>
 

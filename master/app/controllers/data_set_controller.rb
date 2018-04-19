@@ -37,16 +37,24 @@ class DataSetController < ApplicationController
   end
   def list
     @project = Project.find_by_number(session[:project].to_i)
+    @sushi_app = params.dig(:sushi, :app)
     if @project
       @data_sets = if sushi_app_name = params.dig(:select, :sushi_app)
-                     data_sets_ = DataSet.all.select{|data_set|
-                       data_set.sushi_app_name =~ /#{sushi_app_name}/i
-                     }
+                     if sushi_app_name == 'ImportedDataSet'
+                      data_sets_ = DataSet.all.select{|data_set|
+                        data_set.sushi_app_name.nil?
+                      }
+                     else
+                      data_sets_ = DataSet.all.select{|data_set|
+                        data_set.sushi_app_name =~ /#{sushi_app_name}/i
+                      }
+                     end
                    else
                      data_sets_ = DataSet.all.sort_by{|data_set| Time.now-data_set.created_at}[0,10]
                    end
     end
-    @sushi_apps = ["- select - "].concat(SushiApplication.all.sort_by{|app| app.class_name}.map{|app| app.class_name})
+    @sushi_apps = ["--- select ---", "ImportedDataSet"].concat(SushiApplication.all.sort_by{|app| app.class_name}.map{|app| app.class_name})
+    @total = DataSet.select(:id).size
   end
 #  caches_action :report
 #  caches_page :report
@@ -640,13 +648,19 @@ class DataSetController < ApplicationController
   end
   def save_list_as_tsv
     project = Project.find_by_number(session[:project].to_i)
-    data_sets = if sushi_app_name = params.dig(:select, :sushi_app)
+    data_sets = if sushi_app_name = params[:sushi_app]
+                  if sushi_app_name == 'ImportedDataSet'
+                   data_sets_ = DataSet.all.select{|data_set|
+                     data_set.sushi_app_name.nil?
+                   }
+                  else
                    data_sets_ = DataSet.all.select{|data_set|
                      data_set.sushi_app_name =~ /#{sushi_app_name}/i
                    }
-                 else
-                   data_sets_ = DataSet.all.sort_by{|data_set| Time.now-data_set.created_at}[0,10]
-                 end
+                  end
+                else
+                  data_sets_ = DataSet.all.sort_by{|data_set| Time.now-data_set.created_at}[0,10]
+                end
     headers = ["ID", "Name", "Project", "SushiApp", "Samples", "Who", "Created", "BFabricID", "ManGOID"]
     tsv_string = CSV.generate("", headers: headers, write_headers: true, col_sep:"\t") do |out|
       data_sets.each do |data_set|
@@ -667,8 +681,8 @@ class DataSetController < ApplicationController
         out << row
       end
     end
-    data_set_name = if sushi_app = params[:sushi_app]
-                      "#{sushi_app}_datasets"
+    data_set_name = if sushi_app_name
+                      "#{sushi_app_name}_datasets"
                     else
                       "datasets"
                     end
