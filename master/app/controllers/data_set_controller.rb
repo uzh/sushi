@@ -53,7 +53,7 @@ class DataSetController < ApplicationController
                      data_sets_ = DataSet.all.sort_by{|data_set| Time.now-data_set.created_at}[0,10]
                    end
     end
-    @sushi_apps = ["--- select ---", "ImportedDataSet"].concat(SushiApplication.all.sort_by{|app| app.class_name}.map{|app| app.class_name})
+    @sushi_apps = ["--- select ---"].concat(SushiApplication.all.sort_by{|app| app.class_name}.map{|app| app.class_name})
     @total = DataSet.select(:id).size
   end
 #  caches_action :report
