@@ -36,6 +36,10 @@
                   <li style="padding: 0px 3px;line-height:60px;">-</li>
                   <li><%= link_to 'gStore', "/projects/p#{session[:project]}", :style => "padding: 0px 3px;line-height:60px;" %></li>
                   <li style="padding: 0px 3px;line-height:60px;">-</li>
+                  <% if session[:employee] %>
+                    <li><%= link_to 'Find', "/data_set/list", :method => :post, :style => "padding: 0px 3px;line-height:60px;" %></li>
+                  <% end %>
+                  <li style="padding: 0px 3px;line-height:60px;">-</li>
             </ul>
 
             <ul class="nav navbar-nav" style="float: left !important;margin: 0 5px !important;">

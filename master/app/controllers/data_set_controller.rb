@@ -35,6 +35,19 @@ class DataSetController < ApplicationController
     top
     render action: "index"
   end
+  def list
+    @project = Project.find_by_number(session[:project].to_i)
+    if @project
+      @data_sets = if sushi_app_name = params.dig(:select, :sushi_app)
+                     data_sets_ = DataSet.all.select{|data_set|
+                       data_set.sushi_app_name =~ /#{sushi_app_name}/i
+                     }
+                   else
+                     data_sets_ = DataSet.all.sort_by{|data_set| Time.now-data_set.created_at}[0,10]
+                   end
+    end
+    @sushi_apps = ["- select - "].concat(SushiApplication.all.sort_by{|app| app.class_name}.map{|app| app.class_name})
+  end
 #  caches_action :report
 #  caches_page :report
   def bfabric
