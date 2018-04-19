@@ -30,6 +30,7 @@ SushiFabric::Application.routes.draw do
       post :register_bfabric
     end
     collection do
+      post :list
       get :whole_treeviews
       get :partial_treeviews
       get :partial_treeviews2
