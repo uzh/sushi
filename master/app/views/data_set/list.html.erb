@@ -1,0 +1,73 @@
+<script type="text/javascript">
+  $(function(){
+    $('.dt').DataTable({
+      "order": [[ 6, "desc" ]]
+    });
+    $('#select_sushi_app').change(function(){
+      var Idx = this.selectedIndex;
+      var sushi_app = this.options[Idx].text;
+      $('#sushi_app').val(sushi_app);
+      this.form.submit();
+    })
+  });
+</script>
+<h3>DataSets (all projects)<span style="font-size: 0.5em;"></h3>
+
+<%= form_tag('/data_set/list', :multipart => true, :method=>:post) do %>
+  <label>SUSHIApp:</label> <%= select :select, :sushi_app, @sushi_apps, :selected => '', :class=>"form-control input-md" %>
+<% end %>
+
+
+    <table id="data_sets" class="dt pure-table pure-table-bordered">
+        <thead class="dataset">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Project</th>
+            <th>SushiApp</th>
+            <th>Samples</th>
+            <th>Who</th>
+            <th>Created</th>
+            <th>BFabricID</th>
+            <th>ManGOID</th>
+        </tr>
+        </thead>
+        <% if @project %>
+        <tbody>
+          <% @data_sets.each do |data_set| %>
+        <tr>
+            <td><%= data_set.id %></td>
+            <td><%= link_to td(data_set.name), "/data_set/p#{@project.number}/#{data_set.id}" %></td>
+            <td> <%= data_set.project.number %></td>
+            <td><%= data_set.sushi_app_name %></td>
+            <td>
+                <%= data_set.completed_samples.to_i %> / <%= data_set.samples_length %>
+            </td>
+            <% if user = data_set.user%>
+              <td><%= user.login %></td>
+            <% else %>
+              <td>sushi_lover</td>
+            <% end %>
+            <td><%= data_set.created_at.strftime("%Y-%b-%d %X ") + SushiFabric::Application.config.time_zone.split('/').last %></td>
+            <% if data_set.bfabric_id %>
+              <td><%= link_to data_set.bfabric_id,
+                  "https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?id=#{data_set.bfabric_id}&tab=details",
+                  target: "_blank" %>
+              </td>
+            <% else %>
+              <td></td>
+            <% end %>
+            <% if data_set.run_name_order_id %>
+              <td><%= link_to data_set.run_name_order_id,
+                  "http://fgcz-mango.uzh.ch/order_files/view/#{data_set.run_name_order_id}", target: "_blank" %>
+              </td>
+            <% else %>
+              <td></td>
+            <% end %>
+        </tr>
+        <% end %>
+        </tbody>
+        <% end %>
+    </table>
+<hr>
+
