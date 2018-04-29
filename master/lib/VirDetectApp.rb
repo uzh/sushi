@@ -17,13 +17,13 @@ Virome analysis for the diagnostic use in veterinary virology<br/>
 <a href='https://www.ncbi.nlm.nih.gov/pubmed/25009045'>Reference paper</a>, base on which this pileline is implemented.
 EOS
 
-    @required_columns = ['Name','Read1','Read2','Species']
+    @required_columns = ['Name','Read1','Species']
     @required_params = ['virBuild','hostBuild','paired']
     @params['virBuild'] = ref_selector
     @params['virBuild', 'description'] = 'the viral reference database to use.'
     @params['hostBuild'] = ref_selector
     @params['hostBuild', 'description'] = 'the none-human host genome to use as reference for removal of contamination'
-    @params['paired'] = true
+    @params['paired'] = false
     @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
     # optional params
     @params['cores'] = '8'
