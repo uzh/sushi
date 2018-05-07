@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20180412-100236'
+Version = '20180507-041245'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -46,7 +46,8 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/GFOLD", "Dev/PhantomJS", "Dev/R"]
+    @params['Rversion'] = ["Dev/R/3.4.2", "Dev/R/3.5.0"]
+    @modules = ["Tools/GFOLD", "Dev/PhantomJS"]
   end
    def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
@@ -73,7 +74,8 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['transcriptTypes'] = @dataset[0]['transcriptTypes'].to_s.split(',')
   end
   def commands
-    run_RApp("EzAppEdger")
+    command = "module load #{@params["Rversion"]}\n"
+    command << run_RApp("EzAppEdger")
   end
 end
 
