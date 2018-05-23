@@ -42,7 +42,8 @@ class DESeq2App < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Tools/GFOLD", "Dev/PhantomJS", "Dev/R", "Tools/sambamba"]
+    @params['Rversion'] = ["Dev/R/3.5.0", "Dev/R/3.4.2"]
+    @modules = ["Tools/samtools", "Tools/GFOLD", "Dev/PhantomJS", "Tools/sambamba"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
@@ -70,7 +71,8 @@ class DESeq2App < SushiFabric::SushiApp
     @params['transcriptTypes'] = @dataset[0]['transcriptTypes'].to_s.split(',')
   end
   def commands
-    run_RApp("EzAppDeseq2")
+    command = "module load #{@params["Rversion"]}\n"
+    command << run_RApp("EzAppDeseq2")
   end
 end
 
