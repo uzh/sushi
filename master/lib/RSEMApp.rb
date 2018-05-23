@@ -62,32 +62,63 @@ EOS
   end
   def next_dataset
     if @params['keepBam']
-      {'Name'=>@dataset['Name'],
-       'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
-       'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
-       'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-       'Species'=>@dataset['Species'],
-       'refBuild'=>@params['refBuild'],
-       'featureLevel'=>'isoform',
-       'refFeatureFile'=>@params['refFeatureFile'],
-       'strandMode'=>@params['strandMode'],
-       'paired'=>@params['paired'],
-       'Read Count'=>@dataset['Read Count'],
-       'transcriptTypes'=>@params['transcriptTypes']
-      }.merge(extract_columns(@inherit_tags))
+      if @params['transcriptFasta'] == ''
+        {'Name'=>@dataset['Name'],
+         'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
+         'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
+         'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
+         'Species'=>@dataset['Species'],
+         'refBuild'=>@params['refBuild'],
+         'featureLevel'=>'isoform',
+         'refFeatureFile'=>@params['refFeatureFile'],
+         'strandMode'=>@params['strandMode'],
+         'paired'=>@params['paired'],
+         'Read Count'=>@dataset['Read Count'],
+         'transcriptTypes'=>@params['transcriptTypes']
+        }.merge(extract_columns(@inherit_tags))
+      else
+        {'Name'=>@dataset['Name'],
+         'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
+         'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
+         'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
+         'Species'=>@dataset['Species'],
+         'refBuild'=>@params['refBuild'],
+         'featureLevel'=>'isoform',
+         'refFeatureFile'=>@params['refFeatureFile'],
+         'strandMode'=>@params['strandMode'],
+         'paired'=>@params['paired'],
+         'Read Count'=>@dataset['Read Count'],
+         'transcriptTypes'=>'NA'
+        }.merge(extract_columns(@inherit_tags))
+      end
     else
-      {'Name'=>@dataset['Name'],
-       'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
-       'Species'=>@dataset['Species'],
-       'refBuild'=>@params['refBuild'],
-       'featureLevel'=>'isoform',
-       'refFeatureFile'=>@params['refFeatureFile'],
-       'strandMode'=>@params['strandMode'],
-       'paired'=>@params['paired'],
-       'Read Count'=>@dataset['Read Count'],
-       'transcriptTypes'=>@params['transcriptTypes'],
-       'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
-      }.merge(extract_columns(@inherit_tags))
+      if @params['transcriptFasta'] == ''
+        {'Name'=>@dataset['Name'],
+         'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
+         'Species'=>@dataset['Species'],
+         'refBuild'=>@params['refBuild'],
+         'featureLevel'=>'isoform',
+         'refFeatureFile'=>@params['refFeatureFile'],
+         'strandMode'=>@params['strandMode'],
+         'paired'=>@params['paired'],
+         'Read Count'=>@dataset['Read Count'],
+         'transcriptTypes'=>@params['transcriptTypes'],
+         'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
+        }.merge(extract_columns(@inherit_tags))
+      else
+        {'Name'=>@dataset['Name'],
+         'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
+         'Species'=>@dataset['Species'],
+         'refBuild'=>@params['refBuild'],
+         'featureLevel'=>'isoform',
+         'refFeatureFile'=>@params['refFeatureFile'],
+         'strandMode'=>@params['strandMode'],
+         'paired'=>@params['paired'],
+         'Read Count'=>@dataset['Read Count'],
+         'transcriptTypes'=>'NA',
+         'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
+        }.merge(extract_columns(@inherit_tags))
+      end
     end
   end
   def commands
