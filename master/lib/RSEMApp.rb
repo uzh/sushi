@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20171109-095250'
+Version = '20180530-104624'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -61,65 +61,49 @@ EOS
     end
   end
   def next_dataset
-    if @params['keepBam']
-      if @params['transcriptFasta'] == ''
-        {'Name'=>@dataset['Name'],
-         'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
-         'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
-         'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-         'Species'=>@dataset['Species'],
-         'refBuild'=>@params['refBuild'],
-         'featureLevel'=>'isoform',
-         'refFeatureFile'=>@params['refFeatureFile'],
-         'strandMode'=>@params['strandMode'],
-         'paired'=>@params['paired'],
-         'Read Count'=>@dataset['Read Count'],
-         'transcriptTypes'=>@params['transcriptTypes']
-        }.merge(extract_columns(@inherit_tags))
+    dataset = {
+      'Name'=>@dataset['Name'],
+      'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt")
+    }
+    keep_bam = {
+      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
+      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai")
+    }
+    non_keep_bam = {
+      'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
+    }
+    non_transcript_fasta = {
+      'transcriptTypes'=>@params['transcriptTypes']
+    }
+    transcript_fasta = {
+      'transcriptTypes'=>'NA'
+    }
+    common = {
+      'Species'=>@dataset['Species'],
+      'refBuild'=>@params['refBuild'],
+      'featureLevel'=>'isoform',
+      'refFeatureFile'=>@params['refFeatureFile'],
+      'strandMode'=>@params['strandMode'],
+      'paired'=>@params['paired'],
+      'Read Count'=>@dataset['Read Count'],
+    }
+    merge_transcript_fasta =->() do
+      if @params['transcriptFasta'].to_s.empty?
+        dataset.merge!(non_transcript_fasta)
       else
-        {'Name'=>@dataset['Name'],
-         'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
-         'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
-         'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-         'Species'=>@dataset['Species'],
-         'refBuild'=>@params['refBuild'],
-         'featureLevel'=>'isoform',
-         'refFeatureFile'=>@params['refFeatureFile'],
-         'strandMode'=>@params['strandMode'],
-         'paired'=>@params['paired'],
-         'Read Count'=>@dataset['Read Count'],
-         'transcriptTypes'=>'NA'
-        }.merge(extract_columns(@inherit_tags))
-      end
-    else
-      if @params['transcriptFasta'] == ''
-        {'Name'=>@dataset['Name'],
-         'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
-         'Species'=>@dataset['Species'],
-         'refBuild'=>@params['refBuild'],
-         'featureLevel'=>'isoform',
-         'refFeatureFile'=>@params['refFeatureFile'],
-         'strandMode'=>@params['strandMode'],
-         'paired'=>@params['paired'],
-         'Read Count'=>@dataset['Read Count'],
-         'transcriptTypes'=>@params['transcriptTypes'],
-         'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
-        }.merge(extract_columns(@inherit_tags))
-      else
-        {'Name'=>@dataset['Name'],
-         'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
-         'Species'=>@dataset['Species'],
-         'refBuild'=>@params['refBuild'],
-         'featureLevel'=>'isoform',
-         'refFeatureFile'=>@params['refFeatureFile'],
-         'strandMode'=>@params['strandMode'],
-         'paired'=>@params['paired'],
-         'Read Count'=>@dataset['Read Count'],
-         'transcriptTypes'=>'NA',
-         'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
-        }.merge(extract_columns(@inherit_tags))
+        dataset.merge!(transcript_fasta)
       end
     end
+    if @params['keepBam']
+      dataset.merge!(keep_bam)
+      dataset.merge!(common)
+      merge_transcript_fasta.()
+    else
+      dataset.merge!(common)
+      merge_transcript_fasta.()
+      dataset.merge!(non_keep_bam)
+    end
+    dataset.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppRSEM")
