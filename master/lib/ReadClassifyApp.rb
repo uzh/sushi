@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20171119-221935'
+Version = '20180531-092244'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -31,7 +31,7 @@ http://seselab.org/homeoroq/
     @params['scratch'] = '100'
     @params['paired'] = true
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
-    @modules = ["Tools/samtools", "Tools/sambamba"]
+    @modules = ["Dev/Python/2.7.13", "Tools/samtools", "Tools/sambamba"]
   end
   def preprocess
     @parent1_genome = if samp = @dataset_hash.first and ref_path = samp['refBuild1'] and dirs = ref_path.split('/') and spc = dirs.first and sub = spc.split('_')
@@ -78,16 +78,16 @@ http://seselab.org/homeoroq/
     end
     command = "mkdir tmp\n"
     command << "grep 'version' /usr/local/ngseq/stow/read_classify-2.1.0/bin/read_classify.py\n"
-    command << "/usr/local/ngseq/bin/python --version\n"
-    command << "export PYTHONPATH=$PYTHONPATH:/usr/local/ngseq/lib/python2.7:/usr/local/ngseq/lib/python2.7/dist-packages\n"
+    command << "python --version\n"
+    #command << "export PYTHONPATH=$PYTHONPATH:/usr/local/ngseq/lib/python2.7:/usr/local/ngseq/lib/python2.7/dist-packages\n"
     command << "env|grep PYTHON\n"
     command << "samtools view -h #{bam1} > #{sam1}\n"
     command << "samtools view -h #{bam2} > #{sam2}\n"
 
     if @params['paired']
-      command << "/usr/local/ngseq/bin/python /usr/local/ngseq/stow/read_classify-2.1.0/bin/read_classify.py #{sam1} #{sam2} #{out1_prefix} #{out2_prefix}\n"
+      command << "python /usr/local/ngseq/stow/read_classify-2.1.0/bin/read_classify.py #{sam1} #{sam2} #{out1_prefix} #{out2_prefix}\n"
     else
-      command << "/usr/local/ngseq/bin/python /usr/local/ngseq/stow/read_classify-2.1.0/bin/read_classify_single_end.py #{sam1} #{sam2} #{out1_prefix} #{out2_prefix}\n"
+      command << "python /usr/local/ngseq/stow/read_classify-2.1.0/bin/read_classify_single_end.py #{sam1} #{sam2} #{out1_prefix} #{out2_prefix}\n"
     end
     ["orig", "other", "common"].each do |type|
       command << "samtools index #{out1_prefix}_#{type}.bam\n"
