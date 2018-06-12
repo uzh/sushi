@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20180531-092244'
+Version = '20180612-151012'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -94,6 +94,7 @@ http://seselab.org/homeoroq/
       command << "samtools index #{out2_prefix}_#{type}.bam\n"
     end
     command << "echo '#{GlobalVariables::SUSHI}' > #{@dataset['Name']}_dummy.txt\n"
+    command << "module unload Dev/Python/2.7.13"
     command
   end
 end
