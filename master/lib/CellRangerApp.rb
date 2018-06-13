@@ -39,7 +39,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
       'BAM [File]'=>File.join(report_dir, 'outs/possorted_genome_bam.bam'),
       'BAI [File]'=>File.join(report_dir, 'outs/possorted_genome_bam.bam.bai'),
       'Species'=>@dataset['Species'],
-      'reference'=>@params['reference']
+      'reference'=>@params['reference'],
+      'CountMatrix [File]'=>File.join(report_dir, "outs/filtered_gene_bc_matrices/#{@params['reference']}/matrix.mtx")
     }.merge(extract_columns(@inherit_tags))
     dataset
   end
