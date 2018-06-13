@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20180613-141921'
+Version = '20180613-144727'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -43,7 +43,7 @@ http://seselab.org/homeoroq/
     @params['target_orig'] = ''
     @params['target_other'] = ''
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
-    @modules = ["Tools/RBH/2018.2.8", "Dev/R/3.5.0", "Dev/Ruby/2.4.3"]
+    @modules = ["Tools/RBH/2018.2.8", "Dev/R/3.5.0", "Dev/Ruby/2.4.3", "Aligner/ncbi-blast/2.6.0+"]
   end
   def set_default_parameters
     count_qc_dir = @dataset_hash.first['Report [File]']
