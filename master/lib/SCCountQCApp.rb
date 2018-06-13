@@ -14,8 +14,8 @@ class SCCountQCApp < SushiFabric::SushiApp
     @description =<<-EOS
 Quality control for singel cell alignment and counts<br/>
     EOS
-    @required_columns = ['Name', 'Species', 'featureLevel', 'refFeatureFile', 'CellDataset', 'CountMatrix', 'BAM', 'STARLog']
-    @required_params = ['refBuild']
+    @required_columns = ['Name', 'Species', 'CountMatrix', 'BAM']
+    @required_params = ['name']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '100'
