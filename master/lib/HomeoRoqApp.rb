@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20180613-135018'
+Version = '20180613-141921'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -43,7 +43,7 @@ http://seselab.org/homeoroq/
     @params['target_orig'] = ''
     @params['target_other'] = ''
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
-    @modules = ["Tools/RBH/2018.2.8"]
+    @modules = ["Tools/RBH/2018.2.8", "Dev/R/3.5.0", "Dev/Ruby/2.4.3"]
   end
   def set_default_parameters
     count_qc_dir = @dataset_hash.first['Report [File]']
@@ -66,7 +66,6 @@ http://seselab.org/homeoroq/
     @params['target_orig', 'description'] = "Polyploid orig"
     @params['target_other'] = groups
     @params['target_other', 'description'] = "Polyploid other"
-    @modules = ["Dev/R"]
   end
   def preprocess
   end
@@ -129,9 +128,9 @@ http://seselab.org/homeoroq/
     command << "cp index.csv homeoroq_results/\n"
     # calcpval_one.R
     @params['iteration'].to_i.times do |i|
-      command << "/usr/local/ngseq/stow/R-3.2.2/bin/R --vanilla --slave --args homeoroq_results/tpms_pval_run#{i}.txt #{tpm_txt} index.csv #{@params['cores']} < /usr/local/ngseq/lib/calcpval_one.R\n"
+      command << "R --vanilla --slave --args homeoroq_results/tpms_pval_run#{i}.txt #{tpm_txt} index.csv #{@params['cores']} < /usr/local/ngseq/lib/calcpval_one.R\n"
     end
-    command << "/usr/local/ngseq/stow/R-3.2.2/bin/Rscript /usr/local/ngseq/lib/calcpval_mean.R homeoroq_results\n"
+    command << "Rscript /usr/local/ngseq/lib/calcpval_mean.R homeoroq_results\n"
     control = @params['control_orig'].gsub(/_orig/, '')
     target = @params['target_orig'].gsub(/_orig/, '')
     command << "Rscript /usr/local/ngseq/lib/plot_homeoroq.R homeoroq_results/pval_mean.xls #{control} #{target}\n"
