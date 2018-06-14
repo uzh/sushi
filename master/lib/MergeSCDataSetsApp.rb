@@ -22,14 +22,19 @@ Assuming that all other columns than file path are same between datasets.<br />
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
-    {
+    next_dataset_base = {
       'Name'=>@dataset['Name'],
-      'Read1 [File]'=>@dataset['Read1'],
-      'RawDataDir1 [File]'=>@dataset['RawDataDir'],
-      'Read2 [File]'=>@dataset['Read1'],
-      'RawDataDir2 [File]'=>@dataset['RawDataDir'],
-      'Species'=>@dataset['Species'],
-    }.merge(extract_columns(@inherit_tags))
+    }
+    @dataset.keys.select{|colname| colname =~ /RawDataDir\d*/ or colname =~ /Read\d+/}.each do |colname|
+      new_colname = if colname == "RawDataDir"
+                      "RawDataDir1 [File]"
+                    else
+                      "#{colname} [File]"
+                    end
+      next_dataset_base[new_colname] = @dataset[colname]
+    end
+    next_dataset_base['Species'] = @dataset['Species']
+    next_dataset_base.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
     if data_set = DataSet.find_by_id(@dataset_sushi_id)
@@ -59,8 +64,8 @@ Assuming that all other columns than file path are same between datasets.<br />
     final_read_number += 1
     dataset_hash1.each_with_index do |sample, i|
       name = sample['Name']
-      @dataset_hash[i]["Read#{final_read_number} [File]"] = dataset_hash2[name]['Read1 [File]']
       @dataset_hash[i]["RawDataDir#{final_read_number} [File]"] = dataset_hash2[name]['RawDataDir [File]']
+      @dataset_hash[i]["Read#{final_read_number} [File]"] = dataset_hash2[name]['Read1 [File]']
     end
     @dataset_hash.sort_by!{|row| row['Name']}
   end
