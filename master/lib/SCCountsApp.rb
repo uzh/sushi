@@ -60,7 +60,7 @@ EOS
      'refFeatureFile'=>@params['refFeatureFile'],
      'transcriptTypes'=>@params['transcriptTypes'],
      'CellDataset [File]'=>File.join(@result_dir, "#{@dataset['Name']}-dataset.tsv"),
-     'CountMatrix [File]'=>File.join(@result_dir, "#{@dataset['Name']}-counts.txt"),
+     'CountMatrix [File]'=>File.join(@result_dir, "#{@dataset['Name']}-counts.mtx"),
      'Stats [File]'=>File.join(@result_dir, "#{@dataset['Name']}-stats.txt"),
      'CellCyclePhase [File]'=>File.join(@result_dir, "#{@dataset['Name']}-CellCyclePhase.txt"),
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
