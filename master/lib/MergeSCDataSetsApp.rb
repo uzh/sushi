@@ -15,7 +15,7 @@ Assuming that all other columns than file path are same between datasets.<br />
 <br />
     EOS
     @analysis_category = 'SingleCell'
-    @params['OrigDataSet'] = []
+    @params['BaseDataSet'] = ''
     @params['TargetDataSet'] = []
     @required_columns = ['Name', 'Read1', 'RawDataDir', 'Species']
     @required_params = ['TargetDataSet']
@@ -33,7 +33,7 @@ Assuming that all other columns than file path are same between datasets.<br />
   end
   def set_default_parameters
     if data_set = DataSet.find_by_id(@dataset_sushi_id)
-      @params['OrigDataSet'] = {data_set.name => data_set.id}
+      @params['BaseDataSet'] = data_set.name
       @params['TargetDataSet'] = Hash[*data_set.project.data_sets.map{|d| [d.name, d.id]}.flatten].to_a.reverse
     end
   end
@@ -50,10 +50,17 @@ Assuming that all other columns than file path are same between datasets.<br />
     # here
     # merge dataset_hash2 with @dataset_hash
     dataset_hash1 = @dataset_hash.clone
+    final_read_number = 1
+    dataset_hash1.first.keys.each do |colname|
+      if colname =~ /Read(\d+)\s+\[File\]/
+        final_read_number = $1.to_i
+      end
+    end
+    final_read_number += 1
     dataset_hash1.each_with_index do |sample, i|
       name = sample['Name']
-      @dataset_hash[i]['Read2 [File]'] = dataset_hash2[name]['Read1 [File]']
-      @dataset_hash[i]['RawDataDir2 [File]'] = dataset_hash2[name]['RawDataDir [File]']
+      @dataset_hash[i]["Read#{final_read_number} [File]"] = dataset_hash2[name]['Read1 [File]']
+      @dataset_hash[i]["RawDataDir#{final_read_number} [File]"] = dataset_hash2[name]['RawDataDir [File]']
     end
     @dataset_hash.sort_by!{|row| row['Name']}
   end
