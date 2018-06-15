@@ -78,6 +78,9 @@ $(document).ready(function(){
         $("#hide_indicator").toggleClass("arrow-up arrow-down");
 
     });
+    $("#show_sushi_app_button").click(function(){
+        $("#show_sushi_app").show(500);
+    });
     $("#add_comment").click(function(){
       var data_set_id = $("#data_set_id").val();
       var old_comment = $("#data_set_comment").val();
@@ -328,19 +331,32 @@ $(document).ready(function(){
     <hr />
 <% end %>
 
-    <h3 style="display: inline">Applications</h3>
-    <% if !@sample_invalid_name.keys.empty? %>
+<h3 style="display: inline">Applications</h3>
+- <a href="" id="refresh_sushi_list">refresh</a>
+<br />
+<% unless @file_exist.values.inject{|a,b| a and b}%>
+  <br />
+  <% if session['employee'] %>
+    <span class="alert">The missing file(s) listed above could cause a failure of the next job run.</span> 
+    <button class="btn-link" id="show_sushi_app_button">Agree?</button>
+  <% end %>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $("#show_sushi_app").hide();
+  });
+  </script>
+<% end %>
+<div id="show_sushi_app">
+  <% if !@sample_invalid_name.keys.empty? %>
     <br />
     <ul>
       <li><span class="alert">Invalid character is used in sample name. Please correct it.</span></li>
       <li>Invalid characters: !@#$%^&*()<>{}[]/:;"='+| and SPACE</li>
     </ul>
   <% elsif @sushi_apps %>
-    - <a href="" id="refresh_sushi_list">refresh</a>
-    <br />
     <br />
     <%= render :partial => '/data_set/sushi_application_list' %>
   <% end %>
-
+</div>
 <hr />
 
