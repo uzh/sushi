@@ -61,6 +61,8 @@ EOS
      'transcriptTypes'=>@params['transcriptTypes'],
      'CellDataset [File]'=>File.join(@result_dir, "#{@dataset['Name']}-dataset.tsv"),
      'CountMatrix [File]'=>File.join(@result_dir, "#{@dataset['Name']}-counts.mtx"),
+     'CountMatrixColNames [File]'=>File.join(@result_dir, "#{@dataset['Name']}-counts.colNames"),
+     'CountMatrixRowNames [File]'=>File.join(@result_dir, "#{@dataset['Name']}-counts.rowNames"),
      'Stats [File]'=>File.join(@result_dir, "#{@dataset['Name']}-stats.txt"),
      'CellCyclePhase [File]'=>File.join(@result_dir, "#{@dataset['Name']}-CellCyclePhase.txt"),
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
