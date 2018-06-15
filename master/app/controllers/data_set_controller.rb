@@ -230,10 +230,9 @@ class DataSetController < ApplicationController
         @data_set.save
         set_runnable_apps(false)
       end
-      if @file_exist.values.inject{|a,b| a and b}
-        @sushi_apps = @data_set.runnable_apps
-        @sushi_apps_category = @sushi_apps.keys.sort
-      end
+
+      @sushi_apps = @data_set.runnable_apps
+      @sushi_apps_category = @sushi_apps.keys.sort
     else
       @url_not_found = true
       index
