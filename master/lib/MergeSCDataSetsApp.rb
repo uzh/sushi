@@ -20,6 +20,7 @@ Assuming that all other columns than file path are same between datasets.<br />
     @required_columns = ['Name', 'Read1', 'Species']
     @required_params = ['TargetDataSet']
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
+    @child = true # child flag: true means that the next dataset is a child dataset
   end
   def next_dataset
     next_dataset_base = {
