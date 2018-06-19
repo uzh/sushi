@@ -20,3 +20,4 @@ master/.Rproj.user
 master/.Rhistory
 master/*.Rproj
 .DS_Store
+lib/WordCountApp.rb
