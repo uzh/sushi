@@ -65,11 +65,12 @@ This command initializes the database appropriately.
 
   $ mkdir workflow_manager
   $ cd workflow_manager/
-  $ workflow_manager -m production
-  version = X.X.X
-  mode = production
+  $ bundle exec workflow_manager
+  mode = development
+  ruby = xxx
+  GEM_PATH = xxx
   DB = PStore
-  Cluster = local_computer
+  Cluster = LocalComputer
   druby://localhost:12345
 
 Note
