@@ -44,12 +44,10 @@ Note
 
   $ git clone https://github.com/uzh/sushi.git
   $ cd sushi/master
-  $ bundle install 
+  $ bundle install --path vendor/bundle
   $ bundle exec rake secret
 
-if you do not want to install the gem libraries in your GEM PATHS directories you can use --path option to specifiy the gem library directory like:
-
-  $ bundle install --path vendor/bundle
+If you get an error during gem library installation, please try 1) delete Gemfile.lock and 2) bundle install again. This may adjust the library version to your environment.
 
 'rake secret' command gives you the secret key and paste it in /config/initilizer/devise.rb as follows:
 
