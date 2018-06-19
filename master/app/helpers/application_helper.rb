@@ -8,7 +8,7 @@ module ApplicationHelper
       session[:employee] = (@fgcz and current_user and FGCZ.get_user_groups(current_user.login).include?('Employees'))
       session[:projects] = if @fgcz and current_user
                              FGCZ.get_user_projects(current_user.login).map{|project| project.gsub(/p/,'').to_i}.sort
-                           elsif user_projects = SushiFabric::Application.config.course_users
+                           elsif defined?(SushiFabric::Application.config.course_users) and user_projects = SushiFabric::Application.config.course_users
                              user_projects
                            else
                              [1001]
