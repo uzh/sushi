@@ -15,7 +15,7 @@ class STARApp < SushiFabric::SushiApp
     Ultafast spliced alignment<br/>
 <a href='https://code.google.com/p/rna-star/'>manual</a><br/>
 Noteworthy options:<ul>
-<li> --outFilterMatchNmin 30 --outFilterMismatchNmax 5 --outFilterMismatchNoverLmax 0.05 --outFilterMultimapNmax 50</li>
+<li> --outFilterMatchNmin 30 --outFilterMismatchNmax 5 --outFilterMismatchNoverLmax 0.05 --outFilterMultimapNmax 50 --alignEndsProtrude 3 ConcordantPair</li>
 <li> large numbers of contigs ask form more RAM. In that case the index must be built with a smaller --genomeChrBinNbits 18;
 e.g. the Wheat assembly with 1Mio contigs and --genomeChrBinNbits 10 still takes 120GB of RAM during alignmnet</li>
 </ul>
@@ -30,7 +30,7 @@ EOS
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['cmdOptions'] = '--outFilterType BySJout --outFilterMatchNmin 30 --outFilterMismatchNmax 10 --outFilterMismatchNoverLmax 0.05 --outMultimapperOrder Random --alignSJDBoverhangMin 1 --alignSJoverhangMin 8 --alignIntronMax 1000000 --alignMatesGapMax 1000000  --outFilterMultimapNmax 50 --chimSegmentMin 15 --chimJunctionOverhangMin 15 --chimScoreMin 15 --chimScoreSeparation 10 --outSAMstrandField intronMotif'
+    @params['cmdOptions'] = '--outFilterType BySJout --outFilterMatchNmin 30 --outFilterMismatchNmax 10 --outFilterMismatchNoverLmax 0.05 --outMultimapperOrder Random --alignSJDBoverhangMin 1 --alignSJoverhangMin 8 --alignIntronMax 1000000 --alignMatesGapMax 1000000  --outFilterMultimapNmax 50 --chimSegmentMin 15 --chimJunctionOverhangMin 15 --chimScoreMin 15 --chimScoreSeparation 10 --outSAMstrandField intronMotif --alignEndsProtrude 3 ConcordantPair'
     @params['getJunctions'] = false
     #@params['getChimericJunctions'] = false
     @params['twopassMode'] = true
