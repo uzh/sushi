@@ -53,9 +53,9 @@ cp -a $BAM_FILE .
 samstat $FN
 mv {$FN,#{@dataset['Name']}}.samstat.html
 ###qualimap
-unset DISPLAY ; qualimap bamqc -bam $FN -c -nt #{@params['cores']} --java-mem-size=10G -outdir #{@dataset['Name']} > qualimap.out
+unset DISPLAY ; qualimap bamqc -bam $FN -c -nt #{@params['cores']} --java-mem-size=#{@params['ram']}G -outdir #{@dataset['Name']} > qualimap.out
 ###picard 
-java -Xmx10g -jar $Picard_jar CollectGcBiasMetrics OUTPUT=#{@dataset['Name']}.gc.dat SUMMARY_OUTPUT=#{@dataset['Name']}.gc.sum.dat INPUT=$FN CHART_OUTPUT=#{@dataset['Name']}.picard.pdf ASSUME_SORTED=#{@params['sortedBam']} REFERENCE_SEQUENCE=$REF VALIDATION_STRINGENCY=LENIENT > picard.out 2> picard.err
+java -Xmx#{@params['ram']}g -jar $Picard_jar CollectGcBiasMetrics OUTPUT=#{@dataset['Name']}.gc.dat SUMMARY_OUTPUT=#{@dataset['Name']}.gc.sum.dat INPUT=$FN CHART_OUTPUT=#{@dataset['Name']}.picard.pdf ASSUME_SORTED=#{@params['sortedBam']} REFERENCE_SEQUENCE=$REF VALIDATION_STRINGENCY=LENIENT > picard.out 2> picard.err
 EOS
     command
   end
