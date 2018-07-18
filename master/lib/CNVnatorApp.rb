@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20180718'
+Version = '20180718-144150'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -63,8 +63,7 @@ class CNVnatorApp < SushiFabric::SushiApp
     export YEPPPLIBDIR=/usr/local/ngseq/src/yeppp-1.0.0/binaries/linux/x86_64
     export LD_LIBRARY_PATH=$YEPPPLIBDIR:$LD_LIBRARY_PATH 
     EOS
-    command
-    run_RApp("EzAppCNVnator")
+    command + run_RApp("EzAppCNVnator")
   end
 end
 
