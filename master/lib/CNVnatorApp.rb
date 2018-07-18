@@ -31,7 +31,7 @@ class CNVnatorApp < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['mail'] = ''
     @modules = ["Dev/R"]
-    # MACS2 is in Python2 bin
+
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters
@@ -58,6 +58,9 @@ class CNVnatorApp < SushiFabric::SushiApp
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
+    source /usr/local/ngseq/stow/root_v6.12.06/bin/thisroot.sh
+    export YEPPPLIBDIR=/usr/local/ngseq/src/yeppp-1.0.0/binaries/linux/x86_64
+    export LD_LIBRARY_PATH=$YEPPPLIBDIR:$LD_LIBRARY_PATH
     run_RApp("EzAppCNVnator")
   end
 end
