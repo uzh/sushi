@@ -12,7 +12,7 @@ class CNVnatorApp < SushiFabric::SushiApp
     @name = 'CNVnator'
     @analysis_category = 'Variants'
     @description =<<-EOS
- tool for CNV discovery and genotyping from depth-of-coverage by mapped reads <br/>
+ A tool for CNV discovery and genotyping from depth-of-coverage by mapped reads <br/>
 <a href='https://github.com/abyzovlab/CNVnator'>https://github.com/abyzovlab/CNVnator</a>
     EOS
     @required_columns = ['Name','BAM','BAI', 'refBuild']
@@ -58,9 +58,12 @@ class CNVnatorApp < SushiFabric::SushiApp
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
+    command =<<-EOS 
     source /usr/local/ngseq/stow/root_v6.12.06/bin/thisroot.sh
     export YEPPPLIBDIR=/usr/local/ngseq/src/yeppp-1.0.0/binaries/linux/x86_64
-    export LD_LIBRARY_PATH=$YEPPPLIBDIR:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=$YEPPPLIBDIR:$LD_LIBRARY_PATH 
+    EOS
+    command
     run_RApp("EzAppCNVnator")
   end
 end
