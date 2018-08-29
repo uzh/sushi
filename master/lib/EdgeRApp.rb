@@ -37,7 +37,8 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['normMethod', 'description'] = "see http://bioconductor.org/packages/edgeR/"
     @params['runGO'] = ['true', 'false']
     @params['grouping2'] = ''
-    @params['grouping2', 'description'] = 'specify the column name of your secondary factor --only in case your experiment has a second factor, that should enter the linear model for differential expression!'
+    @params['grouping2', 'description'] =  'specify the column name of your secondary factor (if there is one). Ensure the 
+    column name is in the format "NAME [Factor]" or "NAME [Numeric]"'
     @params['backgroundExpression'] = 10
     @params['backgroundExpression', "description"] = "counts to be added to shrink estimated log2 ratios"
     @params['transcriptTypes'] = ''
