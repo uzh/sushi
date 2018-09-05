@@ -47,7 +47,7 @@ report_link = File.join(@result_dir, '00index.html')
 
 end
 def commands
-run_RApp("EzAppMothurDataClean")
+run_RApp("EzAppMothurDataCleanIllumina")
 end
 end
 
