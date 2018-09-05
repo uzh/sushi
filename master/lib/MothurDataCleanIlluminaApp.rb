@@ -27,7 +27,7 @@ OTU-based metagenomics analysis of Illumina data with Mothur.
 @params['diffs_Illumina', 'description'] = 'Differences allowed in the pre.cluster step. Should be 1 every 100 bases.If the data are only Pacbio, it is ignored'
 @params['minLen_Illumina'] = '145'
 @params['minLen_Illumina', 'description'] = 'Sequences shorter than this long are removed.'
-@params['maxLen_Illumina'] = '320'
+@params['maxLen_Illumina'] = '330'
 @params['maxLen_Illumina', 'description'] = 'Sequences longer than this are removed.'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
