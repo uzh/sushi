@@ -13,9 +13,8 @@ class MpileupApp <  SushiFabric::SushiApp
     @analysis_category = 'Variants'
     @description =<<-EOS
 Variant analysis with samtools/bcftools.<br/>
-The analysis runs the 3 commands: samtools mpileup, bcftools call, bcftools filter<br/>
-<a href='http://www.htslib.org/doc/samtools-1.1.html'>samtools manual/</a><br>
-<a href='http://www.htslib.org/doc/bcftools-1.1.html'>bcftools manual/</a><br>
+The analysis runs the 3 commands of bcftools: mpileup, call, and filter<br/>
+<a href='http://www.htslib.org/doc/bcftools.html'>bcftools manual/</a><br>
 EOS
     @required_columns = ['Name','BAM','BAI', 'refBuild', 'Species']
     @required_params = ['name', 'paired']
@@ -27,12 +26,12 @@ EOS
     @params['refBuild'] = ref_selector
     @params['region'] = ""
     @params['region', 'description'] = 'The region of the genome. You can give either a chromosome name or a region on a chromosome like chr1:1000-2000'
-    @params['mpileupOptions'] = '--skip-indels --output-tags DP,DV,DPR,INFO/DPR,DP4,SP'
+    @params['mpileupOptions'] = '--skip-indels --annotate DP,AD,INFO/AD,ADF,ADR,SP'
     @params['mpileupOptions', 'description'] = 'The options to the samtools mpileup command'
     @params['callOptions'] = '--multiallelic-caller --keep-alts --variants-only'
-    @params['callOptions', 'description'] = 'The options to <a href=http://www.htslib.org/doc/bcftools-1.1.html#call>bcftools call</a>'
+    @params['callOptions', 'description'] = 'The options to <a href=http://www.htslib.org/doc/bcftools.html#call>bcftools call</a>'
     @params['filterOptions'] = '--include "MIN(DP)>5"'
-    @params['filterOptions', 'description'] = 'The options to <a href=http://www.htslib.org/doc/bcftools-1.1.html#filter>bcftools filter</a>'
+    @params['filterOptions', 'description'] = 'The options to <a href=http://www.htslib.org/doc/bcftools.html#filter>bcftools filter</a>'
     @params['specialOptions'] = ''
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
