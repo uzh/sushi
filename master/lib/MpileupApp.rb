@@ -26,8 +26,8 @@ EOS
     @params['refBuild'] = ref_selector
     @params['region'] = ""
     @params['region', 'description'] = 'The region of the genome. You can give either a chromosome name or a region on a chromosome like chr1:1000-2000'
-    @params['mpileupOptions'] = '--skip-indels --annotate DP,AD,INFO/AD,ADF,ADR,SP'
-    @params['mpileupOptions', 'description'] = 'The options to the samtools mpileup command'
+    @params['mpileupOptions'] = '--skip-indels --annotate AD,INFO/AD,ADF,ADR,SP'
+    @params['mpileupOptions', 'description'] = 'The options to the bcftools mpileup command'
     @params['callOptions'] = '--multiallelic-caller --keep-alts --variants-only'
     @params['callOptions', 'description'] = 'The options to <a href=http://www.htslib.org/doc/bcftools.html#call>bcftools call</a>'
     @params['filterOptions'] = '--include "MIN(DP)>5"'
