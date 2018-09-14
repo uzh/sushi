@@ -150,9 +150,9 @@ class RunApplicationController < ApplicationController
                  else
                    @nodes.select{|node| node =~ /fgcz-h/ or node =~ /fgcz-c-048/}
                  end
-        if current_user and FGCZ.get_user_projects(current_user.login).include?('p1535')
-          @nodes['fgcz-c-047: cpu 32,mem   1 TB,scr  28T'] = 'fgcz-c-047'
-        end
+      end
+      if current_user and FGCZ.get_user_projects(current_user.login).include?('p1535')
+        @nodes['fgcz-c-047: cpu 32,mem   1 TB,scr  28T'] = 'fgcz-c-047'
       end
     end
 		unless @factors
