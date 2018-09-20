@@ -48,7 +48,7 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/3.5.0", "Dev/R/3.4.2"]
+    @params['Rversion'] = ["Dev/R/3.5.0", "Dev/R/3.4.2", "Dev/R/3.3.0"]
     @modules = ["Tools/GFOLD", "Dev/PhantomJS"]
   end
    def preprocess
