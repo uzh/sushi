@@ -34,13 +34,13 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     report_dir = File.join(@result_dir,"#{@dataset['Name']}")
     dataset = {
       'Name'=>@dataset['Name'],
-      #'ResultDir [File]'=>report_dir,
+      'ResultDir [File]'=>report_dir,
       'Report [Link]'=>File.join(report_dir, 'outs/web_summary.html'),
-      'BAM [File]'=>File.join(report_dir, 'outs/possorted_genome_bam.bam'),
-      'BAI [File]'=>File.join(report_dir, 'outs/possorted_genome_bam.bam.bai'),
+      'BAM [Link]'=>File.join(report_dir, 'outs/possorted_genome_bam.bam'),
+      'BAI [Link]'=>File.join(report_dir, 'outs/possorted_genome_bam.bam.bai'),
       'Species'=>@dataset['Species'],
       'reference'=>@params['reference'],
-      'CountMatrix [File]'=>File.join(report_dir, "outs/filtered_gene_bc_matrices/#{@params['reference']}/matrix.mtx")
+      'CountMatrix [Link]'=>File.join(report_dir, "outs/filtered_gene_bc_matrices/#{@params['reference']}/matrix.mtx")
     }.merge(extract_columns(@inherit_tags))
     dataset
   end
