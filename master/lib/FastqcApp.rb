@@ -21,6 +21,8 @@ EOS
     @params['ram'] = '16'
     @params['scratch'] = '100'
     @params['paired'] = false
+    @params['perLibrary'] = true
+    @params['perLibrary', 'description'] = "FastQC process per library or per cell for single cell experiment"
 #    @params['libQuantPlots'] = true
 #    @params['libQuantPlots', 'description'] = "make plot comparing library quantifications with read numbers"
     @params['name'] = 'FastQC_Result'
