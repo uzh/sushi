@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20171109-095910'
+Version = '20180927-163350'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -16,7 +16,7 @@ Trimmomatic performs a variety of useful trimming tasks for illumina paired-end 
 Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usadellab.org/cms/?page=trimmomatic</a>
     EOS
     @required_columns = ['Name','Read1']
-    @required_params = ['paired', 'quality_type', 'leading', 'trailing', 'slidingwindow', 'avgqual', 'headcrop', 'minlen']
+    @required_params = ['paired', 'quality_type']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
@@ -46,7 +46,9 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     @params['slidingwindow', 'description'] = 'Perform a sliding window trimming, cutting once the average quality within the window falls below a threshold'
     @params['avgqual'] = '20'
     @params['avgqual', 'description'] = 'Drop the read if the average quality is below the specified level'
-    @params['headcrop'] = 0
+    @params['crop'] = ''
+    @params['crop', 'description'] = 'The number of bases to keep, from the start of the read'
+    @params['headcrop'] = '0'
     @params['headcrop', 'description'] = 'The number of bases to remove from the start of the read'
     @params['minlen'] = '30'
     @params['minlen', 'description'] = 'Drop the read if it is below a specified length'
@@ -107,7 +109,27 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
       command << " #{output_R2} #{output_unpared_R2}"
     end
     command << " ILLUMINACLIP:#{adapters_fa}:#{@params['seed_mismatchs']}:#{@params['palindrome_clip_threshold']}:#{@params['simple_clip_threshold']}"
-    command << " LEADING:#{@params['leading']} TRAILING:#{@params['trailing']} SLIDINGWINDOW:#{@params['slidingwindow']} AVGQUAL:#{@params['avgqual']} HEADCROP:#{@params['headcrop']} MINLEN:#{@params['minlen']}"
+    unless @params['leading'].strip.empty?
+      command << " LEADING:#{@params['leading']}"
+    end
+    unless @params['trailing'].strip.empty?
+      command << " TRAILING:#{@params['trailing']}"
+    end
+    unless @params['slidingwindow'].strip.empty?
+      command << " SLIDINGWINDOW:#{@params['slidingwindow']}"
+    end
+    unless @params['avgqual'].strip.empty?
+      command << " AVGQUAL:#{@params['avgqual']}"
+    end
+    unless @params['crop'].strip.empty?
+      command << " CROP:#{@params['crop']}"
+    end
+    unless @params['headcrop'].strip.empty?
+      command << " HEADCROP:#{@params['headcrop']}"
+    end
+    unless @params['minlen'].strip.empty?
+      command << " MINLEN:#{@params['minlen']}"
+    end
     command
   end
 end
