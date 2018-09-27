@@ -673,10 +673,12 @@ class DataSetController < ApplicationController
   def save_all_dataset_list_as_tsv
     project = Project.find_by_number(session[:project].to_i)
     data_sets = if sushi_app_name = params[:sushi_app]
-                  if sushi_app_name == 'ImportedDataSet'
+                  if sushi_app_name == 'ImportedDataSets'
                    data_sets_ = DataSet.all.select{|data_set|
                      data_set.sushi_app_name.nil?
                    }
+                  elsif sushi_app_name == 'AllDataSets'
+                    data_sets_ = DataSet.all
                   else
                    data_sets_ = DataSet.all.select{|data_set|
                      data_set.sushi_app_name =~ /#{sushi_app_name}/i
