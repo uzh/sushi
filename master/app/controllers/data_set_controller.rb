@@ -645,21 +645,7 @@ class DataSetController < ApplicationController
      :type => 'text/csv',
      :disposition => "attachment; filename=#{data_set_name}.tsv" 
   end
-  def save_list_as_tsv
-    project = Project.find_by_number(session[:project].to_i)
-    data_sets = if sushi_app_name = params[:sushi_app]
-                  if sushi_app_name == 'ImportedDataSet'
-                   data_sets_ = DataSet.all.select{|data_set|
-                     data_set.sushi_app_name.nil?
-                   }
-                  else
-                   data_sets_ = DataSet.all.select{|data_set|
-                     data_set.sushi_app_name =~ /#{sushi_app_name}/i
-                   }
-                  end
-                else
-                  data_sets_ = DataSet.all.sort_by{|data_set| Time.now-data_set.created_at}[0,10]
-                end
+  def data_sets_tsv_string(data_sets)
     headers = ["ID", "Name", "Project", "SushiApp", "Samples", "Who", "Created", "BFabricID", "ManGOID"]
     tsv_string = CSV.generate("", headers: headers, write_headers: true, col_sep:"\t") do |out|
       data_sets.each do |data_set|
@@ -680,6 +666,24 @@ class DataSetController < ApplicationController
         out << row
       end
     end
+    tsv_string
+  end
+  def save_all_dataset_list_as_tsv
+    project = Project.find_by_number(session[:project].to_i)
+    data_sets = if sushi_app_name = params[:sushi_app]
+                  if sushi_app_name == 'ImportedDataSet'
+                   data_sets_ = DataSet.all.select{|data_set|
+                     data_set.sushi_app_name.nil?
+                   }
+                  else
+                   data_sets_ = DataSet.all.select{|data_set|
+                     data_set.sushi_app_name =~ /#{sushi_app_name}/i
+                   }
+                  end
+                else
+                  data_sets_ = DataSet.all.sort_by{|data_set| Time.now-data_set.created_at}[0,10]
+                end
+    tsv_string = data_sets_tsv_string(data_sets)
     data_set_name = if sushi_app_name
                       "#{sushi_app_name}_datasets"
                     else
@@ -689,7 +693,15 @@ class DataSetController < ApplicationController
     :type => 'text/csv',
     :disposition => "attachment; filename=#{data_set_name}.tsv"
   end
-
+  def save_project_dataset_list_as_tsv
+    project = Project.find_by_number(session[:project].to_i)
+    data_sets = project.data_sets
+    tsv_string = data_sets_tsv_string(data_sets)
+    data_set_name = "p#{project.number}_datasets"
+    send_data tsv_string,
+    :type => 'text/csv',
+    :disposition => "attachment; filename=#{data_set_name}.tsv"
+  end
   def delete
     @data_set = DataSet.find_by_id(params[:format])
 
