@@ -40,10 +40,12 @@ class DataSetController < ApplicationController
     @sushi_app = params.dig(:sushi, :app)
     if @project
       @data_sets = if sushi_app_name = params.dig(:select, :sushi_app)
-                     if sushi_app_name == 'ImportedDataSet'
+                     if sushi_app_name == 'ImportedDataSets'
                       data_sets_ = DataSet.all.select{|data_set|
                         data_set.sushi_app_name.nil?
                       }
+                     elsif sushi_app_name == 'AllDataSets'
+                      data_sets_ = DataSet.all
                      else
                       data_sets_ = DataSet.all.select{|data_set|
                         data_set.sushi_app_name =~ /#{sushi_app_name}/i
@@ -53,7 +55,7 @@ class DataSetController < ApplicationController
                      data_sets_ = DataSet.all.sort_by{|data_set| Time.now-data_set.created_at}[0,10]
                    end
     end
-    @sushi_apps = ["--- select ---"].concat(SushiApplication.all.sort_by{|app| app.class_name}.map{|app| app.class_name})
+    @sushi_apps = ["--- select ---", "ImportedDataSets", "AllDataSets"].concat(SushiApplication.all.sort_by{|app| app.class_name}.map{|app| app.class_name})
     @total = DataSet.select(:id).size
   end
 #  caches_action :report
