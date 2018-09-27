@@ -199,6 +199,8 @@
     <%= link_to "More...", "/data_set/index_full" %>
     <% end %>
     <% end %>
+
+    <%= link_to "Download", {:action=>"save_project_dataset_list_as_tsv"}, :method=>:post %>
 <hr>
 <% if session[:employee] %>
   <%= form_tag({:action => "bfabric"}, {:name => :register_bfabric}) do %>

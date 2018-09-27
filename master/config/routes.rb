@@ -30,7 +30,8 @@ SushiFabric::Application.routes.draw do
       post :register_bfabric
     end
     collection do
-      post :save_list_as_tsv
+      post :save_project_dataset_list_as_tsv
+      post :save_all_dataset_list_as_tsv
       post :list
       get :whole_treeviews
       get :partial_treeviews
