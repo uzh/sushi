@@ -43,6 +43,7 @@ Quality control for singel cell alignment and counts<br/>
     {'Name'=>@dataset['Name'],
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
+     'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
      'Report [File]'=>report_file,
     }
