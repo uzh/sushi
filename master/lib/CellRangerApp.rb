@@ -21,6 +21,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['name'] = 'CellRangerCount'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['featureLevel'] = 'gene'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]
@@ -39,6 +40,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
       'Species'=>@dataset['Species'],
       'refBuild'=>@params['refBuild'],
       'refFeatureFile'=>@params['refFeatureFile'],
+      'featureLevel'=>@params['featureLevel'],
       'CountMatrix [Link]'=>File.join(report_dir, "outs/filtered_gene_bc_matrices/#{@params['reference']}/matrix.mtx")
     }.merge(extract_columns(@inherit_tags))
     dataset
