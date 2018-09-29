@@ -16,13 +16,11 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @required_columns = ['Name','RawDataDir','Species']
     @required_params = ['name']
     @params['cores'] = '8'
-    @params['ram'] = '32'
+    @params['ram'] = '40'
     @params['scratch'] = '100'
     @params['name'] = 'CellRangerCount'
-    @params['reference'] = {'select'=>''}
-    Dir["/srv/GT/databases/10X_References/*"].sort.select{|design| File.directory?(design)}.each do |dir|
-      @params['reference'][File.basename(dir)] = File.basename(dir)
-    end
+    @params['refBuild'] = ref_selector
+    @params['refFeatureFile'] = 'genes.gtf'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]
@@ -39,7 +37,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
       'BAM [Link]'=>File.join(report_dir, 'outs/possorted_genome_bam.bam'),
       'BAI [Link]'=>File.join(report_dir, 'outs/possorted_genome_bam.bam.bai'),
       'Species'=>@dataset['Species'],
-      'reference'=>@params['reference'],
+      'refBuild'=>@params['refBuild'],
+      'refFeatureFile'=>@params['refFeatureFile'],
       'CountMatrix [Link]'=>File.join(report_dir, "outs/filtered_gene_bc_matrices/#{@params['reference']}/matrix.mtx")
     }.merge(extract_columns(@inherit_tags))
     dataset
