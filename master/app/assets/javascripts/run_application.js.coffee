@@ -16,8 +16,8 @@ $ ->
               $(this).addClass('attention')
               $(this).val($(this).val().replace(/[^0-9]/g,""))
     $("[with='ascii']").on "keyup.inputcontrol.ascii", ->
-            match_part = $(this).val().match(/[^ -~]|[;\\{}$%#!*]/)
+            match_part = $(this).val().match(/[^ -~]|[\\{}$%#!*]/)
             if match_part
               alert "WARNING: #{match_part} is not allowed"
               $(this).addClass('attention')
-              $(this).val($(this).val().replace(/[^ -~]|[;\\{}$%#!*]/g,""))
+              $(this).val($(this).val().replace(/[^ -~]|[\\{}$%#!*]/g,""))
