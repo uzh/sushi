@@ -6,21 +6,21 @@ require_relative 'global_variables'
 include GlobalVariables
 
 
-class SCCountQCApp < SushiFabric::SushiApp
+class SCReportApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'SCCountQC'
+    @name = 'SCReport'
     @analysis_category = 'SingleCell'
     @description =<<-EOS
-Quality control for singel cell alignment and counts<br/>
+Single cell report<br/>
     EOS
     @required_columns = ['Name', 'Species', 'refBuild', 'CountMatrix', 'BAM']
     @required_params = ['name']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '100'
-    @params['scratch'] = '200'
-    @params['name'] = 'SCCount_QC'
+    @params['ram'] = '16'
+    @params['scratch'] = '30'
+    @params['name'] = 'SCReport'
     @params['refBuild'] = ref_selector
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
@@ -31,14 +31,20 @@ Quality control for singel cell alignment and counts<br/>
     @params['transcriptTypes', 'selected'] = 0
     @params['min_genes'] = 500
     @params['min_genes', 'description'] = 'Minimal number of genes for Seurat filtering'
+    @params['max_genes'] = 3000
+    @params['max_genes', 'description'] = 'Maximal number of genes for Seurat filtering'
     @params['min_counts'] = 50000
     @params['min_counts', 'description'] = 'Minimal counts for Seurat filtering'
+    @params['pcs'] = 10
+    @params['pcs', 'description'] = 'The maximal dimensions to use for reduction'
+    @params['markersToCheck'] = ''
+    @params['markersToCheck', 'description'] = 'The markers to check in format of DC-like=Lgals3,Napsa;B cells=Cd79a,Ly6d; '
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/R", "Dev/jdk", "Tools/Picard", "Tools/samtools"]
+    @modules = ["Dev/R"]
   end
   def next_dataset
-    report_file = File.join(@result_dir, "#{@dataset['Name']}_SCCountQC")
+    report_file = File.join(@result_dir, "#{@dataset['Name']}_SCReport")
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@dataset['Name'],
      'Species'=>@dataset['Species'],
@@ -62,7 +68,7 @@ Quality control for singel cell alignment and counts<br/>
     end
   end
   def commands
-    run_RApp("EzAppSCCountQC")
+    run_RApp("SCReportApp")
   end
 end
 
