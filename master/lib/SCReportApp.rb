@@ -68,7 +68,7 @@ Single cell report<br/>
     end
   end
   def commands
-    run_RApp("SCReportApp")
+    run_RApp("EzAppSCReport")
   end
 end
 
