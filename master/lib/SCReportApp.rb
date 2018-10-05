@@ -43,6 +43,9 @@ Single cell report<br/>
     @params['mail'] = ""
     @modules = ["Dev/R"]
   end
+  def preprocess
+    @random_string = (1..12).map{[*('a'..'z')].sample}.join
+  end
   def next_dataset
     report_file = File.join(@result_dir, "#{@dataset['Name']}_SCReport")
     report_link = File.join(report_file, '00index.html')
