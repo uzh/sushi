@@ -37,8 +37,10 @@ Single cell report<br/>
     @params['min_counts', 'description'] = 'Minimal counts for Seurat filtering'
     @params['pcs'] = 10
     @params['pcs', 'description'] = 'The maximal dimensions to use for reduction'
+    @params['resolution'] = 0.8
+    @params['resolution', 'description'] = 'Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.'
     @params['markersToCheck'] = ''
-    @params['markersToCheck', 'description'] = 'The markers to check in format of DC-like=Lgals3,Napsa;B cells=Cd79a,Ly6d; '
+    @params['markersToCheck', 'description'] = 'The markers to check in format of DC-like=Lgals3,Napsa;B cells=Cd79a,Ly6d; . Single and double quote are not allowed.'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]
