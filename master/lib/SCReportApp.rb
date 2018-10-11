@@ -47,6 +47,8 @@ Single cell report<br/>
     @params['resolution', 'description'] = 'Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.'
     @params['markersToCheck'] = ''
     @params['markersToCheck', 'description'] = 'The markers to check in format of DC-like=Lgals3,Napsa;B cells=Cd79a,Ly6d; . Single and double quote are not allowed.'
+    @params['runPseudoTime'] = false
+    @params['runPseudoTime', 'description'] = 'Run PseudoTime for single cell data?'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]
