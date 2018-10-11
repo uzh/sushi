@@ -37,6 +37,12 @@ Single cell report<br/>
     @params['min_counts', 'description'] = 'Minimal counts for Seurat filtering'
     @params['pcs'] = 10
     @params['pcs', 'description'] = 'The maximal dimensions to use for reduction'
+    @params['x.low.cutoff'] = 0.1
+    @params['x.low.cutoff', 'description'] = 'Bottom cutoff on x-axis for identifying variable genes'
+    @params['x.high.cutoff'] = 8
+    @params['x.high.cutoff', 'description'] = 'Top cutoff on x-axis for identifying variable genes'
+    @params['y.cutoff'] = 1
+    @params['y.cutoff', 'description'] = 'Bottom cutoff on y-axis for identifying variable genes'
     @params['resolution'] = 0.8
     @params['resolution', 'description'] = 'Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.'
     @params['markersToCheck'] = ''
