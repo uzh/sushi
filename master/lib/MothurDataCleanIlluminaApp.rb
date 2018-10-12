@@ -35,13 +35,11 @@ OTU-based metagenomics analysis of Illumina data with Mothur.
 end
 def next_dataset
 @params['name'] = "MothurDataCleanIllumina"
-report_file = File.join(@result_dir, '00index_files')
 report_link = File.join(@result_dir, '00index.html')
 {'Name'=>@params['name'],
-  'CountTableIllumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
-  'PreClusteredFastaFileIllumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.pick.pick.fasta"),
-  'TaxonomyFileIllumina [File]'=>File.join(@result_dir, "Illumina.good.unique.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy"),
-  'Report [File]'=>report_file,
+  'CountTableIllumina [File]'=>File.join(@result_dir, "Illumina.unique.good.good.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
+  'PreClusteredFastaFileIllumina [File]'=>File.join(@result_dir, "Illumina.unique.good.good.good.filter.unique.precluster.pick.pick.fast"),
+  'TaxonomyFileIllumina [File]'=>File.join(@result_dir, "Illumina.unique.good.good.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy"),
   'Static Report [Link,File]'=>report_link,
   }
 
