@@ -159,6 +159,12 @@ class RunApplicationController < ApplicationController
 			#init_factor('Condition')
 			init_factor
 		end
+
+    @process_mode = @sushi_app.params['process_mode']
+    @samples = @data_set.samples.map{|sample|
+      name = sample.to_hash["Name"]
+      [name, name]
+    }
   end
   def confirmation
     @params = params
@@ -176,7 +182,7 @@ class RunApplicationController < ApplicationController
       end
     end
     params[:parameters].each do |key, value|
-      @sushi_app.params[key] = if key == 'node' or @sushi_app.params[key, "multi_selection"]
+      @sushi_app.params[key] = if key == 'node' or key == 'samples' or @sushi_app.params[key, "multi_selection"]
                                  if value.instance_of?(Array)
                                    value.map{|v| v.chomp}.join(',')
                                  else
