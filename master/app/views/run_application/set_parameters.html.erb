@@ -64,10 +64,12 @@
           <% when 'node' %>
             <% if session['employee'] and !SushiFabric::Application.config.course_mode %>
               <%= select_tag "parameters[#{key}]", options_for_select(@nodes), :multiple => true, :size => 5 %><br /> 
-          <% else %>
-            <%= @nodes.values.join(',') %>
-            <%= hidden_field :parameters, :node, :value => @nodes.values.join(',') %>
-          <% end %>
+            <% else %>
+              <%= @nodes.values.join(',') %>
+              <%= hidden_field :parameters, :node, :value => @nodes.values.join(',') %>
+            <% end %>
+          <% when 'samples' %>
+            <%= select_tag "parameters[#{key}]", options_for_select(@samples, {:selected => @samples.map{|sample| sample.last}}), :multiple => true, :size => 5 %><br />
           <% else %>
             <% if @factors and key=='grouping' %>
               <%= select :parameters, :grouping, options_for_select(@factor_colums.keys.map{|factor| [factor.split.first, factor.split.first]}, params[:grouping]),  :prompt => "please select" %>
