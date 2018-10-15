@@ -37,6 +37,8 @@ Single cell report<br/>
     @params['min_counts', 'description'] = 'Minimal counts for Seurat filtering'
     @params['pcs'] = 10
     @params['pcs', 'description'] = 'The maximal dimensions to use for reduction'
+    @params['pcGenes'] = ''
+    @params['pcGenes', 'description'] = 'The genes used in supvervised clustering'
     @params['x.low.cutoff'] = 0.1
     @params['x.low.cutoff', 'description'] = 'Bottom cutoff on x-axis for identifying variable genes'
     @params['x.high.cutoff'] = 8
