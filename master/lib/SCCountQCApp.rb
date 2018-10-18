@@ -34,9 +34,9 @@ Quality control for singel cell alignment and counts<br/>
     @params['minReadsPerGene'] = 5
     @params['minReadsPerGene', 'description'] = 'Minimal number of reads per gene to be expressed'
     @params['min_genes'] = 500
-    @params['min_genes', 'description'] = 'Minimal number of genes for Seurat filtering'
+    @params['min_genes', 'description'] = 'Minimal number of genes per cell for Seurat filtering'
     @params['min_counts'] = 50000
-    @params['min_counts', 'description'] = 'Minimal counts for Seurat filtering'
+    @params['min_counts', 'description'] = 'Minimal counts per cell on smart-Seq2 for Seurat filtering'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R", "Dev/jdk", "Tools/Picard", "Tools/samtools"]
