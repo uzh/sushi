@@ -29,6 +29,10 @@ Quality control for singel cell alignment and counts<br/>
     @params['transcriptTypes'] = ''
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 0
+    @params['minReadsPerCell'] = 10000
+    @params['minReadsPerCell', 'description'] = 'Minimal number of reads per cell for Scater filtering'
+    @params['minReadsPerGene'] = 5
+    @params['minReadsPerGene', 'description'] = 'Minimal number of reads per gene to be expressed'
     @params['min_genes'] = 500
     @params['min_genes', 'description'] = 'Minimal number of genes for Seurat filtering'
     @params['min_counts'] = 50000
