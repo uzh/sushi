@@ -38,7 +38,7 @@ def next_dataset
 report_link = File.join(@result_dir, '00index.html')
 {'Name'=>@params['name'],
   'CountTableIllumina [File]'=>File.join(@result_dir, "Illumina.unique.good.good.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
-  'PreClusteredFastaFileIllumina [File]'=>File.join(@result_dir, "Illumina.unique.good.good.good.filter.unique.precluster.pick.pick.fast"),
+  'PreClusteredFastaFileIllumina [File]'=>File.join(@result_dir, "Illumina.unique.good.good.good.filter.unique.precluster.pick.pick.fasta"),
   'TaxonomyFileIllumina [File]'=>File.join(@result_dir, "Illumina.unique.good.good.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy"),
   'Static Report [Link,File]'=>report_link,
   }
