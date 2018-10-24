@@ -36,11 +36,14 @@ end
 def next_dataset
 @params['name'] = "MothurDataCleanIllumina"
 report_link = File.join(@result_dir, '00index.html')
+report_file = File.join(@result_dir, '00index_files')
 {'Name'=>@params['name'],
   'CountTableIllumina [File]'=>File.join(@result_dir, "Illumina.unique.good.good.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
   'PreClusteredFastaFileIllumina [File]'=>File.join(@result_dir, "Illumina.unique.good.good.good.filter.unique.precluster.pick.pick.fasta"),
   'TaxonomyFileIllumina [File]'=>File.join(@result_dir, "Illumina.unique.good.good.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy"),
   'Static Report [Link,File]'=>report_link,
+  'Report [File]'=>report_file,
+  
   }
 
 end
