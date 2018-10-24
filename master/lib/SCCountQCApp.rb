@@ -47,6 +47,7 @@ Quality control for singel cell alignment and counts<br/>
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
+     'seuratOnline [Link]'=>"#{SHINY_SEURAT_ONLINE}?data=#{report_file}/sce.rds",
      'Report [File]'=>report_file,
     }
   end
