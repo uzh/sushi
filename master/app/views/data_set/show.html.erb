@@ -239,6 +239,15 @@ $(document).ready(function(){
     Samples: <b><%= @data_set.samples.length %></b>
   </li>
   <li>
+    Who: <b>
+            <% if user = @data_set.user %>
+              <%= user.login %>
+            <% else %>
+              sushi_lover
+            <% end %>
+        </b>
+  </li>
+  <li>
     Created: <b><%= @data_set.created_at.strftime("%Y-%b-%d") %></b>
   </li>
   <% if @data_set.bfabric_id %>
