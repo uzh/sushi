@@ -29,8 +29,6 @@ Single cell report<br/>
     @params['transcriptTypes'] = ''
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 0
-    @params['minReadsPerGene'] = 3
-    @params['minReadsPerGene', 'description'] = 'Minimal number of reads per gene to be expressed'
     @params['minGenesPerCell'] = 500
     @params['minGenesPerCell', 'description'] = 'Minimal number of genes per cell for Seurat filtering'
     @params['maxGenesPerCell'] = 3000
