@@ -45,7 +45,7 @@ Single cell report<br/>
     @params['x.high.cutoff', 'description'] = 'Top cutoff on x-axis for identifying variable genes'
     @params['y.cutoff'] = 1
     @params['y.cutoff', 'description'] = 'Bottom cutoff on y-axis for identifying variable genes'
-    @params['vars.to.regress'] = ['nUMI', 'perc_mito', 'nGenes']
+    @params['vars.to.regress'] = ['nUMI', 'perc_mito', 'nGene']
     @params['vars.to.regress', 'multi_selection'] = true
     @params['vars.to.regress', 'selected'] = ['nUMI', 'perc_mito']
     @params['resolution'] = 0.8
