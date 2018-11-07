@@ -47,6 +47,8 @@ Single cell report<br/>
     @params['y.cutoff', 'description'] = 'Bottom cutoff on y-axis for identifying variable genes'
     @params['resolution'] = 0.8
     @params['resolution', 'description'] = 'Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.'
+    @params['markersToShow'] = 10
+    @params['markersToShow', 'description'] = 'The markers to show in the heatmap of cluster marker genes.'
     @params['markersToCheck'] = ''
     @params['markersToCheck', 'description'] = 'The markers to check in format of DC-like=Lgals3,Napsa;B cells=Cd79a,Ly6d; . Single and double quote are not allowed.'
     @params['runPseudoTime'] = false
