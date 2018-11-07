@@ -45,6 +45,9 @@ Single cell report<br/>
     @params['x.high.cutoff', 'description'] = 'Top cutoff on x-axis for identifying variable genes'
     @params['y.cutoff'] = 1
     @params['y.cutoff', 'description'] = 'Bottom cutoff on y-axis for identifying variable genes'
+    @params['vars.to.regress'] = ['nUMI', 'perc_mito', 'nGenes']
+    @params['vars.to.regress', 'multi_selection'] = true
+    @params['vars.to.regress', 'selected'] = ['nUMI', 'perc_mito']
     @params['resolution'] = 0.8
     @params['resolution', 'description'] = 'Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.'
     @params['markersToShow'] = 10
