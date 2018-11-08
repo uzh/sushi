@@ -28,9 +28,9 @@ Assuming that all other columns than file path are same between datasets.<br />
     }
     @dataset.keys.select{|colname| colname =~ /RawDataDir\d*/ or colname =~ /Read\d+/}.each do |colname|
       new_colname = if colname == "RawDataDir"
-                      "RawDataDir1 [File]"
+                      "RawDataDir"
                     else
-                      "#{colname} [File]"
+                      "#{colname}"
                     end
       next_dataset_base[new_colname] = @dataset[colname]
     end
@@ -56,17 +56,10 @@ Assuming that all other columns than file path are same between datasets.<br />
     # here
     # merge dataset_hash2 with @dataset_hash
     dataset_hash1 = @dataset_hash.clone
-    final_read_number = 1
-    dataset_hash1.first.keys.each do |colname|
-      if colname =~ /Read(\d+)\s+\[File\]/
-        final_read_number = $1.to_i
-      end
-    end
-    final_read_number += 1
     dataset_hash1.each_with_index do |sample, i|
       name = sample['Name']
-      @dataset_hash[i]["RawDataDir#{final_read_number} [File]"] = dataset_hash2[name]['RawDataDir [File]']
-      @dataset_hash[i]["Read#{final_read_number} [File]"] = dataset_hash2[name]['Read1 [File]']
+      @dataset_hash[i]["RawDataDir [File]"] += ",#{dataset_hash2[name]['RawDataDir [File]']}"
+      @dataset_hash[i]["Read1 [File]"] += ",#{dataset_hash2[name]['Read1 [File]']}"
     end
     @dataset_hash.sort_by!{|row| row['Name']}
   end
