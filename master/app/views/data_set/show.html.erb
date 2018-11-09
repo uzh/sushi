@@ -197,7 +197,7 @@ $(document).ready(function(){
       <% @dataset_path.each do |dataset_path| %>
         &nbsp;&nbsp; <%= link_to File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path.to_s), File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path.to_s), target: "_blank" %><br>
       <% end %>
-    <% else %>
+    <% elsif @dataset_path.length == 1 %>
       <%= link_to File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first.to_s), File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first.to_s), target: "_blank" %>
     <% end %>
   <% else %>
@@ -212,7 +212,7 @@ $(document).ready(function(){
       <% @dataset_path.each do |dataset_path| %>
         &nbsp;&nbsp; <%= text_field :wget, :command, :value => "wget --user #{current_user.login} -e robots=off --ask-password -r --no-parent -nH --cut-dirs=2 --reject='index.html*' #{File.join("https://fgcz-gstore.uzh.ch/projects/", dataset_path.to_s)}", :size => 100 %><br>
       <% end %>
-    <% else %>
+    <% elsif @dataset_path.length == 1 %>
       <%= text_field :wget, :command, :value => "wget --user #{current_user.login} -e robots=off --ask-password -r --no-parent -nH --cut-dirs=2 --reject='index.html*' #{File.join("https://fgcz-gstore.uzh.ch/projects/", @dataset_path.first.to_s)}", :size => 85 %>
     <% end %>
   <% else %>
@@ -276,8 +276,8 @@ $(document).ready(function(){
   <% @dataset_path.each do |dataset_path| %>
     - <%= link_to dataset_path, File.join("/projects/", dataset_path.to_s) %>
   <% end %>
-<% else %>
-- <%= link_to "data folder", File.join("/projects/", @dataset_path.first.to_s) %>
+<% elsif @dataset_path.length == 1 %>
+  - <%= link_to "data folder", File.join("/projects/", @dataset_path.first.to_s) %>
 <% end %>
 <div id="hide_show">
 <% if @data_set %>
