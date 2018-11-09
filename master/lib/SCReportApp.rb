@@ -10,6 +10,7 @@ class SCReportApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'SCReport'
+    @params['process_mode'] = 'DATASET'
     @analysis_category = 'SingleCell'
     @description =<<-EOS
 Single cell report<br/>
@@ -18,7 +19,7 @@ Single cell report<br/>
     @required_params = ['name']
     # optional params
     @params['cores'] = '4'
-    @params['ram'] = '8'
+    @params['ram'] = '15'
     @params['scratch'] = '10'
     @params['name'] = 'SCReport'
     @params['refBuild'] = ref_selector
