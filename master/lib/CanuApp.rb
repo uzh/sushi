@@ -22,6 +22,8 @@ EOS
     @params['cores'] = '8'
     @params['ram'] = '50'
     @params['scratch'] = '400'
+    @params['inputType'] = ["pacbioSmrtCell","fastqFile"]
+    @params['inputType', 'description'] = 'direct output of a pacbio run or pre-processed (e.g., demultiplexed) fastq file?'
     @params['canuReadOpt'] = '-pacbio-raw'
     @params['canuReadOpt', 'description'] = 'input read types: -pacbio-raw, -pacbio-corrected, -nanopore-raw, -nanopore-corrected. Default is pacbio raw data'
     @params['canuGenomeSize'] = '5000'
