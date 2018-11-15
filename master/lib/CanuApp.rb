@@ -16,7 +16,7 @@ Canu long read genome assembler
 <a href='http://canu.readthedocs.io/en/latest/quick-start.html'>http://canu.readthedocs.io/en/latest/quick-start.html</a>
 EOS
 
-    @required_columns = ['Name','Reads']
+    @required_columns = ['Name','Read1']
     @required_params = ['canuReadOpt', 'canuGenomeSize']
     # optional params
     @params['cores'] = '8'
