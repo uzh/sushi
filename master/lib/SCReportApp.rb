@@ -36,6 +36,8 @@ Single cell report<br/>
     @params['minGenesPerCell', 'description'] = 'Minimal number of genes per cell for Seurat filtering'
     @params['maxGenesPerCell'] = 3000
     @params['maxGenesPerCell', 'description'] = 'Maximal number of genes per cell for Seurat filtering'
+    @params['maxMitoFraction'] = 0.25
+    @params['maxMitoFraction', 'description'] = 'Maximal fraction of mitochondrial reads per cell for Seurat filtering'
     @params['minReadsPerCell'] = 50000
     @params['minReadsPerCell', 'description'] = 'Minimal reads per cell of smart-Seq2 for Seurat filtering'
     @params['pcs'] = 10
