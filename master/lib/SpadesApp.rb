@@ -23,8 +23,10 @@ EOS
     @params['ram'] = '50'
     @params['scratch'] = '100'
     @params['paired'] = true
-    @params['spadesBasicOpt'] = ''
-    @params['spadesBasicOpt', 'description'] = 'SPAdes basic options: --sc --meta, --rna, --plasmid, Default is empty for genome assembly without MDA'
+    @params['genomeType'] = ["isolate","metagenome"]
+    @params['genomeType', 'description'] = 'are you assemblying an isolate or a metagenome?'
+    @params['otherBasicOpt'] = ''
+    @params['otherBasicOpt', 'description'] = 'SPAdes basic options (apart from --meta): --sc, --rna, --plasmid, Default is empty for genome assembly without MDA'
     @params['spadesPipeOpt'] = '--careful'
     @params['spadesPipeOpt', 'description'] = 'SPAdes pipeline options: --only-assembler, --careful'
     @params['cmdOptions'] = ''
