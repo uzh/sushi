@@ -61,6 +61,8 @@ Single cell report<br/>
     @params['markersToCheck', 'description'] = 'The markers to check in format of DC-like=Lgals3,Napsa;B cells=Cd79a,Ly6d; . Single and double quote are not allowed.'
     @params['runPseudoTime'] = false
     @params['runPseudoTime', 'description'] = 'Run PseudoTime for single cell data?'
+    @params['all2allMarkers'] = false
+    @params['all2allMarkers', 'description'] = 'Run all against all cluster comparisons?'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]
