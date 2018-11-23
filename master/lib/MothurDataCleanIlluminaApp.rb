@@ -9,13 +9,13 @@ include GlobalVariables
 class MothurDataCleanIlluminaApp < SushiFabric::SushiApp
 def initialize
 super
+@params['process_mode'] = 'DATASET'
 @name = 'MothurDataCleanIllumina'
 @analysis_category = 'Metagenomics'
 @description =<<-EOS
 OTU-based metagenomics analysis of Illumina data with Mothur.
 <a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki/MiSeq_SOP</a>
   EOS
-@params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'Read1']
 @required_params = ['cutOff', 'diffs_Illumina']
 @params['cores'] = '1'
@@ -34,16 +34,14 @@ OTU-based metagenomics analysis of Illumina data with Mothur.
 @modules = ["Dev/R"]
 end
 def next_dataset
-@params['name'] = "MothurDataCleanIllumina"
 report_link = File.join(@result_dir, '00index.html')
 report_file = File.join(@result_dir, '00index_files')
-{'Name'=>@params['name'],
+{'Name'=>@dataset['Name'],
   'CountTableIllumina [File]'=>File.join(@result_dir, "Illumina.unique.good.good.good.filter.unique.precluster.denovo.vsearch.pick.pick.count_table"),
   'PreClusteredFastaFileIllumina [File]'=>File.join(@result_dir, "Illumina.unique.good.good.good.filter.unique.precluster.pick.pick.fasta"),
   'TaxonomyFileIllumina [File]'=>File.join(@result_dir, "Illumina.unique.good.good.good.filter.unique.precluster.pick.pds.wang.pick.taxonomy"),
   'Static Report [Link,File]'=>report_link,
   'Report [File]'=>report_file,
-  
   }
 
 end
