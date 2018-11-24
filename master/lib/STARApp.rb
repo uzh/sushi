@@ -39,6 +39,7 @@ EOS
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
     @params['minTailQuality'] = 0
+    @params['minTrailingQuality'] = 10
     @params['minAvgQuality'] = 10
     @params['minReadLength'] = 20
     @params['specialOptions'] = ''
