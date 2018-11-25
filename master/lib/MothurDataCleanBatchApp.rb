@@ -57,7 +57,7 @@ def next_dataset
      {'Name'=>@dataset['Name'],
      'ReadsCountTable [File]'=>File.join(@result_dir, "#{@dataset['Name']}.reads.count.txt"),
      'ReadsTaxonomyFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.reads.to.tax.txt"),
-     'PreClusteredFastaFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.preclustered.txt"),
+     'PreClusteredFastaFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.preclustered.fasta"),
      'OTUsCountTable [File]'=>File.join(@result_dir, "#{@dataset['Name']}.OTUs.count.txt"),
      'OTUsToTaxonomyFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.OTUs.to.tax.txt"),
      'ErrorFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.errorcount.txt"),
