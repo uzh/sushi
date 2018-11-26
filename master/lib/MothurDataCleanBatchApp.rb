@@ -61,7 +61,7 @@ def next_dataset
      'OTUsCountTable [File]'=>File.join(@result_dir, "#{@dataset['Name']}.OTUs.count.txt"),
      'OTUsToTaxonomyFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.OTUs.to.tax.txt"),
       if @params['mockSample'] 
-     'ErrorFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.errorcount.txt"),
+        'ErrorFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.errorcount.txt"),
       end
      'stepConvergence [File]'=>File.join(@result_dir, "#{@dataset['Name']}.step.converge.txt"),
      }.merge(extract_columns(@inherit_tags))
