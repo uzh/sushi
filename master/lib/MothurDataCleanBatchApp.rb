@@ -33,7 +33,7 @@ OTU-based metagenomics analysis with Mothur. Please make sure that the input fil
 @params['referenceFasta'] = '/srv/GT/analysis/grusso/courses/metagenomicsCourse/references/bioPoolReference.16S.fasta'
 @params['referenceFasta', 'description'] = 'Full path to fasta file for the mock community (if available).'
 @params['mail'] = ""
-@inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
+@inherit_tags = ["B-Fabric", "Characteristic", "Mock"]
 @modules = ["Dev/R"]
 end
   def preprocess
@@ -64,7 +64,7 @@ def next_dataset
      'ErrorFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.errorcount.txt"),
       end
      'stepConvergence [File]'=>File.join(@result_dir, "#{@dataset['Name']}.step.converge.txt"),
-     }
+     }.merge(extract_columns(@inherit_tags))
 end
 def commands
 run_RApp("EzAppMothurDataCleanBatch")
