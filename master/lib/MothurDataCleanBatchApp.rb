@@ -54,17 +54,17 @@ end
   end
   
 def next_dataset
-     {'Name'=>@dataset['Name'],
-     'ReadsCountTable [File]'=>File.join(@result_dir, "#{@dataset['Name']}.reads.count.txt"),
-     'ReadsTaxonomyFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.reads.to.tax.txt"),
-     'PreClusteredFastaFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.preclustered.fasta"),
-     'OTUsCountTable [File]'=>File.join(@result_dir, "#{@dataset['Name']}.OTUs.count.txt"),
-     'OTUsToTaxonomyFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.OTUs.to.tax.txt"),
-      if @params['mockSample'] 
-        'ErrorFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.errorcount.txt"),
+     nds = {'Name'=>@dataset['Name']}
+     nds['ReadsCountTable [File]'] = File.join(@result_dir, "#{@dataset['Name']}.reads.count.txt")
+     nds['ReadsTaxonomyFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.reads.to.tax.txt")
+     nds['PreClusteredFastaFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.preclustered.fasta")
+     nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@dataset['Name']}.OTUs.count.txt")
+     nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.OTUs.to.tax.txt")
+      if @params['mockSample']
+        nds['ErrorFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.errorcount.txt")
       end
-     'stepConvergence [File]'=>File.join(@result_dir, "#{@dataset['Name']}.step.converge.txt"),
-     }.merge(extract_columns(@inherit_tags))
+     nds['stepConvergence [File]'] = File.join(@result_dir, "#{@dataset['Name']}.step.converge.txt")
+     nds = nds.merge(extract_columns(@inherit_tags))
 end
 def commands
 run_RApp("EzAppMothurDataCleanBatch")
