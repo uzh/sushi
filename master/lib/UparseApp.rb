@@ -17,7 +17,7 @@ Please make sure that the input files are from the same technology.
 <a href='https://drive5.com/uparse/'>https://drive5.com/uparse/</a>
   EOS
 @required_columns = ['Name', 'Read1']
-@required_params = ['cutOffTaxonomy']
+@required_params = ['fastqErrorMax']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
@@ -37,7 +37,7 @@ end
   end
 def next_dataset
      {'Name'=>@dataset['Name'],
-     'OTUsToTaxonomyFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}..OTUs.to.tax.txt"),
+     'OTUsToTaxonomyFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.OTUs.to.tax.txt"),
      'OTUsCountTable [File]'=>File.join(@result_dir, "#{@dataset['Name']}.OTUs.count.txt"),
      }
 end
