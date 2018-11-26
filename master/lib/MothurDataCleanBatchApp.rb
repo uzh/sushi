@@ -60,7 +60,9 @@ def next_dataset
      'PreClusteredFastaFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.preclustered.fasta"),
      'OTUsCountTable [File]'=>File.join(@result_dir, "#{@dataset['Name']}.OTUs.count.txt"),
      'OTUsToTaxonomyFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.OTUs.to.tax.txt"),
+      if @params['mockSample'] 
      'ErrorFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.errorcount.txt"),
+      end
      'stepConvergence [File]'=>File.join(@result_dir, "#{@dataset['Name']}.step.converge.txt"),
      }
 end
