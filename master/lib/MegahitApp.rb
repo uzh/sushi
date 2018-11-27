@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20180905-113400'
+Version = '20181127-155223'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -42,7 +42,7 @@ end
   end
 def next_dataset
      {'Name'=>@dataset['Name'],
-     'contigFile [File]'] => File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),
+     'contigFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),
      'prodigalPredictionFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.prodigalAnnotation.faa"),
      'diamondAnnotationFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.annotatedProteins.tsv")
 }
