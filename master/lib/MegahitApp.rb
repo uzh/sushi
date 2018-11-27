@@ -43,7 +43,7 @@ end
 def next_dataset
      {'Name'=>@dataset['Name'],
      'contigFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),
-     'prodigalPredictionFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.prodigalAnnotation.faa"),
+     'prodigalPredictionFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.prodigalAnnotation.gff"),
      'diamondAnnotationFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.annotatedProteins.tsv")
 }
 end
