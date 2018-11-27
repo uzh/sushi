@@ -48,7 +48,7 @@ def next_dataset
 }
 end
 def commands
-run_RApp("EzAppUparse")
+run_RApp("EzAppMegahit")
 end
 end
 
