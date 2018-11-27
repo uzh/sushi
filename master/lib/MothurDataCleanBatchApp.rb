@@ -55,15 +55,18 @@ end
   
 def next_dataset
      nds = {'Name'=>@dataset['Name']}
-     nds['ReadsCountTable [File]'] = File.join(@result_dir, "#{@dataset['Name']}.reads.count.txt")
-     nds['ReadsTaxonomyFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.reads.to.tax.txt")
-     nds['PreClusteredFastaFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.preclustered.fasta")
-     nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@dataset['Name']}.OTUs.count.txt")
-     nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.OTUs.to.tax.txt")
+     nds['RawDataSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.rawSumm.txt")
+     nds['DeduppedSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.deduppedSumm.txt")
+     nds['LenAndHomopSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.lenHomopSumm.txt")
+     nds['MapFiltSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.mapFilt.txt")
+     nds['ChimeraPlot [File]'] = File.join(@result_dir, "#{@dataset['Name']}.chimPlot.txt")
+     nds['PreClusteredAndChimeraSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.preclChimSumm.txt")
       if @params['mockSample']
-        nds['ErrorFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.errorcount.txt")
+        nds['ErrorFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.errorCount.txt")
       end
-     nds['stepConvergence [File]'] = File.join(@result_dir, "#{@dataset['Name']}.step.converge.txt")
+     nds['stepConvergence [File]'] = File.join(@result_dir, "#{@dataset['Name']}.stepConv.txt")
+     nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.OTUsToTax.txt")
+     nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@dataset['Name']}.step.OTUsToCount.txt")
      nds = nds.merge(extract_columns(@inherit_tags))
 end
 def commands
