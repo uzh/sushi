@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20171109-095604'
+Version = '20181127-160812'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -16,15 +16,16 @@ Report of the data analysis performed with Mothur.
 EOS
 @params['process_mode'] = 'DATASET'
 @required_columns = ['Name','RawDataSummary','DeduppedSummary','LenAndHomopSummary','MapFiltSummary','ChimeraPlot','PreClusteredAndChimeraSummary','stepConvergence']
+@required_params = ['name']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
 @params['mail'] = ""
+@params['name'] = "MothurDataAnalysisReport"
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
 end
 def next_dataset
-@params['name'] = "MothurDataAnalysisReport"
 report_file = File.join(@result_dir, '00index_files')
 report_link = File.join(@result_dir, '00index.html')
 {'Name'=>@dataset['Name'],
