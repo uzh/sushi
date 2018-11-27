@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20181127-160812'
+Version = '20181127-162121'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -28,11 +28,10 @@ end
 def next_dataset
 report_file = File.join(@result_dir, '00index_files')
 report_link = File.join(@result_dir, '00index.html')
-{'Name'=>@dataset['Name'],
+{'Name'=>@params['name'],
   'Report [File]'=>report_file,
-  'Static Report [Link,File]'=>report_link,
+  'Static Report [Link,File]'=>report_link
 }
-
 end
 def commands
 run_RApp("EzAppMothurDataAnalysisReport")
