@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20181127-162121'
+Version = '20181127-163024'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -23,7 +23,7 @@ EOS
 @params['mail'] = ""
 @params['name'] = "MothurDataAnalysisReport"
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
-@modules = ["Dev/R"]
+@modules = ["Dev/R/3.5.1"]
 end
 def next_dataset
 report_file = File.join(@result_dir, '00index_files')
