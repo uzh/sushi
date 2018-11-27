@@ -27,7 +27,7 @@ def next_dataset
 @params['name'] = "MothurDataAnalysisReport"
 report_file = File.join(@result_dir, '00index_files')
 report_link = File.join(@result_dir, '00index.html')
-{'Name'=>@params['Name'],
+{'Name'=>@dataset['Name'],
   'Report [File]'=>report_file,
   'Static Report [Link,File]'=>report_link,
 }
