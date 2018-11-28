@@ -64,7 +64,7 @@ def next_dataset
       if @params['mockSample']
         nds['ErrorFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.errorCount.txt")
       end
-     nds['stepConvergenceSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.stepConv.txt")
+     nds['stepConvergence [File]'] = File.join(@result_dir, "#{@dataset['Name']}.stepConv.txt")
      nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.OTUsToTax.txt")
      nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@dataset['Name']}.step.OTUsToCount.txt")
      nds = nds.merge(extract_columns(@inherit_tags))
