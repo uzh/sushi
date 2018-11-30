@@ -16,7 +16,7 @@ OTU-based metagenomics analysis with Mothur. Please make sure that the input fil
 <a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki</a>
   EOS
 @required_columns = ['Name', 'Read1']
-@required_params = ['cutOffTaxonomy', 'diffs','cutOffCluster']
+@required_params = ['cutOffTaxonomy', 'diffs','cutOffCluster', "technology"]
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
@@ -30,6 +30,8 @@ OTU-based metagenomics analysis with Mothur. Please make sure that the input fil
 @params['maxLen', 'description'] = 'Sequences longer than this are removed.'
 @params['cutOffCluster'] = '0.03'
 @params['cutOffCluster', 'description'] = 'Cut-off similarity to cluster OTUs'
+@params['technology'] = ['illumina',"pacbio","ONT"]
+@params['technology', 'description'] = 'Sequencing technology used.'
 @params['referenceFasta'] = '/srv/GT/analysis/grusso/courses/metagenomicsCourse/references/bioPoolReference.16S.fasta'
 @params['referenceFasta', 'description'] = 'Full path to fasta file for the mock community (if available).'
 @params['mail'] = ""
@@ -67,6 +69,7 @@ def next_dataset
      nds['stepConvergenceSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.stepConv.txt")
      nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.OTUsToTax.txt")
      nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@dataset['Name']}.step.OTUsToCount.txt")
+     nds['Technology [Factor]'] = @params['technology']
      nds = nds.merge(extract_columns(@inherit_tags))
 end
 def commands
