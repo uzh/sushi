@@ -15,7 +15,7 @@ super
 Report of the data analysis performed with Mothur.
 EOS
 @params['process_mode'] = 'DATASET'
-@required_columns = ['Name','RawDataSummary','DeduppedSummary','LenAndHomopSummary','MapFiltSummary','ChimeraPlot','PreClusteredAndChimeraSummary','stepConvergence']
+@required_columns = ['Name','RawDataSummary','DeduppedSummary','LenAndHomopSummary','MapFiltSummary','ChimeraPlot','PreClusteredAndChimeraSummary','stepConvergenceSummary']
 @required_params = ['name']
 @params['cores'] = '1'
 @params['ram'] = '8'
