@@ -44,7 +44,9 @@ def next_dataset
      {'Name'=>@dataset['Name'],
      'contigFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),
      'prodigalPredictionFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.prodigalAnnotation.gff"),
-     'diamondAnnotationFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.annotatedProteins.tsv")
+     'interproscanFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.annotatedProteins.gff"),
+     'krakenLabelsFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.kraken.labels")
+     
 }
 end
 def commands

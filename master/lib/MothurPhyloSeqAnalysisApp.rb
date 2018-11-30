@@ -16,15 +16,13 @@ super
 <a href='http://joey711.github.io/phyloseq/index.html'>http://joey711.github.io/phyloseq/index.html</a>
   EOS
 @params['process_mode'] = 'DATASET'
-@required_columns = ['Name', 'OTU_pacbio','Taxonomy_pacbio','OTU_Illumina','Taxonomy_Illumina']
-@required_params = ['pacbioRepresentativeOTUs', 'illuminaRepresentativeOTUs']
+@required_columns = ['Name', 'OTUsToTaxonomyFile', 'OTUsCountTable']
+@required_params = ['representativeOTUs']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
-@params['pacbioRepresentativeOTUs'] = ''
-@params['pacbioRepresentativeOTUs', 'description'] = 'Number of OTUs representing the Pacbio samples.'
-@params['illuminaRepresentativeOTUs'] = ''
-@params['illuminaRepresentativeOTUs', 'description'] = 'Number of OTUs representing the Illumina samples.'
+@params['representativeOTUs'] = ''
+@params['representativeOTUs', 'description'] = 'Number of OTUs representing the sample.'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
@@ -40,7 +38,7 @@ report_link = File.join(@result_dir, '00index.html')
 
 end
 def commands
-run_RApp("EzAppMothurPhyloSeqAnalysis")
+run_RApp("EzAppGenericPhyloSeqAnalysis")
 end
 end
 
