@@ -6,25 +6,25 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class MegahitApp < SushiFabric::SushiApp
+class MetaspadesApp < SushiFabric::SushiApp
 def initialize
 super
-@name = 'Megahit'
+@name = 'Metaspades'
 @analysis_category = 'Metagenomics'
 @description =<<-EOS
 Denovo metagenomics assembly with Metaspades, gene prediction  with Prodigal and annotation with InterProScan (soon also Diamond). 
-<a href='https://drive5.com/uparse/'>https://drive5.com/uparse/</a>
+<a href='http://cab.spbu.ru/software/spades/'>http://cab.spbu.ru/software/spades/</a>
 <a href='https://github.com/hyattpd/prodigal/wiki'>https://github.com/hyattpd/prodigal/wiki</a>
 <a href='https://github.com/bbuchfink/diamond'>https://github.com/bbuchfink/diamond</a>
 <a href='https://github.com/ebi-pf-team/interproscan/wiki/InterProScan5RC4'>https://github.com/ebi-pf-team/interproscan/wiki/InterProScan5RC4</a>
   EOS
 @required_columns = ['Name', 'Read1']
-@required_params = ['megahitKmerList','diamondEvalue','diamondMaxSeqs']
+@required_params = ['metaspadesKmerList','diamondEvalue','diamondMaxSeqs']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
-@params['megahitKmerList'] = '69,79,89'
-@params['megahitKmerList', 'description'] = 'Comma-separated list of k-mer for the assembly.'
+@params['metaspadesKmerList'] = '69,79,89'
+@params['metaspadesKmerList', 'description'] = 'Comma-separated list of k-mer for the assembly.'
 @params['diamondEvalue'] = '0.05'
 @params['diamondEvalue', 'description'] = 'Blast e-value cut-off.'
 @params['diamondMaxSeqs'] = '30'
@@ -47,11 +47,10 @@ def next_dataset
      'prodigalPredictionFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.prodigalAnnotation.gff"),
      'interproscanFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.annotatedProteins.gff"),
      'krakenLabelsFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.kraken.labels")
-     
 }
 end
 def commands
-run_RApp("EzAppMegahit")
+run_RApp("EzAppMetaspades")
 end
 end
 
