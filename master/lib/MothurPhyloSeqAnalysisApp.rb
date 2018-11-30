@@ -16,7 +16,7 @@ super
 <a href='http://joey711.github.io/phyloseq/index.html'>http://joey711.github.io/phyloseq/index.html</a>
   EOS
 @params['process_mode'] = 'DATASET'
-@required_columns = ['Name', 'OTUsToTaxonomyFile', 'OTUsCountTable']
+@required_columns = ['Name', 'OTUsToTaxonomyFile', 'OTUsCountTable', 'Group']
 @required_params = ['representativeOTUs']
 @params['cores'] = '1'
 @params['ram'] = '8'
