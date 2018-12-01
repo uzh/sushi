@@ -71,7 +71,7 @@ def next_dataset
      nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@dataset['Name']}.step.OTUsToCount.txt")
      nds['Technology [Factor]'] = @params['technology']
     pds = @dataset.clone
-    nds.merge!(pds['Group'])
+    nds.merge!(@pds['Group'])
     nds
 end
 def commands
