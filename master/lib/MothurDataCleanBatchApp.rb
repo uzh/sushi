@@ -70,7 +70,7 @@ def next_dataset
      nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.OTUsToTax.txt")
      nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@dataset['Name']}.step.OTUsToCount.txt")
      nds['Technology [Factor]'] = @params['technology']
-     nds['Group [Factor]'] = @dataset['Group']
+     nds['Group [Factor]'] = @dataset['Group [Factor]']
 end
 def commands
 run_RApp("EzAppMothurDataCleanBatch")
