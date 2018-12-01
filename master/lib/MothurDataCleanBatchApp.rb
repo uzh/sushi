@@ -56,22 +56,19 @@ end
   end
   
 def next_dataset
-     nds = {'Name'=>@dataset['Name']}
-     nds['RawDataSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.rawSumm.txt")
-     nds['DeduppedSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.deduppedSumm.txt")
-     nds['LenAndHomopSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.lenHomopSumm.txt")
-     nds['MapFiltSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.mapFilt.txt")
-     nds['ChimeraPlot [File]'] = File.join(@result_dir, "#{@dataset['Name']}.chimPlot.txt")
-     nds['PreClusteredAndChimeraSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.preclChimSumm.txt")
-      if @params['mockSample']
-        nds['ErrorFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.errorCount.txt")
-      end
-     nds['stepConvergenceSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.stepConv.txt")
-     nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.OTUsToTax.txt")
-     nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@dataset['Name']}.step.OTUsToCount.txt")
-     nds['Technology [Factor]'] = @params['technology']
-     nds['Group [Factor]'] = @dataset['Group [Factor]']
-end
+     {'Name'=>@dataset['Name'],
+     'RawDataSummary [File]' => File.join(@result_dir, "#{@dataset['Name']}.rawSumm.txt"),
+     'DeduppedSummary [File]'=> File.join(@result_dir, "#{@dataset['Name']}.deduppedSumm.txt"),
+     'LenAndHomopSummary [File]' => File.join(@result_dir, "#{@dataset['Name']}.lenHomopSumm.txt"),
+     'MapFiltSummary [File]' => File.join(@result_dir, "#{@dataset['Name']}.mapFilt.txt"),
+     'ChimeraPlot [File]' => File.join(@result_dir, "#{@dataset['Name']}.chimPlot.txt"),
+     'PreClusteredAndChimeraSummary [File]' => File.join(@result_dir, "#{@dataset['Name']}.preclChimSumm.txt"),
+     'stepConvergenceSummary [File]' => File.join(@result_dir, "#{@dataset['Name']}.stepConv.txt"),
+     'OTUsToTaxonomyFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.OTUsToTax.txt"),
+     'OTUsCountTable [File]' => File.join(@result_dir, "#{@dataset['Name']}.step.OTUsToCount.txt"),
+     'Technology [Factor]' => @params['technology'],
+     }.merge(extract_columns(@inherit_tags))
+     end
 def commands
 run_RApp("EzAppMothurDataCleanBatch")
 end
