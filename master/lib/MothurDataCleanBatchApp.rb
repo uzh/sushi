@@ -68,7 +68,7 @@ def next_dataset
       end
      nds['stepConvergenceSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.stepConv.txt")
      nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.OTUsToTax.txt")
-     nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@dataset['Name']}.step.OTUsToCount.txt")
+     nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@dataset['Name']}.OTUsToCount.txt")
      nds['Technology [Factor]'] = @params['technology']
     pds = @dataset.clone
     pds.delete("Read1")
