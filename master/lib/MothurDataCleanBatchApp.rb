@@ -73,6 +73,7 @@ def next_dataset
     pds = @dataset.clone
     pds.delete("Read1")
     pds.delete("Read2")
+    pds.delete("Technology")
     nds.merge!(pds)
     nds
 end
