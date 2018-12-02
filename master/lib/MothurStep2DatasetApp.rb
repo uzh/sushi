@@ -45,8 +45,7 @@ end
   
 def next_dataset
 @params['name'] = "MothurStep2Dataset"
-def next_dataset
-     nds = {'Name'=>@dataset['Name']}
+     nds = {'Name'=>@params['name']}
      nds['ChimeraPlot [File]'] = File.join(@result_dir, "#{@dataset['Name']}.chimPlot.txt")
      nds['PreClusteredAndChimeraSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.preclChimSumm.txt")
       if @params['mockSample']
@@ -56,7 +55,6 @@ def next_dataset
      nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.OTUsToTax.txt")
      nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@dataset['Name']}.OTUsToCount.txt")
      nds
-
 end
 def commands
 run_RApp("EzAppMothurStep2Dataset")
