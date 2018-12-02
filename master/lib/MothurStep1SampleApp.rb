@@ -16,7 +16,7 @@ Data preprocssing with Mothur. Please make sure that the input files are from th
 <a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki</a>
   EOS
 @required_columns = ['Name', 'Read1']
-@required_params = ['minLen', 'maxLen', 'technology']
+@required_params = ['minLen', 'maxLen', 'technology','paired','mockSample']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
@@ -41,10 +41,9 @@ end
       @required_columns << 'Read2'
     end
   end
-  def set_default_parameters
-     @params['paired'] = dataset_has_column?('Read2')
+ def set_default_parameters
+    @params['paired'] = dataset_has_column?('Read2')
   end
-  
   def preprocess
     if @params['mockSample']
       @required_columns << 'Mock'
