@@ -17,18 +17,19 @@ super
   EOS
 @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'alignedFile', 'groupFile']
-@required_params = ['cutOffTaxonomy', 'diffs','cutOffCluster']
+@required_params = ['cutOffTaxonomy', 'diffs','cutOffCluster','representativeOTUs']
+@params['cores'] = '1'
+@params['ram'] = '8'
+@params['scratch'] = '10'
 @params['cutOffTaxonomy'] = '80'
 @params['cutOffTaxonomy', 'description'] = 'Cut-off for taxonomy assignment in classify.seqs'
 @params['diffs'] = '2'
 @params['diffs', 'description'] = 'Differences allowed in the pre.cluster step. Should be 1 every 100 bases.'
 @params['cutOffCluster'] = '0.03'
 @params['cutOffCluster', 'description'] = 'Cut-off similarity to cluster OTUs'
-@params['cores'] = '1'
-@params['ram'] = '8'
-@params['scratch'] = '10'
-@params['representativeOTUs'] = ''
+@params['representativeOTUs'] = '80'
 @params['representativeOTUs', 'description'] = 'Number of OTUs representing the sample.'
+@params['name'] = "MothurStep2Dataset"
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
@@ -44,7 +45,6 @@ end
   end
   
 def next_dataset
-@params['name'] = "MothurStep2Dataset"
      nds = {'Name'=>@params['name']}
      nds['ChimeraPlot [File]'] = File.join(@result_dir, "#{@dataset['Name']}.chimPlot.txt")
      nds['PreClusteredAndChimeraSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.preclChimSumm.txt")
