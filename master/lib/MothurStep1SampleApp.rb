@@ -16,7 +16,7 @@ Data preprocssing with Mothur. Please make sure that the input files are from th
 <a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki</a>
   EOS
 @required_columns = ['Name', 'Read1']
-@required_params = ['minLen', 'maxLen', "technology"]
+@required_params = ['minLen', 'maxLen', 'technology']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
@@ -24,13 +24,13 @@ Data preprocssing with Mothur. Please make sure that the input files are from th
 @params['minLen', 'description'] = 'Sequences shorter than this long are removed.'
 @params['maxLen'] = '330'
 @params['maxLen', 'description'] = 'Sequences longer than this are removed.'
-@params['technology'] = ['illumina',"pacbio","ONT"]
+@params['technology'] = ['illumina','pacbio','ONT']
 @params['technology', 'description'] = 'Sequencing technology used.'
 @params['referenceFasta'] = '/srv/GT/analysis/grusso/courses/metagenomicsCourse/references/bioPoolReference.16S.fasta'
 @params['referenceFasta', 'description'] = 'Full path to fasta file for the mock community (if available).'
 @params['mail'] = ""
-@inherit_tags = ["B-Fabric", "Characteristic", "Mock","Group"]
-@modules = ["Dev/R"]
+@inherit_tags = ['B-Fabric', 'Characteristic', 'Mock','Group']
+@modules = ['Dev/R']
 end
   def preprocess
     if @params['paired']
