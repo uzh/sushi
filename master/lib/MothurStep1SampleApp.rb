@@ -17,7 +17,7 @@ Data preprocssing with Mothur. Please make sure that the input files are from th
   EOS
 @required_columns = ['Name', 'Read1']
 @required_params = ['minLen', 'maxLen', 'technology','paired','mockSample']
-@params['cores'] = '1'
+@params['cores'] = '2'
 @params['ram'] = '8'
 @params['scratch'] = '10'
 @params['minLen'] = '145'
