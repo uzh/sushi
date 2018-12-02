@@ -18,7 +18,7 @@ super
 @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'alignedFile', 'groupFile']
 @required_params = ['cutOffTaxonomy', 'diffs','cutOffCluster','representativeOTUs']
-@params['cores'] = '1'
+@params['cores'] = '8'
 @params['ram'] = '8'
 @params['scratch'] = '10'
 @params['cutOffTaxonomy'] = '80'
