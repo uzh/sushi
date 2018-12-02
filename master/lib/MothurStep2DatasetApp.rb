@@ -36,15 +36,6 @@ super
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
 end
-
-  def preprocess
-    if @params['Group']
-      @required_columns << 'Group'
-    end
-  end
-  def set_default_parameters
-     @params['Group'] = dataset_has_column?('Group')
-  end
     def preprocess
     if @params['mockSample']
       @required_columns << 'Mock'
@@ -60,6 +51,7 @@ def next_dataset
       if @params['mockSample']
         nds['ErrorFile [File]'] = File.join(@result_dir, "#{@params['name']}.errorCount.txt")
       end
+     nds['MapFiltSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.mapFilt.txt")
      nds['stepConvergenceSummary [File]'] = File.join(@result_dir, "#{@params['name']}.stepConv.txt")
      nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@params['name']}.OTUsToTax.txt")
      nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@params['name']}.OTUsToCount.txt")
