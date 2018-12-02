@@ -27,15 +27,6 @@ Quality control of metagenome assembly and annotation.
 @modules = ["Dev/R"]
 end
 
-  def preprocess
-    if @params['Group']
-      @required_columns << 'Group'
-    end
-  end
-  def set_default_parameters
-     @params['Group'] = dataset_has_column?('Group')
-  end
-  
 def next_dataset
 @params['name'] = "MetagenomeAnnotationQC"
 report_file = File.join(@result_dir, '00index_files')
