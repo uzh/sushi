@@ -43,7 +43,14 @@ end
   def set_default_parameters
      @params['Group'] = dataset_has_column?('Group')
   end
-  
+    def preprocess
+    if @params['mockSample']
+      @required_columns << 'Mock'
+    end
+  end
+  def set_default_parameters
+     @params['mockSample'] = dataset_has_column?('Mock')
+  end
 def next_dataset
      nds = {'Name'=>@params['name']}
      nds['ChimeraPlot [File]'] = File.join(@result_dir, "#{@params['name']}.chimPlot.txt")
