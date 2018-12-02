@@ -15,17 +15,15 @@ class MetaQuastApp < SushiFabric::SushiApp
 MetaQUAST (Quality Assessment Tool for Metagenome Assemblies)
 <a href='http://quast.sourceforge.net/metaquast'>http://quast.sourceforge.net/metaquast</a>
 EOS
-
     @required_columns = ['Name','contigFile']
     @required_params = ['cores', 'ram', 'scratch']
-    # optional params
     @params['cores'] = '4'
     @params['ram'] = '30'
     @params['scratch'] = '50'
     @params['fileWithListOfRefs'] = ''
     @params['fileWithListOfRefs', 'description'] = 'full path to a txt file listing the reference genomes.'
     @params['cmdOptions'] = ''
-    @params['cmdOptions', 'description'] = 'specify other commandline options for QUAST; do not specify any option that is already covered by the dedicated input fields'
+    @params['cmdOptions', 'description'] = 'specify other commandline options for Metaquast; do not specify any option that is already covered by the dedicated input fields'
     @params['mail'] = ""
     @modules = ["QC/QUAST", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
