@@ -57,7 +57,7 @@ def next_dataset
      nds = {'Name'=>@dataset['Name']}
      nds['RawDataSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.rawSumm.txt")
      nds['DeduppedSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.deduppedSumm.txt")
-     nds['LenAndHomopS  ummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.lenHomopSumm.txt")
+     nds['LenAndHomopSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.lenHomopSumm.txt")
      nds['MapFiltSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.mapFilt.txt")
      nds['alignedFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.align.txt")
      nds['groupFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.group.txt")
