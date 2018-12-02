@@ -46,14 +46,14 @@ end
   
 def next_dataset
      nds = {'Name'=>@params['name']}
-     nds['ChimeraPlot [File]'] = File.join(@result_dir, "#{@dataset['Name']}.chimPlot.txt")
-     nds['PreClusteredAndChimeraSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.preclChimSumm.txt")
+     nds['ChimeraPlot [File]'] = File.join(@result_dir, "#{@params['name']}.chimPlot.txt")
+     nds['PreClusteredAndChimeraSummary [File]'] = File.join(@result_dir, "#{@params['name']}.preclChimSumm.txt")
       if @params['mockSample']
-        nds['ErrorFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.errorCount.txt")
+        nds['ErrorFile [File]'] = File.join(@result_dir, "#{@params['name']}.errorCount.txt")
       end
-     nds['stepConvergenceSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.stepConv.txt")
-     nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.OTUsToTax.txt")
-     nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@dataset['Name']}.OTUsToCount.txt")
+     nds['stepConvergenceSummary [File]'] = File.join(@result_dir, "#{@params['name']}.stepConv.txt")
+     nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@params['name']}.OTUsToTax.txt")
+     nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@params['name']}.OTUsToCount.txt")
      nds
 end
 def commands
@@ -62,5 +62,4 @@ end
 end
 
 if __FILE__ == $0
-run MothurStep2DatasetApp
 end
