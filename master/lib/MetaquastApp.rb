@@ -6,10 +6,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class MetaQuastApp < SushiFabric::SushiApp
+class MetaquastApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'MetaQuast'
+    @name = 'Metaquast'
     @analysis_category = 'QC'
     @description =<<-EOS
 MetaQUAST (Quality Assessment Tool for Metagenome Assemblies)
@@ -36,7 +36,7 @@ EOS
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
-    run_RApp("EzAppMetaQuast")
+    run_RApp("EzAppMetaquast")
   end
 end
 
