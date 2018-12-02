@@ -34,6 +34,10 @@ OTU-based metagenomics analysis with Mothur. Please make sure that the input fil
 @params['technology', 'description'] = 'Sequencing technology used.'
 @params['referenceFasta'] = '/srv/GT/analysis/grusso/courses/metagenomicsCourse/references/bioPoolReference.16S.fasta'
 @params['referenceFasta', 'description'] = 'Full path to fasta file for the mock community (if available).'
+@params['paired'] = false
+@params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
+@params['mockSample'] = false
+@params['mockSample', 'description'] = 'Is there at least a mock (control) sample in the experiment? '
 @params['mail'] = ""
 @inherit_tags = ["B-Fabric", "Characteristic", "Mock","Group"]
 @modules = ["Dev/R"]
