@@ -29,6 +29,8 @@ super
 @params['cutOffCluster', 'description'] = 'Cut-off similarity to cluster OTUs'
 @params['representativeOTUs'] = '80'
 @params['representativeOTUs', 'description'] = 'Number of OTUs representing the sample.'
+@params['mockSample'] = false
+@params['mockSample', 'description'] = 'Is there at least a mock (control) sample in the experiment? '
 @params['name'] = "MothurStep2Dataset"
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
