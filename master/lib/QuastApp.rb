@@ -15,7 +15,6 @@ class QuastApp < SushiFabric::SushiApp
 QUAST (Quality Assessment Tool for Genome Assemblies)
 <a href='http://quast.bioinf.spbau.ru/manual.html '>http://quast.bioinf.spbau.ru/manual.html</a>
 EOS
-
     @required_columns = ['Name','Draft']
     @required_params = ['cores', 'ram', 'scratch']
     # optional params
