@@ -10,7 +10,7 @@ class MetaQuastApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'MetaQuast'
-    @analysis_category = 'QC'
+    @analysis_category = 'Metagenomics'
     @description =<<-EOS
 MetaQUAST (Quality Assessment Tool for Metagenome Assemblies)
 <a href='http://quast.sourceforge.net/metaquast'>http://quast.sourceforge.net/metaquast</a>
