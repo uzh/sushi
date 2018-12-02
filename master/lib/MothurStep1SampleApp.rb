@@ -6,7 +6,7 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class MothurStep1Sample < SushiFabric::SushiApp
+class MothurStep1SampleApp < SushiFabric::SushiApp
 def initialize
 super
 @name = 'MothurStep1Sample'
@@ -53,7 +53,7 @@ def next_dataset
      nds = {'Name'=>@dataset['Name']}
      nds['RawDataSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.rawSumm.txt")
      nds['DeduppedSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.deduppedSumm.txt")
-     nds['LenAndHomopSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.lenHomopSumm.txt")
+     nds['LenAndHomopS  ummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.lenHomopSumm.txt")
      nds['MapFiltSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.mapFilt.txt")
      nds['alignedFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.align.txt")
      nds['groupFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.group.txt")
