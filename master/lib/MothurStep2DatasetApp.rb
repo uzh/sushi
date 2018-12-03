@@ -36,7 +36,15 @@ super
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
 end
-    def preprocess
+        def preprocess
+    if @params['Group']
+      @required_columns << 'Group'
+    end
+  end
+  def set_default_parameters
+     @params['Group'] = dataset_has_column?('Group')
+  end
+  def preprocess
     if @params['mockSample']
       @required_columns << 'Mock'
     end
@@ -50,6 +58,9 @@ def next_dataset
      nds['PreClusteredAndChimeraSummary [File]'] = File.join(@result_dir, "#{@params['name']}.preclChimSumm.txt")
       if @params['mockSample']
         nds['ErrorFile [File]'] = File.join(@result_dir, "#{@params['name']}.errorCount.txt")
+      end
+      if @params['Group']
+     nds['Group [File]'] = File.join(@result_dir, "#{@params['Name']}.designMatrix.txt")
       end
      nds['MapFiltSummary [File]'] = File.join(@result_dir, "#{@params['name']}.mapFilt.txt")
      nds['stepConvergenceSummary [File]'] = File.join(@result_dir, "#{@params['name']}.stepConv.txt")
