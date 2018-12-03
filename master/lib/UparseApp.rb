@@ -24,11 +24,21 @@ Please make sure that the input files are from the same technology.
 @params['scratch'] = '10'
 @params['fastqErrorMax'] = '1'
 @params['fastqErrorMax', 'description'] = 'Max fastq error rate (https://drive5.com/usearch/manual/cmd_fastq_filter.html).'
+@params['Group'] = 'true'
+@params['Group', 'description'] = 'Is there a group factor in the dataset?'
 @params['mail'] = ""
 @params['Name'] = "Uparse"
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
 end
+  def preprocess
+    if @params['Group']
+      @required_columns << 'Group'
+    end
+  end
+  def set_default_parameters
+     @params['Group'] = dataset_has_column?('Group')
+  end
   def preprocess
     if @params['paired']
       @required_columns << 'Read2'
@@ -38,10 +48,17 @@ end
      @params['paired'] = dataset_has_column?('Read2')
   end
 def next_dataset
-     {'Name'=>@params['Name'],
-     'OTUsToTaxonomyFile [File]'=>File.join(@result_dir, "#{@params['Name']}.OTUs.to.tax.txt"),
-     'OTUsCountTable [File]'=>File.join(@result_dir, "#{@params['Name']}.OTUs.count.txt"),
-     }
+     nds = {'Name'=>@params['name']}
+     nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUs.to.tax.txt")
+     nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUs.count.txt")
+      if @params['Group']
+    pds = @dataset.clone
+    pds.delete("Read1")
+    pds.delete("Read2")
+    pds.delete("Technology")
+    nds.merge!(pds)
+      end
+     nds
 end
 def commands
 run_RApp("EzAppUparse")
