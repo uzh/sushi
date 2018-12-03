@@ -31,7 +31,7 @@ super
 @params['representativeOTUs', 'description'] = 'Number of OTUs representing the sample.'
 @params['mockSample'] = ['false','true']
 @params['mockSample', 'description'] = 'Is there at least a mock (control) sample in the experiment? '
-@params['Group'] = ['false','true']
+@params['Group'] = ['true','false']
 @params['Group', 'description'] = 'Is there a design matrix for the experiment? '
 @params['Name'] = "MothurStep2"
 @params['mail'] = ""
