@@ -43,9 +43,6 @@ def next_dataset
      nds = {'Name'=>@params['Name']}
      nds['ChimeraPlot [File]'] = File.join(@result_dir, "#{@params['Name']}.chimPlot.txt")
      nds['PreClusteredAndChimeraSummary [File]'] = File.join(@result_dir, "#{@params['Name']}.preclChimSumm.txt")
-      if @params['mockSample']
-        nds['ErrorFile [File]'] = File.join(@result_dir, "#{@params['Name']}.errorCount.txt")
-      end
       if @params['Group']
      nds['sampleDescriptionFile [File]'] = File.join(@result_dir, "#{@params['Name']}.designMatrix.txt")
       end
