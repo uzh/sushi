@@ -26,7 +26,7 @@ Data preprocssing with Mothur. Please make sure that the input files are from th
 @params['maxLen', 'description'] = 'Sequences longer than this are removed.'
 @params['technology'] = ['illumina','pacbio','ONT']
 @params['technology', 'description'] = 'Sequencing technology used.'
-@params['referenceFasta'] = '/srv/GT/analysis/grusso/courses/metagenomicsCourse/references/bioPoolReference.16S.fasta'
+@params['referenceFasta'] = ''
 @params['referenceFasta', 'description'] = 'Full path to fasta file for the mock community (if available).'
 @params['paired'] = false
 @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
