@@ -16,7 +16,7 @@ super
 OTU-based metagenomics analysis of Illumina data with Mothur.
 <a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki/MiSeq_SOP</a>
   EOS
-@required_columns = ['Name', 'Read1']
+@required_columns = ['Name', 'Read1','TemporaryNotToAppear']
 @required_params = ['cutOff', 'diffs_Illumina']
 @params['cores'] = '1'
 @params['ram'] = '8'
