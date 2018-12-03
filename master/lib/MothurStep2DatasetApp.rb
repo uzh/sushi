@@ -51,7 +51,7 @@ def next_dataset
       if @params['mockSample']
         nds['ErrorFile [File]'] = File.join(@result_dir, "#{@params['name']}.errorCount.txt")
       end
-     nds['MapFiltSummary [File]'] = File.join(@result_dir, "#{@params['Name']}.mapFilt.txt")
+     nds['MapFiltSummary [File]'] = File.join(@result_dir, "#{@params['name']}.mapFilt.txt")
      nds['stepConvergenceSummary [File]'] = File.join(@result_dir, "#{@params['name']}.stepConv.txt")
      nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@params['name']}.OTUsToTax.txt")
      nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@params['name']}.OTUsToCount.txt")
