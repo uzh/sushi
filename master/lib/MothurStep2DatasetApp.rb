@@ -17,7 +17,7 @@ super
   EOS
 @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'alignedFile', 'groupFile']
-@required_params = ['cutOffTaxonomy', 'diffs','cutOffCluster','representativeOTUs']
+@required_params = ['cutOffTaxonomy', 'diffs','cutOffCluster']
 @params['cores'] = '8'
 @params['ram'] = '8'
 @params['scratch'] = '10'
@@ -27,8 +27,6 @@ super
 @params['diffs', 'description'] = 'Differences allowed in the pre.cluster step. Should be 1 every 100 bases.'
 @params['cutOffCluster'] = '0.03'
 @params['cutOffCluster', 'description'] = 'Cut-off similarity to cluster OTUs'
-@params['representativeOTUs'] = '80'
-@params['representativeOTUs', 'description'] = 'Number of OTUs representing the sample.'
 @params['mockSample'] = ['false','true']
 @params['mockSample', 'description'] = 'Is there at least a mock (control) sample in the experiment? '
 @params['Group'] = ['true','false']
