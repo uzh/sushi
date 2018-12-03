@@ -16,11 +16,13 @@ Report of the data analysis performed with Mothur.
 EOS
 @params['process_mode'] = 'DATASET'
 @required_columns = ['Name','ChimeraPlot','PreClusteredAndChimeraSummary','stepConvergenceSummary','OTUsToTaxonomyFile','OTUsCountTable']
-@required_params = ['name']
+@required_params = ['name', 'group']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
 @params['mail'] = ""
+@params['Group'] = 'true'
+@params['Group', 'description'] = 'Is there a group factor in the dataset?'
 @params['name'] = "EzAppMothurStep2DatasetReport"
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R/3.5.1"]
