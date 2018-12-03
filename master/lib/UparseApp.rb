@@ -40,7 +40,7 @@ end
      @params['paired'] = dataset_has_column?('Read2')
   end
 def next_dataset
-     nds = {'Name'=>@params['name']}
+     nds = {'Name'=>@params['Name']}
      nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUs.to.tax.txt")
      nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUs.count.txt")
       if @params['Group']
