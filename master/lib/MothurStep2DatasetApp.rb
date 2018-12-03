@@ -33,7 +33,7 @@ super
 @params['mockSample', 'description'] = 'Is there at least a mock (control) sample in the experiment? '
 @params['Group'] = ['false','true']
 @params['Group', 'description'] = 'Is there a design matrix for the experiment? '
-@params['Name'] = "MothurStep2Dataset"
+@params['Name'] = "MothurStep2"
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
@@ -41,18 +41,18 @@ end
 
 def next_dataset
      nds = {'Name'=>@params['Name']}
-     nds['ChimeraPlot [File]'] = File.join(@result_dir, "#{@params['name']}.chimPlot.txt")
-     nds['PreClusteredAndChimeraSummary [File]'] = File.join(@result_dir, "#{@params['name']}.preclChimSumm.txt")
+     nds['ChimeraPlot [File]'] = File.join(@result_dir, "#{@params['Name']}.chimPlot.txt")
+     nds['PreClusteredAndChimeraSummary [File]'] = File.join(@result_dir, "#{@params['Name']}.preclChimSumm.txt")
       if @params['mockSample']
-        nds['ErrorFile [File]'] = File.join(@result_dir, "#{@params['name']}.errorCount.txt")
+        nds['ErrorFile [File]'] = File.join(@result_dir, "#{@params['Name']}.errorCount.txt")
       end
       if @params['Group']
      nds['sampleDescriptionFile [File]'] = File.join(@result_dir, "#{@params['Name']}.designMatrix.txt")
       end
-     nds['MapFiltSummary [File]'] = File.join(@result_dir, "#{@params['name']}.mapFilt.txt")
-     nds['stepConvergenceSummary [File]'] = File.join(@result_dir, "#{@params['name']}.stepConv.txt")
-     nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@params['name']}.OTUsToTax.txt")
-     nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@params['name']}.OTUsToCount.txt")
+     nds['MapFiltSummary [File]'] = File.join(@result_dir, "#{@params['Name']}.mapFilt.txt")
+     nds['stepConvergenceSummary [File]'] = File.join(@result_dir, "#{@params['Name']}.stepConv.txt")
+     nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUsToTax.txt")
+     nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUsToCount.txt")
      nds
 end
 def commands
