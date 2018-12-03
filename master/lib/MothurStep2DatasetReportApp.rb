@@ -21,8 +21,8 @@ EOS
 @params['ram'] = '8'
 @params['scratch'] = '10'
 @params['mail'] = ""
-@params['Group'] = ['true','false']
-@params['Group', 'description'] = 'Is there a group factor in the dataset?'
+@params['group'] = ['true','false']
+@params['group', 'description'] = 'Is there a group factor in the dataset?'
 @params['representativeOTUs'] = ''
 @params['representativeOTUs', 'description'] = 'Number of OTUs representing the sample.'
 @params['name'] = "MothurStep2DatasetReport"
