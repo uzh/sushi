@@ -52,11 +52,7 @@ def next_dataset
      nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUs.to.tax.txt")
      nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUs.count.txt")
       if @params['Group']
-    pds = @dataset.clone
-    pds.delete("Read1")
-    pds.delete("Read2")
-    pds.delete("Technology")
-    nds.merge!(pds)
+     nds['Group [File]'] = File.join(@result_dir, "#{@params['Name']}.designMatrix.txt")
       end
      nds
 end
