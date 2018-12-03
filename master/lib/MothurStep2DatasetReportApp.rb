@@ -21,7 +21,7 @@ EOS
 @params['ram'] = '8'
 @params['scratch'] = '10'
 @params['mail'] = ""
-@params['name'] = "EzAppMothurStep2DatasetReportReportApp"
+@params['name'] = "EzAppMothurStep2DatasetReport"
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R/3.5.1"]
 end
