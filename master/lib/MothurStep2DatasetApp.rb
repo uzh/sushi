@@ -33,14 +33,14 @@ super
 @params['mockSample', 'description'] = 'Is there at least a mock (control) sample in the experiment? '
 @params['Group'] = ['false','true']
 @params['Group', 'description'] = 'Is there a design matrix for the experiment? '
-@params['name'] = "MothurStep2Dataset"
+@params['Name'] = "MothurStep2Dataset"
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
 end
 
 def next_dataset
-     nds = {'Name'=>@params['name']}
+     nds = {'Name'=>@params['Name']}
      nds['ChimeraPlot [File]'] = File.join(@result_dir, "#{@params['name']}.chimPlot.txt")
      nds['PreClusteredAndChimeraSummary [File]'] = File.join(@result_dir, "#{@params['name']}.preclChimSumm.txt")
       if @params['mockSample']
