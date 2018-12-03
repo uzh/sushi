@@ -44,6 +44,7 @@ end
 def next_dataset
      {'Name'=>@dataset['Name'],
      'contigFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),
+     'binnedContigsFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.binnedContigs.fasta),
      'prodigalPredictionFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.prodigalPrediction.gff"),
      'interproscanFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.annotatedProteins.gff"),
       'OTUsToTaxonomyFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.OTUs.to.tax.txt"),
