@@ -47,7 +47,7 @@ def next_dataset
         nds['ErrorFile [File]'] = File.join(@result_dir, "#{@params['name']}.errorCount.txt")
       end
       if @params['Group']
-     nds['Group [File]'] = File.join(@result_dir, "#{@params['Name']}.designMatrix.txt")
+     nds['sampleDescriptionFile [File]'] = File.join(@result_dir, "#{@params['Name']}.designMatrix.txt")
       end
      nds['MapFiltSummary [File]'] = File.join(@result_dir, "#{@params['name']}.mapFilt.txt")
      nds['stepConvergenceSummary [File]'] = File.join(@result_dir, "#{@params['name']}.stepConv.txt")
