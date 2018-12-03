@@ -16,6 +16,7 @@ OTU-based metagenomics analysis with Uparse.
 Please make sure that the input files are from the same technology.
 <a href='https://drive5.com/uparse/'>https://drive5.com/uparse/</a>
   EOS
+@params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'Read1']
 @required_params = ['fastqErrorMax']
 @params['cores'] = '1'
@@ -24,6 +25,7 @@ Please make sure that the input files are from the same technology.
 @params['fastqErrorMax'] = '1'
 @params['fastqErrorMax', 'description'] = 'Max fastq error rate (https://drive5.com/usearch/manual/cmd_fastq_filter.html).'
 @params['mail'] = ""
+@params['Name'] = "Uparse"
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
 end
@@ -36,9 +38,9 @@ end
      @params['paired'] = dataset_has_column?('Read2')
   end
 def next_dataset
-     {'Name'=>@dataset['Name'],
-     'OTUsToTaxonomyFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.OTUs.to.tax.txt"),
-     'OTUsCountTable [File]'=>File.join(@result_dir, "#{@dataset['Name']}.OTUs.count.txt"),
+     {'Name'=>@params['Name'],
+     'OTUsToTaxonomyFile [File]'=>File.join(@result_dir, "#{@params['Name']}.OTUs.to.tax.txt"),
+     'OTUsCountTable [File]'=>File.join(@result_dir, "#{@params['Name']}.OTUs.count.txt"),
      }
 end
 def commands
