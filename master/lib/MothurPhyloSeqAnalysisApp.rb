@@ -48,7 +48,7 @@ report_link = File.join(@result_dir, '00index.html')
 
 end
 def commands
-run_RApp("EezMethodMothurPhyloSeqAnalysis")
+run_RApp("EzMethodMothurPhyloSeqAnalysis")
 end
 end
 
