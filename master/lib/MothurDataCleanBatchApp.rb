@@ -15,7 +15,7 @@ super
 OTU-based metagenomics analysis with Mothur. Please make sure that the input files are from the same technology and adjust minLen and maxLen accordingly.
 <a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki</a>
   EOS
-@required_columns = ['Name', 'Read1']
+@required_columns = ['Name', 'Read1', 'TemporaryNotToAppear']
 @required_params = ['cutOffTaxonomy', 'diffs','cutOffCluster', "technology"]
 @params['cores'] = '1'
 @params['ram'] = '8'
