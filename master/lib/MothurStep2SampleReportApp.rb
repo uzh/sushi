@@ -6,10 +6,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class MothurStep2SampleReportApp < SushiFabric::SushiApp
+class MothurStep2DatasetReportApp < SushiFabric::SushiApp
 def initialize
 super
-@name = 'MothurStep2SampleReport'
+@name = 'MothurStep2DatasetReport'
 @analysis_category = 'Metagenomics'
 @description =<<-EOS
 Report of the data analysis performed with Mothur.
@@ -21,7 +21,7 @@ EOS
 @params['ram'] = '8'
 @params['scratch'] = '10'
 @params['mail'] = ""
-@params['name'] = "MothurStep2SampleReportApp"
+@params['name'] = "EzAppMothurStep2DatasetReportReportApp"
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R/3.5.1"]
 end
@@ -34,7 +34,7 @@ report_link = File.join(@result_dir, '00index.html')
 }
 end
 def commands
-run_RApp("EzAppMothurStep2SampleReport")
+run_RApp("EzAppMothurStep2DatasetReport")
 end
 end
 
