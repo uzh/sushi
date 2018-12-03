@@ -17,25 +17,18 @@ super
   EOS
 @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'OTUsToTaxonomyFile', 'OTUsCountTable']
-@required_params = ['representativeOTUs']
+@required_params = ['representativeOTUs','group']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
+@params['group'] = ['true','false']
+@params['group', 'description'] = 'Is there a group factor in the dataset?'
 @params['representativeOTUs'] = ''
 @params['representativeOTUs', 'description'] = 'Number of OTUs representing the sample.'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
 end
-
-  def preprocess
-    if @params['Group']
-      @required_columns << 'Group'
-    end
-  end
-  def set_default_parameters
-     @params['Group'] = dataset_has_column?('Group')
-  end
   
 def next_dataset
 @params['name'] = "MothurPhyloSeq"
