@@ -6,10 +6,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class MothurPhyloSeqAnalysisApp < SushiFabric::SushiApp
+class PhyloSeqAnalysisApp < SushiFabric::SushiApp
 def initialize
 super
-@name = 'MothurPhyloSeqAnalysis'
+@name = 'PhyloSeqAnalysis'
 @analysis_category = 'Metagenomics'
 @description =<<-EOS
 16S metagenomics visualization with Phyloseq.
@@ -31,7 +31,7 @@ super
 end
   
 def next_dataset
-@params['name'] = "MothurPhyloSeq"
+@params['name'] = "PhyloSeq"
 report_file = File.join(@result_dir, '00index_files')
 report_link = File.join(@result_dir, '00index.html')
 {'Name'=>@params['name'],
@@ -41,7 +41,7 @@ report_link = File.join(@result_dir, '00index.html')
 
 end
 def commands
-run_RApp("EzAppMothurPhyloSeqAnalysis")
+run_RApp("EzAppPhyloSeqAnalysis")
 end
 end
 
