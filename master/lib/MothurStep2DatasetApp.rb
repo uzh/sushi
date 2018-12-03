@@ -29,29 +29,16 @@ super
 @params['cutOffCluster', 'description'] = 'Cut-off similarity to cluster OTUs'
 @params['representativeOTUs'] = '80'
 @params['representativeOTUs', 'description'] = 'Number of OTUs representing the sample.'
-@params['mockSample'] = false
+@params['mockSample'] = ['false','true']
 @params['mockSample', 'description'] = 'Is there at least a mock (control) sample in the experiment? '
+@params['Group'] = ['false','true']
+@params['Group', 'description'] = 'Is there a design matrix for the experiment? '
 @params['name'] = "MothurStep2Dataset"
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
 end
-        def preprocess
-    if @params['Group']
-      @required_columns << 'Group'
-    end
-  end
-  def set_default_parameters
-     @params['Group'] = dataset_has_column?('Group')
-  end
-  def preprocess
-    if @params['mockSample']
-      @required_columns << 'Mock'
-    end
-  end
-  def set_default_parameters
-     @params['mockSample'] = dataset_has_column?('Mock')
-  end
+
 def next_dataset
      nds = {'Name'=>@params['name']}
      nds['ChimeraPlot [File]'] = File.join(@result_dir, "#{@params['name']}.chimPlot.txt")
