@@ -24,8 +24,6 @@ Please make sure that the input files are from the same technology.
 @params['scratch'] = '10'
 @params['fastqErrorMax'] = '1'
 @params['fastqErrorMax', 'description'] = 'Max fastq error rate (https://drive5.com/usearch/manual/cmd_fastq_filter.html).'
-@params['Group'] = 'true'
-@params['Group', 'description'] = 'Is there a group factor in the dataset?'
 @params['mail'] = ""
 @params['Name'] = "Uparse"
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
