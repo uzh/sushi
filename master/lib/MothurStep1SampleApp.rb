@@ -44,14 +44,6 @@ end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
   end
-  def preprocess
-    if @params['mockSample']
-      @required_columns << 'Mock'
-    end
-  end
-  def set_default_parameters
-     @params['mockSample'] = dataset_has_column?('Mock')
-  end
   
 def next_dataset
      nds = {'Name'=>@dataset['Name']}
