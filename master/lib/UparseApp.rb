@@ -44,7 +44,7 @@ def next_dataset
      nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUs.to.tax.txt")
      nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUs.count.txt")
       if @params['Group']
-     nds['Group [File]'] = File.join(@result_dir, "#{@params['Name']}.designMatrix.txt")
+     nds['sampleDescriptionFile [File]'] = File.join(@result_dir, "#{@params['Name']}.designMatrix.txt")
       end
      nds
 end
