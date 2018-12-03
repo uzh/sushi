@@ -21,11 +21,11 @@ EOS
 @params['ram'] = '8'
 @params['scratch'] = '10'
 @params['mail'] = ""
-@params['Group'] = 'true'
+@params['Group'] = ['true','false']
 @params['Group', 'description'] = 'Is there a group factor in the dataset?'
 @params['representativeOTUs'] = ''
 @params['representativeOTUs', 'description'] = 'Number of OTUs representing the sample.'
-@params['name'] = "EzAppMothurStep2DatasetReport"
+@params['name'] = "MothurStep2DatasetReport"
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R/3.5.1"]
 end
