@@ -31,7 +31,7 @@ EOS
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
-    {'Name'=>@param['Name'],
+    {'Name'=>@params['Name'],
      'QuastReport [Link]'=>File.join(@result_dir, @params['Name'], 'report.html'),
      'QuastOut [File]'=>File.join(@result_dir, @params['Name']),
     }
