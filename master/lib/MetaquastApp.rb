@@ -26,15 +26,15 @@ EOS
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for Metaquast; do not specify any option that is already covered by the dedicated input fields'
     @params['mail'] = ""
+    @param['Name'] = "metaquastReport"
     @modules = ["QC/QUAST", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
-    {'Name'=>@dataset['Name'],
-     'QuastReport [Link]'=>File.join(@result_dir, "#{@dataset['Name']}", 'report.html'),
-     'QuastOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
-     'Species'=>@dataset['Species'],
-    }.merge(extract_columns(@inherit_tags))
+    {'Name'=>@param['Name'],
+     'QuastReport [Link]'=>File.join(@result_dir, "#{@param['Name']}", 'report.html'),
+     'QuastOut [File]'=>File.join(@result_dir, "#{@param['Name']}"),
+    }
   end
   def commands
     run_RApp("EzAppMetaquast")
