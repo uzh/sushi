@@ -15,6 +15,7 @@ class MetaquastApp < SushiFabric::SushiApp
 MetaQUAST (Quality Assessment Tool for Metagenome Assemblies)
 <a href='http://quast.sourceforge.net/metaquast'>http://quast.sourceforge.net/metaquast</a>
 EOS
+    @params['process_mode'] = 'DATASET'
     @required_columns = ['Name','contigFile']
     @required_params = ['cores', 'ram', 'scratch']
     @params['cores'] = '4'
