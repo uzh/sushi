@@ -35,10 +35,9 @@ def next_dataset
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
 {'Name'=>@params['name'],
-  'Report [File]'=>report_file,
-  'Static Report [Link]'=>report_link,
+    'Static Report [Link]'=>report_link,
+    'Report [File]'=>report_file,
 }
-
 end
 def commands
 run_RApp("EzAppPhyloSeqAnalysis")
