@@ -26,14 +26,14 @@ EOS
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for Metaquast; do not specify any option that is already covered by the dedicated input fields'
     @params['mail'] = ""
-    @param['Name'] = "metaquastReport"
+    @params['Name'] = "metaquastReport"
     @modules = ["QC/QUAST", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
     {'Name'=>@param['Name'],
-     'QuastReport [Link]'=>File.join(@result_dir, "#{@param['Name']}", 'report.html'),
-     'QuastOut [File]'=>File.join(@result_dir, "#{@param['Name']}"),
+     'QuastReport [Link]'=>File.join(@result_dir, @params['Name'], 'report.html'),
+     'QuastOut [File]'=>File.join(@result_dir, @params['Name']),
     }
   end
   def commands
