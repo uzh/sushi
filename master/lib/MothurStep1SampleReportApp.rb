@@ -26,11 +26,12 @@ EOS
 @modules = ["Dev/R/3.5.1"]
 end
 def next_dataset
-report_file = File.join(@result_dir, '00index_files')
-report_link = File.join(@result_dir, '00index.html')
+@params['name'] = "MothurStep1"
+    report_file = File.join(@result_dir, @params['name'])
+    report_link = File.join(report_file, '00index.html')
 {'Name'=>@params['name'],
   'Report [File]'=>report_file,
-  'Static Report [Link,File]'=>report_link
+  'Static Report [Link]'=>report_link,
 }
 end
 def commands
