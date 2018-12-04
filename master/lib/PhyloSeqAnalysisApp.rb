@@ -26,12 +26,12 @@ super
 @params['representativeOTUs'] = ''
 @params['representativeOTUs', 'description'] = 'Number of OTUs representing the sample.'
 @params['mail'] = ""
+@params['name'] = "PhyloSeqReport"
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
 end
   
 def next_dataset
-@params['name'] = "PhyloSeq"
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
 {'Name'=>@params['name'],
