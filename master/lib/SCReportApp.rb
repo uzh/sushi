@@ -80,6 +80,7 @@ Single cell report<br/>
      'Static Report [Link]'=>report_link,
      'Live Report [Link]'=>"#{SHINY_EXPLORE_SC}?data=#{report_file}/SCReport-#{@random_string}.rds",
      'Report [File]'=>report_file,
+     'BAM [File]'=>(dataset = @dataset.first and dataset['BAM [File]']),
     }
   end
   def set_default_parameters
