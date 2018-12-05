@@ -22,7 +22,7 @@ Please make sure that the input files are from the same technology.
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
-@params['Group'] = ['false','true']
+@params['Group'] = ['true','false']
 @params['Group', 'description'] = 'Is there a design matrix for the experiment? '
 @params['fastqErrorMax'] = '1'
 @params['fastqErrorMax', 'description'] = 'Max fastq error rate (https://drive5.com/usearch/manual/cmd_fastq_filter.html).'
