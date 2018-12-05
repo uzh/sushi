@@ -15,7 +15,7 @@ class SCRNAVelocityApp < SushiFabric::SushiApp
     @description =<<-EOS
 RNA velocity analysis for single cell data<br/>
     EOS
-    @required_columns = ['Name', 'refBuild', 'Report', 'BAM']
+    @required_columns = ['Name', 'refBuild', 'Report', 'ResultDir']
     @required_params = ['name']
     # optional params
     @params['cores'] = '8'

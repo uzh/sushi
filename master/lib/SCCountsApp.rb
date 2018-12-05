@@ -52,24 +52,27 @@ EOS
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
-    {'Name'=>@dataset['Name'],
+    report_dir = File.join(@result_dir,"#{@dataset['Name']}")
+    dataset = {'Name'=>@dataset['Name'],
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'paired'=>@params['paired'],
      'featureLevel'=>@params['featureLevel'],
      'refFeatureFile'=>@params['refFeatureFile'],
      'transcriptTypes'=>@params['transcriptTypes'],
-     'CellDataset [File]'=>File.join(@result_dir, "#{@dataset['Name']}-dataset.tsv"),
-     'CountMatrix [File]'=>File.join(@result_dir, "#{@dataset['Name']}-counts.mtx"),
-     'CountMatrixColNames [File]'=>File.join(@result_dir, "#{@dataset['Name']}-counts.colNames"),
-     'CountMatrixRowNames [File]'=>File.join(@result_dir, "#{@dataset['Name']}-counts.rowNames"),
-     'Stats [File]'=>File.join(@result_dir, "#{@dataset['Name']}-stats.txt"),
-     'CellCyclePhase [File]'=>File.join(@result_dir, "#{@dataset['Name']}-CellCyclePhase.txt"),
-     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
-     'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-     'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
-     'STARLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_STAR.log")
+     'ResultDir [File]'=>report_dir,
+     'CellDataset [Link]'=>File.join(report_dir, "#{@dataset['Name']}-dataset.tsv"),
+     'CountMatrix [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.mtx"),
+     'CountMatrixColNames [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.colNames"),
+     'CountMatrixRowNames [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.rowNames"),
+     'Stats [Link]'=>File.join(report_dir, "#{@dataset['Name']}-stats.txt"),
+     'CellCyclePhase [Link]'=>File.join(report_dir, "#{@dataset['Name']}-CellCyclePhase.txt"),
+     'BAM [Link]'=>File.join(report_dir, "#{@dataset['Name']}.bam"),
+     'BAI [Link]'=>File.join(report_dir, "#{@dataset['Name']}.bam.bai"),
+     'PreprocessingLog [Link]'=>File.join(report_dir, "#{@dataset['Name']}_preprocessing.log"),
+     'STARLog [Link]'=>File.join(report_dir, "#{@dataset['Name']}_STAR.log")
     }.merge(extract_columns(@inherit_tags))
+    dataset
   end
   def commands
     run_RApp("EzAppSCCounts")
