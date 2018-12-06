@@ -50,7 +50,6 @@ end
   def set_default_parameters
      @params['Group'] = dataset_has_column?('Group')
   end
-  
 def next_dataset
      nds = {'Name'=>@dataset['Name']}
      nds['RawDataSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.rawSumm.txt")
