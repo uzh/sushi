@@ -38,26 +38,19 @@ end
     if @params['paired']
       @required_columns << 'Read2'
     end
-  end
- def set_default_parameters
-    @params['paired'] = dataset_has_column?('Read2')
-  end
-      def preprocess
-    if @params['Group']
+      if @params['Group']
       @required_columns << 'Group'
     end
-  end
-  def set_default_parameters
-     @params['Group'] = dataset_has_column?('Group')
-  end
-        def preprocess
-    if @params['mockSample']
+        if @params['mockSample']
       @required_columns << 'mockSample'
     end
   end
-  def set_default_parameters
-     @params['mockSample'] = dataset_has_column?('mockSample')
+ def set_default_parameters
+    @params['paired'] = dataset_has_column?('Read2')
+       @params['Group'] = dataset_has_column?('Group')
+           @params['mockSample'] = dataset_has_column?('mockSample')
   end
+  
 def next_dataset
      nds = {'Name'=>@dataset['Name']}
      nds['RawDataSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.rawSumm.txt")
