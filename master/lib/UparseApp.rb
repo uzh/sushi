@@ -33,18 +33,19 @@ end
     if @params['paired']
       @required_columns << 'Read2'
     end
-  end
-  def set_default_parameters
-     @params['paired'] = dataset_has_column?('Read2')
-  end
-    def preprocess
-    if @params['Group']
+      if @params['Group']
       @required_columns << 'Group'
     end
+        if @params['mockSample']
+      @required_columns << 'mockSample'
+    end
   end
-  def set_default_parameters
-     @params['Group'] = dataset_has_column?('Group')
+ def set_default_parameters
+    @params['paired'] = dataset_has_column?('Read2')
+       @params['Group'] = dataset_has_column?('Group')
+           @params['mockSample'] = dataset_has_column?('mockSample')
   end
+  
 def next_dataset
      nds = {'Name'=>@params['Name']}
      nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUs.to.tax.txt")
