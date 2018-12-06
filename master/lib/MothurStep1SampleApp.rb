@@ -26,6 +26,8 @@ Data preprocssing with Mothur. Please make sure that the input files are from th
 @params['maxLen', 'description'] = 'Sequences longer than this are removed.'
 @params['technology'] = ['illumina','pacbio','ONT']
 @params['technology', 'description'] = 'Sequencing technology used.'
+@params['Group'] = ['true','false']
+@params['Group', 'description'] = 'Experimental design.'
 @params['referenceFasta'] = ''
 @params['referenceFasta', 'description'] = 'Full path to fasta file for the mock community (if available).'
 @params['paired'] = false
