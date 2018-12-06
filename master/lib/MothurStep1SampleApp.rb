@@ -16,7 +16,7 @@ Data preprocssing with Mothur. Please make sure that the input files are from th
 <a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki</a>
   EOS
 @required_columns = ['Name', 'Read1']
-@required_params = ['minLen', 'maxLen', 'technology','paired','mockSample']
+@required_params = ['minLen', 'maxLen', 'technology','paired']
 @params['cores'] = '2'
 @params['ram'] = '8'
 @params['scratch'] = '10'
