@@ -27,15 +27,13 @@ super
 @params['diffs', 'description'] = 'Differences allowed in the pre.cluster step. Should be 1 every 100 bases.'
 @params['cutOffCluster'] = '0.03'
 @params['cutOffCluster', 'description'] = 'Cut-off similarity to cluster OTUs'
-@params['Group'] = ['true','false']
-@params['Group', 'description'] = 'Is there a design matrix for the experiment? '
 @params['Name'] = "MothurStep2"
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
 end
   def preprocess
-      if @params['Group']
+      if @params['group']
       @required_columns << 'Group'
     end
         if @params['mockSample']
@@ -43,7 +41,7 @@ end
     end
   end
  def set_default_parameters
-       @params['Group'] = dataset_has_column?('Group')
+       @params['group'] = dataset_has_column?('Group')
            @params['mockSample'] = dataset_has_column?('mockSample')
   end
   
