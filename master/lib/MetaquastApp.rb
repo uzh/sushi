@@ -21,6 +21,7 @@ EOS
     @params['cores'] = '4'
     @params['ram'] = '30'
     @params['scratch'] = '50'
+    @params['isThereRef'] = ['false','true']
     @params['fileWithListOfRefs'] = ''
     @params['fileWithListOfRefs', 'description'] = 'full path to a txt file listing the reference genomes.'
     @params['cmdOptions'] = ''
