@@ -15,7 +15,7 @@ class SCReportApp < SushiFabric::SushiApp
     @description =<<-EOS
 Single cell report<br/>
     EOS
-    @required_columns = ['Name', 'Species', 'refBuild', 'CountMatrix', 'BAM']
+    @required_columns = ['Name', 'Species', 'refBuild', 'CountMatrix', 'ResultDir']
     @required_params = ['name']
     # optional params
     @params['cores'] = '4'
@@ -80,7 +80,7 @@ Single cell report<br/>
      'Static Report [Link]'=>report_link,
      'Live Report [Link]'=>"#{SHINY_EXPLORE_SC}?data=#{report_file}/SCReport-#{@random_string}.rds",
      'Report [File]'=>report_file,
-     'ResultDir [Link]'=>@dataset['ResultDir [File]'],
+     'ResultDir [Link]'=>@dataset['ResultDir'],
     }
   end
   def set_default_parameters
