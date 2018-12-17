@@ -10,7 +10,7 @@ class SCReportApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'SCReport'
-    @params['process_mode'] = 'DATASET'
+    @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'SingleCell'
     @description =<<-EOS
 Single cell report<br/>
@@ -71,10 +71,10 @@ Single cell report<br/>
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
   end
   def next_dataset
-    report_file = File.join(@result_dir, @params['name'])
+    report_file = File.join(@result_dir, "#{@dataset['Name']}_SCReport")
     report_link = File.join(report_file, '00index.html')
-    {'Name'=>@params['name'],
-     'Species'=>(dataset = @dataset.first and dataset['Species']),
+    {'Name'=>@dataset['Name'],
+     'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
