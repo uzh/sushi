@@ -41,7 +41,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
       'refBuild'=>@params['refBuild'],
       'refFeatureFile'=>@params['refFeatureFile'],
       'featureLevel'=>@params['featureLevel'],
-      'CountMatrix [Link]'=>File.join(report_dir, 'outs/filtered_feature_bc_matrices')
+      'CountMatrix [Link]'=>File.join(report_dir, 'outs/filtered_feature_bc_matrix')
     }.merge(extract_columns(@inherit_tags))
     dataset
   end
