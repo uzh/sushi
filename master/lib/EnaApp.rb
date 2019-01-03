@@ -38,3 +38,10 @@ EOS
     run_RApp("EzAppENA")
   end
 end
+
+if __FILE__ == $0
+  usecase = EnaApp.new
+
+  usecase.project = "p1001"
+  usecase.user = "lopitz"
+end
