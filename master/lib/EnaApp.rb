@@ -21,6 +21,7 @@ EOS
         @params['scratch'] = '300'
         @params['paired'] = false
         @params['name'] = 'ENA_Data'
+        @params['projectID'] = ''
         @params['cmdOptions'] = ""
         @params['mail'] = ""
         @modules = ["Dev/R"]
