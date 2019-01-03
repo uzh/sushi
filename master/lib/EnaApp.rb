@@ -43,5 +43,6 @@ if __FILE__ == $0
   usecase = EnaApp.new
 
   usecase.project = "p1001"
+  usecase.params['projectID'] = 'PRJEB12612'
   usecase.user = "lopitz"
 end
