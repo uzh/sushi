@@ -30,7 +30,7 @@ EOS
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
-     'projectID'=>@dataset['projectID']
+     'projectID'=>@dataset['projectID'],
      'ENA Result [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
     }
   end
