@@ -16,6 +16,8 @@ class DataSetController < ApplicationController
               if File.exist?(file_path)
                 sample_available+=1
               end
+            else # in case of no [File] tag sample
+              sample_available+=1
             end
           end
           data_set.completed_samples = sample_available
