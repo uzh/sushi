@@ -41,9 +41,65 @@ EOS
 end
 
 if __FILE__ == $0
-  usecase = EnaApp.new
+  usecase = FastqcApp.new
 
   usecase.project = "p1001"
-  usecase.params['projectID'] = 'PRJEB12612'
-  usecase.user = "lopitz"
+  usecase.user = "masa"
+
+  # set user parameter
+  # for GUI sushi
+  #usecase.params['process_mode'].value = 'SAMPLE'
+  #usecase.params['refBuild'] = 'TAIR10'
+  #usecase.params['paired'] = true
+  #usecase.params['cores'] = 2
+  #usecase.params['node'] = 'fgcz-c-048'
+
+  # also possible to load a parameterset csv file
+  # mainly for CUI sushi
+  usecase.parameterset_tsv_file = 'tophat_parameterset.tsv'
+  #usecase.params['name'] = 'name'
+
+  # set input dataset
+  # mainly for CUI sushi
+  usecase.dataset_tsv_file = 'tophat_dataset.tsv'
+
+  # also possible to load a input dataset from Sushi DB
+  #usecase.dataset_sushi_id = 1
+
+  # run (submit to workflow_manager)
+  usecase.run
+  #usecase.test_run
+
+end
+
+if __FILE__ == $0
+  usecase = FastqcApp.new
+
+  usecase.project = "p1001"
+  usecase.user = "masa"
+
+  # set user parameter
+  # for GUI sushi
+  #usecase.params['process_mode'].value = 'SAMPLE'
+  #usecase.params['refBuild'] = 'TAIR10'
+  #usecase.params['paired'] = true
+  #usecase.params['cores'] = 2
+  #usecase.params['node'] = 'fgcz-c-048'
+
+  # also possible to load a parameterset csv file
+  # mainly for CUI sushi
+  usecase.parameterset_tsv_file = 'tophat_parameterset.tsv'
+  #usecase.params['name'] = 'name'
+
+  # set input dataset
+  # mainly for CUI sushi
+  usecase.dataset_tsv_file = 'tophat_dataset.tsv'
+
+  # also possible to load a input dataset from Sushi DB
+  #usecase.dataset_sushi_id = 1
+
+  # run (submit to workflow_manager)
+  usecase.run
+  #usecase.test_run
+
 end
