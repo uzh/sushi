@@ -13,7 +13,7 @@ class SCReportMergingApp < SushiFabric::SushiApp
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'SingleCell'
     @description =<<-EOS
-    The report of mergeed single cell samples/plates<br/>
+    The report of merged single cell samples/plates<br/>
     EOS
     @required_columns = ['Name', 'Species', 'refBuild', 'refFeatureFile', 'Static Report']
     @required_params = []
