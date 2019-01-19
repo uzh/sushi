@@ -41,7 +41,7 @@ class SCReportMergingApp < SushiFabric::SushiApp
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
-    {'Name'=>@dataset['Name'],
+    {'Name'=>@params['name'],
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile'],
