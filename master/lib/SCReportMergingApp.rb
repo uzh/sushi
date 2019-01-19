@@ -28,12 +28,12 @@ class SCReportMergingApp < SushiFabric::SushiApp
     @params['resolution', 'description'] = 'Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.'
     @params['batchCorrection'] = ['CCA', 'None']
     @params['batchCorrection', 'description'] = 'The batch correctio method: CCA or no correction'
-    @param['cc'] = 20
-    @param['cc', 'description'] = 'The number of canonical correlated subspaces.'
-    @param['chosenClusters1'] =''
-    @param['chosenClusters1', 'description'] = 'The subclusters to merge from sample 1'
-    @param['chosenClusters2'] =''
-    @param['chosenClusters2', 'description'] = 'The subclusters to merge from sample 2'
+    @params['cc'] = 20
+    @params['cc', 'description'] = 'The number of canonical correlated subspaces.'
+    @params['chosenClusters1'] =''
+    @params['chosenClusters1', 'description'] = 'The subclusters to merge from sample 1'
+    @params['chosenClusters2'] =''
+    @params['chosenClusters2', 'description'] = 'The subclusters to merge from sample 2'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]
@@ -46,7 +46,6 @@ class SCReportMergingApp < SushiFabric::SushiApp
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
-     #'Live Report [Link]'=>"#{SHINY_EXPLORE_SC}?data=#{report_file}/SCReport-#{@random_string}.rds",
      'Report [File]'=>report_file,
     }
   end
