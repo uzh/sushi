@@ -34,6 +34,8 @@ class SCReportMergingApp < SushiFabric::SushiApp
     @params['chosenClusters1', 'description'] = 'The subclusters to merge from sample 1'
     @params['chosenClusters2'] =''
     @params['chosenClusters2', 'description'] = 'The subclusters to merge from sample 2'
+    @params['all2allMarkers'] = false
+    @params['all2allMarkers', 'description'] = 'Run all against all cluster comparisons?'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]
