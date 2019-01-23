@@ -24,6 +24,7 @@ class SCReportMergingApp < SushiFabric::SushiApp
     @params['name'] = 'SCReportMerging'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['scProtocol'] = ['10X', 'smart-Seq2']
     @params['resolution'] = 0.6
     @params['resolution', 'description'] = 'Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.'
     @params['batchCorrection'] = ['CCA', 'None']
