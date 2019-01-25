@@ -18,9 +18,9 @@ Single cell report<br/>
     @required_columns = ['Name', 'Species', 'refBuild', 'CountMatrix', 'ResultDir']
     @required_params = ['name']
     # optional params
-    @params['cores'] = '4'
-    @params['ram'] = '15'
-    @params['scratch'] = '10'
+    @params['cores'] = '8'
+    @params['ram'] = '30'
+    @params['scratch'] = '50'
     @params['name'] = 'SCReport'
     @params['refBuild'] = ref_selector
     @params['paired'] = false
