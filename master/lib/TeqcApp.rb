@@ -28,13 +28,14 @@ Quality control for target capture experiments<br/>
     Dir["/srv/GT/databases/targetEnrichment_designs/*"].sort.select{|design| File.directory?(design)}.each do |dir|
       @params['designFile'][File.basename(dir)] = File.basename(dir)
     end
+    @params['removeDuplicates'] = true
     @params['covUniformityPlot'] = true
     @params['covTargetLengthPlot'] = true
     @params['duplicatesPlot'] = true
     #@params['Rversion'] = ["Dev/R/3.4.2", "Dev/R/3.5.0"]
     @params['cmdOptions'] = ""
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Tools/sambamba","Dev/R/3.4.2"]
+    @modules = ["Tools/samtools", "Tools/sambamba","Dev/R"]
   end
  def set_default_parameters
    @params['refBuild'] = @dataset[0]['refBuild']
