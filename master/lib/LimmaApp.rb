@@ -6,7 +6,7 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class LimmaRApp < SushiFabric::SushiApp
+class LimmaApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'Limma'
