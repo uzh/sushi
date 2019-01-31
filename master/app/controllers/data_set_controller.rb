@@ -1,29 +1,32 @@
 class DataSetController < ApplicationController
   include SushiFabric
-  def top(n_dataset=1000)
+  def top(n_dataset=1000, tree=nil)
     view_context.project_init
     @project = Project.find_by_number(session[:project].to_i)
 
+    @tree = tree
     @data_sets = []
     if @project and  data_sets = @project.data_sets
-      @data_sets = data_sets.reverse[0, n_dataset]
-      @data_sets.each do |data_set|
-        unless data_set.completed_samples.to_i == data_set.samples_length.to_i
-          sample_available = 0
-          data_set.samples.each do |sample|
-            if sample_file = sample.to_hash.select{|header, file| header and header.tag?('File')}.first
-              file_path = File.join(SushiFabric::GSTORE_DIR, sample_file.last.to_s)
-              if File.exist?(file_path)
-                sample_available+=1
-              end
-            else # in case of no [File] tag sample
-              sample_available+=1
-            end
-          end
-          data_set.completed_samples = sample_available
-          data_set.save
-        end
-      end
+       @data_sets = data_sets.reverse[0, n_dataset]
+       unless @tree
+         @data_sets.each do |data_set|
+           unless data_set.completed_samples.to_i == data_set.samples_length.to_i
+             sample_available = 0
+             data_set.samples.each do |sample|
+               if sample_file = sample.to_hash.select{|header, file| header and header.tag?('File')}.first
+                 file_path = File.join(SushiFabric::GSTORE_DIR, sample_file.last.to_s)
+                 if File.exist?(file_path)
+                   sample_available+=1
+                 end
+               else # in case of no [File] tag sample
+                 sample_available+=1
+               end
+             end
+             data_set.completed_samples = sample_available
+             data_set.save
+           end
+         end
+       end
     end
   end
   def index
@@ -31,10 +34,14 @@ class DataSetController < ApplicationController
       @warning = warning
       session['import_fail'] = nil
     end
-    top(100)
+    top(10)
   end
   def index_full
     top
+    render action: "index"
+  end
+  def index_tree
+    top(10, :tree)
     render action: "index"
   end
   def list

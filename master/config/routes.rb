@@ -43,6 +43,7 @@ SushiFabric::Application.routes.draw do
       post :multi_delete
       post :multi_destroy
       get :index_full
+      get :index_tree
       post :report
       post :bfabric
       post :add_comment
