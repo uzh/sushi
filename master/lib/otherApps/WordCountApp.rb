@@ -29,11 +29,20 @@ class WordCountApp < SushiFabric::SushiApp
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
-    {
-      'Name'=>@dataset['Name'],
-      'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats'),
-      'Options' => @params['test_option1']
-    }.merge(extract_columns(@inherit_tags))
+    if @params['count_option'] == "-c"
+      {
+        'Name'=>@dataset['Name'],
+        'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats'),
+        'Options' => @params['test_option1']
+      }.merge(extract_columns(@inherit_tags))
+    else
+      {
+        'Name'=>@dataset['Name'],
+        'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats'),
+        'Hoge' => 'Bar',
+        'Options' => @params['test_option1']
+      }.merge(extract_columns(@inherit_tags))
+    end
   end
   def set_default_parameters
     if @dataset[0]['Options']
