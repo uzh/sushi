@@ -19,8 +19,8 @@ RNA velocity analysis for single cell data<br/>
     @required_params = ['name']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '16'
-    @params['scratch'] = '150'
+    @params['ram'] = '30'
+    @params['scratch'] = '250'
     @params['name'] = 'SCRNAVelocity'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
