@@ -31,10 +31,8 @@ class SCReportMergingApp < SushiFabric::SushiApp
     @params['batchCorrection', 'description'] = 'The batch correctio method: CCA or no correction'
     @params['cc'] = 20
     @params['cc', 'description'] = 'The number of canonical correlated subspaces.'
-    @params['chosenClusters1'] =''
-    @params['chosenClusters1', 'description'] = 'The subclusters to merge from sample 1'
-    @params['chosenClusters2'] =''
-    @params['chosenClusters2', 'description'] = 'The subclusters to merge from sample 2'
+    @params['chosenClusters'] =''
+    @params['chosenClusters', 'description'] = 'The clusters to choose from each sample.In the format of sample1=cluster1,cluster2;sample2=cluster1,cluster2.'
     @params['all2allMarkers'] = false
     @params['all2allMarkers', 'description'] = 'Run all against all cluster comparisons?'
     @params['specialOptions'] = ''
