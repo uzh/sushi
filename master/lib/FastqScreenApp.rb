@@ -22,12 +22,12 @@ EOS
     @params['scratch'] = '100'
     @params['paired'] = false
     @params['name'] = 'FastqScreen_Result'
-    @params['trimAdapter'] = false
+    #@params['trimAdapter'] = false
     @params['trimLeft'] = 0
     @params['trimRight'] = 0
     @params['minTailQuality'] = 10
     @params['minAvgQuality'] = 20
-    @params['minReadLength'] = 50
+    @params['minReadLength'] = 30
     @params['nReads'] = '100000'
     @params['nTopSpecies'] = '5'
     @params['minAlignmentScore'] = '-20'
