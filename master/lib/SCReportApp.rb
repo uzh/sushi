@@ -65,7 +65,7 @@ Single cell report<br/>
     @params['all2allMarkers', 'description'] = 'Run all against all cluster comparisons?'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/R"]
+    @modules = ["Dev/R", "Dev/Python/3.6.8"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
