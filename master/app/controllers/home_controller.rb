@@ -2,9 +2,12 @@ class HomeController < ApplicationController
   def index
     view_context.project_init
     @fgcz = SushiFabric::Application.config.fgcz?
-    if bf = params[:bfabric_registration] and bf_off = bf[:off]
-      session[:off_bfabric_registration] = (bf_off == "OFF")
+  end
+  def switch_bfabric_registration
+    if bf = params[:bfabric_registration]
+      session[:off_bfabric_registration] = (bf == "OFF")
     end
+    render action: "index"
   end
   def gstore
     # path

@@ -1,3 +1,26 @@
+<script type="text/javascript">
+   $(function(){
+       $('#bfabric_registration_off').change(function(){
+         var Idx = this.selectedIndex;
+         var on_off = this.options[Idx].text;
+         $.ajax({
+                type: 'GET',
+                url: '/switch_bfabric_registration',
+                data: {'bfabric_registration': on_off},
+                async : false
+         });
+       })
+   });
+</script>
+
 <div id="footer">
 <strong>SUSHI</strong> - produced by <%= link_to image_tag("fgcz_logo.jpg"), "http://www.fgcz.ch" %> <%= link_to image_tag("sib_logo.png"), "http://sib.swiss" %> and <strong><a href="/sushi_rank"><span style="color:lightgrey;">SUSHI Lovers</span></a></strong>
+
+
+<% if session[:employee] %>
+  <%= link_to 'Find', "/data_set/list", :method => :post, :style => "color: #235ffc;" %>
+  <span style="color: #235ffc;">BF</span>
+  <%= select :bfabric_registration, :off, ["ON", "OFF"], :selected=>(session[:off_bfabric_registration] ? 'OFF' : 'ON') %>
+<% end %>
+
 </div>
