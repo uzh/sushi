@@ -179,6 +179,7 @@ class DataSetController < ApplicationController
     end
 
     if @data_set
+      session[:latest_data_set_id] = @data_set.id
       # check some properties
       if session[:employee]
         if parent_dataset = @data_set.data_set
