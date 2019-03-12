@@ -6,12 +6,6 @@
          $('#project_number').val(project_number);
          this.form.submit();
        })
-       $('#bfabric_registration_off').change(function(){
-         var Idx = this.selectedIndex;
-         var on_off = this.options[Idx].text;
-         this.form.submit();
-       })
-
    });
 </script>
 
@@ -35,11 +29,6 @@
                   <li><%= link_to 'Jobs', '/job_monitoring', :style => "padding: 0px 3px;line-height:60px;" %></li>
                   <li style="padding: 0px 3px;line-height:60px;">-</li>
                   <li><%= link_to 'gStore', "/projects/p#{session[:project]}", :style => "padding: 0px 3px;line-height:60px;" %></li>
-                  <li style="padding: 0px 3px;line-height:60px;">-</li>
-                  <% if session[:employee] %>
-                    <li><%= link_to 'Find', "/data_set/list", :method => :post, :style => "padding: 0px 3px;line-height:60px;" %></li>
-                    <li style="padding: 0px 3px;line-height:60px;">-</li>
-                  <% end %>
             </ul>
 
             <ul class="nav navbar-nav" style="float: left !important;margin: 0 5px !important;">
@@ -59,9 +48,6 @@
       <%= label(:project, :number, "Project") %>
       <%= text_field :project, :number, :value=>"#{session[:project]}", :size => 10, :style => "line-height: 16px" %>
       <%= select :select_project, :number, session[:projects], :prompt=>'project list' %>
-      <% if session[:employee] %>
-      BF<%= select :bfabric_registration, :off, ["ON", "OFF"], :selected=>(session[:off_bfabric_registration] ? 'OFF' : 'ON') %>
-      <% end %>
         </div>
     <% end %>
 	<ul class="nav navbar-nav navbar-right" style="margin-right: 0">

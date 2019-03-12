@@ -92,6 +92,7 @@ SushiFabric::Application.routes.draw do
   get "/check_sushi_constants" => "home#sushi_constants"
   get "/import/*dataset" => "data_set#import_from_gstore"
   get "/sushi_rank" => "home#sushi_rank"
+  get "/switch_bfabric_registration" => "home#switch_bfabric_registration"
 
 
 #	match "/city_select" => "run_application#city_select"
