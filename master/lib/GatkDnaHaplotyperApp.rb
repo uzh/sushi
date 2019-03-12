@@ -29,7 +29,7 @@ Haplotype calling for DNA-seq<br/>
     end
     @params['getRealignedBam'] = false
     @params['markDuplicates'] = false
-    @params['addReadGroup'] = false
+    @params['addReadGroup'] = true
     @params['knownSitesAvailable'] = false
     @params['specialOptions'] = ''
     @params['mail'] = ""
