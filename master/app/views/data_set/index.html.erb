@@ -1,5 +1,14 @@
 <script type="text/javascript">
     $(document).ready(function () {
+        var count = 0;
+        var countup = function(){
+          count++;
+          var id = setTimeout(countup, 1000);
+          if(count > 2){　
+            clearTimeout(id);
+          }
+        }
+
         var url_not_found = $('#url_not_found').val();
         if(url_not_found=="true"){
           alert("URL is not found");
@@ -14,6 +23,7 @@
             "plugins" : [ "state", "search", "checkbox" ],
             checkbox: { cascade: "", three_state: false, tie_selection : false, whole_node: false }
         });
+
         var to = false;
         $('#search_tree').keyup(function () {
           if(to) { clearTimeout(to); }
@@ -22,19 +32,11 @@
             $('#data_set_tree').jstree(true).search(v);
           }, 250);
         });
-    });
 
-    $(document).ready(function () {
-      var count = 0;
-      var countup = function(){
-        count++;
-        var id = setTimeout(countup, 1000);
-        if(count > 2){　
-          clearTimeout(id);
-        }
-      }
-      countup();
       $("#data_set_tree")
+        .on('state_ready.jstree', function(e, data){
+          countup();
+        })
         .on('check_node.jstree', function(e, data){
               var all_checked = data.instance.get_checked();
               var delete_flag_checked = $.map(all_checked, function(n, i){
