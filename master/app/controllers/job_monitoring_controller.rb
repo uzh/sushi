@@ -85,8 +85,16 @@ class JobMonitoringController < ApplicationController
       gsub_options << "-r #{prev_params['ram']}" unless prev_params['ram'].to_s.empty?
       gsub_options << "-s #{prev_params['scratch']}" unless prev_params['scratch'].to_s.empty?
       if script_path and current_user and script_content and project_number and gstore_script_dir and @data_set_id and File.exist?(parameters_tsv)
-        job_id = @@workflow_manager.start_monitoring(script_path, current_user.login, 0, script_content, project_number, gsub_options.join(' '), gstore_script_dir)
-        puts "job_id: #{job_id}"
+        new_job_id = @@workflow_manager.start_monitoring(script_path, current_user.login, 0, script_content, project_number, gsub_options.join(' '), gstore_script_dir)
+        puts "job_id: #{new_job_id}"
+        new_job = Job.new
+        new_job.submit_job_id = new_job_id.to_i
+        new_job.script_path = script_path
+        new_job.next_dataset_id = job.next_dataset_id
+        new_job.save
+        new_job.data_set.jobs << new_job
+        new_job.data_set.save
+
         puts "RESUBMITTED"
       else
         raise "SOMETHING WRONG"
