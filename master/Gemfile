@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'ffi', '1.9.18' # latest 1.9.21 failed on 20180209, hopefully it will be solved in future.
+gem 'sassc-rails'
 gem 'rails', '4.2.11.1'
 
 # Bundle edge Rails instead:
@@ -12,7 +13,6 @@ gem 'sqlite3'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails'
   gem 'coffee-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
