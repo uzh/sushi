@@ -49,7 +49,7 @@ class SCReportMergingApp < SushiFabric::SushiApp
     @params['all2allMarkers', 'description'] = 'Run all against all cluster comparisons?'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/R"]
+    @modules = ["Dev/R", "Dev/Python/3.6.8"]
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
