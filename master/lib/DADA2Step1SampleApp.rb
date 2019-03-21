@@ -16,7 +16,7 @@ Data preprocssing with DADA2. Please make sure that the input files are from the
 <a href='https://DADA2.org/wiki/MiSeq_SOP'>https://DADA2.org/wiki</a>
   EOS
 @required_columns = ['Name', 'Read1']
-@required_params = ['maxLen', 'technology','paired']
+@required_params = ['maxLen', 'technology','paired','concatenateReads']
 @params['cores'] = '2'
 @params['ram'] = '8'
 @params['scratch'] = '10'
@@ -36,6 +36,9 @@ end
     if @params['paired']
       @required_columns << 'Read2'
     end
+    if @params['concatenateReads']
+      @required_columns << 'Read2'
+    end
       if @params['Group']
       @required_columns << 'Group'
     end
@@ -45,8 +48,10 @@ end
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
+    @params['concatenateReads'] = dataset_has_column?('Read2')
        @params['Group'] = dataset_has_column?('Group')
            @params['mockSample'] = dataset_has_column?('mockSample')
+           
   end
   
 def next_dataset
