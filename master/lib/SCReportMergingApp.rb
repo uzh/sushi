@@ -25,10 +25,6 @@ class SCReportMergingApp < SushiFabric::SushiApp
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['scProtocol'] = ['10x', 'smart-Seq2']
-    @params['minGenesPerCell'] = 500
-    @params['minGenesPerCell', 'description'] = 'Minimal number of genes per cell for Seurat filtering'
-    @params['maxGenesPerCell'] = 3000
-    @params['maxGenesPerCell', 'description'] = 'Maximal number of genes per cell for Seurat filtering'
     @params['pcs'] = 20
     @params['pcs', 'description'] = 'The maximal dimensions to use for reduction.'
     @params['x.low.cutoff'] = 0.0125
@@ -43,6 +39,8 @@ class SCReportMergingApp < SushiFabric::SushiApp
     @params['batchCorrection', 'description'] = 'The batch correctio method: CCA or no correction'
     @params['cc'] = 20
     @params['cc', 'description'] = 'The number of canonical correlated subspaces.'
+    @params['resolutionCCA'] = 0.6
+    @params['resolutionCCA', 'description'] = 'Value of the resolution parameter for CCA correction version, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.'
     @params['chosenClusters'] =''
     @params['chosenClusters', 'description'] = 'The clusters to choose from each sample.In the format of sample1=cluster1,cluster2;sample2=cluster1,cluster2.'
     @params['all2allMarkers'] = false
