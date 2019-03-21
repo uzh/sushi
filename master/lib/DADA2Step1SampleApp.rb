@@ -16,14 +16,12 @@ Data preprocssing with DADA2. Please make sure that the input files are from the
 <a href='https://DADA2.org/wiki/MiSeq_SOP'>https://DADA2.org/wiki</a>
   EOS
 @required_columns = ['Name', 'Read1']
-@required_params = ['minLen', 'maxLen', 'technology','paired']
+@required_params = ['maxLen', 'technology','paired']
 @params['cores'] = '2'
 @params['ram'] = '8'
 @params['scratch'] = '10'
-@params['minLen'] = '190'
-@params['minLen', 'description'] = 'Sequences shorter than this long are removed.'
-@params['maxLen'] = '240'
-@params['maxLen', 'description'] = 'Sequences longer than this are removed.'
+@params['maxLen'] = '300'
+@params['maxLen', 'description'] = 'Sequences shorter than this long are removed.'
 @params['technology'] = ['illumina','pacbio','ONT']
 @params['technology', 'description'] = 'Sequencing technology used.'
 @params['referenceFasta'] = ''
