@@ -15,6 +15,7 @@ super
 Data preprocssing with DADA2. Please make sure that the input files are from the same technology and adjust minLen and maxLen accordingly.
 <a href='https://DADA2.org/wiki/MiSeq_SOP'>https://DADA2.org/wiki</a>
   EOS
+@params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'RObjectWithSeqTab']
 @required_params = ['database']
 @params['cores'] = '2'
