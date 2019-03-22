@@ -28,6 +28,8 @@ Data preprocssing with DADA2. Please make sure that the input files are from the
 @params['referenceFasta', 'description'] = 'Full path to fasta file for the mock community (if available).'
 @params['paired'] = true
 @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
+@params['concatenateReads'] = false
+@params['concatenateReads', 'description'] = 'should paired reads be concatenated instead of overlapped? Set it TRUE if paired reads do not overlap.'
 @params['mail'] = ""
 @inherit_tags = ['B-Fabric', 'Characteristic', 'Mock','Group']
 @modules = ['Dev/R']

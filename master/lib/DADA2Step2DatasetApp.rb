@@ -24,16 +24,17 @@ Data preprocssing with DADA2. Please make sure that the input files are from the
 @params['database'] = ['silva','RDP','greenGenes']
 @params['database', 'description'] = '16S database to use for taxonomic assignment.'
 @params['mail'] = ""
+@params['Name'] = "DADA2Step2"
 @inherit_tags = ['B-Fabric', 'Characteristic', 'Mock','Group']
 @modules = ['Dev/R']
 end
   def preprocess
-      if @params['Group']
+      if @params['group']
       @required_columns << 'Group'
     end
   end
  def set_default_parameters
-       @params['Group'] = dataset_has_column?('Group')
+       @params['group'] = dataset_has_column?('Group')
   end
   
 def next_dataset
