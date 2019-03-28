@@ -30,6 +30,7 @@ Single cell report<br/>
     @params['transcriptTypes'] = ''
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 0
+    @params['scProtocol'] = ['10X', 'smart-Seq2']
     @params['minCellsPerGene'] = 5
     @params['minCellsPerGene', 'description'] = 'Minimum number of cells per gene for creating Seurat object'
     @params['minGenesPerCell'] = 500

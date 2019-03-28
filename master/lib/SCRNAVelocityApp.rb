@@ -24,7 +24,7 @@ RNA velocity analysis for single cell data<br/>
     @params['name'] = 'SCRNAVelocity'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['scProtocol'] = ['smart-Seq2', '10X']
+    @params['scProtocol'] = ['10X', 'smart-Seq2']
     @params['markersToCheck'] = ''
     @params['markersToCheck', 'description'] = 'Show the fitting of individual genes if given, in format of Lgals3,Napsa.'
     @params['specialOptions'] = ''

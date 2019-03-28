@@ -63,16 +63,7 @@ EOS
      'refFeatureFile'=>@params['refFeatureFile'],
      'transcriptTypes'=>@params['transcriptTypes'],
      'ResultDir [File]'=>report_dir,
-     'CellDataset [Link]'=>File.join(report_dir, "#{@dataset['Name']}-dataset.tsv"),
-     'CountMatrix [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.mtx"),
-     'CountMatrixColNames [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.colNames"),
-     'CountMatrixRowNames [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.rowNames"),
-     'Stats [Link]'=>File.join(report_dir, "#{@dataset['Name']}-stats.txt"),
-     'CellCyclePhase [Link]'=>File.join(report_dir, "#{@dataset['Name']}-CellCyclePhase.txt"),
-     'BAM [Link]'=>File.join(report_dir, "#{@dataset['Name']}.bam"),
-     'BAI [Link]'=>File.join(report_dir, "#{@dataset['Name']}.bam.bai"),
-     'PreprocessingLog [Link]'=>File.join(report_dir, "#{@dataset['Name']}_preprocessing.log"),
-     'STARLog [Link]'=>File.join(report_dir, "#{@dataset['Name']}_STAR.log")
+     'CountMatrix [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.mtx")
     }.merge(extract_columns(@inherit_tags))
     dataset
   end

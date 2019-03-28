@@ -44,24 +44,22 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     if @params['TenXLibrary'] == "VDJ"
       dataset = {
         'Name'=>@dataset['Name'],
-        'ResultDir [File]'=>report_dir,
-        'Report [Link]'=>File.join(report_dir, 'outs/web_summary.html'),
-        'Species'=>@dataset['Species'],
-        'refBuild'=>@params['refBuild'],
-        'refFeatureFile'=>@params['refFeatureFile'],
-        'featureLevel'=>@params['featureLevel']
-      }.merge(extract_columns(@inherit_tags))
-    else
-      dataset = {
-        'Name'=>@dataset['Name'],
-        'ResultDir [File]'=>report_dir,
-        'Report [Link]'=>File.join(report_dir, 'outs/web_summary.html'),
-        'BAM [Link]'=>File.join(report_dir, 'outs/possorted_genome_bam.bam'),
-        'BAI [Link]'=>File.join(report_dir, 'outs/possorted_genome_bam.bam.bai'),
         'Species'=>@dataset['Species'],
         'refBuild'=>@params['refBuild'],
         'refFeatureFile'=>@params['refFeatureFile'],
         'featureLevel'=>@params['featureLevel'],
+        'ResultDir [File]'=>report_dir,
+        'Report [Link]'=>File.join(report_dir, 'outs/web_summary.html')
+      }.merge(extract_columns(@inherit_tags))
+    else
+      dataset = {
+        'Name'=>@dataset['Name'],
+        'Species'=>@dataset['Species'],
+        'refBuild'=>@params['refBuild'],
+        'refFeatureFile'=>@params['refFeatureFile'],
+        'featureLevel'=>@params['featureLevel'],
+        'ResultDir [File]'=>report_dir,
+        'Report [Link]'=>File.join(report_dir, 'outs/web_summary.html'),
         'CountMatrix [Link]'=>File.join(report_dir, 'outs/filtered_feature_bc_matrix')
       }.merge(extract_columns(@inherit_tags))
     end

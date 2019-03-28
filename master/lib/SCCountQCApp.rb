@@ -29,6 +29,7 @@ Quality control for singel cell alignment and counts<br/>
     @params['transcriptTypes'] = ''
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 0
+    @params['scProtocol'] = ['10X', 'smart-Seq2']
     @params['minReadsPerCell'] = 1500
     @params['minReadsPerCell', 'description'] = 'Filter cells with less reads counted on genes'
     @params['minReadsPerGene'] = 3
