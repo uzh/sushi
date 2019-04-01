@@ -24,7 +24,7 @@ class SCReportMergingApp < SushiFabric::SushiApp
     @params['name'] = 'SCReportMerging'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['scProtocol'] = ['10x', 'smart-Seq2']
+    @params['scProtocol'] = ['10X', 'smart-Seq2']
     @params['pcs'] = 20
     @params['pcs', 'description'] = 'The maximal dimensions to use for reduction.'
     @params['x.low.cutoff'] = 0.0125
