@@ -27,17 +27,11 @@ Counted since <%= @first_date %>
 <% end %>
 </table>
 <%= column_chart @count_month,
-  :library => {
-  :hAxis => {:title => "Total job submitting"}
-  }
+  ytitle: "#Submitted Jobs"
 %>
 <%= column_chart @count_users,
-  :library => {
-  :hAxis => {:title => "New users"}
-  }
+  ytitle: "#New Users"
 %>
 <%= line_chart @total_users,
-  :library => {
-  :hAxis => {:title => "Total number of users"}
-  }
+  ytitle: "Total number of Users"
 %>
