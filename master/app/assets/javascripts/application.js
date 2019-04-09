@@ -11,7 +11,8 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require ./shared
-//= require chartkick
+//= require Chart.bundle
+////= require chartkick
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
