@@ -51,7 +51,7 @@ class DataSet < ActiveRecord::Base
     end
     self.num_samples
   end
-  def register_bfabric(op = 'new')
+  def register_bfabric(op = 'new', bfabric_application_number: nil)
     base = "public/register_sushi_dataset_into_bfabric"
     check = "public/check_dataset_bfabric"
     parent_dataset = self.data_set
@@ -74,6 +74,9 @@ class DataSet < ActiveRecord::Base
                   else
                     [base, "p#{self.project.number}", dataset_tsv, self.name, self.id].join(" ")
                   end
+        if bfabric_application_number
+          command << " -a #{bfabric_application_number}"
+        end
         if option_check
           open(dataset_tsv, "w") do |out|
             out.print self.tsv_string
