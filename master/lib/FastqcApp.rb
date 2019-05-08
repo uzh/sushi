@@ -28,7 +28,7 @@ EOS
     @params['name'] = 'FastQC_Result'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
-    @modules = ["QC/FastQC", "Dev/R", "Tools/samtools", "Tools/sambamba"]
+    @modules = ["QC/FastQC", "Dev/R", "Tools/Picard", "Tools/samtools", "Tools/sambamba"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
