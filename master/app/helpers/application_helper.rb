@@ -7,7 +7,7 @@ module ApplicationHelper
       @fgcz = SushiFabric::Application.config.fgcz?
       session[:employee] = (@fgcz and current_user and FGCZ.get_user_groups(current_user.login).include?('Employees'))
       session[:projects] = if @fgcz and current_user
-                             FGCZ.get_user_projects(current_user.login).map{|project| project.gsub(/p/,'').to_i}.sort
+                             FGCZ.get_user_projects2(current_user.login).map{|project| project.gsub(/p/,'').to_i}.sort
                            elsif defined?(SushiFabric::Application.config.course_users) and user_projects = SushiFabric::Application.config.course_users
                              user_projects
                            else
