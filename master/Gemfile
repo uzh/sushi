@@ -54,7 +54,7 @@ gem 'ruby_parser'
 #    gem 'fgcz'
 gem 'savon'
 if `hostname`.chomp =~ /fgcz-s-032/
-gem 'fgcz', :path => '/srv/SushiFabric/Gems/fgcz'
+gem 'fgcz', '>= 0.0.2', :path => '/srv/SushiFabric/Gems/fgcz'
 end
 
 group :test do
