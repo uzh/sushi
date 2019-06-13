@@ -8,7 +8,7 @@ PATH
 PATH
   remote: /srv/SushiFabric/Gems/fgcz
   specs:
-    fgcz (0.0.1)
+    fgcz (0.0.2)
 
 GEM
   remote: https://rubygems.org/
@@ -231,7 +231,7 @@ DEPENDENCIES
   devise
   devise_ldap_authenticatable (>= 0.6.1.1)!
   ffi (= 1.9.18)
-  fgcz!
+  fgcz (>= 0.0.2)!
   google-analytics-rails
   hpricot
   jquery-rails
