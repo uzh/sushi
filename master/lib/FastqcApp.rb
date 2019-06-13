@@ -28,7 +28,7 @@ EOS
     @params['name'] = 'FastQC_Result'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
-    @modules = ["QC/FastQC", "Dev/R", "Tools/Picard", "Tools/samtools", "Tools/sambamba"]
+    @modules = ["QC/FastQC", "Dev/R", "Tools/Picard", "Tools/samtools", "Tools/sambamba", "Dev/Python"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
@@ -41,9 +41,11 @@ EOS
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
+    reportMultiQC_link = File.join(report_file, 'multiqc_report.html')
     {'Name'=>@params['name'],
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
+     'MultiQC [Link]'=>reportMultiQC_link,
     }
   end
   def commands
