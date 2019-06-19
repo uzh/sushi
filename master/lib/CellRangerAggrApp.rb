@@ -31,6 +31,11 @@ EOS
     @modules = ["Dev/R"]
   end
   def set_default_parameters
+    @params['refBuild'] = @dataset[0]['refBuild']
+    if dataset_has_column?('refFeatureFile')
+      @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
+    end
+    @params['transcriptTypes'] = @dataset[0]['transcriptTypes'].to_s.split(',')
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
