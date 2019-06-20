@@ -44,6 +44,7 @@ EOS
      'refFeatureFile'=>@params['refFeatureFile'],
      'featureLevel'=>@params['featureLevel'],
      'transcriptTypes'=>@params['transcriptTypes'],
+     'ResultDir [File]'=>report_file,
      'Report [Link]'=>File.join(report_file, 'web_summary.html')
     }
   end
