@@ -52,7 +52,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
         'refFeatureFile'=>@params['refFeatureFile'],
         'featureLevel'=>@params['featureLevel'],
         'ResultDir [File]'=>report_dir,
-        'Report [Link]'=>File.join(report_dir, 'outs/web_summary.html')
+        'Report [Link]'=>File.join(report_dir, 'web_summary.html')
       }.merge(extract_columns(@inherit_tags))
     else
       dataset = {
