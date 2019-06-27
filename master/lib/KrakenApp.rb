@@ -9,7 +9,7 @@ class KrakenApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'Kraken'
-    @analysis_category = 'Metagenomic'
+    @analysis_category = 'Metagenomics'
     @description =<<-EOS
 Kraken taxonomic sequence classification system
 <a href='https://ccb.jhu.edu/software/kraken2/index.shtml'>https://ccb.jhu.edu/software/kraken2/index.shtml</a>
