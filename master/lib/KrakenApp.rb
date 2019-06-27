@@ -32,7 +32,7 @@ EOS
     @params['minTailQuality', 'description'] = 'if above zero, then reads are trimmed as soon as 4 consecutive bases have lower mean quality'
     @params['minAvgQuality'] = 20
     @params['minReadLength'] = 50
-    @params['krakenDBOpt'] = 'bacteria'
+    @params['krakenDBOpt'] = ['bacteria', 'viruses']
     @params['krakenDBOpt', 'description'] = 'kraken database options: viruses or bacteria. Default is bacteria'
     @params['krakenConfidenceOpt'] = '0.0'
     @params['krakenConfidenceOpt', 'description'] = 'Confidence score threshold, between 0 and 1'
