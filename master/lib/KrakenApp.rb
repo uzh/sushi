@@ -14,12 +14,14 @@ class KrakenApp < SushiFabric::SushiApp
 Kraken taxonomic sequence classification system
 <a href='https://ccb.jhu.edu/software/kraken2/index.shtml'>https://ccb.jhu.edu/software/kraken2/index.shtml</a>
 EOS
+
     @required_columns = ['Name','Read1']
-    @required_params = ['name', 'paired', 'krakenDBOpt']
+    @required_params = ['paired', 'krakenDBOpt']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '30'
-    @params['scratch'] = '50'
+    @params['ram'] = '100'
+    @params['scratch'] = '500'
+    @params['paired'] = true
     @params['trimAdapter'] = true
     @params['trimAdapter', 'description'] = 'if adapters should be trimmed'
     @params['trimLeft'] = 0
@@ -31,7 +33,7 @@ EOS
     @params['minAvgQuality'] = 20
     @params['minReadLength'] = 50
     @params['krakenDBOpt'] = 'bacteria'
-    @params['krakenDBOpt', 'description'] = 'kraken database options: viruses bacteria. Default is bac'
+    @params['krakenDBOpt', 'description'] = 'kraken database options: viruses or bacteria. Default is bacteria'
     @params['krakenConfidenceOpt'] = '0.0'
     @params['krakenConfidenceOpt', 'description'] = 'Confidence score threshold, between 0 and 1'
     @params['krakenPhredOpt'] = '0'
@@ -51,6 +53,9 @@ EOS
     {'Name'=>@dataset['Name'],
      'KronaReport [Link]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
      'KrakenOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
+     'KrakenReport [File]'=>File.join(@result_dir, "#{@dataset['Name']}.report.txt"),
+     'KronaOutDir [File]'=>File.join(@result_dir, "#{@dataset['Name']}.html.files"),
+     'KronaOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
