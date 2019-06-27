@@ -15,14 +15,14 @@ class GatkRnaHaplotyperApp <  SushiFabric::SushiApp
 Haplotype calling for RNA-seq<br/>
 <a href='https://www.broadinstitute.org/gatk/guide/tooldocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php'>HaplotypeCaller</a>
     EOS
-    @required_columns = ['Name','BAM','BAI', 'build', 'Species']
+    @required_columns = ['Name','BAM','BAI', 'refBuild', 'Species']
     @required_params = ['name', 'paired']
     @params['cores'] = '24'
     @params['ram'] = '100'
     @params['scratch'] = '500'
     @params['paired'] = false
     @params['name'] = 'GATK_RnaVariants'
-    @params['build'] = ref_selector
+    @params['refBuild'] = ref_selector
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Dev/jdk", "Variants/GATK", "Tools/Picard", "Dev/R", "Tools/sambamba"]
@@ -35,13 +35,13 @@ Haplotype calling for RNA-seq<br/>
      'Report [File]'=>report_dir,
      'Html [Link]'=>File.join(report_dir, '00index.html'),
      'Species'=>(dataset = @dataset.first and dataset['Species']),
-     'build'=>@params['build']
+     'refBuild'=>@params['refBuild']
     }
   end
   def set_default_parameters
-    @params['build'] = @dataset[0]['build']
+    @params['refBuild'] = @dataset[0]['refBuild']
     if dataset_has_column?('paired')
-      @params['paired'] = @dataset[0]['paired']
+      @params['refBuild'] = @dataset[0]['refBuild']
     end
   end
 
@@ -50,34 +50,3 @@ Haplotype calling for RNA-seq<br/>
   end
 end
 
-if __FILE__ == $0
-  usecase = BamStatsApp.new
-
-  usecase.project = "p1001"
-  usecase.user = "masa"
-
-  # set user parameter
-  # for GUI sushi
-  #usecase.params['process_mode'].value = 'SAMPLE'
-  #usecase.params['build'] = 'TAIR10'
-  #usecase.params['paired'] = true
-  #usecase.params['cores'] = 2
-  #usecase.params['node'] = 'fgcz-c-048'
-
-  # also possible to load a parameterset csv file
-  # mainly for CUI sushi
-  usecase.parameterset_tsv_file = 'tophat_parameterset.tsv'
-  #usecase.params['name'] = 'name'
-
-  # set input dataset
-  # mainly for CUI sushi
-  usecase.dataset_tsv_file = 'tophat_dataset.tsv'
-
-  # also possible to load a input dataset from Sushi DB
-  #usecase.dataset_sushi_id = 1
-
-  # run (submit to workflow_manager)
-  usecase.run
-  #usecase.test_run
-
-end
