@@ -17,8 +17,8 @@ Haplotype calling for RNA-seq<br/>
     EOS
     @required_columns = ['Name','BAM','BAI', 'refBuild', 'Species']
     @required_params = ['name', 'paired']
-    @params['cores'] = '24'
-    @params['ram'] = '100'
+    @params['cores'] = '4'
+    @params['ram'] = '30'
     @params['scratch'] = '500'
     @params['paired'] = false
     @params['name'] = 'GATK_RnaVariants'
