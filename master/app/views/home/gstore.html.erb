@@ -43,11 +43,11 @@
         <% if page == @current_page.to_i %>
           <%= page %>
         <% else %>
-          <%= link_to page, "#{File.join(@base, @path)}.#{page}:" %>
+          <%= link_to page, "#{File.join(@base, @path)}.#{page}:#{@sort.to_s}:nr" %>
         <% end %>
       <% end %>
     </td>
-    <td> <%= select :page, :unit, {"10" => 10, "50" => 50, "100" => 100}, :selected => @page_unit %></td>
+    <td> <%= select :page, :unit, {"10" => 10, "50" => 50, "100" => 100, "300" => 300}, :selected => @page_unit %></td>
   </tr>
 </table>
 <% end %>
