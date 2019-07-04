@@ -18,7 +18,6 @@ class HomeController < ApplicationController
     parent.pop
     @parent = parent.join('/')
     @parent = params[:project_id] if @parent.empty?
-    @sort = params[:format] if params[:format]
     @files = Dir[File.join(SushiFabric::GSTORE_DIR, @path)+"/*"]
     @total = @files.length
 
@@ -30,16 +29,18 @@ class HomeController < ApplicationController
                  else
                    session[:gstore_page_unit] = 10
                  end
-    current_page, sort = params[:format].to_s.split(/:/)
+    current_page, @sort, non_rev = params[:format].to_s.split(/:/)
     @current_page = (current_page||1).to_i
     @page_list = (1..(@files.length.to_f/@page_unit).ceil).to_a
     start = (@current_page - 1) * @page_unit
     last  = @current_page * @page_unit - 1
 
     # sort
-    if sort
-      session[:gstore_reverse] = !session[:gstore_reverse]
-      case sort
+    if @sort
+      unless non_rev
+        session[:gstore_reverse] = !session[:gstore_reverse]
+      end
+      case @sort
       when 'Name'
         @files.sort_by! {|file| File.basename(file)}
       when 'Last_Modified'
