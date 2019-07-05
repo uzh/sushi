@@ -39,7 +39,7 @@ Note
   end
   def set_default_parameters
     if data_set = DataSet.find_by_id(@dataset_sushi_id)
-      @params['DataSet'] = Hash[*data_set.project.data_sets.map{|d| [d.name, d.id]}.flatten]
+      @params['DataSet'] = Hash[*data_set.project.data_sets.map{|d| [d.name, d.id]}.sort_by{|name, id| id}.reverse.flatten]
     end
   end
   def preprocess
