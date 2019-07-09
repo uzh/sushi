@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20190705-160026'
+Version = '20190709-102432'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -27,16 +27,37 @@ EAGLE: Explicit Alternative Genome Likelihood Evaluator <br />
     @modules = ["Tools/EAGLE/1.1.1"]
   end
   def preprocess
-    @parent1_genome = if samp = @dataset_hash.first and ref_path = samp['refBuild1'] and dirs = ref_path.split('/') and spc = dirs.first and sub = spc.split('_')
-                spc[0] + sub.last[0,3]
-              else
-                'parent1_genome'
-              end
-    @parent2_genome = if samp = @dataset_hash.first and ref_path = samp['refBuild2'] and dirs = ref_path.split('/') and spc = dirs.first and sub = spc.split('_')
-                     spc[0] + sub.last[0,3]
-                   else
-                     'parent2_genome'
-                   end
+    # first, from species name
+    @parent1_genome = if samp1 = @dataset_hash.first and ref_path1 = samp['refBuild1'] and dirs1 = ref_path1.split('/') and spc1 = dirs1.first and sub1 = spc1.split('_')
+                        spc1[0] + sub1.last[0,3]
+                      else
+                        '1'
+                      end
+    @parent2_genome = if samp2 = @dataset_hash.first and ref_path2 = samp['refBuild2'] and dirs2 = ref_path2.split('/') and spc2 = dirs2.first and sub2 = spc2.split('_')
+                        spc2[0] + sub2.last[0,3]
+                      else
+                        '2'
+                      end
+    if @parent1_genome == @parent2_genome
+      # second, from build name
+      build1_parts = if build1 = dir1[2]
+                       build1.split('_')
+                     else
+                       ["1"]
+                     end
+      build2_parts = if build2 = dir2[2]
+                       build2.split('_')
+                     else
+                       ["2"]
+                     end
+      @parent1_genome = build1_parts.join("_")
+      @parent2_genome = build2_parts.join("_")
+    end
+    if @parent1_genome == @parent2_genome
+      # otherwise, 1 and 2
+      @parent1_genome = "1"
+      @parent2_genome = "2"
+    end
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
