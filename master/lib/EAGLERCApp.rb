@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20190709-111716'
+Version = '20190709-112022'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -40,12 +40,12 @@ EAGLE: Explicit Alternative Genome Likelihood Evaluator <br />
                       end
     if @parent1_genome == @parent2_genome
       # second, from build name
-      build1_parts = if build1 = dir1[2]
+      build1_parts = if build1 = dirs1[2]
                        build1.split('_')
                      else
                        ["1"]
                      end
-      build2_parts = if build2 = dir2[2]
+      build2_parts = if build2 = dirs2[2]
                        build2.split('_')
                      else
                        ["2"]
