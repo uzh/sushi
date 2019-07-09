@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20190709-102432'
+Version = '20190709-111716'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -28,12 +28,12 @@ EAGLE: Explicit Alternative Genome Likelihood Evaluator <br />
   end
   def preprocess
     # first, from species name
-    @parent1_genome = if samp1 = @dataset_hash.first and ref_path1 = samp['refBuild1'] and dirs1 = ref_path1.split('/') and spc1 = dirs1.first and sub1 = spc1.split('_')
+    @parent1_genome = if samp1 = @dataset_hash.first and ref_path1 = samp1['refBuild1'] and dirs1 = ref_path1.split('/') and spc1 = dirs1.first and sub1 = spc1.split('_')
                         spc1[0] + sub1.last[0,3]
                       else
                         '1'
                       end
-    @parent2_genome = if samp2 = @dataset_hash.first and ref_path2 = samp['refBuild2'] and dirs2 = ref_path2.split('/') and spc2 = dirs2.first and sub2 = spc2.split('_')
+    @parent2_genome = if samp2 = @dataset_hash.first and ref_path2 = samp2['refBuild2'] and dirs2 = ref_path2.split('/') and spc2 = dirs2.first and sub2 = spc2.split('_')
                         spc2[0] + sub2.last[0,3]
                       else
                         '2'
