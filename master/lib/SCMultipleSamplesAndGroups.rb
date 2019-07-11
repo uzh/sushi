@@ -23,7 +23,6 @@ class SCMultipleSamplesAndGroupsApp < SushiFabric::SushiApp
     @param['scratch'] = '50'
     @param['node'] = ''
     @param['process_mode'] = 'DATASET'
-    @param['samples'] = 'Epilepsy_13122018,GBM_28_08_2018'
     @param['name'] = 'SCReportMerging'
     @param['refBuild'] = ref_selector
     @param['refFeatureFile'] = 'genes.gtf'
