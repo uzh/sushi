@@ -1,9 +1,9 @@
 PATH
-  remote: /srv/SushiFabric/Gems/devise_ldap_authenticatable
+  remote: /srv/SushiFabric/Gems/devise_ldap_authenticatable_forked_20190712
   specs:
-    devise_ldap_authenticatable (0.6.1.1)
-      devise (>= 2.0.0)
-      net-ldap (~> 0.2.2)
+    devise_ldap_authenticatable (0.8.6.1)
+      devise (>= 3.4.1)
+      net-ldap (>= 0.16.0)
 
 PATH
   remote: /srv/SushiFabric/Gems/fgcz
@@ -103,7 +103,7 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.11.3)
     mysql2 (0.4.10)
-    net-ldap (0.2.2)
+    net-ldap (0.16.1)
     nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
     nori (2.6.0)
@@ -229,7 +229,7 @@ DEPENDENCIES
   chartkick
   coffee-rails
   devise
-  devise_ldap_authenticatable (>= 0.6.1.1)!
+  devise_ldap_authenticatable (>= 0.8.6.1)!
   ffi (= 1.9.25)
   fgcz (>= 0.0.2)!
   google-analytics-rails
