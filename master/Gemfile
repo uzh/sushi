@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'ffi', '1.9.18' # latest 1.9.21 failed on 20180209, hopefully it will be solved in future.
+gem 'ffi', '1.9.25'
 gem 'sassc-rails'
 gem 'rails', '4.2.11.1'
 
