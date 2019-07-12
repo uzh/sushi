@@ -39,7 +39,7 @@ gem 'jquery-rails'
 # gem 'debugger'
 gem 'devise'
 if `hostname`.chomp =~ /fgcz-s-032/
-gem 'devise_ldap_authenticatable', '>= 0.6.1.1', :path => '/srv/SushiFabric/Gems/devise_ldap_authenticatable'
+gem 'devise_ldap_authenticatable', '>= 0.8.6.1', :path => '/srv/SushiFabric/Gems/devise_ldap_authenticatable_forked_20190712'
 else
 gem 'devise_ldap_authenticatable'
 end
