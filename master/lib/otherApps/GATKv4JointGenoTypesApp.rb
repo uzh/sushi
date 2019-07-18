@@ -23,6 +23,7 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['refBuild'] = ref_selector
     @params['only_SNP'] = true
     @params['QD'] = '2.0'
+    @params['MQ'] = '30.0'
     @params['GQ'] = '20'
     @params['DP'] = '0'
     @params['MQRankSum'] = '-15.0'
