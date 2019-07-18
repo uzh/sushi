@@ -31,11 +31,11 @@ Haplotype calling for DNA-seq with > version 4.0 in GVCF mode<br/>
   end
   def next_dataset
     dataset = {
-    'Name'=>@dataset['Name'],
+      'Name'=>@dataset['Name'],
       'GVCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.g.vcf"),
       'GVCFINDEX [File]'=>File.join(@result_dir, "#{@dataset['Name']}.g.vcf.idx"),
       'Species'=>@dataset['Species'],
-      'refBuild'=>@params['refBuild']
+      'refBuild'=>@params['refBuild'],
       'Dummy [File]'=>File.join(@result_dir, "#{@dataset['Name']}_dummy.txt")
     }.merge(extract_columns(@inherit_tags))
 

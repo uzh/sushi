@@ -15,7 +15,7 @@ class GATKv4JointGenoTypesApp <  SushiFabric::SushiApp
 genotype,merge and annotate gvcf-Files<br/>
     EOS
     @required_columns = ['Name', 'GVCF', 'GVCFINDEX', 'Species', 'refBuild', 'Dummy']
-    @required_params = ['name', 'grouping']
+    @required_params = ['name']
     @params['cores'] = '1'
     @params['ram'] = '50'
     @params['scratch'] = '100'
@@ -24,6 +24,7 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['only_SNP'] = true
     @params['QD'] = '2.0'
     @params['GQ'] = '20'
+    @params['DP'] = '0'
     @params['MQRankSum'] = '-15.0'
     @params['specialOptions'] = ''
     @params['mail'] = ""
@@ -43,19 +44,27 @@ genotype,merge and annotate gvcf-Files<br/>
   end
   def commands
     ref = File.join(GENOME_REF_DIR, @params['refBuild'].split('/')[0,3].join("/")+"/Sequence/WholeGenomeFasta/genome.fa")
-    combined_g_vcf = "combined.g.vcf"
+    combined_g_vcf = @params['name'] + ".g.vcf"
     combined_raw_vcf = @params['name'] + ".raw.vcf"
-    combined_raw_snp_vcf = "combined.raw.snp.vcf"
-    filtered_vcf = "combined.filtered.vcf"
-    command = "gatk CombineGVCFs -R #{ref} -V vcf_out/Ecor_GE12_DENOVO_v2.0_A_subgenome_ref.g.vcf -O #{combined_g_vcf}"
-    command << "gatk GenotypeGVCFs -R #{ref} -V #{combined_g_vcf} -O #{combined_raw_vcf}"
+    combined_raw_snp_vcf = @params['name'] + ".raw.snp.vcf"
+    combined_filtered_vcf = @params['name'] + ".filtered.vcf"
+    gvcfs = []
+    @dataset.each do |row|
+      gvcf = File.join(@gstore_dir, row['GVCF [File]'])
+      gvcfs << gvcf
+    end
+    gvcfs_option = gvcfs.map{|gvcf| "-V #{gvcf}"}.join(" ")
+    command = "gatk CombineGVCFs -R #{ref} #{gvcfs_option} -O #{combined_g_vcf}\n"
+    command << "gatk GenotypeGVCFs -R #{ref} -V #{combined_g_vcf} -O #{combined_raw_vcf}\n"
     raw_vcf = combined_raw_vcf
     if @params['only_SNP']
-      command << "gatk SelectVariants -R #{ref} -V #{combined_raw_vcf} -O #{combined_raw_snp_vcf} -select-type SNP"
+      command << "gatk SelectVariants -R #{ref} -V #{combined_raw_vcf} -O #{combined_raw_snp_vcf} -select-type SNP\n"
       raw_vcf = combined_raw_snp_vcf
-      command << "mv #{combined_raw_snp_vcf} #{combined_raw_vcf}"
     end
-    command << "gatk VariantFiltration -R #{ref} -V #{raw_vcf} --filter-expression \"! vc.hasAttribute('QD') || QD < #{@params['QD']}\" --filter-name \"QD\" --filter-expression \"vc.isSNP() && (MQ < #{@params['MQ']} || (vc.hasAttribute('MQRankSum') && MQRankSum < #{@params['MQRankSum']}))\" --filter-name \"MQ\" --genotype-filter-expression \"GQ < #{@params['GQ']} || DP == 0\" --genotype-filter-name \"GQ\" -O #{combined_filtered_vcf}"
+    command << "gatk VariantFiltration -R #{ref} -V #{raw_vcf} --filter-expression \"! vc.hasAttribute('QD') || QD < #{@params['QD']}\" --filter-name \"QD\" --filter-expression \"vc.isSNP() && (MQ < #{@params['MQ']} || (vc.hasAttribute('MQRankSum') && MQRankSum < #{@params['MQRankSum']}))\" --filter-name \"MQ\" --genotype-filter-expression \"GQ < #{@params['GQ']} || DP == #{@params['DP']}\" --genotype-filter-name \"GQ\" -O #{combined_filtered_vcf}\n"
+    if @params['only_SNP']
+      command << "mv #{combined_raw_snp_vcf} #{combined_raw_vcf}\n"
+    end
     command
   end
 end
