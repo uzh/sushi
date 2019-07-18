@@ -32,7 +32,7 @@ Single cell report based on Scran<br/>
     @params['transcriptTypes', 'selected'] = 0
     @params['scProtocol'] = ['10X', 'Smart-seq2']
     @params['snnK'] = '15'
-    @params['snnK', 'description'] = 'An integer scalar specifying the number of nearest neighbors to consider during graph construction. Larger value, more fined clusters. Used in 10X.'
+    @params['snnK', 'description'] = 'An integer scalar specifying the number of nearest neighbors to consider during graph construction. Larger value, fewer clusters. Used in 10X.'
     @params['visMethod'] = ['TSNE', 'UMAP', 'DiffusionMap']
     @params['visMethod', 'description'] = 'Select the low-dimensional visusalization method.'
     @params['knownMarkers'] = ''
