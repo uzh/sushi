@@ -28,14 +28,13 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['DP'] = '0'
     @params['MQRankSum'] = '-15.0'
     @params['specialOptions'] = ''
-    @params['mail'] = ""
     @modules = ["Variants/GATK/4.1.2.0", "Tools/Picard/2.18.0"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
     {'Name'=>@params['name'],
-     'Raw VCF [File]'=>File.join(@result_dir, "#{@params['name']}.raw.vcf"),
-     'Filtered VCF [File]'=>File.join(@result_dir, "#{@params['name']}.filtered.vcf"),
+     'Raw VCF [File]'=>File.join(@result_dir, "#{@params['name']}.raw.vcf.gz"),
+     'Filtered VCF [File]'=>File.join(@result_dir, "#{@params['name']}.filtered.vcf.gz"),
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild']
     }
@@ -50,12 +49,17 @@ genotype,merge and annotate gvcf-Files<br/>
     combined_raw_snp_vcf = @params['name'] + ".raw.snp.vcf"
     combined_filtered_vcf = @params['name'] + ".filtered.vcf"
     gvcfs = []
+    command = ""
     @dataset.each do |row|
-      gvcf = File.join(@gstore_dir, row['GVCF [File]'])
+      gvcf_gz = File.join(@gstore_dir, row['GVCF [File]'])
+      gvcf = File.basename(gvcf_gz).gsub(/.gz/, '')
       gvcfs << gvcf
+      command << "cp #{gvcf_gz} ."
+      command << "gunzip -c #{File.basename(gvcf_gz)} > #{gvcf}"
+      command << "rm #{File.basename(gvcf_gz)}"
     end
     gvcfs_option = gvcfs.map{|gvcf| "-V #{gvcf}"}.join(" ")
-    command = "gatk CombineGVCFs -R #{ref} #{gvcfs_option} -O #{combined_g_vcf}\n"
+    command << "gatk CombineGVCFs -R #{ref} #{gvcfs_option} -O #{combined_g_vcf}\n"
     command << "gatk GenotypeGVCFs -R #{ref} -V #{combined_g_vcf} -O #{combined_raw_vcf}\n"
     raw_vcf = combined_raw_vcf
     if @params['only_SNP']
@@ -66,6 +70,8 @@ genotype,merge and annotate gvcf-Files<br/>
     if @params['only_SNP']
       command << "mv #{combined_raw_snp_vcf} #{combined_raw_vcf}\n"
     end
+    command << "gzip #{combined_raw_vcf}\n"
+    command << "gzip #{combined_filtered_vcf}\n"
     command
   end
 end
