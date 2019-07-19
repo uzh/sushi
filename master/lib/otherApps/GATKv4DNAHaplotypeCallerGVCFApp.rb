@@ -32,7 +32,7 @@ Haplotype calling for DNA-seq with > version 4.0 in GVCF mode<br/>
   def next_dataset
     dataset = {
       'Name'=>@dataset['Name'],
-      'GVCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.g.vcf"),
+      'GVCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.g.vcf.gz"),
       'GVCFINDEX [File]'=>File.join(@result_dir, "#{@dataset['Name']}.g.vcf.idx"),
       'Species'=>@dataset['Species'],
       'refBuild'=>@params['refBuild'],
@@ -55,6 +55,7 @@ Haplotype calling for DNA-seq with > version 4.0 in GVCF mode<br/>
     command << "gatk MarkDuplicates -I #{sort_rg_bam} -O #{sort_rg_dup_bam} -M #{sort_rg_dup_met}\n"
     command << "samtools index #{sort_rg_dup_bam}\n"
     command << "gatk HaplotypeCaller -R #{ref} -I #{sort_rg_dup_bam} -O #{g_vcf} -ERC GVCF\n"
+    command << "gzip #{g_vcf}\n"
     command << "echo '#{GlobalVariables::SUSHI}' > #{@dataset['Name']}_dummy.txt\n"
   end
 end
