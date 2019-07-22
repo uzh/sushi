@@ -54,9 +54,9 @@ genotype,merge and annotate gvcf-Files<br/>
       gvcf_gz = File.join(@gstore_dir, row['GVCF [File]'])
       gvcf = File.basename(gvcf_gz).gsub(/.gz/, '')
       gvcfs << gvcf
-      command << "cp #{gvcf_gz} ."
-      command << "gunzip -c #{File.basename(gvcf_gz)} > #{gvcf}"
-      command << "rm #{File.basename(gvcf_gz)}"
+      command << "cp #{gvcf_gz} .\n"
+      command << "gunzip -c #{File.basename(gvcf_gz)} > #{gvcf}\n"
+      command << "rm #{File.basename(gvcf_gz)}\n"
     end
     gvcfs_option = gvcfs.map{|gvcf| "-V #{gvcf}"}.join(" ")
     command << "gatk CombineGVCFs -R #{ref} #{gvcfs_option} -O #{combined_g_vcf}\n"
