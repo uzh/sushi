@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20190722-154556'
+Version = '20190723-101916'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -14,7 +14,7 @@ class ConvERDSApp < SushiFabric::SushiApp
 This converts the result DataSet of EAGLERCApp to an input DataSet of DNAHaplotypeCallerGVCFApp.
     EOS
     @analysis_category = 'Polyploid'
-    @required_columns = ['Name', 'Species', 'refBuild1']
+    @required_columns = ['Name', 'Species', 'dummy']
     @required_params = ['parent', 'type']
     # optional params
     @params['cores'] = '1'
@@ -29,24 +29,24 @@ This converts the result DataSet of EAGLERCApp to an input DataSet of DNAHaploty
     new_dataset_hash = []
     dataset_hash.each do |sample|
       new_sample_orig = {
-        'Name'=>File.basename(sample["Parent#{@params['parent']}RefBAM [File]"]).gsub(/.bam/, ''),
+        'Name'=>sample["Name"],
         'BAM'=>sample["Parent#{@params['parent']}RefBAM [File]"],
         'refBuild'=>sample["refBuild#{@params['parent']}"],
-        'refBuild1'=>sample["refBuild1"],
+        'dummy'=>sample['dummy [File]'],
         'Species'=>sample['Species']
       }
       new_sample_other = {
-        'Name'=>File.basename(sample["Parent#{@params['parent']}AltBAM [File]"]).gsub(/.bam/, ''),
+        'Name'=>sample["Name"],
         'BAM'=>sample["Parent#{@params['parent']}AltBAM [File]"],
         'refBuild'=>sample["refBuild#{@params['parent']}"],
-        'refBuild1'=>sample["refBuild1"],
+        'dummy'=>sample['dummy [File]'],
         'Species'=>sample['Species']
       }
       new_sample_common = {
-        'Name'=>File.basename(sample["Parent#{@params['parent']}UnkBAM [File]"]).gsub(/.bam/, ''),
+        'Name'=>sample["Name"],
         'BAM'=>sample["Parent#{@params['parent']}UnkBAM [File]"],
         'refBuild'=>sample["refBuild#{@params['parent']}"],
-        'refBuild1'=>sample["refBuild1"],
+        'dummy'=>sample['dummy [File]'],
         'Species'=>sample['Species']
       }
 
