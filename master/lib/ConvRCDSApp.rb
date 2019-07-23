@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20170907-112024'
+Version = '20190723-101503'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -53,7 +53,7 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
         'refBuild'=>sample["refBuild#{@params['parent']}"],
         'Species'=>sample['Species'],
         'dummy'=>sample['dummy [File]'],
-        'Conditin'=>"#{sample['Condition [Factor]']}_common"
+        'Condition'=>"#{sample['Condition [Factor]']}_common"
       }
 
       unless @params['type'] == 'other'
