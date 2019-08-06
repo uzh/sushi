@@ -11,7 +11,7 @@ class GATKv4FilteringSNPsByReferenceVCFApp <  SushiFabric::SushiApp
     @name = 'GATKv4FilteringSNPsByReferenceVCF'
     @analysis_category = 'Variants'
     @description =<<-EOS
-genotype,merge and annotate gvcf-Files<br/>
+filtering out SNPs by the VCF coming from reference accession<br/>
     EOS
     @required_columns = ['Name', 'Raw VCF', 'Filtered VCF', 'Species', 'refBuild']
     @required_params = []
