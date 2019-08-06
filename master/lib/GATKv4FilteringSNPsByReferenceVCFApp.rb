@@ -14,11 +14,10 @@ class GATKv4FilteringSNPsByReferenceVCFApp <  SushiFabric::SushiApp
 genotype,merge and annotate gvcf-Files<br/>
     EOS
     @required_columns = ['Name', 'Raw VCF', 'Filtered VCF', 'Species', 'refBuild']
-    @required_params = ['name']
+    @required_params = []
     @params['cores'] = '1'
     @params['ram'] = '50'
     @params['scratch'] = '100'
-    @params['name'] = 'GATKv4Filtering'
     @params['DataSet'] = []
     @modules = ["Dev/Ruby/2.4.3"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
@@ -48,18 +47,18 @@ genotype,merge and annotate gvcf-Files<br/>
     {'Name'=>@dataset['Name'],
      'Filtered VCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.filtered_by_reference_vcf.vcf.gz"),
      'Species'=>@dataset['Species'],
-     'refBuild'=>@params['refBuild'],
-     'Script [File]'=>File.join(@result_dir, 'filter_out_snps_by_reference_vcf.rb'),
+     'refBuild'=>@dataset['refBuild'],
+     'Script [File]'=>File.join(@result_dir, "filter_out_snps_by_reference_vcf.#{@dataset['Name']}.rb"),
      'Script log [File]'=>File.join(@result_dir, "filter_out_snps_by_reference_vcf.#{@dataset['Name']}.log")
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
-    if filter_dataset = DataSet.find_by_id(params['DataSet'])
-      filter_vcf_gz = File.join(sample_path(filter_dataset), "GATKv4_Genotyping.filtered.vcf.gz")
-      filter_vcf_gz = File.join(@gstore_dir, filter_vcf_gz)
-    end
-    command =<<-EOS
-cat > filter_out_snps_by_reference_vcf.rb <<-EOF
+    if filter_dataset = DataSet.find_by_id(params['DataSet']) and
+       filter_vcf_gz_dir = File.join(@gstore_dir, sample_path(filter_dataset)) and
+       filter_vcf_gz = Dir[File.join(filter_vcf_gz_dir, "*.filtered.vcf.gz")].to_a.first
+
+      command =<<-EOS
+cat > filter_out_snps_by_reference_vcf.#{@dataset['Name']}.rb <<-EOF
 #!/usr/bin/env ruby
 # encoding: utf-8
 # Version = '20190806-113030'
@@ -139,8 +138,14 @@ warn "# precision (TP/total):\#{"%.2f" % (precision)} (validation)"
 warn "# FDR (FP/total):      \#{"%.2f" % (fdr)}"  
 warn "# Ref: https://en.wikipedia.org/wiki/Confusion_matrix"
 EOF
-    EOS
-    command << "ruby filter_out_snps_by_reference_vcf.rb #{File.join(@gstore_dir, @dataset['Filtered VCF'])} #{filter_vcf_gz} -o #{@dataset['Name']}.filtered_by_reference_vcf.vcf.gz 2> filter_out_snps_by_reference_vcf.#{@dataset['Name']}.log\n"
-    command
+      EOS
+      command << "ruby filter_out_snps_by_reference_vcf.#{@dataset['Name']}.rb #{File.join(@gstore_dir, @dataset['Filtered VCF'])} #{filter_vcf_gz} -o #{@dataset['Name']}.filtered_by_reference_vcf.vcf.gz 2> filter_out_snps_by_reference_vcf.#{@dataset['Name']}.log\n"
+      command
+    else
+      command =  "echo 'Error'\n"
+      command << "touch filter_out_snps_by_reference_vcf.#{@dataset['Name']}.rb\n"
+      command << "touch #{@dataset['Name']}.filtered_by_reference_vcf.vcf.gz\n"
+      command << "touch filter_out_snps_by_reference_vcf.#{@dataset['Name']}.log\n"
+    end
   end
 end
