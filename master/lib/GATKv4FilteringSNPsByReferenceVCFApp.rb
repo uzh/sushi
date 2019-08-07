@@ -103,7 +103,7 @@ output =->(out) do
         if filter == "PASS"
           total_snps += 1
           key = [sid, pos].join("_")
-          unless (alt.split(",") & false_snps[key].to_a).empty?
+          if (alt.split(",") - false_snps[key].to_a).empty?
             false_positives += 1
           else
             out.print line
