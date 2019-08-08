@@ -27,8 +27,8 @@ filtering out SNPs by the VCF coming from reference accession<br/>
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
-     'New Genome Fasta [File]'=>File.join(@result_dir, "#{@dataset['Name']}.genome.fa"),
-     'Transcripts Fasta [File]'=>File.join(@result_dir, "#{@dataset['Name']}.cds.fa"),
+     'New Genome Fasta [File]'=>File.join(@result_dir, "#{@dataset['Name']}.genome.fa.gz"),
+     'Transcripts Fasta [File]'=>File.join(@result_dir, "#{@dataset['Name']}.cds.fa.gz"),
      'Species'=>@dataset['Species'],
      'refBuild'=>@dataset['refBuild'],
      'Script [File]'=>File.join(@result_dir, "replace_snps_by_vcf.#{@dataset['Name']}.rb"),
@@ -38,12 +38,12 @@ filtering out SNPs by the VCF coming from reference accession<br/>
   def commands
     command =<<-EOS
 #!/bin/bash
-# Version = '20190807-144039'
+# Version = '20190808-085705'
 
 cat > replace_snps_by_vcf.#{@dataset['Name']}.rb <<-EOF
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20190807-144039'
+# Version = '20190808-085705'
 
 unless genome_fa=ARGV[0] and filtered_vcf_gz=ARGV[1]
   puts <<-eos
@@ -130,6 +130,8 @@ EOF
     transcripts_fa = "#{@dataset['Name']}.cds.fa"
     command << "ruby #{script_rb} #{genome_fa} #{filtered_vcf} > #{new_genome_fa} 2> #{script_log}\n"
     command << "gffread -x #{transcripts_fa} -g #{new_genome_fa} #{genes_gtf}\n" 
+    command << "gzip #{new_genome_fa}\n"
+    command << "gzip #{transcripts_fa}\n"
     command
   end
 end
