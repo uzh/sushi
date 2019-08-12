@@ -144,12 +144,12 @@ end
 
 total_snps_indels = total_snps + total_indels
 warn
-warn "# target vcf:                         \#{target_snps_vcf_gz}"
+warn "# target vcf:                         \#{target_snps_vcf_gz}"
 warn "# filter vcf:                         \#{false_snps_vcf_gz}"
 warn "# total_snps_indels (target):         \#{total_snps_indels}"
-warn "#   total_snps (target):              \#{total_snps}"
-warn "#   total_indels (target):            \#{total_indels}"
-warn "# false_snps_indels (filter):         \#{false_snps_indels.keys.length}"
+warn "#   total_snps (target):              \#{total_snps}"
+warn "#   total_indels (target):            \#{total_indels}"
+warn "# false_snps_indels (filter):         \#{false_snps_indels.keys.length}"
 warn "#   false_snps (filter):              \#{false_snps}"
 warn "#   false_indels (filter):            \#{false_indels}"
 warn
@@ -157,8 +157,8 @@ warn
 false_positives = false_positive_snps + false_positive_indels
 true_positives = total_snps_indels-false_positives
 warn "# false_positives (filtered):         \#{false_positives}"
-warn "#   false_positive_snps (filtered):   \#{false_positive_snps}"
-warn "#   false_positive_indels (filtered): \#{false_positive_indels}"
+warn "#   false_positive_snps (filtered):   \#{false_positive_snps}"
+warn "#   false_positive_indels (filtered): \#{false_positive_indels}"
 warn "# true_positives:                     \#{true_positives}"
 warn "#   = total_snps_indels - false_positives"
 warn "#   = \#{total_snps_indels} - \#{false_positives} = \#{total_snps_indels-false_positives}"
@@ -169,7 +169,7 @@ fdr = false_positives.to_f/(true_positives+false_positives)      # FDR (false di
 warn "# precision (TP/total):             \#{"%.2f" % (true_positives.to_f/total_snps_indels)}"
 warn "# precision (TP/total):             \#{"%.2f" % (precision)} (validation)"
 warn "# FDR (FP/total):                   \#{"%.2f" % (fdr)}"  
-warn "# Ref: https://en.wikipedia.org/wiki/Confusion_matrix"
+warn "# Ref: https://en.wikipedia.org/wiki/Confusion_matrix"
 EOF
       EOS
       command << "ruby filter_out_snps_indels_by_reference_vcf.#{@dataset['Name']}.rb #{File.join(@gstore_dir, @dataset['Filtered VCF'])} #{filter_vcf_gz} -o #{@dataset['Name']}.filtered_by_reference_vcf.vcf.gz 2> filter_out_snps_indels_by_reference_vcf.#{@dataset['Name']}.log\n"
