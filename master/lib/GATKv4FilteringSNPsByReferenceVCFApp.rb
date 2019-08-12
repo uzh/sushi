@@ -48,8 +48,8 @@ filtering out SNPs by the VCF coming from reference accession<br/>
      'Filtered VCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.filtered_by_reference_vcf.vcf.gz"),
      'Species'=>@dataset['Species'],
      'refBuild'=>@dataset['refBuild'],
-     'Script [File]'=>File.join(@result_dir, "filter_out_snps_by_reference_vcf.#{@dataset['Name']}.rb"),
-     'Script log [File]'=>File.join(@result_dir, "filter_out_snps_by_reference_vcf.#{@dataset['Name']}.log")
+     'Script [File]'=>File.join(@result_dir, "filter_out_snps_indels_by_reference_vcf.#{@dataset['Name']}.rb"),
+     'Script log [File]'=>File.join(@result_dir, "filter_out_snps_indels_by_reference_vcf.#{@dataset['Name']}.log")
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
@@ -58,10 +58,10 @@ filtering out SNPs by the VCF coming from reference accession<br/>
        filter_vcf_gz = Dir[File.join(filter_vcf_gz_dir, "*.filtered.vcf.gz")].to_a.first
 
       command =<<-EOS
-cat > filter_out_snps_by_reference_vcf.#{@dataset['Name']}.rb <<-EOF
+cat > filter_out_snps_indels_by_reference_vcf.#{@dataset['Name']}.rb <<-EOF
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20190806-113030'
+# Version = '20190812-110125'
 
 unless target_snps_vcf_gz=ARGV[0] and false_snps_vcf_gz=ARGV[1]
   puts <<-eos
@@ -79,7 +79,9 @@ out_file = if idx = ARGV.index("-o")
 
 require 'zlib'
 
-false_snps = {}
+false_snps_indels = {}
+false_snps = 0
+false_indels = 0
 Zlib::GzipReader.open(false_snps_vcf_gz) do |io|
   io.each do |line|
     # CHROM  POSID REF ALT QUAL  FILTER  INFO  FORMAT  ref_bam_A/Ecor_PR2021.ref
@@ -87,24 +89,42 @@ Zlib::GzipReader.open(false_snps_vcf_gz) do |io|
     unless line =~ /^#/
       sid, pos, dot, ref, alt, qual, filter, *others = line.split
       key = [sid, pos].join("_")
-      false_snps[key] = alt.split(",")
+      false_snps_indels[key] = alt.split(",")
+      if alt.split(",").map{|a| a.length}.max > 1 or ref.split(",").map{|r| r.length}.max > 1
+        false_indels += 1
+      else
+        false_snps += 1
+      end
     end
   end
 end
 
 total_snps = 0
-false_positives = 0
+false_positive_snps = 0
+total_indels = 0
+false_positive_indels = 0
 
 output =->(out) do
   Zlib::GzipReader.open(target_snps_vcf_gz) do |io|
     io.each do |line|
       unless line =~ /^#/
         sid, pos, dot, ref, alt, qual, filter, *others = line.split
+        flag_indel = false
         if filter == "PASS"
-          total_snps += 1
+          if alt.split(",").map{|a| a.length}.max > 1 or ref.split(",").map{|r| r.length}.max > 1
+            total_indels += 1
+            flag_indel = true
+          else
+            total_snps += 1
+          end
           key = [sid, pos].join("_")
-          if (alt.split(",") - false_snps[key].to_a).empty?
-            false_positives += 1
+          #unless (alt.split(",") & false_snps[key].to_a).empty?
+          if (alt.split(",") - false_snps_indels[key].to_a).empty?
+            if flag_indel
+              false_positive_indels += 1
+            else
+              false_positive_snps += 1
+            end
           else
             out.print line
           end
@@ -122,30 +142,43 @@ else
   output.(\$stdout)
 end
 
-true_positives = total_snps-false_positives
+total_snps_indels = total_snps + total_indels
 warn
-warn "# target vcf:          \#{target_snps_vcf_gz}"
-warn "# filter vcf:          \#{false_snps_vcf_gz}"
-warn "# total_snps (target): \#{total_snps}"
-warn "# false_snps (filter): \#{false_snps.keys.length}"
-warn "# false_positives:     \#{false_positives}"
-warn "# true_positives:      \#{true_positives}"
+warn "# target vcf:                         #{target_snps_vcf_gz}"
+warn "# filter vcf:                         #{false_snps_vcf_gz}"
+warn "# total_snps_indels (target):         #{total_snps_indels}"
+warn "#   total_snps (target):              #{total_snps}"
+warn "#   total_indels (target):            #{total_indels}"
+warn "# false_snps_indels (filter):         #{false_snps_indels.keys.length}"
+warn "#   false_snps (filter):              #{false_snps}"
+warn "#   false_indels (filter):            #{false_indels}"
+warn
+
+false_positives = false_positive_snps + false_positive_indels
+true_positives = total_snps_indels-false_positives
+warn "# false_positives (filtered):         #{false_positives}"
+warn "#   false_positive_snps (filtered):   #{false_positive_snps}"
+warn "#   false_positive_indels (filtered): #{false_positive_indels}"
+warn "# true_positives:                     #{true_positives}"
+warn "#   = total_snps_indels - false_positives"
+warn "#   = #{total_snps_indels} - #{false_positives} = #{total_snps_indels-false_positives}"
+warn
 
 precision = true_positives.to_f/(true_positives+false_positives) # PPV (positive predictive value)
 fdr = false_positives.to_f/(true_positives+false_positives)      # FDR (false discovery rate)
-warn "# precision (TP/total):\#{"%.2f" % (true_positives.to_f/total_snps)}"
-warn "# precision (TP/total):\#{"%.2f" % (precision)} (validation)"
-warn "# FDR (FP/total):      \#{"%.2f" % (fdr)}"  
-warn "# Ref: https://en.wikipedia.org/wiki/Confusion_matrix"
+warn "# precision (TP/total):             #{"%.2f" % (true_positives.to_f/total_snps_indels)}"
+warn "# precision (TP/total):             #{"%.2f" % (precision)} (validation)"
+warn "# FDR (FP/total):                   #{"%.2f" % (fdr)}"  
+warn "# Ref: https://en.wikipedia.org/wiki/Confusion_matrix"
 EOF
       EOS
-      command << "ruby filter_out_snps_by_reference_vcf.#{@dataset['Name']}.rb #{File.join(@gstore_dir, @dataset['Filtered VCF'])} #{filter_vcf_gz} -o #{@dataset['Name']}.filtered_by_reference_vcf.vcf.gz 2> filter_out_snps_by_reference_vcf.#{@dataset['Name']}.log\n"
+      command << "ruby filter_out_snps_indels_by_reference_vcf.#{@dataset['Name']}.rb #{File.join(@gstore_dir, @dataset['Filtered VCF'])} #{filter_vcf_gz} -o #{@dataset['Name']}.filtered_by_reference_vcf.vcf.gz 2> filter_out_snps_indels_by_reference_vcf.#{@dataset['Name']}.log\n"
       command
     else
       command =  "echo 'Error'\n"
-      command << "touch filter_out_snps_by_reference_vcf.#{@dataset['Name']}.rb\n"
+      command << "touch filter_out_snps_indels_by_reference_vcf.#{@dataset['Name']}.rb\n"
       command << "touch #{@dataset['Name']}.filtered_by_reference_vcf.vcf.gz\n"
-      command << "touch filter_out_snps_by_reference_vcf.#{@dataset['Name']}.log\n"
+      command << "touch filter_out_snps_indels_by_reference_vcf.#{@dataset['Name']}.log\n"
     end
   end
 end
