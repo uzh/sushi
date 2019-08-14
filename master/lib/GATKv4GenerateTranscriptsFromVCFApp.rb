@@ -39,12 +39,12 @@ filtering out SNPs by the VCF coming from reference accession<br/>
   def commands
     command =<<-EOS
 #!/bin/bash
-# Version = '20190813-152717'
+# Version = '20190814-102640'
 
 cat > replace_snps_indels_by_vcf.#{@dataset['Name']}.rb <<-EOF
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20190813-152717'
+# Version = '20190814-102640'
 
 unless genome_fa=ARGV[0] and genes_gtf=ARGV[1] and filtered_vcf_gz=ARGV[2]
   puts <<-eos
@@ -134,7 +134,7 @@ open(out_genome_fa, "w") do |out|
     ni   = 0
     new_seq = e.seq.clone
     warn "# \#{Time.now}: processing \#{sid}"
-    replaces[sid]&.to_a.reverse.each do |pos, ref_alt|
+    replaces[sid]&.to_a&.reverse&.each do |pos, ref_alt|
       ref, alt = ref_alt
       unless ref == new_seq[pos-1, ref.length]
         warn "# WARN: \#{sid}:\#{pos}"
