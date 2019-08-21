@@ -18,7 +18,7 @@ filtering out SNPs by the VCF coming from reference accession<br/>
     @params['cores'] = '1'
     @params['ram'] = '50'
     @params['scratch'] = '30'
-    @modules = ["Dev/Ruby/2.4.3", "Tools/Cufflinks/2.2.1"]
+    @modules = ["Dev/Ruby/2.4.3", "Tools/Cufflinks/2.2.1", "Tools/samtools/1.9"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters
@@ -41,13 +41,13 @@ filtering out SNPs by the VCF coming from reference accession<br/>
   def commands
     command =<<-EOS
 #!/bin/bash
-# Version = '20190821-045350'
+# Version = '20190821-062107'
 
 cat > replace_N_with_low_high_coverage.#{@dataset['Name']}.rb <<-EOF1
 
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20190821-045350'
+# Version = '20190821-062107'
 
 unless bam_or_depth=ARGV[0] and genome_fa=ARGV[1]
   puts <<-eos
@@ -322,7 +322,6 @@ warn "# \#{Time.now}: generated \#{out_genes_gtf}"
 EOF2
     EOS
     script1_rb = "replace_N_with_low_high_coverage.#{@dataset['Name']}.rb"
-    script1_log = "replace_N_with_low_high_coverage.#{@dataset['Name']}.log"
     genome_fa = File.join(GENOME_REF_DIR, @dataset['refBuild'].split('/')[0,3].join("/")+"/Sequence/WholeGenomeFasta/genome.fa")
     gstore_bam = File.join(@gstore_dir, @dataset['BAM'])
     bam = File.basename(@dataset['BAM'])
@@ -332,7 +331,6 @@ EOF2
     command << "ruby #{script1_rb} #{bam} #{genome_fa} > #{org_genome_masked_fa}\n"
 
     script2_rb = "replace_snps_indels_by_vcf.#{@dataset['Name']}.rb"
-    script2_log = "replace_snps_indels_by_vcf.#{@dataset['Name']}.log"
     filtered_vcf = File.join(@gstore_dir, @dataset['Filtered VCF'])
     refbuild_path = File.join(GENOME_REF_DIR, @dataset['refBuild'])
     genes_gtf = File.join(refbuild_path, "Genes/genes.gtf")
