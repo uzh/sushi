@@ -41,13 +41,13 @@ filtering out SNPs by the VCF coming from reference accession<br/>
   def commands
     command =<<-EOS
 #!/bin/bash
-# Version = '20190821-062107'
+# Version = '20190822-060725'
 
 cat > replace_N_with_low_high_coverage.#{@dataset['Name']}.rb <<-EOF1
 
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20190821-062107'
+# Version = '20190822-060725'
 
 unless bam_or_depth=ARGV[0] and genome_fa=ARGV[1]
   puts <<-eos
@@ -114,14 +114,16 @@ end
 
 
 total_bases = sid2pos.select{|sid, pos| sid2seq.keys.include?(sid)}.values.flatten.length
-warn "# \#{Time.now}: start replacing: Total \#{total_bases} bases replacement"
+warn "# \#{Time.now}: start masking: Total \#{total_bases} bases replacement"
 
+replaced_bases = 0
 sid2pos.each do |sid, poss|
   if seq = sid2seq[sid]
     poss.each do |pos|
       seq[pos-1] = "N"
     end
-    warn "# \#{Time.now}: \#{sid} replaced"
+    replaced_bases += poss.length
+    warn "# \#{Time.now}: \#{sid} done, \#{poss.length} bases replaced with N (\#{"%.1f" % (replaced_bases/total_bases*100.0)}%)"
   end
 end
 
