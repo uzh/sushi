@@ -28,7 +28,7 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['MQRankSum'] = '-15.0'
     @params['specialOptions'] = ''
     @modules = ["Variants/GATK/4.1.2.0", "Tools/Picard/2.18.0"]
-    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic", "BAM"]
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
