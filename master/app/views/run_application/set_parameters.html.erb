@@ -63,7 +63,8 @@
             <% end %>
           <% when 'node' %>
             <% if session['employee'] and !SushiFabric::Application.config.course_mode %>
-              <%= select_tag "parameters[#{key}]", options_for_select(@nodes), :multiple => true, :size => 5 %><br /> 
+              <!-- 20190823 masa tentatively in 2-3 months for Gwyneth -->
+              <%= select_tag "parameters[#{key}]", options_for_select(@nodes, {:selected => @nodes.map{|node| node.last}}), :multiple => true, :size => 5 %><br />
             <% else %>
               <%= @nodes.values.join(',') %>
               <%= hidden_field :parameters, :node, :value => @nodes.values.join(',') %>
