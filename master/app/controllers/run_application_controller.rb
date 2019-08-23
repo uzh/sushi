@@ -154,6 +154,10 @@ class RunApplicationController < ApplicationController
       if current_user and FGCZ.get_user_projects(current_user.login).include?('p1535')
         @nodes['fgcz-c-047: cpu 32,mem   1 TB,scr  28T'] = 'fgcz-c-047'
       end
+
+      # 20190823 masa tentatively in 2-3 months for Gwyneth
+      @nodes.delete('fgcz-c-047: cpu 32,mem   1 TB,scr  28T')
+      @nodes
     end
 		unless @factors
 			#init_factor('Condition')
