@@ -157,6 +157,7 @@ class RunApplicationController < ApplicationController
 
       # 20190823 masa tentatively in 2-3 months for Gwyneth
       @nodes.delete('fgcz-c-047: cores 8/16, ram 1009G, scr 900G')
+      @nodes.delete('fgcz-c-047: cpu 32,mem   1 TB,scr  28T')
       @nodes
     end
 		unless @factors
