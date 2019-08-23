@@ -41,13 +41,13 @@ filtering out SNPs by the VCF coming from reference accession<br/>
   def commands
     command =<<-EOS
 #!/bin/bash
-# Version = '20190823-105124'
+# Version = '20190823-143829'
 
 cat > replace_N_with_low_high_coverage.#{@dataset['Name']}.rb <<-EOF1
 
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20190823-105124'
+# Version = '20190823-143829'
 
 unless bam_or_depth=ARGV[0] and genome_fa=ARGV[1]
   puts <<-eos
@@ -343,23 +343,25 @@ open(out_genes_gtf, "w") do |out|
       # sa0001  maker exon  84805 85236 . + . transcript_id "ga00001"; gene_id "ga00001"; gene_name "ga00001"; gene_biotype "protein_coding"
       # sa0001  maker CDS 84805 85236 . + 0 transcript_id "ga00001"; gene_id "ga00001"; gene_name "ga00001"; gene_biotype "protein_coding"
       sid, maker, type, st_, ed_, dot1, strand, dot2, *others = line.chomp.split
-      st = st_.to_i
-      ed = ed_.to_i
-      until_st = 0
-      between_st_ed = 0
-      replaces_indel[sid]&.each do |pos, ref_alt|
-        ref, alt = ref_alt
-        if pos < st
-          until_st += (alt.length - ref.length)
-        elsif pos <= ed
-          between_st_ed += (alt.length - ref.length)
-        else
-          break
+      if sid2seq[sid]
+        st = st_.to_i
+        ed = ed_.to_i
+        until_st = 0
+        between_st_ed = 0
+        replaces_indel[sid]&.each do |pos, ref_alt|
+          ref, alt = ref_alt
+          if pos < st
+            until_st += (alt.length - ref.length)
+          elsif pos <= ed
+            between_st_ed += (alt.length - ref.length)
+          else
+            break
+          end
         end
+        new_st = st + until_st
+        new_ed = ed + until_st + between_st_ed
+        out.puts [sid, maker, type, new_st, new_ed, dot1, strand, dot2, others.join(" ")].join("\\t")
       end
-      new_st = st + until_st
-      new_ed = ed + until_st + between_st_ed
-      out.puts [sid, maker, type, new_st, new_ed, dot1, strand, dot2, others.join(" ")].join("\\t")
     else
       out.print line
     end
