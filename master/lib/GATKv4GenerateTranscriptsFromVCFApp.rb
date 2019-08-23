@@ -15,9 +15,9 @@ filtering out SNPs by the VCF coming from reference accession<br/>
     EOS
     @required_columns = ['Name', 'BAM', 'Filtered VCF', 'Species', 'refBuild']
     @required_params = []
-    @params['cores'] = '1'
-    @params['ram'] = '50'
-    @params['scratch'] = '30'
+    @params['cores'] = '8'
+    @params['ram'] = '100'
+    @params['scratch'] = '200'
     @modules = ["Dev/Ruby/2.4.3", "Tools/Cufflinks/2.2.1", "Tools/samtools/1.9"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
@@ -41,18 +41,18 @@ filtering out SNPs by the VCF coming from reference accession<br/>
   def commands
     command =<<-EOS
 #!/bin/bash
-# Version = '20190822-060725'
+# Version = '20190823-105124'
 
 cat > replace_N_with_low_high_coverage.#{@dataset['Name']}.rb <<-EOF1
 
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20190822-060725'
+# Version = '20190823-105124'
 
 unless bam_or_depth=ARGV[0] and genome_fa=ARGV[1]
   puts <<-eos
   usage:
-   \#{File.basename(__FILE__)} [target.bam|samtools.depth] [genome.fa] (-o samtools.depth) > new_genome.fa
+   \#{File.basename(__FILE__)} [target.bam|samtools.depth] [genome.fa] (-o samtools.depth) (-p cores) > new_genome.fa
 
   note:
    .bam: the positions in coverage < 2 or coverage < 250 in samtools depth will be replaced to N in genome.fa
@@ -60,10 +60,18 @@ unless bam_or_depth=ARGV[0] and genome_fa=ARGV[1]
 
   option:
    -o: keep samtools.depth
+   -p: #cores for threads (default 1)
   eos
   exit
 end
 
+threads = if idx = ARGV.index("-p")
+            ARGV[idx+1].to_i
+          else
+            1
+          end
+
+warn "# cores: \#{threads}"
 #command = "samtools depth -aa -r sa0001 \#{bam}"
 sid2pos = {}
 if bam_or_depth =~ /\\.bam$/
@@ -112,22 +120,31 @@ Bio::FlatFile.open(genome_fa).each do |e|
   sid2seq[e.definition] = e.seq
 end
 
-
+require 'parallel'
 total_bases = sid2pos.select{|sid, pos| sid2seq.keys.include?(sid)}.values.flatten.length
 warn "# \#{Time.now}: start masking: Total \#{total_bases} bases replacement"
 
 replaced_bases = 0
-sid2pos.each do |sid, poss|
+
+sid2seq_repbases = Parallel.map(sid2pos, in_processes: threads, finish: -> (item, i, res){ 
+  sid, poss = item
+  replaced_bases += res.last
+  warn "# \#{Time.now}: \#{sid} done, \#{res.last} bases replaced with N (\#{replaced_bases}/\#{total_bases} = \#{"%.1f" % (replaced_bases.to_f/total_bases*100.0)}%)"
+}) do |sid, poss|
+  rep_bases = 0
   if seq = sid2seq[sid]
     poss.each do |pos|
       seq[pos-1] = "N"
     end
-    replaced_bases += poss.length
-    warn "# \#{Time.now}: \#{sid} done, \#{poss.length} bases replaced with N (\#{"%.1f" % (replaced_bases/total_bases*100.0)}%)"
+    rep_bases = poss.length 
+    [{sid => seq}, rep_bases]
+  else
+    [{}, rep_bases]
   end
 end
 
-sid2seq.each do |sid, seq|
+sid2seq_new = sid2seq_repbases.inject({}){|merged, next_| merged.merge(next_.first)}
+sid2seq_new.each do |sid, seq|
   puts ">\#{sid}"
   puts seq.scan(/.{100}|.+\\Z/).join("\\n")
 end
@@ -139,14 +156,15 @@ cat > replace_snps_indels_by_vcf.#{@dataset['Name']}.rb <<-EOF2
 
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20190820-160716'
+# Version = '20190823-091849'
 
 unless genome_fa=ARGV[0] and genome_masked_fa=ARGV[1] and genes_gtf=ARGV[2] and filtered_vcf_gz=ARGV[3]
   puts <<-eos
   usage:
-   \#{File.basename(__FILE__)} [genome.fa] [genome.masked.fa] [genes.gtf] [filtered.vcf.gz] (-f genome.new.fa -m genome.masked.new.fa -t genes.new.gtf)
+   \#{File.basename(__FILE__)} [genome.fa] [genome.masked.fa] [genes.gtf] [filtered.vcf.gz] (-f genome.new.fa -m genome.masked.new.fa -t genes.new.gtf -p cores)
   options:
    without -f, -m or -t, the default file names will be *.new.fa, *.new.gtf in the current directly
+   -p: #cores in parallel processing
   note:
    * masked_genome.fa: N replaced by low/high coverage
    * Site becomes N if
@@ -177,8 +195,15 @@ out_genes_gtf = if idx = ARGV.index("-t")
                   File.basename(genes_gtf).gsub(".gtf", ".new.gtf")
                 end
 
+cores = if idx = ARGV.index("-p")
+          ARGV[idx+1].to_i
+        else
+          1
+        end
+
 require 'zlib'
 
+warn "# cores: \#{cores}"
 warn "# \#{Time.now}: loading \#{genes_gtf} "
 genes_gtf_lines = []
 File.readlines(genes_gtf).each do |line|
@@ -234,6 +259,14 @@ end
 
 require 'bio'
 
+warn "# \#{Time.now}: loading \#{genome_fa}"
+sid2seq = {}
+Bio::FlatFile.open(genome_fa).each do |e|
+  sid = e.definition
+  sid2seq[sid] = e.seq
+end
+
+
 warn "# \#{Time.now}: loading \#{genome_masked_fa}"
 sid2seq_masked = {}
 Bio::FlatFile.open(genome_masked_fa).each do |e|
@@ -241,48 +274,61 @@ Bio::FlatFile.open(genome_masked_fa).each do |e|
   sid2seq_masked[sid] = e.seq
 end
 
+require 'parallel'
 warn "# \#{Time.now}: processing \#{genome_fa}"
-open(out_genome_fa, "w") do |out|
-open(out_genome_masked_fa, "w") do |out_masked|
-  Bio::FlatFile.open(genome_fa).each do |e|
-    sid = e.definition
-    snps = 0
-    indels = 0
-    ns   = 0
-    ni   = 0
-    new_seq = e.seq.clone
-    new_seq_masked = sid2seq_masked[sid]
-    warn "# \#{Time.now}: processing \#{sid}"
-    replaces[sid]&.to_a&.reverse&.each do |pos, ref_alt|
-      ref, alt = ref_alt
-      unless ref == new_seq[pos-1, ref.length]
-        warn "# WARN: \#{sid}:\#{pos}"
-        warn "#   ref org: \#{ref}" 
-        warn "#   ref new: \#{new_seq[pos-1, ref.length]}"
-        warn "#   alt new: \#{alt}"
-      end
-      new_seq[pos-1, ref.length] = alt
-      new_seq_masked[pos-1, ref.length] = alt
+#Bio::FlatFile.open(genome_fa).each do |e|
+
+sid2seq_new = Parallel.map(sid2seq.keys, in_processes: cores, finish: -> (sid, i, res){ 
+  snps, indels, ns, ni = res.last
+  warn "# \#{Time.now}: \#{sid} done"
+  warn "#   - \#{sid}: replaced SNPs:   \#{snps}\\t(unclear SNPs: \#{ns})"
+  warn "#   - \#{sid}: replaced InDels: \#{indels}\\t(unclear InDels: \#{ni})"
+}) do |sid|
+#sid2seq.keys.each do |sid|
+  snps = 0
+  indels = 0
+  ns   = 0
+  ni   = 0
+  new_seq = sid2seq[sid]
+  new_seq_masked = sid2seq_masked[sid]
+  warn "# \#{Time.now}: processing \#{sid}"
+  replaces[sid]&.to_a&.reverse&.each do |pos, ref_alt|
+    ref, alt = ref_alt
+    unless ref == new_seq[pos-1, ref.length]
+      warn "# WARN: \#{sid}:\#{pos}"
+      warn "#   ref org: \#{ref}" 
+      warn "#   ref new: \#{new_seq[pos-1, ref.length]}"
+      warn "#   alt new: \#{alt}"
+    end
+    new_seq[pos-1, ref.length] = alt
+    new_seq_masked[pos-1, ref.length] = alt
+    if ref.length == 1 and alt.length == 1
+      snps += 1
+    else
+      indels += 1
+      # warn "# WARN unclear InDel: \#{[sid, pos, ref_alt].join(",")}"
+    end
+    if alt =~ /N/
       if ref.length == 1 and alt.length == 1
-        snps += 1
+        ns += 1
       else
-        indels += 1
-        warn "# InDel: \#{[sid, pos, ref_alt].join(",")}"
-      end
-      if alt =~ /N/
-        if ref.length == 1 and alt.length == 1
-          ns += 1
-        else
-          ni += 1
-        end
+        ni += 1
       end
     end
-    warn "# \#{sid}: replaced SNPs:   \#{snps}\\t(unclear SNPs: \#{ns})"
-    warn "# \#{sid}: replaced InDels: \#{indels}\\t(unclear InDels: \#{ni})"
+  end
+  [{sid => [new_seq, new_seq_masked]}, [snps, indels, ns, ni]]
+end
+
+sid2seq_new_masked = sid2seq_new.inject({}){|merged, next_| merged.merge(next_.first)}
+
+open(out_genome_fa, "w") do |out|
+open(out_genome_masked_fa, "w") do |out_masked|
+  sid2seq_new_masked.each do |sid, new_masked|
+    new_seq, new_seq_masked = new_masked
     out.puts ">\#{sid}"
-    out.puts new_seq.scan(/.{100}|.+\Z/).join("\\n")
+    out.puts new_seq.scan(/.{100}|.+\\Z/).join("\\n")
     out_masked.puts ">\#{sid}"
-    out_masked.puts new_seq_masked.scan(/.{100}|.+\Z/).join("\\n")
+    out_masked.puts new_seq_masked.scan(/.{100}|.+\\Z/).join("\\n")
   end
 end
 end
@@ -328,9 +374,10 @@ EOF2
     gstore_bam = File.join(@gstore_dir, @dataset['BAM'])
     bam = File.basename(@dataset['BAM'])
     org_genome_masked_fa = "#{@dataset['Name']}.genome.masked.org.fa"
+    cores = @params['cores']
     command << "cp #{gstore_bam} ./#{bam}\n"
     # ruby replace_N_with_low_high_coverage.rb data/Ecor_GE12_DENOVO_v2.0_A_subgenome_ref.bam references/sa0050.fa > sa0050.new2.fa
-    command << "ruby #{script1_rb} #{bam} #{genome_fa} > #{org_genome_masked_fa}\n"
+    command << "ruby #{script1_rb} #{bam} #{genome_fa} -p #{cores} > #{org_genome_masked_fa}\n"
 
     script2_rb = "replace_snps_indels_by_vcf.#{@dataset['Name']}.rb"
     filtered_vcf = File.join(@gstore_dir, @dataset['Filtered VCF'])
@@ -343,7 +390,7 @@ EOF2
     transcripts_fa = "#{@dataset['Name']}.cds.fa"
     transcripts_masked_fa = "#{@dataset['Name']}.cds.masked.fa"
     # ruby replace_snps_indels_by_vcf.rb references/sa0049.fa genome.sa0049.masked.fa references/genes.gtf A_Ecor_GE12.snps_indels.sa0049.vcf.gz -f genome.sa0049.new.fa -m genome.sa0049.masked.new.fa -t genes.new.gtf
-    command << "ruby #{script2_rb} #{genome_fa} #{org_genome_masked_fa} #{genes_gtf} #{filtered_vcf} -f #{new_genome_fa} -m #{new_genome_masked_fa} -t #{new_genes_gtf}\n"
+    command << "ruby #{script2_rb} #{genome_fa} #{org_genome_masked_fa} #{genes_gtf} #{filtered_vcf} -f #{new_genome_fa} -m #{new_genome_masked_fa} -t #{new_genes_gtf} -p #{cores}\n"
     command << "gffread -x #{transcripts_fa} -g #{new_genome_fa} #{new_genes_gtf}\n" 
     command << "gffread -x #{transcripts_masked_fa} -g #{new_genome_masked_fa} #{new_genes_gtf}\n" 
     command << "gzip #{new_genome_fa}\n"
