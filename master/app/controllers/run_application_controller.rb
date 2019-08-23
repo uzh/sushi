@@ -87,10 +87,13 @@ class RunApplicationController < ApplicationController
     # reformat
     nodes = {}
     node_list.each do |hostname, specs|
-      cores, ram, scr = specs
-      key = "#{hostname}: cores #{cores}, ram #{ram}, scr #{scr}"
-      value = hostname
-      nodes[key] = value
+      # 20190823 masa tentatively off use f47
+      unless hostname =~ /fgcz-c-047/
+        cores, ram, scr = specs
+        key = "#{hostname}: cores #{cores}, ram #{ram}, scr #{scr}"
+        value = hostname
+        nodes[key] = value
+      end
     end
     nodes
   end
@@ -156,7 +159,6 @@ class RunApplicationController < ApplicationController
       end
 
       # 20190823 masa tentatively in 2-3 months for Gwyneth
-      @nodes.delete('fgcz-c-047: cores 8/16, ram 1009G, scr 900G')
       @nodes.delete('fgcz-c-047: cpu 32,mem   1 TB,scr  28T')
       @nodes
     end
