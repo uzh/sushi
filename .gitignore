@@ -21,3 +21,4 @@ master/.Rhistory
 master/*.Rproj
 .DS_Store
 lib/WordCountApp.rb
+master/bak
