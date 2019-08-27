@@ -15,10 +15,10 @@ filtering out SNPs by the VCF coming from reference accession<br/>
     EOS
     @required_columns = ['Name', 'BAM', 'Filtered VCF', 'Species', 'refBuild']
     @required_params = []
-    @params['cores'] = '8'
+    @params['cores'] = '1'
     @params['ram'] = '100'
-    @params['scratch'] = '200'
-    @modules = ["Dev/Ruby/2.4.3", "Tools/Cufflinks/2.2.1", "Tools/samtools/1.9"]
+    @params['scratch'] = '100'
+    @modules = ["Dev/Ruby/2.4.3", "Tools/Cufflinks/2.2.1", "Tools/samtools/1.9", "Tools/BEDTools/2.28.0"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters
@@ -41,38 +41,41 @@ filtering out SNPs by the VCF coming from reference accession<br/>
   def commands
     command =<<-EOS
 #!/bin/bash
-# Version = '20190823-143829'
+# Version = '20190827-160459'
 
 cat > replace_N_with_low_high_coverage.#{@dataset['Name']}.rb <<-EOF1
 
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20190823-143829'
+# Version = '20190827-160459'
 
-unless bam_or_depth=ARGV[0] and genome_fa=ARGV[1]
+def help
   puts <<-eos
   usage:
-   \#{File.basename(__FILE__)} [target.bam|samtools.depth] [genome.fa] (-o samtools.depth) (-p cores) > new_genome.fa
+   \#{File.basename(__FILE__)} [target.bam|samtools.depth] [genome.fa] (-d samtools.depth) (-b masking.bed) -o new_genome.fa
 
   note:
-   .bam: the positions in coverage < 2 or coverage < 250 in samtools depth will be replaced to N in genome.fa
+   .bam: the positions in coverage < 2 or 250 < coverage in samtools depth will be replaced to N in genome.fa
    .depth: all the positions will be replaced to N in genome.fa
 
   option:
-   -o: keep samtools.depth
-   -p: #cores for threads (default 1)
+   -o: out.fa (required)
+   -d: keep samtools.depth
+   -b: out bedtools.bed for masking intervals (default: target.bed)
   eos
   exit
 end
 
-threads = if idx = ARGV.index("-p")
-            ARGV[idx+1].to_i
-          else
-            1
-          end
+unless bam_or_depth=ARGV[0] and genome_fa=ARGV[1]
+  help
+end
 
-warn "# cores: \#{threads}"
-#command = "samtools depth -aa -r sa0001 \#{bam}"
+out_fa = if idx = ARGV.index("-o")
+           ARGV[idx+1]
+         else
+           help
+         end
+
 sid2pos = {}
 if bam_or_depth =~ /\\.bam$/
 
@@ -120,36 +123,53 @@ Bio::FlatFile.open(genome_fa).each do |e|
   sid2seq[e.definition] = e.seq
 end
 
+# out .bed
+out_bed = if idx = ARGV.index("-b")
+            ARGV[idx+1]
+          else
+            File.basename(bam_or_depth).split(".").first + ".bed"
+          end
+
+total_masking_bases = 0
+open(out_bed, "w") do |out|
+  sid2pos.each do |sid, poss|
+    interval_end_pos = nil
+    interval_start_pos = nil
+    poss.each do |pos|
+      if interval_start_pos.nil?
+        # first
+        interval_start_pos = pos - 1
+        interval_end_pos = pos
+      elsif pos == interval_end_pos + 1
+        # continue interval
+        interval_end_pos += 1
+        total_masking_bases += 1
+      else
+        # end interval
+        out.puts [sid, interval_start_pos, interval_end_pos].join("\\t")
+
+        # new interval
+        interval_start_pos = pos - 1
+        interval_end_pos = pos
+      end
+    end
+    # final interval
+    out.puts [sid, interval_start_pos, interval_end_pos].join("\\t")
+  end
+end
+
+# masking
 require 'parallel'
 total_bases = sid2pos.select{|sid, pos| sid2seq.keys.include?(sid)}.values.flatten.length
 warn "# \#{Time.now}: start masking: Total \#{total_bases} bases replacement"
 
-replaced_bases = 0
+command = "which bedtools"
+warn "# \`which bedtools\`"
 
-sid2seq_repbases = Parallel.map(sid2pos, in_processes: threads, finish: -> (item, i, res){ 
-  sid, poss = item
-  replaced_bases += res.last
-  warn "# \#{Time.now}: \#{sid} done, \#{res.last} bases replaced with N (\#{replaced_bases}/\#{total_bases} = \#{"%.1f" % (replaced_bases.to_f/total_bases*100.0)}%)"
-}) do |sid, poss|
-  rep_bases = 0
-  if seq = sid2seq[sid]
-    poss.each do |pos|
-      seq[pos-1] = "N"
-    end
-    rep_bases = poss.length 
-    [{sid => seq}, rep_bases]
-  else
-    [{}, rep_bases]
-  end
-end
-
-sid2seq_new = sid2seq_repbases.inject({}){|merged, next_| merged.merge(next_.first)}
-sid2seq_new.each do |sid, seq|
-  puts ">\#{sid}"
-  puts seq.scan(/.{100}|.+\\Z/).join("\\n")
-end
+command = "bedtools maskfasta -fi \#{genome_fa} -bed \#{out_bed} -fo \#{out_fa}"
+warn "# \#{Time.now}: \#{command}"
+\`\#{command}\`
 warn "# \#{Time.now}: done"
-
 EOF1
 
 cat > replace_snps_indels_by_vcf.#{@dataset['Name']}.rb <<-EOF2
@@ -379,7 +399,7 @@ EOF2
     cores = @params['cores']
     command << "cp #{gstore_bam} ./#{bam}\n"
     # ruby replace_N_with_low_high_coverage.rb data/Ecor_GE12_DENOVO_v2.0_A_subgenome_ref.bam references/sa0050.fa > sa0050.new2.fa
-    command << "ruby #{script1_rb} #{bam} #{genome_fa} -p #{cores} > #{org_genome_masked_fa}\n"
+    command << "ruby #{script1_rb} #{bam} #{genome_fa} -o #{org_genome_masked_fa}\n"
 
     script2_rb = "replace_snps_indels_by_vcf.#{@dataset['Name']}.rb"
     filtered_vcf = File.join(@gstore_dir, @dataset['Filtered VCF'])
