@@ -41,13 +41,13 @@ filtering out SNPs by the VCF coming from reference accession<br/>
   def commands
     command =<<-EOS
 #!/bin/bash
-# Version = '20190827-160459'
+# Version = '20190828-163304'
 
 cat > replace_N_with_low_high_coverage.#{@dataset['Name']}.rb <<-EOF1
 
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20190827-160459'
+# Version = '20190828-163304'
 
 def help
   puts <<-eos
@@ -87,7 +87,7 @@ if bam_or_depth =~ /\\.bam$/
     warn "# \#{Time.now}: \#{command}"
     system command
   end
-  out = if idx = ARGV.index("-o")
+  out = if idx = ARGV.index("-d")
           out_file = ARGV[idx+1]
           open(out_file, "w")
         end
@@ -104,6 +104,7 @@ if bam_or_depth =~ /\\.bam$/
       end
     end
   end
+  out.close if out
 
 elsif bam_or_depth =~ /\\.depth$/
   samtools_depth = bam_or_depth
