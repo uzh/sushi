@@ -41,13 +41,13 @@ filtering out SNPs by the VCF coming from reference accession<br/>
   def commands
     command =<<-EOS
 #!/bin/bash
-# Version = '20190829-062122'
+# Version = '20190829-065648'
 
 cat > replace_N_with_low_high_coverage.#{@dataset['Name']}.rb <<-EOF1
 
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20190829-062122'
+# Version = '20190829-065648'
 
 def help
   puts <<-eos
@@ -169,7 +169,7 @@ warn "# \`which bedtools\`"
 
 command = "bedtools maskfasta -fi \#{genome_fa} -bed \#{out_bed} -fo \#{out_fa}"
 warn "# \#{Time.now}: \#{command}"
-\`\#{command}\`
+system command
 warn "# \#{Time.now}: done"
 EOF1
 
