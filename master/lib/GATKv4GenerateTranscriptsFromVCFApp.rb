@@ -15,9 +15,9 @@ filtering out SNPs by the VCF coming from reference accession<br/>
     EOS
     @required_columns = ['Name', 'BAM', 'Filtered VCF', 'Species', 'refBuild']
     @required_params = []
-    @params['cores'] = '1'
+    @params['cores'] = '8'
     @params['ram'] = '100'
-    @params['scratch'] = '100'
+    @params['scratch'] = '200'
     @modules = ["Dev/Ruby/2.4.3", "Tools/Cufflinks/2.2.1", "Tools/samtools/1.9", "Tools/BEDTools/2.28.0"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
@@ -41,13 +41,13 @@ filtering out SNPs by the VCF coming from reference accession<br/>
   def commands
     command =<<-EOS
 #!/bin/bash
-# Version = '20190828-163304'
+# Version = '20190829-062122'
 
 cat > replace_N_with_low_high_coverage.#{@dataset['Name']}.rb <<-EOF1
 
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20190828-163304'
+# Version = '20190829-062122'
 
 def help
   puts <<-eos
