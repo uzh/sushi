@@ -58,15 +58,13 @@ end
   end
   
 def next_dataset
-     nds = {'Name'=>@dataset['Name']}
-     nds['RObjectWithSeqTab [File]'] = File.join(@result_dir, "#{@dataset['Name']}.seqTab.Rdata")
-     nds['Technology [Factor]'] = @params['technology']
-    pds = @dataset.clone
-    pds.delete("Read1")
-    pds.delete("Read2")
-    pds.delete("Technology")
-    nds.merge!(pds)
-    nds
+     nds = {'Name'=>@params['Name']}
+      if @params['Group']
+     nds['sampleDescriptionFile [File]'] = File.join(@result_dir, "#{@params['Name']}.designMatrix.txt")
+      end
+     nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUsToTax.txt")
+     nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUsToCount.txt")
+     nds
 end
 def commands
 run_RApp("EzAppDADA2Step1Sample")
