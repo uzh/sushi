@@ -32,6 +32,7 @@ Data preprocssing with DADA2. Please make sure that the input files are from the
 @params['concatenateReads'] = false
 @params['concatenateReads', 'description'] = 'should paired reads be concatenated instead of overlapped? Set it TRUE if paired reads do not overlap.'
 @params['mail'] = ""
+@params['Name'] = "DADA2"
 @inherit_tags = ['B-Fabric', 'Characteristic', 'Mock','Group']
 @modules = ['Dev/R']
 end
