@@ -17,7 +17,7 @@ Data preprocssing with DADA2. Please make sure that the input files are from the
   EOS
   @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'Read1']
-@required_params = ['maxLen', 'technology','paired','concatenateReads']
+@required_params = ['maxLen', 'technology','paired']
 @params['cores'] = '2'
 @params['ram'] = '8'
 @params['scratch'] = '10'
