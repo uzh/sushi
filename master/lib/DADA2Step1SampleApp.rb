@@ -31,38 +31,26 @@ Data preprocssing with DADA2. Please make sure that the input files are from the
 @params['database', 'description'] = '16S database to use for taxonomic assignment.'
 @params['paired'] = true
 @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
-@params['concatenateReads'] = false
-@params['concatenateReads', 'description'] = 'should paired reads be concatenated instead of overlapped? Set it TRUE if paired reads do not overlap.'
+@params['group'] = false
+@params['group', 'description'] = 'is there at least one sample-group assignment column? If yes, ensure the 
+    column name is in the format "NAME [Factor]"'
 @params['mail'] = ""
 @params['Name'] = "DADA2"
-@inherit_tags = ['B-Fabric', 'Characteristic', 'Mock','Group']
+@inherit_tags = ['B-Fabric', 'Characteristic', 'group']
 @modules = ['Dev/R']
 end
   def preprocess
     if @params['paired']
       @required_columns << 'Read2'
     end
-    if @params['concatenateReads']
-      @required_columns << 'Read2'
-    end
-      if @params['Group']
-      @required_columns << 'Group'
-    end
-        if @params['mockSample']
-      @required_columns << 'mockSample'
-    end
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
-    @params['concatenateReads'] = dataset_has_column?('Read2')
-       @params['Group'] = dataset_has_column?('Group')
-           @params['mockSample'] = dataset_has_column?('mockSample')
-           
   end
   
 def next_dataset
      nds = {'Name'=>@params['Name']}
-      if @params['Group']
+      if @params['group']
      nds['sampleDescriptionFile [File]'] = File.join(@result_dir, "#{@params['Name']}.designMatrix.txt")
       end
      nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUsToTax.txt")
