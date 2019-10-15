@@ -55,6 +55,7 @@ def next_dataset
       end
      nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUsToTax.txt")
      nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUsToCount.txt")
+     nds['RObjectPhyloseq [File]'] = File.join(@result_dir, "#{@params['Name']}.phyloseq.Rdata")
      nds
 end
 def commands
