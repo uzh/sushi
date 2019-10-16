@@ -16,12 +16,12 @@ super
 <a href='http://joey711.github.io/phyloseq/index.html'>http://joey711.github.io/phyloseq/index.html</a>
   EOS
 @params['process_mode'] = 'DATASET'
-@required_columns = ['Name', 'OTUsToTaxonomyFile', 'OTUsCountTable']
+@required_columns = ['Name', 'RObjectPhyloseq']
 @required_params = ['representativeOTUs','group']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
-@params['representativeOTUs'] = ''
+@params['representativeOTUs'] = '150'
 @params['representativeOTUs', 'description'] = 'Number of OTUs representing the sample.'
 @params['mail'] = ""
 @params['name'] = "PhyloSeqReport"
