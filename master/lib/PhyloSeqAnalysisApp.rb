@@ -27,6 +27,11 @@ super
 @params['taxonomicRank', 'description'] = 'Which rank shuold be displayed in the rank-dependent plots in the report?'
 @params['group'] = false
 @params['group', 'description'] = 'are there group informations in the dataset?'
+@params['rawCount'] = '5'
+@params['rawCount', 'description'] = 'OTUs with fewer than these counts in less than the fraction of samples 
+below will be removed.'
+@params['sampleFraction'] = '0.3'
+@params['sampleFraction', 'description'] = 'Minimum fraction of samples for which the raw count threshold above applies.'
 @params['mail'] = ""
 @params['name'] = "PhyloSeqReport"
 @inherit_tags = ["B-Fabric", "Characteristic","group"]
