@@ -30,14 +30,7 @@ super
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
 end
-      def preprocess
-    if @params['group']
-      @required_columns << 'sampleDescriptionFile'
-    end
-  end
-  def set_default_parameters
-     @params['group'] = dataset_has_column?('sampleDescriptionFile')
-  end
+
 def next_dataset
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
