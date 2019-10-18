@@ -17,12 +17,14 @@ super
   EOS
 @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'RObjectPhyloseq']
-@required_params = ['representativeOTUs','group']
+@required_params = ['representativeOTUs','group','taxonomicRank']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
 @params['representativeOTUs'] = '150'
-@params['representativeOTUs', 'description'] = 'Number of OTUs representing the sample.'
+@params['representativeOTUs', 'description'] = 'Rough number of expected OTUs.'
+@params['taxonomicRank'] = ['Phylum','Class','Order','Family','Genus']
+@params['taxonomicRank', 'description'] = 'Which rank shuold be displayed in the rank-dependent plots in the report?'
 @params['mail'] = ""
 @params['name'] = "PhyloSeqReport"
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
