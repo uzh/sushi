@@ -25,12 +25,13 @@ super
 @params['representativeOTUs', 'description'] = 'Rough number of expected OTUs.'
 @params['taxonomicRank'] = ['Phylum','Class','Order','Family','Genus']
 @params['taxonomicRank', 'description'] = 'Which rank shuold be displayed in the rank-dependent plots in the report?'
+@params['group'] = false
+@params['group', 'description'] = 'are there group informations in the dataset?'
 @params['mail'] = ""
 @params['name'] = "PhyloSeqReport"
 @inherit_tags = ["B-Fabric", "Characteristic","group"]
 @modules = ["Dev/R"]
 end
-
 def next_dataset
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
