@@ -27,7 +27,7 @@ super
 @params['taxonomicRank', 'description'] = 'Which rank shuold be displayed in the rank-dependent plots in the report?'
 @params['mail'] = ""
 @params['name'] = "PhyloSeqReport"
-@inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
+@inherit_tags = ["B-Fabric", "Characteristic","group"]
 @modules = ["Dev/R"]
 end
 
