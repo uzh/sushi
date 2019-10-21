@@ -30,7 +30,7 @@ Single cell Seurat clustering report<br/>
     @params['transcriptTypes'] = ''
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 0
-    @params['scProtocol'] = ['10X', 'smart-Seq2']
+    @params['scProtocol'] = ['10x', 'Smart-Seq2']
     @params['minCellsPerGene'] = 3
     @params['minCellsPerGene', 'description'] = 'Minimum number of cells per gene for creating Seurat object'
     @params['minGenesPerCell'] = 1000
