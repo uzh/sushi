@@ -40,7 +40,7 @@ end
 def next_dataset
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
-    output_table = File.join(report_file, 'abundanceAndDiffExprTable.txt')
+    output_table = File.join(@result_dir, 'abundanceAndDiffExprTable.txt')
 {'Name'=>@params['name'],
     'abundanceTable [File]'=>output_table,
     'Static Report [Link]'=>report_link,
