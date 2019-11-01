@@ -37,7 +37,7 @@ Single cell report based on Scran<br/>
     @params['visMethod', 'description'] = 'Select the low-dimensional visusalization method.'
     @params['knownMarkers'] = ''
     @params['knownMarkers', 'description'] = 'The markers to check in format of DC-like=Lgals3,Napsa;B cells=Cd79a,Ly6d; . Single and double quote are not allowed.'
-    @params['runPseudoTime'] = true
+    @params['runPseudoTime'] = false
     @params['runPseudoTime', 'description'] = 'Run PseudoTime for single cell data?'
     @params['specialOptions'] = ''
     @params['mail'] = ""
