@@ -32,6 +32,8 @@ super
 below will be removed.'
 @params['sampleFraction'] = '0.3'
 @params['sampleFraction', 'description'] = 'Minimum fraction of samples for which the raw count threshold above applies.'
+@params['numTopRanks'] = '15'
+@params['numTopRanks', 'description'] = 'Number of top-ranked OTUs to be considered in the plots.'
 @params['mail'] = ""
 @params['name'] = "PhyloSeqReport"
 @inherit_tags = ["B-Fabric", "Characteristic","group"]
