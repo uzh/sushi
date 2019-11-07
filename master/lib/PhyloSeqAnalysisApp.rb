@@ -17,7 +17,7 @@ super
   EOS
 @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'RObjectPhyloseq']
-@required_params = ['representativeOTUs','group','taxonomicRank']
+@required_params = ['group','taxonomicRank']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
