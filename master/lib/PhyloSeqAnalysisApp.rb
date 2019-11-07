@@ -21,10 +21,8 @@ super
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
-@params['representativeOTUs'] = '150'
-@params['representativeOTUs', 'description'] = 'Rough number of expected OTUs.'
 @params['taxonomicRank'] = ['Phylum','Class','Order','Family','Genus']
-@params['taxonomicRank', 'description'] = 'Which rank shuold be displayed in the rank-dependent plots in the report?'
+@params['taxonomicRank', 'description'] = 'Which rank should be displayed in the rank-dependent plots in the report?'
 @params['group'] = false
 @params['group', 'description'] = 'are there group informations in the dataset?'
 @params['rawCount'] = '5'
