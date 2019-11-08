@@ -37,6 +37,27 @@ below will be removed.'
 @inherit_tags = ["B-Fabric", "Characteristic","group"]
 @modules = ["Dev/R"]
 end
+def set_default_parameters
+      desMat=@dataset[0]['OTUsDesignMatrix [File]']
+     if  !desMat.nil?
+      require 'csv'
+      fileName = File.join(SushiFabric::GSTORE_DIR, desMat)
+      designMatrixTable = CSV.read(fileName,:headers => true, :col_sep => "\t")
+      ff = Hash[designMatrixTable.headers.collect{ |item| [item, ['Values available for this variable']+designMatrixTable[item].uniq]}]
+      ff.each do |key, value|
+      @params[key] = value
+      @params[key, 'description'] = 'This is NOT a selector, just a list of available values. If #{key} is used as grouping variable, sampleGroup and refGroup MUST be chose from this list.'
+      end
+      @params['grouping']= ff.keys
+      @params['grouping','description']='This IS a selector. This decides from which of the lists above sampleGroup and refGroup must be chosen.'
+      @params['sampleGroup'] = ''
+      @params['sampleGroup','description'] = 'This MUST be chosen from the values in the dropdown list associated to the grouping variable'
+      @params['refGroup'] = ''
+      @params['refGroup','description'] = 'This MUST be a different choice from the values in the dropdown list associated to the SAME grouping variable'
+      @required_params << ['sampleGroup','refGroup']
+      end
+end
+
 def next_dataset
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
