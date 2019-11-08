@@ -54,7 +54,6 @@ def set_default_parameters
       @params['sampleGroup','description'] = 'This MUST be chosen from the values in the dropdown list associated to the grouping variable'
       @params['refGroup'] = ''
       @params['refGroup','description'] = 'This MUST be a different choice from the values in the dropdown list associated to the SAME grouping variable'
-      @required_params << ['sampleGroup','refGroup']
       end
 end
 
