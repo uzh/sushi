@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20171109-095604'
+Version = '20191108-134725'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -32,6 +32,9 @@ below will be removed.'
 @params['sampleFraction', 'description'] = 'Minimum fraction of samples for which the raw count threshold above applies.'
 @params['numTopRanks'] = '15'
 @params['numTopRanks', 'description'] = 'Number of top-ranked OTUs to be considered in the plots.'
+@params['pack'] = ''
+@params['sodiumPerc'] = ''
+@params['grouping'] = ''
 @params['mail'] = ""
 @params['name'] = "PhyloSeqReport"
 @inherit_tags = ["B-Fabric", "Characteristic","group"]
@@ -44,6 +47,7 @@ def set_default_parameters
       fileName = File.join(SushiFabric::GSTORE_DIR, desMat)
       designMatrixTable = CSV.read(fileName,:headers => true, :col_sep => "\t")
       ff = Hash[designMatrixTable.headers.collect{ |item| [item, ["Values available for this variable"] + designMatrixTable[item].uniq]}]
+      p ff
       ff.each do |key, value|
       @params[key] = value
       @params[key, 'description'] = 'This is NOT a selector, just a list of available values. If #{key} is used as grouping variable, sampleGroup and refGroup MUST be chose from this list.'
