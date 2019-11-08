@@ -43,7 +43,7 @@ def set_default_parameters
       require 'csv'
       fileName = File.join(SushiFabric::GSTORE_DIR, desMat)
       designMatrixTable = CSV.read(fileName,:headers => true, :col_sep => "\t")
-      ff = Hash[designMatrixTable.headers.collect{ |item| [item, ['Values available for this variable']+designMatrixTable[item].uniq]}]
+      ff = Hash[designMatrixTable.headers.collect{ |item| [item, ["Values available for this variable"] + designMatrixTable[item].uniq]}]
       ff.each do |key, value|
       @params[key] = value
       @params[key, 'description'] = 'This is NOT a selector, just a list of available values. If #{key} is used as grouping variable, sampleGroup and refGroup MUST be chose from this list.'
