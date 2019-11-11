@@ -23,7 +23,9 @@ Data preprocssing with DADA2. Please make sure that the input files are from the
 @params['scratch'] = '10'
 @params['maxLen'] = '300'
 @params['maxLen', 'description'] = 'Sequences shorter than this long are removed.'
-@params['technology'] = ['illumina','pacbio','ONT']
+@params['maxExpError'] = '1'
+@params['maxExpError', 'description'] = 'Max expected error in the amplicon sequences. Rule of thumb, 1 for 50K reads. Increase by 2 every 10K reads lost.'
+@params['technology'] = ['illumina','pacbio','454']
 @params['technology', 'description'] = 'Sequencing technology used.'
 @params['referenceFasta'] = ''
 @params['referenceFasta', 'description'] = 'Full path to fasta file for the mock community (if available).'
