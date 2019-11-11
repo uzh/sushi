@@ -99,6 +99,7 @@ Single cell report<br/>
     end
   end
   def commands
+    command = "module load #{@params["Rversion"]}\n"
     run_RApp("EzAppSCReport")
   end
 end
