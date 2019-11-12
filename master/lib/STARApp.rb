@@ -24,7 +24,7 @@ EOS
     @required_params = ['refBuild','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '40'
+    @params['ram'] = '30'
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['paired'] = false
@@ -33,7 +33,7 @@ EOS
     @params['cmdOptions'] = '--outFilterType BySJout --outFilterMatchNmin 30 --outFilterMismatchNmax 10 --outFilterMismatchNoverLmax 0.05 --outMultimapperOrder Random --alignSJDBoverhangMin 1 --alignSJoverhangMin 8 --alignIntronMax 100000 --alignMatesGapMax 100000  --outFilterMultimapNmax 50 --chimSegmentMin 15 --chimJunctionOverhangMin 15 --chimScoreMin 15 --chimScoreSeparation 10 --outSAMstrandField intronMotif --alignEndsProtrude 3 ConcordantPair'
     @params['getJunctions'] = false
     #@params['getChimericJunctions'] = false
-    @params['twopassMode'] = true
+    @params['twopassMode'] = false
     @params['twopassMode', 'description'] = 'Per-sample 2-pass mapping or 1-pass mapping in STAR. 2-pass mapping allows to detect more splices reads mapping to novel junctions.'
     @params['trimAdapter'] = true
     @params['trimLeft'] = 0
