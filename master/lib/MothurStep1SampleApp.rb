@@ -16,21 +16,31 @@ Data preprocssing with Mothur. Please make sure that the input files are from th
 <a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki</a>
   EOS
 @required_columns = ['Name', 'Read1']
-@required_params = ['minLen', 'maxLen', 'technology','paired']
+@required_params = ['minLen', 'maxLen', 'technology','paired','cutOffTaxonomy','diffs','cutOffCluster']
 @params['cores'] = '2'
 @params['ram'] = '8'
 @params['scratch'] = '10'
-@params['minLen'] = '145'
-@params['minLen', 'description'] = 'Sequences shorter than this long are removed.'
-@params['maxLen'] = '330'
-@params['maxLen', 'description'] = 'Sequences longer than this are removed.'
-@params['technology'] = ['illumina','pacbio','ONT']
+@params['technology'] = ['illumina','454']
 @params['technology', 'description'] = 'Sequencing technology used.'
 @params['referenceFasta'] = ''
 @params['referenceFasta', 'description'] = 'Full path to fasta file for the mock community (if available).'
 @params['paired'] = false
 @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
+@params['minLen'] = '145'
+@params['minLen', 'description'] = 'Sequences shorter than this long are removed.'
+@params['maxLen'] = '650'
+@params['maxLen', 'description'] = 'Sequences longer than this are removed.'
+@params['diffs'] = '2'
+@params['diffs', 'description'] = 'Differences allowed in the pre.cluster step. Should be 1 every 100 bases.'
+@params['cutOffTaxonomy'] = '80'
+@params['cutOffTaxonomy', 'description'] = 'Cut-off for taxonomy assignment in classify.seqs'
+@params['cutOffCluster'] = '0.03'
+@params['cutOffCluster', 'description'] = 'Cut-off similarity to cluster OTUs'
+@params['group'] = false
+@params['group', 'description'] = 'is there at least one sample-group assignment column? If yes, ensure the 
+    column name is in the format "NAME [Factor]"'
 @params['mail'] = ""
+@params['Name'] = "Mothur"
 @inherit_tags = ['B-Fabric', 'Characteristic', 'Mock','Group']
 @modules = ['Dev/R']
 end
@@ -38,33 +48,20 @@ end
     if @params['paired']
       @required_columns << 'Read2'
     end
-      if @params['Group']
-      @required_columns << 'Group'
-    end
-        if @params['mockSample']
-      @required_columns << 'mockSample'
-    end
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
-       @params['Group'] = dataset_has_column?('Group')
-           @params['mockSample'] = dataset_has_column?('mockSample')
   end
   
 def next_dataset
-     nds = {'Name'=>@dataset['Name']}
-     nds['RawDataSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.rawSumm.txt")
-     nds['DeduppedSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.deduppedSumm.txt")
-     nds['LenAndHomopSummary [File]'] = File.join(@result_dir, "#{@dataset['Name']}.lenHomopSumm.txt")
-     nds['alignedFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.align.txt")
-     nds['groupFile [File]'] = File.join(@result_dir, "#{@dataset['Name']}.group.txt")
-     nds['Technology [Factor]'] = @params['technology']
-    pds = @dataset.clone
-    pds.delete("Read1")
-    pds.delete("Read2")
-    pds.delete("Technology")
-    nds.merge!(pds)
-    nds
+     nds = {'Name'=>@params['Name']}
+     nds['OTUsToTaxonomyFile [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUsToTax.txt")
+     nds['OTUsCountTable [File]'] = File.join(@result_dir, "#{@params['Name']}.OTUsToCount.txt")
+     if @params['group']
+     nds['OTUsDesignMatrix [File]'] = File.join(@result_dir, "#{@params['Name']}.designMatrix.txt")
+     end
+     nds['RObjectPhyloseq [File]'] = File.join(@result_dir, "#{@params['Name']}.phyloseq.Rdata")
+     nds
 end
 def commands
 run_RApp("EzAppMothurStep1Sample")
