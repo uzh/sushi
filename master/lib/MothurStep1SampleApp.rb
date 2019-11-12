@@ -15,6 +15,7 @@ super
 Data preprocssing with Mothur. Please make sure that the input files are from the same technology and adjust minLen and maxLen accordingly.
 <a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki</a>
   EOS
+   @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'Read1']
 @required_params = ['minLen', 'maxLen', 'technology','paired','cutOffTaxonomy','diffs','cutOffCluster']
 @params['cores'] = '2'
