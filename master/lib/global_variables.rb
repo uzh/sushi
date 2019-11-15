@@ -131,6 +131,7 @@ module GlobalVariables
     end
     command << "param[['dataRoot']] = '#{@gstore_dir}'\n"
     command << "param[['resultDir']] = '#{@result_dir}'\n"
+    command << "param[['isLastJob']] = #{@last_job.to_s.upcase}\n"
     command << "output = list()\n"
     output = next_dataset
     output.keys.each do |key|
