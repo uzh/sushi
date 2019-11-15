@@ -5,6 +5,7 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
+require 'csv'
 class WordCountApp < SushiFabric::SushiApp
   def initialize
     super
@@ -22,6 +23,9 @@ class WordCountApp < SushiFabric::SushiApp
     @params['test_option1', 'multi_selection'] = true
     @params['test_option2'] = ''
     @params['test_option2', 'multi_selection'] = true
+    @params['test_option2', 'select_all_default'] = true
+    @params['cellType'] = []
+    @params['cellType', 'multi_selection'] = true
     @params['note'] = '' 
     @required_columns = ['Name', 'Read1']
     @required_params = []
@@ -39,6 +43,11 @@ class WordCountApp < SushiFabric::SushiApp
     if @dataset[0]['Options']
       @params['test_option2'] = @dataset[0]['Options'].split(',')
     end
+    cell_types = {}
+    CSV.foreach("/srv/GT/databases/all_cell_markers.txt", headers: true, col_sep: "\t") do |e|
+      cell_types[e["cellType"]] = true
+    end
+    @params['cellType'] = cell_types.keys.sort
     @params['note'] = @dataset[0]['Read1 [File]']
   end
   def preprocess
