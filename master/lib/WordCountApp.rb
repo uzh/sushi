@@ -23,7 +23,7 @@ class WordCountApp < SushiFabric::SushiApp
     @params['test_option1', 'multi_selection'] = true
     @params['test_option2'] = ''
     @params['test_option2', 'multi_selection'] = true
-    @params['test_option2', 'select_all_default'] = true
+    @params['test_option2', 'all_selected'] = true
     @params['cellType'] = []
     @params['cellType', 'multi_selection'] = true
     @params['note'] = '' 
