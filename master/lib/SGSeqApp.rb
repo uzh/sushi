@@ -32,7 +32,6 @@ EOS
 
   def next_dataset
     {'Name'=>@dataset['Name'],
-     'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
      'SgSeqRDataFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.Rdata"),
      'SgSeqVarFreqFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.varFreq.txt"),
      'SgSeqCountFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.inputForDEXSeq.txt"),
