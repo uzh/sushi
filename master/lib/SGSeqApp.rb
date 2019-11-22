@@ -29,16 +29,13 @@ EOS
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
-  def set_default_parameters
-    @params['refBuild'] = @dataset[0]['refBuild']
-    if dataset_has_column?('refFeatureFile')
-      @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
-    end
-  end
+
   def next_dataset
     {'Name'=>@dataset['Name'],
      'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
      'SgSeqRDataFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.Rdata"),
+     'SgSeqVarFreqFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.varFreq.txt"),
+     'SgSeqCountFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.inputForDEXSeq.txt"),
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile']
     }.merge(extract_columns(@inherit_tags))
