@@ -21,6 +21,7 @@ class WordCountApp < SushiFabric::SushiApp
     @params['count_option'] = ['', '-c', '-l', '-m', '-w']
     @params['test_option1'] = ['option1', 'option2', 'option3']
     @params['test_option1', 'multi_selection'] = true
+    @params['test_option1', 'multi_selection_size'] = 10
     @params['test_option2'] = ''
     @params['test_option2', 'multi_selection'] = true
     @params['test_option2', 'all_selected'] = true

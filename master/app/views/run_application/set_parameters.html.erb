@@ -84,6 +84,7 @@
               <%= select :parameters, key.to_sym, ['true', 'false'], :selected => value.to_s %>
             <% elsif value.instance_of?(Array) %>
               <% if @sushi_app.params[key, "multi_selection"] %>
+                <% multi_selection_size = @sushi_app.params[key, "multi_selection_size"]||(value.length>5 ? value.length : 5) %>
                 <% if selected_value = @sushi_app.params[key, "selected"] %>
                   <% if !selected_value.instance_of?(String) and !selected_value.instance_of?(Array) %>
                     <% selected_value = value[selected_value] %>
@@ -91,11 +92,7 @@
                 <% elsif @sushi_app.params[key, "all_selected"] %>
                     <% selected_value = value %>
                 <% end %>
-                <% if value.length > 5 %>
-                  <%= select_tag "parameters[#{key}]", options_for_select(value, {:selected => selected_value}), :multiple => true, :size=>value.length  %><br />
-                <% else %>
-                  <%= select_tag "parameters[#{key}]", options_for_select(value, {:selected => selected_value}), :multiple => true, :size=>5  %><br />
-                <% end %>
+                <%= select_tag "parameters[#{key}]", options_for_select(value, {:selected => selected_value}), :multiple => true, :size=>multi_selection_size  %><br />
               <% else  %>
                 <%= select :parameters, key.to_sym, value, :selected => selected_value.to_s %>
               <% end %>
