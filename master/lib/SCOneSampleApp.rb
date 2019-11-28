@@ -35,6 +35,7 @@ Single cell report<br/>
     @params['tissue'] = []
     @params['tissue','multi_selection'] = true
     @params['tissue','all_selected'] = true
+    @params['tissue', 'multi_selection_size'] = 10
     tissue = {}
     CSV.foreach("/srv/GT/databases/all_cell_markers.txt", headers: true, col_sep: "\t") do |e|
       tissue[e["tissueType"]] = true
