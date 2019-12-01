@@ -16,8 +16,8 @@ super
 <a href='http://joey711.github.io/phyloseq/index.html'>http://joey711.github.io/phyloseq/index.html</a>
   EOS
 @params['process_mode'] = 'DATASET'
-@required_columns = ['Name', 'RObjectPhyloseq']
-@required_params = ['taxonomicRank']
+@required_columns = ['Name', 'RObjectPhyloseq','RObjectQCChimera']
+@required_params = ['taxonomicRank','rawCount','sampleFraction','numTopRanks']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
