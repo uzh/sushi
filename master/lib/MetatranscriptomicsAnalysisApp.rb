@@ -6,34 +6,34 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class MetagenomeAnnotationQCApp < SushiFabric::SushiApp
+class MetatranscriptomicsAnalysisApp < SushiFabric::SushiApp
 def initialize
 super
-@name = 'MetagenomeAnnotationQC'
+@name = 'MetatranscriptomicsAnalysis'
 @analysis_category = 'Metagenomics'
 @description =<<-EOS
-Quality control of metagenome assembly and annotation. 
+Analysis of metatranscriptomics data produced by Samsa2. 
   EOS
 @params['process_mode'] = 'DATASET'
-@required_columns = ['Name', 'contigFile', 'prodigalPredictionFile','interproscanFile']
-@required_params = ['numberOfTopNCategories','grouping', 'sampleGroup', 'refGroup']
+@required_columns = ['Name', 'annotationFileRefSeq']
+@required_params = ['numberOfTopNCategories','grouping', 'sampleGroup', 'refGroup'  ]
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
-@params['numberOfTopNCategories'] = '30'
-@params['numberOfTopNCategories', 'description'] = 'Number of top most represented GO and protein categories to report.'
 @params['grouping'] = '' 
 @params['sampleGroup'] = '' 
 @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
 @params['refGroup'] = '' 
 @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
+@params['numberOfTopNCategories'] = '30'
+@params['numberOfTopNCategories', 'description'] = 'Number of top most represented functions to report.'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
 end
 
 def next_dataset
-@params['name'] = "MetagenomeAnnotationQC"
+@params['name'] = "MetatranscriptomicsAnalysis"
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
 {'Name'=>@params['name'],
@@ -42,7 +42,7 @@ def next_dataset
 }
 end
 def commands
-run_RApp("EzAppMetagenomeAnnotationQC")
+run_RApp("EzAppMetatranscriptomicsAnalysis")
 end
 end
 
