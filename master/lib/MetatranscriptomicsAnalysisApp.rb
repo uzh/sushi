@@ -42,7 +42,7 @@ def next_dataset
 }
 end
 def commands
-run_RApp("EzAppMetatranscriptomicsAnalysis")
+run_RApp("EzAppMetatranscriptomeAnalysis")
 end
 end
 
