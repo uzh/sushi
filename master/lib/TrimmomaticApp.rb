@@ -54,6 +54,7 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     @params['minlen', 'description'] = 'Drop the read if it is below a specified length'
     @params['mail'] = ""
     @modules = ["Dev/jdk", "QC/Trimmomatic"]
+    @inherit_tags = ["Factor"]
   end
   def preprocess
     if @params['paired']
@@ -64,17 +65,14 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     @params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
-    nds = {'Name'=>@dataset['Name']}
-    nds['Read1 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")
-    if @params['paired'] 
-      nds['Read2 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read2'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")
-    end
-    nds['Adapters [File]'] = File.join(@result_dir, "#{@dataset['Name']}_adapters.fa")
-    pds = @dataset.clone
-    pds.delete("Read1")
-    pds.delete("Read2")
-    nds.merge!(pds)
-    nds
+   dataset =  {'Name'=>@dataset['Name'],
+    'Read1 [File]' => File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}"),
+    'Adapters [File]' => File.join(@result_dir, "#{@dataset['Name']}_adapters.fa")
+    }.merge(extract_columns(@inherit_tags))
+  if @params['paired'] 
+      dataset['Read2 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read2'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")
+  end
+  dataset
   end
   def se_pe
     @params['paired'] ? 'PE' : 'SE'

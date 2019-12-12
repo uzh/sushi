@@ -20,15 +20,17 @@ Denovo metagenomics assembly with Metaspades, gene prediction  with Prodigal and
   EOS
 @required_columns = ['Name', 'Read1']
 @required_params = ['metaspadesKmerList','diamondEvalue','diamondMaxSeqs']
-@params['cores'] = '1'
-@params['ram'] = '8'
-@params['scratch'] = '10'
+@params['cores'] = '8'
+@params['ram'] = '30'
+@params['scratch'] = '50'
 @params['metaspadesKmerList'] = '69,79,89'
 @params['metaspadesKmerList', 'description'] = 'Comma-separated list of k-mer for the assembly.'
 @params['diamondEvalue'] = '0.05'
 @params['diamondEvalue', 'description'] = 'Blast e-value cut-off.'
 @params['diamondMaxSeqs'] = '30'
 @params['diamondMaxSeqs', 'description'] = 'Blast maximum number of sequences to report.'
+@params['annotation'] = ['interproscan']
+@params['annotation', 'description'] = 'Which annotation to perform. Diamond will be introduced soon.'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
@@ -46,8 +48,8 @@ def next_dataset
      'contigFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),
      'prodigalPredictionFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.prodigalAnnotation.gff"),
      'interproscanFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.annotatedProteins.gff"),
-     'krakenLabelsFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.kraken.labels")
-}
+     'binSummaryFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.binSummaryFile.txt")
+}.merge(extract_columns(@inherit_tags))
 end
 def commands
 run_RApp("EzAppMetaspades")

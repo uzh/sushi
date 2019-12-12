@@ -217,7 +217,7 @@ GEM
     wasabi (3.5.0)
       httpi (~> 2.0)
       nokogiri (>= 1.4.2)
-    workflow_manager (0.4.2)
+    workflow_manager (0.4.8)
     yaml_db (0.7.0)
       rails (>= 3.0)
       rake (>= 0.8.7)

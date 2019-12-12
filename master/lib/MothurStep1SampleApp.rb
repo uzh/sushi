@@ -17,20 +17,16 @@ Data preprocssing with Mothur. Please make sure that the input files are from th
   EOS
    @params['process_mode'] = 'DATASET'
 @required_columns = ['Name', 'Read1']
-@required_params = ['minLen', 'maxLen', 'technology','paired','cutOffTaxonomy','diffs','cutOffCluster']
+@required_params = ['technology','paired','cutOffTaxonomy','diffs','cutOffCluster']
 @params['cores'] = '2'
 @params['ram'] = '8'
 @params['scratch'] = '10'
-@params['technology'] = ['illumina','454']
+@params['technology'] = ['illumina','pacbio']
 @params['technology', 'description'] = 'Sequencing technology used.'
 @params['referenceFasta'] = ''
 @params['referenceFasta', 'description'] = 'Full path to fasta file for the mock community (if available).'
 @params['paired'] = false
 @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
-@params['minLen'] = '145'
-@params['minLen', 'description'] = 'Sequences shorter than this long are removed.'
-@params['maxLen'] = '650'
-@params['maxLen', 'description'] = 'Sequences longer than this are removed.'
 @params['diffs'] = '2'
 @params['diffs', 'description'] = 'Differences allowed in the pre.cluster step. Should be 1 every 100 bases.'
 @params['cutOffTaxonomy'] = '80'
@@ -62,6 +58,7 @@ def next_dataset
      nds['OTUsDesignMatrix [File]'] = File.join(@result_dir, "#{@params['Name']}.designMatrix.txt")
      end
      nds['RObjectPhyloseq [File]'] = File.join(@result_dir, "#{@params['Name']}.phyloseq.Rdata")
+     nds['RObjectQCChimera [File]'] = File.join(@result_dir, "#{@params['Name']}.QCChimera.Rdata")
      nds
 end
 def commands
