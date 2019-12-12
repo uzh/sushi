@@ -60,6 +60,7 @@ def next_dataset
      nds['OTUsDesignMatrix [File]'] = File.join(@result_dir, "#{@params['Name']}.designMatrix.txt")
      end
      nds['RObjectPhyloseq [File]'] = File.join(@result_dir, "#{@params['Name']}.phyloseq.Rdata")
+     nds['RObjectQCChimera [File]'] = File.join(@result_dir, "#{@params['Name']}.QCChimera.Rdata")
      nds
 end
 def commands
