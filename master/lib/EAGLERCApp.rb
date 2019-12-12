@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20190710-091024'
+Version = '20191210-110232'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -24,7 +24,7 @@ EAGLE: Explicit Alternative Genome Likelihood Evaluator <br />
     @params['ram'] = '16'
     @params['scratch'] = '100'
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
-    @modules = ["Tools/EAGLE/1.1.1"]
+    @modules = ["Tools/EAGLE/1.1.1b"]
   end
   def preprocess
     # first, from species name
