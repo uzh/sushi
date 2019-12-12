@@ -29,6 +29,8 @@ Denovo metagenomics assembly with Metaspades, gene prediction  with Prodigal and
 @params['diamondEvalue', 'description'] = 'Blast e-value cut-off.'
 @params['diamondMaxSeqs'] = '30'
 @params['diamondMaxSeqs', 'description'] = 'Blast maximum number of sequences to report.'
+@params['annotation'] = ['interproscan']
+@params['annotation', 'description'] = 'Which annotation to perform. Diamond will be introduced soon.'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R"]
