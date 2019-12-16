@@ -32,7 +32,7 @@ Single cell report<br/>
     @params['transcriptTypes', 'selected'] = 0
     @params['scProtocol'] = ['10X', 'smart-Seq2']
     @params['species'] = ['Human', 'Mouse', "other"]
-    @params['vars.to.regress'] = ['nUMI', 'perc_mito', 'nGene']
+    @params['vars.to.regress'] = ['cell_cycle', 'nUMI', 'perc_mito', 'nGene']
     @params['vars.to.regress', 'multi_selection'] = true
     @params['tissue'] = []
     @params['tissue','multi_selection'] = true
