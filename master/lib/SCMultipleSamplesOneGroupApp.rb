@@ -31,6 +31,7 @@ class SCMultipleSamplesOneGroupApp < SushiFabric::SushiApp
     @params['batchCorrection'] = 'true'
     @params['chosenClusters'] = ''
     @params['all2allMarkers'] = 'false'
+    @params['maxSamplesSupported'] = '5'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @params['Rversion'] = 'Dev/R/3.6.0'
