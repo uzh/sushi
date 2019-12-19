@@ -83,6 +83,6 @@ EOS
 end
 
 if __FILE__ == $0
-  run NcPROApp
+  run ExceRptApp
 
 end
