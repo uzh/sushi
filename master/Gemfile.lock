@@ -108,7 +108,7 @@ GEM
       mini_portile2 (~> 2.4.0)
     nori (2.6.0)
     orm_adapter (0.5.0)
-    rack (1.6.11)
+    rack (1.6.12)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.11.1)
@@ -239,6 +239,7 @@ DEPENDENCIES
   loofah (>= 2.3.1)
   mysql2 (= 0.4.10)
   nokogiri (>= 1.10.4)
+  rack (>= 1.6.12)
   rails (= 4.2.11.1)
   rspec
   rspec-rails
