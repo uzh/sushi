@@ -12,15 +12,12 @@ class ExceRptReportApp < SushiFabric::SushiApp
     @name = 'ExceRptReport'
     @params['process_mode'] = 'DATASET'
     @params['name']
-    @analysis_category = 'Count'
+    @analysis_category = 'QC'
     @description =<<-EOS
     EOS
     ## modules
     @modules = ["Dev/R"]
   end
-  def preprocess
-    @random_string = (1..12).map{[*('a'..'z')].sample}.join
-  end  
   def next_dataset
     report_file = File.join(@result_dir, "#{@params['name']}_ExceRptReport")
     report_link = File.join(report_file, '00index.html')
