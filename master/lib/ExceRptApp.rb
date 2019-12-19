@@ -75,8 +75,7 @@ EOS
       'excerpt [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
       'Species'=>@dataset['Species'],
       'refBuild'=>@params['refBuild']
-    }
-   dataset
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppExceRpt")
