@@ -44,7 +44,7 @@ EOS
     @params['TRIM_N_BASES_5p'] = '0'
     @params['TRIM_N_BASES_3p'] = '0'
     @params['RANDOM_BARCODE_LENGTH'] = '0'
-    @params['RANDOM_BARCODE_LOCATION'] = ['-5p -3p','-5p','-3p']
+    @params['RANDOM_BARCODE_LOCATION'] = ["'-5p -3p'","'-5p'","'-3p'"]
     @params['KEEP_RANDOM_BARCODE_STATS'] = ['false','true']
     @params['DOWNSAMPLE_RNA_READS'] = 'NULL'
     #@params['MAP_EXOGENOUS'] = ['off','miRNA']
@@ -60,6 +60,9 @@ EOS
     @params['STAR_outFilterMismatchNmax'] = '1'
     @params['STAR_outFilterMismatchNmax','description'] = 'Maximum allowed mismatched bases in the aligned portion of the read.'
     #@params['MAX_MISMATCHES_EXOGENOUS'] = '0'
+
+
+    REMOVE_LARGE_INTERMEDIATE_FILES
 
     ## modules
     @modules = ["Dev/R"]
