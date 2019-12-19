@@ -76,4 +76,5 @@ gem "jstree-rails-4"
 gem 'therubyracer'
 gem 'thin'
 gem 'google-analytics-rails'
+gem "nokogiri", ">= 1.10.4"
 
