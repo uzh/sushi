@@ -104,7 +104,7 @@ GEM
     minitest (5.11.3)
     mysql2 (0.4.10)
     net-ldap (0.16.1)
-    nokogiri (1.10.1)
+    nokogiri (1.10.7)
       mini_portile2 (~> 2.4.0)
     nori (2.6.0)
     orm_adapter (0.5.0)
@@ -237,6 +237,7 @@ DEPENDENCIES
   jquery-rails
   jstree-rails-4
   mysql2 (= 0.4.10)
+  nokogiri (>= 1.10.4)
   rails (= 4.2.11.1)
   rspec
   rspec-rails
