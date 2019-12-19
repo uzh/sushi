@@ -63,6 +63,7 @@ EOS
     #@params['MAX_MISMATCHES_EXOGENOUS'] = '0'
 
     ## modules
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
     @modules = ["Dev/R"]
   end
   def preprocess
