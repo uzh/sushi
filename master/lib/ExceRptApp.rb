@@ -18,6 +18,7 @@ ExceRpt performs a complete analysis of small-RNA-seq. This software carries out
 EOS
     @required_columns = ['Name','Read1', 'Adapter1', 'Species']
     @required_params = ['refBuild', 'cores', 'ram', 'scratch']
+    
     ## parameters
     ### general
     @params['cores'] = '8'
@@ -25,7 +26,7 @@ EOS
     @params['ram','description'] = 'in Gigabytes'
     #@params['JAVA_RAM'] = '10G'
     @params['scratch'] = '100'
-    @params['refBuild'] = ['Mus_musculus/UCSC/mm10', 'Homo_sapiens/UCSC/hg38']
+    @params['refBuild'] = ['Homo_sapiens/UCSC/hg38', 'Mus_musculus/UCSC/mm10']
     @params['mail'] = ""
     
     ### tunable parameters exceRpt_smallRNA
@@ -61,18 +62,12 @@ EOS
     @params['STAR_outFilterMismatchNmax'] = '1'
     @params['STAR_outFilterMismatchNmax','description'] = 'Maximum allowed mismatched bases in the aligned portion of the read.'
     #@params['MAX_MISMATCHES_EXOGENOUS'] = '0'
-
-
-    REMOVE_LARGE_INTERMEDIATE_FILES
+    @params['REMOVE_LARGE_INTERMEDIATE_FILES'] = ['true','false']
+    @params['REMOVE_LARGE_INTERMEDIATE_FILES','description'] = 'When exceRpt finishes, choose whether to remove the large alignment files that can take a lot of disk space.'
 
     ## modules
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
     @modules = ["Dev/R"]
-  end
-  def preprocess
-    if @params['paired']
-      @required_columns<<  'Read2'
-    end
   end
   def next_dataset
     dataset = {
