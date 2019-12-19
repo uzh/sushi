@@ -22,7 +22,7 @@ EOS
     ## parameters
     ### general
     @params['cores'] = '8'
-    @params['ram'] = '40'
+    @params['ram'] = '16'
     @params['ram','description'] = 'in Gigabytes'
     #@params['JAVA_RAM'] = '10G'
     @params['scratch'] = '100'
