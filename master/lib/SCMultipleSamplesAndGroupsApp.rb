@@ -16,7 +16,7 @@ class SCMultipleSamplesAndGroupsApp < SushiFabric::SushiApp
     The report of merged single cell samples/plates<br/>
     EOS
     @required_columns = ['Name', 'Species', 'refBuild', 'refFeatureFile', 'Static Report']
-    @required_params = ['grouping', 'refGroup']
+    @required_params = []
     # optional params
     @params['cores'] = '4'
     @params['ram'] = '50'
@@ -29,8 +29,6 @@ class SCMultipleSamplesAndGroupsApp < SushiFabric::SushiApp
     @params['npcs'] = '20'
     @params['resolution'] = '0.6'
     @params['batchCorrection'] = 'true'
-    @params['grouping'] = ''
-    @params['refGroup'] = ''
     @params['chosenClusters'] = ''
     @params['all2allMarkers'] = 'false'
     @params['maxSamplesSupported'] = '5'
