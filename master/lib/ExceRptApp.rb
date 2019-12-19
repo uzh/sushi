@@ -8,6 +8,7 @@ include GlobalVariables
 class ExceRptApp < SushiFabric::SushiApp
   def initialize
     super
+    @name = 'Excerpt'
     @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'Count'
     @description =<<-EOS
@@ -65,6 +66,7 @@ EOS
     REMOVE_LARGE_INTERMEDIATE_FILES
 
     ## modules
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
     @modules = ["Dev/R"]
   end
   def preprocess
@@ -78,8 +80,7 @@ EOS
       'excerpt [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
       'Species'=>@dataset['Species'],
       'refBuild'=>@params['refBuild']
-    }
-   dataset
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppExceRpt")
@@ -87,6 +88,6 @@ EOS
 end
 
 if __FILE__ == $0
-  run NcPROApp
+  run ExceRptApp
 
 end
