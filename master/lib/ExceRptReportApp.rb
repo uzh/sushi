@@ -10,9 +10,10 @@ class ExceRptReportApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'ExceRptReport'
+    @required_columns = ['Name','excerpt', 'Species', 'refBuild']
     @params['process_mode'] = 'DATASET'
-    @params['name']
-    @analysis_category = 'Count'
+    @params['name'] = "Excerpt_Report"
+    @analysis_category = 'QC'
     @description =<<-EOS
     EOS
     ## modules
@@ -22,15 +23,14 @@ class ExceRptReportApp < SushiFabric::SushiApp
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
   end  
   def next_dataset
-    report_file = File.join(@result_dir, "#{@params['name']}_ExceRptReport")
+    report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
-    dataset = {
-      'Name'=>@dataset['Name'],
-      'excerpt [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
-      'Species'=>@dataset['Species'],
-      'refBuild'=>@params['refBuild'],
+    {'Name'=>@params['name'],
+     'Species'=>(dataset = @dataset.first and dataset['Species']),
+     'refBuild'=>@params['refBuild'],
+     'Static Report [Link]'=>report_link,
+     'Report [File]'=>report_file,
     }
-   dataset
   end
   def commands
     run_RApp("EzAppExceRptReport")
