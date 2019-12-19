@@ -66,7 +66,7 @@ end
 
 gem 'workflow_manager'
 gem 'sushi_fabric'
-gem 'chartkick'
+gem "chartkick", ">= 3.3.0"
 #gem 'mysql2'
 gem 'mysql2', '0.4.10'
 #gem 'activerecord-mysql2-adapter'
@@ -76,4 +76,6 @@ gem "jstree-rails-4"
 gem 'therubyracer'
 gem 'thin'
 gem 'google-analytics-rails'
-
+gem "nokogiri", ">= 1.10.4"
+gem "loofah", ">= 2.3.1"
+gem "rack", ">= 1.6.12"
