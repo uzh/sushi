@@ -8,6 +8,7 @@ include GlobalVariables
 class ExceRptApp < SushiFabric::SushiApp
   def initialize
     super
+    @name = 'Excerpt'
     @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'Count'
     @description =<<-EOS
