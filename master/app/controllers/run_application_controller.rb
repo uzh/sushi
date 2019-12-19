@@ -162,6 +162,9 @@ class RunApplicationController < ApplicationController
       @nodes.delete('fgcz-c-047: cpu 32,mem   1 TB,scr  28T')
       @nodes
     end
+    if inactivate_nodes = @sushi_app.inactivate_nodes and !inactivate_nodes.empty?
+      @nodes.delete_if{|node_desc, node| node_desc =~ /#{inactivate_nodes.join("|")}/}
+    end
 		unless @factors
 			#init_factor('Condition')
 			init_factor
