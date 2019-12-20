@@ -19,40 +19,42 @@ EOS
     @required_columns = ['Name','Read1', 'Adapter1', 'Species']
     @required_params = ['refBuild', 'cores', 'ram', 'scratch']
     
-    ## parameters
-    ### general
+    # parameters
+    ## general
     @params['cores'] = '8'
     @params['ram'] = '16'
-    @params['ram','description'] = 'in Gigabytes'
     #@params['JAVA_RAM'] = '10G'
     @params['scratch'] = '100'
-    @params['refBuild'] = ['Homo_sapiens/UCSC/hg38', 'Mus_musculus/UCSC/mm10']
+    @params['refBuild'] = ['Homo_sapiens/UCSC/hg38', 'Mus_musculus/UCSC/mm10']  ## this param substitutes exceRpt_smallRNA's vaibale: "MAIN_ORGANISM_GENOME_ID"
     @params['mail'] = ""
     
-    ### tunable parameters exceRpt_smallRNA
-    #@params['ADAPTER_SEQ'] = 'guessKnown'
-    #@params['ADAPTER_SEQ','description'] = 'Write your adapter sequence or "none" in case adapters were trimmed. By default, "guessKnown" will attempt to guess the 3p adapter using known sequences.'
+    ## tunable parameters exceRpt_smallRNA
+    #@params['ADAPTER_SEQ'] = 'guessKnown' # taken from dataset
     @params['SAMPLE_NAME'] = 'NULL'
     @params['SAMPLE_NAME','description'] = 'If "NULL", the ExceRptApp will automatically set the name from the fastq(.gz) files.'
-    #@params['MAIN_ORGANISM_GENOME_ID'] = ['hg38','mm10']
     @params['ENDOGENOUS_LIB_PRIORITY'] = 'miRNA,tRNA,piRNA,gencode,circRNA'
-    @params['ENDOGENOUS_LIB_PRIORITY','description'] = '<comma,separated,list,no,spaces>'
-    
-    @params['CALIBRATOR_LIBRARY'] = 'NULL'
-    @params['CALIBRATOR_LIBRARY','description'] = 'Path to a bowtie2 index of calibrator oligos used for QC or normalisation.'
-    @params['CALIBRATOR_TRIM5p'] = '0'
-    @params['CALIBRATOR_TRIM3p'] = '0'
-    
+    @params['ENDOGENOUS_LIB_PRIORITY','description'] = '<comma,separated,list,no,spaces> to choose the priority of each library during read assignment and quantification.'
+    ## preprocessing
     @params['TRIM_N_BASES_5p'] = '0'
     @params['TRIM_N_BASES_3p'] = '0'
-    @params['RANDOM_BARCODE_LENGTH'] = '0'
-    @params['RANDOM_BARCODE_LOCATION'] = ["'-5p -3p'","'-5p'","'-3p'"]
-    @params['KEEP_RANDOM_BARCODE_STATS'] = ['false','true']
-    @params['DOWNSAMPLE_RNA_READS'] = 'NULL'
-    #@params['MAP_EXOGENOUS'] = ['off','miRNA']
     @params['MIN_READ_LENGTH'] = '18'
     @params['QFILTER_MIN_QUAL'] = '20'
     @params['QFILTER_MIN_READ_FRAC'] = '80'
+    ## barcodes
+    @params['RANDOM_BARCODE_LENGTH'] = '0'
+    @params['RANDOM_BARCODE_LOCATION'] = ['-5p -3p','-5p','-3p']
+    @params['KEEP_RANDOM_BARCODE_STATS'] = ['false','true']
+    ## calibration (to be further tested before making it available)
+    #@params['CALIBRATOR_LIBRARY'] = 'NULL'
+    #@params['CALIBRATOR_LIBRARY','description'] = 'Path to a bowtie2 index of calibrator oligos spiked-in for QC or normalisation.'
+    #@params['CALIBRATOR_TRIM5p'] = '0'
+    #@params['CALIBRATOR_TRIM3p'] = '0'
+    
+    @params['DOWNSAMPLE_RNA_READS'] = 'NULL'
+    @params['DOWNSAMPLE_RNA_READS','description'] = 'Choose whether to downsample to this number of reads after assigning reads to the various transcriptome libraries (may be useful for normalising very different yields)'
+    #@params['MAP_EXOGENOUS'] = ['off','miRNA'] # we do not use this functionality
+    
+    ## STAR parameters
     @params['STAR_alignEndsType'] = ['Local','EndToEnd']
     @params['STAR_alignEndsType','description'] = 'Defines the alignment mode; local alignment is recommended to allow for isomiRs.'
     @params['STAR_outFilterMatchNmin'] = '18'
@@ -84,5 +86,4 @@ end
 
 if __FILE__ == $0
   run ExceRptApp
-
 end
