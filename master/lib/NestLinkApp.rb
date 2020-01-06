@@ -19,7 +19,7 @@ NestLink - an R data package to guide through Engineered Peptide Barcodes for In
     @params['ram'] = '40'
     @params['scratch'] = '30'
     @params['nReads'] = '0'
-    @params['maxMismatch'] = 1
+    @params['maxMismatch'] = '1'
     @params['NB_Linker1'] = "GGCCggcggGGCC"
     @params['NB_Linker2'] = "GCAGGAGGA"
     @params['ProteaseSite'] = "TTAGTCCCAAGA"
