@@ -16,7 +16,7 @@ class ExceRptReportApp < SushiFabric::SushiApp
     @analysis_category = 'QC'
     @description =<<-EOS
     EOS
-    
+    @required_params = ['name']
     ## modules
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
     @modules = ["Dev/R"]
