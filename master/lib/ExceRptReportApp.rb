@@ -11,6 +11,9 @@ class ExceRptReportApp < SushiFabric::SushiApp
     super
     @name = 'ExceRptReport'
     @required_columns = ['Name','excerpt', 'Species', 'refBuild']
+    @params['cores'] = '1'
+    @params['ram'] = '2'
+    @params['scratch'] = '10'
     @params['process_mode'] = 'DATASET'
     @params['name'] = "Excerpt_Report"
     @analysis_category = 'QC'
