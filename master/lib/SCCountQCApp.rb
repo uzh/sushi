@@ -30,12 +30,6 @@ Quality control for singel cell alignment and counts<br/>
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 0
     @params['scProtocol'] = ['10X', 'smart-Seq2']
-    @params['minReadsPerCell'] = 1500
-    @params['minReadsPerCell', 'description'] = 'Filter cells with less reads counted on genes'
-    @params['minReadsPerGene'] = 3
-    @params['minReadsPerGene', 'description'] = 'Minimal number of reads per gene to be expressed'
-    @params['minGenesPerCell'] = 500
-    @params['minGenesPerCell', 'description'] = 'Filter cells with less genes expressed'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     #@params['Rversion'] = ["Dev/R/3.6.0", "Dev/R/3.5.1", "Dev/R/3.5.0", "Dev/R/3.4.2", "Dev/R/3.4.0", "Dev/R/3.3.0"]
