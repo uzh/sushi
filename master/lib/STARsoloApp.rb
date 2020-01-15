@@ -67,7 +67,6 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
         #'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
         'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix')
       }.merge(extract_columns(@inherit_tags))
-    end
     dataset
   end
   def commands
