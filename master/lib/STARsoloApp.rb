@@ -38,6 +38,8 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
     @params['soloUMIlen'] = 'auto'
     @params['soloUMIlen', 'description'] = 'UMI length. Select *auto* to use default UMI length based on chemistry. Specify the length otherwise.'
     
+    @params['keepAlignment'] = ['False','True']
+    
     #@params['soloCellFilter'] = ['None','CellRanger2.2','TopCells']
     #@params['soloFeatures'] = ['Gene','SJ','GeneFull','Transcript3p']
     #@params['soloFeatures', 'multi_selection'] = true
