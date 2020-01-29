@@ -18,7 +18,7 @@ Single cell report<br/>
     @required_columns = ['Name', 'Species', 'refBuild', 'CountMatrix', 'ResultDir']
     @required_params = ['name']
     # optional params
-    @params['cores'] = '8'
+    @params['cores'] = '4'
     @params['ram'] = '30'
     @params['scratch'] = '50'
     @params['name'] = 'SCOneSample'
@@ -32,7 +32,7 @@ Single cell report<br/>
     @params['transcriptTypes', 'selected'] = 0
     @params['scProtocol'] = ['10X', 'smart-Seq2']
     @params['species'] = ['Human', 'Mouse', "other"]
-    @params['vars.to.regress'] = ['cell_cycle', 'nUMI', 'perc_mito', 'nGene']
+    @params['vars.to.regress'] = ['cell_cycle', 'nCount_RNA', 'subsets_Mito_percent', 'nFeature_RNA']
     @params['vars.to.regress', 'multi_selection'] = true
     @params['tissue'] = []
     @params['tissue','multi_selection'] = true
