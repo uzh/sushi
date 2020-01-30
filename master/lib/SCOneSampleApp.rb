@@ -43,8 +43,8 @@ Single cell report<br/>
       tissue[e["tissueType"]] = true
     end
     @params['tissue'] = tissue.keys.sort
-    @params['pcs'] = 20
-    @params['pcs', 'description'] = 'The maximal dimensions to use for reduction.'
+    @params['npcs'] = 20
+    @params['npcs', 'description'] = 'The maximal dimensions to use for reduction.'
     @params['pcGenes'] = ''
     @params['pcGenes', 'description'] = 'The genes used in supvervised clustering'
     @params['resolution'] = 0.6
