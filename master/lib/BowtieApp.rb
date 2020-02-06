@@ -30,8 +30,6 @@ Fast and memory-efficient short read aligner<br/>
     @params['trimAdapter'] = true
     # Fastp
     ## trimming
-    @params['reads_to_process'] = '0'
-    @params['reads_to_process','description'] = 'specify how many reads/pairs to be processed. Default 0 means process all reads.'
     @params['trim_front'] = '0'
     @params['trim_front','description'] = 'trimming how many bases in front for read1 (and read2), default is 0.'
     @params['trim_tail'] = '0'
@@ -48,10 +46,8 @@ Fast and memory-efficient short read aligner<br/>
     @params['max_len1','description'] = 'if read1 is longer than max_len1, then trim read1 at its tail to make it as long as max_len1. Default 0 means no limitation. If two reads are present, the same will apply to read2.'
     @params['poly_x_min_len'] = '10'
     @params['poly_x_min_len','description'] = 'the minimum length to detect polyX in the read tail. 10 by default.'
-    @params['length_required'] = '15'
-    @params['length_required','description'] = 'reads shorter than length_required will be discarded, default is 15.'
-    @params['length_limit'] = '0'
-    @params['length_limit','description'] = 'reads longer than length_limit will be discarded, default 0 means no limitation.'
+    @params['length_required'] = '18'
+    @params['length_required','description'] = 'reads shorter than length_required will be discarded.'
     ## additional commands
     @params['cmdOptionsFastp'] = ''
     
