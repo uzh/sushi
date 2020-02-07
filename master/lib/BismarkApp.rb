@@ -30,18 +30,32 @@ EOS
     @params['deduplicate', 'description'] = 'Removal of PCR duplicates. Not recommended for RRBS-Seq (Enzymatic digestion)'
     @params['cmdOptions'] = '--bowtie2'
     @params['cmdOptions', 'description'] = 'specify the commandline options for bismark; do not specify any option that is already covered by the dedicated input fields'
+    # trimming options
+    # general
     @params['trimAdapter'] = true
-    @params['trimAdapter', 'description'] = 'if adapters should be trimmed'
-    @params['trimLeft'] = 0
-    @params['trimLeft', 'description'] = 'fixed trimming at the "left" i.e. 5-prime end of the read'
-    @params['trimRight'] = 0
-    @params['trimRight', 'description'] = 'fixed trimming at the "right" i.e. 3-prime end of the read'
-    @params['minTailQuality'] = 0
-    @params['minTailQuality', 'description'] = 'if above zero, then reads are trimmed as soon as 4 consecutive bases have lower mean quality'
-    @params['minAvgQuality'] = 10
-    @params['minReadLength'] = 20
-    @params['specialOptions'] = ''
-    @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
+    # Fastp
+    ## trimming
+    @params['trim_front'] = '0'
+    @params['trim_front','description'] = 'trimming how many bases in front for read1 (and read2), default is 0.'
+    @params['trim_tail'] = '0'
+    @params['trim_tail','description'] = 'trimming how many bases in tail for read1 (and read2), default is 0.'
+    @params['cut_front'] = '0'
+    @params['cut_front','description'] = 'move a sliding window from front (5p) to tail, drop the bases in the window if its mean quality < threshold, stop otherwise.'
+    @params['cut_tail'] = '0'
+    @params['cut_tail','description'] = 'move a sliding window from tail (3p) to front, drop the bases in the window if its mean quality < threshold, stop otherwise.'
+    @params['cut_right'] = '0'
+    @params['cut_right','description'] = 'move a sliding window from front to tail, if meet one window with mean quality < threshold, drop the bases in the window and the right part, and then stop.'
+    @params['average_qual'] = '0'
+    @params['average_qual','description'] = 'if one read average quality score <avg_qual>, then this read/pair is discarded. Default 0 means no requirement'
+    @params['max_len1'] = '0'
+    @params['max_len1','description'] = 'if read1 is longer than max_len1, then trim read1 at its tail to make it as long as max_len1. Default 0 means no limitation. If two reads are present, the same will apply to read2.'
+    @params['poly_x_min_len'] = '10'
+    @params['poly_x_min_len','description'] = 'the minimum length to detect polyX in the read tail. 10 by default.'
+    @params['length_required'] = '18'
+    @params['length_required','description'] = 'reads shorter than length_required will be discarded.'
+    ## additional commands
+    @params['cmdOptionsFastp'] = ''
+    
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Aligner/Bowtie2", "Aligner/Bismark", "QC/Flexbar", "QC/Trimmomatic", "Dev/R", "Tools/sambamba"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
