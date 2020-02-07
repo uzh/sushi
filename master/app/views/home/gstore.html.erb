@@ -1,4 +1,4 @@
-<% if @fgcz %>
+<% if @fgcz and current_user %>
   <h2>Index of <%= link_to File.join(@base, @path), "https://fgcz-gstore.uzh.ch/projects/#{@path}" %></h2>
 <% else %>
 <h2>Index of <%= File.join(@base, @path) %></h2>
