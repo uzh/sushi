@@ -40,18 +40,13 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
     
     @params['keepAlignment'] = ['False','True']
     
-    #@params['soloCellFilter'] = ['None','CellRanger2.2','TopCells']
-    #@params['soloFeatures'] = ['Gene','SJ','GeneFull','Transcript3p']
-    #@params['soloFeatures', 'multi_selection'] = true
-    #@params['soloFeatures','description'] = 'Genomic features for which the UMI counts per Cell Barcode are collected.'
-    
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'Specify the commandline options for CellRanger; do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     
     
-    @modules = ["Dev/R"]
+    @modules = ["Dev/R","Aligner/STAR/2.7.3a"]
     @inherit_tags = ["B-Fabric"]
   end
   def set_default_parameters
