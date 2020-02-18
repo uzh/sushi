@@ -9,7 +9,7 @@ include GlobalVariables
 class FastpApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'fastp'
+    @name = 'Fastp'
     @analysis_category = 'Prep'
     @description =<<-EOS
 A tool designed to provide fast all-in-one preprocessing for FastQ files. This tool is developed in C++ with multithreading supported to afford high performance.
@@ -62,15 +62,15 @@ EOS
       @required_columns << 'Read2'
     end
   end
-  def set_default_parameters
+ def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
-   dataset =  {
+   dataset = {
       'Name'=>@dataset['Name'],
       'Read1 [File]' => File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}"),
       'Adapters [File]' => File.join(@result_dir, "#{@dataset['Name']}_adapters.fa")
-    }.merge(extract_columns(@inherit_tags))
+      }.merge(extract_columns(@inherit_tags))
     if @params['paired'] 
         dataset['Read2 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read2'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")
     end
@@ -84,4 +84,3 @@ end
 if __FILE__ == $0
   run FastpApp
 end
-
