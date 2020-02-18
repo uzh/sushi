@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20171109-094409'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -10,6 +9,7 @@ class FastpApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'Fastp'
+    @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'Prep'
     @description =<<-EOS
 A tool designed to provide fast all-in-one preprocessing for FastQ files. This tool is developed in C++ with multithreading supported to afford high performance.
@@ -54,6 +54,7 @@ EOS
     @params['length_required','description'] = 'reads shorter than length_required will be discarded.'
     @params['cmdOptionsFastp'] = ''
     @params['mail'] = ""
+    
     @modules = ["QC/fastp","Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
