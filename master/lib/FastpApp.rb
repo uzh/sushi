@@ -54,8 +54,8 @@ EOS
     @params['length_required','description'] = 'reads shorter than length_required will be discarded.'
     @params['cmdOptionsFastp'] = ''
     @params['mail'] = ""
-    @modules = ["QC/fastp"]
-    @inherit_tags = ["Factor"]
+    @modules = ["QC/fastp","Dev/R"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
     if @params['paired']
