@@ -45,6 +45,7 @@
     <table>
       <% @sushi_app.params.each do |key, value| %>
         <% selected_value = @params_selected[key] %>
+        <% if @sushi_app.params[key, 'employee'] and session[:employee] or !@sushi_app.params[key, 'employee'] %>
         <tr>
           <th>
           <% if @sushi_app.params[key, 'hr'] %>
@@ -119,6 +120,7 @@
         <% end %>
         </td>
         </tr>
+        <% end %>
       <% end %>
     </table>
   <br />
