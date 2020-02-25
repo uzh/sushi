@@ -46,8 +46,17 @@
       <% @sushi_app.params.each do |key, value| %>
         <% selected_value = @params_selected[key] %>
         <tr>
-          <th><%= key %></th>
+          <th>
+          <% if @sushi_app.params[key, 'hr'] %>
+            <hr \>
+          <% else %>
+            <%= key %>
+          <% end %>
+          </th>
           <td>
+          <% if @sushi_app.params[key, 'hr'] %>
+            <hr \>
+          <% else %>
           <% case key %>
           <% when 'cores' %>
             <%= text_field :parameters, key.to_sym, :value => "#{value}", :with=>"numeric" %> GB
@@ -107,6 +116,7 @@
             <font color=red>required</font>
           <% end %>
           <font color=gray><%= @sushi_app.params[key, 'description'].to_s.html_safe %></font>
+        <% end %>
         </td>
         </tr>
       <% end %>
