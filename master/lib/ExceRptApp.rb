@@ -44,8 +44,8 @@ EOS
     @params['RANDOM_BARCODE_LENGTH','description'] = 'Identify and remove random barcodes of this number of nucleotides. For a Bioo prep with a 4N random barcode on both the 3p and 5p adapter, this value should be 4.'
     @params['RANDOM_BARCODE_LOCATION'] = ['-5p -3p','-5p','-3p']
     @params['RANDOM_BARCODE_LOCATION','description'] = 'Specify where to look for the random barcode(s).'
-    @params['KEEP_RANDOM_BARCODE_STATS'] = ['false','true']
-    @params['KEEP_RANDOM_BARCODE_STATS'] = 'Specify whether or not to calculate overrepresentation statistics using the random barcodes (this may be slow and memory intensive!).'
+    @params['KEEP_RANDOM_BARCODE_STATS'] = false
+    @params['KEEP_RANDOM_BARCODE_STATS', 'description'] = 'Specify whether or not to calculate overrepresentation statistics using the random barcodes (this may be slow and memory intensive!).'
     
     ## STAR parameters
     @params['STAR_alignEndsType'] = ['Local','EndToEnd']
