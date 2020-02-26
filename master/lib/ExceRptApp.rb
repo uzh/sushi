@@ -22,7 +22,7 @@ EOS
     # parameters
     ## general
     @params['cores'] = '8'
-    @params['ram'] = '16'
+    @params['ram'] = '30'
     #@params['JAVA_RAM'] = '10G'
     @params['scratch'] = '100'
     @params['refBuild'] = ['Homo_sapiens/UCSC/hg38', 'Mus_musculus/UCSC/mm10']  ## this param substitutes exceRpt_smallRNA's vaibale: "MAIN_ORGANISM_GENOME_ID"
