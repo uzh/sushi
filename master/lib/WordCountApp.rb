@@ -28,6 +28,7 @@ class WordCountApp < SushiFabric::SushiApp
     @params['cellType'] = []
     @params['cellType', 'multi_selection'] = true
     @params['note'] = '' 
+    @params['note', 'employee'] = true
     @required_columns = ['Name', 'Read1']
     @required_params = []
     #@modules = ["Aligner/STAR", "Tools/samtools", "Tools/sambamba"]
