@@ -33,18 +33,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-atac/soft
   end
   def next_dataset
     report_dir = File.join(@result_dir,"#{@dataset['Name']}")
-    if @params['TenXLibrary'] == "VDJ"
-      dataset = {
-        'Name'=>@dataset['Name'],
-        'Species'=>@dataset['Species'],
-        'refBuild'=>@params['refBuild'],
-        'refFeatureFile'=>@params['refFeatureFile'],
-        'featureLevel'=>@params['featureLevel'],
-        'ResultDir [File]'=>report_dir,
-        'Report [Link]'=>File.join(report_dir, 'web_summary.html')
-      }.merge(extract_columns(@inherit_tags))
-    else
-      dataset = {
+    dataset = {
         'Name'=>@dataset['Name'],
         'Species'=>@dataset['Species'],
         'refBuild'=>@params['refBuild'],
@@ -53,8 +42,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-atac/soft
         'ResultDir [File]'=>report_dir,
         'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
         'CountMatrix [Link]'=>File.join(report_dir, 'filtered_peak_bc_matrix')
-      }.merge(extract_columns(@inherit_tags))
-    end
+    }.merge(extract_columns(@inherit_tags))
     dataset
   end
   def commands
