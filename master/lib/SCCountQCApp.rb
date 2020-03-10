@@ -18,7 +18,7 @@ Quality control for singel cell alignment and counts<br/>
     @required_params = ['name']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '100'
+    @params['ram'] = '28'
     @params['scratch'] = '200'
     @params['name'] = 'SCCount_QC'
     @params['refBuild'] = ref_selector
