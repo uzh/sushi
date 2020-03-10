@@ -39,21 +39,17 @@ Single cell Seurat clustering report<br/>
     @params['maxGenesPerCell', 'description'] = 'Maximal number of genes per cell for Seurat filtering'
     @params['maxMitoPercent'] = 25
     @params['maxMitoPercent', 'description'] = 'Maximal percentage of mitochondrial reads per cell for Seurat filtering'
-    @params['pcs'] = 50
+    @params['pcs'] = 30
     @params['pcs', 'description'] = 'The maximal dimensions to use for reduction.'
     @params['vars.to.regress'] = ['nFeature_RNA', 'nCount_RNA', 'percent.mt']
     @params['vars.to.regress', 'multi_selection'] = true
     @params['vars.to.regress', 'selected'] = ['nFeature_RNA', 'percent.mt']
     @params['resolution'] = 0.5
     @params['resolution', 'description'] = 'Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.'
-    @params['markersToShow'] = 10
-    @params['markersToShow', 'description'] = 'The markers to show in the heatmap of cluster marker genes.'
     @params['knownMarkers'] = ''
     @params['knownMarkers', 'description'] = 'The markers to check in format of DC-like=Lgals3,Napsa;B cells=Cd79a,Ly6d; . Single and double quote are not allowed.'
     @params['runPseudoTime'] = false
     @params['runPseudoTime', 'description'] = 'Run PseudoTime for single cell data?'
-    @params['all2allMarkers'] = false
-    @params['all2allMarkers', 'description'] = 'Run all against all cluster comparisons?'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     #@params['Rversion'] = ["Dev/R/3.6.0", "Dev/R/3.5.1", "Dev/R/3.5.0", "Dev/R/3.4.2", "Dev/R/3.4.0", "Dev/R/3.3.0"]
