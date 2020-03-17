@@ -45,8 +45,21 @@
     <table>
       <% @sushi_app.params.each do |key, value| %>
         <% selected_value = @params_selected[key] %>
+        <% if @sushi_app.params[key, 'employee'] and session[:employee] or !@sushi_app.params[key, 'employee'] %>
         <tr>
-          <th><%= key %></th>
+          <% if @sushi_app.params[key, 'hr'] %>
+            <tr>
+              <th>
+                <hr \>
+              </th>
+              <td>
+                <hr \>
+              </td>
+            </tr>
+          <% end %>
+          <th>
+            <%= key %>
+          </th>
           <td>
           <% case key %>
           <% when 'cores' %>
@@ -109,6 +122,7 @@
           <font color=gray><%= @sushi_app.params[key, 'description'].to_s.html_safe %></font>
         </td>
         </tr>
+        <% end %>
       <% end %>
     </table>
   <br />
