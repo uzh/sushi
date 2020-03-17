@@ -18,7 +18,7 @@ Single cell report<br/>
     @required_columns = ['Name', 'Species', 'refBuild', 'CountMatrix', 'ResultDir']
     @required_params = ['name']
     # optional params
-    @params['cores'] = '8'
+    @params['cores'] = '4'
     @params['ram'] = '30'
     @params['scratch'] = '50'
     @params['name'] = 'SCOneSample'
@@ -32,7 +32,7 @@ Single cell report<br/>
     @params['transcriptTypes', 'selected'] = 0
     @params['scProtocol'] = ['10X', 'smart-Seq2']
     @params['species'] = ['Human', 'Mouse', "other"]
-    @params['vars.to.regress'] = ['cell_cycle', 'nUMI', 'perc_mito', 'nGene']
+    @params['vars.to.regress'] = ['cell_cycle', 'nCount_RNA', 'subsets_Mito_percent', 'nFeature_RNA']
     @params['vars.to.regress', 'multi_selection'] = true
     @params['tissue'] = []
     @params['tissue','multi_selection'] = true
@@ -43,8 +43,8 @@ Single cell report<br/>
       tissue[e["tissueType"]] = true
     end
     @params['tissue'] = tissue.keys.sort
-    @params['pcs'] = 20
-    @params['pcs', 'description'] = 'The maximal dimensions to use for reduction.'
+    @params['npcs'] = 20
+    @params['npcs', 'description'] = 'The maximal dimensions to use for reduction.'
     @params['pcGenes'] = ''
     @params['pcGenes', 'description'] = 'The genes used in supvervised clustering'
     @params['resolution'] = 0.6
