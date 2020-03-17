@@ -5,27 +5,24 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class BWAApp < SushiFabric::SushiApp
+class FastpApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'BWA'
-    @analysis_category = 'Map'
+    @name = 'Fastp'
+    @params['process_mode'] = 'SAMPLE'
+    @analysis_category = 'Prep'
     @description =<<-EOS
-    Burrows-Wheeler Aligner<br/>
-<a href='http://bio-bwa.sourceforge.net/'>BWA</a><br/>
-    EOS
-    @required_columns = ['Name','Read1','Species']
-    @required_params = ['refBuild','paired']
+A tool designed to provide fast all-in-one preprocessing for FastQ files. This tool is developed in C++ with multithreading supported to afford high performance.
+Refer to <a href='https://github.com/OpenGene/fastp'>https://github.com/OpenGene/fastp</a>
+EOS
+    @required_columns = ['Name','Read1']
+    @required_params = ['paired']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '16'
     @params['scratch'] = '100'
-    @params['refBuild'] = ref_selector
-    @params['refBuild', 'description'] = 'the genome refBuild and annotation to use as reference. If human variant calling is the main goal, please use hg_19_karyotypic.'
     @params['paired'] = false
-    @params['algorithm'] = ['mem', 'aln', 'bwasw']
-    @params['cmdOptions'] = ''
-    
+    @params['paired', 'description'] = 'either the reads are paired-ends or single-end'
     # trimming options
     # general
     @params['trimAdapter'] = true
@@ -55,11 +52,10 @@ class BWAApp < SushiFabric::SushiApp
     @params['poly_x_min_len','description'] = 'the minimum length to detect polyX in the read tail. 10 by default.'
     @params['length_required'] = '18'
     @params['length_required','description'] = 'reads shorter than length_required will be discarded.'
-    ## additional commands
     @params['cmdOptionsFastp'] = ''
-    
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/BWA", "QC/Flexbar", "QC/fastp", "Dev/R", "Tools/sambamba"]
+    
+    @modules = ["QC/fastp","Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
@@ -67,30 +63,25 @@ class BWAApp < SushiFabric::SushiApp
       @required_columns << 'Read2'
     end
   end
-  def set_default_parameters
+ def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
-    {'Name'=>@dataset['Name'],
-     'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
-     'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-        'IGV Starter [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
-        'Species'=>@dataset['Species'],
-        'refBuild'=>@params['refBuild'],
-        'paired'=>@params['paired'],
-        'refFeatureFile'=>@params['refFeatureFile'],
-        'strandMode'=>@params['strandMode'],
-        'Read Count'=>@dataset['Read Count'],
-        'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
-        'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml"),
-        'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
-    }.merge(extract_columns(@inherit_tags))
+   dataset = {
+      'Name'=>@dataset['Name'],
+      'Read1 [File]' => File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}"),
+      'Adapters [File]' => File.join(@result_dir, "#{@dataset['Name']}_adapters.fa")
+      }.merge(extract_columns(@inherit_tags))
+    if @params['paired'] 
+        dataset['Read2 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read2'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")
+    end
+    dataset
   end
   def commands
-    run_RApp("EzAppBWA")
+    run_RApp("EzAppFastp")
   end
 end
 
 if __FILE__ == $0
-
+  run FastpApp
 end
