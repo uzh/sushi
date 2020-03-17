@@ -10,16 +10,22 @@ class ExceRptReportApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'ExceRptReport'
+    @params['process_mode'] = 'DATASET'
+    @analysis_category = 'QC'
+    @description =<<-EOS
+QC report of exceRpt outputs.
+EOS
     @required_columns = ['Name','excerpt', 'Species', 'refBuild']
+    @required_params = ['name']
+    
     @params['cores'] = '1'
     @params['ram'] = '2'
     @params['scratch'] = '10'
-    @params['process_mode'] = 'DATASET'
     @params['name'] = "Excerpt_Report"
-    @analysis_category = 'QC'
-    @description =<<-EOS
-    EOS
-    @required_params = ['name']
+    
+    @params['mail'] = ""
+    
+
     ## modules
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
     @modules = ["Dev/R"]
@@ -41,5 +47,4 @@ end
 
 if __FILE__ == $0
   run EzAppExceRptReport
-  
 end
