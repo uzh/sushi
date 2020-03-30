@@ -37,7 +37,7 @@ EOS
     @params['cmdOptions', 'description'] = 'specify the commandline options; do not specify any option that is already covered by the dedicated input fields'
     @params['dictPath'] = ''
     @params['dictPath'] = {'select'=>''}
-    Dir["/srv/GT/databases/GEML/sgRNA_Libs"].sort.select{|lib| File.directory?(lib)}.each do |dir|
+    Dir["/srv/GT/databases/GEML/sgRNA_Libs/*"].sort.select{|lib| File.directory?(lib)}.each do |dir|
       @params['dictPath'][File.basename(dir)] = File.basename(dir)
     end
     @params['keyStart'] = '24'
