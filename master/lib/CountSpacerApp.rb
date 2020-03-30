@@ -22,10 +22,24 @@ EOS
     @params['cores'] = '1'
     @params['ram'] = '4'
     @params['scratch'] = '100'
-
+    @params['trimAdapter'] = true
+    @params['trimAdapter', 'description'] = 'if adapters should be trimmed'
+    @params['trimLeft'] = 0
+    @params['trimLeft', 'description'] = 'fixed trimming at the "left" i.e. 5-prime end of the read'
+    @params['trimRight'] = 0
+    @params['trimRight', 'description'] = 'fixed trimming at the "right" i.e. 3-prime end of the read'
+    @params['minTailQuality'] = 0
+    @params['minTailQuality', 'description'] = 'if above zero, then reads are trimmed as soon as 4 consecutive bases have lower mean quality'
+    @params['minAvgQuality'] = 10
+    @params['minReadLength'] = 50
+    
     @params['cmdOptions'] = '-no-g'
     @params['cmdOptions', 'description'] = 'specify the commandline options; do not specify any option that is already covered by the dedicated input fields'
     @params['dictPath'] = ''
+    @params['dictPath'] = {'select'=>''}
+    Dir["/srv/GT/databases/GEML/sgRNA_Libs"].sort.select{|lib| File.directory?(lib)}.each do |dir|
+      @params['dictPath'][File.basename(dir)] = File.basename(dir)
+    end
     @params['keyStart'] = '24'
     @params['keyStart', 'description'] = 'start position of key'
     @params['keyEnd'] = '44'
@@ -33,7 +47,7 @@ EOS
     @params['specialOptions'] = ''
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
-    @modules = ["Dev/Python2", "Dev/R"]
+    @modules = ["QC/Flexbar", "QC/Trimmomatic", "Dev/Python2", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
@@ -47,10 +61,10 @@ EOS
   def next_dataset
     {'Name'=>@dataset['Name'],
      'Counts [File]'=>File.join(@result_dir, "#{@dataset['Name']}_counts.csv"),
-     'Stats [File]'=>File.join(@result_dir, "#{@dataset['Name']}_statistics.txt")
-     #'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
-     #'Species'=>@dataset['Species'],
-     #'Read Count'=>@dataset['Read Count'],
+     'Stats [File]'=>File.join(@result_dir, "#{@dataset['Name']}_statistics.txt"),
+     'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
+     'Species'=>@dataset['Species'],
+     'Read Count'=>@dataset['Read Count']
     }#.merge(extract_columns(@inherit_tags))
   end
   def commands
