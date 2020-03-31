@@ -68,7 +68,7 @@ EOS
     @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
     
     @params['mail'] = ""
-    @modules = ["QC/Flexbar", "QC/Trimmomatic", "Dev/R"]
+    @modules = ["QC/Flexbar", "QC/fastp", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
