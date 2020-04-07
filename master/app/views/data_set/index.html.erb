@@ -127,7 +127,7 @@
 <h3>DataSets <span style="font-size: 0.5em;"> - <a href="#" id="btn_multi_delete">delete</a> with selected
 <% if @tree %>
   - <%= link_to "Full table view", "/data_set/index_full" %><br>
-<% elsif data_sets = @project&.data_sets and data_sets.length != @data_sets.length %>
+<% elsif @project and data_sets = @project.data_sets and data_sets.length != @data_sets.length %>
   - <%= link_to "Tree view", "/data_set/index_tree" %> - <%= link_to "Full table view", "/data_set/index_full" %>
 <% end %>
 </span>
@@ -135,7 +135,7 @@
 
 <%= hidden_field "url", "not_found", :value=>@url_not_found %>
 <% if @project %>
-  <% if @tree or (data_sets = @project&.data_sets and data_sets.length == @data_sets.length) %>
+  <% if @tree or (@project and data_sets = @project.data_sets and data_sets.length == @data_sets.length) %>
     Search: <%= text_field :search, :tree %>
     <ul id="data_set_tree" class="filetree"></ul>
   <% end %>
@@ -201,7 +201,7 @@
         </tbody>
         <% end %>
     </table>
-    <% if @project and data_sets = @project&.data_sets and data_sets.length > @data_sets.length %>
+    <% if @project and data_sets = @project.data_sets and data_sets.length > @data_sets.length %>
     <%= link_to "More...", "/data_set/index_full" %>
     <% end %>
     <% end %>
