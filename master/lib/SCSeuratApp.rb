@@ -41,9 +41,9 @@ Single cell Seurat clustering report<br/>
     @params['maxMitoPercent', 'description'] = 'Maximal percentage of mitochondrial reads per cell for Seurat filtering'
     @params['pcs'] = 30
     @params['pcs', 'description'] = 'The maximal dimensions to use for reduction.'
-    @params['vars.to.regress'] = ['nFeature_RNA', 'nCount_RNA', 'percent.mt']
+    @params['vars.to.regress'] = ['nFeature_RNA', 'percent.mt', 'CellCycle']
     @params['vars.to.regress', 'multi_selection'] = true
-    @params['vars.to.regress', 'selected'] = ['nFeature_RNA', 'percent.mt']
+    @params['vars.to.regress', 'selected'] = ['nFeature_RNA']
     @params['resolution'] = 0.5
     @params['resolution', 'description'] = 'Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.'
     @params['knownMarkers'] = ''
