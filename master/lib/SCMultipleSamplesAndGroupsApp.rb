@@ -29,9 +29,9 @@ class SCMultipleSamplesAndGroupsApp < SushiFabric::SushiApp
     @params['npcs'] = '20'
     @params['resolution'] = '0.6'
     @params['batchCorrection'] = 'true'
-    @params['SCT.regress'] = ['none', 'cell_cycle']
+    @params['SCT.regress'] = ['none', 'CellCycle']
     @params['DE.method'] = ['wilcoxon', 'LR']
-    @params['DE.regress'] = ['Plate', 'cell_cycle']
+    @params['DE.regress'] = ['Plate', 'CellCycle']
     @params['DE.regress','multi_selection'] = true
     @params['chosenClusters'] = ''
     @params['all2allMarkers'] = 'false'
