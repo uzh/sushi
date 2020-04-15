@@ -32,7 +32,7 @@ Single cell report<br/>
     @params['transcriptTypes', 'selected'] = 0
     @params['scProtocol'] = ['10X', 'smart-Seq2']
     @params['species'] = ['Human', 'Mouse', "other"]
-    @params['SCT.regress'] = ['none', 'cell_cycle']
+    @params['SCT.regress'] = ['none', 'CellCycle']
     @params['DE.method'] = ['wilcoxon', 'LR']
     @params['tissue'] = []
     @params['tissue','multi_selection'] = true
