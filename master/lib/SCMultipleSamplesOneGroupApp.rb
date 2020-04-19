@@ -36,7 +36,7 @@ class SCMultipleSamplesOneGroupApp < SushiFabric::SushiApp
       tissue[e["tissueType"]] = true
     end
     @params['tissue'] = tissue.keys.sort
-    @params['npcs'] = '20'
+    @params['npcs'] = '30'
     @params['resolution'] = '0.6'
     @params['batchCorrection'] = 'true'
     @params['SCT.regress'] = ['none', 'CellCycle']
