@@ -975,6 +975,7 @@ class DataSetController < ApplicationController
     end
   end
   def announce
+    params.permit!
     template_path = if template = params[:template]
                       template[:path]
                     end
