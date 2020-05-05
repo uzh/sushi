@@ -38,8 +38,8 @@ EOS
     Dir["/srv/GT/databases/GEML/sgRNA_Libs/*"].sort.select{|lib| File.directory?(lib)}.each do |dir|
       @params['dictPath'][File.basename(dir)] = File.basename(dir)
     end
-    @params['leftPattern '] = 'TGTGGAAAGGACGAAACACC.'
-    @params['rightPattern'] = 'GTTTTAGAGCTAGGCCAACATG'
+    @params['leftPattern '] = ''
+    @params['rightPattern'] = ''
     @params['maxMismatch'] = 1
     @params['maxMismatch', 'description'] = 'number of allowed mismatches for pattern search'
 
