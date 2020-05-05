@@ -63,7 +63,6 @@ EOS
     {'Name'=>@params['name'],
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
-     'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
      'Species'=>@dataset['Species'],
      'Read Count'=>@dataset['Read Count']
     }
