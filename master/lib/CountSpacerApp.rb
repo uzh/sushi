@@ -20,7 +20,7 @@ EOS
     @required_params = ['dictPath']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '20'
+    @params['ram'] = '40'
     @params['scratch'] = '100'
     @params['trimAdapter'] = true
     @params['trimAdapter', 'description'] = 'if adapters should be trimmed'
@@ -32,7 +32,7 @@ EOS
     @params['minTailQuality', 'description'] = 'if above zero, then reads are trimmed as soon as 4 consecutive bases have lower mean quality'
     @params['minAvgQuality'] = 10
     @params['minReadLength'] = 19
-
+    @params['name'] = 'CountSpacer_Result'
     @params['dictPath'] = ''
     @params['dictPath'] = {'select'=>''}
     Dir["/srv/GT/databases/GEML/sgRNA_Libs/*"].sort.select{|lib| File.directory?(lib)}.each do |dir|
@@ -58,13 +58,15 @@ EOS
     #@params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
-    {'Name'=>@dataset['Name'],
-     'Counts [File]'=>File.join(@result_dir, "#{@dataset['Name']}_counts.csv"),
-     'Stats [File]'=>File.join(@result_dir, "#{@dataset['Name']}_statistics.txt"),
+    report_file = File.join(@result_dir, @params['name'])
+    report_link = File.join(report_file, '00index.html')
+    {'Name'=>@params['name'],
+     'Report [File]'=>report_file,
+     'Html [Link]'=>report_link,
      'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
      'Species'=>@dataset['Species'],
      'Read Count'=>@dataset['Read Count']
-    }#.merge(extract_columns(@inherit_tags))
+    }
   end
   def commands
     run_RApp("EzAppCountSpacer")
