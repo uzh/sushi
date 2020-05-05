@@ -19,8 +19,8 @@ EOS
     @required_columns = ['Name','Read1']
     @required_params = ['dictPath']
     # optional params
-    @params['cores'] = '1'
-    @params['ram'] = '4'
+    @params['cores'] = '8'
+    @params['ram'] = '20'
     @params['scratch'] = '100'
     @params['trimAdapter'] = true
     @params['trimAdapter', 'description'] = 'if adapters should be trimmed'
@@ -31,23 +31,22 @@ EOS
     @params['minTailQuality'] = 0
     @params['minTailQuality', 'description'] = 'if above zero, then reads are trimmed as soon as 4 consecutive bases have lower mean quality'
     @params['minAvgQuality'] = 10
-    @params['minReadLength'] = 50
-    
-    @params['cmdOptions'] = '-no-g'
-    @params['cmdOptions', 'description'] = 'specify the commandline options; do not specify any option that is already covered by the dedicated input fields'
+    @params['minReadLength'] = 19
+
     @params['dictPath'] = ''
     @params['dictPath'] = {'select'=>''}
     Dir["/srv/GT/databases/GEML/sgRNA_Libs/*"].sort.select{|lib| File.directory?(lib)}.each do |dir|
       @params['dictPath'][File.basename(dir)] = File.basename(dir)
     end
-    @params['keyStart'] = '24'
-    @params['keyStart', 'description'] = 'start position of key'
-    @params['keyEnd'] = '44'
-    @params['keyEnd', 'description'] = 'end position of key'
+    @params['leftPattern '] = ''
+    @params['rightPattern'] = ''
+    @params['maxMismatch'] = 1
+    @params['maxMismatch', 'description'] = 'number of allowed mismatches for pattern search'
+
     @params['specialOptions'] = ''
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
-    @modules = ["QC/Flexbar", "QC/Trimmomatic", "Dev/Python2", "Dev/R"]
+    @modules = ["QC/Flexbar", "QC/Trimmomatic", "Dev/Python2", "Dev/R", "Aligner/Bowtie"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
