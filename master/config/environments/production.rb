@@ -73,8 +73,7 @@ SushiFabric::Application.configure do
   config.eager_load = true
 
   def config.fgcz?
-    #@fgcz ||= (`hostname`.chomp =~ /fgcz-s-032/)
-    @fgcz ||= (`hostname`.chomp =~ /fgcz/)
+    @fgcz ||= (`hostname`.chomp =~ /fgcz-s-032/)
   end
 
   # fgcz
