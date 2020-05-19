@@ -1,4 +1,4 @@
-class AddLoginToUsers < ActiveRecord::Migration
+class AddLoginToUsers < ActiveRecord::Migration[5.2]
   def self.up
     add_column :users, :login, :string, :null => false, :default => "", :unique => true
     add_index :users, :login, :unique => true
