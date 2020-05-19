@@ -73,7 +73,8 @@ SushiFabric::Application.configure do
   config.eager_load = true
 
   def config.fgcz?
-    @fgcz ||= (`hostname`.chomp =~ /fgcz-s-032/)
+    #@fgcz ||= (`hostname`.chomp =~ /fgcz-s-032/)
+    @fgcz ||= (`hostname`.chomp =~ /fgcz/)
   end
 
   # fgcz
@@ -88,6 +89,7 @@ SushiFabric::Application.configure do
     config.sushi_app_dir = Dir.pwd
     config.module_source = "/usr/local/ngseq/etc/lmod_profile"
     config.course_mode = false
+    #ENV['PATH'] = "/usr/local/ngseq/packages/Dev/Python/3.6.8/bin/:/usr/local/ngseq/opt/GxTx_Scripts_in_Python3/g-bin/:" + ENV['PATH']
   end
 
 end
