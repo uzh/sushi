@@ -1,12 +1,12 @@
 PATH
-  remote: /srv/SushiFabric/Gems/devise_ldap_authenticatable_forked_20190712
+  remote: /srv/sushi/gems/devise_ldap_authenticatable_forked_20190712
   specs:
     devise_ldap_authenticatable (0.8.6.1)
       devise (>= 3.4.1)
       net-ldap (>= 0.16.0)
 
 PATH
-  remote: /srv/SushiFabric/Gems/fgcz
+  remote: /srv/sushi/gems/fgcz
   specs:
     fgcz (0.0.2)
 
