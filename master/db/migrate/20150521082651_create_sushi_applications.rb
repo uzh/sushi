@@ -1,4 +1,4 @@
-class CreateSushiApplications < ActiveRecord::Migration
+class CreateSushiApplications < ActiveRecord::Migration[5.2]
   def change
     create_table :sushi_applications do |t|
       t.string :class_name
