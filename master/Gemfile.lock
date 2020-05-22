@@ -8,7 +8,7 @@ PATH
 PATH
   remote: /srv/sushi/gems/fgcz
   specs:
-    fgcz (0.0.2)
+    fgcz (0.0.3)
 
 GEM
   remote: https://rubygems.org/
