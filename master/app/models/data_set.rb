@@ -52,7 +52,11 @@ class DataSet < ActiveRecord::Base
     self.num_samples
   end
   def register_bfabric(op = 'new', bfabric_application_number: nil)
-    base = "public/register_sushi_dataset_into_bfabric"
+    base = if python_version = `which python` and python_version =~ /3/
+             python3 = "public/register_sushi_dataset_into_bfabric.py3"
+           else
+             python2 = "public/register_sushi_dataset_into_bfabric"
+           end
     check = "public/check_dataset_bfabric"
     parent_dataset = self.data_set
     if parent_dataset.nil? or parent_dataset.bfabric_id
