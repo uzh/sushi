@@ -14,7 +14,7 @@ class KallistoApp < SushiFabric::SushiApp
     <a href="https://pachterlab.github.io/kallisto/about">kallisto</a> is a program for quantifying abundances of transcripts from RNA-Seq data. It is based on the novel idea of pseudoalignment for rapidly determining the compatibility of reads with targets, without the need for alignment.
 EOS
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['paired', 'strandMode']
+    @required_params = ['refBuild', 'paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '30'
@@ -39,8 +39,7 @@ EOS
     @params['transcriptFasta', 'description'] = 'give full path of transcript fasta file; in that case the build is ignored; if it comes from trinity assembly the gene-isoform associations will be extracted and used'
     @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
     @params['transcriptTypes', 'multi_selection'] = true
-    
-    
+
     # trimming options
     # general
     @params['trimAdapter', 'hr'] = true
@@ -77,9 +76,9 @@ EOS
     ## additional commands
     @params['markDuplicates'] = true
     @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
-    
+      
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/kallisto", "QC/Flexbar", "QC/fastp", "Dev/R", "Tools/sambamba"]
+    @modules = ["Tools/samtools", "Aligner/kallisto", "QC/fastp", "Dev/R", "Tools/sambamba"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
