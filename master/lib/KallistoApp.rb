@@ -14,7 +14,7 @@ class KallistoApp < SushiFabric::SushiApp
     <a href="https://pachterlab.github.io/kallisto/about">kallisto</a> is a program for quantifying abundances of transcripts from RNA-Seq data. It is based on the novel idea of pseudoalignment for rapidly determining the compatibility of reads with targets, without the need for alignment.
 EOS
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['paired', 'strandMode']
+    @required_params = ['refBuild', 'paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '30'
