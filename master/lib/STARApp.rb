@@ -61,6 +61,8 @@ EOS
     @params['average_qual','description'] = 'if one read average quality score <avg_qual>, then this read/pair is discarded. Default 0 means no requirement'
     @params['max_len1'] = '0'
     @params['max_len1','description'] = 'if read1 is longer than max_len1, then trim read1 at its tail to make it as long as max_len1. Default 0 means no limitation. If two reads are present, the same will apply to read2.'
+    @params['max_len2'] = '0'
+    @params['max_len2','description'] = 'if read1 is longer than max_len2, then trim read2 at its tail to make it as long as max_len1. Default 0 means no limitation.'
     @params['poly_x_min_len'] = '10'
     @params['poly_x_min_len','description'] = 'the minimum length to detect polyX in the read tail. 10 by default.'
     @params['length_required'] = '18'
@@ -71,7 +73,7 @@ EOS
     @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
     @params['mail'] = ""
     # Python2 is required because of RSeQC package
-    @modules = ["Aligner/STAR", "Tools/samtools", "QC/Flexbar", "Dev/jdk", "Tools/Picard", "QC/fastp", "Dev/Python", "Dev/R", "Tools/sambamba"]
+    @modules = ["Aligner/STAR", "Tools/samtools", "Dev/jdk", "Tools/Picard", "QC/fastp", "Dev/Python", "Dev/R", "Tools/sambamba"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
