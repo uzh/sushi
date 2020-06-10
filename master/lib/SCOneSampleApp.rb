@@ -32,8 +32,8 @@ Single cell report<br/>
     @params['transcriptTypes', 'selected'] = 0
     @params['scProtocol'] = ['10X', 'smart-Seq2']
     @params['species'] = ['Human', 'Mouse', "other"]
-    @params['vars.to.regress'] = ['cell_cycle', 'nCount_RNA', 'subsets_Mito_percent', 'nFeature_RNA']
-    @params['vars.to.regress', 'multi_selection'] = true
+    @params['SCT.regress'] = ['none', 'CellCycle']
+    @params['DE.method'] = ['wilcox', 'LR']
     @params['tissue'] = []
     @params['tissue','multi_selection'] = true
     @params['tissue','all_selected'] = true

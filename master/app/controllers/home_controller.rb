@@ -99,7 +99,11 @@ class HomeController < ApplicationController
     end
     @rank = count_name.sort_by{|name, count| count}.reverse
     @monthly_mvp = monthly_mvp
-    @mvp = monthly_mvp.sort_by{|name, count| count}.reverse.first.first
+    @mvp = unless @monthly_mvp.empty?
+             monthly_mvp.sort_by{|name, count| count}.reverse.first.first
+           else
+             {}
+           end
     @first_date = first_date.sort.first.split.first
   end
 end
