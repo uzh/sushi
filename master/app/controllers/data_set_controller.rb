@@ -918,7 +918,7 @@ class DataSetController < ApplicationController
   end
   def announce_template_set
     @data_set_id = params[:id]
-    @announce_templates = Dir["/srv/SushiFabric/announce_templates/*.txt"].to_a
+    @announce_templates = Dir["/srv/SushiFabric/announce_templates/*.txt"].to_a.sort
   end
   def announce_replace_set
     @template_path = if template = params[:template]
@@ -975,6 +975,7 @@ class DataSetController < ApplicationController
     end
   end
   def announce
+    params.permit!
     template_path = if template = params[:template]
                       template[:path]
                     end

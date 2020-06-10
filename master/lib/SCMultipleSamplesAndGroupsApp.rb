@@ -26,9 +26,23 @@ class SCMultipleSamplesAndGroupsApp < SushiFabric::SushiApp
     @params['name'] = 'SCReportMerging'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['npcs'] = '20'
+    @params['species'] = ['Human', 'Mouse', "other"]
+    @params['tissue'] = []
+    @params['tissue','multi_selection'] = true
+    @params['tissue','all_selected'] = true
+    @params['tissue', 'multi_selection_size'] = 10
+    tissue = {}
+    CSV.foreach("/srv/GT/databases/all_cell_markers.txt", headers: true, col_sep: "\t") do |e|
+      tissue[e["tissueType"]] = true
+    end
+    @params['tissue'] = tissue.keys.sort
+    @params['npcs'] = '30'
     @params['resolution'] = '0.6'
     @params['batchCorrection'] = 'true'
+    @params['SCT.regress'] = ['none', 'CellCycle']
+    @params['DE.method'] = ['wilcox', 'LR']
+    @params['DE.regress'] = ['Plate', 'CellCycle']
+    @params['DE.regress','multi_selection'] = true
     @params['chosenClusters'] = ''
     @params['all2allMarkers'] = 'false'
     @params['maxSamplesSupported'] = '5'
