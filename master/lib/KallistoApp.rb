@@ -39,6 +39,7 @@ EOS
     @params['transcriptFasta', 'description'] = 'give full path of transcript fasta file; in that case the build is ignored; if it comes from trinity assembly the gene-isoform associations will be extracted and used'
     @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
     @params['transcriptTypes', 'multi_selection'] = true
+
     # trimming options
     # general
     @params['trimAdapter', 'hr'] = true
@@ -75,6 +76,7 @@ EOS
     ## additional commands
     @params['markDuplicates'] = true
     @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
+      
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Aligner/kallisto", "QC/fastp", "Dev/R", "Tools/sambamba"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
