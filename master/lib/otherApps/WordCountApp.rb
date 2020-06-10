@@ -5,6 +5,7 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
+require 'csv'
 class WordCountApp < SushiFabric::SushiApp
   def initialize
     super
@@ -20,34 +21,35 @@ class WordCountApp < SushiFabric::SushiApp
     @params['count_option'] = ['', '-c', '-l', '-m', '-w']
     @params['test_option1'] = ['option1', 'option2', 'option3']
     @params['test_option1', 'multi_selection'] = true
+    @params['test_option1', 'multi_selection_size'] = 10
     @params['test_option2'] = ''
     @params['test_option2', 'multi_selection'] = true
+    @params['test_option2', 'all_selected'] = true
+    @params['cellType'] = []
+    @params['cellType', 'multi_selection'] = true
     @params['note'] = '' 
+    @params['note', 'employee'] = true
     @required_columns = ['Name', 'Read1']
     @required_params = []
-    @modules = ["Aligner/STAR", "Tools/samtools", "Tools/sambamba"]
+    #@modules = ["Aligner/STAR", "Tools/samtools", "Tools/sambamba"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
-    if @params['count_option'] == "-c"
-      {
-        'Name'=>@dataset['Name'],
-        'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats'),
-        'Options' => @params['test_option1']
-      }.merge(extract_columns(@inherit_tags))
-    else
-      {
-        'Name'=>@dataset['Name'],
-        'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats'),
-        'Hoge' => 'Bar',
-        'Options' => @params['test_option1']
-      }.merge(extract_columns(@inherit_tags))
-    end
+    {
+      'Name'=>@dataset['Name'],
+      'Stats [File]'=>File.join(@result_dir, @dataset['Name'].to_s + '.stats'),
+      'Options' => @params['test_option1']
+    }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
     if @dataset[0]['Options']
       @params['test_option2'] = @dataset[0]['Options'].split(',')
     end
+    cell_types = {}
+    CSV.foreach("/srv/GT/databases/all_cell_markers.txt", headers: true, col_sep: "\t") do |e|
+      cell_types[e["cellType"]] = true
+    end
+    @params['cellType'] = cell_types.keys.sort
     @params['note'] = @dataset[0]['Read1 [File]']
   end
   def preprocess
