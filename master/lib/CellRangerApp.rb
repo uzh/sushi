@@ -57,6 +57,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     else
       dataset = {
         'Name'=>@dataset['Name'],
+        'Condition'=>@dataset['Condition'],
         'Species'=>@dataset['Species'],
         'refBuild'=>@params['refBuild'],
         'refFeatureFile'=>@params['refFeatureFile'],
