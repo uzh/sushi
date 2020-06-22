@@ -6,7 +6,7 @@ require_relative 'global_variables'
 include GlobalVariables
 
 
-class SCRNAVelocityApp < SushiFabric::SushiApp
+class SCTrajectoryInferenceApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'SCTrajectoryInference'
