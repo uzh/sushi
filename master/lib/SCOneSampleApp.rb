@@ -67,6 +67,7 @@ Single cell report<br/>
     report_file = File.join(@result_dir, "#{@dataset['Name']}_SCReport")
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@dataset['Name'],
+     'Condition'=>@dataset['Condition']
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile'],
