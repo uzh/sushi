@@ -52,7 +52,7 @@ Trajectory inference analysis for single cell data<br/>
     end
   end
   def commands
-    run_RApp("EzAppTrajectoryInference")
+    run_RApp("EzAppSCTrajectoryInference")
   end
 end
 
