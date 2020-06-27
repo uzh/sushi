@@ -25,14 +25,15 @@ Trajectory inference analysis for single cell data<br/>
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['start_id'] = '0'
-    @params['end_id'] = ''
+    @params['end_id'] = 'none'
     @params['start_n'] = '1'
     @params['end_n'] = '1'
-    @params['TI_method'] = ''
-    @params['diff_Branch'] = ''
-    @params['diff_Branch_Point'] = ''
+    @params['TI_method'] = 'none'
+    @params['diff_Branch'] = 'none'
+    @params['diff_Branch_Point'] = 'none'
     @params['specialOptions'] = ''
     @params['mail'] = ''
+    @params['Rversion'] = 'Dev/R/3.6.1'
     @modules = ["Dev/R", "Dev/Python/3.6.8"]
   end
   def next_dataset
