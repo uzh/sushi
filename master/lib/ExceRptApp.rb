@@ -63,7 +63,7 @@ EOS
 
     ## modules
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
-    @modules = ["Dev/R", "Tools/exceRpt", "Aligner/Bowtie2", "Tools/samtools", "Dev/jdk", "QC/FastQC", "Aligner/STAR"]
+    @modules = ["Dev/R", "Tools/exceRpt/4.6.3", "Aligner/Bowtie2", "Tools/samtools", "Dev/jdk", "QC/FastQC", "Aligner/STAR/2.6.1c"]
   end
   def next_dataset
     dataset = {
