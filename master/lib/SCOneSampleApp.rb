@@ -31,6 +31,7 @@ Single cell report<br/>
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 0
     @params['scProtocol'] = ['10X', 'smart-Seq2']
+    @params['nDist'] = '2'
     @params['species'] = ['Human', 'Mouse', "other"]
     @params['SCT.regress'] = ['none', 'CellCycle']
     @params['DE.method'] = ['wilcox', 'LR']
