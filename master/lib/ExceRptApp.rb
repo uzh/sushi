@@ -77,7 +77,7 @@ EOS
   end
   def commands
     command = "module load #{@params["ExcerptVersion"]}\n"
-    command << "module load #{@params["StarVersion"]}\n"
+    command << "module load #{@params["starVersion"]}\n"
     command << run_RApp("EzAppExceRpt")
   end
 end
