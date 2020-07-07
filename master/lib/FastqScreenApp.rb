@@ -72,7 +72,7 @@ EOS
     @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
     @params['mail'] = ""
     
-    @modules = ["Aligner/BWA", "Tools/samtools", "Aligner/Bowtie2", "QC/fastp", "QC/Flexbar", "QC/FastQScreen", "Dev/R", "Tools/sambamba", "Tools/Picard"]
+    @modules = ["Aligner/BWA", "Tools/samtools", "Aligner/Bowtie2", "QC/fastp", "Tools/kraken", "QC/FastQScreen", "Dev/R", "Tools/sambamba", "Tools/Picard"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
