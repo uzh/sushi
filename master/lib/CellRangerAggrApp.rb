@@ -28,7 +28,7 @@ EOS
     @params['transcriptTypes', 'selected'] = 0
     @params['normalize'] = ['mapped', 'none']
     @params['mail'] = ""
-    @modules = ["Dev/R"]
+    @modules = ["Dev/R", "Aligner/CellRanger"]
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
