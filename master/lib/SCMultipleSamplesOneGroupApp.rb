@@ -49,7 +49,7 @@ class SCMultipleSamplesOneGroupApp < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @params['Rversion'] = 'Dev/R/3.6.0'
-    @modules = ["Dev/R", "Dev/Python/3.6.8"]
+    @modules = ["Dev/R", "Dev/Python"]
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
