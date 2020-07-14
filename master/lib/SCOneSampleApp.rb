@@ -59,7 +59,7 @@ Single cell report<br/>
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/3.6.1"]
-    @modules = ["Dev/R", "Dev/Python/3.6.8"]
+    @modules = ["Dev/R", "Dev/Python"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
