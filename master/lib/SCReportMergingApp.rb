@@ -47,7 +47,7 @@ class SCReportMergingApp < SushiFabric::SushiApp
     @params['all2allMarkers', 'description'] = 'Run all against all cluster comparisons?'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/3.6.0", "Dev/R/3.5.1", "Dev/R/3.5.0", "Dev/R/3.4.2", "Dev/R/3.4.0", "Dev/R/3.3.0"]
+    @params['Rversion'] = ["Dev/R/4.0.1"]
     @modules = ["Dev/R", "Dev/Python/3.6.8"]
   end
   def next_dataset
