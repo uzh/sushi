@@ -57,7 +57,7 @@ Single cell report<br/>
     @params['nmad', 'description'] = 'Median absolute deviation (MAD) from the median value of each metric across all cells'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/3.6.1"]
+    @params['Rversion'] = ["Dev/R/4.0.1"]
     @modules = ["Dev/R", "Dev/Python/3.6.8"]
   end
   def preprocess
