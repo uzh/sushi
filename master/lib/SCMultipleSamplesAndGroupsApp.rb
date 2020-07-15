@@ -48,7 +48,7 @@ class SCMultipleSamplesAndGroupsApp < SushiFabric::SushiApp
     @params['maxSamplesSupported'] = '5'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = 'Dev/R/3.6.0'
+    @params['Rversion'] = ["Dev/R/4.0.1"]
     @modules = ["Dev/R", "Dev/Python"]
   end
   def next_dataset

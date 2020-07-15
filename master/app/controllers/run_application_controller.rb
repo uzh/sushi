@@ -138,7 +138,8 @@ class RunApplicationController < ApplicationController
       end
     end
     @nodes = if SushiFabric::Application.config.fgcz?
-               make_fgcz_node_list
+               #make_fgcz_node_list
+               @sushi_app.cluster_nodes
              else
                @sushi_app.cluster_nodes
              end

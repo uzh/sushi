@@ -58,8 +58,8 @@ Single cell report<br/>
     @params['nmad', 'description'] = 'Median absolute deviation (MAD) from the median value of each metric across all cells'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/3.6.1"]
-    @modules = ["Dev/R", "Dev/Python"]
+    @params['Rversion'] = ["Dev/R/4.0.1"]
+    @modules = ["Dev/R"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
