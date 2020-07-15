@@ -308,4 +308,12 @@ As default, there is no user authentification. Please apply the patch, local_dev
 
   $ patch -p0 < master/local_devise.patch
 
+== Release information
+
+Ver. 2.0.2
+* fastq bug fix
+* Workflow Manager v0.5.6, added a new Cluster class for Debian10 (with slurm)
+
+Ver. 2.0.0
+* Rails v5 + Ruby v2.6 + ezRun v3.11.1 (BioConductor v3.11.1)
 

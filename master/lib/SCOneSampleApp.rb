@@ -31,6 +31,7 @@ Single cell report<br/>
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 0
     @params['scProtocol'] = ['10X', 'smart-Seq2']
+    @params['nDist'] = '2'
     @params['species'] = ['Human', 'Mouse', "other"]
     @params['SCT.regress'] = ['none', 'CellCycle']
     @params['DE.method'] = ['wilcox', 'LR']
@@ -58,7 +59,7 @@ Single cell report<br/>
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.0.1"]
-    @modules = ["Dev/R", "Dev/Python/3.6.8"]
+    @modules = ["Dev/R"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
@@ -67,6 +68,7 @@ Single cell report<br/>
     report_file = File.join(@result_dir, "#{@dataset['Name']}_SCReport")
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@dataset['Name'],
+     'Condition'=>@dataset['Condition'],
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile'],
