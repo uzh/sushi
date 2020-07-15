@@ -32,7 +32,6 @@ Quality control for target capture experiments<br/>
     @params['covUniformityPlot'] = true
     @params['covTargetLengthPlot'] = true
     @params['duplicatesPlot'] = true
-    #@params['Rversion'] = ["Dev/R/3.4.2", "Dev/R/3.5.0"]
     @params['cmdOptions'] = ""
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Tools/sambamba","Dev/R"]
@@ -55,7 +54,6 @@ Quality control for target capture experiments<br/>
     }
   end
   def commands
-    #command = "module load #{@params["Rversion"]}\n"
     run_RApp("EzAppTeqc")
   end
 end
