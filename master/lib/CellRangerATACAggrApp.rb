@@ -25,7 +25,7 @@ EOS
     @params['featureLevel'] = 'gene'
     @params['normalize'] = ['depth', 'signal', 'none']
     @params['mail'] = ""
-    @modules = ["Dev/R"]
+    @modules = ["Dev/R", "Aligner/CellRangerATAC"]
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']

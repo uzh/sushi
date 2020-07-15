@@ -41,13 +41,13 @@ filtering out SNPs by the VCF coming from reference accession<br/>
   def commands
     command =<<-EOS
 #!/bin/bash
-# Version = '20190829-065648'
+# Version = '20200603-022530'
 
 cat > replace_N_with_low_high_coverage.#{@dataset['Name']}.rb <<-EOF1
 
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20190829-065648'
+# Version = '20200603-022530'
 
 def help
   puts <<-eos
@@ -190,7 +190,6 @@ unless genome_fa=ARGV[0] and genome_masked_fa=ARGV[1] and genes_gtf=ARGV[2] and 
    * masked_genome.fa: N replaced by low/high coverage
    * Site becomes N if
     * hetero site (GT other than 1|1 or 0|0)
-    * GQ < 20
     * DP<2 or DP>250
    * Site replaced from reference if
     * hard filtering == PASS
@@ -241,16 +240,15 @@ Zlib::GzipReader.open(filtered_vcf_gz) do |gz|
       sid, pos, dot, ref, alt, qual, filter, info,  format, values = line.chomp.split
       ac_, af_, an_, bq_, dp_, *others = info.split(";")
       af = af_.split("=").last
-      gt, ad, dp, gq, *others = values.split(":")
+      gt, ad, dp, *others = values.split(":")
       #if alt.split(",").length > 1
       if filter == "PASS"
         if alt.split(",").length > 1 or
            af.split(",").first.to_f < 1.0 or
-           gq.to_i < 20 or
            dp.to_i < 2 or
            dp.to_i > 250
           # N
-          # puts [sid, pos, ref, alt, af, gq, gt, dp].join("\\t")
+          # puts [sid, pos, ref, alt, af, gt, dp].join("\\t")
           replaces[sid] ||= {}
           new_alt = "N"*ref.length
           replaces[sid][pos.to_i] = [ref, new_alt]

@@ -32,7 +32,6 @@ Quality control for singel cell alignment and counts<br/>
     @params['scProtocol'] = ['10X', 'smart-Seq2']
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    #@params['Rversion'] = ["Dev/R/3.6.0", "Dev/R/3.5.1", "Dev/R/3.5.0", "Dev/R/3.4.2", "Dev/R/3.4.0", "Dev/R/3.3.0"]
     @modules = ["Dev/R", "Dev/jdk", "Tools/Picard", "Tools/samtools"]
   end
   def next_dataset
