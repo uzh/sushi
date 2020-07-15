@@ -19,7 +19,14 @@ test:
   timeout: 5000
 
 production:
-  adapter: sqlite3
-  database: db/production.sqlite3
-  pool: 5
-  timeout: 5000
+  adapter: mysql2
+  pool: 10
+#  timeout: 5000
+  username: sushilover
+  password: wasabi
+  database: sushi
+  encoding: utf8
+  socket: /var/run/mysqld/mysqld.sock
+#  host: localhost
+  reconnect: true
+
