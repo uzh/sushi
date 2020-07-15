@@ -22,8 +22,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = 'gene'
-    @params['TenXLibrary'] = ['GEX', 'VDJ']
-    @params['TenXLibrary', 'description'] = 'Which 10X library? GEX or VDJ.'
+    @params['TenXLibrary'] = ['GEX', 'VDJ', 'FeatureBarcoding']
+    @params['TenXLibrary', 'description'] = 'Which 10X library? GEX, VDJ or FeatureBarcoding'
     @params['scMode'] = ['SC', 'SN']
     @params['scMode', 'description'] = 'Single-cell or single-nuclei?'
     @params['chemistry'] = ['auto', 'threeprime', 'fiveprime', 'SC3Pv1', 'SC3Pv2', 'SC3Pv3', 'SC5P-PE', 'SC5P-R2']
@@ -37,7 +37,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['cmdOptions', 'description'] = 'specify the commandline options for CellRanger; do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/R"]
+    @modules = ["Dev/R", "Aligner/CellRanger"]
     @inherit_tags = ["B-Fabric"]
   end
   def set_default_parameters
@@ -57,6 +57,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     else
       dataset = {
         'Name'=>@dataset['Name'],
+        'Condition'=>@dataset['Condition'],
         'Species'=>@dataset['Species'],
         'refBuild'=>@params['refBuild'],
         'refFeatureFile'=>@params['refFeatureFile'],

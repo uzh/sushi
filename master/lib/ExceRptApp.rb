@@ -62,8 +62,10 @@ EOS
     @params['mail'] = ""
 
     ## modules
+    @params['ExcerptVersion'] = ["Tools/exceRpt/5.0.0", "Tools/exceRpt/4.6.3"]
+    @params['starVersion'] = ["Aligner/STAR/2.7.3a", "Aligner/STAR/2.6.1c"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
-    @modules = ["Dev/R"]
+    @modules = ["Dev/R", "Aligner/Bowtie2", "Tools/samtools", "Dev/jdk", "QC/FastQC"]
   end
   def next_dataset
     dataset = {
@@ -74,7 +76,9 @@ EOS
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
-    run_RApp("EzAppExceRpt")
+    command = "module load #{@params["ExcerptVersion"]}\n"
+    command << "module load #{@params["starVersion"]}\n"
+    command << run_RApp("EzAppExceRpt")
   end
 end
 
