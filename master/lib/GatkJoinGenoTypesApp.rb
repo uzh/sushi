@@ -25,7 +25,7 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['targetFile'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/jdk", "Variants/GATK/3.7", "Tools/Picard", "Variants/SnpEff", "Dev/R"]
+    @modules = ["Dev/jdk", "Variants/GATK", "Tools/Picard", "Variants/SnpEff", "Dev/R"]
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
