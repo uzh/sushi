@@ -6,10 +6,10 @@ require_relative 'global_variables'
 include GlobalVariables
 
 
-class SCMergeLargeDatasetApp < SushiFabric::SushiApp
+class SCMergeLargeDatasetsApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'SCMergeLargeDataset'
+    @name = 'SCMergeLargeDatasets'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'SingleCell'
     @description =<<-EOS
@@ -23,7 +23,7 @@ class SCMergeLargeDatasetApp < SushiFabric::SushiApp
     @params['scratch'] = '50'
     @params['node'] = ''
     @params['process_mode'] = 'DATASET'
-    @params['name'] = 'SCMergeLargeDataset'
+    @params['name'] = 'SCMergeLargeDatasets'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['species'] = ['Human', 'Mouse', "other"]
@@ -39,7 +39,7 @@ class SCMergeLargeDatasetApp < SushiFabric::SushiApp
     @params['k'] = '10'
     @params['block'] = 'Batch'
     @params['mail'] = ""
-    @modules = ["Dev/R", "Dev/Python"]
+    @modules = ["Dev/R"]
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
@@ -59,7 +59,7 @@ class SCMergeLargeDatasetApp < SushiFabric::SushiApp
     end
   end
   def commands
-    run_RApp("EzAppSCMergeLargeDataset")
+    run_RApp("EzAppSCMergeLargeDatasets")
   end
 end
 
