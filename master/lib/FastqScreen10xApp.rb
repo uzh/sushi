@@ -15,7 +15,7 @@ class FastqScreen10xApp <  SushiFabric::SushiApp
 Screen files for contaminations or ribosomal RNA content<br/>
 <a target='_blank' href='http://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/'>fastq_screen web site</a>
 EOS
-    @required_columns = ['Name','RawDataDir', 'Read Count']
+    @required_columns = ['Name','RawDataDir']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
     @params['ram'] = '40'
