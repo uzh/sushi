@@ -74,14 +74,8 @@
             <% else %>
               <%= text_field :parameters, key.to_sym, :value => value, :disabled => true %>
             <% end %>
-          <% when 'node' %>
-            <% if session['employee'] and !SushiFabric::Application.config.course_mode %>
-              <!-- 20190823 masa tentatively in 2-3 months for Gwyneth -->
-              <%= select_tag "parameters[#{key}]", options_for_select(@nodes, {:selected => @nodes.map{|node| node.last}}), :multiple => true, :size => 5 %><br />
-            <% else %>
-              <%= @nodes.values.join(',') %>
-              <%= hidden_field :parameters, :node, :value => @nodes.values.join(',') %>
-            <% end %>
+          <% when 'queue' %>
+            <%= text_field :parameters, key.to_sym, :value => "#{session["employee"] ? "employee" : "user"}", :readonly => true %>
           <% when 'samples' %>
             <%= select_tag "parameters[#{key}]", options_for_select(@samples, {:selected => @samples.map{|sample| sample.last}}), :multiple => true, :size => 5 %><br />
           <% else %>
