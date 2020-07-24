@@ -52,15 +52,11 @@ class DataSet < ActiveRecord::Base
     self.num_samples
   end
   def register_bfabric(op = 'new', bfabric_application_number: nil)
-    base = if python_version = `which python` and python_version =~ /3/
-             python3 = "public/register_sushi_dataset_into_bfabric.py3"
-           else
-             python2 = "public/register_sushi_dataset_into_bfabric"
-           end
+    python3 = "public/register_sushi_dataset_into_bfabric"
     check = "public/check_dataset_bfabric"
     parent_dataset = self.data_set
     if parent_dataset.nil? or parent_dataset.bfabric_id
-      if SushiFabric::Application.config.fgcz? and File.exist?(base) and File.exist?(check)
+      if SushiFabric::Application.config.fgcz? and File.exist?(python3) and File.exist?(check)
         time = Time.new.strftime("%Y%m%d-%H%M%S")
         dataset_tsv = File.join(SushiFabric::Application.config.scratch_dir, "dataset.#{self.id}_#{time}.tsv")
         option_check = if ((op == 'new' or op == 'only_one') and !self.bfabric_id) or op == 'renewal'
@@ -74,9 +70,9 @@ class DataSet < ActiveRecord::Base
                          end
                        end
         command = if parent_dataset and bfabric_id = parent_dataset.bfabric_id
-                    [base, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id].join(" ")
+                    [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id].join(" ")
                   else
-                    [base, "p#{self.project.number}", dataset_tsv, self.name, self.id].join(" ")
+                    [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id].join(" ")
                   end
         if bfabric_application_number
           command << " -a #{bfabric_application_number}"
