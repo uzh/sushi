@@ -74,6 +74,7 @@
             <% else %>
               <%= text_field :parameters, key.to_sym, :value => value, :disabled => true %>
             <% end %>
+          <% when 'node' %>
           <% when 'queue' %>
             <%= text_field :parameters, key.to_sym, :value => "#{session["employee"] ? "employee" : "user"}", :readonly => true %>
           <% when 'samples' %>
