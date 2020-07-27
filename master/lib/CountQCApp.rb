@@ -19,7 +19,7 @@ Quality control after counting reads<br/>
     @required_params = []
     # optional params
     @params['cores'] = '1'
-    @params['ram'] = '2'
+    @params['ram'] = '4'
     @params['scratch'] = '10'
     @params['name'] = 'Count_QC'
     @params['refBuild'] = ref_selector
