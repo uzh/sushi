@@ -31,7 +31,6 @@ Single cell report<br/>
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 0
     @params['scProtocol'] = ['10X', 'smart-Seq2']
-    @params['nDist'] = '2'
     @params['species'] = ['Human', 'Mouse', "other"]
     @params['SCT.regress'] = ['none', 'CellCycle']
     @params['DE.method'] = ['wilcox', 'LR']
@@ -54,8 +53,8 @@ Single cell report<br/>
     @params['all2allMarkers', 'description'] = 'Run all against all cluster comparisons?'
     @params['cellsPercentage'] = 0.05
     @params['cellsPercentage', 'description'] = 'A gene will be kept if it is expressed in at least this percentage of cells'
-    @params['nmad'] = 3
-    @params['nmad', 'description'] = 'Median absolute deviation (MAD) from the median value of each metric across all cells'
+    @params['nDist'] = '2'
+     @params['nDist', 'description'] = 'A cell is filtered if it is an outlier in at least this number of distributions'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.0.1"]
