@@ -40,12 +40,15 @@ EOS
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
     {'Name'=>@params['name'],
+     'Condition'=>@dataset['Condition'],
+     'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile'],
      'featureLevel'=>@params['featureLevel'],
      'transcriptTypes'=>@params['transcriptTypes'],
      'ResultDir [File]'=>report_file,
      'Report [Link]'=>File.join(report_file, 'web_summary.html')
+     'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix')
     }
   end
   def commands
