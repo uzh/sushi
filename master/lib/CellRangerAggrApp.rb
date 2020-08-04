@@ -17,7 +17,7 @@ EOS
     @required_columns = ['Name','CountMatrix']
     @required_params = ['name']
     @params['cores'] = '1'
-    @params['ram'] = '4'
+    @params['ram'] = '8'
     @params['scratch'] = '100'
     @params['name'] = 'CellRangerAggr_Result'
     @params['refBuild'] = ref_selector
