@@ -18,9 +18,9 @@ Quality control after counting reads<br/>
     @required_columns = ['Name','Count', 'Species', 'refBuild', 'featureLevel', 'refFeatureFile']
     @required_params = []
     # optional params
-    @params['cores'] = '1'
-    @params['ram'] = '4'
-    @params['scratch'] = '10'
+    @params['cores'] = ['1', '2']
+    @params['ram'] = ['4', '8']
+    @params['scratch'] = ['10', '20']
     @params['name'] = 'Count_QC'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'

@@ -15,8 +15,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     EOS
     @required_columns = ['Name','RawDataDir','Species']
     @required_params = ['name', 'refBuild']
-    @params['cores'] = '8'
-    @params['ram'] = '60'
+    @params['cores'] = ['8', '4']
+    @params['ram'] = ['60', '40']
     @params['scratch'] = '200'
     @params['name'] = 'CellRangerCount'
     @params['refBuild'] = ref_selector
