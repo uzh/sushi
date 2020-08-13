@@ -62,12 +62,6 @@
           </th>
           <td>
           <% case key %>
-          <% when 'cores' %>
-            <%= text_field :parameters, key.to_sym, :value => "#{value}", :with=>"numeric" %> GB
-          <% when 'ram' %>
-            <%= text_field :parameters, key.to_sym, :value => "#{value}", :with=>"numeric" %> GB
-          <% when 'scratch' %>
-            <%= text_field :parameters, key.to_sym, :value => "#{value}", :with=>"numeric" %> GB
           <% when 'process_mode' %>
             <% if value.kind_of?(Array) %>
               <%= select :parameters, key.to_sym, value %>
