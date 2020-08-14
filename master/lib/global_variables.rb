@@ -34,32 +34,34 @@ module GlobalVariables
   end
   def ref_selector
     selector = {'select'=>''}
+    selector = Rails.cache.fetch('ref_selector', expired_in: 1.hour) do
+      base_pattern = "#{GENOME_REF_DIR}/*/*/*"
+      shown_replace_regexp = /#{GENOME_REF_DIR+"/"}/
+      value_replace_regexp = /#{GENOME_REF_DIR+"/"}/
+      shown_replace_pattern = {shown_replace_regexp=>''}
+      value_replace_pattern = {value_replace_regexp=>''}
+      refBuilds = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
-    base_pattern = "#{GENOME_REF_DIR}/*/*/*"
-    shown_replace_regexp = /#{GENOME_REF_DIR+"/"}/
-    value_replace_regexp = /#{GENOME_REF_DIR+"/"}/
-    shown_replace_pattern = {shown_replace_regexp=>''}
-    value_replace_pattern = {value_replace_regexp=>''}
-    refBuilds = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
+      base_pattern = "#{GENOME_REF_DIR}/*/*/*/Annotation/Version*\0#{GENOME_REF_DIR}/*/*/*/Annotation/Release*"
+      versions = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
-    base_pattern = "#{GENOME_REF_DIR}/*/*/*/Annotation/Version*\0#{GENOME_REF_DIR}/*/*/*/Annotation/Release*"
-    versions = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
+      base_pattern = "#{GENOME_REF_DIR}/*/*/*/Sequence"
+      sequences = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
-    base_pattern = "#{GENOME_REF_DIR}/*/*/*/Sequence"
-    sequences = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
-
-    refBuilds.keys.each do |refBuild_key|
-      if versions.keys.find{|version_key| version_key=~/#{refBuild_key}/}
-        refBuilds.delete(refBuild_key)
+      refBuilds.keys.each do |refBuild_key|
+        if versions.keys.find{|version_key| version_key=~/#{refBuild_key}/}
+          refBuilds.delete(refBuild_key)
+        end
+        unless sequences.keys.find{|sequence_key| sequence_key=~/#{refBuild_key}/}
+          refBuilds.delete(refBuild_key)
+        end
       end
-      unless sequences.keys.find{|sequence_key| sequence_key=~/#{refBuild_key}/}
-        refBuilds.delete(refBuild_key)
-      end
+      refBuilds.merge!(versions)
+      refBuilds = refBuilds.sort.to_h
+
+      selector.merge!(refBuilds)
+      selector
     end
-    refBuilds.merge!(versions)
-    refBuilds = refBuilds.sort.to_h
-
-    selector.merge!(refBuilds)
     selector
   end
   def extract_column(type)
