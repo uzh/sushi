@@ -33,8 +33,7 @@ Trajectory inference analysis for single cell data<br/>
     @params['diff_Branch_Point'] = 'none'
     @params['specialOptions'] = ''
     @params['mail'] = ''
-    @params['Rversion'] = 'Dev/R/3.6.1'
-    @modules = ["Dev/R/3.6.1", "Dev/Python"]
+    @modules = ["Dev/R", "Dev/Python"]
   end
   def next_dataset
     report_file = File.join(@result_dir, "#{@dataset['Name']}_SCTrajectoryInference")
