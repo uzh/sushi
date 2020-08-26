@@ -29,9 +29,9 @@ Quality control for target capture experiments<br/>
       @params['designFile'][File.basename(dir)] = File.basename(dir)
     end
     @params['removeDuplicates'] = true
-    @params['covUniformityPlot'] = true
-    @params['covTargetLengthPlot'] = true
-    @params['duplicatesPlot'] = true
+    @params['covUniformityPlot'] = false
+    @params['covTargetLengthPlot'] = false
+    @params['duplicatesPlot'] = false
     @params['cmdOptions'] = ""
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Tools/sambamba","Dev/R"]
