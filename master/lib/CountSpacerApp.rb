@@ -84,7 +84,7 @@ EOS
     #@params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
-    report_file = File.join(@result_dir, @dataset['Name'])
+    report_file = File.join(@result_dir,"#{@dataset['Name']}")
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@dataset['Name'],
      'Report [File]'=>report_file,
