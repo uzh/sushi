@@ -17,7 +17,7 @@ Assuming that all other columns than file path are same between datasets.<br />
     @analysis_category = 'SingleCell'
     @params['BaseDataSet'] = ''
     @params['TargetDataSet'] = []
-    @required_columns = ['Name', 'Read1', 'Species']
+    @required_columns = ['Name', 'Species', 'RawDataDir']
     @required_params = ['TargetDataSet']
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
     @child = true # child flag: true means that the next dataset is a child dataset
@@ -59,7 +59,6 @@ Assuming that all other columns than file path are same between datasets.<br />
     dataset_hash1.each_with_index do |sample, i|
       name = sample['Name']
       @dataset_hash[i]["RawDataDir [File]"] += ",#{dataset_hash2[name]['RawDataDir [File]']}"
-      @dataset_hash[i]["Read1 [File]"] += ",#{dataset_hash2[name]['Read1 [File]']}"
     end
     @dataset_hash.sort_by!{|row| row['Name']}
   end
