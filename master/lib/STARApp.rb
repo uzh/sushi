@@ -73,7 +73,7 @@ EOS
     @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
     @params['mail'] = ""
     # Python2 is required because of RSeQC package
-    @modules = ["Aligner/STAR", "Tools/samtools", "Dev/jdk", "Dev/R", "Tools/Picard", "QC/fastp", "Tools/sambamba"]
+    @modules = ["Aligner/STAR", "Tools/samtools", "Dev/jdk", "Dev/R", "Dev/Python", "Tools/Picard", "QC/fastp", "Tools/sambamba"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
