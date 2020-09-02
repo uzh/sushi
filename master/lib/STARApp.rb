@@ -73,7 +73,7 @@ EOS
     @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
     @params['mail'] = ""
     # Python2 is required because of RSeQC package
-    @modules = ["Aligner/STAR", "Tools/samtools", "Dev/jdk", "Tools/Picard", "QC/fastp", "Dev/Python", "Dev/R", "Tools/sambamba"]
+    @modules = ["Aligner/STAR", "Tools/samtools", "Dev/jdk", "Dev/R", "Dev/Python", "Tools/Picard", "QC/fastp", "Tools/sambamba"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
@@ -95,15 +95,14 @@ EOS
         'Name'=>@dataset['Name'],
         'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
         'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-        'IGV Starter [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
+        'IGV [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
         'Species'=>@dataset['Species'],
         'refBuild'=>@params['refBuild'],
         'paired'=>@params['paired'],
         'refFeatureFile'=>@params['refFeatureFile'],
         'strandMode'=>@params['strandMode'],
         'Read Count'=>@dataset['Read Count'],
-        'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
-        'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml"),
+        'IGV [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
         'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
         'STARLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_STAR.log")
     }.merge(extract_columns(@inherit_tags))
