@@ -41,6 +41,15 @@ module ApplicationHelper
                                session[:projects].first
                             end
                           end
+
+      session[:partition] = if SushiFabric::Application.config.course_mode
+                              "course"
+                            elsif session[:employee]
+                              "employee"
+                            else
+                              "user"
+                            end
+
       if @fgcz and current_user and current_user.selected_project == -1
         current_user.selected_project = session[:project]
         current_user.save
