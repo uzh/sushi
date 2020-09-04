@@ -31,7 +31,7 @@ EOS
     @params['cmdOptions'] = 'useGrid=false'
     @params['cmdOptions', 'description'] = 'specify other commandline options for Canu; do not specify any option that is already covered by the dedicated input fields'
     @params['mail'] = ""
-    @modules = ["Assembly/Canu", "Dev/R"]
+    @modules = ["Assembly/Canu", "Dev/R", "Dev/jdk"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
