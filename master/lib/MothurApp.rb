@@ -1,22 +1,22 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20180905-113400'
+Version = '20200908-113400'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class MothurStep1SampleApp < SushiFabric::SushiApp
+class MothurApp < SushiFabric::SushiApp
 def initialize
 super
-@name = 'MothurStep1Sample'
+@name = 'MothurApp'
 @analysis_category = 'Metagenomics'
 @description =<<-EOS
 Data preprocssing with Mothur. Please make sure that the input files are from the same technology and adjust minLen and maxLen accordingly.
-<a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki</a>
+<a href='https://github.com/mothur/mothur'>Mothur main repository.</a>
   EOS
    @params['process_mode'] = 'DATASET'
-@required_columns = ['Name', 'Read1','Adapter1']
+@required_columns = ['Name', 'Read1']
 @required_params = ['technology','paired','cutOffTaxonomy','diffs','cutOffCluster']
 @params['cores'] = '2'
 @params['ram'] = '8'
@@ -62,7 +62,7 @@ def next_dataset
      nds
 end
 def commands
-run_RApp("EzAppMothurStep1Sample")
+run_RApp("EzAppMothur")
 end
 end
 
