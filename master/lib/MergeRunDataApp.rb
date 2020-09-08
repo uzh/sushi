@@ -16,7 +16,7 @@ Merging fastq files from two illumina runs by name <br /><br />
     @analysis_category = 'Prep'
     @params['process_mode'] = 'DATASET'
     @params['FirstDataSet'] = ''
-    @params['SecondDataSet'] = []
+    @params['SecondDataSet'] = ''
     @required_columns = ['Name', 'Species', 'Read1']
     @required_params = ['SecondDataSet', 'paired']
     
@@ -53,7 +53,7 @@ Merging fastq files from two illumina runs by name <br /><br />
   def set_default_parameters
     if data_set = DataSet.find_by_id(@dataset_sushi_id)
       @params['FirstDataSet'] = data_set.name
-      @params['SecondDataSet'] = Hash[*data_set.project.data_sets.map{|d| [d.name, d.id]}.flatten].to_a
+      @params['SecondDataSet'] = Hash[*data_set.project.data_sets.map{|d| [d.name, d.id]}.flatten].to_a.reverse
       @params['paired'] = dataset_has_column?('Read2')
     end
   end
