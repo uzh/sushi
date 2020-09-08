@@ -16,7 +16,7 @@ Data preprocssing with Mothur. Please make sure that the input files are from th
 <a href='https://mothur.org/wiki/MiSeq_SOP'>https://mothur.org/wiki</a>
   EOS
    @params['process_mode'] = 'DATASET'
-@required_columns = ['Name', 'Read1','Adapter1']
+@required_columns = ['Name', 'Read1', 'Adapter1']
 @required_params = ['technology','paired','cutOffTaxonomy','diffs','cutOffCluster']
 @params['cores'] = '2'
 @params['ram'] = '8'
@@ -39,7 +39,7 @@ Data preprocssing with Mothur. Please make sure that the input files are from th
 @params['mail'] = ""
 @params['Name'] = "Mothur"
 @inherit_tags = ['B-Fabric', 'Characteristic', 'Mock','Group']
-@modules = ['Dev/R', 'Tools/Mothur'
+@modules = ['Dev/R', 'Tools/Mothur']
 end
   def preprocess
     if @params['paired']
