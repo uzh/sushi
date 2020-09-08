@@ -39,7 +39,7 @@ Data preprocssing with Mothur. Please make sure that the input files are from th
 @params['mail'] = ""
 @params['Name'] = "Mothur"
 @inherit_tags = ['B-Fabric', 'Characteristic', 'Mock','Group']
-@modules = ['Dev/R', 'Tools/Mothur']
+@modules = ['Dev/R', 'Tools/Mothur', 'Tools/ea-utils']
 end
   def preprocess
     if @params['paired']
