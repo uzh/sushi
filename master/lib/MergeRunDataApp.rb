@@ -27,14 +27,15 @@ Merging fastq files from two illumina runs by name <br /><br />
     @params['scratch'] = '200'
     @params['paired'] = false
     @params['paired', 'description'] = 'either the reads are paired-ends or single-end'
-
+    @params['mail'] = ''
+    
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
     @child = false # child flag: true means that the next dataset is a child dataset
   end
   def next_dataset
-    report_file = File.join(@result_dir, @params['name'])
-    {'Name'=>@params['name'],
+    report_file = File.join(@result_dir, @params['Name'])
+    {'Name'=>@params['Name'],
      'Result [File]'=>report_file,
     }
   end
@@ -49,12 +50,13 @@ Merging fastq files from two illumina runs by name <br /><br />
     if data_set = DataSet.find_by_id(@dataset_sushi_id)
       @params['FirstDataSet'] = data_set.name
       @params['SecondDataSet'] = Hash[*data_set.project.data_sets.map{|d| [d.name, d.id]}.flatten].to_a.reverse
-      @params['DataSetName2'] = DataSet.find_by_id(@params['SecondDataSet']).name
       @params['paired'] = dataset_has_column?('Read2')
     end
   end
   
   def commands
+     dataset2 = DataSet.find_by_id(params['SecondDataSet'])
+     @params['DataSetName2'] = dataset2.name
      run_RApp("EzAppMergeRunData")
   end
 end
