@@ -32,14 +32,16 @@ Merging fastq files from two illumina runs by name <br /><br />
     @child = false # child flag: true means that the next dataset is a child dataset
   end
   def next_dataset
-   dataset = {
+   nds = {
       'Name'=>@dataset['Name'],
-      'Read1 [File]' => File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','merged.fastq.gz')}"),
-      }.merge(extract_columns(@inherit_tags))
+      'Read1 [File]' => File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','merged.fastq.gz')}")
+      }
     if @params['paired'] 
-        dataset['Read2 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read2'].to_s).gsub('fastq.gz','merged.fastq.gz')}")
+        nds['Read2 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read2'].to_s).gsub('fastq.gz','merged.fastq.gz')}")
     end
-    dataset
+    nds['Species'] = @dataset['Species']
+    nds.merge(extract_columns(@inherit_tags))
+    nds
   end
   
   def preprocess
@@ -51,7 +53,7 @@ Merging fastq files from two illumina runs by name <br /><br />
   def set_default_parameters
     if data_set = DataSet.find_by_id(@dataset_sushi_id)
       @params['FirstDataSet'] = data_set.name
-      @params['SecondDataSet'] = Hash[*data_set.project.data_sets.map{|d| [d.name, d.id]}.flatten].to_a.reverse
+      @params['SecondDataSet'] = Hash[*data_set.project.data_sets.map{|d| [d.name, d.id]}.flatten].to_a
       @params['paired'] = dataset_has_column?('Read2')
     end
   end
