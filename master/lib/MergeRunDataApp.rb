@@ -17,6 +17,7 @@ Merging fastq files from two illumina runs by name <br /><br />
     @params['process_mode'] = 'DATASET'
     @params['FirstDataSet'] = ''
     @params['SecondDataSet'] = ''
+    @params['matchingColumn'] = ['Name', 'Tube', 'Sample Id']
     @params['Name'] = 'MergedRunData'
     @required_columns = ['Name', 'Species', 'Read1']
     @required_params = ['SecondDataSet', 'paired']
@@ -26,7 +27,6 @@ Merging fastq files from two illumina runs by name <br /><br />
     @params['ram'] = '4'
     @params['scratch'] = '200'
     @params['paired'] = false
-    @params['paired', 'description'] = 'either the reads are paired-ends or single-end'
     @params['mail'] = ''
     
     @modules = ["Dev/R"]
