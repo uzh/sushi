@@ -23,8 +23,8 @@ Merging fastq files from two illumina runs by name <br /><br />
     @required_params = ['SecondDataSet', 'paired']
     
     # optional params
-    @params['cores'] = '1'
-    @params['ram'] = '4'
+    @params['cores'] = '8'
+    @params['ram'] = '10'
     @params['scratch'] = '200'
     @params['paired'] = false
     @params['mail'] = ''
