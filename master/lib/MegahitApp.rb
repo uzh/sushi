@@ -40,7 +40,7 @@ end
     if @params['paired']
       @required_columns << 'Read2'
     end
-  __END__
+  end
   def set_default_parameters
      @params['paired'] = dataset_has_column?('Read2')
   end
