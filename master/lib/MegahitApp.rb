@@ -46,7 +46,8 @@ end
   end
 def next_dataset
      {'Name'=>@dataset['Name'],
-     'contigFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta")
+     'contigFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),
+     'mappingFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.mappedToContigs.bam")
 }
 end
 def commands
