@@ -27,11 +27,11 @@ Denovo metagenomics assembly with Megahit.
 @params['kmerStep'] = '10'
 @params['kmerStep', 'description'] = 'Step value to move from kmerMin to kmerMax.'
 @params['noMercy'] = false
-@params['noMercy', 'description'] = 'Recommended for assemblying metagenomes. Enable it if assemblying isolate with coverage above 30x.'
+@params['noMercy', 'description'] = 'By default disabled when assemblying metagenomes. Enable it if assemblying isolate with coverage above 30x.'
 @params['kmin1pass'] = false
-@params['kmin1pass', 'description'] = 'Recommended for generic metagenomes. Enable it for ultra-complex samples, e.g., soil.'
+@params['kmin1pass', 'description'] = 'By default disabled when assemblying generic metagenomes. Enable it for ultra-complex samples, e.g., soil.'
 @params['minCount'] = '2'
-@params['minCount', 'description'] = 'Recommended for assemblying metagenomes. Increase it to 3 or 4 if assemblying isolate with coverage above 40x.'
+@params['minCount', 'description'] = 'Recommended default for assemblying metagenomes. Increase it to 3 or 4 if assemblying isolate with coverage above 40x.'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R","Assembly/megahit"]
