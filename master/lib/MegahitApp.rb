@@ -12,45 +12,41 @@ super
 @name = 'Megahit'
 @analysis_category = 'Metagenomics'
 @description =<<-EOS
-Denovo metagenomics assembly with Metaspades, gene prediction  with Prodigal and annotation with InterProScan (soon also Diamond). 
-<a href='https://drive5.com/uparse/'>https://drive5.com/uparse/</a>
-<a href='https://github.com/hyattpd/prodigal/wiki'>https://github.com/hyattpd/prodigal/wiki</a>
-<a href='https://github.com/bbuchfink/diamond'>https://github.com/bbuchfink/diamond</a>
-<a href='https://github.com/ebi-pf-team/interproscan/wiki/InterProScan5RC4'>https://github.com/ebi-pf-team/interproscan/wiki/InterProScan5RC4</a>
+Denovo metagenomics assembly with Megahit. 
+<a href='https://github.com/voutcn/megahit'>https://github.com/voutcn/megahit</a>
   EOS
 @required_columns = ['Name', 'Read1']
-@required_params = ['megahitKmerList','diamondEvalue','diamondMaxSeqs']
+@required_params = ['kmerMin','kmerMax','kmerStep','noMercy','kmin1pass','minCount']
 @params['cores'] = '1'
 @params['ram'] = '8'
 @params['scratch'] = '10'
-@params['megahitKmerList'] = '69,79,89'
-@params['megahitKmerList', 'description'] = 'Comma-separated list of k-mer for the assembly.'
-@params['diamondEvalue'] = '0.05'
-@params['diamondEvalue', 'description'] = 'Blast e-value cut-off.'
-@params['diamondMaxSeqs'] = '30'
-@params['diamondMaxSeqs', 'description'] = 'Blast maximum number of sequences to report.'
-@params['annotation'] = ['interproscan']
-@params['annotation', 'description'] = 'Which annotation to perform. Diamond will be introduced soon.'
+@params['kmerMin'] = '31'
+@params['kmerMin', 'description'] = 'Minimum k-mer value for the assembly.'
+@params['kmerMax'] = '101'
+@params['kmerMax', 'description'] = 'Maximum k-mer value for the assembly.'
+@params['kmerStep'] = '10'
+@params['kmerStep', 'description'] = 'Step value to move from kmerMin to kmerMax.'
+@params['noMercy'] = false
+@params['noMercy', 'description'] = 'Recommended for assemblying metagenomes. Enable it if assemblying isolate with coverage above 30x.'
+@params['kmin1pass'] = false
+@params['kmin1pass', 'description'] = 'Recommended for generic metagenomes. Enable it for ultra-complex samples, e.g., soil.'
+@params['minCount'] = '2'
+@params['minCount', 'description'] = 'Recommended for assemblying metagenomes. Increase it to 3 or 4 if assemblying isolate with coverage above 40x.'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
-@modules = ["Dev/R"]
+@modules = ["Dev/R","Assembly/megahit"]
 end
   def preprocess
     if @params['paired']
       @required_columns << 'Read2'
     end
-  end
+  __END__
   def set_default_parameters
      @params['paired'] = dataset_has_column?('Read2')
   end
 def next_dataset
      {'Name'=>@dataset['Name'],
      'contigFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),
-     'binnedContigsFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.binnedContigs.fasta"),
-     'prodigalPredictionFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.prodigalPrediction.gff"),
-     'interproscanFile [File]' => File.join(@result_dir, "#{@dataset['Name']}.annotatedProteins.gff"),
-      'OTUsToTaxonomyFile [File]'=>File.join(@result_dir, "#{@dataset['Name']}.OTUs.to.tax.txt"),
-     'OTUsCountTable [File]'=>File.join(@result_dir, "#{@dataset['Name']}.OTUs.count.txt"),
 }
 end
 def commands
