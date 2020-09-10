@@ -65,7 +65,7 @@ EOS
     @params['ExcerptVersion'] = ["Tools/exceRpt/5.0.0", "Tools/exceRpt/4.6.3"]
     @params['starVersion'] = ["Aligner/STAR/2.6.1e"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
-    @modules = ["Dev/R", "Aligner/Bowtie2", "Tools/samtools", "Dev/jdk", "QC/FastQC"]
+    @modules = ["Dev/R", "Aligner/Bowtie2", "Tools/samtools", "Dev/jdk", "QC/FastQC", "Tools/fastx"]
   end
   def next_dataset
     dataset = {
