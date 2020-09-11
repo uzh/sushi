@@ -36,10 +36,7 @@ class ApplicationController < ActionController::Base
     sushi_apps = Dir[File.join(lib_dir, '*.rb')].select{|script| !non_sushi_apps.include?(File.basename(script))}.to_a.map{|script| File.basename(script)}
     sushi_apps.concat Dir[File.join(lib_dir, '*.sh')].map{|script| File.basename(script)}
     sushi_apps.each do |script|
-      if script =~ /\.rb/
-        class_name = script.gsub(/\.rb/,'')
-        require class_name
-      elsif script =~ /\.sh/
+      if script =~ /\.sh/
         sushi_wrap = SushiWrap.new(File.join(lib_dir, script))
         sushi_wrap.define_class
       end
@@ -53,14 +50,12 @@ class ApplicationController < ActionController::Base
     lib_dir = File.expand_path('../../../lib', __FILE__)
     sushi_apps.select{|app| app =~ /\.rb$/}.each do |app|
       class_name = app.gsub(/\.rb/,'')
-      updated_at = File.stat(File.join(lib_dir, app)).mtime
-      unless sushi_app = SushiApplication.find_by_class_name(class_name) and updated_at < sushi_app.updated_at
-        if sushi_app 
-          load File.join(lib_dir, app)
-        end
+      updated_at = File.stat(File.join(lib_dir, app)).mtime.in_time_zone.to_s
+      unless sushi_app = SushiApplication.find_by_class_name(class_name) and updated_at == sushi_app.updated_at.in_time_zone.to_s
+        load File.join(lib_dir, app)
         begin
           sushi_app_instance = eval(class_name).new
-          sushi_app_instance.instance_variable_set(:@dataset, {})
+          sushi_app_instance.instance_variable_set(:@dataset, {0=>{}})
           sushi_app_instance.instance_variable_set(:@result_dir, '')
           sushi_app_entry = (sushi_app || SushiApplication.new)
           sushi_app_entry.class_name = class_name
@@ -68,6 +63,7 @@ class ApplicationController < ActionController::Base
           sushi_app_entry.required_columns = sushi_app_instance.required_columns
           sushi_app_entry.next_dataset_keys = sushi_app_instance.next_dataset.keys
           sushi_app_entry.description = sushi_app_instance.description
+          sushi_app_entry.updated_at = updated_at.in_time_zone
           sushi_app_entry.save
         rescue => err
           warn err
