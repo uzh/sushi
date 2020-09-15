@@ -28,7 +28,7 @@ EOS
     @params['cmdOptions', 'description'] = 'specify other commandline options for Metaquast; do not specify any option that is already covered by the dedicated input fields'
     @params['mail'] = ""
     @params['Name'] = "metaquastReport"
-    @modules = ["QC/QUAST", "Dev/R"]
+    @modules = ["QC/QUAST", "Dev/R","Dev/Python/2.7.16"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
