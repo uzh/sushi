@@ -76,16 +76,15 @@ class BWAApp < SushiFabric::SushiApp
     {'Name'=>@dataset['Name'],
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-        'IGV Starter [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
-        'Species'=>@dataset['Species'],
-        'refBuild'=>@params['refBuild'],
-        'paired'=>@params['paired'],
-        'refFeatureFile'=>@params['refFeatureFile'],
-        'strandMode'=>@params['strandMode'],
-        'Read Count'=>@dataset['Read Count'],
-        'IGV Starter [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.jnlp"),
-        'IGV Session [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.xml"),
-        'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
+     'IGV [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
+     'Species'=>@dataset['Species'],
+     'refBuild'=>@params['refBuild'],
+     'paired'=>@params['paired'],
+     'refFeatureFile'=>@params['refFeatureFile'],
+     'strandMode'=>@params['strandMode'],
+     'Read Count'=>@dataset['Read Count'],
+     'IGV [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
+     'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
