@@ -61,7 +61,7 @@ EOS
     @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
     @params['mail'] = ""
     
-    @modules = ["Aligner/BWA", "Tools/samtools", "Aligner/Bowtie2", "QC/fastp", "Tools/kraken", "QC/FastQScreen", "Tools/sambamba", "Tools/Picard"]
+    @modules = ["Aligner/BWA", "Tools/samtools", "Aligner/Bowtie2", "QC/fastp", "Tools/kraken/1.1.1", "QC/FastQScreen", "Tools/sambamba", "Tools/Picard"]
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
