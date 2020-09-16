@@ -23,3 +23,5 @@ master/*.Rproj
 lib/WordCountApp.rb
 master/bak
 .Rproj.user
+.Rhistory
+sushi.Rproj
