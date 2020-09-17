@@ -46,7 +46,7 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
     @params['mail'] = ""
     
     
-    @modules = ["Dev/R","Aligner/STAR/2.7.3a"]
+    @modules = ["Dev/R","Aligner/STAR"]
     @inherit_tags = ["B-Fabric"]
   end
   def set_default_parameters
