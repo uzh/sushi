@@ -23,8 +23,8 @@ EOS
     @required_columns = ['Name','Read1','Species']
     @required_params = ['refBuild','paired', 'strandMode']
     # optional params
-    @params['cores'] = '8'
-    @params['ram'] = '30'
+    @params['cores'] = ['8']
+    @params['ram'] = ['30', '40']
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['paired'] = false
