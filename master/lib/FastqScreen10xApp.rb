@@ -20,7 +20,7 @@ EOS
     @params['cores'] = '8'
     @params['ram'] = '40'
     @params['scratch'] = '300'
-    @params['paired'] = true
+    @params['paired'] = false
     @params['name'] = 'FastqScreen_Result'
     @params['nReads'] = '100000'
     @params['nTopSpecies'] = '5'
