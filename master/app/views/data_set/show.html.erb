@@ -185,7 +185,7 @@ $(document).ready(function(){
   <p>
     - Java downloader from B-Fabric:
   <% if @data_set.workunit_id %>
-  <%= link_to "https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-workunit.html?id=#{@data_set.workunit_id}", "https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-workunit.html?id=#{@data_set.workunit_id}", target: "_blank" %>
+  <%= link_to "https://fgcz-bfabric.uzh.ch/bfabric/dataset/show.html?id=#{@data_set.workunit_id}", "https://fgcz-bfabric.uzh.ch/bfabric/dataset/show.html?id=#{@data_set.workunit_id}", target: "_blank" %>
   <% else %>
     not available
   <% end %>
@@ -253,7 +253,7 @@ $(document).ready(function(){
   <% if @data_set.bfabric_id %>
   <li>
       BFabricID:
-      <b><%= link_to @data_set.bfabric_id, "https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?id=#{@data_set.bfabric_id}&tab=details", target: "_blank" %></b> 
+      <b><%= link_to @data_set.bfabric_id, "https://fgcz-bfabric.uzh.ch/bfabric/dataset/show.html?id=#{@data_set.bfabric_id}&tab=details", target: "_blank" %></b>
   </li>
   <% end %>
   <% if @data_set.run_name_order_id %>
