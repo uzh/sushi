@@ -17,9 +17,11 @@ A quality control tool for NGS reads<br/>
 EOS
     @required_columns = ['Name','Read1']
     @required_params = ['name', 'paired']
-    @params['cores'] = '8'
-    @params['ram'] = '16'
-    @params['scratch'] = '100'
+    @params['cores'] = [8, 1, 2, 4, 8]
+    @params['ram'] = [16, 32, 64]
+    @params['ram', 'description'] = "GB"
+    @params['scratch'] = [100, 10, 50, 100]
+    @params['scratch', 'description'] = "GB"
     @params['paired'] = false
     @params['perLibrary'] = true
     @params['perLibrary', 'description'] = "FastQC process per library or per cell for single cell experiment"
