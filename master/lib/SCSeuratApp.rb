@@ -39,6 +39,8 @@ Single cell Seurat clustering report<br/>
     @params['maxGenesPerCell', 'description'] = 'Maximal number of genes per cell for Seurat filtering'
     @params['maxMitoPercent'] = 25
     @params['maxMitoPercent', 'description'] = 'Maximal percentage of mitochondrial reads per cell for Seurat filtering'
+    @params['singleRReference'] = ['None', 'HumanPrimaryCellAtlasData', 'BlueprintEncodeData', 'MonacoImmuneData', 'DatabaseImmuneCellExpressionData', 'NovershternHematopoieticData', 'MouseRNAseqData', 'ImmGenData']
+    @params['singleRReference', 'description'] = 'SingleR reference dataset to use. See more details at https://bioconductor.org/packages/release/bioc/vignettes/SingleR/inst/doc/SingleR.html#5_available_references'
     @params['pcs'] = 30
     @params['pcs', 'description'] = 'The maximal dimensions to use for reduction.'
     @params['vars.to.regress'] = ['nFeature_RNA', 'percent.mt', 'CellCycle']
