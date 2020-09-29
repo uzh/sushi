@@ -183,7 +183,7 @@
             <td><%= data_set.created_at.strftime("%Y-%m-%d %X ") + SushiFabric::Application.config.time_zone.split('/').last %></td>
             <% if data_set.bfabric_id %>
             <td><%= link_to data_set.bfabric_id,
-                "https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-dataset.html?id=#{data_set.bfabric_id}&tab=details",
+                "https://fgcz-bfabric.uzh.ch/bfabric/dataset/show.html?id=#{data_set.bfabric_id}&tab=details",
                 target: "_blank" %>
             </td>
             <% else %>
