@@ -33,11 +33,11 @@ Single cell report<br/>
     @params['scProtocol'] = ['10X', 'smart-Seq2']
     @params['species'] = ['Human', 'Mouse', "other"]
     @params['nreads'] = ''
-    @params['nreads', 'description'] = 'Low quality cells have less than "nreads" reads'
+    @params['nreads', 'description'] = 'Low quality cells have less than "nreads" reads. Only when applying fixed thresholds'
     @params['ngenes'] = ''
-    @params['ngenes', 'description'] = 'Low quality cells have less than "ngenes" genes'
+    @params['ngenes', 'description'] = 'Low quality cells have less than "ngenes" genes. Only when applying fixed thresholds'
     @params['perc_mito'] = ''
-    @params['perc_mito', 'description'] = 'Low quality cells have more than "perc_mito" percent of mitochondrial genes'
+    @params['perc_mito', 'description'] = 'Low quality cells have more than "perc_mito" percent of mitochondrial genes. Only when applying fixed thresholds'
     @params['SCT.regress'] = ['none', 'CellCycle']
     @params['DE.method'] = ['wilcox', 'LR']
     @params['tissue'] = []
