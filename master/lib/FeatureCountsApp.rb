@@ -36,6 +36,7 @@ EOS
     @params['minFeatureOverlap', 'description'] = "minimum overlap of a read with a transcript feature"
     @params['minMapQuality'] = 10
     @params['keepMultiHits'] = true
+    @params['ignoreDup'] = false
     @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 'protein_coding'
