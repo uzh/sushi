@@ -454,9 +454,13 @@ class DataSetController < ApplicationController
         data_set << "DataSetName"
         data_set << items[-2]
         data_set << "ProjectNumber" << @project.number
+        order_ids = {}
         data_set_tsv.each do |row|
           unless row.fields.join.strip.empty?
             rows << row.fields
+            if order_id = row["Order Id [B-Fabric]"]
+              order_ids[order_id] = true
+            end
           end
         end
         unless headers.include?(nil)
@@ -474,8 +478,13 @@ class DataSetController < ApplicationController
                   end
         set_runnable_apps(refresh)
 
+        data_set = DataSet.find_by_id(@data_set_id)
+        unless order_ids.keys.empty?
+          data_set.order_ids = order_ids.keys
+          data_set.save
+        end
+
         unless session[:off_bfabric_registration]
-          data_set = DataSet.find_by_id(@data_set_id)
           pid = Process.fork do
             Process.fork do
               data_set.register_bfabric
@@ -598,6 +607,7 @@ class DataSetController < ApplicationController
           data_set = []
           headers = data_set_tsv.headers
           rows = []
+          order_ids = {}
           data_set << "DataSetName"
           if dataset = params[:dataset] and dataset_name = dataset[:name]
             data_set << dataset_name
@@ -611,6 +621,9 @@ class DataSetController < ApplicationController
           data_set_tsv.each do |row|
             unless row.fields.join.strip.empty?
               rows << row.fields
+              if order_id = row["Order Id [B-Fabric]"]
+                order_ids[order_id] = true
+              end
             end
           end
           unless headers.include?(nil)
@@ -631,8 +644,13 @@ class DataSetController < ApplicationController
       if @data_set_id
         set_runnable_apps(false)
 
+        data_set = DataSet.find_by_id(@data_set_id)
+        unless order_ids.keys.empty?
+          data_set.order_ids = order_ids.keys
+          data_set.save
+        end
+
         unless session[:off_bfabric_registration]
-          data_set = DataSet.find_by_id(@data_set_id)
           pid = Process.fork do
             Process.fork do
               data_set.register_bfabric
