@@ -22,6 +22,8 @@ Trajectory inference analysis for single cell data<br/>
     @params['ram'] = '30'
     @params['scratch'] = '250'
     @params['name'] = 'SCTrajectoryInference'
+    @params['refBuild'] = ref_selector
+    @params['refFeatureFile'] = 'genes.gtf'
     @params['start_id'] = '0'
     @params['start_id', 'description'] = 'Start cluster(s)'
     @params['end_id'] = 'none'
@@ -45,6 +47,16 @@ Trajectory inference analysis for single cell data<br/>
     {'Name'=>@dataset['Name'],
      'Static Report [Link]'=>report_link
     }
+  end
+  def set_default_parameters
+    @params['refBuild'] = @dataset[0]['refBuild']
+    if dataset_has_column?('refFeatureFile')
+      @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
+    end
+    @params['transcriptTypes'] = @dataset[0]['transcriptTypes'].to_s.split(',')
+    if dataset_has_column?('paired')
+      @params['paired'] = @dataset[0]['paired']
+    end
   end
   def commands
     run_RApp("EzAppSCTrajectoryInference")
