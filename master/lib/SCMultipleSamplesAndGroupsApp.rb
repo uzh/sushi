@@ -36,9 +36,9 @@ class SCMultipleSamplesAndGroupsApp < SushiFabric::SushiApp
       tissue[e["tissueType"]] = true
     end
     @params['tissue'] = tissue.keys.sort
-    @params['tissue', 'description'] = 'Tissue the cells come from. Used for cell types identification for Human and Mouse organisms.'
+    @params['tissue', 'description'] = 'Tissue the cells come from. Used in cell types identification for Human and Mouse organisms.'
     @params['npcs'] = '30'
-    @params['npcs', 'description'] = 'The maximal dimensions to use for reduction.'
+    @params['npcs', 'description'] = 'Number of principal components to use for dimensionality reduction.'
     @params['resolution'] = '0.6'
     @params['resolution', 'description'] = 'Value between 0 and 1. A higher value will lead to larger communities.'
     @params['batchCorrection'] = 'true'
