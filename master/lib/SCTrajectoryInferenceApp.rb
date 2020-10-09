@@ -15,7 +15,7 @@ class SCTrajectoryInferenceApp < SushiFabric::SushiApp
     @description =<<-EOS
 Trajectory inference analysis for single cell data<br/>
     EOS
-    @required_columns = ['Name', 'Report']
+    @required_columns = ['Name', 'Report', 'ResultDir']
     @required_params = ['name']
     # optional params
     @params['cores'] = '8'
@@ -41,11 +41,9 @@ Trajectory inference analysis for single cell data<br/>
     @modules = ["Dev/R", "Dev/Python"]
   end
   def next_dataset
-    report_file = File.join(@result_dir, "#{@dataset['Name']}_SCTrajectoryInference")
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@dataset['Name'],
-     'Static Report [Link]'=>report_link,
-     'Report [File]'=>report_file,
+     'Static Report [Link]'=>report_link
     }
   end
   def commands
