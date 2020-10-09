@@ -54,10 +54,6 @@ Trajectory inference analysis for single cell data<br/>
     if dataset_has_column?('refFeatureFile')
       @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
     end
-    @params['transcriptTypes'] = @dataset[0]['transcriptTypes'].to_s.split(',')
-    if dataset_has_column?('paired')
-      @params['paired'] = @dataset[0]['paired']
-    end
   end
   def commands
     run_RApp("EzAppSCTrajectoryInference")
