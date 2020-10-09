@@ -7,6 +7,7 @@ class DataSet < ActiveRecord::Base
   belongs_to :data_set, :foreign_key => :parent_id
   serialize :runnable_apps, Hash
   belongs_to :user
+  serialize :order_ids, Array
 
   def headers
     self.samples.map{|sample| sample.to_hash.keys}.flatten.uniq
@@ -69,15 +70,21 @@ class DataSet < ActiveRecord::Base
                            eval(out.chomp.downcase)
                          end
                        end
-        command = if parent_dataset and bfabric_id = parent_dataset.bfabric_id
-                    [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id].join(" ")
-                  else
-                    [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id].join(" ")
+#        command = if parent_dataset and bfabric_id = parent_dataset.bfabric_id
+#                     [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id].join(" ")
+#                  else
+#                     [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id].join(" ")
+#                  end
+        # 20201008 MH
+        # Tentatively, only top level dataset with uniq order id in dataset table can be registered in BFabric
+        command = if parent_dataset.nil? and self.order_ids.uniq.length == 1
+                     [python3, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id].join(" ")
                   end
-        if bfabric_application_number
+
+        if command and bfabric_application_number
           command << " -a #{bfabric_application_number}"
         end
-        if option_check
+        if command and option_check
           open(dataset_tsv, "w") do |out|
             out.print self.tsv_string
           end
