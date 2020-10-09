@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_11_24_130223) do
+ActiveRecord::Schema.define(version: 2020_10_08_130324) do
 
-  create_table "data_sets", force: :cascade do |t|
+  create_table "data_sets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "project_id"
     t.integer "parent_id"
     t.string "name"
@@ -30,9 +30,10 @@ ActiveRecord::Schema.define(version: 2017_11_24_130223) do
     t.string "sushi_app_name"
     t.string "run_name_order_id"
     t.integer "workunit_id"
+    t.text "order_ids"
   end
 
-  create_table "jobs", force: :cascade do |t|
+  create_table "jobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "submit_job_id"
     t.integer "input_dataset_id"
     t.integer "next_dataset_id"
@@ -41,21 +42,21 @@ ActiveRecord::Schema.define(version: 2017_11_24_130223) do
     t.string "script_path"
   end
 
-  create_table "projects", force: :cascade do |t|
+  create_table "projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "data_set_tree", limit: 16777215
   end
 
-  create_table "samples", force: :cascade do |t|
+  create_table "samples", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "key_value"
     t.integer "data_set_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "sushi_applications", force: :cascade do |t|
+  create_table "sushi_applications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "class_name"
     t.string "analysis_category"
     t.text "required_columns"
@@ -65,7 +66,7 @@ ActiveRecord::Schema.define(version: 2017_11_24_130223) do
     t.text "description"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "sign_in_count", default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"

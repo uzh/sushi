@@ -19,7 +19,7 @@ class EdgeRApp < SushiFabric::SushiApp
     @required_columns = ['Name','Count', 'Species', 'refBuild', 'featureLevel', 'refFeatureFile']
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
     # optional params
-    @params['cores'] = ['1', '2']
+    @params['cores'] = ['1', '2', '8']
     @params['ram'] = ['4', '8']
     @params['scratch'] = ['10', '20']
     @params['refBuild'] = ref_selector
