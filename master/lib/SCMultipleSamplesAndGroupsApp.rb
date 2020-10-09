@@ -36,15 +36,20 @@ class SCMultipleSamplesAndGroupsApp < SushiFabric::SushiApp
       tissue[e["tissueType"]] = true
     end
     @params['tissue'] = tissue.keys.sort
+    @params['tissue', 'description'] = 'Tissue the cells come from. Used for cell types identification for Human and Mouse organisms.'
     @params['npcs'] = '30'
+    @params['npcs', 'description'] = 'The maximal dimensions to use for reduction.'
     @params['resolution'] = '0.6'
+    @params['resolution', 'description'] = 'Value between 0 and 1. A higher value will lead to larger communities.'
     @params['batchCorrection'] = 'true'
+    @params['batchCorrection', 'description'] = "Perform batch correction?"
     @params['SCT.regress'] = ['none', 'CellCycle']
+    @params['SCT.regress', 'description'] = "Variable to regress when processing the counts with the SCTransform method."
     @params['DE.method'] = ['wilcox', 'LR']
-    @params['DE.regress'] = ['Plate', 'CellCycle']
+    @params['DE.method', 'description'] = "Method to be used when calculating gene cluster markers and differentially expressed genes between conditions."
+    @params['DE.regress'] = ['Batch', 'CellCycle']
     @params['DE.regress','multi_selection'] = true
-    @params['chosenClusters'] = ''
-    @params['all2allMarkers'] = 'false'
+    @params['DE.regress', 'description'] = "Variables to regress when calculating gene cluster markers and differentially expressed genes. Only used with the LR method."
     @params['maxSamplesSupported'] = '5'
     @params['specialOptions'] = ''
     @params['mail'] = ""
