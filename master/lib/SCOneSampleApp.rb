@@ -78,7 +78,6 @@ Single cell report<br/>
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
-     'Live Report [Link]'=>"#{SHINY_EXPLORE_SC}?data=#{report_file}/SCReport-#{@random_string}.rds",
      'Report [File]'=>report_file,
      'ResultDir [Link]'=>@dataset['ResultDir'],
     }
