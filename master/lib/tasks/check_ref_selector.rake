@@ -9,6 +9,12 @@ namespace :lib do
 
     require 'pp'
     pp ref_selector
+
+    puts
+    reference = "Eleusine_coracana/FGCZ/PR202_v2/Annotation/Release_01-2019-01-24"
+    genome_root = fetch_genome_root(reference)
+    p "reference=#{reference}"
+    p "genome_root=#{genome_root}"
   end
 
 end
