@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
-GENOME_REF_DIR = '/srv/GT/reference'
+GENOME_REF_DIRS = ['/srv/GT/reference', '/srv/GT/assembly']
 EZ_GLOBAL_VARIABLES = '/usr/local/ngseq/opt/EZ_GLOBAL_VARIABLES.txt'
 #EZ_GLOBAL_VARIABLES = '/usr/local/ngseq/opt/EZ_GLOBAL_VARIABLES_DEMO.txt'
 
@@ -15,16 +15,25 @@ end
 
 module GlobalVariables
   SUSHI = 'Supercalifragilisticexpialidocious!!'
-  def refBuilder_selector(base_dir, shown_pattern=nil, value_pattern=nil)
+  def fetch_genome_root(reference)
+    selector = ref_selector({}, 'fetch_genome_root')
+    if full_path = selector[reference]
+      genome_root = full_path.gsub(/#{reference}/, '')
+    else
+      raise "Reference is not found: #{reference}"
+    end
+    genome_root.delete_suffix("/")
+  end
+  def refBuilder_selector(base_dirs, shown_pattern=nil, value_pattern=nil)
     selector = {}
-    Dir[base_dir].sort.select{|dir| File.directory?(dir)}.each do |dir|
+    Dir[*base_dirs].sort.select{|dir| File.directory?(dir)}.each do |dir|
       key = if shown_pattern
-              dir.gsub(shown_pattern.keys.first, shown_pattern)
+              dir.gsub(/#{shown_pattern.keys.join("|")}/, shown_pattern)
             else
               dir
             end
       value = if value_pattern
-                dir.gsub(value_pattern.keys.first, value_pattern)
+                dir.gsub(/#{value_pattern.keys.join("|")}/, value_pattern)
               else
                 File.basename(dir)
               end
@@ -32,20 +41,17 @@ module GlobalVariables
     end
     selector
   end
-  def ref_selector
+  def ref_selector(value_replace_pattern=GENOME_REF_DIRS.inject({}){|hash, dir| hash[dir+"/"]=''; hash}, cache_name='ref_selector')
     selector = {'select'=>''}
-    selector = Rails.cache.fetch('ref_selector', expired_in: 1.hour) do
-      base_pattern = "#{GENOME_REF_DIR}/*/*/*"
-      shown_replace_regexp = /#{GENOME_REF_DIR+"/"}/
-      value_replace_regexp = /#{GENOME_REF_DIR+"/"}/
-      shown_replace_pattern = {shown_replace_regexp=>''}
-      value_replace_pattern = {value_replace_regexp=>''}
+    selector = Rails.cache.fetch(cache_name, expired_in: 1.hour) do
+      base_pattern = GENOME_REF_DIRS.map{|dir| "#{dir}/*/*/*"}
+      shown_replace_pattern = GENOME_REF_DIRS.inject({}){|hash, dir| hash[dir+"/"]=''; hash}
       refBuilds = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
-      base_pattern = "#{GENOME_REF_DIR}/*/*/*/Annotation/Version*\0#{GENOME_REF_DIR}/*/*/*/Annotation/Release*"
+      base_pattern = GENOME_REF_DIRS.map{|dir| ["#{dir}/*/*/*/Annotation/Version*", "#{dir}/*/*/*/Annotation/Release*"]}.flatten
       versions = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
-      base_pattern = "#{GENOME_REF_DIR}/*/*/*/Sequence"
+      base_pattern = GENOME_REF_DIRS.map{|dir| "#{dir}/*/*/*/Sequence"}
       sequences = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
 
       refBuilds.keys.each do |refBuild_key|
