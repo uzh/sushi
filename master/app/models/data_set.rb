@@ -77,8 +77,26 @@ class DataSet < ActiveRecord::Base
 #                  end
         # 20201008 MH
         # Tentatively, only top level dataset with uniq order id in dataset table can be registered in BFabric
-        command = if parent_dataset.nil? and self.order_ids.uniq.length == 1
-                     [python3, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id].join(" ")
+        order_ids_ = {}
+        if self.order_ids.empty?
+           self.samples.each do |sample_|
+             sample = sample_.to_hash
+             if order_id = sample["Order Id [B-Fabric]"]
+               order_ids_[order_id] = true
+             end
+           end
+        end
+        unless order_ids_.empty?
+          self.order_ids.concat(order_ids_.keys)
+          self.save
+        end
+
+        command = if parent_dataset.nil? and self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i
+                    if order_id > 8000
+                      [python3, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id].join(" ")
+                    else
+                      [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id].join(" ")
+                    end
                   end
 
         if command and bfabric_application_number
