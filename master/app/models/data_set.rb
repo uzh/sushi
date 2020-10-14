@@ -91,8 +91,12 @@ class DataSet < ActiveRecord::Base
           self.save
         end
 
-        command = if parent_dataset.nil? and self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i and order_id > 8000
-                     [python3, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id].join(" ")
+        command = if parent_dataset.nil? and self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i
+                    if order_id > 8000
+                      [python3, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id].join(" ")
+                    else
+                      [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id].join(" ")
+                    end
                   end
 
         if command and bfabric_application_number
