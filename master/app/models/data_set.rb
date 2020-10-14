@@ -91,7 +91,7 @@ class DataSet < ActiveRecord::Base
           self.save
         end
 
-        command = if parent_dataset.nil? and self.order_ids.uniq.length == 1
+        command = if parent_dataset.nil? and self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i and order_id > 8000
                      [python3, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id].join(" ")
                   end
 
