@@ -31,7 +31,8 @@ Single cell report<br/>
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 0
     @params['scProtocol'] = ['10X', 'smart-Seq2']
-    @params['species'] = ['Human', 'Mouse', "other"]
+    @params['species'] = ["other", 'Human', 'Mouse']
+    @params['species', 'description'] = 'Used for automated cell type annotation'
     @params['nreads'] = ''
     @params['nreads', 'description'] = 'Low quality cells have less than "nreads" reads. Only when applying fixed thresholds'
     @params['ngenes'] = ''
@@ -39,7 +40,9 @@ Single cell report<br/>
     @params['perc_mito'] = ''
     @params['perc_mito', 'description'] = 'Low quality cells have more than "perc_mito" percent of mitochondrial genes. Only when applying fixed thresholds'
     @params['SCT.regress'] = ['none', 'CellCycle']
+    @params['SCT.regress', 'description'] = 'Choose CellCycle to be regressed out when using the SCTransform method if it is a bias.'
     @params['DE.method'] = ['wilcox', 'LR']
+    @params['DE.method', 'description'] ='Method to be used when calculating gene cluster markers. Use LR if you want to include cell cycle in the regression model.'
     @params['tissue'] = []
     @params['tissue','multi_selection'] = true
     @params['tissue','all_selected'] = true
@@ -49,6 +52,7 @@ Single cell report<br/>
       tissue[e["tissueType"]] = true
     end
     @params['tissue'] = tissue.keys.sort
+    @params['tissue', 'description'] = 'Tissue the cells come from. Used in cell types identification for Human and Mouse organisms.'
     @params['npcs'] = 20
     @params['npcs', 'description'] = 'The maximal dimensions to use for reduction.'
     @params['pcGenes'] = ''
