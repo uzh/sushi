@@ -53,7 +53,7 @@ Single cell report<br/>
     @params['npcs', 'description'] = 'The maximal dimensions to use for reduction.'
     @params['pcGenes'] = ''
     @params['pcGenes', 'description'] = 'The genes used in supvervised clustering'
-    @params['resolution'] = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    @params['resolution'] = [0.6, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
     @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
     @params['all2allMarkers'] = false
     @params['all2allMarkers', 'description'] = 'Run all against all cluster comparisons?'
