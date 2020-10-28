@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20171109-094822'
+Version = '20201028-154752'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -69,6 +69,8 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
+    '. "/usr/local/ngseq/miniconda3/etc/profile.d/conda.sh"' +
+    "\nconda activate MACS2\n" +
     run_RApp("EzAppMacs2")
   end
 end
