@@ -71,6 +71,7 @@ EOS
   def next_dataset
    dataset = {
       'Name'=>@dataset['Name'],
+      'Species'=>@dataset['Species'],
       'Read1 [File]' => File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}"),
       }
     if @params['paired'] 
