@@ -25,6 +25,8 @@ class BWAApp < SushiFabric::SushiApp
     @params['paired'] = false
     @params['algorithm'] = ['mem', 'aln', 'bwasw']
     @params['cmdOptions'] = ''
+    @params['markDuplicates'] = true
+    @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
     
     # trimming options
     # general
