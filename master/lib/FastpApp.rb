@@ -72,10 +72,10 @@ EOS
    dataset = {
       'Name'=>@dataset['Name'],
       'Species'=>@dataset['Species'],
-      'Read1 [File]' => File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}"),
+      'Read1 [File]' => File.join(@result_dir, "#{@dataset['Name']}_trimmed_R1.fastq.gz'"),
       }
     if @params['paired'] 
-        dataset['Read2 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read2'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")
+        dataset['Read2 [File]'] = File.join(@result_dir, "#{@dataset['Name']}_trimmed_R2.fastq.gz'"),
     end
     dataset['PreprocessingLog [File]'] = File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
     dataset.merge(extract_columns(@inherit_tags))
