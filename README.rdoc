@@ -18,10 +18,10 @@ SUSHI server is the user interface and it send some requests to SUSHI applicatio
 
 === 2.1. Requirements
 
-* Ruby (>= v2.2.3)
+* Ruby (>= v2.6.x)
 * Git (>= v2.10.2)
 * bundler (RubyGem, >= v1.10.6)
-* (Ruby on Rails (>= v4.2.6) this wll be automatically installed through bundler)
+* (Ruby on Rails (>= v5) this wll be automatically installed through bundler)
 
 Just confirm first to check if the required applications are installed in your system as follows:
 
@@ -309,6 +309,9 @@ As default, there is no user authentification. Please apply the patch, local_dev
   $ patch -p0 < master/local_devise.patch
 
 == Release information
+
+Ver. 2.1.0, 2020.11.04
+* Rails v5.2.4.3, Ruby v2.6.6, ezRun v3.12.1, sushi_fabric v1.0.0, workflow_manager v0.5.9
 
 Ver. 2.0.2
 * fastq bug fix
