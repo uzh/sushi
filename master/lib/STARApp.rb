@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20200225-143601'
+Version = '20201104-091000'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -23,7 +23,7 @@ EOS
     @required_columns = ['Name','Read1','Species']
     @required_params = ['refBuild','paired', 'strandMode']
     # optional params
-    @params['cores'] = ['8']
+    @params['cores'] = [8, 1, 2, 4, 8]
     @params['ram'] = ['30', '40']
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
