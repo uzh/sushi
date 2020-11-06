@@ -19,8 +19,8 @@ class EdgeRApp < SushiFabric::SushiApp
     @required_columns = ['Name','Count', 'Species', 'refBuild', 'featureLevel', 'refFeatureFile']
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
     # optional params
-    @params['cores'] = ['1', '2', '8']
-    @params['ram'] = ['8', '16']
+    @params['cores'] = ['4', '2']
+    @params['ram'] = ['12', '8']
     @params['scratch'] = ['10', '20']
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
