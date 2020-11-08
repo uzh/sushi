@@ -49,7 +49,6 @@ class SCMultipleSamplesOneGroupApp < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.0.3", "Dev/R/4.0.1"]
-    @modules = ["Dev/R"]
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
@@ -69,7 +68,8 @@ class SCMultipleSamplesOneGroupApp < SushiFabric::SushiApp
     end
   end
   def commands
-    run_RApp("EzAppSCMultipleSamplesOneGroup")
+    command = "module load #{@params["Rversion"]}\n"
+    command << run_RApp("EzAppSCMultipleSamplesOneGroup")
   end
 end
 
