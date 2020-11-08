@@ -70,7 +70,6 @@ Single cell report<br/>
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.0.3", "Dev/R/4.0.1"]
-    @modules = ["Dev/R"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
@@ -102,7 +101,8 @@ Single cell report<br/>
     end
   end
   def commands
-    run_RApp("EzAppSCOneSample")
+    command = "module load #{@params["Rversion"]}\n"
+    command << run_RApp("EzAppSCOneSample")
   end
 end
 
