@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20180507-041245'
+Version = '20201127-101634'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -28,11 +28,15 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['testMethod'] = ['glm', 'exactTest']
     @params['deTest'] = ['QL', 'LR']
     @params['deTest', 'description'] = 'This option only works for glm method. Quasi-likelihood (QL) F-test or likelihood ratio (LR) test. LR is prefered for single-cell data.'
-    @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'
-    @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
+    @params['grouping'] = '' ## Note: this will be a selector defined by Factor tagged column
+    @params['sampleGroup'] = '' ## Note: this will be a selector defined by Factor tagged column
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
-    @params['refGroup'] = '' ## TODO: this should be a value from the selected column
+    @params['sampleGroupBaseline'] = '' ### Note: this will be a selector defined by Factor tagged column
+    @params['sampleGroupBaseline', 'description'] = 'select the baseline for sampleGroup if you have'
+    @params['refGroup'] = '' ## Note: this will be a selector defined by Factor tagged column
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
+    @params['refGroupBaseline'] = '' ## Note: this will be a selector defined by Factor tagged column
+    @params['refGroupBaseline', 'description'] = 'select the baseline for refGroup if you have'
     @params['onlyCompGroupsHeatmap'] = ['false', 'true']
     @params['onlyCompGroupsHeatmap', 'description'] = 'Only show the samples from comparison groups in heatmap'
     @params['normMethod'] = ['TMM', 'RLE', 'upperquartile', 'none']
