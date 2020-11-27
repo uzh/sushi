@@ -25,7 +25,9 @@ class RunApplicationController < ApplicationController
       @factors = @factor_colums[factor_key]
       params[:grouping] = factor_key
       params[:sampleGroup] = @factor_colums[params[:grouping]]
+      params[:sampleGroupBaseline] = @factor_colums[params[:grouping]]
       params[:refGroup] = @factor_colums[params[:grouping]]
+      params[:refGroupBaseline] = @factor_colums[params[:grouping]]
       @option_list = @factors.map{|v| [v,v]}
       @option_list.unshift(["please select", ''])
     end
