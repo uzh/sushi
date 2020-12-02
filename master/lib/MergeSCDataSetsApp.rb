@@ -58,7 +58,9 @@ Assuming that all other columns than file path are same between datasets.<br />
     dataset_hash1 = @dataset_hash.clone
     dataset_hash1.each_with_index do |sample, i|
       name = sample['Name']
-      @dataset_hash[i]["RawDataDir [File]"] += ",#{dataset_hash2[name]['RawDataDir [File]']}"
+      if dataset_hash2[name] and dataset_hash2[name]['RawDataDir [File]']
+        @dataset_hash[i]["RawDataDir [File]"] += ",#{dataset_hash2[name]['RawDataDir [File]']}"
+      end
     end
     @dataset_hash.sort_by!{|row| row['Name']}
   end
