@@ -49,7 +49,7 @@ EOS
         'transcriptTypes'=>@params['transcriptTypes'],
         'ResultDir [File]'=>report_file,
         'Report [Link]'=>File.join(report_file, 'web_summary.html'),
-        'CountMatrix [Link]'=>File.join(report_file, 'filtered_feature_bc_matrix')
+        'CountMatrix [Link]'=>File.join(report_file, 'count', 'filtered_feature_bc_matrix')
       }
   end
   def commands

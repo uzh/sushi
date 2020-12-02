@@ -30,6 +30,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @params['mode'] = ['ChIP-seq', 'ATAC-seq']
     @params['mode', 'description'] = 'Call MACS2 for ChIP-seq or ATAC-seq data.'
     @params['cmdOptions'] = '--nomodel --bw 200'
+    @params['markDuplicates'] = false
     @params['specialOptions'] = ''
     @params['mail'] = ''
     @modules = ["Tools/UCSC", "Tools/BEDTools", "Dev/R", "Tools/sambamba", "Tools/Picard"]
