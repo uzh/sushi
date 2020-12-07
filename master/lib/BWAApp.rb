@@ -63,7 +63,7 @@ class BWAApp < SushiFabric::SushiApp
     @params['cmdOptionsFastp'] = ''
     
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/BWA", "QC/Flexbar", "QC/fastp", "Dev/R", "Tools/sambamba"]
+    @modules = ["Tools/samtools", "Aligner/BWA", "QC/Flexbar", "QC/fastp", "Dev/R", "Tools/sambamba", "Tools/Picard"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
