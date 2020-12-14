@@ -18,7 +18,7 @@ EOS
     @required_columns = ['Name','Read1']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
-    @params['ram'] = '40'
+    @params['ram'] = '80'
     @params['scratch'] = '100'
     @params['paired'] = false
     @params['name'] = 'FastqScreen_Result'
