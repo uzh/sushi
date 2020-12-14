@@ -18,7 +18,7 @@ EOS
     @required_columns = ['Name','RawDataDir']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
-    @params['ram'] = '30'
+    @params['ram'] = '80'
     @params['scratch'] = '300'
     @params['paired'] = false
     @params['name'] = 'FastqScreen_Result'
