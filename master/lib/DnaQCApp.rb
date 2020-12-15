@@ -23,10 +23,9 @@ Quality control after the alignment of RNAseq reads<br/>
     @params['name'] = 'DNA_QC_Statistics'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
-    #@params['strandMode'] = ['both', 'sense', 'antisense']
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "QC/Qualimap", "Tools/Picard", "Dev/R", "Tools/sambamba"]
+    @modules = ["Tools/samtools", "QC/Qualimap", "Tools/Picard", "Dev/R"]
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])

@@ -66,7 +66,7 @@ EOS
     @params['cmdOptionsFastp'] = ''
     ## additional commands
     @params['markDuplicates'] = true
-    @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
+    @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
     
     @params['mail'] = ""
     @modules = ["Aligner/Bowtie", "QC/Flexbar", "Tools/ncPROseq", "QC/fastp", "Dev/R"]

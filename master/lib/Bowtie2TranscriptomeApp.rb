@@ -70,7 +70,7 @@ EOS
     @params['cmdOptionsFastp'] = ''
     
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/Flexbar", "QC/fastp", "Dev/R", "Tools/sambamba"]
+    @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/Flexbar", "QC/fastp", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
