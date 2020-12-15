@@ -31,7 +31,7 @@ http://seselab.org/homeoroq/
     @params['scratch'] = '100'
     @params['paired'] = true
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
-    @modules = ["Dev/Python/2.7.13", "Tools/samtools", "Tools/sambamba"]
+    @modules = ["Dev/Python/2.7.13", "Tools/samtools"]
   end
   def preprocess
     @parent1_genome = if samp = @dataset_hash.first and ref_path = samp['refBuild1'] and dirs = ref_path.split('/') and spc = dirs.first and sub = spc.split('_')

@@ -60,7 +60,7 @@ class TrinityApp < SushiFabric::SushiApp
     @params['cmdOptionsFastp'] = ''
     ## additional commands
     @params['markDuplicates'] = true
-    @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
+    @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
 
     @params['mail'] = ""
     @modules = ["Assembly/Trinity", "QC/fastp", "QC/Flexbar", "Aligner/Bowtie2", "Aligner/Salmon", "Dev/R"]

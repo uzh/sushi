@@ -50,7 +50,7 @@ EOS
     @params['controlSeqs', 'description'] = 'The extra control sequences (such as spikein sequences) available in https://fgcz-gstore.uzh.ch/reference/controlSeqs.fa'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/jdk", "Aligner/STAR", "Tools/samtools", "Aligner/BWA", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat", "QC/Trimmomatic", "QC/Flexbar", "Tools/Picard", "Dev/Python", "Dev/R", "Tools/sambamba"]
+    @modules = ["Dev/jdk", "Aligner/STAR", "Tools/samtools", "Aligner/BWA", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat", "QC/Trimmomatic", "QC/Flexbar", "Tools/Picard", "Dev/Python", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset

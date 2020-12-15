@@ -41,7 +41,7 @@ class DEXSeqApp < SushiFabric::SushiApp
     @params['expressionName'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/Python2", "Tools/samtools", "Dev/R", "Tools/sambamba"]
+    @modules = ["Dev/Python2", "Tools/samtools", "Dev/R"]
   end
   def next_dataset
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"

@@ -42,7 +42,7 @@ EOS
     @params['transcriptTypes', 'selected'] = 'protein_coding'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Dev/R", "Tools/sambamba"]
+    @modules = ["Tools/samtools", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters

@@ -33,7 +33,7 @@ Variant calling for RNA-seq using <a href='https://software.broadinstitute.org/g
     @params['rgpl', 'description'] = 'platform/technology used to produce reads (used to define read groups)'
 	 @params['dontUseSoftClippedBases'] = ['true', 'false']
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Dev/jdk", "Variants/Queue", "Tools/Picard", "Dev/R", "Tools/sambamba"]
+    @modules = ["Tools/samtools", "Dev/jdk", "Variants/Queue", "Tools/Picard", "Dev/R"]
   end
   def next_dataset
     {

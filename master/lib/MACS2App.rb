@@ -33,7 +33,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @params['markDuplicates'] = false
     @params['specialOptions'] = ''
     @params['mail'] = ''
-    @modules = ["Tools/UCSC", "Tools/BEDTools", "Dev/R", "Tools/sambamba", "Tools/Picard"]
+    @modules = ["Tools/UCSC", "Tools/BEDTools", "Dev/R", "Tools/Picard"]
     # MACS2 is in Python2 bin
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
