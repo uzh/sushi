@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20201104-091000'
+Version = '20201215-140009'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -69,7 +69,7 @@ EOS
     @params['length_required','description'] = 'reads shorter than length_required will be discarded.'
     @params['cmdOptionsFastp'] = ''
     ## additional commands
-    @params['markDuplicates'] = true
+    @params['markDuplicates'] = false
     @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
     @params['specialOptions'] = ''
 
