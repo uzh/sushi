@@ -19,7 +19,7 @@ Data preprocssing with Mothur. Please make sure that the input files are from th
 @required_columns = ['Name', 'Read1', 'Adapter1']
 @required_params = ['technology','paired','cutOffTaxonomy','diffs','cutOffCluster']
 @params['cores'] = '2'
-@params['ram'] = '8'
+@params['ram'] = '7'
 @params['scratch'] = '10'
 @params['technology'] = ['illumina','pacbio']
 @params['technology', 'description'] = 'Sequencing technology used.'

@@ -18,7 +18,7 @@ Analysis of metatranscriptomics data produced by Samsa2.
 @required_columns = ['Name', 'annotationFileRefSeq']
 @required_params = ['numberOfTopNCategories','grouping', 'sampleGroup', 'refGroup'  ]
 @params['cores'] = '1'
-@params['ram'] = '8'
+@params['ram'] = '7'
 @params['scratch'] = '10'
 @params['grouping'] = '' 
 @params['sampleGroup'] = '' 

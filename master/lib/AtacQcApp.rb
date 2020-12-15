@@ -18,7 +18,7 @@ Quality control for ATACSeq  experiments<br/>
     @required_columns = ['Name','BAM','BAI', 'refBuild']
     @required_params = ['name', 'paired']
     @params['cores'] = '1'
-    @params['ram'] = '16'
+    @params['ram'] = '15'
     @params['scratch'] = '100'
     @params['paired'] = true
     @params['name'] = 'AtacQC_Result'

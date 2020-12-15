@@ -18,7 +18,7 @@ EOS
     @required_columns = ['Name','Read1']
     @required_params = ['name', 'paired']
     @params['cores'] = [8, 1, 2, 4, 8]
-    @params['ram'] = [16, 32, 64]
+    @params['ram'] = [15, 30, 62]
     @params['ram', 'description'] = "GB"
     @params['scratch'] = [100, 10, 50, 100]
     @params['scratch', 'description'] = "GB"
