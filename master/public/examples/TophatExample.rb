@@ -20,7 +20,7 @@ It aligns RNA-Seq using bowtie2, and then analyzes the mapping results to identi
     @required_params = ['build','paired']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '16'
+    @params['ram'] = '15'
     @params['scratch'] = '100'
     @params['library_type'] = ['fr-unstranded', 'fr-firststrand', 'fr-secondstrand']
     @params['library_type', 'description'] = 'strand specificity of the library'

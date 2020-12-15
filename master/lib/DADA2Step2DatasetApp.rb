@@ -19,7 +19,7 @@ Data preprocssing with DADA2. Please make sure that the input files are from the
 @required_columns = ['Name', 'RObjectWithSeqTab']
 @required_params = ['database']
 @params['cores'] = '2'
-@params['ram'] = '8'
+@params['ram'] = '7'
 @params['scratch'] = '10'
 @params['database'] = ['silva','RDP','greenGenes']
 @params['database', 'description'] = '16S database to use for taxonomic assignment.'

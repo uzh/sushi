@@ -27,7 +27,7 @@ http://seselab.org/homeoroq/
     @required_params = []
     # optional params
     @params['cores'] = '1'
-    @params['ram'] = '16'
+    @params['ram'] = '15'
     @params['scratch'] = '100'
     @params['paired'] = true
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]

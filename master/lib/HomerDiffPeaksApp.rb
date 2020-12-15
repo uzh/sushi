@@ -20,7 +20,7 @@ EOS
     @required_columns = ['Name','BAM']
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
     @params['cores'] = '4'
-    @params['ram'] = '16'
+    @params['ram'] = '15'
     @params['scratch'] = '100'
     @params['paired'] = true
     @params['grouping'] = ''

@@ -18,7 +18,7 @@ class BWATrimmomaticApp < SushiFabric::SushiApp
     @required_params = ['refBuild','paired']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '16'
+    @params['ram'] = '15'
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['refBuild', 'description'] = 'the genome refBuild and annotation to use as reference. If human variant calling is the main goal, please use hg_19_karyotypic.'

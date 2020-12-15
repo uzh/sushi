@@ -18,7 +18,7 @@ Quality control of metagenome assembly and annotation.
 @required_columns = ['Name', 'contigFile', 'prodigalPredictionFile','interproscanFile']
 @required_params = ['numberOfTopNCategories','grouping', 'sampleGroup', 'refGroup']
 @params['cores'] = '1'
-@params['ram'] = '8'
+@params['ram'] = '7'
 @params['scratch'] = '10'
 @params['numberOfTopNCategories'] = '30'
 @params['numberOfTopNCategories', 'description'] = 'Number of top most represented GO and protein categories to report.'

@@ -28,7 +28,7 @@ http://seselab.org/homeoroq/
     @required_params = []
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '16'
+    @params['ram'] = '15'
     @params['scratch'] = '10'
     @params['name'] = 'HomeoRoq'
     @params['iteration'] = '10'
