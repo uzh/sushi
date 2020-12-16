@@ -25,7 +25,7 @@ EOS
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['refFeatureFile'] = 'genes.gtf'
     @params['spikeInSet'] = ['', 'ERCC92']
-    @params['mapMethod'] = ['STAR', 'bowtie', 'bowtie2', 'tophat', 'bwa-mem']
+    @params['mapMethod'] = ['STAR', 'bowtie2', 'bwa-mem']
     @params['mapOptions'] = '--outFilterType BySJout --outFilterMatchNmin 30 --outFilterMismatchNmax 10 --outFilterMismatchNoverLmax 0.05 --alignSJDBoverhangMin 1 --alignSJoverhangMin 8 --alignIntronMax 1000000 --alignMatesGapMax 1000000  --outFilterMultimapNmax 50 --chimSegmentMin 15 --chimJunctionOverhangMin 15 --chimScoreMin 15 --chimScoreSeparation 10 --outSAMstrandField intronMotif'
     @params['getChimericJunctions'] = false
     @params['trimAdapter'] = true
@@ -50,7 +50,7 @@ EOS
     @params['controlSeqs', 'description'] = 'The extra control sequences (such as spikein sequences) available in https://fgcz-gstore.uzh.ch/reference/controlSeqs.fa'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/jdk", "Aligner/STAR", "Tools/samtools", "Aligner/BWA", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat", "QC/Trimmomatic", "QC/Flexbar", "Tools/Picard", "Dev/Python", "Dev/R"]
+    @modules = ["Dev/jdk", "Aligner/STAR", "Tools/samtools", "Tools/Picard", "Dev/Python", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset

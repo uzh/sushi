@@ -69,7 +69,7 @@ EOS
     @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
     
     @params['mail'] = ""
-    @modules = ["Aligner/Bowtie", "QC/Flexbar", "Tools/ncPROseq", "QC/fastp", "Dev/R"]
+    @modules = ["Aligner/Bowtie", "Tools/ncPROseq", "QC/fastp", "Dev/R"]
   end
   def preprocess
     if @params['paired']

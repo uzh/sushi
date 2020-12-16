@@ -60,7 +60,7 @@ Fast and memory-efficient short read aligner<br/>
     @params['cmdOptionsFastp'] = ''
     
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/Bowtie", "QC/Flexbar", "QC/fastp", "Dev/R"]
+    @modules = ["Tools/samtools", "Aligner/Bowtie", "QC/fastp", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
