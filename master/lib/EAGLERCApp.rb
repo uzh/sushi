@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20191219-102609'
+Version = '20201231-053632'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -25,7 +25,7 @@ EAGLE: Explicit Alternative Genome Likelihood Evaluator <br />
     @params['scratch'] = '100'
     @inactivate_nodes = ["fgcz-c-048"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
-    @modules = ["Tools/EAGLE/1.1.1b"]
+    @modules = ["Tools/EAGLE/1.1.2"]
   end
   def preprocess
     # first, from species name
@@ -83,8 +83,8 @@ EAGLE: Explicit Alternative Genome Likelihood Evaluator <br />
     bam2 = File.join(@gstore_dir, @dataset['BAM2'])
 
     command = "eagle --version\n"
-    ref1 = File.join(GENOME_REF_DIR, @dataset['refBuild1'].split('/')[0,3].join("/")+"/Sequence/WholeGenomeFasta/genome.fa")
-    ref2 = File.join(GENOME_REF_DIR, @dataset['refBuild2'].split('/')[0,3].join("/")+"/Sequence/WholeGenomeFasta/genome.fa")
+    ref1 = File.join(GENOME_REF_DIRS[0], @dataset['refBuild1'].split('/')[0,3].join("/")+"/Sequence/WholeGenomeFasta/genome.fa")
+    ref2 = File.join(GENOME_REF_DIRS[0], @dataset['refBuild2'].split('/')[0,3].join("/")+"/Sequence/WholeGenomeFasta/genome.fa")
     command << "eagle-rc --ngi --ref1=#{ref1} --ref2=#{ref2} --bam1=#{bam1} --bam2=#{bam2} -o #{@dataset['Name']} > #{@dataset['Name']}.sort.stdout.log 2> #{@dataset['Name']}.sort.errout.log\n"
     command << "mv #{@dataset['Name']}1.ref.bam #{@dataset['Name']}_#{@parent1_genome}_ref.bam\n"
     command << "mv #{@dataset['Name']}1.alt.bam #{@dataset['Name']}_#{@parent1_genome}_alt.bam\n"
