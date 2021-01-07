@@ -26,7 +26,7 @@ Perform motif discovery on DNA, RNA or protein datasets<br/>
     @params['specialOptions'] = 'distanceToTSS=2000 minFold=4'
     @params['refBuild'] = ref_selector
     @params['mail'] = ''
-    @modules = ['Tools/MEME', "Dev/R", "Tools/bedtools"]
+    @modules = ['Tools/MEME', "Dev/R", "Tools/BEDTools"]
   end
   def next_dataset
     meme_link = File.join(@result_dir, "#{@dataset['Name']}/#{@dataset['Name']}_meme-chip.html")
