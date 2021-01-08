@@ -21,7 +21,7 @@ Perform motif discovery on DNA, RNA or protein datasets<br/>
     @params['scratch'] = '20'
     @params['name'] = 'MotifCheck_MEME'
     @params['motifDB'] = '-db /srv/GT/databases/meme_db/motif_databases/JASPAR/JASPAR2018_CORE_vertebrates_redundant.meme -db /srv/GT/databases/meme_db/motif_databases/MOUSE/uniprobe_mouse.meme -db /srv/GT/databases/meme_db/motif_databases/HUMAN/HOCOMOCOv9.meme'
-    @params['cmdOptions'] = '-meme-mod zoops -meme-minw 6 -meme-maxw 30 -meme-nmotifs 3 -dreme-e 0.05 -centrimo-score 5.0 -centrimo-ethresh 10.0'
+    @params['cmdOptions'] = '-meme-mod zoops -minw 6 -maxw 30 -meme-nmotifs 5 -centrimo-score 5.0 -centrimo-ethresh 10.0'
     @params['filterPeaks'] = 'true'
     @params['specialOptions'] = 'distanceToTSS=2000 minFold=4'
     @params['refBuild'] = ref_selector
