@@ -1,9 +1,43 @@
 <script>
 $(document).ready(function(){
   $(document).tooltip();
-  $('.dt').DataTable(
-      {"order":[[ 0, "desc" ]]}
-      );
+  $('.dt').DataTable({
+      "order":[[ 0, "desc" ]],
+      "ordering": false
+  });
+
+  $('#checkall').click(function (e) {
+      if ($(this).prop("checked")) {
+          $('.target').each(function () {
+              $(this).prop("checked", true);
+          });
+      } else {
+          $('.target').each(function () {
+              $(this).prop("checked", false);
+          });
+      }
+  });
+
+  $(function () {
+      $('#btn_multi_kill').click(function () {
+          var flag = false;
+          $('.target').each(function () {
+              if ($(this).prop("checked")) {
+                  flag = true;
+                  return false;
+              }
+          });
+          if (flag == true) {
+              var form = $('#multi_kill');
+              form.submit();
+          } else {
+              // no selected
+              alert('Please select at least one job.');
+          }
+      });
+  })
+
+
 });
 </script>
 <% if session[:all_job_list] %>
@@ -25,13 +59,15 @@ $(document).ready(function(){
   <% end %>
 <% end %>
 <hr/>
-<h3>Job List</h3>
+<h3>Job List <span style="font-size: 0.5em;"> - <a href="#" id="btn_multi_kill">kill</a> selected jobs</span></h3>
+<%= form_tag('/job_monitoring/multi_kill_job', :id=>"multi_kill") do %>
 <table id="job_list" class="dt pure-table pure-table-bordered">
     <thead>
     <tr>
         <th>Job ID</th>
         <th>Status</th>
         <th></th>
+        <th class="check_box"><%= check_box 'kill_all_flag', 'all', {:id=>'checkall'}, true, false %></th>
         <th>User</th>
         <th>JobScript</th>
         <th>Log</th>
@@ -53,6 +89,11 @@ $(document).ready(function(){
               <% end %>
             <% end %>
         </td>
+        <td class="check_box">
+            <% if (job[1]=='running' or job[1]=='pending') and current_user and job[4]==current_user.login %>
+              <%= check_box "kill_flag", "#{job[0]}", {:class=>'target'}, true, false %>
+            <% end %>
+        </td>
         <td><%= job[4] %></td>
         <td><%= link_to td(job[2]), :action => 'print_script', :job_id => job[0] %></td>
         <td><%= link_to 'Log', :action => 'print_log', :job_id => job[0] %></td>
@@ -71,6 +112,7 @@ $(document).ready(function(){
     <% end %>
     </tbody>
 </table>
+<% end %>
 <hr/>
 Total: <%= @total %> jobs, only recent <%= @page_unit %> jobs are shown.
 <hr/>

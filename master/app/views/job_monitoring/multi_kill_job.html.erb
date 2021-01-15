@@ -1,0 +1,12 @@
+<h1>Project <%= session[:project] %></h1>
+<hr />
+<h2>Kill Jobs</h2>
+The following commands were executed<br />
+<pre>
+<%= @commands %>
+</pre>
+Status:<br />
+<pre>
+<%= @statuses %>
+</pre>
+<%= link_to "Job List", "/job_monitoring" %>
