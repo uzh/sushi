@@ -63,6 +63,17 @@ class JobMonitoringController < ApplicationController
       @command = "wfm_kill_job -i #{@job_id} -d #{SushiFabric::WORKFLOW_MANAGER}"
     end
   end
+  def multi_kill_job
+    @job_ids = if flag=params[:kill_flag]
+                      flag.keys
+                    end
+    @statuses = ''
+    @commands = ''
+    @job_ids.each do |job_id|
+      @statuses << @@workflow_manager.kill_job(job_id) + "\n"
+      @commands << "wfm_kill_job -i #{job_id} -d #{SushiFabric::WORKFLOW_MANAGER}\n"
+    end
+  end
   def resubmit_job
     if @job_id = params[:id]
       gstore_script_dir = if job = Job.find_by_submit_job_id(@job_id)
