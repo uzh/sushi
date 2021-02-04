@@ -40,7 +40,7 @@ EOS
     @params['style', 'description'] = 'Style of peaks found by findPeaks during features selection'
     
     @params['mail'] = ""
-    @modules = ["Dev/R", "Tools/HOMER", "Tools/samtools"]
+    @modules = ["Dev/R", "Tools/HOMER", "Tools/samtools", "Tools/BEDTools"]
   end
   def next_dataset
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"
