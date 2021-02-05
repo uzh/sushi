@@ -51,6 +51,11 @@ class ApplicationController < ActionController::Base
     # new check
     sushi_apps = all_sushi_applications
     lib_dir = File.expand_path('../../../lib', __FILE__)
+    NilClass.class_eval do
+      def [](x)
+        ''
+      end
+    end
     sushi_apps.select{|app| app =~ /\.rb$/}.each do |app|
       class_name = app.gsub(/\.rb/,'')
       updated_at = File.stat(File.join(lib_dir, app)).mtime
@@ -74,6 +79,9 @@ class ApplicationController < ActionController::Base
           warn "#{class_name} cannot be imported"
         end
       end
+    end
+    NilClass.class_eval do
+      undef_method :[]
     end
 
     # delete check
