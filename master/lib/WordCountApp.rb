@@ -9,6 +9,7 @@ require 'csv'
 class WordCountApp < SushiFabric::SushiApp
   def initialize
     super
+    @employee = true
     @name = 'Word_Count'
     @description = "test applicaiton #{GlobalVariables::SUSHI}"
     @analysis_category = 'Stats'

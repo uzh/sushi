@@ -73,6 +73,7 @@ class ApplicationController < ActionController::Base
           sushi_app_entry.required_columns = sushi_app_instance.required_columns
           sushi_app_entry.next_dataset_keys = sushi_app_instance.next_dataset.keys
           sushi_app_entry.description = sushi_app_instance.description
+          sushi_app_entry.employee = sushi_app_instance.employee
           sushi_app_entry.save
         rescue => err
           warn err
@@ -98,6 +99,13 @@ class ApplicationController < ActionController::Base
     sushi_apps = SushiApplication.all.select do |app|
       (app.required_columns - data_set_headers.map{|colname| colname.to_s.gsub(/\[.+\]/,'').strip}).empty?
     end
+  end
+  def employee_apps
+    apps = {}
+    SushiApplication.all.select{|app| app.employee}.each do |app|
+      apps[app.class_name.to_s] = true
+    end
+    apps
   end
   def sample_path(data_set)
     paths = []
