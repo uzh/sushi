@@ -38,7 +38,8 @@ EOS
     @params['balanced', 'description'] = 'Do not force the use of normalization factors to match total mapped reads.  This can be useful when analyzing differential peaks between similar data (for example H3K27ac) where we expect similar levels in all experiments. Applying this allows the data to essentially be quantile normalized during the differential calculation.'
     @params['style'] = ['histone', 'factor', 'tss', 'groseq', 'dnase', 'super', 'mC']
     @params['style', 'description'] = 'Style of peaks found by findPeaks during features selection'
-    
+    @params['cmdOptions'] = ''
+    @params['cmdOptions', 'description'] = 'to define batches in the analysis to perform paired test, e.g. -batch 1 2 1 2'
     @params['mail'] = ""
     @modules = ["Dev/R", "Tools/HOMER", "Tools/samtools", "Tools/BEDTools"]
   end
