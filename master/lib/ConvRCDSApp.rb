@@ -75,7 +75,6 @@ This converts the result DataSet of ReadClassifyApp to an input DataSet of Count
      'refBuild'=>@dataset['refBuild'],
      'Species'=>@dataset['Species'],
      'dummy [File]'=>File.join(@result_dir, "#{@dataset['Name']}_dummy.txt"),
-     'Condition [Factor]'=>@dataset['Condition']
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
