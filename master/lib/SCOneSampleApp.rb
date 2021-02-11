@@ -31,8 +31,6 @@ Single cell report<br/>
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 0
     @params['scProtocol'] = ['10X', 'smart-Seq2']
-    @params['species'] = ["other", 'Human', 'Mouse']
-    @params['species', 'description'] = 'Used for automated cell type annotation'
     @params['nreads'] = ''
     @params['nreads', 'description'] = 'Low quality cells have less than "nreads" reads. Only when applying fixed thresholds'
     @params['ngenes'] = ''
