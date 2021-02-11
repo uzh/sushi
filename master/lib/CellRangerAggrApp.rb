@@ -41,7 +41,6 @@ EOS
     report_file = File.join(@result_dir, @params['name'])
     dataset = {
         'Name'=>File.join(@dataset[0]['Name'],@dataset[1]['Name']),
-        'Condition'=>@dataset[0]['Condition'],
         'Species'=>@dataset[0]['Species'],
         'refBuild'=>@params['refBuild'],
         'refFeatureFile'=>@params['refFeatureFile'],

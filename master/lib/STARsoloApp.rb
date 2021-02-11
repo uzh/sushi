@@ -47,7 +47,7 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
     
     
     @modules = ["Dev/R","Aligner/STAR","Aligner/CellRanger"]
-    @inherit_tags = ["B-Fabric"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
   end
@@ -55,7 +55,6 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
     report_dir = File.join(@result_dir,"#{@dataset['Name']}")
       dataset = {
         'Name'=>@dataset['Name'],
-        'Condition'=>@dataset['Condition'],
         'Species'=>@dataset['Species'],
         'refBuild'=>@params['refBuild'],
         'refFeatureFile'=>@params['refFeatureFile'],
