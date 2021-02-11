@@ -19,7 +19,7 @@ super
 @required_columns = ['Name', 'RObjectPhyloseq','RObjectQCChimera']
 @required_params = ['taxonomicRank','rawCount','sampleFraction','numTopRanks']
 @params['cores'] = '1'
-@params['ram'] = '8'
+@params['ram'] = '7'
 @params['scratch'] = '10'
 @params['taxonomicRank'] = ['Phylum','Class','Order','Family','Genus']
 @params['taxonomicRank', 'description'] = 'Which rank should be displayed in the rank-dependent plots in the report?'

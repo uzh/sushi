@@ -225,46 +225,36 @@ class RunApplicationController < ApplicationController
 
   end
   def submit_jobs
-    @params = params
-    class_name = params[:sushi_app][:class]
-    require class_name
-    @sushi_app = eval(class_name).new
-    @sushi_app.logger = logger
-    @sushi_app.workflow_manager = @@workflow_manager
-    @sushi_app.user = if current_user 
-                        current_user.login
-                      else
-                        'sushi_lover'
-                      end
+    active_job_params = {}
+    active_job_params[:class_name] = params[:sushi_app][:class]
+    active_job_params[:user] = if current_user 
+                                 current_user.login
+                               else
+                                 'sushi_lover'
+                               end
     @data_set_id = params[:data_set][:id]
+    active_job_params[:data_set_id] = @data_set_id.to_i
     if next_dataset = params[:next_dataset] 
       if name = next_dataset[:name] and !name.to_s.strip.empty?
-        @sushi_app.next_dataset_name = name.to_s.strip.gsub(/\s/,'_')
+        active_job_params[:next_dataset_name] = name.to_s.strip.gsub(/\s/,'_')
       end
       if comment = next_dataset[:comment] and !comment.to_s.strip.empty?
-        @sushi_app.next_dataset_comment = comment.to_s.strip
+        active_job_params[:next_dataset_comment] = comment.to_s.strip
       end
     end
+    active_job_params[:parameters] = {}
     params[:parameters].each do |key, value|
-      @sushi_app.params[key] = if @sushi_app.params.data_type(key) == String
-                                       value
-                                     else
-                                       eval(value)
-                                     end
+      active_job_params[:parameters][key] = value
     end
     if current_data_set = DataSet.find_by_id(@data_set_id.to_i) and
        project = current_data_set.project and
        project_number = project.number
-      @sushi_app.project = 'p' + project_number.to_s
+       active_job_params[:project] = 'p' + project_number.to_s
     end
-    @sushi_app.dataset_sushi_id = @data_set_id.to_i
-    @sushi_app.current_user = current_user
-    @sushi_app.off_bfabric_registration = session[:off_bfabric_registration]
-    submit_type = params[:submit_type]
-    if submit_type == "Submit"
-      @sushi_app.run
-    elsif submit_type == "MockRun"
-      @sushi_app.mock_run
-    end
+    active_job_params[:current_user] = current_user
+    active_job_params[:off_bfabric_registration] = session[:off_bfabric_registration]
+    active_job_params[:submit_type] = params[:submit_type]
+
+    SubmitJob.perform_later(active_job_params)
   end
 end

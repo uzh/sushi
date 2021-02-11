@@ -113,7 +113,7 @@ describe SushiApp do
   describe '#submit_command' do
     before do
       sushi.params['cores'] = '4'
-      sushi.params['ram']   = '8'
+      sushi.params['ram']   = '7'
       sushi.params['scratch'] = '16'
       sushi.params['node']  = 'fgcz-c-046'
       sushi.params['user']  = 'sushi'

@@ -17,7 +17,7 @@ Quality control after the alignment of RNAseq reads<br/>
     @required_columns = ['Name','BAM','BAI', 'refBuild', 'Species']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
-    @params['ram'] = '70'
+    @params['ram'] = '60'
     @params['scratch'] = '100'
     @params['paired'] = false
     @params['name'] = 'RNA_BAM_Statistics'
@@ -26,7 +26,7 @@ Quality control after the alignment of RNAseq reads<br/>
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Dev/Python", "Tools/Picard", "Tools/BamUtil", "Dev/R", "Tools/sambamba"]
+    @modules = ["Tools/samtools", "Dev/Python", "Tools/Picard", "Tools/BamUtil", "Dev/R"]
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])

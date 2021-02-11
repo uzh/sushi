@@ -20,7 +20,7 @@ EOS
     @required_params = ['refBuild','paired']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '16'
+    @params['ram'] = '15'
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['refBuild', 'description'] = 'the genome refBuild and annotation to use as reference. If human variant calling is the main goal, please use hg_19_karyotypic.'
@@ -62,10 +62,10 @@ EOS
     ## additional commands
     @params['cmdOptionsFastp'] = ''
     @params['markDuplicates'] = true
-    @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
+    @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/Flexbar", "QC/fastp", "Dev/R", "Tools/sambamba", "Tools/Picard"]
+    @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/fastp", "Dev/R", "Tools/Picard"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess

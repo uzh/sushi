@@ -44,7 +44,7 @@ EOS
     @params['keepMultiHits'] = true
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/jdk", "Aligner/STAR", "Tools/samtools", "Aligner/BWA", "Aligner/Bowtie", "Aligner/Bowtie2", "Aligner/TopHat", "QC/Trimmomatic", "QC/Flexbar", "Tools/Picard", "Dev/Python2", "Dev/R", "Tools/sambamba"]
+    @modules = ["Dev/jdk", "Aligner/STAR", "Tools/samtools", "Tools/Picard", "Dev/Python2", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset

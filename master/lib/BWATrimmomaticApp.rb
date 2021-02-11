@@ -18,7 +18,7 @@ class BWATrimmomaticApp < SushiFabric::SushiApp
     @required_params = ['refBuild','paired']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '16'
+    @params['ram'] = '15'
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['refBuild', 'description'] = 'the genome refBuild and annotation to use as reference. If human variant calling is the main goal, please use hg_19_karyotypic.'
@@ -33,7 +33,7 @@ class BWATrimmomaticApp < SushiFabric::SushiApp
     @params['minReadLength'] = 20
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/BWA", "QC/Flexbar", "QC/Trimmomatic", "Dev/R", "Tools/sambamba"]
+    @modules = ["Tools/samtools", "Aligner/BWA", "QC/Trimmomatic", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess

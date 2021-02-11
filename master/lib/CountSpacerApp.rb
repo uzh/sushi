@@ -86,11 +86,13 @@ EOS
   def next_dataset
     report_file = File.join(@result_dir,"#{@dataset['Name']}")
     report_link = File.join(report_file, '00index.html')
+    count_file = File.join(report_file, "#{@dataset['Name']}-sgRNA_counts.txt")
     {'Name'=>@dataset['Name'],
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
+     'Count [File]'=>count_file, 
      'Species'=>@dataset['Species'],
-     'Read Count'=>@dataset['Read Count']
+     'Read Count'=>@dataset['Read Count'] 
     }
   end
   def commands

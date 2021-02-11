@@ -18,7 +18,7 @@ EOS
     @required_columns = ['Name','Read1']
     @required_params = ['name', 'paired']
     @params['cores'] = [8, 1, 2, 4, 8]
-    @params['ram'] = [16, 32, 64]
+    @params['ram'] = [15, 30, 62]
     @params['ram', 'description'] = "GB"
     @params['scratch'] = [100, 10, 50, 100]
     @params['scratch', 'description'] = "GB"
@@ -30,7 +30,7 @@ EOS
     @params['name'] = 'FastQC_Result'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
-    @modules = ["QC/FastQC", "Dev/R", "Tools/Picard", "Tools/samtools", "Tools/sambamba", "Dev/Python"]
+    @modules = ["QC/FastQC", "Dev/R", "Tools/Picard", "Tools/samtools", "Dev/Python"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')

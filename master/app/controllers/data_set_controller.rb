@@ -243,6 +243,7 @@ class DataSetController < ApplicationController
         set_runnable_apps(false)
       end
 
+      @employee_apps = employee_apps
       @sushi_apps = @data_set.runnable_apps
       @sushi_apps_category = @sushi_apps.keys.sort
     else

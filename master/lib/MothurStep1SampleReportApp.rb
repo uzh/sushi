@@ -18,7 +18,7 @@ EOS
 @required_columns = ['Name','RawDataSummary','DeduppedSummary','LenAndHomopSummary']
 @required_params = ['name']
 @params['cores'] = '1'
-@params['ram'] = '8'
+@params['ram'] = '7'
 @params['scratch'] = '10'
 @params['mail'] = ""
 @params['name'] = "MothurStep1SampleReportApp"

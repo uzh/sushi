@@ -20,7 +20,7 @@ Please make sure that the input files are from the same technology.
 @required_columns = ['Name', 'Read1']
 @required_params = ['fastqErrorMax']
 @params['cores'] = '1'
-@params['ram'] = '8'
+@params['ram'] = '7'
 @params['scratch'] = '10'
 @params['fastqErrorMax'] = '1'
 @params['fastqErrorMax', 'description'] = 'Max fastq error rate (https://drive5.com/usearch/manual/cmd_fastq_filter.html).'

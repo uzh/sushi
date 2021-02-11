@@ -19,7 +19,7 @@ EOS
     @required_columns = ['Name','BAM', 'refBuild']
     @required_params = ['name']
     @params['cores'] = '8'
-    @params['ram'] = '16'
+    @params['ram'] = '15'
     @params['scratch'] = '50'
     @params['refBuild'] = ref_selector
     @params['paired'] = true

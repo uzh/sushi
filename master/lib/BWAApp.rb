@@ -18,7 +18,7 @@ class BWAApp < SushiFabric::SushiApp
     @required_params = ['refBuild','paired']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '16'
+    @params['ram'] = '15'
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['refBuild', 'description'] = 'the genome refBuild and annotation to use as reference. If human variant calling is the main goal, please use hg_19_karyotypic.'
@@ -26,7 +26,7 @@ class BWAApp < SushiFabric::SushiApp
     @params['algorithm'] = ['mem', 'aln', 'bwasw']
     @params['cmdOptions'] = ''
     @params['markDuplicates'] = true
-    @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
+    @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
     
     # trimming options
     # general
@@ -63,7 +63,7 @@ class BWAApp < SushiFabric::SushiApp
     @params['cmdOptionsFastp'] = ''
     
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/BWA", "QC/Flexbar", "QC/fastp", "Dev/R", "Tools/sambamba"]
+    @modules = ["Tools/samtools", "Aligner/BWA", "QC/fastp", "Dev/R", "Tools/Picard"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess

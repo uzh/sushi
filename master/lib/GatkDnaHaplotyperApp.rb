@@ -33,7 +33,7 @@ Haplotype calling for DNA-seq<br/>
     @params['knownSitesAvailable'] = false
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Dev/jdk", "Variants/GATK", "Tools/Picard", "Tools/htslib", "Dev/R", "Tools/sambamba"]
+    @modules = ["Tools/samtools", "Dev/jdk", "Variants/GATK", "Tools/Picard", "Tools/htslib", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters

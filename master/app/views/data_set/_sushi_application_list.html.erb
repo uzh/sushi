@@ -10,7 +10,9 @@
         <tr><td><%= category %></td>
           <td style="padding: 2px;">
             <% @sushi_apps[category].each do |app| %>
-              <%= submit_tag app.to_s, :name=>'app', :class=>"btn btn-info btn-sm raised", :style=>"padding: 2px" %>
+              <% if (session['employee'] and @employee_apps[app]) or !@employee_apps[app] %>
+                <%= submit_tag app.to_s, :name=>'app', :class=>"btn btn-info btn-sm raised", :style=>"padding: 2px" %>
+              <% end %>
             <% end %>
           </td>
         </tr>

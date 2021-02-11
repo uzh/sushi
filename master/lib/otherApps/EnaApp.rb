@@ -17,7 +17,7 @@ EOS
         @required_columns = ['Name','projectID']
         @required_params = ['name', 'projectID']
         @params['cores'] = '1'
-        @params['ram'] = '16'
+        @params['ram'] = '15'
         @params['scratch'] = '300'
         @params['paired'] = false
         @params['name'] = 'ENA_Data'
