@@ -20,7 +20,7 @@ Kmergenie calculates kmer distribution, and it estimates the best kmer size and 
     @required_params = ['model','paired']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '16'
+    @params['ram'] = '15'
     @params['scratch'] = '100'
     @params['model'] = ['diploid', 'haploid']
     @params['paired'] = false

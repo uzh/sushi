@@ -19,7 +19,7 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
     @required_params = ['paired', 'quality_type']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '16'
+    @params['ram'] = '15'
     @params['scratch'] = '100'
     @params['paired'] = false
     @params['paired', 'description'] = 'either the reads are paired-ends or single-end'

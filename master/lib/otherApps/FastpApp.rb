@@ -19,7 +19,7 @@ EOS
     @required_params = ['paired']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '16'
+    @params['ram'] = '15'
     @params['scratch'] = '100'
     @params['paired'] = false
     @params['paired', 'description'] = 'either the reads are paired-ends or single-end'

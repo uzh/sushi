@@ -15,7 +15,7 @@ class CountOverlapsApp < SushiFabric::SushiApp
     @required_params = ['refBuild','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '32'
+    @params['ram'] = '15'
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['paired'] = false

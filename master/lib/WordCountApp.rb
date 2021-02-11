@@ -9,6 +9,7 @@ require 'csv'
 class WordCountApp < SushiFabric::SushiApp
   def initialize
     super
+    @employee = true
     @name = 'Word_Count'
     @description = "test applicaiton #{GlobalVariables::SUSHI}"
     @analysis_category = 'Stats'
@@ -31,7 +32,6 @@ class WordCountApp < SushiFabric::SushiApp
     @params['note', 'employee'] = true
     @required_columns = ['Name', 'Read1']
     @required_params = []
-    #@modules = ["Aligner/STAR", "Tools/samtools", "Tools/sambamba"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset

@@ -18,7 +18,7 @@ EOS
 @required_columns = ['Name','ChimeraPlot','PreClusteredAndChimeraSummary','stepConvergenceSummary','OTUsToTaxonomyFile','OTUsCountTable']
 @required_params = ['name', 'group','representativeOTUs']
 @params['cores'] = '1'
-@params['ram'] = '8'
+@params['ram'] = '7'
 @params['scratch'] = '10'
 @params['mail'] = ""
 @params['group'] = ['true','false']

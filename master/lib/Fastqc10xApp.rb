@@ -24,7 +24,7 @@ EOS
     @params['name'] = 'FastQC_Result'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
-    @modules = ["QC/FastQC", "Tools/Picard", "Tools/samtools", "Tools/sambamba", "Dev/Python"]
+    @modules = ["QC/FastQC", "Tools/Picard", "Tools/samtools", "Dev/Python"]
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])

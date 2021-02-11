@@ -18,7 +18,7 @@ EOS
     @required_columns = ['Name','RawDataDir']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
-    @params['ram'] = '30'
+    @params['ram'] = '80'
     @params['scratch'] = '300'
     @params['paired'] = false
     @params['name'] = 'FastqScreen_Result'
@@ -58,10 +58,10 @@ EOS
     @params['cmdOptionsFastp'] = ''
     ## additional commands
     @params['markDuplicates'] = true
-    @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
+    @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
     @params['mail'] = ""
     
-    @modules = ["Aligner/BWA", "Tools/samtools", "Aligner/Bowtie2", "QC/fastp", "Tools/kraken", "QC/FastQScreen", "Tools/sambamba", "Tools/Picard"]
+    @modules = ["Aligner/BWA", "Tools/samtools", "Aligner/Bowtie2", "QC/fastp", "Tools/kraken", "QC/FastQScreen", "Tools/Picard"]
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])

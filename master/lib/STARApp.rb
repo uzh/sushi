@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20201104-091000'
+Version = '20201215-140009'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -30,7 +30,7 @@ EOS
     @params['paired'] = false
     @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['cmdOptions'] = '--outFilterType BySJout --outFilterMatchNmin 30 --outFilterMismatchNmax 10 --outFilterMismatchNoverLmax 0.05 --outMultimapperOrder Random --alignSJDBoverhangMin 1 --alignSJoverhangMin 8 --alignIntronMax 100000 --alignMatesGapMax 100000  --outFilterMultimapNmax 50 --chimSegmentMin 15 --chimJunctionOverhangMin 15 --chimScoreMin 15 --chimScoreSeparation 10 --outSAMstrandField intronMotif --alignEndsProtrude 3 ConcordantPair'
+    @params['cmdOptions'] = '--sjdbOverhang 150 --outFilterType BySJout --outFilterMatchNmin 30 --outFilterMismatchNmax 10 --outFilterMismatchNoverLmax 0.05 --outMultimapperOrder Random --alignSJDBoverhangMin 1 --alignSJoverhangMin 8 --alignIntronMax 100000 --alignMatesGapMax 100000  --outFilterMultimapNmax 50 --chimSegmentMin 15 --chimJunctionOverhangMin 15 --chimScoreMin 15 --chimScoreSeparation 10 --outSAMstrandField intronMotif --alignEndsProtrude 3 ConcordantPair'
     @params['getJunctions'] = false
     #@params['getChimericJunctions'] = false
     @params['twopassMode'] = false
@@ -69,13 +69,13 @@ EOS
     @params['length_required','description'] = 'reads shorter than length_required will be discarded.'
     @params['cmdOptionsFastp'] = ''
     ## additional commands
-    @params['markDuplicates'] = true
-    @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
+    @params['markDuplicates'] = false
+    @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
     @params['specialOptions'] = ''
 
     @params['mail'] = ""
     # Python2 is required because of RSeQC package
-    @modules = ["Aligner/STAR", "Tools/samtools", "Dev/jdk", "Dev/R", "Dev/Python", "Tools/Picard", "QC/fastp", "Tools/sambamba"]
+    @modules = ["Aligner/STAR", "Tools/samtools", "Dev/jdk", "Dev/R", "Dev/Python", "Tools/Picard", "QC/fastp"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess

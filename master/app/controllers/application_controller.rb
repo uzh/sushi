@@ -51,6 +51,11 @@ class ApplicationController < ActionController::Base
     # new check
     sushi_apps = all_sushi_applications
     lib_dir = File.expand_path('../../../lib', __FILE__)
+    NilClass.class_eval do
+      def [](x)
+        ''
+      end
+    end
     sushi_apps.select{|app| app =~ /\.rb$/}.each do |app|
       class_name = app.gsub(/\.rb/,'')
       updated_at = File.stat(File.join(lib_dir, app)).mtime
@@ -68,12 +73,16 @@ class ApplicationController < ActionController::Base
           sushi_app_entry.required_columns = sushi_app_instance.required_columns
           sushi_app_entry.next_dataset_keys = sushi_app_instance.next_dataset.keys
           sushi_app_entry.description = sushi_app_instance.description
+          sushi_app_entry.employee = sushi_app_instance.employee
           sushi_app_entry.save
         rescue => err
           warn err
           warn "#{class_name} cannot be imported"
         end
       end
+    end
+    NilClass.class_eval do
+      undef_method :[]
     end
 
     # delete check
@@ -90,6 +99,13 @@ class ApplicationController < ActionController::Base
     sushi_apps = SushiApplication.all.select do |app|
       (app.required_columns - data_set_headers.map{|colname| colname.to_s.gsub(/\[.+\]/,'').strip}).empty?
     end
+  end
+  def employee_apps
+    apps = {}
+    SushiApplication.all.select{|app| app.employee}.each do |app|
+      apps[app.class_name.to_s] = true
+    end
+    apps
   end
   def sample_path(data_set)
     paths = []

@@ -16,6 +16,7 @@ SushiFabric::Application.routes.draw do
       post :index
       get :print_log
       get :print_script
+      post :multi_kill_job
     end
   end
   

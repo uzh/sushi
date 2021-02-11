@@ -74,13 +74,13 @@ EOS
     @params['cmdOptionsFastp'] = ''
     ## additional commands
     @params['markDuplicates'] = true
-    @params['markDuplicates', 'description'] = 'should duplicates be marked with sambamba. It is recommended for ChIP-seq and ATAC-seq data.'
+    @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
     
     @params['mail'] = ""
 	  # Bowtie >=1.2.0 may return interleaving mates which trips RSEM (as of v1.3.0) as it expects
 	  # each read to be followed by a mate.
 	  # Also, as of v1.3.0, it only supports samtools v1.3.1
-	  @modules = ["Tools/samtools/1.3.1", "Aligner/Bowtie/1.1.2", "Aligner/Bowtie2", "Aligner/STAR", "Aligner/RSEM", "QC/Flexbar", "QC/fastp", "Dev/R", "Tools/sambamba"]
+	  @modules = ["Tools/samtools/1.3.1", "Aligner/Bowtie/1.1.2", "Aligner/Bowtie2", "Aligner/STAR", "Aligner/RSEM", "QC/fastp", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess

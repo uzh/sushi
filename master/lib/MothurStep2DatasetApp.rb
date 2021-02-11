@@ -19,7 +19,7 @@ super
 @required_columns = ['Name', 'alignedFile', 'groupFile']
 @required_params = ['cutOffTaxonomy', 'diffs','cutOffCluster']
 @params['cores'] = '8'
-@params['ram'] = '8'
+@params['ram'] = '7'
 @params['scratch'] = '10'
 @params['cutOffTaxonomy'] = '80'
 @params['cutOffTaxonomy', 'description'] = 'Cut-off for taxonomy assignment in classify.seqs'
