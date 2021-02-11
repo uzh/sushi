@@ -26,7 +26,6 @@ class SCMultipleSamplesOneGroupApp < SushiFabric::SushiApp
     @params['name'] = 'SCReportMerging'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['species'] = ['Human', 'Mouse', "other"]
     @params['tissue'] = []
     @params['tissue','multi_selection'] = true
     @params['tissue','all_selected'] = true
