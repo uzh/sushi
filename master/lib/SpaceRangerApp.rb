@@ -32,7 +32,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R", "Aligner/SpaceRanger"]
-    @inherit_tags = ["B-Fabric"]
+    @inherit_tags = [ "Factor", "B-Fabric"
   end
   def set_default_parameters
   end
