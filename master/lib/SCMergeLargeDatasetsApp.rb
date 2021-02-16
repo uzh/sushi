@@ -32,10 +32,11 @@ class SCMergeLargeDatasetsApp < SushiFabric::SushiApp
     @params['tissue','all_selected'] = true
     @params['tissue', 'multi_selection_size'] = 10
     tissue = {}
-    CSV.foreach("/srv/GT/databases/all_cell_markers.txt", headers: true, col_sep: "\t") do |e|
+    CSV.foreach("/srv/GT/databases/scGeneSets/all_cell_markers.txt", headers: true, col_sep: "\t") do |e|
       tissue[e["tissueType"]] = true
     end
     @params['tissue'] = tissue.keys.sort
+    @params['tissue', 'description'] = 'Tissue the cells come from. Used in cell types identification for Human and Mouse organisms.'
     @params['k'] = '10'
     @params['block'] = 'Batch'
     @params['mail'] = ""
