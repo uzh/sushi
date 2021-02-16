@@ -97,4 +97,18 @@ namespace :ds do
     # 980
   end
 
+  desc "Save all datasets with date and SUSHIApp"
+  task all_dataset_with_date_and_sushiapp: :environment do
+    out_file = "all_datasets_with_sushiapp_#{Time.now.strftime("%Y-%m-%d")}.csv"
+    headers = ["name", "project", "date", "SUSHIApp"]
+    require 'csv'
+    csv = CSV.generate("", headers: headers, write_headers: true, col_sep: ",") do |out|
+      DataSet.all.each do |dataset|
+        out << [dataset.name, dataset.project.number, dataset.updated_at.strftime("%Y-%m-%d"), dataset.sushi_app_name]
+      end
+    end
+    File.write(out_file, csv)
+    warn "# #{out_file} generated"
+  end
+
 end
