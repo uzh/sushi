@@ -42,13 +42,13 @@ EOS
     {'Name'=>@params['name'],
      'VCF [File]'=>File.join(@result_dir, "#{@params['name']}.vcf.gz"),
      'TBI [File]'=>File.join(@result_dir, "#{@params['name']}.vcf.gz.tbi"),
-     'IGV Starter [Link]'=>File.join(@result_dir, "#{@params['name']}-igv.jnlp"),
+     #'IGV Starter [Link]'=>File.join(@result_dir, "#{@params['name']}-igv.jnlp"),
      'Report [File]'=>report_dir,
      'Html [Link]'=>File.join(report_dir, '00index.html'),
      'Species'=>(dataset = @dataset.first and dataset['Species']),
-     'refBuild'=>@params['refBuild'],
-     'IGV Starter [File]'=>File.join(@result_dir, "#{@params['name']}-igv.jnlp"),
-     'IGV Session [File]'=>File.join(@result_dir, "#{@params['name']}-igv.xml")
+     'refBuild'=>@params['refBuild']
+     #'IGV Starter [File]'=>File.join(@result_dir, "#{@params['name']}-igv.jnlp"),
+     #'IGV Session [File]'=>File.join(@result_dir, "#{@params['name']}-igv.xml")
     }
   end
   def set_default_parameters
