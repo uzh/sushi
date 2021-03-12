@@ -124,7 +124,7 @@
 </script>
 
 <div id="import" data-complete="<%= @warning %>"></div>
-<h3>DataSets <span style="font-size: 0.5em;"> - <a href="#" id="btn_multi_delete">delete</a> with selected
+<h3>DataSets <span style="font-size: 0.5em;"> - <a href="#" id="btn_multi_delete">delete selected</a>
 <% if @tree %>
   - <%= link_to "Full table view", "/data_set/index_full" %><br>
 <% elsif @project and data_sets = @project.data_sets and data_sets.length != @data_sets.length %>
