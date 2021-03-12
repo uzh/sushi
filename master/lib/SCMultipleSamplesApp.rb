@@ -60,8 +60,6 @@ class SCMultipleSamplesApp < SushiFabric::SushiApp
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@params['name'],
      'Species'=>(dataset = @dataset.first and dataset['Species']),
-     'refBuild'=>@params['refBuild'],
-     'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
      'Report [File]'=>report_file,
     }
