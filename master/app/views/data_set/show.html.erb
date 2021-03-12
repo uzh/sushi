@@ -165,7 +165,7 @@ $(document).ready(function(){
 <%= hidden_field :data_set, :id, :value=>@data_set.id %>
 <%= hidden_field :data_set, :comment, :value=>@data_set.comment.to_s %>
 <%= hidden_field :bfab_data_set, :id, :value=>@data_set.bfabric_id.to_s %>
-- <a href="#" id="opener">download links</a>
+- <a href="#" id="opener">download</a>
 - <%= link_to 'scripts', "/data_set/script_log.#{@data_set.id}", :method=>:get %>
 - <%= link_to 'parameters', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>
 <% if @data_set.data_set and @data_set.sushi_app_name %>
@@ -173,10 +173,10 @@ $(document).ready(function(){
 <% end %>
 - <a href="#" id="btn_multi_delete">delete</a>
 <% if @can_register_bfabric %>
-- <%= link_to "register bfabric", {:action=>"register_bfabric", :id=>@data_set.id}, :data=>{:confirm=>"Are you sure you want to register this dataset? DataSet ID:#{@data_set.id}? It will take some seconds."}, :method=>:post %>
+- <%= link_to "register in B-Fabric", {:action=>"register_bfabric", :id=>@data_set.id}, :data=>{:confirm=>"Are you sure you want to register this dataset? DataSet ID:#{@data_set.id}? It will take some seconds."}, :method=>:post %>
 <% end %>
 <% if session[:employee] %>
-- <%= link_to "BFabricID", '', :id=>"mod_bfab_data_set_id" %> 
+- <%= link_to "Set B-Fabric ID", '', :id=>"mod_bfab_data_set_id" %> 
   <% if !@data_set.data_set %>
   - <%= link_to "announce", {:action=>"announce_template_set", :id=>@data_set.id}, :method=>:post %>
   <% end %>
@@ -270,7 +270,7 @@ $(document).ready(function(){
 <h3 style="display: inline">
   <span id="data_set_title"><%= @data_set.name %></span> Content <button class="btn-link" id="hide">Hide</button><span id="hide_indicator" class="arrow-up"></span>
 </h3>
-- <%= link_to 'edit', "/sample/#{@data_set.id}", :method=>:post %>
+- <%= link_to 'edit table', "/sample/#{@data_set.id}", :method=>:post %>
 <% if @dataset_path.length > 1 %>
   - data folder
   <% @dataset_path.each do |dataset_path| %>

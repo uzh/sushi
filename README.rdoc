@@ -310,6 +310,15 @@ As default, there is no user authentification. Please apply the patch, local_dev
 
 == Release information
 
+Ver. 2.1.2, 2021.03.11
+* Rails v5.2.4.3, Ruby v2.6.6, ezRun v3.12.1 (Bioconductor v3.12.1, R v4.0.3), sushi_fabric v1.0.8, workflow_manager v0.6.0
+* all source files are concatenated in g-req copy case of job footer, sushi_fabric.gem ver.1.0.8
+* remove non-existing igv files in MpileupApp
+* extend EdgeR memory options
+* add SCMultipleSamplesApp in replacement of the other merging samples apps
+* Fixed SBATCH job dependency option, sushi_fabric.gem ver.1.0.7
+* Fixed EAGLERCApp
+
 Ver. 2.1.0, 2020.11.04
 * Rails v5.2.4.3, Ruby v2.6.6, ezRun v3.12.1, sushi_fabric v1.0.0, workflow_manager v0.5.9
 
