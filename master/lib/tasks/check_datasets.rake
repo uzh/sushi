@@ -126,4 +126,30 @@ namespace :ds do
     warn "# #{out_file} generated"
   end
 
+  desc "Save all datasets (samples)1"
+  task dump_all_datasets_samples: :environment do
+    out_file = "all_datasets_smaples_#{Time.now.strftime("%Y-%m-%d")}.csv"
+    headers = ["name", "project", "samples"]
+    require 'csv'
+    csv = CSV.generate("", headers: headers, write_headers: true, col_sep: ",") do |out|
+      DataSet.all.each do |dataset|
+        row = [dataset.name, dataset.project.number]
+        row << dataset.samples.map{|sample| sample.key_value}.join(":")
+        out << row
+      end
+    end
+    File.write(out_file, csv)
+    warn "# #{out_file} generated"
+  end
+
+  desc "Save all datasets (samples)2"
+  task dump_all_datasets_samples2: :environment do
+    out_file = "all_datasets_smaples2_#{Time.now.strftime("%Y-%m-%d")}.txt"
+    res = ActiveRecord::Base.connection.select_all("select * from samples;")
+#    p res
+    File.write(out_file, res.to_a.join(":"))
+    warn "# #{out_file} generated"
+  end
+
+
 end
