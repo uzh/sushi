@@ -93,11 +93,19 @@ class DataSet < ActiveRecord::Base
 
         puts "parent_dataset.nil?= #{parent_dataset.nil?}"
         puts "self.order_ids= #{self.order_ids}"
-        command = if parent_dataset.nil? and self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i
-                    if order_id > 8000
-                      [python3, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id, "--skip-file-check"].join(" ")
-                    else
-                      [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id, "--skip-file-check"].join(" ")
+        command = if self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i
+                    if parent_dataset.nil? # root dataset
+                      if order_id > 8000
+                        [python3, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id, "--skip-file-check"].join(" ")
+                      else
+                        [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id, "--skip-file-check"].join(" ")
+                      end
+                    elsif parent_dataset and bfabric_id = parent_dataset.bfabric_id # child dataset
+                      if order_id > 8000
+                        [python3, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id, bfabric_id, "--skip-file-check"].join(" ")
+                      else
+                        [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--skip-file-check"].join(" ")
+                      end
                     end
                   end
 
