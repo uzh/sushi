@@ -50,7 +50,7 @@ Quality control after counting reads<br/>
      'Static Report [Link]'=>report_link,
      'Live Report [Link]'=>"#{SHINY_EXPLORE_COUNTS}?data=#{report_file}/counts-#{@random_string}-EzResult.RData",
      'Report [File]'=>report_file,
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
