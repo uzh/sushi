@@ -31,6 +31,7 @@ EOS
     @params['cmdOptions'] = ""
     @params['mail'] = ""
     @modules = ["QC/FastQC", "Dev/R", "Tools/Picard", "Tools/samtools", "Dev/Python"]
+    @inherit_tags = ["B-Fabric"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
