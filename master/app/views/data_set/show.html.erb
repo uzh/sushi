@@ -220,6 +220,22 @@ $(document).ready(function(){
   <% end %>
   </p>
   <p>
+  - scp command:
+  <% if @fgcz and current_user and current_user.login %>
+    <% if @dataset_path.length > 1 %>
+      <br>
+      <% @dataset_path.each do |dataset_path| %>
+        &nbsp;&nbsp; <%= text_field :wget, :command, :value => "scp -r #{current_user.login}@fgcz-genomics.uzh.ch:#{File.join("/srv/gstore/projects/", dataset_path.to_s)} ./", :size => 100 %><br>
+      <% end %>
+    <% elsif @dataset_path.length == 1 %>
+      <%= text_field :wget, :command, :value => "scp -r #{current_user.login}@fgcz-genomics.uzh.ch:#{File.join("/srv/gstore/projects/", @dataset_path.first.to_s)} ./", :size => 85 %><br>
+    <% end %>
+  <% else %>
+    not available
+  <% end %>
+  </p>
+
+  <p>
   - <%= link_to "Download dataset description table (click here)", {:action=>"save_as_tsv", :id=>@data_set.id}, :method=>:post %>
   </p>
 </div>
