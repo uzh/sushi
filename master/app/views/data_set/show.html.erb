@@ -185,7 +185,7 @@ $(document).ready(function(){
   <p>
     - Java downloader from B-Fabric:
   <% if @data_set.workunit_id %>
-  <%= link_to "https://fgcz-bfabric.uzh.ch/bfabric/dataset/show.html?id=#{@data_set.workunit_id}", "https://fgcz-bfabric.uzh.ch/bfabric/dataset/show.html?id=#{@data_set.workunit_id}", target: "_blank" %>
+  <%= link_to "https://fgcz-bfabric.uzh.ch/bfabric/fragments/download-jnlp.html?workunitId=#{@data_set.workunit_id}", "https://fgcz-bfabric.uzh.ch/bfabric/fragments/download-jnlp.html?workunitId=#{@data_set.workunit_id}", target: "_blank" %>
   <% else %>
     not available
   <% end %>
