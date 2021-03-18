@@ -49,7 +49,7 @@ EOS
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
      'MultiQC [Link]'=>reportMultiQC_link,
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppFastqc")
