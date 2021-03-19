@@ -79,7 +79,12 @@ $(document).ready(function(){
     <% @job_list.each_with_index do |job, i| %>
     <tr>
         <td><%= job[0] %></td>
-        <td><%= button_to job[1], "/job_monitoring/#{job[0]}/change_status" %></td>
+        <td>
+        <% if session['employee'] %>
+          <%= button_to job[1], "/job_monitoring/#{job[0]}/change_status" %></td>
+        <% else %>
+          <%= job[1] %></td>
+        <% end %>
         <td>
             <% if (job[1]=='running' or job[1]=='pending') and current_user and job[4]==current_user.login %>
               <%= button_to 'kill', "/job_monitoring/#{job[0]}/kill_job", data: {confirm: "Are you sure you want to kill the job '#{job[0]}'?"}, :class=>"btn btn-info btn-sm raised" %>
