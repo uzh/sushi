@@ -125,8 +125,13 @@ module GlobalVariables
       usecase.test_run
     end
   end
-  def run_RApp(app_name = self.class.to_s[0].downcase+self.class.to_s[1,20], lib_path=nil)
-    command = "R --vanilla --slave<<  EOT\n"
+  def run_RApp(app_name = self.class.to_s[0].downcase+self.class.to_s[1,20], lib_path: nil, conda_env: nil)
+    command = ''
+    if conda_env
+      command << ". '/usr/local/ngseq/miniconda3/etc/profile.d/conda.sh'\n"
+      command << "conda activate #{conda_env}\n"
+    end
+    command << "R --vanilla --slave<<  EOT\n"
     command << "EZ_GLOBAL_VARIABLES <<- '#{EZ_GLOBAL_VARIABLES}'\n"
     if lib_path
       command << ".libPaths('#{lib_path}')\n"

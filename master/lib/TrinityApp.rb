@@ -87,7 +87,7 @@ class TrinityApp < SushiFabric::SushiApp
     }
   end
   def commands
-    run_RApp('EzAppTrinity')
+    run_RApp('EzAppTrinity', conda_env: 'Trinity')
   end
 end
 
