@@ -43,10 +43,6 @@
   <% end %>
 </table>
   </div>
-  <%= form_tag({:controller => 'sample',:action => 'edit'}) do %>
-    <%= hidden_field :edit_option, :add, :value=>'row' %> 
-    <%= image_submit_tag 'add.png', :name=>'edit' %>
-  <% end %>
   <%= button_to 'edit sample', "/sample/#{@data_set.id}/edit" %>
 <% end %>
 <hr />
