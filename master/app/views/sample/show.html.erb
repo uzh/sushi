@@ -4,6 +4,8 @@
 <hr />
 <h3>Samples</h3>
 <% if @data_set %>
+<%= button_to 'edit table content', "/sample/#{@data_set.id}/edit" %>
+
   <div id="scroll">
 <table>
   <tr>
@@ -43,7 +45,6 @@
   <% end %>
 </table>
   </div>
-  <%= button_to 'edit sample', "/sample/#{@data_set.id}/edit" %>
 <% end %>
 <hr />
 <%= link_to 'Sushi Application List', '/sushi_application' %>
