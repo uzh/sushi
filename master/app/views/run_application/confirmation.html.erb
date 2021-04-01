@@ -29,7 +29,9 @@ sushi_app class <%= @sushi_app.class %><br /><br />
 
   <% else %>
     <%= submit_tag 'Submit', :name=>'submit_type', :class=>"btn btn-danger btn-sm raised" %>
-    <%= submit_tag 'MockRun', :name=>'submit_type', :class=>"btn btn-info btn-sm raised" %>
+    <% if session[:employee] %>
+      <%= submit_tag 'MockRun', :name=>'submit_type', :class=>"btn btn-info btn-sm raised" %>
+    <% end %>
   <% end %>
 <% end %>
 

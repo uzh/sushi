@@ -39,7 +39,7 @@ class DESeq2App < SushiFabric::SushiApp
     assuming there is one). Ensure the 
     column name is in the format "NAME [Factor]" or "NAME [Numeric]"'
     @params['backgroundExpression'] = 10
-    @params['backgroundExpression', "description"] = "counts to be added to shrink estimated log2 ratios"
+    @params['backgroundExpression', "description"] = "additive offset used in heatmaps"
     @params['transcriptTypes'] = ''
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 0

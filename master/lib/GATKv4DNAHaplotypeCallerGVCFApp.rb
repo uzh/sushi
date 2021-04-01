@@ -23,7 +23,7 @@ Haplotype calling for DNA-seq with > version 4.0 in GVCF mode<br/>
     @params['refBuild'] = ref_selector
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools/1.9", "Variants/GATK/4.1.2.0", "Tools/Picard/2.18.0"]
+    @modules = ["Tools/samtools/1.11", "Variants/GATK/4.1.8.0", "Tools/Picard/2.22.8"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic", "BAM"]
   end
   def set_default_parameters
@@ -42,7 +42,7 @@ Haplotype calling for DNA-seq with > version 4.0 in GVCF mode<br/>
     dataset
   end
   def commands
-    ref = File.join(GENOME_REF_DIR, @dataset['refBuild'].split('/')[0,3].join("/")+"/Sequence/WholeGenomeFasta/genome.fa")
+    ref = File.join(GENOME_REF_DIRS.first, @dataset['refBuild'].split('/')[0,3].join("/")+"/Sequence/WholeGenomeFasta/genome.fa")
     bam = File.join(@gstore_dir, @dataset['BAM'])
     sort_bam = File.basename(@dataset['BAM']).gsub(/.bam/, '.sort.bam') 
     sort_rg_bam = File.basename(@dataset['BAM']).gsub(/.bam/, '.sort.rg.bam')
