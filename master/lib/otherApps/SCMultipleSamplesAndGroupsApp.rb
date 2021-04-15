@@ -5,7 +5,6 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-
 class SCMultipleSamplesAndGroupsApp < SushiFabric::SushiApp
   def initialize
     super
