@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20180927-163350'
+Version = '20210414-125050'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -67,7 +67,7 @@ Refer to <a href='http://www.usadellab.org/cms/?page=trimmomatic'>http://www.usa
   def next_dataset
    dataset =  {'Name'=>@dataset['Name'],
     'Read1 [File]' => File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}"),
-    'Adapters [File]' => File.join(@result_dir, "#{@dataset['Name']}_adapters.fa")
+    'Read Count' => 0
     }.merge(extract_columns(@inherit_tags))
   if @params['paired'] 
       dataset['Read2 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read2'].to_s).gsub('fastq.gz','trimmed.fastq.gz')}")

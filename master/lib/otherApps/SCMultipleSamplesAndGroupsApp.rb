@@ -5,7 +5,6 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-
 class SCMultipleSamplesAndGroupsApp < SushiFabric::SushiApp
   def initialize
     super
@@ -52,7 +51,7 @@ class SCMultipleSamplesAndGroupsApp < SushiFabric::SushiApp
     @params['maxSamplesSupported'] = '5'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.0.3", "Dev/R/4.0.1"]
+    @params['Rversion'] = ["Dev/R/4.0.4", "Dev/R/4.0.3", "Dev/R/4.0.1"]
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
