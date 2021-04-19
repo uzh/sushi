@@ -63,7 +63,7 @@ class TrinityApp < SushiFabric::SushiApp
     @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
 
     @params['mail'] = ""
-    @modules = ["Tools/Jellyfish/2.3.0", "Assembly/Trinity/2.11.0", "QC/fastp/0.20.0", "Aligner/Bowtie2/2.4.1", "Aligner/Salmon/1.4.0", "Dev/R/4.0.3", "Tools/samtools/1.11"]
+    @modules = ["Tools/Jellyfish/2.3.0", "Assembly/Trinity/2.11.0", "QC/fastp/0.20.0", "Aligner/Bowtie2/2.4.1", "Aligner/Salmon/1.4.0", "Dev/R/4.0.4", "Tools/samtools/1.11"]
   end
   def preprocess
     if @params['paired']
