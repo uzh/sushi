@@ -23,7 +23,7 @@ Haplotype calling for DNA-seq with > version 4.0 in GVCF mode<br/>
     @params['refBuild'] = ref_selector
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools/1.11", "Variants/GATK/4.1.8.0", "Tools/Picard/2.22.8"]
+    @modules = ["Tools/samtools/1.11", "Variants/GATK/4.2.0.0", "Tools/Picard/2.22.8"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic", "BAM"]
   end
   def set_default_parameters
