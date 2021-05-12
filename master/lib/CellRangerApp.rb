@@ -40,6 +40,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.0.4","Dev/R/4.0.3", "Dev/R/4.0.1"]
+    @modules = ["Aligner/CellRanger", "Tools/seqtk"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
