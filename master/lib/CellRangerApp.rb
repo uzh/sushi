@@ -39,8 +39,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['cmdOptions', 'description'] = 'specify the commandline options for CellRanger; do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.0.4","Dev/R/4.0.3", "Dev/R/4.0.1"]
-    @modules = ["Aligner/CellRanger", "Tools/seqtk"]
+    @params['CellRangerVersion'] = ["Aligner/CellRanger/5.0.0","Aligner/CellRanger/3.1.0","Aligner/CellRanger/4.0.0"]
+    @modules = ["Tools/seqtk"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
@@ -73,7 +73,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     dataset
   end
   def commands
-    command = "module load #{@params["Rversion"]}\n"
+    command = "module load #{@params["CellRangerVersion"]}\n"
     command << run_RApp("EzAppCellRanger")
   end
 end
