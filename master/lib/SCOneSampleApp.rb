@@ -23,14 +23,7 @@ Single cell report<br/>
     @params['scratch'] = '50'
     @params['name'] = 'SCOneSample'
     @params['refBuild'] = ref_selector
-    @params['paired'] = false
-    @params['strandMode'] = ['both', 'sense', 'antisense']
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['featureLevel'] = ['gene', 'isoform']
-    @params['transcriptTypes'] = ''
-    @params['transcriptTypes', 'multi_selection'] = true
-    @params['transcriptTypes', 'selected'] = 0
-    @params['scProtocol'] = ['10X', 'smart-Seq2']
     @params['nreads'] = ''
     @params['nreads', 'description'] = 'Low quality cells have less than "nreads" reads. Only when applying fixed thresholds'
     @params['ngenes'] = ''
@@ -57,8 +50,6 @@ Single cell report<br/>
     @params['pcGenes', 'description'] = 'The genes used in supvervised clustering'
     @params['resolution'] = [0.6, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
     @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
-    @params['all2allMarkers'] = false
-    @params['all2allMarkers', 'description'] = 'Run all against all cluster comparisons?'
     @params['cellsFraction'] = 0.05
     @params['cellsFraction', 'description'] = 'A gene will be kept if it is expressed in at least this fraction of cells'
     @params['nUMIs'] = 1
