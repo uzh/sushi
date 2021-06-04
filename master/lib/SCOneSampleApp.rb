@@ -82,13 +82,6 @@ Single cell report<br/>
     if dataset_has_column?('refFeatureFile')
       @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
     end
-    @params['transcriptTypes'] = @dataset[0]['transcriptTypes'].to_s.split(',')
-    if dataset_has_column?('paired')
-      @params['paired'] = @dataset[0]['paired']
-    end
-    if dataset_has_column?('strandMode')
-      @params['strandMode'] = @dataset[0]['strandMode']
-    end
   end
   def commands
     command = "module load #{@params["Rversion"]}\n"
