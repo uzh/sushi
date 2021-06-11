@@ -37,7 +37,7 @@ class JunctionSeqApp < SushiFabric::SushiApp
     @params['expressionName'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/jdk", "Dev/R"]
+    @modules = ["Dev/jdk", "Dev/R/4.0.3"]
   end
   def next_dataset
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"
