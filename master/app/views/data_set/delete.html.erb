@@ -35,12 +35,12 @@
 <hr />
 <h2>Select</h2>
 <%= form_tag(@data_set.id.to_s, :method=>:delete) do %>
-  <%= check_box :option_delete, :only_sushi, {:class=>"checking"} %> <%= tooltip("Delete database entry", "SUSHI database entry will be removed") %><br />
+  <%= check_box :option_delete, :only_sushi, {:checked=>true, :class=>"checking"} %> <%= tooltip("Delete database entry", "SUSHI database entry will be removed") %><br />
   <% if session[:employee] and @data_set.parent_id and @data_set.child == false %>
     <%= check_box :option_delete, :data_files, {:class=>"checking"} %> <%= tooltip("Delete big data in gStore", "Other data than .tsv and sub-directories will be removed from gStore") %><br />
   <% end %>
   <% if @gstore_dataset_deletable %>
-    <%= check_box :option_delete, :only_gstore, {:class=>["target", "checking"]} %> <%= tooltip("Delete gStore data", "All data files will be remove from gStore") %><br />
+    <%= check_box :option_delete, :only_gstore, {:checked=>true, :class=>["target", "checking"]} %> <%= tooltip("Delete gStore data", "All data files will be remove from gStore") %><br />
   <% else %>
     <br />
     Note: 

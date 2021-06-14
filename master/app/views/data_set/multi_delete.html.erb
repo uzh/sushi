@@ -18,9 +18,9 @@
 <hr />
 <h2>Select</h2>
 <%= form_tag(:action=>:multi_destroy, :method=>:post) do %>
-  <%= check_box :option_delete, :only_sushi, {:class=>"checking"} %> <%= tooltip("Delete database entry", "SUSHI database entry will be removed") %><br />
+  <%= check_box :option_delete, :only_sushi, {:checked=>true, :class=>"checking"} %> <%= tooltip("Delete database entry", "SUSHI database entry will be removed") %><br />
   <% if @gstore_dataset_deletable %>
-    <%= check_box :option_delete, :only_gstore, {:class=>["target", "checking"]} %> <%= tooltip("Delete gStore data", "All data files will be remove from gStore") %><br />
+    <%= check_box :option_delete, :only_gstore, {:checked=>true, :class=>["target", "checking"]} %> <%= tooltip("Delete gStore data", "All data files will be remove from gStore") %><br />
   <% else %>
     <br />
     Note:
