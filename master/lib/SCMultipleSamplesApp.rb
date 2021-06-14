@@ -36,8 +36,10 @@ class SCMultipleSamplesApp < SushiFabric::SushiApp
     end
     @params['tissue'] = tissue.keys.sort
     @params['tissue', 'description'] = 'Tissue the cells come from. Used in cell types identification for Human and Mouse organisms.'
+    @params['pcGenes'] = ''
+    @params['pcGenes', 'description'] = 'The genes used in supvervised clustering'
     @params['npcs'] = '30'
-    @params['npcs', 'description'] = 'Number of principal components to use for dimensionality reduction.'
+    @params['npcs', 'description'] = 'Number of principal components to use for dimensionality reduction. Do not use more pcs than pcGenes (when used).'
     @params['resolution'] = '0.6'
     @params['resolution', 'description'] = 'Value between 0 and 1. A higher value will lead to larger communities.'
     @params['batchCorrection'] = 'true'
