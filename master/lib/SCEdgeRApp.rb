@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20210702-144817'
+Version = '20210702-145619'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -16,7 +16,7 @@ class SCEdgeRApp < SushiFabric::SushiApp
     Empirical analysis of digital gene expression data in R<br/>
 <a href='https://bioconductor.org/packages/release/bioc/html/edgeR.html'>edgeR</a><br/>
     EOS
-    @required_columns = ['Name','Count', 'Species', 'refBuild', 'featureLevel', 'refFeatureFile', 'dummy']
+    @required_columns = ['Name', 'Species', 'refBuild', 'dummy']
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
     # optional params
     @params['cores'] = ['4', '2']
