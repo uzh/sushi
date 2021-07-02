@@ -329,3 +329,6 @@ Ver. 2.0.2
 Ver. 2.0.0
 * Rails v5 + Ruby v2.6 + ezRun v3.11.1 (BioConductor v3.11.1)
 
+Ver. 2.2.0
+* Rails v5 + Ruby v2.6 + ezRun v3.13 (BioConductor v3.13)
+
