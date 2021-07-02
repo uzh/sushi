@@ -12,7 +12,7 @@ class RunApplicationController < ApplicationController
 						#@factor_colums[header] << value
 
 						@factor_colums[key] ||= []
-						@factor_colums[key] << value
+						@factor_colums[key].concat(value.split(",").map{|v| v.strip})
 					end
 				end
 			end
