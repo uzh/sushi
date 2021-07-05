@@ -38,7 +38,7 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
     @params['soloUMIlen'] = 'auto'
     @params['soloUMIlen', 'description'] = 'UMI length. Select *auto* to use default UMI length based on chemistry. Specify the length otherwise.'
     
-    @params['keepAlignment'] = ['False','True']
+    @params['keepAlignment'] = false
     
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'Specify the commandline options for CellRanger; do not specify any option that is already covered by the dedicated input fields'
@@ -46,7 +46,7 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
     @params['mail'] = ""
     
     
-    @modules = ["Dev/R","Aligner/STAR","Aligner/CellRanger"]
+    @modules = ["Dev/R", "Tools/samtools", "Aligner/STAR","Aligner/CellRanger"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
