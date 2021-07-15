@@ -54,7 +54,7 @@ class SCMultipleSamplesApp < SushiFabric::SushiApp
     @params['maxSamplesSupported'] = '5'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.0.4", "Dev/R/4.0.3", "Dev/R/4.0.1"]
+    @params['Rversion'] = ["Dev/R/4.1.0, Dev/R/4.0.4", "Dev/R/4.0.3"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
