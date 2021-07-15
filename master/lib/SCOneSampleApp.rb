@@ -60,7 +60,7 @@ Single cell report<br/>
     @params['filterByExpression', 'description'] = 'Keep cells according to specific gene expression. i.e. Set > 1 | Pkn3 > 1'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.0.4", "Dev/R/4.0.3", "Dev/R/4.0.1"]
+    @params['Rversion'] = ["Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
