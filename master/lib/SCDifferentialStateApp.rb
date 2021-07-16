@@ -27,6 +27,7 @@ class SCDifferentialStateApp < SushiFabric::SushiApp
     @params['DE.regress'] = ['Batch', 'CellCycle']
     @params['DE.regress','multi_selection'] = true
     @params['DE.regress', 'description'] = "Variables to regress when calculating differentially expressed genes. Only used with the LR method."
+    @params['grouping'] = '' ## Note: this will be a selector defined by Factor tagged column
     @params['sampleGroup'] = '' ## Note: this will be a selector defined by Factor tagged column
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
     @params['refGroup'] = '' ## Note: this will be a selector defined by Factor tagged column
