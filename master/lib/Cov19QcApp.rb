@@ -61,7 +61,7 @@ EOS
     @params['length_required','description'] = 'reads shorter than length_required will be discarded.'
     
     @params['mail'] = ""
-    @modules = ["Aligner/Bowtie2", "Dev/R", "QC/fastp", "Tools/samtools"]
+    @modules = ["Aligner/Bowtie2", "Dev/R", "QC/fastp", "Tools/samtools", "Tools/bcftools", "Dev/jdk", "Tools/Picard"]
     @inherit_tags = ["B-Fabric"]
   end
  def set_default_parameters
