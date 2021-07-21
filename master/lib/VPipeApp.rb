@@ -47,7 +47,7 @@ EOS
     }
   end
   def commands
-    run_RApp("EzAppVPipe",conda_env: "V-Pipe")
+    run_RApp("EzAppVPipe",conda_env: "V-pipe")
   end
 end
 
