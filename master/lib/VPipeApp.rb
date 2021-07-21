@@ -25,12 +25,12 @@ EOS
     @params['scratch'] = '100'
     @params['paired'] = true
     @params['name'] = 'VPIPE_Result'
-    @params['readLength'] <- '150'
-    @params['samplePrefix'] <- '210531_SARS_BAG_order25068_'
+    @params['readLength'] = '150'
+    @params['samplePrefix'] = '210531_SARS_BAG_order25068_'
     @params['samplePrefix', 'description'] = 'prefix to remove from sample name'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
-    @modules = []
+    @modules = ["Dev/R", "Tools/samtools", "Tools/BEDTools"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
@@ -47,7 +47,7 @@ EOS
     }
   end
   def commands
-    run_RApp("EzAppVPipe",conda_env: 'V-Pipe')
+    run_RApp("EzAppVPipe",conda_env: "V-Pipe")
   end
 end
 
