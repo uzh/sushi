@@ -15,7 +15,7 @@ class SCTrajectoryInferenceApp < SushiFabric::SushiApp
     @description =<<-EOS
 Trajectory inference analysis for single cell data<br/>
     EOS
-    @required_columns = ['Name', 'Report', 'refBuild', 'refFeatureFile']
+    @required_columns = ['Name', 'Report']
     @required_params = ['name']
     # optional params
     @params['cores'] = '8'
