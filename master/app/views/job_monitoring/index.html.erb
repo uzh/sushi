@@ -86,7 +86,7 @@ $(document).ready(function(){
           <%= job[1] %></td>
         <% end %>
         <td>
-            <% if (job[1]=='running' or job[1]=='pending') and current_user and job[4]==current_user.login %>
+            <% if (job[1]=~/RUNNING/i or job[1]=~/PENDING/i) and current_user and job[4]==current_user.login %>
               <%= button_to 'kill', "/job_monitoring/#{job[0]}/kill_job", data: {confirm: "Are you sure you want to kill the job '#{job[0]}'?"}, :class=>"btn btn-info btn-sm raised" %>
             <% elsif job[1]=='fail' and session['employee'] and current_user %>
               <% if submit_job = @submit_jobs[i] and submit_job.data_set %>
@@ -95,7 +95,7 @@ $(document).ready(function(){
             <% end %>
         </td>
         <td class="check_box">
-            <% if (job[1]=='running' or job[1]=='pending') and current_user and job[4]==current_user.login %>
+            <% if (job[1]=~/RUNNING/i or job[1]=~/PENDING/i) and current_user and job[4]==current_user.login %>
               <%= check_box "kill_flag", "#{job[0]}", {:class=>'target'}, true, false %>
             <% end %>
         </td>
