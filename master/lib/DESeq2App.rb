@@ -63,7 +63,7 @@ class DESeq2App < SushiFabric::SushiApp
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
      'Static Report [Link]'=>report_link,
-     'Live Report [Link]'=>"#{SHINY_EXPLORE_DE}?data=#{report_file}/result-#{@comparison}-#{@random_string}-EzResult.RData",
+     'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/pjl_exploreDEG?data=#{report_file}",
      'Report [File]'=>report_file,
     }
   end
