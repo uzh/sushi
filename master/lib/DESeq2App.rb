@@ -46,7 +46,7 @@ class DESeq2App < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.0.4", "Dev/R/4.0.3", "Dev/R/4.0.1"]
+    @params['Rversion'] = ["Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3", "Dev/R/4.0.1"]
     @modules = ["Tools/samtools"]
   end
   def preprocess
