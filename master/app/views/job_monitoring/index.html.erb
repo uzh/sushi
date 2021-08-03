@@ -88,7 +88,7 @@ $(document).ready(function(){
         <td>
             <% if (job[1]=~/RUNNING/i or job[1]=~/PENDING/i) and current_user and job[4]==current_user.login %>
               <%= button_to 'kill', "/job_monitoring/#{job[0]}/kill_job", data: {confirm: "Are you sure you want to kill the job '#{job[0]}'?"}, :class=>"btn btn-info btn-sm raised" %>
-            <% elsif job[1]=='fail' and session['employee'] and current_user %>
+            <% elsif job[1]=~'FAIL' and session['employee'] and current_user %>
               <% if submit_job = @submit_jobs[i] and submit_job.data_set %>
                 <%= button_to 'resubmit', "/job_monitoring/#{job[0]}/resubmit_job", data: {confirm: "Are you sure you want to submit the job '#{job[0]}' again?"}, :class=>"btn btn-info btn-sm raised" %>
               <% end %>
