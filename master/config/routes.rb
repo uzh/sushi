@@ -95,6 +95,10 @@ SushiFabric::Application.routes.draw do
   get "/sushi_rank" => "home#sushi_rank"
   get "/switch_bfabric_registration" => "home#switch_bfabric_registration"
 
+  require 'sidekiq/web'
+  authenticate :user do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
 #	match "/city_select" => "run_application#city_select"
 #	match "/result" => "run_application#result"
