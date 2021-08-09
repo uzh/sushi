@@ -50,6 +50,8 @@ Single cell report<br/>
     @params['ngenes', 'description'] = 'Low quality cells have less than "ngenes" genes. Only when applying fixed thresholds'
     @params['perc_mito'] = ''
     @params['perc_mito', 'description'] = 'Low quality cells have more than "perc_mito" percent of mitochondrial genes. Only when applying fixed thresholds'
+    @params['perc_ribo'] = ''
+    @params['perc_ribo', 'description'] = 'Low quality cells have more than "perc_ribo" percent of ribosomal genes. Only when applying fixed thresholds'
     @params['nmad'] = 3
     @params['nmad', 'description'] = 'Median absolute deviation (MAD) from the median value of each metric across all cells'
     @params['cellsFraction'] = 0.05
