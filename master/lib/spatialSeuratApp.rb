@@ -6,10 +6,10 @@ require_relative 'global_variables'
 include GlobalVariables
 
 
-class spatialSeuratApp < SushiFabric::SushiApp
+class SpatialSeuratApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'spatialSeurat'
+    @name = 'SpatialSeurat'
     @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'SingleCell'
     @description =<<-EOS
@@ -21,7 +21,7 @@ Single cell report<br/>
     @params['cores'] = '4'
     @params['ram'] = '20'
     @params['scratch'] = '50'
-    @params['name'] = 'spatialSeurat'
+    @params['name'] = 'SpatialSeurat'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['SCT.regress'] = ['none', 'CellCycle']
@@ -75,7 +75,7 @@ Single cell report<br/>
   end
   def commands
     command = "module load #{@params["Rversion"]}\n"
-    command << run_RApp("EzAppspatialSeurat")
+    command << run_RApp("EzAppSpatialSeurat")
   end
 end
 
