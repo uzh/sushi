@@ -32,12 +32,6 @@ class JobMonitoringController < ApplicationController
     start = (@current_page - 1) * @page_unit
     last  = @current_page * @page_unit - 1
     @job_list = @job_list[start..last]
-    @submit_jobs = []
-    @job_list.each_with_index do |job, i|
-      if submit_job = Job.find_by_submit_job_id(job[0].to_i)
-        @submit_jobs[i] = submit_job
-      end
-    end
   end
   def print_log
     public_dir = File.expand_path('../../../public', __FILE__)

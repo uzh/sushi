@@ -79,10 +79,10 @@ class SampleController < ApplicationController
 
     # del row
     if params[:edit_save] and del_rows = session[:del_rows]
+      @data_set.num_samples = @data_set.samples.length - del_rows.length
       del_rows.sort.reverse.each do |i|
         @data_set.samples.delete(@data_set.samples[i])
       end
-      @data_set.num_samples = @data_set.samples.length - del_rows.length
       @data_set.md5 = @data_set.md5hexdigest
       @data_set.save
       save_dataset_tsv_in_gstore(@data_set)

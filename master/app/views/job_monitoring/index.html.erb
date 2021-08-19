@@ -80,18 +80,12 @@ $(document).ready(function(){
     <tr>
         <td><%= job[0] %></td>
         <td>
-        <% if session['employee'] %>
-          <%= button_to job[1], "/job_monitoring/#{job[0]}/change_status" %></td>
-        <% else %>
           <%= job[1] %></td>
-        <% end %>
         <td>
             <% if (job[1]=~/RUNNING/i or job[1]=~/PENDING/i) and current_user and job[4]==current_user.login %>
               <%= button_to 'kill', "/job_monitoring/#{job[0]}/kill_job", data: {confirm: "Are you sure you want to kill the job '#{job[0]}'?"}, :class=>"btn btn-info btn-sm raised" %>
             <% elsif job[1]=~/FAIL/i and session['employee'] and current_user %>
-              <% if submit_job = @submit_jobs[i] and submit_job.data_set %>
                 <%= button_to 'resubmit', "/job_monitoring/#{job[0]}/resubmit_job", data: {confirm: "Are you sure you want to submit the job '#{job[0]}' again?"}, :class=>"btn btn-info btn-sm raised" %>
-              <% end %>
             <% end %>
         </td>
         <td class="check_box">
@@ -103,14 +97,13 @@ $(document).ready(function(){
         <td><%= link_to td(job[2]), :action => 'print_script', :job_id => job[0] %></td>
         <td><%= link_to 'Log', :action => 'print_log', :job_id => job[0] %></td>
         <td>
-            <% if submit_job = @submit_jobs[i] and submit_job.data_set %>
+          <% if job[6] %>
             <% if @all_job_list %>
-            <%= link_to td(submit_job.data_set.name+" (p#{job[5]})"), :controller=>:data_set, :action=>:show,
-            :id=>submit_job.next_dataset_id, :project=>job[5] %>
+              <%= link_to td("DataSet (p#{job[5]})"), :controller=>:data_set, :action=>:show, :id=>job[6], :project=>job[5] %>
             <% else %>
-            <%= link_to td(submit_job.data_set.name), "/data_set/#{submit_job.next_dataset_id}" %>
+              <%= link_to 'DataSet', "/data_set/#{job[6]}" %>
             <% end %>
-            <% end %>
+          <% end %>
         </td>
         <td><%= job[3].to_s %></td>
     </tr>
