@@ -34,6 +34,8 @@ class SpatialSeuratSlidesApp < SushiFabric::SushiApp
     @params['resolution', 'description'] = 'Value between 0 and 1. A higher value will lead to larger communities.'
     @params['SCT.regress'] = ['none', 'CellCycle']
     @params['SCT.regress', 'description'] = "Variable to regress when processing the counts with the SCTransform method."
+    @params['batchCorrection'] = 'true'
+    @params['batchCorrection', 'description'] = "Perform batch correction?"
     @params['DE.method'] = ['wilcox', 'LR']
     @params['DE.method', 'description'] = "Method to be used when calculating gene cluster markers and differentially expressed genes between conditions."
     @params['DE.regress'] = ['Batch', 'CellCycle']
