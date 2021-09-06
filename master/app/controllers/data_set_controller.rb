@@ -396,7 +396,7 @@ class DataSetController < ApplicationController
       end
       root << node
     end
-    
+
     render :json => root.sort_by{|node| node["id"]}.reverse
   end
   def import_from_gstore
@@ -659,7 +659,7 @@ class DataSetController < ApplicationController
           end # child process
           Process.waitpid pid
         end
-      elsif file = params[:file] and tsv = file[:name]
+      elsif file = params[:file] and tsv = file[:name] and @warning.nil?
         @warning = "There might be the same DataSet that has exactly same samples saved in SUSHI. Please check it."
       end
     end
