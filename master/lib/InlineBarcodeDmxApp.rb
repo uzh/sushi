@@ -15,12 +15,11 @@ class InlineBarcodeDmxApp <  SushiFabric::SushiApp
     Simple R based app which performs demultiplexing of inline barcodes, read trimming and read filtering based on remaining read length
 EOS
     @required_columns = ['Name','Read1','indexFile']
-    @required_params = ['name', '']
+    @required_params = ['name']
     @params['cores'] = '1'
     @params['ram'] = '30'
     @params['scratch'] = '200'
     @params['name'] = 'InLineDmx_Result'
-    #@params['resultDir'] = 'inLineBarcodeDmx_20210914'
     @params['barcodePos'] = '8'
     @params['rightPattern'] = 'GTGTCAGTCACTTCCAG'
     @params['maxMismatch'] = '1'
