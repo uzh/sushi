@@ -20,7 +20,7 @@ EOS
     @required_params = ['cores', 'ram', 'scratch']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '50'
+    @params['ram'] = '30'
     @params['scratch'] = '100'
     @params['paired'] = true
     @params['otherBasicOpt'] = ''
