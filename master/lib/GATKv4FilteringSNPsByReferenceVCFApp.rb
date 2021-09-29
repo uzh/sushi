@@ -19,7 +19,7 @@ filtering out SNPs by the VCF coming from reference accession<br/>
     @params['ram'] = '50'
     @params['scratch'] = '100'
     @params['DataSet'] = []
-    @modules = ["Dev/Ruby/2.4.3"]
+    @modules = ["Dev/Ruby/2.6.7"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters
