@@ -17,7 +17,7 @@ Quality control after the alignment of RNAseq reads<br/>
     @required_columns = ['Name','BAM','BAI', 'refBuild', 'Species']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
-    @params['ram'] = '60'
+    @params['ram'] = '100'
     @params['scratch'] = '100'
     @params['paired'] = false
     @params['name'] = 'RNA_BAM_Statistics'
