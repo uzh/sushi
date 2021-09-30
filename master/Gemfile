@@ -78,8 +78,9 @@ gem "jstree-rails-4"
 gem 'therubyracer'
 gem 'thin'
 gem 'google-analytics-rails'
-gem "nokogiri"
+gem "nokogiri", ">= 1.12.5"
 gem "loofah", ">= 2.3.1"
 gem "rack", ">= 2.2.3"
 gem 'mini_racer'
 gem 'sidekiq'
+gem "addressable", ">= 2.8.0"
