@@ -248,7 +248,6 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    workflow_manager (0.7.5)
     yaml_db (0.7.0)
       rails (>= 3.0)
       rake (>= 0.8.7)
@@ -287,7 +286,6 @@ DEPENDENCIES
   therubyracer
   thin
   uglifier
-  workflow_manager
   yaml_db
 
 BUNDLED WITH

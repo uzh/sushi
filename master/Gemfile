@@ -66,7 +66,6 @@ group :test do
   gem 'simplecov-rcov'
 end
 
-gem 'workflow_manager'
 gem 'sushi_fabric'
 gem "chartkick", ">= 3.4.0"
 #gem 'mysql2'
