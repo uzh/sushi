@@ -41,7 +41,6 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['onlyCompGroupsHeatmap', 'description'] = 'Only show the samples from comparison groups in heatmap'
     @params['normMethod'] = ['TMM', 'RLE', 'upperquartile', 'none']
     @params['normMethod', 'description'] = "see http://bioconductor.org/packages/edgeR/"
-    @params['runGO'] = ['true', 'false']
     @params['grouping2'] = ''
     @params['grouping2', 'description'] =  'specify the column name of your secondary co-variate  (factor or numeric, 
     assuming there is one). Ensure the 
@@ -51,6 +50,22 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['transcriptTypes'] = ''
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 0
+    @params['pValueHighlightThresh'] = 0.01
+    @params['pValueHighlightThresh', 'description'] = "pValue cut-off for highlighting candidate features in plots"
+    @params['log2RatioHighlightThresh'] = 0.5
+    @params['log2RatioHighlightThresh', 'description'] = "log2 FoldChange cut-off for highlighting candidate features in plots"
+
+    @params['runGO'] = ['true', 'false']
+    @params['runGO', 'description'] = "perform ORA and GSEA with Gene Ontology annotations"
+    @params['pValThreshGO'] = 0.01
+    @params['pValThreshGO', 'description'] = "pValue cut-off for ORA candidate gene selection"   
+    @params['log2RatioThreshGO'] = 0
+    @params['log2RatioThreshGO', 'description'] = "log2 FoldChange cut-off for ORA candidate gene selection"
+    @params['fdrThresORA'] = 0.05
+    @params['fdrThresORA', 'description'] = "adjusted pValue cut-off for GO terms in ORA"
+    @params['fdrThresGSEA'] = 0.05
+    @params['fdrThresGSEA', 'description'] = "adjusted pValue cut-off for GO terms in GSEA"
+    
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
