@@ -43,7 +43,8 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['refBuild'] = @dataset[0]['refBuild']
   end
   def commands
-    ref = File.join(GENOME_REF_DIR, @params['refBuild'].split('/')[0,3].join("/")+"/Sequence/WholeGenomeFasta/genome.fa")
+    refs = GENOME_REF_DIRS.map{|genome_ref_dir| File.join(genome_ref_dir, @params['refBuild'].split('/')[0,3].join("/")+"/Sequence/WholeGenomeFasta/genome.fa")}
+    ref = refs.find{|fa| File.exist?(fa)}
     combined_g_vcf = @params['name'] + ".g.vcf"
     combined_raw_vcf = @params['name'] + ".raw.vcf"
     combined_raw_snp_vcf = @params['name'] + ".raw.snp.vcf"

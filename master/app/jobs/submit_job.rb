@@ -6,7 +6,8 @@ class SubmitJob < ApplicationJob
     require class_name
     sushi_app = eval(class_name).new
     sushi_app.logger = logger
-    sushi_app.workflow_manager = DRbObject.new_with_uri(SushiFabric::WORKFLOW_MANAGER)
+    workflow_manager = DRbObject.new_with_uri(SushiFabric::WORKFLOW_MANAGER)
+    sushi_app.workflow_manager = workflow_manager
     sushi_app.user = params[:user]
     sushi_app.next_dataset_name = params[:next_dataset_name]
     sushi_app.next_dataset_comment = params[:next_dataset_comment]
@@ -26,5 +27,7 @@ class SubmitJob < ApplicationJob
     elsif params[:submit_type] == "MockRun"
       sushi_app.mock_run
     end
+
+    MakeWholeTreeJob.perform_later(params[:project_id])
   end
 end

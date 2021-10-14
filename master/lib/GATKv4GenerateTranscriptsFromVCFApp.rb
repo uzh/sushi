@@ -41,13 +41,13 @@ filtering out SNPs by the VCF coming from reference accession<br/>
   def commands
     command =<<-EOS
 #!/bin/bash
-# Version = '20200603-022530'
+# Version = '20210915-105504'
 
 cat > replace_N_with_low_high_coverage.#{@dataset['Name']}.rb <<-EOF1
 
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20200603-022530'
+# Version = '20210915-105504'
 
 def help
   puts <<-eos
@@ -391,7 +391,9 @@ warn "# \#{Time.now}: generated \#{out_genes_gtf}"
 EOF2
     EOS
     script1_rb = "replace_N_with_low_high_coverage.#{@dataset['Name']}.rb"
-    genome_fa = File.join(GENOME_REF_DIR, @dataset['refBuild'].split('/')[0,3].join("/")+"/Sequence/WholeGenomeFasta/genome.fa")
+
+    refs = GENOME_REF_DIRS.map{|genome_ref_dir| File.join(genome_ref_dir, @params['refBuild'].split('/')[0,3].join("/")+"/Sequence/WholeGenomeFasta/genome.fa")}
+    genome_fa = refs.find{|fa| File.exist?(fa)}
     gstore_bam = File.join(@gstore_dir, @dataset['BAM'])
     bam = File.basename(@dataset['BAM'])
     org_genome_masked_fa = "#{@dataset['Name']}.genome.masked.org.fa"
@@ -402,8 +404,9 @@ EOF2
 
     script2_rb = "replace_snps_indels_by_vcf.#{@dataset['Name']}.rb"
     filtered_vcf = File.join(@gstore_dir, @dataset['Filtered VCF'])
-    refbuild_path = File.join(GENOME_REF_DIR, @dataset['refBuild'])
-    genes_gtf = File.join(refbuild_path, "Genes/genes.gtf")
+
+    refs = GENOME_REF_DIRS.map{|genome_ref_dir| File.join(genome_ref_dir, File.join(@params['refBuild'], "Genes/genes.gtf"))}
+    genes_gtf = refs.find{|gtf| File.exist?(gtf)}
 
     new_genome_fa  = "#{@dataset['Name']}.genome.fa"
     new_genome_masked_fa = "#{@dataset['Name']}.genome.masked.fa"

@@ -20,7 +20,7 @@ EOS
     @required_params = ['cores', 'ram', 'scratch']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '50'
+    @params['ram'] = '30'
     @params['scratch'] = '100'
     @params['paired'] = true
     @params['otherBasicOpt'] = ''
@@ -64,8 +64,8 @@ EOS
     @params['length_required','description'] = 'reads shorter than length_required will be discarded.'
     @params['cmdOptionsFastp'] = ''
     ## additional commands
-    @params['markDuplicates'] = true
-    @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
+    #@params['markDuplicates'] = true
+    #@params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
 
     @params['mail'] = ""
     @modules = ["Assembly/SPAdes", "QC/fastp", "Dev/R"]
@@ -81,7 +81,7 @@ EOS
      'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.fasta"),
      'SpadesOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
      'SpadesLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_spades.log"),
-     'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
+     'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
      'Species'=>@dataset['Species'],
      'Read Count'=>@dataset['Read Count'],
     }.merge(extract_columns(@inherit_tags))

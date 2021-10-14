@@ -20,7 +20,7 @@ EOS
     @required_params = ['canuReadOpt', 'canuGenomeSize']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '50'
+    @params['ram'] = '30'
     @params['scratch'] = '400'
     @params['inputType'] = ["pacbioSmrtCell","fastqFile"]
     @params['inputType', 'description'] = 'direct output of a pacbio run or pre-processed (e.g., demultiplexed) fastq file?'
