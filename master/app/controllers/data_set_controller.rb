@@ -380,12 +380,14 @@ class DataSetController < ApplicationController
  
     render :json => root.sort_by{|node| node["id"]}.reverse
   end
-  def whole_treeviews
-    @project = Project.find_by_number(session[:project].to_i)
+  def make_whole_tree
+    unless @project
+      @project = Project.find_by_number(session[:project].to_i)
+    end
     root = []
     project_dataset_ids = Hash[*(@project.data_sets.map{|data_set| [data_set.id, true]}.flatten)]
     @project.data_sets.each do |data_set|
-      node = {"id" => data_set.id, 
+      node = {"id" => data_set.id,
               "text" => data_set.data_sets.length.to_s+" "+data_set.name+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>",
               "a_attr" => {"href"=>"/data_set/p#{@project.number}/#{data_set.id}"}
               }
@@ -396,8 +398,17 @@ class DataSetController < ApplicationController
       end
       root << node
     end
-    
-    render :json => root.sort_by{|node| node["id"]}.reverse
+    json = root.sort_by{|node| node["id"]}.reverse.to_json
+    @@workflow_manager.save_dataset_tree(@project.number, json)
+    json
+  end
+  def whole_treeviews
+    @project = Project.find_by_number(session[:project].to_i)
+    unless json = @@workflow_manager.load_dataset_tree(@project.number)
+      json = make_whole_tree
+    end
+
+    render :json => json
   end
   def import_from_gstore
     params[:project] = session[:project]
@@ -495,6 +506,7 @@ class DataSetController < ApplicationController
         end
       end
     end
+    MakeWholeTreeJob.perform_later(data_set.project.id)
 
     redirect_to :controller => "data_set"
   end
@@ -659,7 +671,8 @@ class DataSetController < ApplicationController
           end # child process
           Process.waitpid pid
         end
-      elsif file = params[:file] and tsv = file[:name]
+        MakeWholeTreeJob.perform_later(data_set.project.id)
+      elsif file = params[:file] and tsv = file[:name] and @warning.nil?
         @warning = "There might be the same DataSet that has exactly same samples saved in SUSHI. Please check it."
       end
     end
@@ -806,6 +819,7 @@ class DataSetController < ApplicationController
   def destroy
     @fgcz = SushiFabric::Application.config.fgcz?
     if @data_set = DataSet.find_by_id(params[:id])
+      @project_id = @data_set.project.id
       @option = params[:option_delete]
 
       # check real data
@@ -847,6 +861,9 @@ class DataSetController < ApplicationController
         @data_set = DataSet.find_by_id(params[:id])
         delete_candidates(@data_set)
         render action: "confirm_delete_only_data_files"
+      end
+      if @project_id
+        MakeWholeTreeJob.perform_later(@project_id)
       end
       @deleted_data_set
     end

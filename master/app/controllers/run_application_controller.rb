@@ -254,6 +254,7 @@ class RunApplicationController < ApplicationController
     active_job_params[:current_user] = current_user
     active_job_params[:off_bfabric_registration] = session[:off_bfabric_registration]
     active_job_params[:submit_type] = params[:submit_type]
+    active_job_params[:project_id] = project.id
 
     SubmitJob.perform_later(active_job_params)
   end
