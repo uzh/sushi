@@ -91,6 +91,12 @@ SushiFabric::Application.configure do
     config.sushi_app_dir = Dir.pwd
     config.module_source = "/usr/local/ngseq/etc/lmod_profile"
     config.course_mode = false
+    config.rails_host = if config.force_ssl
+                          "https://fgcz-sushi.uzh.ch"
+                        else
+                          "http://fgcz-h-032:4000"
+                        end
+
     #ENV['PATH'] = "/usr/local/ngseq/packages/Dev/Python/3.6.8/bin/:/usr/local/ngseq/opt/GxTx_Scripts_in_Python3/g-bin/:" + ENV['PATH']
   end
 
