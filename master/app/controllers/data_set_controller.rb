@@ -1,4 +1,7 @@
 class DataSetController < ApplicationController
+
+  skip_before_action :authenticate_user!, only: [:update_completed_samples]
+
   include SushiFabric
   def top(n_dataset=1000, tree=nil)
     view_context.project_init
@@ -8,26 +11,30 @@ class DataSetController < ApplicationController
     @data_sets = []
     if @project and  data_sets = @project.data_sets
        @data_sets = data_sets.reverse[0, n_dataset]
-       unless @tree
-         @data_sets.each do |data_set|
-           unless data_set.completed_samples.to_i == data_set.samples_length.to_i
-             sample_available = 0
-             data_set.samples.each do |sample|
-               if sample_file = sample.to_hash.select{|header, file| header and header.tag?('File')}.first
-                 file_path = File.join(SushiFabric::GSTORE_DIR, sample_file.last.to_s)
-                 if File.exist?(file_path)
-                   sample_available+=1
-                 end
-               else # in case of no [File] tag sample
-                 sample_available+=1
-               end
-             end
-             data_set.completed_samples = sample_available
-             data_set.save
-           end
-         end
-       end
     end
+  end
+  def update_completed_samples_(id)
+    sample_available = 0
+    if data_set = DataSet.find_by_id(id.to_i)
+      data_set.samples.each do |sample|
+        if sample_file = sample.to_hash.select{|header, file| header and header.tag?('File')}.first
+          file_path = File.join(SushiFabric::GSTORE_DIR, sample_file.last.to_s)
+          if File.exist?(file_path)
+            sample_available+=1
+          end
+        else # in case of no [File] tag sample
+          sample_available+=1
+        end
+      end
+      data_set.completed_samples = sample_available
+      data_set.save
+    end
+    sample_available
+  end
+  def update_completed_samples
+    id = params[:id]
+    sample_available = update_completed_samples_(id)
+    render plain: sample_available
   end
   def index
     if warning = session['import_fail']
@@ -235,6 +242,9 @@ class DataSetController < ApplicationController
       # update num_samples
       if @data_set.num_samples.to_i != sample_count
         @data_set.num_samples = sample_count
+      end
+      if @data_set.num_samples.to_i != @data_set.completed_samples.to_i
+        update_completed_samples_(@data_set.id)
       end
 
       if !@data_set.refreshed_apps and @data_set.runnable_apps.empty?
@@ -504,6 +514,7 @@ class DataSetController < ApplicationController
           end # child process
           Process.waitpid pid
         end
+        update_completed_samples_(@data_set_id)
       end
     end
     MakeWholeTreeJob.perform_later(data_set.project.id)
@@ -671,6 +682,7 @@ class DataSetController < ApplicationController
           end # child process
           Process.waitpid pid
         end
+        update_completed_samples_(@data_set_id)
         MakeWholeTreeJob.perform_later(data_set.project.id)
       elsif file = params[:file] and tsv = file[:name] and @warning.nil?
         @warning = "There might be the same DataSet that has exactly same samples saved in SUSHI. Please check it."
