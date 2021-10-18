@@ -61,10 +61,10 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['pValThreshGO', 'description'] = "pValue cut-off for ORA candidate gene selection"   
     @params['log2RatioThreshGO'] = 0
     @params['log2RatioThreshGO', 'description'] = "log2 FoldChange cut-off for ORA candidate gene selection"
-    @params['fdrThresORA'] = 0.05
-    @params['fdrThresORA', 'description'] = "adjusted pValue cut-off for GO terms in ORA"
-    @params['fdrThresGSEA'] = 0.05
-    @params['fdrThresGSEA', 'description'] = "adjusted pValue cut-off for GO terms in GSEA"
+    @params['fdrThreshORA'] = 0.05
+    @params['fdrThreshORA', 'description'] = "adjusted pValue cut-off for GO terms in ORA"
+    @params['fdrThreshGSEA'] = 0.05
+    @params['fdrThreshGSEA', 'description'] = "adjusted pValue cut-off for GO terms in GSEA"
     
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
