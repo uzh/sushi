@@ -1,0 +1,24 @@
+Dear USER_NAME,
+
+I am glad to inform you that your sequencing experiment (pPROJECT_NUMBER oORDER_NUMBER) is finished.
+* <a href="https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-projectorder.html?projectOrderId=ORDER_NUMBER">https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-projectorder.html?projectOrderId=ORDER_NUMBER</a>
+
+Please download your data with your B-Fabric username/password from
+* <a href="https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-workunit.html?id=WORKUNIT_ID&tab=details">https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-workunit.html?id=WORKUNIT_ID&tab=details</a>
+or
+* <a href="https://fgcz-gstore.uzh.ch/projects/pPROJECT_NUMBER/DATASET_NAME">https://fgcz-gstore.uzh.ch/projects/pPROJECT_NUMBER/DATASET_NAME</a>
+
+For details about the download options:
+* <a href="https://fgcz-intranet.uzh.ch/tiki-index.php?page=bioinformatics.gStore.get_data">https://fgcz-intranet.uzh.ch/tiki-index.php?page=bioinformatics.gStore.get_data</a>
+
+You can see the NanoPlot result from
+* <a href="https://fgcz-gstore.uzh.ch/projects/NANOPLOT_LINK">https://fgcz-gstore.uzh.ch/projects/NANOPLOT_LINK</a>
+
+We would be grateful if you could give a <a href="https://fgcz-bfabric.uzh.ch/bfabric/common/submit-feedback.html?projectOrderId=ORDER_NUMBER&defaultTemplateId=1">feedback</a>.
+
+Please download the data immediately, data-delivery-only results are removed after 1 month.
+
+If you have any questions about the wet lab experiment please do not hesitate to contact LAB_COACH.
+
+Best regards,
+MY_NAME
