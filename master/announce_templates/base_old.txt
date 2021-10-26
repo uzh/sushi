@@ -1,0 +1,26 @@
+Dear USER_NAME,
+
+I am glad to inform you that your sequencing experiment (pPROJECT_NUMBER oORDER_NUMBER) is finished.
+* https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-projectorder.html?projectOrderId=ORDER_NUMBER
+
+For bioinformatics support and downstream statistical analysis, please contact BIOINFORMATICIAN.
+If you go completely without bioinformatics support and require data-delivery-only, please do download your data with your B-Fabric username/password from
+* https://fgcz-bfabric.uzh.ch/bfabric/userlab/show-workunit.html?id=WORKUNIT_ID&tab=details
+or
+* https://fgcz-gstore.uzh.ch/projects/pPROJECT_NUMBER/DATASET_NAME
+
+For details about the download options:
+* https://fgcz-intranet.uzh.ch/tiki-index.php?page=bioinformatics.gStore.get_data
+
+You can see the Fastqc and FastqScreen result from
+* https://fgcz-gstore.uzh.ch/projects/FASTQC_LINK
+* https://fgcz-gstore.uzh.ch/projects/FASTQSCREEN_LINK
+
+Please download the data immediately, data-delivery-only results are removed after 1 month.
+
+Please take your remaining samples. Any unclaimed tubes will be discarded within 3 months.
+
+If you have any questions about the wet lab experiment please do not hesitate to contact LAB_COACH.
+
+Best regards,
+MY_NAME
