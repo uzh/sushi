@@ -21,11 +21,17 @@ EOS
     @params['scratch'] = '200'
     @params['name'] = 'InLineDmx_Result'
     @params['barcodePos'] = '8'
-    @params['rightPattern'] = 'GTGTCAGTCACTTCCAG'
-    @params['maxMismatch'] = '1'
-    @params['minReadLength'] = '20'
-    @params['maxReadLength'] = '50'
+    @params['barcodePos', 'description'] = 'Start position of the inline barcode in R1'
     @params['leftLinkerSize'] = '5'
+    @params['leftLinkerSize', 'description'] = 'Length of the linker next to the barcode.'
+    @params['rightPattern'] = 'GTGTCAGTCACTTCCAG'
+    @params['rightPattern', 'description'] = 'Sequence at the 3 prime end to get trimmed.'
+    @params['maxMismatch'] = '1'
+    @params['maxMismatch', 'description'] = 'Accepted number of mismatches in the read to detect the rightPattern'
+    @params['minReadLength'] = '20'
+    @params['minReadLength', 'description'] = 'Minimal read length after trimming. All reads below will be discarded.'
+    @params['maxReadLength'] = '50'
+    @params['maxReadLength', 'description'] = 'Maximal read length after trimming. All reads above will be discarded.'
 
     @params['cmdOptions'] = ""
     @params['mail'] = ""
