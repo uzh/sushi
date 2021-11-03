@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20211102-112331'
+Version = '20211103-084022'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -21,7 +21,7 @@ EAGLE: Explicit Alternative Genome Likelihood Evaluator <br />
     @required_params = []
     # optional params
     @params['cores'] = '1'
-    @params['ram'] = '30'
+    @params['ram'] = '100'
     @params['scratch'] = '100'
     @inactivate_nodes = ["fgcz-c-048"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
