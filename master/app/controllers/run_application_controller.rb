@@ -212,10 +212,6 @@ class RunApplicationController < ApplicationController
         @sushi_app.params[key] = ''
       end
     end
-    if @sushi_app.params['node'].empty?
-      @sushi_app.workflow_manager = @@workflow_manager
-      @sushi_app.params['node'] = @sushi_app.default_node
-    end
     @sushi_app.params.each do |key, value|
       if @sushi_app.required_params and @sushi_app.required_params.include?(key) and value.to_s.empty? 
         @requires ||= {}
@@ -255,6 +251,9 @@ class RunApplicationController < ApplicationController
     active_job_params[:off_bfabric_registration] = session[:off_bfabric_registration]
     active_job_params[:submit_type] = params[:submit_type]
     active_job_params[:project_id] = project.id
+    if active_job_params[:parameters]["process_mode"] == "SAMPLE" and active_job_params[:parameters]["samples"].split(",").length > 20
+      active_job_params[:parameters]["nice"] = "100"
+    end
 
     SubmitJob.perform_later(active_job_params)
   end
