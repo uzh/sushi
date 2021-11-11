@@ -139,35 +139,35 @@ class RunApplicationController < ApplicationController
         end
       end
     end
-    @nodes = if SushiFabric::Application.config.fgcz?
-               #make_fgcz_node_list
-               @sushi_app.cluster_nodes
-             else
-               @sushi_app.cluster_nodes
-             end
-    if SushiFabric::Application.config.fgcz?
-      if session['employee']
-        @nodes = @nodes.select{|node| node =~ /fgcz-h-00[89]/} if SushiFabric::Application.config.course_mode
-      elsif !current_user # demo sushi
-        @nodes = @nodes.select{|node| node =~ /fgcz-h-00[89]/} unless SushiFabric::Application.config.course_mode
-      else # normal user in prod sushi
-        @nodes = if SushiFabric::Application.config.course_mode
-                   @nodes.select{|node| node =~ /fgcz-h-00[89]/}
-                 else
-                   @nodes.select{|node| node =~ /fgcz-h/ or node =~ /fgcz-c-048/}
-                 end
-      end
-      if current_user and FGCZ.get_user_projects(current_user.login).include?('p1535')
-        @nodes['fgcz-c-047: cpu 32,mem   1 TB,scr  28T'] = 'fgcz-c-047'
-      end
-
-      # 20190823 masa tentatively in 2-3 months for Gwyneth
-      @nodes.delete('fgcz-c-047: cpu 32,mem   1 TB,scr  28T')
-      @nodes
-    end
-    if inactivate_nodes = @sushi_app.inactivate_nodes and !inactivate_nodes.empty?
-      @nodes.delete_if{|node_desc, node| node_desc =~ /#{inactivate_nodes.join("|")}/}
-    end
+#    @nodes = if SushiFabric::Application.config.fgcz?
+#               #make_fgcz_node_list
+#               @sushi_app.cluster_nodes
+#             else
+#               @sushi_app.cluster_nodes
+#             end
+#    if SushiFabric::Application.config.fgcz?
+#      if session['employee']
+#        @nodes = @nodes.select{|node| node =~ /fgcz-h-00[89]/} if SushiFabric::Application.config.course_mode
+#      elsif !current_user # demo sushi
+#        @nodes = @nodes.select{|node| node =~ /fgcz-h-00[89]/} unless SushiFabric::Application.config.course_mode
+#      else # normal user in prod sushi
+#        @nodes = if SushiFabric::Application.config.course_mode
+#                   @nodes.select{|node| node =~ /fgcz-h-00[89]/}
+#                 else
+#                   @nodes.select{|node| node =~ /fgcz-h/ or node =~ /fgcz-c-048/}
+#                 end
+#      end
+#      if current_user and FGCZ.get_user_projects(current_user.login).include?('p1535')
+#        @nodes['fgcz-c-047: cpu 32,mem   1 TB,scr  28T'] = 'fgcz-c-047'
+#      end
+#
+#      # 20190823 masa tentatively in 2-3 months for Gwyneth
+#      @nodes.delete('fgcz-c-047: cpu 32,mem   1 TB,scr  28T')
+#      @nodes
+#    end
+#    if inactivate_nodes = @sushi_app.inactivate_nodes and !inactivate_nodes.empty?
+#      @nodes.delete_if{|node_desc, node| node_desc =~ /#{inactivate_nodes.join("|")}/}
+#    end
 		unless @factors
 			#init_factor('Condition')
 			init_factor
@@ -178,6 +178,13 @@ class RunApplicationController < ApplicationController
       name = sample.to_hash["Name"]
       [name, name]
     }
+    order_ids = {}
+    @data_set.samples.each do |sample|
+      if order_id = sample.to_hash["Order Id [B-Fabric]"]
+        order_ids[order_id] = true
+      end
+    end
+    @order_ids = order_ids.keys
   end
   def confirmation
     @params = params
