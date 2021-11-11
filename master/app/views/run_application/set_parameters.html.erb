@@ -35,7 +35,7 @@
       <tr>
         <th>Name</th>
         <% unless @order_ids.empty? %>
-          <td><%= text_field :next_dataset, :name, :value => ["o"+@order_ids.join("_"), @sushi_app.name].join('_').gsub(/\s/,''), :with=>"ascii" %></td>
+          <td><%= text_field :next_dataset, :name, :value => [@order_ids.map{|oid| "o#{oid}"}.join("_"), @sushi_app.name].join('_').gsub(/\s/,''), :with=>"ascii" %></td>
           <% else %>
           <td><%= text_field :next_dataset, :name, :value => @sushi_app.name.gsub(/\s/,''), :with=>"ascii" %></td>
         <% end %>
