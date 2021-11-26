@@ -13,7 +13,7 @@ class CellRangerARCApp <  SushiFabric::SushiApp
     @description =<<-EOS
 This wrapper runs <a href='https://support.10xgenomics.com/single-cell-ARC/software/pipelines/latest/using/count',>cellranger ARC count</a> in Single-library analysis mode.
     EOS
-    @required_columns = ['Name','RawDataDir','Species']
+    @required_columns = ['Name','RawDataDir','Species','RawATACDataDir']
     @required_params = ['name', 'refBuild']
     @params['cores'] = '8'
     @params['ram'] = '60'
