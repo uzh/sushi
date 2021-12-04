@@ -9,44 +9,51 @@ class GatkRnaHaplotyperApp <  SushiFabric::SushiApp
   def initialize
     super
     @name = 'GatkRnaHaplotyper'
-    @params['process_mode'] = 'DATASET'
     @analysis_category = 'Variants'
     @description =<<-EOS
 Haplotype calling for RNA-seq<br/>
-<a href='https://www.broadinstitute.org/gatk/guide/tooldocs/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php'>HaplotypeCaller</a>
+<a href='https://gatk.broadinstitute.org/hc/en-us/articles/360035531192-RNAseq-short-variant-discovery-SNPs-Indels-'>RNA-seq Best practice</a>
     EOS
-    @required_columns = ['Name','BAM','BAI', 'refBuild', 'Species']
-    @required_params = ['name', 'paired']
-    @params['cores'] = '4'
-    @params['ram'] = '30'
-    @params['scratch'] = '500'
-    @params['paired'] = false
+    @required_columns = ['Name','BAM','BAI', 'refBuild']
+    @required_params = ['name']
+    @params['cores'] = '8'
+    @params['ram'] = '50'
+    @params['scratch'] = '100'
     @params['name'] = 'GATK_RnaVariants'
     @params['refBuild'] = ref_selector
+    @params['refFeatureFile'] = 'genes.gtf'
+    #@params['getRealignedBam'] = false
+    @params['markDuplicates'] = false
+    @params['addReadGroup'] = true
+    @params['dbsnpFile'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Dev/jdk", "Variants/GATK", "Tools/Picard", "Dev/R"]
-  end
-  def next_dataset
-    report_dir = File.join(@result_dir, @params['name'])
-    {'Name'=>@params['name'],
-     'VCF [File]'=>File.join(@result_dir, "#{@params['name']}-haplo.vcf.gz"),
-     'TBI [File]'=>File.join(@result_dir, "#{@params['name']}-haplo.vcf.gz.tbi"),
-     'Report [File]'=>report_dir,
-     'Html [Link]'=>File.join(report_dir, '00index.html'),
-     'Species'=>(dataset = @dataset.first and dataset['Species']),
-     'refBuild'=>@params['refBuild']
-    }
+    @modules = ["Tools/samtools", "Variants/GATK", "Dev/R"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
-    if dataset_has_column?('paired')
-      @params['refBuild'] = @dataset[0]['refBuild']
-    end
   end
+  def next_dataset
+    dataset = {
+    'Name'=>@dataset['Name'],
+      'GVCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}-HC_calls.g.vcf.gz"),
+      'GVCFINDEX [File]'=>File.join(@result_dir, "#{@dataset['Name']}-HC_calls.g.vcf.gz.tbi"),
+      'Species'=>@dataset['Species'],
+      'refBuild'=>@params['refBuild']
+    }.merge(extract_columns(@inherit_tags))
 
+#    if @params['getRealignedBam']
+#      dataset['BAM [File]'] = File.join(@result_dir, "#{@dataset['Name']}-realigned.bam")
+#      dataset['BAI [File]'] = File.join(@result_dir, "#{@dataset['Name']}-realigned.bai")
+#    end
+    dataset
+  end
   def commands
-    run_RApp('EzAppGatkRnaHaplotyper')
+    run_RApp("EzAppGatkRnaHaplotyper")
   end
 end
 
+if __FILE__ == $0
+
+end
