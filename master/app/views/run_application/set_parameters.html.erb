@@ -27,7 +27,7 @@
   <%= @sushi_app.description.to_s.html_safe %>
 </blockquote>
 <hr />
-<%= form_tag(:action => 'confirmation') do %>
+<%= form_tag('/run_application/confirmation', :multipart => true) do %>
   <%= hidden_field :sushi_app, :class, :value => @sushi_app.class %>
   <%= hidden_field :data_set, :id, :value => @data_set.id %>
   <h3>Next DataSet</h3>
@@ -107,6 +107,8 @@
               <% end %>
             <% elsif value.instance_of?(Hash) %>
               <%= select :parameters, key.to_sym, value, :selected => selected_value.to_s %>
+            <% elsif @sushi_app.params[key, 'file_upload'] %>
+              <%= file_field :parameters, key.to_sym, :class=>"" %>
             <% else %>
               <%= text_field :parameters, key.to_sym, :value => "#{value}", :with=>"ascii" %>
             <% end %>
