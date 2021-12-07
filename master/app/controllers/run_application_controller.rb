@@ -208,6 +208,16 @@ class RunApplicationController < ApplicationController
                                  else
                                    value
                                  end
+                               elsif @sushi_app.params[key, "file_upload"]
+                                 file = value
+                                 project = session[:project]
+                                 dataset = @sushi_app.next_dataset_name
+                                 temp_dir = File.join("/scratch", "p#{project}_#{dataset}_#{Time.now.strftime("%Y-%m-%d--%H-%M-%S")}")
+                                 temp_file = File.join(temp_dir, file.original_filename)
+                                 FileUtils.mkdir_p temp_dir
+                                 FileUtils.cp(file.path, temp_file)
+                                 FileUtils.chmod(0664, temp_file)
+                                 temp_file
                                elsif @sushi_app.params.data_type(key) == String
                                  value
                                else

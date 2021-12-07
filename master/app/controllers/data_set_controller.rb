@@ -556,7 +556,7 @@ class DataSetController < ApplicationController
       dirs = dirs.map{|path| path.split('/')[0,2].join('/')}.uniq
     end
     def name
-      "DataSet_#{Time.now.strfime("%Y-%m-%d--%H-%M-%D")}"
+      "DataSet_#{Time.now.strftime("%Y-%m-%d--%H-%M-%S")}"
     end
   end
 
