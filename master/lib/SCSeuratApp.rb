@@ -69,7 +69,6 @@ Single cell Seurat clustering report<br/>
      'Static Report [Link]'=>report_link,
      'Live Report [Link]'=>"#{SHINY_EXPLORE_SCSEURAT}?data=#{report_file}/SCSeurat-#{@random_string}.rds",
      'Report [File]'=>report_file,
-     'ResultDir [Link]'=>@dataset['ResultDir'],
     }
   end
   def set_default_parameters
