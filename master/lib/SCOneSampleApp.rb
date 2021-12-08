@@ -76,7 +76,6 @@ Single cell report<br/>
      'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
      'Report [File]'=>report_file,
-     'ResultDir [Link]'=>@dataset['ResultDir'],
     }
   end
   def set_default_parameters

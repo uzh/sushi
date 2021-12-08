@@ -84,8 +84,7 @@ Single cell report<br/>
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
-     'Report [File]'=>report_file,
-     'ResultDir [Link]'=>@dataset['ResultDir'],
+     'Report [File]'=>report_file
     }
   end
   def set_default_parameters
