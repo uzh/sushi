@@ -28,12 +28,15 @@ EOS
     @inherit_tags = []
   end
   def next_dataset
-    report_file_CellType = File.join(@result_dir, 'SC_CellType_Report')
-    report_file_H5= File.join(@result_dir, 'SC_H5_Report')
-    {
-      'Name'=>@dataset['Name'],
-      'SC CellType Report [File]'=>report_file_CellType,
-      'SC H5 [File]'=>report_file_H5
+    report_file = File.join(@result_dir, "#{@dataset['Name']}_Celltype_Report")
+    report_link = File.join(report_file, '00index.html')
+    {'Name'=>@dataset['Name'],
+     'Species'=>@dataset['Species'],
+     'refBuild'=>@params['refBuild'],
+     'refFeatureFile'=>@params['refFeatureFile'],
+     'Static Report [Link]'=>report_link,
+     'SC Celltype Report [File]'=>report_file,
+     'SC H5 [File]'=>File.join(report_file, "sce_h5"),
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
