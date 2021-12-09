@@ -29,9 +29,15 @@ EOS
     @params['name'] = 'MAGeCK_CountResult'
     @params['libName'] = ''
     @params['libName'] = {'select'=>''}
-    Dir["/srv/GT/databases/GEML/sgRNA_Libs/*"].sort.select{|lib| File.directory?(lib)}.each do |dir|
-      @params['dictPath'][File.basename(dir)] = File.basename(dir)
-    end
+    #Dir["/srv/GT/databases/GEML/sgRNA_Libs/*"].sort.select{|lib| File.directory?(lib)}.each do |dir|
+    #  @params['dictPath'][File.basename(dir)] = File.basename(dir)
+    #end
+    #@params["libName"] = []
+    #Dir["/srv/GT/databases/GEML/sgRNA_Libs/*"].sort.each do |dir|
+    #  @params['libName'] << File.basename(dir)
+    #end
+    @params["libName"] = Dir["/srv/GT/databases/GEML/sgRNA_Libs/*"].sort.to_a{|dir| File.basename(dir)}
+
     ## additional commands
     @params['mail'] = ""
     @modules = ["Dev/R"]
