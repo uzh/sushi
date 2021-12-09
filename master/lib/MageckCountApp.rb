@@ -59,3 +59,7 @@ EOS
     run_RApp("EzAppMageckCount")
   end
 end
+
+if __FILE__ == $0
+  run MageckCountApp
+end
