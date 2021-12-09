@@ -75,7 +75,8 @@ Single cell report<br/>
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
-     'Report [File]'=>report_file,
+     'SC Cluster Report [File]'=>report_file,
+     'SC H5 [File]'=>File.join(report_file, "sce_h5"),
     }
   end
   def set_default_parameters
