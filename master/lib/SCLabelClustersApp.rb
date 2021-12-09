@@ -20,10 +20,8 @@ EOS
 
     @params['clusterInfo'] = ''
     @params['clusterInfo', 'file_upload'] = true
-    @required_columns = ['Name', 'SC Cluster Report', 'SC H5']
-    #@required_columns = ['Name']
+    @required_columns = ['Name', 'Species', 'refBuild', 'SC Cluster Report', 'SC H5']
     @required_params = ['clusterInfo']
-    #@required_params = []
     #@inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
     @inherit_tags = []
   end
