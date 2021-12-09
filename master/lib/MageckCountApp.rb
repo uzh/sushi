@@ -9,6 +9,7 @@ class MageckCountApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'MageckCount'
+    @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'Misc'
     @description =<<-EOS
     
@@ -22,7 +23,7 @@ EOS
     @required_params = ['libName']
     # optional params
     @params['cores'] = '8'
-    @params['ram'] = '40'
+    @params['ram'] = '30'
     @params['scratch'] = '100'
 
     @params['name'] = 'MAGeCK_CountResult'
