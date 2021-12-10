@@ -23,6 +23,7 @@ EOS
     @required_columns = ['Name', 'Species', 'refBuild', 'SC Cluster Report', 'SC H5']
     @required_params = ['clusterInfo']
     #@inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
+    @params['mail'] = ""
     @inherit_tags = []
   end
   def next_dataset
