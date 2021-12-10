@@ -33,7 +33,7 @@ class SpatialSeuratCompareApp < SushiFabric::SushiApp
     @params['refGroup'] = '' ## Note: this will be a selector defined by Factor tagged column
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
+    @params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
   end
    def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
