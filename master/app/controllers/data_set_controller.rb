@@ -271,6 +271,7 @@ class DataSetController < ApplicationController
       data_set = DataSet.find_by_id(id)
       data_set.comment = comment
       data_set.save
+      MakeWholeTreeJob.perform_later(data_set.project.id)
     end 
     redirect_to(:action => "show") and return
   end
@@ -280,6 +281,7 @@ class DataSetController < ApplicationController
       data_set.name = name
       data_set.save
       session[:latest_data_set_id] = data_set.id
+      MakeWholeTreeJob.perform_later(data_set.project.id)
     end
     redirect_to(:action => "show") and return
   end
