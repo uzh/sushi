@@ -63,6 +63,7 @@ EOS
     @params['cmdOptionsFastp'] = ''
     @params['markDuplicates'] = true
     @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
+    @params['generateBigWig'] = false
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/fastp", "Dev/R", "Tools/Picard"]
@@ -89,6 +90,10 @@ EOS
      'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
      'Bowtie2Log [File]'=>File.join(@result_dir, "#{@dataset['Name']}_bowtie2.log")
     }.merge(extract_columns(@inherit_tags))
+    if @params['generateBigWig']
+       dataset['BigWig [File]'] = File.join(@result_dir, "#{@dataset['Name']}.bw")
+     end
+
   end
   def commands
     run_RApp("EzAppBowtie2")
