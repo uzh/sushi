@@ -27,6 +27,19 @@ sushi_app class <%= @sushi_app.class %><br /><br />
       });
     <% end %>
 
+  <% elsif @uploaded_file_name %>
+    <ul>
+      <li>The uploaded file (<font color=red><%= @uploaded_file_name %></font>) size = <b><font color=red><%= "%.1f" % (@uploaded_file_size.to_f/(2**20)) %>MB</font></b> should be < <b>10MB</b></li>
+    </ul>
+    <%= button_to 'Back', "#", :id=>"history_back" %>
+
+    <%= javascript_tag do %>
+      $("#history_back").click(function() {
+        history.back()
+        return false;
+      });
+    <% end %>
+
   <% else %>
     <%= submit_tag 'Submit', :name=>'submit_type', :class=>"btn btn-danger btn-sm raised" %>
     <% if session[:employee] %>
