@@ -44,6 +44,7 @@ EOS
     report_file = File.join(@result_dir, @params['name'])    
     {'Name'=>@params['name'],
      'Report [File]'=>report_file,
+     'Report [Link]'=>File.join(report_file, 'outputDir/lineage_report.html')
     }
   end
   def commands
