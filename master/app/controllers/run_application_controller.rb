@@ -214,9 +214,14 @@ class RunApplicationController < ApplicationController
                                  dataset = @sushi_app.next_dataset_name
                                  temp_dir = File.join("/scratch", "p#{project}_#{dataset}_#{Time.now.strftime("%Y-%m-%d--%H-%M-%S")}")
                                  temp_file = File.join(temp_dir, file.original_filename)
-                                 FileUtils.mkdir_p temp_dir
-                                 FileUtils.cp(file.path, temp_file)
-                                 FileUtils.chmod(0664, temp_file)
+                                 @uploaded_file_size = File.size(file.tempfile)
+                                 if @uploaded_file_size < 10000000 # 10MB
+                                   FileUtils.mkdir_p temp_dir
+                                   FileUtils.cp(file.path, temp_file)
+                                   FileUtils.chmod(0664, temp_file)
+                                 else
+                                   @uploaded_file_name = file.original_filename
+                                 end
                                  temp_file
                                elsif @sushi_app.params.data_type(key) == String
                                  value
