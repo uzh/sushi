@@ -78,7 +78,8 @@ EOS
     @params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
-    {'Name'=>@dataset['Name'],
+    dataset = {
+     'Name'=>@dataset['Name'],
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'IGV [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
@@ -92,8 +93,8 @@ EOS
     }.merge(extract_columns(@inherit_tags))
     if @params['generateBigWig']
        dataset['BigWig [File]'] = File.join(@result_dir, "#{@dataset['Name']}.bw")
-     end
-
+    end
+    dataset
   end
   def commands
     run_RApp("EzAppBowtie2")
