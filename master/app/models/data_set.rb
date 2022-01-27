@@ -8,6 +8,7 @@ class DataSet < ActiveRecord::Base
   serialize :runnable_apps, Hash
   belongs_to :user
   serialize :order_ids, Array
+  serialize :job_parameters, Hash
 
   def headers
     self.samples.map{|sample| sample.to_hash.keys}.flatten.uniq
