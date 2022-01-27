@@ -1,14 +1,13 @@
 <h1>Project <%= session[:project] %></h1>
 <hr />
 <h3>Job Parameter</h3>
+<% if @parameters_tsv and File.exist?(@parameters_tsv.to_s) %>
 File: <%= @parameters_tsv.to_s %>
-<% unless File.exist?(@parameters_tsv.to_s) %>
-  does not exist.
 <% end %>
 <table id="job_parameter" class="dt">
 <tbody>
   <tr><th>Parameter</th><th>Value</th>
-  <% if File.exist?(@parameters_tsv.to_s) %>
+  <% if @parameters and !@parameters.empty? or File.exist?(@parameters_tsv.to_s) %>
     <% @parameters.each do |header, value| %>
     <tr>
       <td><%= header %></td><td><%= value %></td>

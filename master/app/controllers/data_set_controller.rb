@@ -909,17 +909,18 @@ class DataSetController < ApplicationController
     @data_set = if id = params[:format]
                   DataSet.find_by_id(id)
                 end
-    @sample_path = if @data_set 
-                     sample_path(@data_set)
-                   end
-    @parameters_tsv = if @sample_path
-                        File.join(SushiFabric::GSTORE_DIR, @sample_path, 'parameters.tsv')
-                      end
-    @parameters = {}
-    if @parameters_tsv and File.exist?(@parameters_tsv)
-      File.readlines(@parameters_tsv).each do |line|
-        header, *values = line.chomp.split
-        @parameters[header] = values.join(" ")
+    if @parameters = @data_set.job_parameters and @parameters.empty?
+      @sample_path = if @data_set
+                       sample_path(@data_set)
+                     end
+      @parameters_tsv = if @sample_path
+                          File.join(SushiFabric::GSTORE_DIR, @sample_path, 'parameters.tsv')
+                        end
+      if @parameters_tsv and File.exist?(@parameters_tsv)
+        File.readlines(@parameters_tsv).each do |line|
+          header, *values = line.chomp.split
+          @parameters[header] = values.join(" ")
+        end
       end
     end
   end
