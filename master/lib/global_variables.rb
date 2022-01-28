@@ -10,6 +10,7 @@ def c(*list)
   list
 end
 if File.exist?(EZ_GLOBAL_VARIABLES)
+  FALSE = false
   load EZ_GLOBAL_VARIABLES
 end
 
