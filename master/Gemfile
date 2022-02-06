@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'ffi', '1.9.25'
+gem 'ffi'
 gem 'sassc-rails'
-gem 'rails', '5.2.4.6'
+gem 'rails', '6.1.4.4'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -68,11 +68,8 @@ end
 
 gem 'sushi_fabric'
 gem "chartkick", ">= 3.4.0"
-#gem 'mysql2'
-gem 'mysql2', '0.4.10'
-#gem 'activerecord-mysql2-adapter'
+gem 'mysql2', '0.5.3'
 gem 'yaml_db'
-#gem 'jquery-turbolinks'
 gem "jstree-rails-4"
 gem 'therubyracer'
 gem 'thin'
@@ -80,6 +77,6 @@ gem 'google-analytics-rails'
 gem "nokogiri", ">= 1.12.5"
 gem "loofah", ">= 2.3.1"
 gem "rack", ">= 2.2.3"
-gem 'mini_racer'
+gem 'mini_racer', '0.4.0'
 gem 'sidekiq'
 gem "addressable", ">= 2.8.0"

@@ -68,6 +68,9 @@ SushiFabric::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
+   # Send deprecation notices to registered listeners
+   config.active_support.deprecation = :notify
+
   config.logger = Logger.new("log/production.log", 5, 10 * 1024 * 1024)
   config.logger.level = Logger::ERROR
   config.log_level = :info
