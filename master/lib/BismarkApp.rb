@@ -63,7 +63,7 @@ EOS
     @params['length_required'] = '18'
     @params['length_required','description'] = 'reads shorter than length_required will be discarded.'
     @params['cmdOptionsFastp'] = ''
-
+    @params['generateBigWig'] = false
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Aligner/Bowtie2", "Aligner/Bismark", "QC/fastp", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
@@ -76,8 +76,9 @@ EOS
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
   end
-  def next_dataset
-    {'Name'=>@dataset['Name'],
+ def next_dataset
+   dataset = {
+     'Name'=>@dataset['Name'],
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'TxtReport [File]'=>File.join(@result_dir, "#{@dataset['Name']}.report.txt"),
@@ -92,6 +93,10 @@ EOS
      'Read Count'=>@dataset['Read Count'],
      'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
     }.merge(extract_columns(@inherit_tags))
+    if @params['generateBigWig']
+       dataset['BigWig [File]'] = File.join(@result_dir, "#{@dataset['Name']}_Cov.bw")
+    end
+    dataset
   end
   def commands
     run_RApp("EzAppBismark")
