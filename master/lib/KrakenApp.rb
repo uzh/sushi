@@ -21,7 +21,7 @@ EOS
     @params['cores'] = '8'
     @params['ram'] = '100'
     @params['scratch'] = '500'
-    @params['paired'] = true
+    @params['paired'] = false
     
     @params['krakenDBOpt'] = ['bacteria', 'viruses']
     @params['krakenDBOpt', 'description'] = 'kraken database options: viruses or bacteria. Default is bacteria'
