@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20201028-154752'
+Version = '20220210-150606'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -43,7 +43,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
       @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
     end
     if dataset_has_column?('paired')
-      @params['paired'] = @dataset[0]['paired']
+      @params['paired'] = @dataset[0]['paired'].to_s.downcase
     end
  end
 
