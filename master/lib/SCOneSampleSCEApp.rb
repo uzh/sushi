@@ -24,20 +24,8 @@ Single cell report<br/>
     @params['name'] = 'SCOneSampleSCE'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['SCT.regress'] = ['none', 'CellCycle']
-    @params['SCT.regress', 'description'] = 'Choose CellCycle to be regressed out when using the SCTransform method if it is a bias.'
-    @params['DE.method'] = ['wilcox', 'LR']
-    @params['DE.method', 'description'] ='Method to be used when calculating gene cluster markers. Use LR if you want to include cell cycle in the regression model.'
-    @params['tissue'] = []
-    @params['tissue','multi_selection'] = true
-    @params['tissue','all_selected'] = true
-    @params['tissue', 'multi_selection_size'] = 10
-    tissue = {}
-    CSV.foreach("/srv/GT/databases/scGeneSets/all_cell_markers.txt", headers: true, col_sep: "\t") do |e|
-      tissue[e["tissueType"]] = true
-    end
-    @params['pcGenes'] = ''
-    @params['pcGenes', 'description'] = 'The genes used in supvervised clustering'
+    @params['vars.regress'] = ['none', 'CellCycle']
+    @params['vars.regress', 'description'] = 'Choose CellCycle to be regressed out when using the SCTransform method if it is a bias.'
     @params['resolution'] = [10, 20, 30, 40, 50]
     @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
     @params['nreads'] = ''
