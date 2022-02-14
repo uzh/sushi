@@ -25,7 +25,7 @@ Single cell report<br/>
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['vars.regress'] = ['none', 'CellCycle']
-    @params['vars.regress', 'description'] = 'Choose CellCycle to be regressed out when using the SCTransform method if it is a bias.'
+    @params['vars.regress', 'description'] = 'Variable to regress when modelling the gene variance. Choose CellCycle if it is a bias.'
     @params['tissue'] = []
     @params['tissue','multi_selection'] = true
     @params['tissue','all_selected'] = true
@@ -37,7 +37,7 @@ Single cell report<br/>
     @params['tissue'] = tissue.keys.sort
     @params['tissue', 'description'] = 'Tissue the cells come from. Used in cell types identification for Human and Mouse organisms.'
     @params['resolution'] = [10, 20, 30, 40, 50]
-    @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
+    @params['resolution', 'description'] = 'A higher value will lead to more dense and less clusters.'
     @params['nreads'] = ''
     @params['nreads', 'description'] = 'Low quality cells have less than "nreads" reads. Only when applying fixed thresholds'
     @params['ngenes'] = ''
