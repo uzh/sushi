@@ -22,6 +22,8 @@ class ScCompareSCEApp < SushiFabric::SushiApp
     @params['cores'] = '4'
     @params['ram'] = '30'
     @params['scratch'] = '50'
+    @params['DE.regress'] = 'Batch'
+    @params['DE.regress', 'description'] = 'Regress batch if it is a bias'
     @params['grouping'] = '' ## Note: this will be a selector defined by Factor tagged column
     @params['sampleGroup'] = '' ## Note: this will be a selector defined by Factor tagged column
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
