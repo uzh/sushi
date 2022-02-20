@@ -6,10 +6,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class ScCompareSCEApp < SushiFabric::SushiApp
+class ScSCECompareApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'ScCompareSCE'
+    @name = 'ScSCECompare'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Differential_Expression'
     @description =<<-EOS
@@ -48,7 +48,7 @@ class ScCompareSCEApp < SushiFabric::SushiApp
   end
   def commands
     command = "module load #{@params["Rversion"]}\n"
-    command << run_RApp("EzAppScCompareSCE")
+    command << run_RApp("EzAppScSCECompare")
   end
 end
 
