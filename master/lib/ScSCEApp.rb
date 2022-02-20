@@ -6,10 +6,10 @@ require_relative 'global_variables'
 include GlobalVariables
 
 
-class SCOneSampleSCEApp < SushiFabric::SushiApp
+class ScSCEApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'SCOneSampleSCE'
+    @name = 'ScSCE'
     @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'SingleCell'
     @description =<<-EOS
@@ -21,7 +21,7 @@ Single cell report<br/>
     @params['cores'] = '4'
     @params['ram'] = '20'
     @params['scratch'] = '50'
-    @params['name'] = 'SCOneSampleSCE'
+    @params['name'] = 'ScSCE'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['vars.regress'] = ['none', 'CellCycle']
@@ -78,7 +78,7 @@ Single cell report<br/>
   end
   def commands
     #command = "module load #{@params["Rversion"]}\n"
-    run_RApp("EzAppSCOneSampleSCE")
+    run_RApp("EzAppScSCE")
   end
 end
 
