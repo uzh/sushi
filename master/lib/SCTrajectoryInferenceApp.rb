@@ -24,7 +24,7 @@ Trajectory inference analysis for single cell data<br/>
     @params['name'] = 'SCTrajectoryInference'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['start_id'] = '0'
+    @params['start_id'] = 'none'
     @params['start_id', 'description'] = 'Start cluster(s)'
     @params['end_id'] = 'none'
     @params['end_id', 'description'] = 'End cluster(s)'
