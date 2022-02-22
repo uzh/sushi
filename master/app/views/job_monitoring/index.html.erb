@@ -83,9 +83,9 @@ $(document).ready(function(){
           <%= job[1] %></td>
         <td>
             <% if (job[1]=~/RUNNING/i or job[1]=~/PENDING/i) and current_user and job[4]==current_user.login %>
-              <%= button_to 'kill', "/job_monitoring/#{job[0]}/kill_job", data: {confirm: "Are you sure you want to kill the job '#{job[0]}'?"}, :class=>"btn btn-info btn-sm raised" %>
+              <%= link_to 'kill', "/job_monitoring/#{job[0]}/kill_job", data: {confirm: "Are you sure you want to kill the job '#{job[0]}'?"}, :class=>"btn btn-info btn-sm raised" %>
             <% elsif job[1]=~/FAIL/i and session['employee'] and current_user %>
-                <%= button_to 'resubmit', "/job_monitoring/#{job[0]}/resubmit_job", data: {confirm: "Are you sure you want to submit the job '#{job[0]}' again?"}, :class=>"btn btn-info btn-sm raised" %>
+                <%= link_to 'resubmit', "/job_monitoring/#{job[0]}/resubmit_job", data: {confirm: "Are you sure you want to submit the job '#{job[0]}' again?"}, :class=>"btn btn-info btn-sm raised" %>
             <% end %>
         </td>
         <td class="check_box">
