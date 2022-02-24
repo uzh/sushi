@@ -33,7 +33,7 @@ class WordCountApp < SushiFabric::SushiApp
     @params['note'] = '' 
     @params['note', 'employee'] = true
     @required_columns = ['Name', 'Read1']
-    @required_params = []
+    @required_params = ['test_option3']
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
