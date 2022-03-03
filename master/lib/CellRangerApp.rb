@@ -38,7 +38,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['cmdOptions', 'description'] = 'specify the commandline options for CellRanger; do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['CellRangerVersion'] = ["Aligner/CellRanger/6.0.2","Aligner/CellRanger/5.0.0","Aligner/CellRanger/4.0.0"]
+    @params['CellRangerVersion'] = ["Aligner/CellRanger/6.1.2","Aligner/CellRanger/6.0.2","Aligner/CellRanger/5.0.0","Aligner/CellRanger/4.0.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
