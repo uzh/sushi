@@ -52,7 +52,7 @@ Single cell report<br/>
     @params['nUMIs', 'description'] = 'A gene will be kept if it has at least nUMIs in the fraction of cells specified before'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    #@params['Rversion'] = ["Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
+    #@params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
     @modules = ["Dev/R"]
   end
   def preprocess

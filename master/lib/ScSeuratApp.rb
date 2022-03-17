@@ -60,7 +60,7 @@ Single cell report<br/>
     @params['filterByExpression', 'description'] = 'Keep cells according to specific gene expression. i.e. Set > 1 | Pkn3 > 1'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    #@params['Rversion'] = ["Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
+    #@params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
     @modules = ["Dev/R"]
   end
   def preprocess
