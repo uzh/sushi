@@ -71,7 +71,7 @@ Single cell report<br/>
     @params['nmad', 'description'] = 'Median absolute deviation (MAD) from the median value of each metric across all cells'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
+    # @params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
@@ -101,8 +101,8 @@ Single cell report<br/>
     end
   end
   def commands
-    command = "module load #{@params["Rversion"]}\n"
-    command << run_RApp("EzAppSCFeatBarcoding")
+    # command = "module load #{@params["Rversion"]}\n"
+    run_RApp("EzAppSCFeatBarcoding")
   end
 end
 
