@@ -44,7 +44,7 @@ Single cell report<br/>
     @params['ngenes', 'description'] = 'Low quality cells have less than "ngenes" genes. Only when applying fixed thresholds'
     @params['perc_mito'] = ''
     @params['perc_mito', 'description'] = 'Low quality cells have more than "perc_mito" percent of mitochondrial genes. Only when applying fixed thresholds'
-    @params['perc_ribo'] = ''
+    @params['perc_ribo'] = '70'
     @params['perc_ribo', 'description'] = 'Low quality cells have more than "perc_ribo" percent of ribosomal genes. Only when applying fixed thresholds'
     @params['cellsFraction'] = 0.0001
     @params['cellsFraction', 'description'] = 'A gene will be kept if it is expressed in at least this fraction of cells'
