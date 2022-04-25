@@ -37,13 +37,13 @@ EOS
   def next_dataset
      dataset = {
         'Name'=>@dataset['Name'],
-        'Read1 [File]'=>File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s)}"),
+        'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}_R1.fastq.gz"),
         'Species'=>@dataset['Species'],
         'paired'=>@params['paired'],
         'Read Count'=>@dataset['Read Count']
     }.merge(extract_columns(@inherit_tags))
      if @params['paired'] 
-       dataset['Read2 [File]'] = File.join(@result_dir, "#{File.basename(@dataset['Read2'].to_s)}")
+       dataset['Read2 [File]'] = File.join(@result_dir, "#{@dataset['Name']}_R2.fastq.gz")
      end
      dataset
   end
