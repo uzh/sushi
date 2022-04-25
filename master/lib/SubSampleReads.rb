@@ -17,8 +17,8 @@ EOS
     @required_columns = ['Name','Read1','Species','Pro']
     @required_params = ['paired', 'nReads']
     # optional params
-    @params['cores'] = ['1']
-    @params['ram'] = ['10']
+    @params['cores'] = '1'
+    @params['ram'] = '10'
     @params['scratch'] = '200'
     @params['paired'] = false
     @params['nReads'] = '500000'
@@ -38,7 +38,6 @@ EOS
      dataset = {
         'Name'=>@dataset['Name'],
         'Read1 [File]'=>File.join(@result_dir, "#{File.basename(@dataset['Read1'].to_s)}"),
-        File.join(@result_dir, "#{@dataset['Read1']}"),
         'Species'=>@dataset['Species'],
         'paired'=>@params['paired'],
         'Read Count'=>@dataset['Read Count'],
