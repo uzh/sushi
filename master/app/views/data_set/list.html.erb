@@ -9,6 +9,12 @@
       $('#sushi_app').val(sushi_app);
       this.form.submit();
     })
+    $('#select_retired_sushi_app').change(function(){
+      var Idx = this.selectedIndex;
+      var sushi_app = this.options[Idx].text;
+      $('#retired_sushi_app').val(sushi_app);
+      this.form.submit();
+    })
   });
 </script>
 <h3>DataSets (total: <%= @total.to_s(:delimited) %> in all projects)<span style="font-size: 0.5em;"></h3>
@@ -17,6 +23,12 @@
   <%= hidden_field :sushi, :app, :value=>@sushi_app %>
   <%= select :select, :sushi_app, @sushi_apps, :selected => @sushi_app, :class=>"form-control input-md" %>
 <% end %>
+<%= form_tag('/data_set/list', :multipart => true, :method=>:post) do %>
+  <label>RetiredApp:</label>
+  <%= hidden_field :retired_sushi, :app, :value=>@retired_sushi_app %>
+  <%= select :select, :retired_sushi_app, @retired_sushi_apps, :selected => @retired_sushi_app, :class=>"form-control input-md" %>
+<% end %>
+
 
 
     <table id="data_sets" class="dt pure-table pure-table-bordered">
