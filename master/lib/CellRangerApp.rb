@@ -24,9 +24,11 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['featureLevel'] = 'gene'
     @params['TenXLibrary'] = ['GEX', 'VDJ', 'FeatureBarcoding']
     @params['TenXLibrary', 'description'] = 'Which 10X library? GEX, VDJ or FeatureBarcoding'
-    @params['scMode', 'description'] = 'Single-cell or single-nuclei?'
+    #@params['scMode', 'description'] = 'Single-cell or single-nuclei?'
     @params['chemistry'] = ['auto', 'threeprime', 'fiveprime', 'SC3Pv1', 'SC3Pv2', 'SC3Pv3', 'SC5P-PE', 'SC5P-R2']
     @params['chemistry', 'description'] = 'Assay configuration. NOTE: by default the assay configuration is detected automatically, which is the recommended mode.'
+    @params['expectedCells'] = '10000'
+    @params['expectedCells', 'description'] = 'Expected number of recovered cells. This value overwrites the default of  3000 cells.'
     @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA']
@@ -35,10 +37,10 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['bamStats'] = true
     @params['bamStats', 'description'] = 'Compute stats per cell from the bam file?'
     @params['cmdOptions'] = ''
-    @params['cmdOptions', 'description'] = 'specify the commandline options for CellRanger; do not specify any option that is already covered by the dedicated input fields'
+    @params['cmdOptions', 'description'] = 'specify the commandline options for CellRanger (e.g. --include-introns for single nuclei data); do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['CellRangerVersion'] = ["Aligner/CellRanger/6.1.2","Aligner/CellRanger/6.0.2","Aligner/CellRanger/5.0.0","Aligner/CellRanger/4.0.0"]
+    @params['CellRangerVersion'] = ["Aligner/CellRanger/6.1.2"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
