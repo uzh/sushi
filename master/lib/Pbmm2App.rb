@@ -15,7 +15,7 @@ A minimap2 frontend for PacBio native data formats<br/>
 <a href='https://github.com/PacificBiosciences/pbmm2'>Github website</a>
 EOS
 
-    @required_columns = ['Name','Read1', 'Species']
+    @required_columns = ['Name','Read1']
     @required_params = ['refBuild','ReadOpt']
     # optional params
     @params['cores'] = '8'
@@ -32,7 +32,6 @@ EOS
   def next_dataset
     {
      'Name'=>@dataset['Name'],
-     'Species'=>(dataset = @dataset.first and dataset['Species']),
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'IGV [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
