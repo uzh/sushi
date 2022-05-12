@@ -16,7 +16,8 @@ class NanoPlotApp <  SushiFabric::SushiApp
 
     <a href='https://github.com/wdecoster/NanoPlot'/>Github web-site</a> 
 EOS
-    @required_columns = ['Name','Read1', 'Species']
+    @required_columns = ['Name','Read1']
+    #@required_columns = ['Name','Read1', 'Species']
     @required_params = ['name']
     @params['cores'] = '8'
     @params['ram'] = '30'
@@ -30,7 +31,7 @@ EOS
     report_file = File.join(@result_dir, @params['name'])    
     report_link = File.join(@result_dir, @params['name'], "#{@dataset['Name']}.NanoPlot-report.html")
     {'Name'=>@dataset['Name'],
-     'Species'=>(dataset = @dataset.first and dataset['Species']),
+     #'Species'=>@dataset['Species'],
      'Report [File]'=>report_file,
      'Report [Link]'=>report_link
     }
