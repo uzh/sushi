@@ -86,7 +86,7 @@ Single cell report<br/>
   end
   def commands
     #command = "module load #{@params["Rversion"]}\n"
-    run_RApp("EzAppScSeurat22")
+    run_RApp("EzAppScSeurat")
   end
 end
 
