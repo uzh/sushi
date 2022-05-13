@@ -34,10 +34,12 @@ class JunctionSeqApp < SushiFabric::SushiApp
     @params['fdr'] = '0.05'
     @params['maxReadLength'] = '151'
     @params['minCount'] = '6'
+    @params['maxGenes'] = '1000'
+    @params['refGroup', 'description'] = 'maximum number of genes for plotting'
     @params['expressionName'] = ''
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/jdk", "Dev/R/4.0.3"]
+    @modules = ["Dev/jdk", "Dev/R/4.1.2"]
   end
   def next_dataset
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"

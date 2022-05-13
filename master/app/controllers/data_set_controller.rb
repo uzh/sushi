@@ -58,8 +58,9 @@ class DataSetController < ApplicationController
   def list
     @project = Project.find_by_number(session[:project].to_i)
     @sushi_app = params.dig(:sushi, :app)
+    @retired_sushi_app = params.dig(:retired_sushi, :app)
     if @project
-      @data_sets = if sushi_app_name = params.dig(:select, :sushi_app)
+      @data_sets = if sushi_app_name = params.dig(:select, :sushi_app) || params.dig(:select, :retired_sushi_app)
                      if sushi_app_name == 'ImportedDataSets'
                       data_sets_ = DataSet.all.select{|data_set|
                         data_set.sushi_app_name.nil?
@@ -76,6 +77,8 @@ class DataSetController < ApplicationController
                    end
     end
     @sushi_apps = ["--- select ---", "ImportedDataSets", "AllDataSets"].concat(SushiApplication.all.sort_by{|app| app.class_name}.map{|app| app.class_name})
+    lib_dir = File.expand_path('../../../lib/otherApps', __FILE__)
+    @retired_sushi_apps = ["--- select ---"].concat(Dir[File.join(lib_dir, '*.rb')].to_a.map{|script| File.basename(script).gsub(/.rb$/, '')}.sort)
     @total = DataSet.select(:id).size
   end
 #  caches_action :report
