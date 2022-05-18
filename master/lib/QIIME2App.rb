@@ -54,7 +54,7 @@ EOS
      nds
   end
   def commands
-     run_RApp("EzAppQIIME2", conda_env: "qiime2-2021.11")
+     run_RApp("EzAppQIIME2", conda_env: "qiime2-2022.2")
   end
 end
 
