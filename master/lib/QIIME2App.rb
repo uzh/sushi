@@ -46,11 +46,11 @@ EOS
   end
   def next_dataset
      nds = {'Name'=>@params['name']}
-     nds['Metadata [File]'] = File.join(@result_dir, 'sample_metadata.tsv')
-     nds['Demux Report [Link]'] = File.join(@result_dir, 'demux_seqs.qzv.zip.folder/data/index.html')
-     nds['Feature Table Html [Link]'] = File.join(@result_dir, 'table.qzv.zip.folder/data/index.html')
-     nds['Rep Seqs Report [Link]'] = File.join(@result_dir, 'dada2_rep_set.qzv.zip.folder/data/index.html')
-     nds['Denoising stats Html [Link]'] = File.join(@result_dir, 'dada2_denoising_stats.qzv.zip.folder/data/index.html')
+     nds['ResultDir [File]'] = File.join(@result_dir, 'Results_Folder/')
+     nds['Demux Report [Link]'] = File.join(@result_dir, 'Results_Folder/demux_seqs.qzv.zip.folder/data/index.html')
+     nds['Feature Table Html [Link]'] = File.join(@result_dir, 'Results_Folder/table.qzv.zip.folder/data/index.html')
+     nds['Rep Seqs Report [Link]'] = File.join(@result_dir, 'Results_Folder/dada2_rep_set.qzv.zip.folder/data/index.html')
+     nds['Denoising stats Html [Link]'] = File.join(@result_dir, 'Results_Folder/dada2_denoising_stats.qzv.zip.folder/data/index.html')
      nds
   end
   def commands
