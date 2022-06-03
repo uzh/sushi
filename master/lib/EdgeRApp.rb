@@ -69,7 +69,7 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3", "Dev/R/4.0.1"]
+    @params['Rversion'] = ["Dev/R/4.2.0", "Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3", "Dev/R/4.0.1"]
   end
    def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
