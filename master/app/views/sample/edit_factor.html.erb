@@ -1,0 +1,59 @@
+<h1>Edit Factors</h1>
+<%= image_tag('back.gif') %>
+<%= link_to "Backto DataSet #{@data_set.name}", "/data_set/#{@data_set.id}", :method=>:get %>
+<hr />
+<ul>
+  <li style="font-weight: bold;">Please enter values in the factor column to group replicates</li>
+  <li>Samples with the same string in the experimental factor are considered as replicates</li>
+  <li>The strings should be short and informative and must not contain spaces or special characters</li>
+</ul>
+Examples are "KO" and "WT"; "treated" and "ctrl", ....
+<hr />
+<h3>Samples</h3>
+<% if @data_set %>
+  <%= form_tag({:controller => 'sample',:action => 'show'}, class: 'form') do %>
+    <div id="scroll">
+    <table>
+      <tr>
+        <% @data_set.factor_first_headers.each_with_index do |header, j| %>
+          <th>
+            <% if !@edit_option %>
+            <% if header =~ /\[Factor\]/ or header =~ /Name/ %>
+              <%= text_field "sample_headers", header.to_s.split.first, :value=>header, class: 'text_field' %>
+            <% else %>
+              <%= hidden_field "sample_headers", header.to_s.split.first, :value=>header %>
+            <% end %>
+            <% elsif del_col=@edit_option[:del_col] and del_col==j.to_s %>
+              <s><font color=red><%= header %></font></s>
+            <% else %>
+              <%= header %>
+            <% end %>
+          </th>
+        <% end %>
+      </tr>
+      <% @data_set.samples.each_with_index do |sample, i| %>
+        <tr>
+          <% @data_set.factor_first_headers.each_with_index do |header, j| %>
+            <td>
+              <% file_path = sample.to_hash[header].to_s %>
+              <% if !@edit_option %>
+                <% if header =~ /Name/ %>
+                  <%= text_field "sample_#{i}", header.to_s.split.first, :value=>file_path, class: 'text_field' %>
+                <% elsif header =~ /\[Factor\]/ %>
+                  <%= text_field "sample_#{i}", header.to_s.split.first, :value=>file_path, class: 'text_field' %>
+                <% else %>
+                  <%= hidden_field "sample_#{i}", header.to_s.split.first, :value=>file_path %>
+                <% end %>
+              <% else %>
+                <%= File.basename(file_path) %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+    </div>
+    <%= submit_tag 'save', :id=>"edit_factor", :name=>'edit_factor' %><br />
+  <% end %>
+<% end %>
+<hr />

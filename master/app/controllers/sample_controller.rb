@@ -13,7 +13,7 @@ class SampleController < ApplicationController
           header_without_tag = header.to_s.split.first 
           new_sample[header] = edit_sample[header_without_tag]
         end
-        if params[:edit]
+        if params[:edit] or params[:edit_factor]
           @data_set.samples[i].key_value = new_sample.to_s
           @data_set.samples[i].save
           @data_set.md5 = @data_set.md5hexdigest
@@ -25,7 +25,7 @@ class SampleController < ApplicationController
         samples << sample.to_hash.values
       end
     end
-    if params[:edit]
+    if params[:edit] or params[:edit_factor]
       save_dataset_tsv_in_gstore(@data_set)
     end
 
@@ -143,8 +143,15 @@ class SampleController < ApplicationController
     if session[:del_rows]
       session[:del_rows] = nil
     end
+    if params[:edit_factor]
+      redirect_to(:controller => "data_set", :action => "show") and return
+    end
   end
   def edit
+    @data_set = DataSet.find_by_id(params[:id])
+    @edit_option = params[:edit_option]
+  end
+  def edit_factor
     @data_set = DataSet.find_by_id(params[:id])
     @edit_option = params[:edit_option]
   end
