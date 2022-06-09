@@ -193,6 +193,8 @@ class DataSetController < ApplicationController
     end
 
     if @data_set
+      @factor_columns = @data_set.headers.select{|header| header.tag?('Factor')}
+
       session[:latest_data_set_id] = @data_set.id
       # check some properties
       if session[:employee]

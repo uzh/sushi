@@ -66,6 +66,7 @@ SushiFabric::Application.routes.draw do
       post :show
       post :edit
       post :multiedit
+      post :edit_factor
     end
   end
 
