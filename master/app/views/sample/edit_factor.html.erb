@@ -15,8 +15,8 @@
             if(val && val != "NA"){
               factors[header_name].push(val);
             }
-            alert($(this).attr('id'));
-            alert($(this).val());
+            //alert($(this).attr('id'));
+            //alert($(this).val());
           }
         });
         let blank_headers = [];
@@ -49,9 +49,9 @@ Examples are "KO" and "WT"; "treated" and "ctrl", ....
 <hr />
 <h3>Samples</h3>
 <% if @data_set %>
-  <%= form_tag({:controller => 'sample',:action => 'show'}, class: 'form') do %>
+  <%= form_tag({:controller => 'sample',:action => 'show'}) do %>
     <div id="scroll">
-    <table>
+    <table class='form_table'>
       <tr>
         <% @data_set.factor_first_headers.each_with_index do |header, j| %>
           <th>
