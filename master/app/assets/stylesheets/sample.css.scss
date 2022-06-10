@@ -4,9 +4,14 @@
 
 
 .form {
-  width: 100%
+  width: 100%;
 }
 
 .text_field {
-  width: 100% 
+  width: 100%;
+}
+
+.text_field_readonly {
+  width: 100%;
+  color: gray;
 }
