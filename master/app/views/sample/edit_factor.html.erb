@@ -1,3 +1,41 @@
+<script type="text/javascript">
+   $(function(){
+      $("#edit_factor").on('click', function(){
+        let factors = {};
+        let id, header_name, val;
+
+        $('input[type=text]').each(function(){
+          if($(this).attr('id').match(/sample_\d+_.+/) && !$(this).val().match(/\[Factor\]/)) {
+            id = $(this).attr('id').split("_");
+            header_name = id.slice(-1)[0];
+            val = $(this).val().trim();
+            if(factors[header_name] == undefined){
+              factors[header_name] = [];
+            }
+            if(val && val != "NA"){
+              factors[header_name].push(val);
+            }
+            alert($(this).attr('id'));
+            alert($(this).val());
+          }
+        });
+        let blank_headers = [];
+        Object.keys(factors).forEach(function(header){
+          if(!factors[header].length){
+            blank_headers.push(header);
+          }
+        });
+        if(blank_headers.length){
+          alert("Please fill in [" + blank_headers.join(",") + "] column(s). Stop saving.");
+          return false;
+        }else{
+          $("#edit_factor").submit();
+        }
+      });
+
+   });
+</script>
+
 <h1>Edit Factors</h1>
 <%= image_tag('back.gif') %>
 <%= link_to "Backto DataSet #{@data_set.name}", "/data_set/#{@data_set.id}", :method=>:get %>
