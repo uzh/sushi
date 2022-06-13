@@ -70,7 +70,7 @@ Examples are "KO" and "WT"; "treated" and "ctrl", ....
         <% @data_set.factor_first_headers.each_with_index do |header, j| %>
           <th>
             <% if !@edit_option %>
-            <% if header =~ /Name/ %>
+            <% if header =~ /^Name/ %>
               <%= text_field "sample_headers", header.to_s.split.first, :value=>header, class: 'text_field_readonly', readonly: true %>
             <% elsif header =~ /\[Factor\]/ %>
               <%= text_field "sample_headers", header.to_s.split.first, :value=>header, class: 'text_field' %>
@@ -91,7 +91,7 @@ Examples are "KO" and "WT"; "treated" and "ctrl", ....
             <td>
               <% file_path = sample.to_hash[header].to_s %>
               <% if !@edit_option %>
-                <% if header =~ /Name/ %>
+                <% if header =~ /^Name/ %>
                   <%= text_field "sample_#{i}", header.to_s.split.first, :value=>file_path, class: 'text_field_readonly', readonly: true %>
                 <% elsif header =~ /\[Factor\]/ %>
                   <%= text_field "sample_#{i}", header.to_s.split.first, :value=>file_path, class: 'text_field' %>
