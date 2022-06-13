@@ -3,22 +3,36 @@
       $("#edit_factor").on('click', function(){
         let factors = {};
         let id, header_name, val;
+        var prohibit_char = /[^a-zA-Z0-9_-]/;
 
+        let input_check = true;
         $('input[type=text]').each(function(){
           if($(this).attr('id').match(/sample_\d+_.+/) && !$(this).val().match(/\[Factor\]/)) {
             id = $(this).attr('id').split("_");
             header_name = id.slice(-1)[0];
-            val = $(this).val().trim();
+            val = $(this).val();
             if(factors[header_name] == undefined){
               factors[header_name] = [];
             }
             if(val && val != "NA"){
               factors[header_name].push(val);
+              if(val.match(prohibit_char)){
+                $(this).addClass('attention');
+                input_check = false;
+              }
             }
             //alert($(this).attr('id'));
             //alert($(this).val());
           }
         });
+
+        // check invalid characters
+        if(!input_check){
+          alert("WARNING: Only alphabets, numbers, underscore '_' and hyphen '-' are allowed for the Factor value");
+          return false;
+        }
+
+        // check blanks/NAs
         let blank_headers = [];
         Object.keys(factors).forEach(function(header){
           if(!factors[header].length){
