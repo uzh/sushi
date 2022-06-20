@@ -17,7 +17,7 @@ class QIIME2App < SushiFabric::SushiApp
 EOS
     @params['process_mode'] = 'DATASET'
     @required_columns = ['Name', 'Read1']
-    @required_params = ['paired','trim_left','truncate_len','sampling_depth', 'group']
+    @required_params = ['paired','trim_left','truncate_len','sampling_depth','max_rarefaction_depth','min_freq','min_samples','group']
     @params['cores'] = '2'
     @params['ram'] = '7'
     @params['scratch'] = '10'
@@ -29,6 +29,12 @@ EOS
     @params['truncate_len', 'description'] = 'Position at which sequences should be truncated due to decrease in quality. Assuming good quality reads and 150bp illumina sequencing.'
     @params['sampling_depth'] = '1000'
     @params['sampling_depth', 'description'] = 'Total frequency that each sample should be rarefied to prior to computing diversity metrics.'
+    @params['max_rarefaction_depth'] = '4000'
+    @params['max_rarefaction_depth', 'description'] = 'Choose maximum depth for generating alpha rarefaction curves for exploring explore alpha diversity as a function of sampling depth.'
+    @params['min_freq'] = '100'
+    @params['min_freq', 'description'] = 'The minimum total frequency that a feature must have to be retained for differential abundance calculation.'
+    @params['min_samples'] = '15'
+    @params['min_samples', 'description'] = 'The minimum number of samples that a feature must be observed in to be retained for differential abundance calculation.' 
     @params['group'] = true
     @params['group', 'description'] = 'There needs to be a group assignment column. Ensure the column name is in the format "NAME [Factor]" and is placed as a column between Read1 and Read2'
     @params['name'] = 'QIIME2'
@@ -48,9 +54,17 @@ EOS
      nds = {'Name'=>@params['name']}
      nds['ResultDir [File]'] = File.join(@result_dir, 'Results_Folder/')
      nds['Demux Report [Link]'] = File.join(@result_dir, 'Results_Folder/demux_seqs.qzv.zip.folder/data/index.html')
-     nds['Feature Table Html [Link]'] = File.join(@result_dir, 'Results_Folder/table.qzv.zip.folder/data/index.html')
+     nds['Denoising stats [Link]'] = File.join(@result_dir, 'Results_Folder/dada2_denoising_stats.qzv.zip.folder/data/index.html')
+     nds['Feature Table [Link]'] = File.join(@result_dir, 'Results_Folder/table.qzv.zip.folder/data/index.html')
      nds['Rep Seqs Report [Link]'] = File.join(@result_dir, 'Results_Folder/dada2_rep_set.qzv.zip.folder/data/index.html')
-     nds['Denoising stats Html [Link]'] = File.join(@result_dir, 'Results_Folder/dada2_denoising_stats.qzv.zip.folder/data/index.html')
+     nds['Taxonomy Barplot [Link]'] = File.join(@result_dir, 'Results_Folder/taxa-bar-plots.qzv.zip.folder/data/index.html')
+     nds['Shannon Diversity [Link]'] = File.join(@result_dir, 'Results_Folder/shannon_group_significance.qzv.zip.folder/data/index.html')
+     nds['Jaccard Diversity [Link]'] = File.join(@result_dir, 'Results_Folder/jaccard_group_significance.qzv.zip.folder/data/index.html')
+     nds['Bray Curtis Diversity [Link]'] = File.join(@result_dir, 'Results_Folder/bray_curtis_group_significance.qzv.zip.folder/data/index.html')
+     nds['Jaccard Emperor Plot [Link]'] = File.join(@result_dir, 'Results_Folder/jaccard_emperor_plot.qzv.zip.folder/data/index.html')
+     nds['Bray Curtis Emperor Plot [Link]'] = File.join(@result_dir, 'Results_Folder/bray_curtis_emperor_plot.qzv.zip.folder/data/index.html')
+     nds['Alpha rarefaction [Link]'] = File.join(@result_dir, 'Results_Folder/alpha-rarefaction.qzv.zip.folder/data/index.html')
+     nds['Differential abundace [Link]'] = File.join(@result_dir, 'Results_Folder/ancom_group.qzv.zip.folder/data/index.html')
      nds
   end
   def commands
