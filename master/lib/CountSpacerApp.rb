@@ -30,7 +30,9 @@ EOS
       @params['dictPath'][File.basename(dir)] = File.basename(dir)
     end
     @params['leftPattern'] = ''
+    @params['leftPattern', 'description'] = 'short patterns < 8bp could could cause misleading results'
     @params['rightPattern'] = ''
+    @params['rightPattern', 'description'] = 'short patterns < 8bp could could cause misleading results'
     @params['maxMismatch'] = 1
     @params['maxMismatch', 'description'] = 'number of allowed mismatches for pattern search'
 
@@ -92,6 +94,9 @@ EOS
      'Html [Link]'=>report_link,
      'Count [File]'=>count_file, 
      'Species'=>@dataset['Species'],
+     #'refBuild'=>'',
+     #'featureLevel'=>'smRNA',
+     #'refFeatureFile'=>'',
      'Read Count'=>@dataset['Read Count'] 
     }
   end
