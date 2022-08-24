@@ -31,7 +31,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['cmdOptions', 'description'] = 'specify the commandline options for SpaceRanger; do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/R", "Aligner/SpaceRanger"]
+    @params['SpaceRangerVersion'] = ["Aligner/SpaceRanger/2.0.0", "Aligner/SpaceRanger/1.3.1"]
+    @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
@@ -52,6 +53,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     dataset
   end
   def commands
+    command = "module load  #{@params["SpaceRangerVersion"]}\n"
     run_RApp("EzAppSpaceRanger")
   end
 end
