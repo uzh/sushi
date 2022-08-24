@@ -54,7 +54,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
   end
   def commands
     command = "module load  #{@params["SpaceRangerVersion"]}\n"
-    run_RApp("EzAppSpaceRanger")
+    command << run_RApp("EzAppSpaceRanger")
   end
 end
 
