@@ -24,6 +24,8 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['grouping'] = ''
     @params['targetFile'] = ''
     @params['specialOptions'] = ''
+    @params['dbNSFP_file'] = ["dbNSFP2.9.txt.gz", "dbNSFP4.1c.txt.gz"]
+    @params['dbNSFP_fields'] = 'ExAC_AF,ExAC_AC,1000Gp1_EUR_AF,Uniprot_acc,Interpro_domain,phastCons100way_vertebrate,CADD_phred,Polyphen2_HDIV_pred,Polyphen2_HVAR_pred,SIFT_score,SIFT_pred'
     @params['mail'] = ""
     @modules = ["Dev/jdk", "Variants/GATK", "Tools/Picard", "Variants/SnpEff", "Dev/R"]
   end
