@@ -21,10 +21,10 @@ EOS
 @params['ram'] = '30'
 @params['scratch'] = '50'
 @params['useSubsystemDB'] = false
-@params['useSubsystemDB', 'description'] = 'Should the metatranscriptome be annotated also against Subsystem?'
+@params['useSubsystemDB', 'description'] = 'Should the metatranscriptome be annotated also against Subsystem? Not supported at the moment.'
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
-@modules = ["Dev/R"]
+@modules = ["Dev/R", "Dev/jdk"]
 end
   def preprocess
     if @params['paired']
