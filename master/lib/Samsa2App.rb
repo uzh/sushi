@@ -36,6 +36,7 @@ end
   end
 def next_dataset
    dataset = {'Name'=>@dataset['Name'],
+     'annotationFileRefSeq [File]' => File.join(@result_dir, "#{@dataset['Name']}.RefSeq.annotated.txt"
      'annotationORGFileRefSeq [File]' => File.join(@result_dir, "#{@dataset['Name']}.RefSeq.annotated_org.txt")
      'annotationFUNCFileRefSeq [File]' => File.join(@result_dir, "#{@dataset['Name']}.RefSeq.annotated_func.txt")
 }.merge(extract_columns(@inherit_tags))
