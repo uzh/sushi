@@ -54,7 +54,8 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['maxSamplesSupported'] = '5'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
+    #@params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
+    @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
@@ -73,8 +74,8 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     end
   end
   def commands
-    command = "module load #{@params["Rversion"]}\n"
-    command << run_RApp("EzAppScSeuratCombine")
+    #command = "module load #{@params["Rversion"]}\n"
+    run_RApp("EzAppScSeuratCombine")
   end
 end
 
