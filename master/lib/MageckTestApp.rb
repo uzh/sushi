@@ -23,6 +23,8 @@ class MageckTestApp < SushiFabric::SushiApp
     @params['scratch'] = ['10']
     @params['name'] = 'MAGeCK_Test'
     @params['specialOptions'] = ''
+    @params['cmdOptions'] = ''
+    @params['cmdOptions', 'description'] = 'specify other commandline options for MAGeCK_Test; do not specify any option that is already covered by the dedicated input fields'
     @params['grouping'] = ''
     @params['sampleGroup'] = ''
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
