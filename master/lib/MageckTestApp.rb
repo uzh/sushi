@@ -22,6 +22,7 @@ class MageckTestApp < SushiFabric::SushiApp
     @params['ram'] = ['4']
     @params['scratch'] = ['10']
     @params['name'] = 'MAGeCK_Test'
+    @params['species'] = ['hsa', 'mmu']
     @params['specialOptions'] = ''
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for MAGeCK_Test; do not specify any option that is already covered by the dedicated input fields'
