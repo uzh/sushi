@@ -16,13 +16,14 @@ class MageckTestApp < SushiFabric::SushiApp
     EOS
     @params['process_mode'] = 'DATASET'
     @required_columns = ['Name','Count']
-    @required_params = []
+    @required_params = ['species','libName','sampleGroup','refGroup']
     # optional params
     @params['cores'] = ['1']
     @params['ram'] = ['4']
     @params['scratch'] = ['10']
     @params['name'] = 'MAGeCK_Test'
     @params['species'] = ['hsa', 'mmu']
+    @params['libName'] = ''
     @params['specialOptions'] = ''
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for MAGeCK_Test; do not specify any option that is already covered by the dedicated input fields'
@@ -47,6 +48,7 @@ class MageckTestApp < SushiFabric::SushiApp
     }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
+    @params['libName'] = @dataset[0]['libName']
   end
   def commands
     run_RApp("EzAppMageckTest")
