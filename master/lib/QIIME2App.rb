@@ -37,6 +37,10 @@ EOS
     @params['min_samples', 'description'] = 'The minimum number of samples that a feature must be observed in to be retained for differential abundance calculation.' 
     @params['group'] = true
     @params['group', 'description'] = 'There needs to be a group assignment column. Ensure the column name is in the format "NAME [Factor]" and is placed as a column between Read1 and Read2'
+    @params['database'] = ["silva", "greengenes"]
+    @params['database', 'description'] = 'Choose marker gene reference database'
+    @params['primer'] = ["whole", "V4"]
+    @params['primer', 'description'] = 'Region of 16S rRNA genes to be used for training Naive Bayes classifier. It has been shown taxonomic classification improves when Naive Bayes classifier is trained on only the region of the target sequences that was sequenced. At the moment only whole 16S or V4 supported.'
     @params['name'] = 'QIIME2'
     @params['mail'] = ""
     @inherit_tags = ['B-Fabric']
