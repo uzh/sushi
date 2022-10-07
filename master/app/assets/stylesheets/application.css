@@ -51,3 +51,7 @@ p.notice {
 .attention {
   background: #FA5858;
 }
+
+.resizable {
+  resize: both;
+}

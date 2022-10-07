@@ -75,7 +75,7 @@
           <% when 'partition' %>
             <%= text_field :parameters, key.to_sym, :value => "#{session[:partition]}", :readonly => true %>
           <% when 'samples' %>
-            <%= select_tag "parameters[#{key}]", options_for_select(@samples, {:selected => @samples.map{|sample| sample.last}}), :multiple => true, :size => 5 %><br />
+            <%= select_tag "parameters[#{key}]", options_for_select(@samples, {:selected => @samples.map{|sample| sample.last}}), :class => 'resizable', :multiple => true, :size => 5 %><br />
           <% else %>
             <% if @factors and key=='grouping' %>
               <%= select :parameters, :grouping, options_for_select(@factor_colums.keys.map{|factor| [factor.split.first, factor.split.first]}, params[:grouping]),  :prompt => "please select" %>

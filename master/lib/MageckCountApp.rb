@@ -51,8 +51,9 @@ EOS
     {'Name'=>@dataset['Name'],
      'Count [File]'=>count_file,
      'Log [File]'=>log_file,
-     'Read Count'=>@dataset['Read Count'] 
-    }
+     'Read Count'=>@dataset['Read Count'],
+     'libName'=>@params['libName']
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppMageckCount")

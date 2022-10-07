@@ -16,7 +16,7 @@ class ScSCECompareApp < SushiFabric::SushiApp
     Empirical analysis of digital gene expression data in R<br/>
 <a href='https://bioconductor.org/packages/release/bioc/html/DifferentialState.html'>DifferentialState</a><br/>
     EOS
-    @required_columns = ['Name', 'Condition']
+    @required_columns = ['Name', 'SC SCE']
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
     # optional params
     @params['cores'] = '4'
