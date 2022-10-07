@@ -40,7 +40,7 @@ EOS
     @params['database'] = ["silva", "greengenes"]
     @params['database', 'description'] = 'Choose marker gene reference database'
     @params['primer'] = ["whole", "V4"]
-    @params['primer', 'description'] = 'Region of 16S rRNA genes to be used for training Naive Bayes classifier. It has been shown taxonomic classification improves when Naive Bayes classifier is trained on only the region of the target sequences that was sequenced. At the moment only whole 16S or V4 supported.'
+    @params['primer', 'description'] = 'Region of 16S rRNA genes to be used for training Naive Bayes classifier. It has been shown taxonomic classification improves when Naive Bayes classifier is trained on only the region of the target sequences that was sequenced. The whole 16S rRNA or the V4 region are included.'
     @params['name'] = 'QIIME2'
     @params['mail'] = ""
     @inherit_tags = ['B-Fabric']
