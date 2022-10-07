@@ -16,7 +16,7 @@ class SeuratCompareApp < SushiFabric::SushiApp
     Empirical analysis of digital gene expression data in R<br/>
 <a href='https://bioconductor.org/packages/release/bioc/html/DifferentialState.html'>DifferentialState</a><br/>
     EOS
-    @required_columns = ['Name', 'Condition']
+    @required_columns = ['Name', 'SC Seurat']
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
     # optional params
     @params['cores'] = '4'
@@ -33,7 +33,7 @@ class SeuratCompareApp < SushiFabric::SushiApp
     @params['refGroup'] = '' ## Note: this will be a selector defined by Factor tagged column
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
+    @params['Rversion'] = ["Dev/R/4.2", "Dev/R/4.1.2", "Dev/R/4.1.0"]
   end
    def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
