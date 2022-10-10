@@ -39,8 +39,12 @@ EOS
     @params['group', 'description'] = 'There needs to be a group assignment column. Ensure the column name is in the format "NAME [Factor]" and is placed as a column between Read1 and Read2'
     @params['database'] = ["silva", "greengenes"]
     @params['database', 'description'] = 'Choose marker gene reference database'
-    @params['primer'] = ["whole", "V4"]
-    @params['primer', 'description'] = 'Region of 16S rRNA genes to be used for training Naive Bayes classifier. It has been shown taxonomic classification improves when Naive Bayes classifier is trained on only the region of the target sequences that was sequenced. The whole 16S rRNA or the V4 region are included.'
+    @params['primer'] = ["V1-V3(1)", "V1-V3(2)", "V3", "V4", "V3-V4", "V4-V5", "V3-V5", "V4-V6"]
+    @params['primer', 'description'] = 'Region of 16S rRNA genes to be used for training Naive Bayes classifier. It has been shown taxonomic classification improves when Naive Bayes classifier is trained on only the region of the target sequences that was sequenced.'
+    @params['forward_primer'] = [ "DAGAGTTTGATCMTGGCTCAG", "GAGAGTTTGATYMTGGCTCAG", "GATCCTACGGGAGGCAGCA", "GTGCCAGCMGCCGCGGTAA", "CCTACGGGNGGCWGCAG", "GTGCCAGCMGCCGCGGTAA", "CCTACGGGAGGCAGCAG", "GTGCCAGCMGCNGCGG3"]
+    @params['forward_primer', 'description'] = "Choose accoding to the same order as the primer parameter"
+    @params['reverse_primer'] = [ "TMTTACCGCGGCNGCTGGCAC", "ACCGCGGCTGCTGGCAC", "CTTACCGCGGCTGCTGGC", "GGACTACHVGGGTWTCTAAT", "GACTACHVGGGTATCTAATCC", "CCGTCAATTCMTTTRAGTTT", "CCGTCAATTCMTTTRAGT", "GGGTTNCGNTCGTTG"]
+    @params['reverse_primer', 'description'] = "Choose accoding to the same order as the primer parameter"
     @params['name'] = 'QIIME2'
     @params['mail'] = ""
     @inherit_tags = ['B-Fabric']
