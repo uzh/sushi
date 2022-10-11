@@ -16,7 +16,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @required_columns = ['Name','RawDataDir','Species']
     @required_params = ['name', 'refBuild']
     @params['cores'] = ['8', '12', '16']
-    @params['ram'] = ['60', '40', "80"]
+    @params['ram'] = ['60', '40', '80']
     @params['scratch'] = '200'
     @params['name'] = 'CellRangerCount'
     @params['refBuild'] = ref_selector
@@ -58,7 +58,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
         'refFeatureFile'=>@params['refFeatureFile'],
         'featureLevel'=>@params['featureLevel'],
         'ResultDir [File]'=>report_dir,
-        'Report [Link]'=>File.join(report_dir, 'web_summary.html')
+        'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
+        'Read Count'=>@dataset['Read Count']
       }.merge(extract_columns(@inherit_tags))
     else
       dataset = {
@@ -70,7 +71,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
         'transcriptTypes'=>@params['transcriptTypes'],
         'ResultDir [File]'=>report_dir,
         'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
-        'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix')
+        'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix'),
+        'Read Count'=>@dataset['Read Count'])
       }.merge(extract_columns(@inherit_tags))
     end
     dataset
