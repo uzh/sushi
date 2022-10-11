@@ -19,8 +19,8 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @required_params = []
     # optional params
     @params['cores'] = '4'
-    @params['ram'] = '30'
-    @params['scratch'] = '50'
+    @params['ram'] = '60'
+    @params['scratch'] = '100'
     @params['node'] = ''
     @params['process_mode'] = 'DATASET'
     @params['name'] = 'SCReportMultipleSamplesSeurat'
