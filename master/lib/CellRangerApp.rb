@@ -72,7 +72,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
         'ResultDir [File]'=>report_dir,
         'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
         'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix'),
-        'Read Count'=>@dataset['Read Count'])
+        'Read Count'=>@dataset['Read Count']
       }.merge(extract_columns(@inherit_tags))
     end
     dataset
