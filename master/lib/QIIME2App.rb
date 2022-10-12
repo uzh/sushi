@@ -36,7 +36,9 @@ EOS
     @params['min_samples'] = '15'
     @params['min_samples', 'description'] = 'The minimum number of samples that a feature must be observed in to be retained for differential abundance calculation.' 
     @params['group'] = true
-    @params['group', 'description'] = 'There needs to be a group assignment column. Ensure the column name is in the format "NAME [Factor]" and is placed as a column between Read1 and Read2'
+    @params['group', 'description'] = 'There needs to be a group assignment column. Ensure the column name is in the format "NAME [Factor]"'
+    @params['grouping'] = ''
+    @params['grouping', 'description'] = 'Type in the same of the group assignment column. If the name is in the format "NAME [Factor]" type in the NAME'
     @params['database'] = ["silva", "greengenes"]
     @params['database', 'description'] = 'Choose marker gene reference database'
     @params['primer'] = ["V1-V3(1)", "V1-V3(2)", "V3", "V4", "V3-V4", "V4-V5", "V3-V5", "V4-V6"]
