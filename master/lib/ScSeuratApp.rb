@@ -39,8 +39,8 @@ Single cell report<br/>
     @params['tissue'] = tissue.keys.sort
     @params['tissue', 'description'] = 'Tissue the cells come from. Used in cell types identification for Human and Mouse organisms.'
     @params['enrichrDatabase'] = ['Tabula_Muris', 'tabula_sapiens', 'Azimuth_Cell_Types_2021', 'PanglaoDB_Augmented_2021', 'CellMarker_Augmented_2021', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Human_Gene_Atlas', 'Mouse_Gene_Atlas', ]
-    @params['tissue','multi_selection'] = true
-    @params['tissue','all_selected'] = true
+    @params['enrichrDatabase','multi_selection'] = true
+    @params['enrichrDatabase','all_selected'] = true
     @params['npcs'] = 20
     @params['npcs', 'description'] = 'The maximal dimensions to use for reduction. Do not use more pcs than pcGenes (when used).'
     @params['pcGenes'] = ''
