@@ -11,7 +11,7 @@ class SeuratCompareApp < SushiFabric::SushiApp
     super
     @name = 'SeuratCompare'
     @params['process_mode'] = 'DATASET'
-    @analysis_category = 'Differential_Expression'
+    @analysis_category = 'SingleCell'
     @description =<<-EOS
     Empirical analysis of digital gene expression data in R<br/>
 <a href='https://bioconductor.org/packages/release/bioc/html/DifferentialState.html'>DifferentialState</a><br/>
