@@ -72,6 +72,7 @@ EOS
     }
   end
   def commands
-    run_RApp("EzAppFastqScreen_10x")
+    commands = 'export LANG=en_US.UTF-8'
+    commands << run_RApp("EzAppFastqScreen_10x")
   end
 end
