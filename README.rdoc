@@ -1,7 +1,5 @@
 == 1. Getting started
 
-boobar
-
 *Process your raw data without cooking it*
 
 *SUSHI* can Support Users for SHell script Integration, defined as a recursive acronym as usual, but someone might say after using it, SUSHI is a Super Ultra Special Hyper Incredible system!! SUSHI is an agile and extensible data analysis framework that brings innovative concepts to Next Generation Sequencing bioinformatics. SUSHI lets bioinformaticians wrap open source tools like e.g. bowtie, STAR or GATK into apps and provides natively a commandline and a web interface to run these apps. Users can script their analysis as well as do an analysis-by-clicking in their browser. When running an SUSHI application SUSHI takes care of all aspects of documentation: Input data, parameters, software tools and versions are stored persistently. SUSHI accepts meta-information on samples and processing and lets the user define the meta-information she/he needs in a tabular format. Finally, all results, the associated logs, all parameters and all meta-information is stored in a single, self-contained directory that can be shared with collaborators. Altogether, SUSHI as a framework truly supports collaborative, reproducible data analysis and research. At the Functional Genomics Center, SUSHI is tightly integrated with B-Fabric(http://fgcz-bfabric.uzh.ch) and shares the authentication, sample information and the storage. The production version of SUSHI is currently being further integrated in the overall B-Fabric framework.
