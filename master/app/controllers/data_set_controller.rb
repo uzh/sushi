@@ -1012,7 +1012,7 @@ class DataSetController < ApplicationController
           when "PROJECT_NUMBER"
             @replaces[key] = session[:project]
           when "ORDER_NUMBER"
-            @replaces[key] = if @data_set.name =~ /_o(\d+)/
+          @replaces[key] = if @data_set.name =~ /_o(\d+)/ or @data_set.name =~ /^o(\d+)_/
                                $1
                              else
                                key
@@ -1044,7 +1044,7 @@ class DataSetController < ApplicationController
     File.readlines(template_path).each do |line|
       @template << line.chomp.gsub(/#{@replaces.keys.join("|")}/, @replaces)
     end
-    @bfab_order_number = if @replaces["DATASET_NAME"] =~ /_o(\d+)/
+    @bfab_order_number = if @replaces["DATASET_NAME"] =~ /_o(\d+)/ or @replaces["DATASET_NAME"] =~ /^o(\d+)_/
                            $1
                          end
   end
