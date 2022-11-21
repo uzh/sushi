@@ -68,6 +68,7 @@ EOS
      nds['Feature Table [Link]'] = File.join(@result_dir, 'Results_Folder/table.qzv.zip.folder/data/index.html')
      nds['Rep Seqs Report [Link]'] = File.join(@result_dir, 'Results_Folder/dada2_rep_set.qzv.zip.folder/data/index.html')
      nds['Taxonomy Barplot [Link]'] = File.join(@result_dir, 'Results_Folder/taxa-bar-plots.qzv.zip.folder/data/index.html')
+     nds['Taxonomy List [Link]'] = File.join(@result_dir, 'Results_Folder/taxonomy.qzv.zip.folder/data/index.html')
      nds['Shannon Diversity [Link]'] = File.join(@result_dir, 'Results_Folder/shannon_group_significance.qzv.zip.folder/data/index.html')
      nds['Jaccard Diversity [Link]'] = File.join(@result_dir, 'Results_Folder/jaccard_group_significance.qzv.zip.folder/data/index.html')
      nds['Bray Curtis Diversity [Link]'] = File.join(@result_dir, 'Results_Folder/bray_curtis_group_significance.qzv.zip.folder/data/index.html')
