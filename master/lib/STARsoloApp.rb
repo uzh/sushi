@@ -37,7 +37,9 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
     @params['soloUMIstart','description'] = 'UMI start base.'
     @params['soloUMIlen'] = 'auto'
     @params['soloUMIlen', 'description'] = 'UMI length. Select *auto* to use default UMI length based on chemistry. Specify the length otherwise.'
-    
+    @params['features'] = ['Gene', 'SJ', 'GeneFull', 'GeneFull_ExonOverIntron', 'GeneFull_Ex50pAS', 'Velocyto']
+    @params['features', 'multi_selection'] = true
+    @params['features', 'selected'] = ['GeneFull_ExonOverIntron', 'Velocyto']
     @params['keepAlignment'] = false
     
     @params['cmdOptions'] = ''
