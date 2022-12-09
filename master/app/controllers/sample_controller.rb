@@ -6,11 +6,11 @@ class SampleController < ApplicationController
     # update values
     samples = []
     @data_set.samples.each_with_index do |sample, i|
-      current_sample = Hash[*sample.to_hash.map{|key, value| [key.split.first,value]}.flatten]
+      current_sample = Hash[*sample.to_hash.map{|key, value| [view_context.remove_tag(key),value]}.flatten]
       if edit_sample = params["sample_#{i}"] and current_sample.to_s!=edit_sample.to_s
         new_sample = {}
         sample.to_hash.each do |header, value|
-          header_without_tag = header.to_s.split.first 
+          header_without_tag = view_context.remove_tag(header.to_s)
           new_sample[header] = edit_sample[header_without_tag]
         end
         if params[:edit] or params[:edit_factor]
@@ -58,7 +58,7 @@ class SampleController < ApplicationController
     end
 
     # add new row
-    current_headers = Hash[*@data_set.samples.first.to_hash.keys.map{|header| [header.to_s.split.first, header]}.flatten]
+    current_headers = Hash[*@data_set.samples.first.to_hash.keys.map{|header| [view_context.remove_tag(header.to_s), header]}.flatten]
     if add_sample = params[:sample_new]
       new_sample = {}
       add_sample.each do |key, value|
@@ -97,7 +97,7 @@ class SampleController < ApplicationController
       @data_set.samples.each_with_index do |sample, i|
         new_sample = {}
         sample.to_hash.each do |header, value|
-          header_without_tag = header.split.first 
+          header_without_tag = view_context.remove_tag(header.to_s)
           if new_header = new_headers[header_without_tag] and !new_header.to_s.empty?
             new_sample[new_header] = value
           else

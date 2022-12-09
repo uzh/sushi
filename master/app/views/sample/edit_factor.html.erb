@@ -71,11 +71,11 @@ Examples are "KO" and "WT"; "treated" and "ctrl", ....
           <th>
             <% if !@edit_option %>
             <% if header =~ /^Name/ %>
-              <%= text_field "sample_headers", header.to_s.split.first, :value=>header, class: 'text_field_readonly', readonly: true %>
+              <%= text_field "sample_headers", remove_tag(header.to_s), :value=>header, class: 'text_field_readonly', readonly: true %>
             <% elsif header =~ /\[Factor\]/ %>
-              <%= text_field "sample_headers", header.to_s.split.first, :value=>header, class: 'text_field' %>
+              <%= text_field "sample_headers", remove_tag(header.to_s), :value=>header, class: 'text_field' %>
             <% else %>
-              <%= hidden_field "sample_headers", header.to_s.split.first, :value=>header %>
+              <%= hidden_field "sample_headers", remove_tag(header.to_s), :value=>header %>
             <% end %>
             <% elsif del_col=@edit_option[:del_col] and del_col==j.to_s %>
               <s><font color=red><%= header %></font></s>
@@ -92,11 +92,11 @@ Examples are "KO" and "WT"; "treated" and "ctrl", ....
               <% file_path = sample.to_hash[header].to_s %>
               <% if !@edit_option %>
                 <% if header =~ /^Name/ %>
-                  <%= text_field "sample_#{i}", header.to_s.split.first, :value=>file_path, class: 'text_field_readonly', readonly: true %>
+                  <%= text_field "sample_#{i}", remove_tag(header.to_s), :value=>file_path, class: 'text_field_readonly', readonly: true %>
                 <% elsif header =~ /\[Factor\]/ %>
-                  <%= text_field "sample_#{i}", header.to_s.split.first, :value=>file_path, class: 'text_field' %>
+                  <%= text_field "sample_#{i}", remove_tag(header.to_s), :value=>file_path, class: 'text_field' %>
                 <% else %>
-                  <%= hidden_field "sample_#{i}", header.to_s.split.first, :value=>file_path %>
+                  <%= hidden_field "sample_#{i}", remove_tag(header.to_s), :value=>file_path %>
                 <% end %>
               <% else %>
                 <%= File.basename(file_path) %>

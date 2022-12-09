@@ -66,5 +66,7 @@ module ApplicationHelper
     str="<span title='"+help+"'>"+str+"</span>"
     str.to_s.html_safe
   end
-
+  def remove_tag(header)
+    header.gsub(/\s*\[.+\]/, '')
+  end
 end

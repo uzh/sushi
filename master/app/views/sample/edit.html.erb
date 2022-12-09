@@ -27,7 +27,7 @@ $(document).ready(function(){
         <% @data_set.factor_first_headers.each_with_index do |header, j| %>
           <th>
             <% if !@edit_option %>
-              <%= text_field "sample_headers", header.to_s.split.first, :size=>15, :value=>header %>
+              <%= text_field "sample_headers", remove_tag(header.to_s), :size=>15, :value=>header %>
             <% elsif del_col=@edit_option[:del_col] and del_col==j.to_s %>
               <s><font color=red><%= header %></font></s>
             <% else %>
@@ -47,7 +47,7 @@ $(document).ready(function(){
             <td>
               <% file_path = sample.to_hash[header].to_s %>
               <% if !@edit_option %>
-                <%= text_field "sample_#{i}", header.to_s.split.first, :size=>15, :value=>file_path %>
+                <%= text_field "sample_#{i}", remove_tag(header.to_s), :size=>15, :value=>file_path %>
               <% elsif @edit_option[:del_row]==i.to_s %>
                 <%= hidden_field :edit_option, :del_row, :value=>i.to_s %> 
                 <s><font color=red><%= File.basename(file_path) %></font></s>
@@ -70,7 +70,7 @@ $(document).ready(function(){
         <tr>
           <% @data_set.factor_first_headers.each do |header| %>
             <td>
-              <%= text_field "sample_new", header.to_s.split.first, :size=>15, :value=>'' %>
+              <%= text_field "sample_new", remove_tag(header.to_s), :size=>15, :value=>'' %>
             </td>
           <% end %>
         </tr>
