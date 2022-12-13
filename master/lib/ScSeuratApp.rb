@@ -24,6 +24,8 @@ Single cell report<br/>
     @params['name'] = 'ScSeurat'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['geneCountModel'] = ''
+    @params['geneCountModel', 'description'] = '(STARsolo Input Only) The gene count model, i.e. Solo features, to use from the previous step'
     @params['SCT.regress'] = ['none', 'CellCycle']
     @params['SCT.regress', 'description'] = 'Choose CellCycle to be regressed out when using the SCTransform method if it is a bias.'
     @params['DE.method'] = ['wilcox', 'LR']
@@ -61,8 +63,6 @@ Single cell report<br/>
     @params['nUMIs', 'description'] = 'A gene will be kept if it has at least nUMIs in the fraction of cells specified before'
     @params['filterByExpression'] = ''
     @params['filterByExpression', 'description'] = 'Keep cells according to specific gene expression. i.e. Set > 1 | Pkn3 > 1'
-    @params['geneCountModel'] = 'GeneFull_ExonOverIntron'
-    @params['geneCountModel', 'description'] = '(STARsolo Input Only) The gene count model, i.e. Solo features, to use from the previous step'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     #@params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
@@ -89,7 +89,9 @@ Single cell report<br/>
       @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
     end
     if dataset_has_column?('soloFeatures')
-      @params['geneCountModel'] = @dataset[0]['soloFeatures'].split(',', -1)
+      @params['geneCountModel'] = @dataset[0]['soloFeatures'].split(',')
+    else
+      @params.delete('geneCountModel')
     end
   end
   def commands
