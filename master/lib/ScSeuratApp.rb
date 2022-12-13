@@ -62,7 +62,7 @@ Single cell report<br/>
     @params['filterByExpression'] = ''
     @params['filterByExpression', 'description'] = 'Keep cells according to specific gene expression. i.e. Set > 1 | Pkn3 > 1'
     @params['geneCountModel'] = 'GeneFull_ExonOverIntron'
-    @params['geneCountModel', 'description'] = '(STARSolo Input Only) The gene count model to use, i.e. which Solo feature from the previous step will act as the input'
+    @params['geneCountModel', 'description'] = '(STARsolo Input Only) The gene count model, i.e. Solo features, to use from the previous step'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     #@params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
@@ -87,6 +87,9 @@ Single cell report<br/>
     @params['refBuild'] = @dataset[0]['refBuild']
     if dataset_has_column?('refFeatureFile')
       @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
+    end
+    if dataset_has_column?('soloFeatures')
+      @params['geneCountModel'] = @dataset[0]['soloFeatures'].split(',', -1)
     end
   end
   def commands
