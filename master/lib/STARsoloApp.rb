@@ -62,6 +62,7 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
         'refBuild'=>@params['refBuild'],
         'refFeatureFile'=>@params['refFeatureFile'],
         'featureLevel'=>@params['featureLevel'],
+        'soloFeatures'=>@params['soloFeatures'],
         #'transcriptTypes'=>@params['transcriptTypes'],
         'ResultDir [File]'=>report_dir,
         #'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
