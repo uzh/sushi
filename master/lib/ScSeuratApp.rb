@@ -24,6 +24,8 @@ Single cell report<br/>
     @params['name'] = 'ScSeurat'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['geneCountModel'] = ''
+    @params['geneCountModel', 'description'] = '(STARsolo Input Only) The gene count model, i.e. Solo features, to use from the previous step'
     @params['SCT.regress'] = ['none', 'CellCycle']
     @params['SCT.regress', 'description'] = 'Choose CellCycle to be regressed out when using the SCTransform method if it is a bias.'
     @params['DE.method'] = ['wilcox', 'LR']
@@ -85,6 +87,11 @@ Single cell report<br/>
     @params['refBuild'] = @dataset[0]['refBuild']
     if dataset_has_column?('refFeatureFile')
       @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
+    end
+    if dataset_has_column?('soloFeatures')
+      @params['geneCountModel'] = @dataset[0]['soloFeatures'].split(',')
+    else
+      @params.delete('geneCountModel')
     end
   end
   def commands
