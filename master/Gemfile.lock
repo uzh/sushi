@@ -122,7 +122,7 @@ GEM
     jstree-rails-4 (3.3.8)
     libv8 (3.16.14.19-x86_64-linux)
     libv8-node (15.14.0.1-x86_64-linux)
-    loofah (2.18.0)
+    loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -163,8 +163,8 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.4.3)
-      loofah (~> 2.3)
+    rails-html-sanitizer (1.4.4)
+      loofah (~> 2.19, >= 2.19.1)
     railties (6.1.6.1)
       actionpack (= 6.1.6.1)
       activesupport (= 6.1.6.1)
@@ -282,12 +282,13 @@ DEPENDENCIES
   hpricot
   jquery-rails
   jstree-rails-4
-  loofah (>= 2.3.1)
+  loofah (>= 2.19.1)
   mini_racer (= 0.4.0)
   mysql2 (= 0.5.3)
   nokogiri (>= 1.13.4)
   rack (>= 2.2.3)
   rails (= 6.1.6.1)
+  rails-html-sanitizer (>= 1.4.4)
   rspec
   rspec-rails
   ruby_parser
