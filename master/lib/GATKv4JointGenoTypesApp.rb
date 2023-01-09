@@ -67,7 +67,8 @@ genotype,merge and annotate gvcf-Files<br/>
       command << "gatk SelectVariants -R #{ref} -V #{combined_raw_vcf} -O #{combined_raw_snp_vcf} -select-type SNP\n"
       raw_vcf = combined_raw_snp_vcf
     end
-    command << "gatk VariantFiltration -R #{ref} -V #{raw_vcf} --filter-expression \"! vc.hasAttribute('QD') || QD < #{@params['QD']}\" --filter-name \"QD\" --filter-expression \"vc.isSNP() && (MQ < #{@params['MQ']} || (vc.hasAttribute('MQRankSum') && MQRankSum < #{@params['MQRankSum']}))\" --filter-name \"MQ\" --genotype-filter-expression \"GQ < #{@params['GQ']} || DP == #{@params['DP']}\" --genotype-filter-name \"GQ\" -O #{combined_filtered_vcf}\n"
+    #command << "gatk VariantFiltration -R #{ref} -V #{raw_vcf} --filter-expression \"! vc.hasAttribute('QD') || QD < #{@params['QD']}\" --filter-name \"QD\" --filter-expression \"vc.isSNP() && (MQ < #{@params['MQ']} || (vc.hasAttribute('MQRankSum') && MQRankSum < #{@params['MQRankSum']}))\" --filter-name \"MQ\" --genotype-filter-expression \"GQ < #{@params['GQ']} || DP == #{@params['DP']}\" --genotype-filter-name \"GQ\" -O #{combined_filtered_vcf}\n"
+    command << "gatk VariantFiltration -R #{ref} -V #{raw_vcf} --filter-name \"QD\" --filter-expression \"vc.hasAttribute('QD') && QD < #{@params['QD']}\" --filter-name \"MQ\" --filter-expression \"vc.isSNP() && vc.hasAttribute('MQ') && (MQ < #{@params['MQ']}\" --filter-name \"MQRankSum\" --filter-expression \"(vc.hasAttribute('MQRankSum') && MQRankSum < #{@params['MQRankSum']}))\" --genotype-filter-name \"GQ\" --genotype-filter-expression \"GQ < #{@params['GQ']}\" --filter-name \"DP\" --filter-expression \"(vc.hasAttribute('DP') && DP < #{@params['DP']}\" -O #{combined_filtered_vcf}\n"
     if @params['only_SNP']
       command << "mv #{combined_raw_snp_vcf} #{combined_raw_vcf}\n"
     end
