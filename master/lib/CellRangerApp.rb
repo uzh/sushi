@@ -36,14 +36,16 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['transcriptTypes', 'selected'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA']
     @params['controlSeqs'] = ''
     @params['controlSeqs', 'description'] = 'The extra control sequences (such as spikein sequences) available in https://fgcz-gstore.uzh.ch/reference/controlSeqs.fa'
+    @params['runVeloCyto'] = false
+    @params['runVeloCyto', 'description'] = 'generate loom file by velocyto?'
     @params['bamStats'] = true
     @params['bamStats', 'description'] = 'Compute stats per cell from the bam file?'
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify the commandline options for CellRanger (e.g. --include-introns for single nuclei data); do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/seqtk", "Dev/R"]
-    @params['CellRangerVersion'] = ["Aligner/CellRanger/7.0.0", "Aligner/CellRanger/6.1.2"]
+    @modules = ["Tools/seqtk", "Dev/R", "Dev/Python/3.8.3", "Tools/samtools"]
+    @params['CellRangerVersion'] = ["Aligner/CellRanger/7.1.0", "Aligner/CellRanger/7.0.0", "Aligner/CellRanger/6.1.2"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
