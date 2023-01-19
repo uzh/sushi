@@ -842,6 +842,7 @@ class DataSetController < ApplicationController
   def destroy
     @fgcz = SushiFabric::Application.config.fgcz?
     if @data_set = DataSet.find_by_id(params[:id])
+      @parent_dataset = @data_set.data_set
       @project_id = @data_set.project.id
       @option = params[:option_delete]
 
@@ -897,6 +898,15 @@ class DataSetController < ApplicationController
     @commands = []
     @command_logs = []
     @deleted_data_sets = []
+    parent_datasets = @data_set_ids.map{|id|
+      if data_set = DataSet.find_by_id(id)
+        parent_dataset = data_set.data_set
+      end
+    }.compact.uniq
+
+    @common_parent_dataset = if parent_datasets.length == 1
+                               parent_datasets.first
+                             end
     @data_set_ids.each do |id|
       params[:id] = id
       @deleted_data_sets << destroy
