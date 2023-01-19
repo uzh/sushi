@@ -1,8 +1,11 @@
 <h1>Project <%= session[:project] %> <span style="color:gray;font-size:medium">Delete DataSet</span></h1>
 <hr />
-<% if @common_parent_dataset %>
+<% unless @parent_datasets.empty? %>
   <%= image_tag('back.gif') %>
-  <%= link_to "Back to Parent DataSet #{@common_parent_dataset.name}", "/data_set/#{@common_parent_dataset.id}", :method=>:get %>
+  Back to parent DataSet(s):
+  <% @parent_datasets.map do |parent_dataset| %>
+    <%= link_to "#{parent_dataset.name}", "/data_set/#{parent_dataset.id}", :method=>:get %>
+  <% end.join(" ") %>
 <% end %>
 <h3>Log</h3>
 <% if @option[:only_sushi] == '1' %>

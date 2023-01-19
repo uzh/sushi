@@ -2,9 +2,9 @@
 <hr />
 <% if @parent_dataset %>
   <%= image_tag('back.gif') %>
-  <%= link_to "Back to Parent DataSet #{@parent_dataset.name}", "/data_set/#{@parent_dataset.id}", :method=>:get %>
+  Back to parent DataSet: 
+  <%= link_to "#{@parent_dataset.name}", "/data_set/#{@parent_dataset.id}", :method=>:get %>
 <% end %>
-
 <h3>Log</h3>
 <ul>
   <% if @option[:only_sushi]=='1' %>

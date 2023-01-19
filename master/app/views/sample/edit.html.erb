@@ -16,7 +16,8 @@ $(document).ready(function(){
 </script>
 <h1>Project <%= session[:project] %></h1>
 <%= image_tag('back.gif') %>
-<%= link_to "Backto DataSet #{@data_set.name}", "/data_set/#{@data_set.id}", :method=>:get %>
+Back to DataSet: 
+<%= link_to "#{@data_set.name}", "/data_set/#{@data_set.id}", :method=>:get %>
 <hr />
 <h3>Samples</h3>
 <% if @data_set %>
