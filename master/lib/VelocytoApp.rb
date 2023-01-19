@@ -30,6 +30,9 @@ This wrapper runs <a href='http://velocyto.org/',>velocyto</a> in Single-library
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
+    @params['refBuild'] = @dataset[0]['refBuild']
+    @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
+    @params['featureLevel'] = @dataset[0]['featureLevel']
   end
   def next_dataset
       dataset = {
