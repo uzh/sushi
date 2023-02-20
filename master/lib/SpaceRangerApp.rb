@@ -13,7 +13,7 @@ class SpaceRangerApp <  SushiFabric::SushiApp
     @description =<<-EOS
 This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/count',>space ranger count</a> in Single-library analysis mode.
     EOS
-    @required_columns = ['Name','RawDataDir','Species', 'image']
+    @required_columns = ['Name','RawDataDir','Species', 'Image', 'Slide', 'Area']
     @required_params = ['name', 'refBuild']
     @params['cores'] = '8'
     @params['ram'] = '60'
