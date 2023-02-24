@@ -68,8 +68,6 @@ EOS
     @params['length_required','description'] = 'reads shorter than length_required will be discarded.'
     @params['cmdOptionsFastp'] = ''
     ## additional commands
-    @params['markDuplicates'] = false
-    @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/fastp", "Tools/kraken", "QC/FastQScreen", "Dev/R", "Tools/Picard"]
   end
