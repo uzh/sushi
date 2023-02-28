@@ -20,6 +20,7 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     # optional params
     @params['cores'] = '4'
     @params['ram'] = '60'
+    @params['ram','description'] = 'use at least 20G per sample'
     @params['scratch'] = '100'
     @params['node'] = ''
     @params['process_mode'] = 'DATASET'
