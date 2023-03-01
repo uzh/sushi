@@ -19,7 +19,7 @@ EOS
     @required_columns = ['Name', 'Read1']
     @required_params = ['paired','trim_left','truncate_len','sampling_depth','max_rarefaction_depth','min_freq','min_samples','group']
     @params['cores'] = '2'
-    @params['ram'] = '7'
+    @params['ram'] = '10'
     @params['scratch'] = '10'
     @params['paired'] = false
     @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
@@ -27,14 +27,14 @@ EOS
     @params['trim_left', 'description'] = 'Position at which sequences should be trimmed due to low quality. Default:0, assuming good quality reads.'
     @params['truncate_len'] = '150'
     @params['truncate_len', 'description'] = 'Position at which sequences should be truncated due to decrease in quality. Assuming good quality reads and 150bp illumina sequencing.'
-    @params['sampling_depth'] = '1000'
-    @params['sampling_depth', 'description'] = 'Total frequency that each sample should be rarefied to prior to computing diversity metrics.'
+    @params['sampling_depth'] = '6000'
+    @params['sampling_depth', 'description'] = 'Total frequency that each sample should be rarefied to prior to computing diversity metrics. Please check that from your fastqc report.'
     @params['max_rarefaction_depth'] = '4000'
     @params['max_rarefaction_depth', 'description'] = 'Choose maximum depth for generating alpha rarefaction curves for exploring explore alpha diversity as a function of sampling depth.'
-    @params['min_freq'] = '100'
+    @params['min_freq'] = '1'
     @params['min_freq', 'description'] = 'The minimum total frequency that a feature must have to be retained for differential abundance calculation.'
-    @params['min_samples'] = '15'
-    @params['min_samples', 'description'] = 'The minimum number of samples that a feature must be observed in to be retained for differential abundance calculation.' 
+    @params['min_samples'] = '1'
+    @params['min_samples', 'description'] = 'The minimum number of samples that a feature must be observed in to be retained for differential abundance calculation. I recommend using a number equal to 10% of your samples' 
     @params['group'] = true
     @params['group', 'description'] = 'There needs to be a group assignment column. Ensure the column name is in the format "NAME [Factor]"'
     @params['grouping'] = ''
@@ -61,7 +61,10 @@ EOS
     @params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
+     report_file = File.join(@result_dir, @params['name'])
      nds = {'Name'=>@params['name']}
+     nds['Static Report [Link]'] = File.join(report_file, '00index.html')
+     nds['Static Report [File]'] = report_file     
      nds['ResultDir [File]'] = File.join(@result_dir, 'Results_Folder/')
      nds['Demux Report [Link]'] = File.join(@result_dir, 'Results_Folder/demux_seqs.qzv.zip.folder/data/index.html')
      nds['Denoising stats [Link]'] = File.join(@result_dir, 'Results_Folder/dada2_denoising_stats.qzv.zip.folder/data/index.html')
