@@ -61,11 +61,9 @@ EOS
     @params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
-     report_file = File.join(@result_dir, @params['name'])
-     nds = {'Name'=>@params['name']}
-     nds['Static Report [Link]'] = File.join(report_file, '00index.html')
-     nds['Static Report [File]'] = report_file     
+     nds = {'Name'=>@params['name']}     
      nds['ResultDir [File]'] = File.join(@result_dir, 'Results_Folder/')
+     nds['Static Report [Link]'] = File.join(@result_dir, "#{@params['name']}.00index.html")
      nds['Demux Report [Link]'] = File.join(@result_dir, 'Results_Folder/demux_seqs.qzv.zip.folder/data/index.html')
      nds['Denoising stats [Link]'] = File.join(@result_dir, 'Results_Folder/dada2_denoising_stats.qzv.zip.folder/data/index.html')
      nds['Feature Table [Link]'] = File.join(@result_dir, 'Results_Folder/table.qzv.zip.folder/data/index.html')
