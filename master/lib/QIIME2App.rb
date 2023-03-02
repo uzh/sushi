@@ -63,7 +63,7 @@ EOS
   def next_dataset
      nds = {'Name'=>@params['name']}     
      nds['ResultDir [File]'] = File.join(@result_dir, 'Results_Folder/')
-     nds['Static Report [Link]'] = File.join(@result_dir, "#{@params['name']}.00index.html")
+     nds['Static Report [Link]'] = File.join(@result_dir, 'Results_Folder/00index.html')
      nds['Demux Report [Link]'] = File.join(@result_dir, 'Results_Folder/demux_seqs.qzv.zip.folder/data/index.html')
      nds['Denoising stats [Link]'] = File.join(@result_dir, 'Results_Folder/dada2_denoising_stats.qzv.zip.folder/data/index.html')
      nds['Feature Table [Link]'] = File.join(@result_dir, 'Results_Folder/table.qzv.zip.folder/data/index.html')
