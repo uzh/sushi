@@ -58,7 +58,7 @@ EOS
 @params['cmdOptions'] = ''
 @params['mail'] = ''
 
-@modules = ["Dev/R", "Aligner/kallisto", "QC/fastq", "Tools/samtools"]
+@modules = ["Dev/R", "Aligner/kallisto", "QC/fastp", "Tools/samtools"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
