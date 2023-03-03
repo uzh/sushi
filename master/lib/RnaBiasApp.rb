@@ -19,10 +19,10 @@ EOS
 @params['cores'] = '8'
 @params['ram'] = '20'
 @params['scratch'] = '100'
-@params['node'] = ''
 @params['name'] = 'RNA_Bias_Result'
 @params['paired'] = false
 @params['strandMode'] = 'both'
+@params['refBuild'] = ref_selector
 @params['refFeatureFile'] = 'genes.gtf'
 @params['bootstrap-samples'] = '10'
 @params['seed'] = '42'
@@ -50,16 +50,15 @@ EOS
 @params['max_len2'] =	'0'
 @params['poly_x_min_len'] =	'10'
 @params['length_required'] =	'20'
-@params['refBuild'] = ref_selector
 @params['backgroundExpression'] = 5 ## low numbers needed for the iSeq runs with
 @params['sigThresh'] = 5
 @params['normMethod'] = 'logMean'
 @params['expressionName'] = 'est_counts'
 @params['nReads']= '10000'
-@params['mail'] = ''
 @params['cmdOptions'] = ''
-  
-@modules = ["Dev/R", "Aligner/Kallisto", "QC/Fastq"]
+@params['mail'] = ''
+
+@modules = ["Dev/R", "Aligner/kallisto", "QC/fastq", "Tools/samtools"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
