@@ -29,7 +29,7 @@ EOS
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
     dataset = {
-        'Name'=>File.join(@dataset[0]['Name'],@dataset[1]['Name']),
+        'Name'=>@params['name'],
         'Species'=>@dataset[0]['Species'],
         'refBuild'=>@dataset[0]['refBuild'],
         'refFeatureFile'=>@dataset[0]['refFeatureFile'],
@@ -37,7 +37,7 @@ EOS
         'transcriptTypes'=>@dataset[0]['transcriptTypes'],
         'ResultDir [File]'=>report_file,
         'Report [Link]'=>File.join(report_file, 'web_summary.html'),
-        'CountMatrix [Link]'=>File.join(report_file, 'count', 'filtered_feature_bc_matrix')
+        'CountMatrix [Link]'=>File.join(report_file, 'filtered_feature_bc_matrix')
       }
   end
   def commands
