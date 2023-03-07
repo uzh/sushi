@@ -11,7 +11,7 @@ class SpatialSeuratSlidesApp < SushiFabric::SushiApp
     super
     @name = 'SpatialSeuratSlides'
     @params['process_mode'] = 'DATASET'
-    @analysis_category = 'SingleCell'
+    @analysis_category = 'SpatialTrx'
     @description =<<-EOS
     Combine multiple slides from Visium/plates<br/>
     EOS

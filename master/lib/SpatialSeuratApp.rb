@@ -11,7 +11,7 @@ class SpatialSeuratApp < SushiFabric::SushiApp
     super
     @name = 'SpatialSeurat'
     @params['process_mode'] = 'SAMPLE'
-    @analysis_category = 'SingleCell'
+    @analysis_category = 'SpatialTrx'
     @description =<<-EOS
 Single cell report<br/>
     EOS

@@ -9,9 +9,9 @@ class SpaceRangerApp <  SushiFabric::SushiApp
   def initialize
     super
     @name = 'SpaceRangerCount'
-    @analysis_category = 'SingleCell'
+    @analysis_category = 'SpatialTrx'
     @description =<<-EOS
-This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/count',>space ranger count</a> in Single-library analysis mode.
+This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expression/software/pipelines/latest/using/count',>space ranger count</a> in Single-library analysis mode.
     EOS
     @required_columns = ['Name','RawDataDir','Species', 'Image', 'Slide', 'Area']
     @required_params = ['name', 'refBuild']
