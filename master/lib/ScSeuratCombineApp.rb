@@ -52,7 +52,7 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['DE.regress'] = ['Batch', 'CellCycle']
     @params['DE.regress','multi_selection'] = true
     @params['DE.regress', 'description'] = "Variables to regress when calculating gene cluster markers and differentially expressed genes. Only used with the LR method."
-    @params['maxSamplesSupported'] = '5'
+    #@params['maxSamplesSupported'] = '5'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     #@params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
