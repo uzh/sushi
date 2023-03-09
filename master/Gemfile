@@ -75,7 +75,7 @@ gem 'thin'
 gem 'google-analytics-rails'
 gem "nokogiri", ">= 1.13.4"
 gem "loofah", ">= 2.19.1"
-gem "rack", ">= 2.2.3"
+gem "rack", ">= 2.2.6.3"
 #gem 'mini_racer', '0.4.0'
 gem 'mini_racer'
 gem 'sidekiq'
