@@ -27,6 +27,10 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     @params['transcriptTypes', 'selected'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA']
     @params['controlSeqs'] = ''
     @params['controlSeqs', 'description'] = 'The extra control sequences (such as spikein sequences) available in https://fgcz-gstore.uzh.ch/reference/controlSeqs.fa'
+    @params['probesetFile'] =  {'select'=>''}
+    Dir["/srv/GT/databases/10x_Probesets/Visium/*"].sort.select{|design| File.directory?(design)}.each do |dir|
+      @params['probesetFile'][File.basename(dir)] = File.basename(dir)
+    end
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify the commandline options for SpaceRanger; do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
