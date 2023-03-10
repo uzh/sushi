@@ -273,10 +273,6 @@ $(document).ready(function(){
   </li>
   <% end %>
   <% if @data_set.run_name_order_id %>
-  <li>
-      ManGOID:
-      <b><%= link_to @data_set.run_name_order_id, "http://fgcz-mango.uzh.ch/order_files/view/#{@data_set.run_name_order_id}", target: "_blank" %></b> 
-  </li>
   <% end %>
 </ul>
 </div>

@@ -713,7 +713,7 @@ class DataSetController < ApplicationController
      :disposition => "attachment; filename=#{data_set_name}.tsv" 
   end
   def data_sets_tsv_string(data_sets)
-    headers = ["ID", "Name", "Project", "SushiApp", "Samples", "Who", "Created", "BFabricID", "ManGOID"]
+    headers = ["ID", "Name", "Project", "SushiApp", "Samples", "Who", "Created", "BFabricID"]
     tsv_string = CSV.generate("", headers: headers, write_headers: true, col_sep:"\t") do |out|
       data_sets.each do |data_set|
         row = []
@@ -729,7 +729,6 @@ class DataSetController < ApplicationController
         end
         row << data_set.created_at.strftime("%Y-%b-%d %X ") + SushiFabric::Application.config.time_zone.split('/').last
         row << data_set.bfabric_id.to_s
-        row << data_set.run_name_order_id.to_s
         out << row
       end
     end
