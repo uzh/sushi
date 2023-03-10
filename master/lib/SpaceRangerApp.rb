@@ -28,7 +28,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     @params['controlSeqs'] = ''
     @params['controlSeqs', 'description'] = 'The extra control sequences (such as spikein sequences) available in https://fgcz-gstore.uzh.ch/reference/controlSeqs.fa'
     @params['probesetFile'] =  {'select'=>''}
-    Dir["/srv/GT/databases/10x_Probesets/Visium/*"].sort.select{|design| File.directory?(design)}.each do |dir|
+    Dir["/srv/GT/databases/10x_Probesets/Visium/*"].sort.select{|design| File.file?(design)}.each do |dir|
       @params['probesetFile'][File.basename(dir)] = File.basename(dir)
     end
     @params['cmdOptions'] = ''
