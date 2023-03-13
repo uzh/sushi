@@ -29,6 +29,8 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['recalibrateInDels', 'description'] = "perform InDel recalibration. This tends to crash for smaller or targeted datasets"
     @params['annotateVariants']=false
     @params['annotateVariants', 'description'] = "perform functional annotation with SNPEff if annotation database is available"
+    @params['proteinCodingTranscriptsOnly']=false
+    @params['proteinCodingTranscriptsOnly', 'description'] = "SNPEff annotate variants only with protCod variants"
     @params['specialOptions'] = ''
     @params['dbNSFP_file'] = ["dbNSFP2.9_GRCh37.txt.gz", "dbNSFP4.3_GRCh38.txt.gz"]
     @params['dbNSFP_file','description'] = 'human data specific database to add MAF and prediction scores. Please use the version which matches your reference.'
