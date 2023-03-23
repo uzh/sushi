@@ -11,11 +11,14 @@ Download:
 
 For bioinformatics support, please contact BIOINFORMATICIAN.
 
-Fastqc and FastqScreen reports:
-* https://fgcz-gstore.uzh.ch/projects/FASTQC_LINK
-* https://fgcz-gstore.uzh.ch/projects/FASTQSCREEN_LINK
+SUSHI reports and nalysis:
+* https://fgcz-sushi.uzh.ch/data_set/DATASET_ID
 
 If you have any questions about the wet lab experiment please do not hesitate to contact LAB_COACH.
+
+Remember, FGCZ support in sequencing and data analysis needs to be acknowledged in all publications.
+If FGCZ staff made significant scientific contributions, please do grant co-authorships to the respective people. 
+
 
 Best regards,
 MY_NAME
