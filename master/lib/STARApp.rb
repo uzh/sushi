@@ -24,7 +24,7 @@ EOS
     @required_params = ['refBuild','paired', 'strandMode']
     # optional params
     @params['cores'] = [8, 1, 2, 4, 8]
-    @params['ram'] = ['30', '40', '200']
+    @params['ram'] = ['30', '40', '330']
     @params['ram', 'description'] = '30/40 GB is enough for human and mouse data. Only use the 200GB option for very large genomes (e.g. plants)'
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
