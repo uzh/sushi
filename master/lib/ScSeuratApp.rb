@@ -40,7 +40,7 @@ Single cell report<br/>
     end
     @params['tissue'] = tissue.keys.sort
     @params['tissue', 'description'] = 'Tissue the cells come from. Used in cell types identification for Human and Mouse organisms.'
-    @params['enrichrDatabase'] = ['Tabula_Muris', 'tabula_sapiens', 'Azimuth_Cell_Types_2021', 'PanglaoDB_Augmented_2021', 'CellMarker_Augmented_2021', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Human_Gene_Atlas', 'Mouse_Gene_Atlas', ]
+    @params['enrichrDatabase'] = ['Tabula_Muris', 'Tabula_Sapiens', 'Azimuth_Cell_Types_2021', 'PanglaoDB_Augmented_2021', 'CellMarker_Augmented_2021', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Human_Gene_Atlas', 'Mouse_Gene_Atlas', ]
     @params['enrichrDatabase','multi_selection'] = true
     @params['enrichrDatabase','all_selected'] = true
     @params['npcs'] = 20
