@@ -44,9 +44,9 @@ Single cell report<br/>
     @params['enrichrDatabase','multi_selection'] = true
     @params['enrichrDatabase','all_selected'] = true
     @params['npcs'] = 20
-    @params['npcs', 'description'] = 'The maximal dimensions to use for reduction. Do not use more pcs than pcGenes (when used).'
+    @params['npcs', 'description'] = 'The maximal top dimensions (pcs) to use for reduction. Do not use more principal components than pcGenes (when used).'
     @params['pcGenes'] = ''
-    @params['pcGenes', 'description'] = 'The genes used in supvervised clustering'
+    @params['pcGenes', 'description'] = 'The genes used in supervised clustering'
     @params['resolution'] = [0.6, 0.2, 0.4, 0.6, 0.8, 1]
     @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
     @params['nreads'] = ''
