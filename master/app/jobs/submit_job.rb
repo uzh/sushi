@@ -11,6 +11,7 @@ class SubmitJob < ApplicationJob
     sushi_app.user = params[:user]
     sushi_app.next_dataset_name = params[:next_dataset_name]
     sushi_app.next_dataset_comment = params[:next_dataset_comment]
+    sushi_app.params['sushi_app'] = class_name
     params[:parameters].each do |key, value|
       sushi_app.params[key] = if sushi_app.params.data_type(key) == String
                                        value
