@@ -11,7 +11,7 @@ Download:
 
 For bioinformatics support, please contact BIOINFORMATICIAN.
 
-SUSHI reports and nalysis:
+SUSHI reports and analysis:
 * https://fgcz-sushi.uzh.ch/data_set/DATASET_ID
 
 If you have any questions about the wet lab experiment please do not hesitate to contact LAB_COACH.

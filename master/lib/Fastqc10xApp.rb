@@ -15,7 +15,7 @@ class Fastqc10xApp <  SushiFabric::SushiApp
 A quality control tool for NGS reads<br/>
 <a href='http://www.bioinformatics.babraham.ac.uk/projects/fastqc'/>Web-site with docu and a tutorial video</a>
 EOS
-    @required_columns = ['Name','RawDataDir']
+    @required_columns = ['Name','RawDataDir', 'Read Count']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
     @params['ram'] = '30'

@@ -13,6 +13,7 @@ class MageckTestApp < SushiFabric::SushiApp
     @analysis_category = 'QC'
     @description =<<-EOS
     Run test module in the tool Model-based Analysis of Genome-wide CRISPR-Cas9 Knockout (<a href='https://sourceforge.net/p/mageck/wiki/Home/'>MAGeCK</a>)
+    Note: SampleNames starting with a number are not supported and will result in a crash of the software. 
     EOS
     @params['process_mode'] = 'DATASET'
     @required_columns = ['Name','Count']

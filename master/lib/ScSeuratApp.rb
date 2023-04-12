@@ -40,13 +40,13 @@ Single cell report<br/>
     end
     @params['tissue'] = tissue.keys.sort
     @params['tissue', 'description'] = 'Tissue the cells come from. Used in cell types identification for Human and Mouse organisms.'
-    @params['enrichrDatabase'] = ['Tabula_Muris', 'tabula_sapiens', 'Azimuth_Cell_Types_2021', 'PanglaoDB_Augmented_2021', 'CellMarker_Augmented_2021', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Human_Gene_Atlas', 'Mouse_Gene_Atlas', ]
+    @params['enrichrDatabase'] = ['Tabula_Muris', 'Tabula_Sapiens', 'Azimuth_Cell_Types_2021', 'PanglaoDB_Augmented_2021', 'CellMarker_Augmented_2021', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Human_Gene_Atlas', 'Mouse_Gene_Atlas', ]
     @params['enrichrDatabase','multi_selection'] = true
     @params['enrichrDatabase','all_selected'] = true
     @params['npcs'] = 20
-    @params['npcs', 'description'] = 'The maximal dimensions to use for reduction. Do not use more pcs than pcGenes (when used).'
+    @params['npcs', 'description'] = 'The maximal top dimensions (pcs) to use for reduction. Do not use more principal components than pcGenes (when used).'
     @params['pcGenes'] = ''
-    @params['pcGenes', 'description'] = 'The genes used in supvervised clustering'
+    @params['pcGenes', 'description'] = 'The genes used in supervised clustering'
     @params['resolution'] = [0.6, 0.2, 0.4, 0.6, 0.8, 1]
     @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
     @params['nreads'] = ''
@@ -63,6 +63,8 @@ Single cell report<br/>
     @params['nUMIs', 'description'] = 'A gene will be kept if it has at least nUMIs in the fraction of cells specified before'
     @params['filterByExpression'] = ''
     @params['filterByExpression', 'description'] = 'Keep cells according to specific gene expression. i.e. Set > 1 | Pkn3 > 1'
+    @params['estimateAmbient'] = true
+    @params['estimateAmbient', 'description'] = 'run SoupX and DecontX to estimate ambientRNA levels'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     #@params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]

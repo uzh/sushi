@@ -984,7 +984,7 @@ class DataSetController < ApplicationController
   end
   def announce_template_set
     @data_set_id = params[:id]
-    @announce_templates = Dir["/srv/SushiFabric/announce_templates/*.txt"].to_a.sort
+    @announce_templates = Dir["announce_templates/*.txt"].to_a.sort
   end
   def announce_replace_set
     @template_path = if template = params[:template]
@@ -1010,7 +1010,7 @@ class DataSetController < ApplicationController
     @template = []
     File.readlines(@template_path).each do |line|
       @template << line
-      if matches = line.scan(/[A-Z_]{2,}/)
+      if matches = line.scan(/[A-Z_]{2,}/).reject{|x| x=="FGCZ" or x=="SUSHI"}
         matches.each do |key|
           case key
           when "USER_NAME"
@@ -1023,6 +1023,8 @@ class DataSetController < ApplicationController
                              else
                                key
                              end
+          when "DATASET_ID"
+            @replaces[key] = @data_set.id
           when "DATASET_NAME"
             @replaces[key] = @data_set.name
           when "WORKUNIT_ID"
