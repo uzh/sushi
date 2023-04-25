@@ -15,7 +15,7 @@ class ScSeuratApp < SushiFabric::SushiApp
     @description =<<-EOS
 Single cell report<br/>
     EOS
-    @required_columns = ['Name', 'Species', 'refBuild', 'CountMatrix', 'ResultDir']
+    @required_columns = ['Name', 'Species', 'refBuild', 'CountMatrix', 'ResultDir', 'Condition']
     @required_params = ['name']
     # optional params
     @params['cores'] = '4'
