@@ -57,8 +57,6 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['DE.regress','multi_selection'] = true
     @params['DE.regress', 'description'] = "Variables to regress when calculating gene cluster markers and differentially expressed genes. Only used with the LR method."
     @params['integrationMethod'] = ['Classic', 'RPCA', 'Harmony']
-    @params['integrationMethod', 'multi_selection'] = false
-    @params['integrationMethod', 'selected'] = 'Classic'
     @params['integrationMethod', 'description'] = 'use RPCA if the number of matching cells/cell types across your samples is small'
     #@params['maxSamplesSupported'] = '5'
     @params['specialOptions'] = ''
