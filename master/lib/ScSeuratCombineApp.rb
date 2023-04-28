@@ -18,7 +18,7 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @required_columns = ['Name', 'Species', 'refBuild', 'refFeatureFile', 'Static Report']
     @required_params = []
     # optional params
-    @params['cores'] = '4'
+    @params['cores'] = '8'
     @params['ram'] = '60'
     @params['ram','description'] = 'use at least 20G per sample'
     @params['scratch'] = '100'
@@ -37,6 +37,10 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     end
     @params['tissue'] = tissue.keys.sort
     @params['tissue', 'description'] = 'Tissue the cells come from. Used in cell types identification for Human and Mouse organisms.'
+    @params['enrichrDatabase'] = ['Tabula_Muris', 'Tabula_Sapiens', 'Azimuth_Cell_Types_2021', 'PanglaoDB_Augmented_2021', 'CellMarker_Augmented_2021', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Human_Gene_Atlas', 'Mouse_Gene_Atlas', ]
+    @params['enrichrDatabase','multi_selection'] = true
+    @params['enrichrDatabase','all_selected'] = true
+
     @params['pcGenes'] = ''
     @params['pcGenes', 'description'] = 'The genes used in supvervised clustering'
     @params['npcs'] = '30'
@@ -52,6 +56,10 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['DE.regress'] = ['Batch', 'CellCycle']
     @params['DE.regress','multi_selection'] = true
     @params['DE.regress', 'description'] = "Variables to regress when calculating gene cluster markers and differentially expressed genes. Only used with the LR method."
+    @params['integrationMethod'] = ['Classic', 'RPCA', 'Harmony']
+    @params['integrationMethod', 'multi_selection'] = false
+    @params['integrationMethod', 'selected'] = 'Classic'
+    @params['integrationMethod', 'description'] = 'use RPCA if the number of matching cells/cell types across your samples is small'
     #@params['maxSamplesSupported'] = '5'
     @params['specialOptions'] = ''
     @params['mail'] = ""
