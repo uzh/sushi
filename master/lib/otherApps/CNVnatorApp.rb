@@ -59,9 +59,9 @@ class CNVnatorApp < SushiFabric::SushiApp
   end
   def commands
     command =<<-EOS 
-    source /usr/local/ngseq/stow/root_v6.12.06/bin/thisroot.sh
-    export YEPPPLIBDIR=/usr/local/ngseq/src/yeppp-1.0.0/binaries/linux/x86_64
-    export LD_LIBRARY_PATH=$YEPPPLIBDIR:$LD_LIBRARY_PATH 
+    #source /usr/local/ngseq/src/root_v6.26.10/bin/thisroot.sh
+    #export YEPPPLIBDIR=/usr/local/ngseq/src/yeppp-1.0.0/binaries/linux/x86_64
+    #export LD_LIBRARY_PATH=$YEPPPLIBDIR:$LD_LIBRARY_PATH 
     EOS
     command + run_RApp("EzAppCNVnator")
   end
