@@ -45,6 +45,8 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
     @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA']
+    @params['controlSeqs'] = ''
+    @params['controlSeqs', 'description'] = 'The extra control sequences (such as spikein sequences) available in https://fgcz-gstore.uzh.ch/reference/controlSeqs.fa'
     
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'Specify the commandline options for CellRanger; do not specify any option that is already covered by the dedicated input fields'
