@@ -42,6 +42,9 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
     @params['soloFeatures', 'selected'] = ['GeneFull_ExonOverIntron', 'Gene', 'Velocyto']
     @params['soloFeatures', 'description'] = "Specify genomic features for which the UMI counts per Cell Barcode are collected. Note 'Velocyto' requires 'Gene' to be specified."
     @params['keepAlignment'] = false
+    @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
+    @params['transcriptTypes', 'multi_selection'] = true
+    @params['transcriptTypes', 'selected'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA']
     
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'Specify the commandline options for CellRanger; do not specify any option that is already covered by the dedicated input fields'
@@ -63,9 +66,8 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
         'refFeatureFile'=>@params['refFeatureFile'],
         'featureLevel'=>@params['featureLevel'],
         'soloFeatures'=>@params['soloFeatures'],
-        #'transcriptTypes'=>@params['transcriptTypes'],
+        'transcriptTypes'=>@params['transcriptTypes'],
         'ResultDir [File]'=>report_dir,
-        #'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
         'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix')
       }.merge(extract_columns(@inherit_tags))
     dataset
