@@ -32,7 +32,7 @@ EOS
     }
   end
   def commands
-    run_RApp("EzAppNanoPlot",conda_env: "NanoPlot")
+    run_RApp("EzAppNanoPlot",conda_env: "nanoplot")
   end
 end
 
