@@ -73,6 +73,7 @@ EOS
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
+     'PreqcReport [Link]'=>File.join(@result_dir, "#{@dataset['Name']}.pdf"),
      'PreqcReport [File]'=>File.join(@result_dir, "#{@dataset['Name']}.pdf"),
      'PreqcOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}.preqc"),
     }.merge(extract_columns(@inherit_tags))
