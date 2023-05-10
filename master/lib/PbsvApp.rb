@@ -49,6 +49,7 @@ EOS
      'refBuild'=>@params['refBuild'],
      'stats [File]'=>File.join(@result_dir, "#{@dataset['Name']}.stats.txt"),
      'OutReport [Link]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
+     'OutReport [File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
      'PbsvLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_pbsv.log")
     }
   end
