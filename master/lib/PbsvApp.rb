@@ -48,8 +48,7 @@ EOS
      'TBI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf.gz.tbi"),
      'refBuild'=>@params['refBuild'],
      'stats [File]'=>File.join(@result_dir, "#{@dataset['Name']}.stats.txt"),
-     'Report [File]'=>File.join(@result_dir, "#{@dataset['Name']}.stats.pdf"),
-     'Report [Link]'=>File.join(@result_dir, "#{@dataset['Name']}.stats.pdf"),
+     'OutReport [Link]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
      'PbsvLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_pbsv.log")
     }
   end
