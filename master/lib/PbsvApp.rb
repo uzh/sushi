@@ -44,13 +44,9 @@ EOS
   def next_dataset
     {
      'Name'=>@dataset['Name'],
-     'VCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf.gz"),
-     'TBI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.vcf.gz.tbi"),
      'refBuild'=>@params['refBuild'],
-     'stats [File]'=>File.join(@result_dir, "#{@dataset['Name']}.stats.txt"),
-     'OutReport [Link]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
-     'OutReport [File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
-     'PbsvLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_pbsv.log")
+     'OutDir [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
+     'OutReport [Link]'=>File.join(@result_dir, "#{@dataset['Name']}", "#{@dataset['Name']}.html")
     }
   end
   def set_default_parameters
