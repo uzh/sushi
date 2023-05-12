@@ -175,6 +175,9 @@ $(document).ready(function(){
 <% if @can_register_bfabric %>
 - <%= link_to "register in B-Fabric", {:action=>"register_bfabric", :id=>@data_set.id}, :data=>{:confirm=>"Are you sure you want to register this dataset? DataSet ID:#{@data_set.id}? It will take some seconds."}, :method=>:post %>
 <% end %>
+<% if session[:employee] and @data_set.workunit_id %>
+- <%= link_to "update resource size", {:action=>"update_resource_size", :id=>@data_set.id}, :data=>{:confirm=>"Note: It will stop if workunit size != 0 and resouce is missing in gstore."}, :method=>:post %>
+<% end %>
 <% if session[:employee] %>
 - <%= link_to "Set B-Fabric ID", '', :id=>"mod_bfab_data_set_id" %> 
   <% if !@data_set.data_set %>

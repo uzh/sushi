@@ -982,6 +982,16 @@ class DataSetController < ApplicationController
     Process.waitpid pid
     redirect_to :controller => "data_set", :action => "show"
   end
+  def update_resource_size
+    data_set = DataSet.find_by_id(params[:id])
+    pid = Process.fork do
+      Process.fork do
+        data_set.update_resource_size
+      end # grand-child process
+    end # child process
+    Process.waitpid pid
+    redirect_to :controller => "data_set", :action => "show"
+  end
   def announce_template_set
     @data_set_id = params[:id]
     @announce_templates = Dir["announce_templates/*.txt"].to_a.sort
