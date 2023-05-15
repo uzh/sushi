@@ -149,6 +149,12 @@ class DataSet < ActiveRecord::Base
       end
     end
   end
+  def update_resource_size
+    #command = "update_resource_size -w #{self.workunit_id} --test"
+    command = "update_resource_size -w #{self.workunit_id}"
+    #p command
+    `#{command}`
+  end
   def paths
     dirs = []
     samples.each do |sample|

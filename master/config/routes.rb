@@ -29,6 +29,7 @@ SushiFabric::Application.routes.draw do
       post :confirm_delete_only_data_files
       post :run_delete_only_data_files
       post :register_bfabric
+      post :update_resource_size
       get :update_completed_samples
     end
     collection do
