@@ -275,7 +275,11 @@ $(document).ready(function(){
       <b><%= link_to @data_set.bfabric_id, "https://fgcz-bfabric.uzh.ch/bfabric/dataset/show.html?id=#{@data_set.bfabric_id}&tab=details", target: "_blank" %></b>
   </li>
   <% end %>
-  <% if @data_set.run_name_order_id %>
+  <% if @data_set.order_id %>
+  <li>
+      OrderID:
+      <b><%= link_to @data_set.order_id, "https://fgcz-bfabric.uzh.ch/bfabric/order/show.html?id=#{@data_set.order_id}&tab=details", target: "_blank" %></b>
+  </li>
   <% end %>
 </ul>
 </div>

@@ -159,6 +159,12 @@ class DataSetController < ApplicationController
   def show
     view_context.project_init
     @fgcz = SushiFabric::Application.config.fgcz?
+    # for order_id link detection: /data_set/pXXXX/oYYYY, or /data_set/oYYYY
+    if params[:project] =~ /^o(\d+)/ or params[:id] =~ /^o(\d+)/ and order_id = $1 and @dataset = DataSet.find_by_order_id(order_id.to_i)
+      params[:project] = "p#{@dataset.project.number}"
+      params[:id] = @dataset.id
+    end
+
     # switch project (from job_monitoring)
     if project = params[:project]
       session[:project] = project.to_i
