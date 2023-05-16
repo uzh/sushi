@@ -89,6 +89,12 @@ class DataSet < ActiveRecord::Base
         end
         unless order_ids_.empty?
           self.order_ids.concat(order_ids_.keys)
+
+          # OrderID save
+          if parent_dataset.nil? and self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i and DataSet.find_by_order_id(order_id).nil?
+            self.order_id = order_id
+          end
+
           self.save
         end
 
