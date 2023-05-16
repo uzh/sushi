@@ -151,5 +151,18 @@ namespace :ds do
     warn "# #{out_file} generated"
   end
 
+  desc "Initialize DataSet.order_id"
+  task init_order_ids: :environment do
+    DataSet.order("id").each_with_index do |dataset, i|
+      #if dataset.dataset.nil? and dataset.order_ids.uniq.length == 1 and
+      if dataset.data_set.nil? and dataset.order_ids.uniq.length == 1
+        order_id = dataset.order_ids.first.to_i and DataSet.find_by_order_id(order_id).nil?
+        dataset.order_id = order_id
+        dataset.save
+      end
+      p [i, dataset.id, dataset.order_ids, dataset.order_id].join(",")
+    end
+  end
+
 
 end
