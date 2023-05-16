@@ -24,7 +24,7 @@ EOS
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for QUAST; do not specify any option that is already covered by the dedicated input fields'
     @params['mail'] = ""
-    @modules = ["QC/QUAST", "Dev/R", "Dev/Python/2.7.16"]
+    @modules = ["Aligner/ncbi-blast/2.12.0+","QC/QUAST", "Dev/R", "Dev/Python/2.7.16"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def next_dataset
