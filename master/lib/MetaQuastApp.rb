@@ -19,7 +19,7 @@ EOS
     @required_params = ['cores', 'ram', 'scratch']
     # optional params
     @params['cores'] = '4'
-    @params['ram'] = '60'
+    @params['ram'] = '30'
     @params['scratch'] = '50'
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for QUAST; do not specify any option that is already covered by the dedicated input fields'
