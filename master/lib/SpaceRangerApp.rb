@@ -35,7 +35,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     @params['cmdOptions', 'description'] = 'specify the commandline options for SpaceRanger; do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['SpaceRangerVersion'] = ["Aligner/SpaceRanger/2.0.1", "Aligner/SpaceRanger/2.0.0"]
+    @params['SpaceRangerVersion'] = ["Aligner/SpaceRanger/2.1.0", "Aligner/SpaceRanger/2.0.1"]
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
