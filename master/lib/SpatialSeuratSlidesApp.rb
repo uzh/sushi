@@ -44,7 +44,7 @@ class SpatialSeuratSlidesApp < SushiFabric::SushiApp
     @params['maxSamplesSupported'] = '5'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.2.2","Dev/R/4.2.0"]
+    @params['Rversion'] = ["Dev/R/4.3.0", "Dev/R/4.2.2","Dev/R/4.2.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset

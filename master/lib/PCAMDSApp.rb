@@ -21,7 +21,7 @@ vcf-stats<br/>
     @params['scratch'] = '100'
     @params['name'] = 'pca_mds'
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.2.2"]
+    @params['Rversion'] = ["Dev/R/4.3.0", "Dev/R/4.2.2"]
     @modules = ["Tools/PLINK/1.9beta6.21"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
