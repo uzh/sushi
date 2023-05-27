@@ -146,7 +146,6 @@ namespace :ds do
   task dump_all_datasets_samples2: :environment do
     out_file = "all_datasets_smaples2_#{Time.now.strftime("%Y-%m-%d")}.txt"
     res = ActiveRecord::Base.connection.select_all("select * from samples;")
-#    p res
     File.write(out_file, res.to_a.join(":"))
     warn "# #{out_file} generated"
   end
@@ -154,15 +153,12 @@ namespace :ds do
   desc "Initialize DataSet.order_id"
   task init_order_ids: :environment do
     DataSet.order("id").each_with_index do |dataset, i|
-      #if dataset.dataset.nil? and dataset.order_ids.uniq.length == 1 and
       if dataset.data_set.nil? and dataset.order_ids.uniq.length == 1
-        order_id = dataset.order_ids.first.to_i and DataSet.find_by_order_id(order_id).nil?
+        order_id = dataset.order_ids.first.to_i
         dataset.order_id = order_id
         dataset.save
+        p [i, dataset.id, dataset.order_ids, dataset.order_id].join(",")
       end
-      p [i, dataset.id, dataset.order_ids, dataset.order_id].join(",")
     end
   end
-
-
 end
