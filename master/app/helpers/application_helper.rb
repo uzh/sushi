@@ -3,7 +3,7 @@ module ApplicationHelper
     text.gsub(/\r\n|\r|\n/, "<br />")
   end
   def project_init
-    if !session[:projects] or params[:select_project]
+    if !session[:projects] or params[:select_project] or params[:project_id] or params[:id]
       @fgcz = SushiFabric::Application.config.fgcz?
       session[:employee] = (@fgcz and current_user and FGCZ.get_user_groups(current_user.login).include?('Employees'))
       session[:projects] = if @fgcz and current_user
@@ -17,15 +17,27 @@ module ApplicationHelper
                             if project=params[:select_project] and number=project[:number] and number.to_i!=0 or
                                project=params[:project] and number=project[:number] and number.to_i!=0 and 
                                (session[:employee] or session[:projects].include?(number.to_i))
+                              # project text field or selection list event
                               current_user.selected_project = number
                               current_user.save
                               number.to_i
-                            elsif project_id = params[:project_id]
-                              number = project_id.gsub(/p/,'')
+                            elsif project_id = params[:project_id] and number = project_id.gsub(/p/,'')
+                              # direct link case with pXXX
+                              if !session[:employee] and !session[:projects].include?(number.to_i)
+                                number = session[:projects].first
+                              end
                               current_user.selected_project = number
                               current_user.save
                               number.to_i
-                            elsif current_user.selected_project != -1
+                            elsif id = params[:id] and data_set = DataSet.find_by_id(id) and number = data_set.project.number
+                              # direct link case without pXXX
+                              if !session[:employee] and !session[:projects].include?(number.to_i)
+                                number = session[:projects].first
+                              end
+                              current_user.selected_project = number
+                              current_user.save
+                              number.to_i
+                            elsif current_user.selected_project != -1 and session[:projects].include?(current_user.selected_project.to_i)
                               current_user.selected_project
                             else
                               session[:projects].first

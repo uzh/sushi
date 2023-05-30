@@ -10,56 +10,61 @@ class HomeController < ApplicationController
     render action: "index"
   end
   def gstore
-    # path
-    @base = '/projects'
-    @path = params[:project_id]
-    @path = File.join(@path, params[:dirs]) if params[:dirs]
-    parent = @path.split('/')
-    parent.pop
-    @parent = parent.join('/')
-    @parent = params[:project_id] if @parent.empty?
-    @files = Dir[File.join(SushiFabric::GSTORE_DIR, @path)+"/*"]
-    @total = @files.length
-
-    # pager
-    @page_unit = if page = params[:page] and unit = page[:unit] 
-                   session[:gstore_page_unit] = unit.to_i
-                 elsif unit = session[:gstore_page_unit]
-                   unit.to_i
-                 else
-                   session[:gstore_page_unit] = 10
-                 end
-    current_page, @sort, non_rev = params[:format].to_s.split(/:/)
-    @current_page = (current_page||1).to_i
-    @page_list = (1..(@files.length.to_f/@page_unit).ceil).to_a
-    start = (@current_page - 1) * @page_unit
-    last  = @current_page * @page_unit - 1
-
-    # sort
-    if @sort
-      unless non_rev
-        session[:gstore_reverse] = !session[:gstore_reverse]
-      end
-      case @sort
-      when 'Name'
-        @files.sort_by! {|file| File.basename(file)}
-      when 'Last_Modified'
-        @files.sort_by! {|file| File.mtime(file)}
-      when 'Size'
-        @files.sort_by! {|file| File.size(file)}
-      end
-      @files.reverse! if session[:gstore_reverse]
+    view_context.project_init
+    if !session[:employee] and project_id = params[:project_id] and number = project_id.gsub(/^p/, '') and !session[:projects].include?(number.to_i)
+      redirect_to :controller => "home", :action => "index"
     else
-      session[:gstore_reverse] = nil
-      if @path == params[:project_id] 
-        @files.sort_by! {|file| File.mtime(file)}
-        @files.reverse!
+      # path
+      @base = '/projects'
+      @path = params[:project_id]
+      @path = File.join(@path, params[:dirs]) if params[:dirs]
+      parent = @path.split('/')
+      parent.pop
+      @parent = parent.join('/')
+      @parent = params[:project_id] if @parent.empty?
+      @files = Dir[File.join(SushiFabric::GSTORE_DIR, @path)+"/*"]
+      @total = @files.length
+
+      # pager
+      @page_unit = if page = params[:page] and unit = page[:unit]
+                     session[:gstore_page_unit] = unit.to_i
+                   elsif unit = session[:gstore_page_unit]
+                     unit.to_i
+                   else
+                     session[:gstore_page_unit] = 10
+                   end
+      current_page, @sort, non_rev = params[:format].to_s.split(/:/)
+      @current_page = (current_page||1).to_i
+      @page_list = (1..(@files.length.to_f/@page_unit).ceil).to_a
+      start = (@current_page - 1) * @page_unit
+      last  = @current_page * @page_unit - 1
+
+      # sort
+      if @sort
+        unless non_rev
+          session[:gstore_reverse] = !session[:gstore_reverse]
+        end
+        case @sort
+        when 'Name'
+          @files.sort_by! {|file| File.basename(file)}
+        when 'Last_Modified'
+          @files.sort_by! {|file| File.mtime(file)}
+        when 'Size'
+          @files.sort_by! {|file| File.size(file)}
+        end
+        @files.reverse! if session[:gstore_reverse]
+      else
+        session[:gstore_reverse] = nil
+        if @path == params[:project_id]
+          @files.sort_by! {|file| File.mtime(file)}
+          @files.reverse!
+        end
       end
-    end
-    @files = @files[start..last]
-    @fgcz = SushiFabric::Application.config.fgcz?
-    if @fgcz and !@files
-      redirect_to "https://fgcz-gstore.uzh.ch/projects/#{@path}.#{params[:format]}"
+      @files = @files[start..last]
+      @fgcz = SushiFabric::Application.config.fgcz?
+      if @fgcz and !@files
+        redirect_to "https://fgcz-gstore.uzh.ch/projects/#{@path}.#{params[:format]}"
+      end
     end
   end
   def sushi_rank
