@@ -91,7 +91,7 @@ class DataSet < ActiveRecord::Base
           self.order_ids.concat(order_ids_.keys)
 
           # OrderID save
-          if parent_dataset.nil? and self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i and DataSet.find_by_order_id(order_id).nil?
+          if parent_dataset.nil? and self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i
             self.order_id = order_id
           end
 
