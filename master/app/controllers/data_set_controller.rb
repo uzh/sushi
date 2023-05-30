@@ -164,7 +164,7 @@ class DataSetController < ApplicationController
       params[:project] = "p#{project_number}"
       params[:id] = nil
       view_context.project_init
-      params[:id] = order_id
+      params[:order_id] = order_id
       if !session[:employee] and !session[:projects].include?(project_number.to_i)
         redirect_to :controller => "home", :action => "index"
       else
@@ -302,7 +302,7 @@ class DataSetController < ApplicationController
       params[:project] = "p#{project_number}"
       params[:id] = nil
       view_context.project_init
-      params[:id] = order_id
+      params[:order_id] = order_id
       if !session[:employee] and !session[:projects].include?(project_number.to_i)
         redirect_to :controller => "home", :action => "index"
       end

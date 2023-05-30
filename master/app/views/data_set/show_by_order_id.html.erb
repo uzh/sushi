@@ -3,7 +3,7 @@ $(document).ready(function(){
   $("#data_set_tree").jstree({
     'core':{
       'data':{
-        url: "/data_set/partial_treeviews_by_order_id.<%= params[:id] %>"
+        url: "/data_set/partial_treeviews_by_order_id.<%= params[:order_id] %>"
       }
     }
   });
