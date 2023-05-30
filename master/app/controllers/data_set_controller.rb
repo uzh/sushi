@@ -157,128 +157,154 @@ class DataSetController < ApplicationController
     end
   end
   def show
-    view_context.project_init
     @fgcz = SushiFabric::Application.config.fgcz?
     # for order_id link detection: /data_set/pXXXX/oYYYY, or /data_set/oYYYY
-    if params[:project] =~ /^o(\d+)/ or params[:id] =~ /^o(\d+)/ and order_id = $1 and @dataset = DataSet.find_by_order_id(order_id.to_i)
-      params[:project] = "p#{@dataset.project.number}"
-      params[:id] = @dataset.id
-    end
-
-    # switch project (from job_monitoring)
-    if project = params[:project]
-      session[:project] = project.to_i
-    end
-
-    if !session[:employee] and data_set_id = params[:id] and data_set = DataSet.find_by_id(data_set_id) and project_number = data_set.project.number and !session[:projects].include?(project_number.to_i)
-      redirect_to :controller => "home", :action => "index"
-    else
-      # data_set comment
-      if data_set = params[:data_set] and comment = data_set[:comment] and id = data_set[:id]
-        data_set = DataSet.find_by_id(id)
-        data_set.comment = comment
-        data_set.save
-      end
-      # new data_set name
-      if new_data_set = params[:data_set] and name = new_data_set[:name] and id = new_data_set[:id]
-        data_set = DataSet.find_by_id(id)
-        data_set.name = name
-        data_set.save
-      end
-
-      # search by RunName and OrderID
-      @data_set = DataSet.find_by_id(params[:id])
-      unless @data_set
-        if project_number = params[:project_id]
-          project_number = project_number.gsub(/p/, '').to_i
-          session[:project] = project_number
-        end
-        if data_sets = DataSet.where(run_name_order_id: params[:id])
-          if data_sets_ = data_sets.to_a.select{|data_set| data_set.project.number == project_number}
-            if @data_set = data_sets_.sort_by{|data_set| data_set.created_at}.first
-              params[:id] = @data_set.id
-            end
-          end
-        end
-      end
-
-      if @data_set
-        @factor_columns = @data_set.headers.select{|header| header.tag?('Factor')}
-
-        session[:latest_data_set_id] = @data_set.id
-        # check some properties
-        if session[:employee]
-          if parent_dataset = @data_set.data_set
-            if @data_set.child == false
-              @can_delete_data_files = true
-            end
-            if parent_dataset.bfabric_id and !@data_set.bfabric_id
-              @can_register_bfabric = true
-            end
-          else
-            unless @data_set.bfabric_id
-              @can_register_bfabric = true
-            end
-          end
-        end
-        # check session[:project]
-        unless session[:project] == @data_set.project.number
-          session[:project] = @data_set.project.number
-          current_user.selected_project = session[:project]
-          current_user.save
-        end
-
-        # check real data
-        @file_exist = {}
-        @sample_path = []
-        @sample_invalid_name = {}
-        sample_count = 0
-        if @data_set
-          @data_set.samples.each do |sample|
-            sample_count+=1
-            sample.to_hash.each do |header, file|
-              if header and (header.tag?('File') or header.tag?('Link') and file !~ /^http/)
-                if file
-                  file_path = File.join(SushiFabric::GSTORE_DIR, file)
-                  @sample_path << File.dirname(file)
-                  @file_exist[file] = File.exist?(file_path)
-                else
-                  @file_exist[header] = false
-                end
-              else
-                @file_exist[file] = true
-              end
-              if header == 'Name' and file =~ /[!@\#$%^&*\(\)\<\>\{\}\[\]\/:; '"=+\|]/
-                @sample_invalid_name[file] = true
-              end
-            end
-          end
-        end
-        @sample_path.uniq!
-        @dataset_path = @sample_path.map{|path| path.split('/')[0,2].join('/')}
-        @dataset_path.uniq!
-
-        # update num_samples
-        if @data_set.num_samples.to_i != sample_count
-          @data_set.num_samples = sample_count
-        end
-        if @data_set.num_samples.to_i != @data_set.completed_samples.to_i
-          update_completed_samples_(@data_set.id)
-        end
-
-        if !@data_set.refreshed_apps and @data_set.runnable_apps.empty?
-          @data_set.refreshed_apps = true
-          @data_set.save
-          set_runnable_apps(false)
-        end
-
-        @employee_apps = employee_apps
-        @sushi_apps = @data_set.runnable_apps
-        @sushi_apps_category = @sushi_apps.keys.sort
+    if params[:project] =~ /^o(\d+)/ or params[:id] =~ /^o(\d+)/ and order_id = $1 and dataset = DataSet.find_by_order_id(order_id.to_i)
+      project_number = dataset.project.number
+      params[:project] = "p#{project_number}"
+      params[:id] = nil
+      view_context.project_init
+      params[:id] = order_id
+      if !session[:employee] and !session[:projects].include?(project_number.to_i)
+        redirect_to :controller => "home", :action => "index"
       else
-        @url_not_found = true
-        index
-        render action: "index"
+        render action: "show_by_order_id"
+      end
+    else
+      view_context.project_init
+      # switch project (from job_monitoring)
+      if project = params[:project]
+        session[:project] = project.to_i
+      end
+      if !session[:employee] and data_set_id = params[:id] and data_set = DataSet.find_by_id(data_set_id) and project_number = data_set.project.number and !session[:projects].include?(project_number.to_i)
+        redirect_to :controller => "home", :action => "index"
+      else
+        # data_set comment
+        if data_set = params[:data_set] and comment = data_set[:comment] and id = data_set[:id]
+          data_set = DataSet.find_by_id(id)
+          data_set.comment = comment
+          data_set.save
+        end
+        # new data_set name
+        if new_data_set = params[:data_set] and name = new_data_set[:name] and id = new_data_set[:id]
+          data_set = DataSet.find_by_id(id)
+          data_set.name = name
+          data_set.save
+        end
+
+        # search by RunName and OrderID
+        @data_set = DataSet.find_by_id(params[:id])
+        unless @data_set
+          if project_number = params[:project_id]
+            project_number = project_number.gsub(/p/, '').to_i
+            session[:project] = project_number
+          end
+          if data_sets = DataSet.where(run_name_order_id: params[:id])
+            if data_sets_ = data_sets.to_a.select{|data_set| data_set.project.number == project_number}
+              if @data_set = data_sets_.sort_by{|data_set| data_set.created_at}.first
+                params[:id] = @data_set.id
+              end
+            end
+          end
+        end
+
+        if @data_set
+          @factor_columns = @data_set.headers.select{|header| header.tag?('Factor')}
+
+          session[:latest_data_set_id] = @data_set.id
+          # check some properties
+          if session[:employee]
+            if parent_dataset = @data_set.data_set
+              if @data_set.child == false
+                @can_delete_data_files = true
+              end
+              if parent_dataset.bfabric_id and !@data_set.bfabric_id
+                @can_register_bfabric = true
+              end
+            else
+              unless @data_set.bfabric_id
+                @can_register_bfabric = true
+              end
+            end
+          end
+          # check session[:project]
+          unless session[:project] == @data_set.project.number
+            session[:project] = @data_set.project.number
+            current_user.selected_project = session[:project]
+            current_user.save
+          end
+
+          # check real data
+          @file_exist = {}
+          @sample_path = []
+          @sample_invalid_name = {}
+          sample_count = 0
+          if @data_set
+            @data_set.samples.each do |sample|
+              sample_count+=1
+              sample.to_hash.each do |header, file|
+                if header and (header.tag?('File') or header.tag?('Link') and file !~ /^http/)
+                  if file
+                    file_path = File.join(SushiFabric::GSTORE_DIR, file)
+                    @sample_path << File.dirname(file)
+                    @file_exist[file] = File.exist?(file_path)
+                  else
+                    @file_exist[header] = false
+                  end
+                else
+                  @file_exist[file] = true
+                end
+                if header == 'Name' and file =~ /[!@\#$%^&*\(\)\<\>\{\}\[\]\/:; '"=+\|]/
+                  @sample_invalid_name[file] = true
+                end
+              end
+            end
+          end
+          @sample_path.uniq!
+          @dataset_path = @sample_path.map{|path| path.split('/')[0,2].join('/')}
+          @dataset_path.uniq!
+
+          # update num_samples
+          if @data_set.num_samples.to_i != sample_count
+            @data_set.num_samples = sample_count
+          end
+          if @data_set.num_samples.to_i != @data_set.completed_samples.to_i
+            update_completed_samples_(@data_set.id)
+          end
+
+          if !@data_set.refreshed_apps and @data_set.runnable_apps.empty?
+            @data_set.refreshed_apps = true
+            @data_set.save
+            set_runnable_apps(false)
+          end
+
+          @employee_apps = employee_apps
+          @sushi_apps = @data_set.runnable_apps
+          @sushi_apps_category = @sushi_apps.keys.sort
+        else
+          @url_not_found = true
+          index
+          render action: "index"
+        end
+      end
+    end
+  end
+  def show_by_order_id
+    @fgcz = SushiFabric::Application.config.fgcz?
+
+    order_id = if params[:id] =~ /^o(\d+)/
+                 $1
+               else
+                 params[:id]
+               end
+    if dataset = DataSet.find_by_order_id(order_id.to_i)
+      project_number = dataset.project.number
+      params[:project] = "p#{project_number}"
+      params[:id] = nil
+      view_context.project_init
+      params[:id] = order_id
+      if !session[:employee] and !session[:projects].include?(project_number.to_i)
+        redirect_to :controller => "home", :action => "index"
       end
     end
   end
@@ -411,6 +437,21 @@ class DataSetController < ApplicationController
     end
  
     render :json => root.sort_by{|node| node["id"]}.reverse
+  end
+  def partial_treeviews_by_order_id
+    tree = []
+    if order_id = params[:format] and data_sets = DataSet.select{|ds| ds.order_id == order_id.to_i} and !data_sets.empty?
+      data_sets.each do |data_set|
+        root = []
+        parent_id = "#"
+        state_opened = false
+        trace_treeviews(root, data_set, parent_id, data_set.project.number, data_set, state_opened)
+        tree += root
+      end
+
+    end
+
+    render :json => tree.sort_by{|node| node["id"]}.reverse
   end
   def make_whole_tree
     unless @project

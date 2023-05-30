@@ -31,6 +31,7 @@ SushiFabric::Application.routes.draw do
       post :register_bfabric
       post :update_resource_size
       get :update_completed_samples
+      get :show_by_order_id
     end
     collection do
       post :save_project_dataset_list_as_tsv
@@ -39,6 +40,7 @@ SushiFabric::Application.routes.draw do
       get :whole_treeviews
       get :partial_treeviews
       get :partial_treeviews2
+      get :partial_treeviews_by_order_id
       post :import
       post :delete
       get :script_log

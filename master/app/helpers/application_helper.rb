@@ -14,8 +14,8 @@ module ApplicationHelper
                              [1001]
                            end
       session[:project] = if @fgcz and current_user
-                            if project=params[:select_project] and number=project[:number] and number.to_i!=0 or
-                               project=params[:project] and number=project[:number] and number.to_i!=0 and 
+                            if params[:project_id].nil? and params[:id].nil? and project=params[:select_project] and number=project[:number] and number.to_i!=0 or
+                               params[:project_id].nil? and params[:id].nil? and project=params[:project] and number=project[:number] and number.to_i!=0 and
                                (session[:employee] or session[:projects].include?(number.to_i))
                               # project text field or selection list event
                               current_user.selected_project = number

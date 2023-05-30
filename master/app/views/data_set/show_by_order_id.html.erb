@@ -1,0 +1,20 @@
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#data_set_tree").jstree({
+    'core':{
+      'data':{
+        url: "/data_set/partial_treeviews_by_order_id.<%= params[:id] %>"
+      }
+    }
+  });
+});
+
+</script>
+
+<h3 style="display: inline">DataSet</h3>
+<div id="data_set_tree_container" class="jstree_container">
+<ul id="data_set_tree" class="filetree jstree_box"></ul>
+</div>
+
+<hr />
+
