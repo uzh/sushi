@@ -6,10 +6,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class SeuratCompareApp < SushiFabric::SushiApp
+class ScSeuratCompareApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'SeuratCompare'
+    @name = 'ScSeuratCompare'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'SingleCell'
     @description =<<-EOS
@@ -51,7 +51,7 @@ class SeuratCompareApp < SushiFabric::SushiApp
   end
   def commands
     command = "module load #{@params["Rversion"]}\n"
-    command << run_RApp("EzAppSeuratCompare")
+    command << run_RApp("EzAppScSeuratCompare")
   end
 end
 
