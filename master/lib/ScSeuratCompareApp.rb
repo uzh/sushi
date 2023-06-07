@@ -17,7 +17,7 @@ class ScSeuratCompareApp < SushiFabric::SushiApp
 <a href='https://bioconductor.org/packages/release/bioc/html/DifferentialState.html'>DifferentialState</a><br/>
     EOS
     @required_columns = ['Name', 'Report']
-    @required_params = ['grouping', 'sampleGroup', 'refGroup']
+    @required_params = ['CellIdentity', 'grouping', 'sampleGroup', 'refGroup']
     # optional params
     @params['cores'] = '4'
     @params['ram'] = '30'
