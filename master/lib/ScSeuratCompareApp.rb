@@ -27,10 +27,13 @@ class ScSeuratCompareApp < SushiFabric::SushiApp
     @params['DE.regress'] = ['Batch', 'CellCycle']
     @params['DE.regress','multi_selection'] = true
     @params['DE.regress', 'description'] = "Variables to regress when calculating differentially expressed genes. Only used with the LR method."
-    @params['grouping'] = '' ## Note: this will be a selector defined by Factor tagged column
-    @params['sampleGroup'] = '' ## Note: this will be a selector defined by Factor tagged column
+    @params['CellIdentity'] = 'ident'
+    @params['CellIdentity', 'description'] = "The Seurat metadata column which contains the cell clusters or types (usually 'seurat_clusters' or 'ident')"
+    @params['grouping'] = 'Condition'
+    @params['grouping', 'description'] = "The Seurat metadata column which contains the sample grouping information"
+    @params['sampleGroup'] = ''
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
-    @params['refGroup'] = '' ## Note: this will be a selector defined by Factor tagged column
+    @params['refGroup'] = ''
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.3.0", "Dev/R/4.2.2", "Dev/R/4.2.0", "Dev/R/4.1.2", "Dev/R/4.1.0"]
