@@ -1,7 +1,14 @@
 class HomeController < ApplicationController
   def index
-    view_context.project_init
     @fgcz = SushiFabric::Application.config.fgcz?
+    if project_ = params[:project] and project_[:number] =~ /^o(\d+)/ and order_id = $1 and dataset = DataSet.find_by_order_id(order_id.to_i)
+      project_number = dataset.project.number
+      if session[:employee] or session[:projects].include?(project_number.to_i)
+        redirect_to "/data_set/p#{project_number}/o#{order_id}"
+      else
+        view_context.project_init
+      end
+    end
   end
   def switch_bfabric_registration
     if bf = params[:bfabric_registration]
