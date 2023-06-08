@@ -942,6 +942,7 @@ class DataSetController < ApplicationController
       end
       @deleted_data_set
     end
+    params[:project_id] = "p#{session[:project]}" if session[:project]
   end
   def multi_destroy
     @option = params[:option_delete]
@@ -967,6 +968,7 @@ class DataSetController < ApplicationController
         @command_log = nil
       end
     end
+    params[:project_id] = "p#{session[:project]}" if session[:project]
   end
   def job_parameter
     @data_set = if id = params[:format]
