@@ -5,10 +5,9 @@ class HomeController < ApplicationController
       project_number = dataset.project.number
       if session[:employee] or session[:projects].include?(project_number.to_i)
         redirect_to "/data_set/p#{project_number}/o#{order_id}"
-      else
-        view_context.project_init
       end
     end
+    view_context.project_init
   end
   def switch_bfabric_registration
     if bf = params[:bfabric_registration]
