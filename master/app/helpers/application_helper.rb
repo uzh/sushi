@@ -2,17 +2,23 @@ module ApplicationHelper
   def linebreak_to_br(text)
     text.gsub(/\r\n|\r|\n/, "<br />")
   end
+  def employee?
+    SushiFabric::Application.config.fgcz? and current_user and FGCZ.get_user_groups(current_user.login).include?('Employees')
+  end
+  def user_projects
+    if SushiFabric::Application.config.fgcz? and current_user
+      FGCZ.get_user_projects2(current_user.login).map{|project| project.gsub(/p/,'').to_i}.sort
+    elsif defined?(SushiFabric::Application.config.course_users) and user_projects = SushiFabric::Application.config.course_users
+      user_projects
+    else
+      [1001]
+    end
+  end
   def project_init
     if !session[:projects] or params[:select_project] or params[:project_id] or params[:id]
       @fgcz = SushiFabric::Application.config.fgcz?
-      session[:employee] = (@fgcz and current_user and FGCZ.get_user_groups(current_user.login).include?('Employees'))
-      session[:projects] = if @fgcz and current_user
-                             FGCZ.get_user_projects2(current_user.login).map{|project| project.gsub(/p/,'').to_i}.sort
-                           elsif defined?(SushiFabric::Application.config.course_users) and user_projects = SushiFabric::Application.config.course_users
-                             user_projects
-                           else
-                             [1001]
-                           end
+      session[:employee] = employee?
+      session[:projects] = user_projects
       session[:project] = if @fgcz and current_user
                             if params[:project_id].nil? and params[:id].nil? and project=params[:select_project] and number=project[:number] and number.to_i!=0 or
                                params[:project_id].nil? and params[:id].nil? and project=params[:project] and number=project[:number] and number.to_i!=0 and

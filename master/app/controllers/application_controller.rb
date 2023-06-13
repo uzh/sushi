@@ -30,6 +30,12 @@ class ApplicationController < ActionController::Base
   end
   @@workflow_manager = DRbObject.new_with_uri(SushiFabric::WORKFLOW_MANAGER)
 
+  def employee?
+    view_context.employee?
+  end
+  def user_projects
+    view_context.user_projects
+  end
   def all_sushi_applications
     non_sushi_apps = ['SushiWrap.rb', 'optparse_ex.rb', 'global_variables.rb']
     lib_dir = File.expand_path('../../../lib', __FILE__)

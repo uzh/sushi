@@ -162,21 +162,18 @@ class DataSetController < ApplicationController
     if params[:project] =~ /^o(\d+)/ or params[:id] =~ /^o(\d+)/ and order_id = $1 and dataset = DataSet.find_by_order_id(order_id.to_i)
       project_number = dataset.project.number
       params[:project] = "p#{project_number}"
-      params[:id] = nil
-      view_context.project_init
       params[:order_id] = order_id
-      if !session[:employee] and !session[:projects].include?(project_number.to_i)
+      if !employee? and !user_projects.include?(project_number.to_i)
         redirect_to :controller => "home", :action => "index"
       else
         render action: "show_by_order_id"
       end
     else
-      view_context.project_init
       # switch project (from job_monitoring)
       if project = params[:project]
         session[:project] = project.to_i
       end
-      if !session[:employee] and data_set_id = params[:id] and data_set = DataSet.find_by_id(data_set_id) and project_number = data_set.project.number and !session[:projects].include?(project_number.to_i)
+      if !employee? and data_set_id = params[:id] and data_set = DataSet.find_by_id(data_set_id) and project_number = data_set.project.number and !user_projects.include?(project_number.to_i)
         redirect_to :controller => "home", :action => "index"
       else
         # data_set comment
@@ -213,7 +210,8 @@ class DataSetController < ApplicationController
 
           session[:latest_data_set_id] = @data_set.id
           # check some properties
-          if session[:employee]
+          #if session[:employee]
+          if employee?
             if parent_dataset = @data_set.data_set
               if @data_set.child == false
                 @can_delete_data_files = true
@@ -300,10 +298,11 @@ class DataSetController < ApplicationController
     if dataset = DataSet.find_by_order_id(order_id.to_i)
       project_number = dataset.project.number
       params[:project] = "p#{project_number}"
-      params[:id] = nil
-      view_context.project_init
+      # params[:id] = nil
+      # view_context.project_init
       params[:order_id] = order_id
-      if !session[:employee] and !session[:projects].include?(project_number.to_i)
+      #if !session[:employee] and !session[:projects].include?(project_number.to_i)
+      if !employee? and !user_projects.include?(project_number.to_i)
         redirect_to :controller => "home", :action => "index"
       end
     end
