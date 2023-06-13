@@ -94,10 +94,10 @@ table tr:nth-child(even) {
 }
 */
 #login_form_wrapper {
-  height: 300px;
+  height: 400px;
   text-align: center;
-  background-image: url(/assets/makisushi.png);
-  background-position: 20% 50px;
+  background-image: url(/assets/sushi_logo.png);
+  background-position: 10% 10px;
   background-repeat: no-repeat;
 }
 
