@@ -24,6 +24,8 @@ Single cell report<br/>
     @params['name'] = 'SpatialSeurat'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['spotClean'] = false
+    @params['spotClean', 'description'] = "run R Package spotClean on the raw count output of SpaceRanger instead of using the filtered output of SpaceRanger"
     @params['SCT.regress'] = ['none', 'CellCycle']
     @params['SCT.regress', 'description'] = 'Choose CellCycle to be regressed out when using the SCTransform method if it is a bias.'
     @params['DE.method'] = ['wilcox', 'LR']
