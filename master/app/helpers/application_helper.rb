@@ -8,8 +8,8 @@ module ApplicationHelper
   def user_projects
     if SushiFabric::Application.config.fgcz? and current_user
       FGCZ.get_user_projects2(current_user.login).map{|project| project.gsub(/p/,'').to_i}.sort
-    elsif SushiFabric::Application.config.course_mode and user_projects = SushiFabric::Application.config.course_users
-      user_projects
+    elsif SushiFabric::Application.config.course_mode and user_projects_ = SushiFabric::Application.config.course_users
+      user_projects_.flatten.uniq.sort
     else
       [1001]
     end
