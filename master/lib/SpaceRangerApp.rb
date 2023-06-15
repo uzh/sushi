@@ -37,7 +37,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     @params['mail'] = ""
     @params['SpaceRangerVersion'] = ["Aligner/SpaceRanger/2.1.0", "Aligner/SpaceRanger/2.0.1"]
     @modules = ["Dev/R"]
-    @inherit_tags = ["Factor", "B-Fabric"]
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters
   end
