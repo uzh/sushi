@@ -29,9 +29,12 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['FeatureBarcodeFile'] = ''
     @params['FeatureBarcodeFile', 'file_upload'] = true
     @params['FeatureBarcodeFile', 'description'] = '(e.g. for CITEseq)'
-    @params['MultiplexBarcodeFile'] = ''
-    @params['MultiplexBarcodeFile', 'file_upload'] = true
-    @params['MultiplexBarcodeFile', 'description'] = 'Used when CellPlex libraries'
+    @params['MultiplexBarcodeFile'] = {'select'=>''}
+    @params['MultiplexBarcodeFile'] =  {'select'=>''}
+    Dir["/srv/GT/databases/10x/CMO_files/*"].sort.select{|design| File.file?(design)}.each do |dir|
+      @params['MultiplexBarcodeFile'][File.basename(dir)] = File.basename(dir)
+    end
+    @params['MultiplexBarcodeFile', 'description'] = 'Used when CellPlex libraries. New files needs to be installed under /srv/GT/databases/10x/CMO_files'
     @params['SampleMultiplexBarcodeFile'] = ''
     @params['SampleMultiplexBarcodeFile', 'file_upload'] = true
     @params['SampleMultiplexBarcodeFile', 'description'] = 'For assigning multiplexing barcode IDs to samples'
