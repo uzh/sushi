@@ -5,10 +5,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class CellRangerApp <  SushiFabric::SushiApp
+class CellRangerMultiApp <  SushiFabric::SushiApp
   def initialize
     super
-    @name = 'CellRangerCount'
+    @name = 'CellRangerMulti'
     @analysis_category = 'SingleCell'
     @description =<<-EOS
 This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/count',>cellranger count</a> in Single-library analysis mode.
@@ -18,18 +18,23 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['cores'] = ['8', '12', '16']
     @params['ram'] = ['60', '40', '80']
     @params['scratch'] = '200'
-    @params['name'] = 'CellRangerCount'
+    @params['name'] = 'CellRangerMulti'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = 'gene'
     @params['TenXLibrary'] = ['GEX', 'VDJ', 'FeatureBarcoding', 'Multiplexing']
     @params['TenXLibrary', 'description'] = 'Which 10X libraries? Note: Not all library types can be processed simultaneously. For GEX or GEX+FeatureBarcoding, the CellRangerCount app is recommended'
     @params['TenXLibrary', 'multi_selection'] = true
-    @params['TenXLibrary', 'selected'] = true
+    @params['TenXLibrary', 'selected'] = ['GEX'] 
     @params['FeatureBarcodeFile'] = ''
     @params['FeatureBarcodeFile', 'file_upload'] = true
+    @params['FeatureBarcodeFile', 'description'] = '(e.g. for CITEseq)'
     @params['MultiplexBarcodeFile'] = ''
-    @params['MultiplexBarcodeFile'] = ''
+    @params['MultiplexBarcodeFile', 'file_upload'] = true
+    @params['MultiplexBarcodeFile', 'description'] = 'Used when CellPlex libraries'
+    @params['SampleMultiplexBarcodeFile'] = ''
+    @params['SampleMultiplexBarcodeFile', 'file_upload'] = true
+    @params['SampleMultiplexBarcodeFile', 'description'] = 'For assigning multiplexing barcode IDs to samples'
     @params['includeIntrons'] = true
     @params['includeIntrons', 'description'] = 'set to false to reproduce the default behavior in cell ranger v6 and earlier'
     @params['expectedCells'] = ''
