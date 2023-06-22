@@ -47,11 +47,11 @@ class WordCountApp < SushiFabric::SushiApp
     if @dataset[0]['Options']
       @params['test_option2'] = @dataset[0]['Options'].split(',')
     end
-    cell_types = {}
-    CSV.foreach("/srv/GT/databases/all_cell_markers.txt", headers: true, col_sep: "\t") do |e|
-      cell_types[e["cellType"]] = true
-    end
-    @params['cellType'] = cell_types.keys.sort
+    #cell_types = {}
+    #CSV.foreach("/srv/GT/databases/all_cell_markers.txt", headers: true, col_sep: "\t") do |e|
+    #  cell_types[e["cellType"]] = true
+    #end
+    #@params['cellType'] = cell_types.keys.sort
     @params['note'] = @dataset[0]['Read1 [File]']
   end
   def preprocess
