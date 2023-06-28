@@ -35,9 +35,9 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
       @params['MultiplexBarcodeSet'][File.basename(dir)] = File.basename(dir)
     end
     @params['MultiplexBarcodeSet', 'description'] = 'Used when CellPlex libraries. New files needs to be installed under /srv/GT/databases/10x/CMO_files'
-    @params['SampleMultiplexBarcodeFile'] = ''
-    @params['SampleMultiplexBarcodeFile', 'file_upload'] = true
-    @params['SampleMultiplexBarcodeFile', 'description'] = 'For assigning multiplexing barcode IDs to samples'
+#    @params['SampleMultiplexBarcodeFile'] = ''
+#    @params['SampleMultiplexBarcodeFile', 'file_upload'] = true
+#    @params['SampleMultiplexBarcodeFile', 'description'] = 'For assigning multiplexing barcode IDs to samples'
     @params['includeIntrons'] = true
     @params['includeIntrons', 'description'] = 'set to false to reproduce the default behavior in cell ranger v6 and earlier'
     @params['expectedCells'] = ''
