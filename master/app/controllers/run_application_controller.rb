@@ -35,6 +35,64 @@ class RunApplicationController < ApplicationController
 	def factor_select
 		init_factor(params[:grouping])
 	end
+  def factor_select2
+    @factor_colums2 = {}
+    data_set_id = params[:data_set_id]||params[:data_set][:id]
+    @data_set = DataSet.find(data_set_id.to_i)
+    if @data_set
+      @data_set.samples.each do |sample|
+      sample.to_hash.each do |header, value|
+        if header.tag?('Factor')
+          key = header.split(/\[/).first.strip
+          @factor_colums2[key] ||= []
+          @factor_colums2[key].concat(value.to_s.split(",").map{|v| v.strip})
+        end
+      end
+    end
+      @factor_colums2.keys.each do |header|
+        @factor_colums2[header].uniq!
+      end
+    end
+    unless @factor_colums2.empty?
+      factor_key = (params[:grouping2] || @factor_colums2.keys.first)
+      @factors2 = @factor_colums2[factor_key]
+      params[:grouping2] = factor_key
+      params[:sampleGroup2] = @factor_colums2[factor_key]
+      params[:refGroup2] = @factor_colums2[factor_key]
+
+      @option_list2 = @factors2.map{|v| [v,v]}
+      @option_list2.unshift(["please select", ''])
+    end
+  end
+  def factor_select3
+    @factor_colums3 = {}
+    data_set_id = params[:data_set_id]||params[:data_set][:id]
+    @data_set = DataSet.find(data_set_id.to_i)
+    if @data_set
+      @data_set.samples.each do |sample|
+      sample.to_hash.each do |header, value|
+        if header.tag?('Factor')
+          key = header.split(/\[/).first.strip
+          @factor_colums3[key] ||= []
+          @factor_colums3[key].concat(value.to_s.split(",").map{|v| v.strip})
+        end
+      end
+    end
+      @factor_colums3.keys.each do |header|
+        @factor_colums3[header].uniq!
+      end
+    end
+    unless @factor_colums3.empty?
+      factor_key = (params[:grouping3] || @factor_colums3.keys.first)
+      @factors3 = @factor_colums3[factor_key]
+      params[:grouping3] = factor_key
+      params[:sampleGroup3] = @factor_colums3[factor_key]
+      params[:refGroup3] = @factor_colums3[factor_key]
+
+      @option_list3 = @factors3.map{|v| [v,v]}
+      @option_list3.unshift(["please select", ''])
+    end
+  end
   def index
     @data_sets = if project_number = session[:project] and project = Project.find_by_number(project_number.to_i)
                    project.data_sets.reverse
@@ -172,6 +230,12 @@ class RunApplicationController < ApplicationController
 			#init_factor('Condition')
 			init_factor
 		end
+    unless @factors2
+      factor_select2
+    end
+    unless @factors3
+      factor_select3
+    end
 
     @process_mode = @sushi_app.params['process_mode']
     @samples = @data_set.samples.map{|sample|

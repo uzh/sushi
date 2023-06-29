@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20201127-101634'
+Version = '20230629-102900'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -37,6 +37,14 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     @params['refGroupBaseline'] = '' ## Note: this will be a selector defined by Factor tagged column
     @params['refGroupBaseline', 'description'] = 'select the baseline for refGroup if you have'
+
+    @params['grouping2'] = ''
+    @params['sampleGroup2'] = ''
+    @params['refGroup2'] = ''
+    @params['grouping3'] = ''
+    @params['sampleGroup3'] = ''
+    @params['refGroup3'] = ''
+
     @params['onlyCompGroupsHeatmap'] = ['false', 'true']
     @params['onlyCompGroupsHeatmap', 'description'] = 'Only show the samples from comparison groups in heatmap'
     @params['normMethod'] = ['TMM', 'RLE', 'upperquartile', 'none']

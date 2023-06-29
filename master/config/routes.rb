@@ -89,6 +89,8 @@ SushiFabric::Application.routes.draw do
       post :confirmation
       post :submit_jobs
 			get  :factor_select
+			get  :factor_select2
+			get  :factor_select3
 			post  :factor_result
     end
   end

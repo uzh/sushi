@@ -6,6 +6,17 @@
            $.get("/run_application/factor_select?grouping=" + group_name + "&data_set_id=" + data_set_id);
        })
 
+       $('#parameters_grouping2').change(function(){
+           var group_name = $("#parameters_grouping2").val();
+					 var data_set_id = $("#data_set_id").val();
+           $.get("/run_application/factor_select2?grouping2=" + group_name + "&data_set_id=" + data_set_id);
+       })
+       $('#parameters_grouping3').change(function(){
+           var group_name = $("#parameters_grouping3").val();
+					 var data_set_id = $("#data_set_id").val();
+           $.get("/run_application/factor_select3?grouping3=" + group_name + "&data_set_id=" + data_set_id);
+       })
+
       $("#go_next").on('click', function(){
         var prohibit_char = /[^a-zA-Z0-9_-]/;
         var next_dataset_name = $("#next_dataset_name").val();
@@ -87,6 +98,20 @@
               <%= render :partial => '/run_application/select_sample_group_baseline' %>
             <% elsif @factors and key=='refGroupBaseline' %>
               <%= render :partial => '/run_application/select_ref_group_baseline' %>
+
+            <% elsif @factors2 and key=='grouping2' %>
+              <%= select :parameters, :grouping2, options_for_select(@factor_colums2.keys.map{|factor| [factor.split.first, factor.split.first]}, params[:grouping2]),  :prompt => "please select" %>
+            <% elsif @factors2 and key=='sampleGroup2' %>
+              <%= render :partial => '/run_application/select_sample_group2' %>
+            <% elsif @factors2 and key=='refGroup2' %>
+              <%= render :partial => '/run_application/select_ref_group2' %>
+            <% elsif @factors3 and key=='grouping3' %>
+              <%= select :parameters, :grouping3, options_for_select(@factor_colums3.keys.map{|factor| [factor.split.first, factor.split.first]}, params[:grouping3]),  :prompt => "please select" %>
+            <% elsif @factors3 and key=='sampleGroup3' %>
+              <%= render :partial => '/run_application/select_sample_group3' %>
+            <% elsif @factors3 and key=='refGroup3' %>
+              <%= render :partial => '/run_application/select_ref_group3' %>
+
             <% elsif key=='refBuild' and value.instance_of?(Hash) %>
               <%= select :parameters, key.to_sym, value.map{|k,v| [k.to_s.split(//)[0,90].join, v]}, :selected => selected_value.to_s %>
             <% elsif value.instance_of?(TrueClass) or value.instance_of?(FalseClass) %>
