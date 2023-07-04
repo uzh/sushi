@@ -69,6 +69,7 @@ Single cell report<br/>
     @params['mail'] = ""
     #@params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
     @modules = ["Dev/R"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
@@ -83,7 +84,7 @@ Single cell report<br/>
      'Static Report [Link]'=>report_link,
      'SC Cluster Report [File]'=>report_file,
      'SC Seurat'=>File.join(report_file, "scData.rds"),
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
