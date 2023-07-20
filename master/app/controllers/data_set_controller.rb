@@ -939,9 +939,9 @@ class DataSetController < ApplicationController
       if @project_id
         MakeWholeTreeJob.perform_later(@project_id)
       end
+      params[:project_id] = "p#{session[:project]}" if session[:project]
       @deleted_data_set
     end
-    params[:project_id] = "p#{session[:project]}" if session[:project]
   end
   def multi_destroy
     @option = params[:option_delete]
