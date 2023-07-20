@@ -2,7 +2,12 @@
   function gobackDataset(){
     var project_number = $("#project_number").val();
     var data_set_id = $("#data_set_id").val();
-    window.location.href = "/data_set/p" + project_number + "/" + data_set_id
+    if(data_set_id!=''){
+      window.location.href = "/data_set/p" + project_number + "/" + data_set_id
+    }else{
+      alert("The DataSet was not found, the resubmission failed");
+      window.location.href = "/data_set/"
+    }
   }
   dispLoading("submitting...");
   setTimeout("gobackDataset()", 7000);
