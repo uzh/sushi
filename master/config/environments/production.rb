@@ -30,7 +30,7 @@ SushiFabric::Application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  config.force_ssl = true
 
   # See everything in the log (default is :info)
   # config.log_level = :debug
@@ -68,9 +68,6 @@ SushiFabric::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-   # Send deprecation notices to registered listeners
-   config.active_support.deprecation = :notify
-
   config.logger = Logger.new("log/production.log", 5, 10 * 1024 * 1024)
   config.logger.level = Logger::ERROR
   config.log_level = :info
@@ -82,11 +79,11 @@ SushiFabric::Application.configure do
 
   # fgcz
   if config.fgcz?
+    GA.tracker = "UA-113893174-1"
     #config.workflow_manager = "druby://fgcz-s-032:40001" # development
     #config.workflow_manager = "druby://fgcz-s-032:50001" # production
     #config.workflow_manager = "druby://fgcz-s-032:70001" # demo
     config.workflow_manager = "druby://fgcz-h-031:40001" # debian10 production
-    #config.workflow_manager = "druby://fgcz-h-030:40001" # debian10 production
     config.scratch_dir = "/scratch"
     #config.gstore_dir = File.join(Dir.pwd, 'public/gstore/projects')
     config.gstore_dir = "/srv/gstore/projects" # production
@@ -97,7 +94,7 @@ SushiFabric::Application.configure do
     config.rails_host = if config.force_ssl
                           "https://fgcz-sushi.uzh.ch"
                         else
-                          "http://fgcz-h-032:4000"
+                          "http://fgcz-h-031:4000"
                         end
 
     #ENV['PATH'] = "/usr/local/ngseq/packages/Dev/Python/3.6.8/bin/:/usr/local/ngseq/opt/GxTx_Scripts_in_Python3/g-bin/:" + ENV['PATH']
