@@ -11,7 +11,12 @@ class CellRangerMultiApp <  SushiFabric::SushiApp
     @name = 'CellRangerMulti'
     @analysis_category = 'SingleCell'
     @description =<<-EOS
-This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/count',>cellranger count</a> in Single-library analysis mode.
+This wrapper runs <a href='https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/using/multi',>cellranger multi</a> in Single-library analysis mode.
+
+Note: that running this app usually requires manual curation of the input dataset. Column names for the corresponding 10X library are as follows.
+VDJ-T: VdjTDataDir
+VDJ-B: VdjBDataDir
+Multiplexing: MultiDataDir
     EOS
     @required_columns = ['Name','RawDataDir','Species']
     @required_params = ['name', 'refBuild']
