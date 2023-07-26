@@ -14,7 +14,7 @@ class CellRangerMultiApp <  SushiFabric::SushiApp
 This wrapper runs <a href='https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/using/multi',>cellranger multi</a> in Single-library analysis mode.<br><br>
 
 Note: that running this app usually requires manual curation of the input dataset. Column names for the corresponding 10X library are as follows.<br>
-<table>
+<table style="width: 25%;">
 <tbody>
 <tr><td>VDJ-T </td><td>VdjTDataDir [File]</td></tr>
 <tr><td>VDJ-B</td><td>VdjBDataDir [File]</td></tr>
