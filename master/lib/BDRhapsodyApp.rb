@@ -5,10 +5,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class BDRhapsodySequenceAnalysis <  SushiFabric::SushiApp
+class BDRhapsodyApp <  SushiFabric::SushiApp
   def initialize
     super
-    @name = 'BDRhapsody'
+    @name = 'BDRhapsodySequenceAnalysis'
     @analysis_category = 'SingleCell'
     @description =<<-EOS
 This wrapper runs a <a href='https://scomix.bd.com/hc/en-us/categories/360000838932-Resource-Library',>CWL workflow</a> for the analysis of BD Single-Cell Multiomics.
