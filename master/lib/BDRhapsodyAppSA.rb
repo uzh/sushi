@@ -48,6 +48,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     @params['controlSeqs'] = ''
     @params['controlSeqs', 'description'] = 'The extra control sequences (such as spikein sequences) available in https://fgcz-gstore.uzh.ch/reference/controlSeqs.fa'
     @params['specialOptions'] = ''
+    @params['version'] = ['2.0']
     @params['mail'] = ""
     @modules = ["Dev/R/4.3.0"]
     @inherit_tags = ["Order Id", "Factor", "B-Fabric"]
