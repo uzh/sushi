@@ -5,10 +5,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class BDRhapsodyApp < SushiFabric::SushiApp
+class BDRhapsodySAApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'BDRhapsodySequenceAnalysis'
+    @name = 'BDRhapsodySA'
     @analysis_category = 'SingleCell'
     @description =<<-EOS
       This wrapper runs a <a href='https://scomix.bd.com/hc/en-us/categories/360000838932-Resource-Library',>CWL workflow</a> for the analysis of BD Single-Cell Multiomics.
@@ -18,7 +18,7 @@ class BDRhapsodyApp < SushiFabric::SushiApp
     @params['cores'] = ['8', '12', '16']
     @params['ram'] = ['60', '40', '80']
     @params['scratch'] = '200'
-    @params['name'] = 'BDRhapsodySequenceAnalysis'
+    @params['name'] = 'BDRhapsodySA'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = 'gene'
@@ -71,7 +71,7 @@ class BDRhapsodyApp < SushiFabric::SushiApp
     dataset
   end
   def commands
-    run_RApp("EzAppBDRhapsody", conda_env: 'seven-bridges')
+    run_RApp("EzAppBDRhapsodySA", conda_env: 'seven-bridges')
   end
 end
 
