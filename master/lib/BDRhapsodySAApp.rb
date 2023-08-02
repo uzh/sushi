@@ -41,10 +41,10 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA']
-    @params['sampleTagsVersion'] = ['', 'Single-Cell Multiplex Kit - Human', 'Single-Cell Multiplex Kit - Mouse', 'Single-Cell Multiplex Kit - Flex']
+    @params['sampleTagsVersion'] = ['', 'human', 'mouse', 'flex']
     @params['tagNames'] = ''
     @params['tagNames', 'description'] = "For a multiplexed samples run only. Use the format '[Sample Tag number]-[sample name]'. Comma-separation for multiple samples. No spaces or forward slashes allowed. Example: 3-Foo,4-Bar"
-    @params['vdjSpeciesVersion'] = ['', 'Human VDJ - BCR and TCR', 'Human VDJ - BCR only', 'Human VDJ - TCR only', 'Mouse VDJ - BCR and TCR', 'Mouse VDJ - BCR only', 'Mouse VDJ - TCR only']
+    @params['vdjSpeciesVersion'] = ['', 'human', 'mouse', 'humanBCR', 'humanTCR', 'mouseBCR', 'mouseTCR']
     @params['controlSeqs'] = ''
     @params['controlSeqs', 'description'] = 'The extra control sequences (such as spikein sequences) available in https://fgcz-gstore.uzh.ch/reference/controlSeqs.fa'
     @params['specialOptions'] = ''
