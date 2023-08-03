@@ -22,6 +22,9 @@ class BeeNetApp < SushiFabric::SushiApp
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = 'gene'
+    @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
+    @params['transcriptTypes', 'multi_selection'] = true
+    @params['transcriptTypes', 'selected'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA']
     @params['numBarcodes'] = '5000'
     @params['numBarcodes', 'description'] = 'This is the expected number of barcodes in a given sample. Count matrix generation uses this, after sorting by count of reads mapped to genes, as the number of cell barcodes in the sample. Must be an integer. We recommend this number be ~40% of the starting input cell number.'
     @params['controlSeqs'] = ''
