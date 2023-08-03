@@ -27,6 +27,8 @@ class BeeNetApp < SushiFabric::SushiApp
     @params['controlSeqs'] = ''
     @params['controlSeqs', 'description'] = 'The extra control sequences (such as spikein sequences) available in https://fgcz-gstore.uzh.ch/reference/controlSeqs.fa'
     @params['specialOptions'] = ''
+    @params['cmdOptions'] = ''
+    @params['cmdOptions', 'description'] = 'specify additional command-line options for beenet analyze (e.g. --qual-bc for changing the maximum allowed mismatches in the barcode); do not specify any option that is already covered by the dedicated input fields'
     @params['BeeNetVersion'] = ['1.1.2']
     @params['mail'] = ""
     @modules = ["Dev/R/4.3.0"]
