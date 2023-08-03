@@ -73,7 +73,11 @@
               <%= text_field :parameters, key.to_sym, :value => value, :disabled => true %>
             <% end %>
           <% when 'partition' %>
-            <%= text_field :parameters, key.to_sym, :value => "#{session[:partition]}", :readonly => true %>
+            <% if session[:employee] %>
+              <%= select :parameters, key.to_sym, partitions, :selected => value.to_s %>
+            <% else %>
+              <%= text_field :parameters, key.to_sym, :value => "#{session[:partition]}", :readonly => true %>
+            <% end %>
           <% when 'samples' %>
             <%= select_tag "parameters[#{key}]", options_for_select(@samples, {:selected => @samples.map{|sample| sample.last}}), :class => 'resizable', :multiple => true, :size => 5 %><br />
           <% else %>

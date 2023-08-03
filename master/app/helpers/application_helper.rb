@@ -87,4 +87,14 @@ module ApplicationHelper
   def remove_tag(header)
     header.gsub(/\s*\[.+\]/, '')
   end
+  def partitions
+    command = "sinfo --format=%R"
+    list = `#{command}`.split(/\n/)
+    list.delete("PARTITION")
+    if i = list.index("employee")
+      list.delete("employee")
+      list.unshift("employee")
+    end
+    list
+  end
 end
