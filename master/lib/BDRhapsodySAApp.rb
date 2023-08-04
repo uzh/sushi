@@ -57,6 +57,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
   end
   def next_dataset
     report_dir = File.join(@result_dir, "#{@dataset['Name']}")
+    dashed_name = "#{@dataset['Name']}".gsub!(/_/, '-')
     dataset = {
       'Name'=>@dataset['Name'],
       'Species'=>@dataset['Species'],
@@ -65,8 +66,8 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
       'featureLevel'=>@params['featureLevel'],
       'transcriptTypes'=>@params['transcriptTypes'],
       'ResultDir [File]'=>report_dir,
-      'Report [Link]'=>File.join(report_dir, "#{@dataset['Name']}_Pipeline_Report.html"),
-      'CountMatrix [Link]'=>File.join(report_dir, "#{@dataset['Name']}_DBEC_MolsPerCell_MEX"),
+      'Report [Link]'=>File.join(report_dir, "#{dashed_name}_Pipeline_Report.html"),
+      'CountMatrix [Link]'=>File.join(report_dir, "#{dashed_name}_DBEC_MolsPerCell_MEX"),
       'Read Count'=>@dataset['Read Count']
     }.merge(extract_columns(@inherit_tags))
     dataset
