@@ -15,8 +15,8 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     EOS
     @required_columns = ['Name', 'Read1', 'Read2', 'Species']
     @required_params = ['name', 'refBuild']
-    @params['cores'] = ['8', '12', '16']
-    @params['ram'] = ['60', '40', '80']
+    @params['cores'] = ['16', '32']
+    @params['ram'] = ['80', '120']
     @params['scratch'] = '200'
     @params['name'] = 'BDRhapsodySA'
     @params['refBuild'] = ref_selector
