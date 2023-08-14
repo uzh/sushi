@@ -68,7 +68,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
       'ResultDir [File]'=>report_dir,
       'Report [Link]'=>File.join(report_dir, "#{dashed_name}_Pipeline_Report.html"),
       'CountMatrix [Link]'=>File.join(report_dir, "#{dashed_name}_RSEC_MolsPerCell_MEX"),
-      'UnfilteredCountMatrix [File]'=File.join(report_dir, "#{dashed_name}_RSEC_MolsPerCell_Unfiltered_MEX"),
+      'UnfilteredCountMatrix [File]'=>File.join(report_dir, "#{dashed_name}_RSEC_MolsPerCell_Unfiltered_MEX"),
       'Read Count'=>@dataset['Read Count']
     }.merge(extract_columns(@inherit_tags))
     dataset
