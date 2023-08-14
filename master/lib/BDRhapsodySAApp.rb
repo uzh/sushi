@@ -18,6 +18,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     @params['cores'] = ['16', '32']
     @params['ram'] = ['80', '120']
     @params['scratch'] = '200'
+    @params['partition'] = ['nextflow']
     @params['name'] = 'BDRhapsodySA'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
