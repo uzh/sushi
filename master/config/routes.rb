@@ -36,7 +36,7 @@ SushiFabric::Application.routes.draw do
     collection do
       post :save_project_dataset_list_as_tsv
       post :save_all_dataset_list_as_tsv
-      get :list
+      post :list
       get :whole_treeviews
       get :partial_treeviews
       get :partial_treeviews2
