@@ -18,7 +18,7 @@
 
 
 <% if session[:employee] %>
-  <%= link_to 'Find', "/data_set/list", :method => :post, :style => "color: #235ffc;" %>
+  <%= link_to 'Find', "/data_set/list", :method => :get, :style => "color: #235ffc;" %>
   <span style="color: #235ffc;">BF</span>
   <%= select :bfabric_registration, :off, ["ON", "OFF"], :selected=>(session[:off_bfabric_registration] ? 'OFF' : 'ON') %>
   <%= link_to 'SK', "/sidekiq", :method => :get, :style => "color: #235ffc;" %>
