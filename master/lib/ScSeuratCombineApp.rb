@@ -49,7 +49,7 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['resolution', 'description'] = 'Value between 0 and 1. A higher value will lead to larger communities.'
     @params['batchCorrection'] = ['true', 'false']
     @params['batchCorrection', 'description'] = "Perform batch correction?"
-    @params['SCT.regress'] = ['none', 'CellCycle']
+    @params['SCT.regress.CellCycle'] = false
     @params['SCT.regress', 'description'] = "Variable to regress when processing the counts with the SCTransform method."
     @params['DE.method'] = ['wilcox', 'LR']
     @params['DE.method', 'description'] = "Method to be used when calculating gene cluster markers and differentially expressed genes between conditions."

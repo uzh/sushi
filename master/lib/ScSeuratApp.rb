@@ -26,7 +26,7 @@ Single cell report<br/>
     @params['refFeatureFile'] = 'genes.gtf'
     @params['geneCountModel'] = ''
     @params['geneCountModel', 'description'] = '(STARsolo Input Only) The gene count model, i.e. Solo features, to use from the previous step'
-    @params['SCT.regress'] = ['none', 'CellCycle']
+    @params['SCT.regress.CellCycle'] = false
     @params['SCT.regress', 'description'] = 'Choose CellCycle to be regressed out when using the SCTransform method if it is a bias.'
     @params['DE.method'] = ['wilcox', 'LR']
     @params['DE.method', 'description'] ='Method to be used when calculating gene cluster markers. Use LR if you want to include cell cycle in the regression model.'

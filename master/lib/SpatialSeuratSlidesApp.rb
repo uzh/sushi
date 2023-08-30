@@ -32,7 +32,7 @@ class SpatialSeuratSlidesApp < SushiFabric::SushiApp
     @params['npcs', 'description'] = 'Number of principal components to use for dimensionality reduction. Do not use more pcs than pcGenes (when used).'
     @params['resolution'] = '0.6'
     @params['resolution', 'description'] = 'Value between 0 and 1. A higher value will lead to larger communities.'
-    @params['SCT.regress'] = ['none', 'CellCycle']
+    @params['SCT.regress.CellCycle'] = false
     @params['SCT.regress', 'description'] = "Variable to regress when processing the counts with the SCTransform method."
     @params['batchCorrection'] = 'true'
     @params['batchCorrection', 'description'] = "Perform batch correction?"
