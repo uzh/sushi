@@ -66,6 +66,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
       'refFeatureFile'=>@params['refFeatureFile'],
       'featureLevel'=>@params['featureLevel'],
       'transcriptTypes'=>@params['transcriptTypes'],
+      'SCDataOrigin'=>'BDRhapsody',
       'ResultDir [File]'=>report_dir,
       'Report [Link]'=>File.join(report_dir, "#{dashed_name}_Pipeline_Report.html"),
       'CountMatrix [Link]'=>File.join(report_dir, "#{dashed_name}_RSEC_MolsPerCell_MEX"),
