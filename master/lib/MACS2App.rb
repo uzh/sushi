@@ -23,7 +23,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['paired'] = false
-    @params['useControl'] = true
+    @params['useControl'] = false
     @params['shiftATAC'] = false
     @params['shiftATAC', 'description'] = 'should all reads aligning to + strand were offset by +4bp, all reads aligning to the - strand are offset -5 bp'
     @params['refFeatureFile'] = 'genes.gtf'
