@@ -75,6 +75,7 @@ Note: that running this app usually requires manual curation of the input datase
       'refFeatureFile'=>@params['refFeatureFile'],
       'featureLevel'=>@params['featureLevel'],
       'transcriptTypes'=>@params['transcriptTypes'],
+      'SCDataOrigin'=>'10X',
       'ResultDir [File]'=>report_dir,
       'Read Count'=>@dataset['Read Count']
     }.merge(extract_columns(@inherit_tags))
