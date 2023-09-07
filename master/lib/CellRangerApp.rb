@@ -24,7 +24,6 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['featureLevel'] = 'gene'
     @params['TenXLibrary'] = ['GEX', 'VDJ', 'FeatureBarcoding']
     @params['TenXLibrary', 'description'] = 'Which 10X library? GEX, VDJ or FeatureBarcoding'
-    #@params['scMode', 'description'] = 'Single-cell or single-nuclei?'
     @params['chemistry'] = ['auto', 'threeprime', 'fiveprime', 'SC3Pv1', 'SC3Pv2', 'SC3Pv3', 'SC5P-PE', 'SC5P-R2', 'ARC-v1']
     @params['chemistry', 'description'] = 'Assay configuration. NOTE: by default the assay configuration is detected automatically, which is the recommended mode.'
     @params["includeIntrons"] = true
@@ -75,6 +74,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
         'ResultDir [File]'=>report_dir,
         'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
         'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix'),
+        'UnfilteredCountMatrix [Link]'=>File.join(report_dir, 'raw_feature_bc_matrix'),
         'Read Count'=>@dataset['Read Count']
       }.merge(extract_columns(@inherit_tags))
     end
