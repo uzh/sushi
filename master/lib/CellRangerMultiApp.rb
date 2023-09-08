@@ -18,6 +18,7 @@ Note: that running this app usually requires manual curation of the input datase
 <tbody>
 <tr><td>VDJ-T</td><td>VdjTDataDir [File]</td></tr>
 <tr><td>VDJ-B</td><td>VdjBDataDir [File]</td></tr>
+<tr><td>Feature Barcoding</td><td>FeatureDataDir [File]</td></tr>
 <tr><td>Multiplexing</td><td>MultiDataDir [File]</td></tr>
 </tbody>
 </table>
