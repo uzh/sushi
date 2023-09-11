@@ -37,7 +37,7 @@ Note: that running this app usually requires manual curation of the input datase
       @params['probesetFile'][File.basename(dir)] = File.basename(dir)
     end
     @params['probesetFile', 'description'] = 'set it only for probe-based single cell fixed RNA profiling (FRP)'
-    @params['TenXLibrary'] = ['GEX', 'VDJ-T', 'VDJ-B', 'FeatureBarcoding', 'Multiplexing']
+    @params['TenXLibrary'] = ['GEX', 'VDJ-T', 'VDJ-B', 'FeatureBarcoding', 'Multiplexing', 'fixedRNA']
     @params['TenXLibrary', 'description'] = "Which 10X libraries? Note: Not all library types can be processed simultaneously. See the <a href='https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/using/multi#when'>support page</a> for further details."
     @params['TenXLibrary', 'multi_selection'] = true
     @params['TenXLibrary', 'selected'] = ['GEX', 'Multiplexing'] 
