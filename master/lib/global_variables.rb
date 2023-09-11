@@ -137,7 +137,11 @@ module GlobalVariables
     if lib_path
       command << ".libPaths('#{lib_path}')\n"
     end
+    command<<  "if (!library(ezRun, logical.return = TRUE)){\n"
+    command<<  "message('retry loading ezRun')\n"
+    command<<  "Sys.sleep(120)\n"
     command<<  "library(ezRun)\n"
+    command<<  "}\n"
     command << "param = list()\n"
     param = @params
     param.keys.each do |key|
