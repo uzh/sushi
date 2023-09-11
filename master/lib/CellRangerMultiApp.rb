@@ -32,6 +32,7 @@ Note: that running this app usually requires manual curation of the input datase
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = 'gene'
+    @params['probesetFile'] =  {'select'=>''}
     Dir["/srv/GT/databases/10x_Probesets/Chromium/*"].sort.select{|design| File.file?(design)}.each do |dir|
       @params['probesetFile'][File.basename(dir)] = File.basename(dir)
     end
