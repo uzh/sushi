@@ -18,6 +18,7 @@ Note: that running this app usually requires manual curation of the input datase
 <tbody>
 <tr><td>VDJ-T</td><td>VdjTDataDir [File]</td></tr>
 <tr><td>VDJ-B</td><td>VdjBDataDir [File]</td></tr>
+<tr><td>Feature Barcoding</td><td>FeatureDataDir [File]</td></tr>
 <tr><td>Multiplexing</td><td>MultiDataDir [File]</td></tr>
 </tbody>
 </table>
@@ -31,7 +32,12 @@ Note: that running this app usually requires manual curation of the input datase
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = 'gene'
-    @params['TenXLibrary'] = ['GEX', 'VDJ-T', 'VDJ-B', 'FeatureBarcoding', 'Multiplexing']
+    @params['probesetFile'] =  {'select'=>''}
+    Dir["/srv/GT/databases/10x_Probesets/Chromium/*"].sort.select{|design| File.file?(design)}.each do |dir|
+      @params['probesetFile'][File.basename(dir)] = File.basename(dir)
+    end
+    @params['probesetFile', 'description'] = 'set it only for probe-based single cell fixed RNA profiling (FRP)'
+    @params['TenXLibrary'] = ['GEX', 'VDJ-T', 'VDJ-B', 'FeatureBarcoding', 'Multiplexing', 'fixedRNA']
     @params['TenXLibrary', 'description'] = "Which 10X libraries? Note: Not all library types can be processed simultaneously. See the <a href='https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/using/multi#when'>support page</a> for further details."
     @params['TenXLibrary', 'multi_selection'] = true
     @params['TenXLibrary', 'selected'] = ['GEX', 'Multiplexing'] 
