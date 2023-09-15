@@ -20,6 +20,8 @@ EOS
         @params['ram'] = '15'
         @params['scratch'] = '300'
         @params['paired'] = false
+        @params['tarOutput'] = false
+        @params['tarOutput', 'description'] = 'for 10x data'
         @params['name'] = 'ENA_Data'
         @params['projectID'] = ''
         @params['cmdOptions'] = ""
