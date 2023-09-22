@@ -58,10 +58,10 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['DE.regress', 'description'] = "Variables to regress when calculating gene cluster markers and differentially expressed genes. Only used with the LR method."
     @params['integrationMethod'] = ['Classic', 'RPCA', 'Harmony']
     @params['integrationMethod', 'description'] = 'use RPCA if the number of matching cells/cell types across your samples is small'
-    #@params['maxSamplesSupported'] = '5'
+    @params['computePathwayTFActivity'] = true
+    @params['computePathwayTFActivity', 'description'] = 'Whether to calculate the TF and pathway activities (Note: Only for human and mouse)'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    #@params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
