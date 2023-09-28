@@ -19,7 +19,7 @@ Single cell report<br/>
     @required_params = ['name']
     # optional params
     @params['cores'] = '4'
-    @params['ram'] = '60'
+    @params['ram'] = '100'
     @params['scratch'] = '100'
     @params['name'] = 'ScSeurat'
     @params['refBuild'] = ref_selector
