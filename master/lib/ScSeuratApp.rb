@@ -46,6 +46,8 @@ Single cell report<br/>
     @params['enrichrDatabase','all_selected'] = true
     @params['Azimuth'] = ["none", "adiposeref", "bonemarrowref", "fetusref", "heartref", "humancortexref", 
                           "kidneyref", "lungref", "mousecortexref", "pancreasref", "pbmcref", "tonsilref"]
+    @params['SingleR' = ['none', 'BlueprintEncodeData', 'DatabaseImmuneCellExpressionData', 'HumanPrimaryCellAtlasData', 
+                          'ImmGenData', 'MonacoImmuneData', 'MouseRNAseqData', 'NovershternHematopoieticData']
     @params['npcs'] = 20
     @params['npcs', 'description'] = 'The maximal top dimensions (pcs) to use for reduction. Do not use more principal components than pcGenes (when used).'
     @params['pcGenes'] = ''
