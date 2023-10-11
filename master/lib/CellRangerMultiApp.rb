@@ -22,6 +22,8 @@ Note: that running this app usually requires manual curation of the input datase
 <tr><td>Multiplexing</td><td>MultiDataDir [File]</td></tr>
 </tbody>
 </table>
+<br> 
+A simple <a href='https://fgcz-shiny.uzh.ch/10x_Sample2Barcode',>ShinyApp  </a> can be used to provide the barcoding information for multiplexed samples/fixed RNA with or without feature barcoding.                  
     EOS
     @required_columns = ['Name','RawDataDir','Species']
     @required_params = ['name', 'refBuild']
