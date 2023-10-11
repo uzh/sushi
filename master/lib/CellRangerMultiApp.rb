@@ -38,7 +38,7 @@ Note: that running this app usually requires manual curation of the input datase
     end
     @params['probesetFile', 'description'] = 'set it only for probe-based single cell fixed RNA profiling (FRP)'
     @params['TenXLibrary'] = ['GEX', 'VDJ-T', 'VDJ-B', 'FeatureBarcoding', 'Multiplexing', 'fixedRNA']
-    @params['TenXLibrary', 'description'] = "Which 10X libraries? Note: Not all library types can be processed simultaneously. See the <a href='https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/using/multi#when'>support page</a> for further details."
+    @params['TenXLibrary', 'description'] = "Which 10X libraries? Note: Not all library types can be processed simultaneously. See the <a href='https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/using/multi#when'>support page</a> for further details. E.g. for fixedRNA, must also specify GEX."
     @params['TenXLibrary', 'multi_selection'] = true
     @params['TenXLibrary', 'selected'] = ['GEX', 'Multiplexing'] 
     @params['FeatureBarcodeFile'] = ''
@@ -50,9 +50,6 @@ Note: that running this app usually requires manual curation of the input datase
       @params['MultiplexBarcodeSet'][File.basename(dir)] = File.basename(dir)
     end
     @params['MultiplexBarcodeSet', 'description'] = 'Used when CellPlex libraries. New files needs to be installed under /srv/GT/databases/10x/CMO_files'
-#    @params['SampleMultiplexBarcodeFile'] = ''
-#    @params['SampleMultiplexBarcodeFile', 'file_upload'] = true
-#    @params['SampleMultiplexBarcodeFile', 'description'] = 'For assigning multiplexing barcode IDs to samples'
     @params['includeIntrons'] = true
     @params['includeIntrons', 'description'] = 'set to false to reproduce the default behavior in cell ranger v6 and earlier'
     @params['expectedCells'] = ''
@@ -67,7 +64,7 @@ Note: that running this app usually requires manual curation of the input datase
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/seqtk", "Dev/R/4.3.0", "Dev/Python/3.8.3", "Tools/samtools"]
-    @params['CellRangerVersion'] = ["Aligner/CellRanger/7.1.0"]
+    @params['CellRangerVersion'] = ["Aligner/CellRanger/7.2.0", "Aligner/CellRanger/7.1.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
