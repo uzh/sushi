@@ -53,7 +53,7 @@ A simple <a href='https://fgcz-shiny.uzh.ch/10x_Sample2Barcode',>ShinyApp  </a> 
     end
     @params['MultiplexBarcodeSet', 'description'] = 'Used when CellPlex libraries. New files needs to be installed under /srv/GT/databases/10x/CMO_files'
     @params['includeIntrons'] = true
-    @params['includeIntrons', 'description'] = 'set to false to reproduce the default behavior in cell ranger v6 and earlier'
+    @params['includeIntrons', 'description'] = 'set to false to reproduce the default behavior in cell ranger v6 and earlier (NOTE: Ignored for fixedRNA)'
     @params['expectedCells'] = ''
     @params['expectedCells', 'description'] = 'Expected number of recovered cells. Leave this free to let cellranger estimate the cell number.'
     @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
