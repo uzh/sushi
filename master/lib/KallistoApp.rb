@@ -100,7 +100,8 @@ EOS
       'Name'=>@dataset['Name'],
       'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
       'bootstrappedCount [File]'=>File.join(@result_dir, "#{@dataset['Name']}.h5"),
-      'runInfo [File]'=>File.join(@result_dir, "#{@dataset['Name']}.json")
+      'runInfo [File]'=>File.join(@result_dir, "#{@dataset['Name']}.json"),
+      'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
     }
     if @params['pseudobam']
       ds.merge!(
