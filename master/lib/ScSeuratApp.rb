@@ -19,7 +19,7 @@ Single cell report<br/>
     @required_params = ['name']
     # optional params
     @params['cores'] = '4'
-    @params['ram'] = '60'
+    @params['ram'] = '100'
     @params['scratch'] = '100'
     @params['name'] = 'ScSeurat'
     @params['refBuild'] = ref_selector
@@ -35,14 +35,19 @@ Single cell report<br/>
     @params['tissue','all_selected'] = true
     @params['tissue', 'multi_selection_size'] = 10
     tissue = {}
-    CSV.foreach("/srv/GT/databases/scGeneSets/all_cell_markers.txt", headers: true, col_sep: "\t") do |e|
-      tissue[e["tissueType"]] = true
+    CSV.foreach("/srv/GT/databases/scGeneSets/CellMarker_2.0-2023-09-27/Cell_marker_All_tissueList.txt", headers: true, col_sep: "\t") do |e|
+      tissue[e["tissue_class"]] = true
     end
     @params['tissue'] = tissue.keys.sort
-    @params['tissue', 'description'] = 'Tissue the cells come from. Used in cell types identification for Human and Mouse organisms.'
-    @params['enrichrDatabase'] = ['Tabula_Muris', 'Tabula_Sapiens', 'Azimuth_Cell_Types_2021', 'PanglaoDB_Augmented_2021', 'CellMarker_Augmented_2021', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Human_Gene_Atlas', 'Mouse_Gene_Atlas', ]
+    @params['tissue', 'description'] = 'Select the tissues of origin in the CellMarker2 database.'
+    @params['enrichrDatabase'] = ['Tabula_Muris', 'Tabula_Sapiens', 'Azimuth_Cell_Types_2021', 'PanglaoDB_Augmented_2021', 
+                                  'CellMarker_Augmented_2021', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Human_Gene_Atlas', 'Mouse_Gene_Atlas', ]
     @params['enrichrDatabase','multi_selection'] = true
     @params['enrichrDatabase','all_selected'] = true
+    @params['Azimuth'] = ["none", "adiposeref", "bonemarrowref", "fetusref", "heartref", "humancortexref", 
+                          "kidneyref", "lungref", "mousecortexref", "pancreasref", "pbmcref", "tonsilref"]
+    @params['SingleR'] = ['none', 'BlueprintEncodeData', 'DatabaseImmuneCellExpressionData', 'HumanPrimaryCellAtlasData', 
+                          'ImmGenData', 'MonacoImmuneData', 'MouseRNAseqData', 'NovershternHematopoieticData']
     @params['npcs'] = 20
     @params['npcs', 'description'] = 'The maximal top dimensions (pcs) to use for reduction. Do not use more principal components than pcGenes (when used).'
     @params['pcGenes'] = ''
@@ -65,9 +70,10 @@ Single cell report<br/>
     @params['filterByExpression', 'description'] = 'Keep cells according to specific gene expression. i.e. Set > 1 | Pkn3 > 1'
     @params['estimateAmbient'] = true
     @params['estimateAmbient', 'description'] = 'run SoupX and DecontX to estimate ambientRNA levels'
+    @params['computePathwayTFActivity'] = true
+    @params['computePathwayTFActivity', 'description'] = 'Whether to calculate the TF and pathway activities (Note: Only for human and mouse)'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    #@params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end

@@ -161,4 +161,24 @@ namespace :ds do
       end
     end
   end
+
+  desc "All dataset and read counts"
+  task all_dataset_read_counts: :environment do
+    headers = ["DataSetID", "Name", "ReadCounts", "Date"]
+    puts headers.join("\t")
+    DataSet.order("id").each_with_index do |dataset, i|
+      #if dataset.data_set.nil? and dataset.order_ids.uniq.length == 1
+      if dataset.data_set.nil?
+        read_counts = 0
+        dataset.samples.each do |sample|
+          if read_count = sample.to_hash["Read Count"]
+            read_counts += read_count.to_i
+          end
+        end
+        date = dataset.created_at.strftime("%Y-%m-%d")
+        puts [dataset.id, dataset.name, read_counts, date].join("\t")
+      end
+    end
+  end
+
 end

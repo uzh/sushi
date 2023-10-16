@@ -18,9 +18,12 @@ Note: that running this app usually requires manual curation of the input datase
 <tbody>
 <tr><td>VDJ-T</td><td>VdjTDataDir [File]</td></tr>
 <tr><td>VDJ-B</td><td>VdjBDataDir [File]</td></tr>
+<tr><td>Feature Barcoding</td><td>FeatureDataDir [File]</td></tr>
 <tr><td>Multiplexing</td><td>MultiDataDir [File]</td></tr>
 </tbody>
 </table>
+<br> 
+A simple <a href='https://fgcz-shiny.uzh.ch/10x_Sample2Barcode',>ShinyApp  </a> can be used to provide the barcoding information for multiplexed samples/fixed RNA with or without feature barcoding.                  
     EOS
     @required_columns = ['Name','RawDataDir','Species']
     @required_params = ['name', 'refBuild']
@@ -31,8 +34,13 @@ Note: that running this app usually requires manual curation of the input datase
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = 'gene'
-    @params['TenXLibrary'] = ['GEX', 'VDJ-T', 'VDJ-B', 'FeatureBarcoding', 'Multiplexing']
-    @params['TenXLibrary', 'description'] = "Which 10X libraries? Note: Not all library types can be processed simultaneously. See the <a href='https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/using/multi#when'>support page</a> for further details."
+    @params['probesetFile'] =  {'select'=>''}
+    Dir["/srv/GT/databases/10x_Probesets/Chromium/*"].sort.select{|design| File.file?(design)}.each do |dir|
+      @params['probesetFile'][File.basename(dir)] = File.basename(dir)
+    end
+    @params['probesetFile', 'description'] = 'set it only for probe-based single cell fixed RNA profiling (FRP)'
+    @params['TenXLibrary'] = ['GEX', 'VDJ-T', 'VDJ-B', 'FeatureBarcoding', 'Multiplexing', 'fixedRNA']
+    @params['TenXLibrary', 'description'] = "Which 10X libraries? Note: Not all library types can be processed simultaneously. See the <a href='https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/using/multi#when'>support page</a> for further details. E.g. for fixedRNA, must also specify GEX."
     @params['TenXLibrary', 'multi_selection'] = true
     @params['TenXLibrary', 'selected'] = ['GEX', 'Multiplexing'] 
     @params['FeatureBarcodeFile'] = ''
@@ -44,11 +52,8 @@ Note: that running this app usually requires manual curation of the input datase
       @params['MultiplexBarcodeSet'][File.basename(dir)] = File.basename(dir)
     end
     @params['MultiplexBarcodeSet', 'description'] = 'Used when CellPlex libraries. New files needs to be installed under /srv/GT/databases/10x/CMO_files'
-#    @params['SampleMultiplexBarcodeFile'] = ''
-#    @params['SampleMultiplexBarcodeFile', 'file_upload'] = true
-#    @params['SampleMultiplexBarcodeFile', 'description'] = 'For assigning multiplexing barcode IDs to samples'
     @params['includeIntrons'] = true
-    @params['includeIntrons', 'description'] = 'set to false to reproduce the default behavior in cell ranger v6 and earlier'
+    @params['includeIntrons', 'description'] = 'set to false to reproduce the default behavior in cell ranger v6 and earlier (NOTE: Ignored for fixedRNA)'
     @params['expectedCells'] = ''
     @params['expectedCells', 'description'] = 'Expected number of recovered cells. Leave this free to let cellranger estimate the cell number.'
     @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
@@ -61,7 +66,7 @@ Note: that running this app usually requires manual curation of the input datase
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/seqtk", "Dev/R/4.3.0", "Dev/Python/3.8.3", "Tools/samtools"]
-    @params['CellRangerVersion'] = ["Aligner/CellRanger/7.1.0"]
+    @params['CellRangerVersion'] = ["Aligner/CellRanger/7.2.0", "Aligner/CellRanger/7.1.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
@@ -75,6 +80,7 @@ Note: that running this app usually requires manual curation of the input datase
       'refFeatureFile'=>@params['refFeatureFile'],
       'featureLevel'=>@params['featureLevel'],
       'transcriptTypes'=>@params['transcriptTypes'],
+      'SCDataOrigin'=>'10X',
       'ResultDir [File]'=>report_dir,
       'Read Count'=>@dataset['Read Count']
     }.merge(extract_columns(@inherit_tags))

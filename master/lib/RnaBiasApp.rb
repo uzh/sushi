@@ -21,7 +21,7 @@ EOS
 @params['scratch'] = '100'
 @params['name'] = 'RNA_Bias_Result'
 @params['paired'] = false
-@params['strandMode'] = 'both'
+@params['strandMode'] = ['both', 'sense', 'antisense']
 @params['refBuild'] = ref_selector
 @params['refFeatureFile'] = 'genes.gtf'
 @params['bootstrap-samples'] = '10'
@@ -62,7 +62,10 @@ EOS
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
-  end
+    if dataset_has_column?('strandMode')
+      @params['strandMode'] = @dataset[0]['strandMode']
+    end
+ end
   def preprocess
     if @params['paired']
       @required_columns<<  'Read2'
