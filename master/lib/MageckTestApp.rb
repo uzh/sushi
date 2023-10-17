@@ -46,6 +46,7 @@ class MageckTestApp < SushiFabric::SushiApp
     report_folder = File.join(@result_dir, "#{@params['comparison']}")
     {'Name'=>@params['name'],
      'Report [File]'=>report_folder,
+     'Report [Link]'=>File.join(report_folder, '00index.html')
     }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
