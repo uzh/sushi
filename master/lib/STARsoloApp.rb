@@ -70,7 +70,8 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
         'soloFeatures'=>@params['soloFeatures'],
         'transcriptTypes'=>@params['transcriptTypes'],
         'ResultDir [File]'=>report_dir,
-        'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix')
+        'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix'),
+        'UnfilteredCountMatrix [Link]'=>File.join(report_dir, 'raw_feature_bc_matrix')
       }.merge(extract_columns(@inherit_tags))
     dataset
   end
