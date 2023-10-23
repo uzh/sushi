@@ -12,7 +12,7 @@ class CellRangerApp <  SushiFabric::SushiApp
     @analysis_category = 'SingleCell'
     @description =<<-EOS
 This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/count',>cellranger count</a> in Single-library analysis mode.
-    EOS
+     EOS
     @required_columns = ['Name','RawDataDir','Species']
     @required_params = ['name', 'refBuild']
     @params['cores'] = ['8', '12', '16']
@@ -39,6 +39,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['runVeloCyto', 'description'] = 'generate loom file by velocyto?'
     @params['bamStats'] = true
     @params['bamStats', 'description'] = 'Compute stats per cell from the bam file?'
+    @params['keepBam'] = false
+    @params['bamStats', 'description'] = 'Keep bam file produced by CellRanger? Usually it is not neccessary for downstream analyses'
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify the commandline options for CellRanger (e.g. --include-introns for single nuclei data); do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
