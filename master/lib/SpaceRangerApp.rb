@@ -31,6 +31,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     Dir["/srv/GT/databases/10x_Probesets/Visium/*"].sort.select{|design| File.file?(design)}.each do |dir|
       @params['probesetFile'][File.basename(dir)] = File.basename(dir)
     end
+    @params['keepBam'] = false
+    @params['keepBam', 'description'] = 'Keep bam file produced by CellRanger? Usually it is not neccessary for downstream analyses'
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify the commandline options for SpaceRanger; do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
