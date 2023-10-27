@@ -30,7 +30,7 @@ class DESeq2App < SushiFabric::SushiApp
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
     @params['refGroup'] = ''
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
-    @params['onlyCompGroupsHeatmap'] = ['false', 'true']
+    @params['onlyCompGroupsHeatmap'] = ['true', 'false']
     @params['onlyCompGroupsHeatmap', 'description'] = 'Only show the samples from comparison groups in heatmap'
     #@params['normMethod'] = 'logMean'
     @params['grouping2'] = ''

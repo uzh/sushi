@@ -37,7 +37,7 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     @params['refGroupBaseline'] = '' ## Note: this will be a selector defined by Factor tagged column
     @params['refGroupBaseline', 'description'] = 'select the baseline for refGroup if you have'
-    @params['onlyCompGroupsHeatmap'] = ['false', 'true']
+    @params['onlyCompGroupsHeatmap'] = ['true', 'false']
     @params['onlyCompGroupsHeatmap', 'description'] = 'Only show the samples from comparison groups in heatmap'
     @params['normMethod'] = ['TMM', 'RLE', 'upperquartile', 'none']
     @params['normMethod', 'description'] = "see http://bioconductor.org/packages/edgeR/"

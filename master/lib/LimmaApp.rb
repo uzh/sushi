@@ -32,7 +32,7 @@ class LimmaApp < SushiFabric::SushiApp
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
     @params['refGroup'] = '' ## TODO: this should be a value from the selected column
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
-    @params['onlyCompGroupsHeatmap'] = ['false', 'true']
+    @params['onlyCompGroupsHeatmap'] = ['true', 'false']
     @params['onlyCompGroupsHeatmap', 'description'] = 'Only show the samples from comparison groups in heatmap'
     @params['runGO'] = ['true', 'false']
     @params['grouping2'] = ''
