@@ -50,7 +50,7 @@ EOS
     @params['name'] = 'QIIME2'
     @params['mail'] = ""
     @inherit_tags = ['B-Fabric']
-    @modules = ['Dev/R']
+    @modules = ['Dev/R/4.2.2']
   end
    def preprocess
     if @params['paired']
