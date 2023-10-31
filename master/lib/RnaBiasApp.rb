@@ -54,7 +54,7 @@ EOS
 @params['sigThresh'] = 5
 @params['normMethod'] = 'logMean'
 @params['expressionName'] = 'est_counts'
-@params['nReads']= '10000'
+@params['minReadsPerSample']= '10000'
 @params['cmdOptions'] = ''
 @params['mail'] = ''
 
