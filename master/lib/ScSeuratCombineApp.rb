@@ -56,8 +56,11 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['DE.regress'] = ['Batch', 'CellCycle']
     @params['DE.regress','multi_selection'] = true
     @params['DE.regress', 'description'] = "Variables to regress when calculating gene cluster markers and differentially expressed genes. Only used with the LR method."
-    @params['integrationMethod'] = ['Classic', 'RPCA', 'Harmony']
-    @params['integrationMethod', 'description'] = 'use RPCA if the number of matching cells/cell types across your samples is small'
+    @params['integrationMethod'] = ['Classic', 'RPCA', 'Harmony', 'STACAS']
+    @params['integrationMethod', 'description'] = 'use RPCA if the number of matching cells/cell types across your samples is small, STACAS if you have prior information on the labels'
+    @params['STACASAnnotationFile'] = ''
+    @params['STACASAnnotationFile', 'file_upload'] = true
+    @params['STACASAnnotationFile', 'description'] = "(STACAS integration only) A 3-column mapping of old cluster to new cluster labels in .xlsx format. Use the 'clusterInfos.xlsx' file as a template. The first column indicates the sample name. The second column are the old cluster labels. The third column are the new cluster labels. The first row should be a header indicating the column names. We recommend using the names provided in 'clusterInfos.xlsx', namely 'Sample', 'Cluster', and 'ClusterLabel'. If you do not know the identity of a cluster with certainty, mark it 'unknown', rather than giving it your best guess. STACAS is designed to handle partial annotations."
     @params['computePathwayTFActivity'] = true
     @params['computePathwayTFActivity', 'description'] = 'Whether to calculate the TF and pathway activities (Note: Only for human and mouse)'
     @params['specialOptions'] = ''
