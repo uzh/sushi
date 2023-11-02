@@ -26,6 +26,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @params['useControl'] = false
     @params['shiftATAC'] = false
     @params['shiftATAC', 'description'] = 'should all reads aligning to + strand were offset by +4bp, all reads aligning to the - strand are offset -5 bp'
+    @params['annotatePeaks'] = true
     @params['refFeatureFile'] = 'genes.gtf'
     @params['mode'] = ['ChIP-seq', 'ATAC-seq']
     @params['mode', 'description'] = 'Call MACS2 for ChIP-seq or ATAC-seq data.'
