@@ -9,7 +9,7 @@ include GlobalVariables
 class ScSeuratLabelClustersApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'ScSeurat'
+    @name = 'ScSeuratLabel'
     @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'SingleCell'
     @description =<<-EOS
