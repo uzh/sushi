@@ -59,6 +59,10 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['DE.regress'] = ['Batch', 'CellCycle']
     @params['DE.regress','multi_selection'] = true
     @params['DE.regress', 'description'] = "Variables to regress when calculating gene cluster markers and differentially expressed genes. Only used with the LR method."
+    @params['min.pct'] = 0.1
+    @params['min.pct', 'description'] = 'Used in calculating cluster markers: The minimum fraction of cells in either of the two tested populations.'
+    @params['logfc.threshold'] = 0.25
+    @params['logfc.threshold', 'description'] = 'Used in calculating cluster markers: Limit testing to genes which show, on average, at least X-fold difference (log-scale) between the two groups of cells.'
     @params['integrationMethod'] = ['Classic', 'RPCA', 'Harmony', 'STACAS']
     @params['integrationMethod', 'description'] = 'use RPCA if the number of matching cells/cell types across your samples is small, STACAS if you have prior information on the labels'
     @params['STACASAnnotationFile'] = ''
