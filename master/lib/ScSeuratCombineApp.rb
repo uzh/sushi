@@ -65,6 +65,8 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['logfc.threshold', 'description'] = 'Used in calculating cluster markers: Limit testing to genes which show, on average, at least X-fold difference (log-scale) between the two groups of cells.'
     @params['integrationMethod'] = ['Classic', 'RPCA', 'Harmony', 'STACAS']
     @params['integrationMethod', 'description'] = 'use RPCA if the number of matching cells/cell types across your samples is small, STACAS if you have prior information on the labels'
+    @params['additionalFactors'] = ''
+    @params['additionalFactors', 'description'] = "A comma-separated list of additional column names from the input dataset to use to label cells from a give sample. Useful for adding additional variables beyond 'Condition' and 'Batch' to the object. This information is also used by Harmony if Harmony is selected as the integration method. Use only the column name without '[Factor]'. Example: Patient,Tissue"
     @params['STACASAnnotationFile'] = ''
     @params['STACASAnnotationFile', 'file_upload'] = true
     @params['STACASAnnotationFile', 'description'] = "(STACAS integration only) A 3-column mapping of old cluster to new cluster labels in .xlsx format. Use the 'clusterInfos.xlsx' file as a template. The first column indicates the sample name. The second column are the old cluster labels. The third column are the new cluster labels. The first row should be a header indicating the column names. We recommend using the names provided in 'clusterInfos.xlsx', namely 'Sample', 'Cluster', and 'ClusterLabel'. If you do not know the identity of a cluster with certainty, mark it 'unknown', rather than giving it your best guess. STACAS is designed to handle partial annotations."
