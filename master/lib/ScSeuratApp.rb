@@ -74,7 +74,7 @@ Single cell report<br/>
     @params['filterByExpression', 'description'] = 'Keep cells according to specific gene expression. i.e. Set > 1 | Pkn3 > 1'
     @params['estimateAmbient'] = true
     @params['estimateAmbient', 'description'] = 'run SoupX and DecontX to estimate ambientRNA levels'
-    @params['computePathwayTFActivity'] = true
+    @params['computePathwayTFActivity'] = false
     @params['computePathwayTFActivity', 'description'] = 'Whether to calculate the TF and pathway activities (Note: Only for human and mouse)'
     @params['specialOptions'] = ''
     @params['mail'] = ""
