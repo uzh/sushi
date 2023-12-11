@@ -35,6 +35,7 @@ class WordCountApp < SushiFabric::SushiApp
     @required_columns = ['Name', 'Read1']
     @required_params = ['test_option3']
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
+    @queue = "heavy"
   end
   def next_dataset
     {
