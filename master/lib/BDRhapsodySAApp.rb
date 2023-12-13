@@ -15,7 +15,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     EOS
     @required_columns = ['Name', 'Read1', 'Read2', 'Species']
     @required_params = ['name']
-    @params['cores'] = ['16', '32']
+    @params['cores'] = ['8', '16', '32']
     @params['ram'] = ['80', '120']
     @params['scratch'] = '200'
     @params['partition'] = ['nextflow']
