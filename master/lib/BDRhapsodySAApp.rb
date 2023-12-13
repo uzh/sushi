@@ -14,7 +14,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
       This wrapper runs a <a href='https://scomix.bd.com/hc/en-us/categories/360000838932-Resource-Library',>CWL workflow</a> for the analysis of BD Single-Cell Multiomics.
     EOS
     @required_columns = ['Name', 'Read1', 'Read2', 'Species']
-    @required_params = ['name', 'refBuild']
+    @required_params = ['name']
     @params['cores'] = ['16', '32']
     @params['ram'] = ['80', '120']
     @params['scratch'] = '200'
