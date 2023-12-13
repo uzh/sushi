@@ -58,7 +58,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
   end
   def next_dataset
     report_dir = File.join(@result_dir, "#{@dataset['Name']}")
-    dashed_name = "#{@dataset['Name']}".gsub!(/_/, '-')
+    dashed_name = "#{@dataset['Name']}".gsub(/_/, '-')
     dataset = {
       'Name'=>@dataset['Name'],
       'Species'=>@dataset['Species'],
