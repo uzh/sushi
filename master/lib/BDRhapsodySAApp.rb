@@ -51,7 +51,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['version'] = ['2.0']
     @params['mail'] = ""
-    @modules = ["Dev/R/4.3.0"]
+    @modules = ["Dev/R"]
     @inherit_tags = ["Order Id", "Factor", "B-Fabric"]
   end
   def set_default_parameters
