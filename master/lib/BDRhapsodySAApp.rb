@@ -18,7 +18,6 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     @params['cores'] = ['8', '16', '32']
     @params['ram'] = ['80', '120']
     @params['scratch'] = '200'
-    @params['partition'] = 'nextflow'
     @params['name'] = 'BDRhapsodySA'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
@@ -53,6 +52,9 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     @params['mail'] = ""
     @modules = ["Dev/R"]
     @inherit_tags = ["Order Id", "Factor", "B-Fabric"]
+  end
+  def set_default_parameters
+    @params['partition'] = 'nextflow'
   end
   def next_dataset
     report_dir = File.join(@result_dir, "#{@dataset['Name']}")
