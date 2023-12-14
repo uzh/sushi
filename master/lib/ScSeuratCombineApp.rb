@@ -63,7 +63,7 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['min.pct', 'description'] = 'Used in calculating cluster markers: The minimum fraction of cells in either of the two tested populations.'
     @params['logfc.threshold'] = 0.25
     @params['logfc.threshold', 'description'] = 'Used in calculating cluster markers: Limit testing to genes which show, on average, at least X-fold difference (log-scale) between the two groups of cells.'
-    @params['integrationMethod'] = ['Classic', 'RPCA', 'Harmony', 'STACAS']
+    @params['integrationMethod'] = ['CCA', 'RPCA', 'Harmony', 'STACAS']
     @params['integrationMethod', 'description'] = 'use RPCA if the number of matching cells/cell types across your samples is small, STACAS if you have prior information on the labels'
     @params['additionalFactors'] = ''
     @params['additionalFactors', 'description'] = "A comma-separated list of additional column names from the input dataset to use to label cells from a give sample. Useful for adding additional variables beyond 'Condition' and 'Batch' to the object. This information is also used by Harmony if Harmony is selected as the integration method. Use only the column name without '[Factor]'. Example: Patient,Tissue"
