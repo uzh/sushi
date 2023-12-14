@@ -55,6 +55,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     @inherit_tags = ["Order Id", "Factor", "B-Fabric"]
   end
   def set_default_parameters
+    @params['partition'] = ['nextflow']
   end
   def next_dataset
     report_dir = File.join(@result_dir, "#{@dataset['Name']}")
