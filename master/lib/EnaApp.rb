@@ -22,6 +22,10 @@ EOS
         @params['paired'] = false
         @params['tarOutput'] = false
         @params['tarOutput', 'description'] = 'for 10x data'
+        @params['excludedSamples'] = ''
+        @params['excludedSamples', 'description'] = 'comma separated sample_accession SAMN-ids for samples to exclude'
+        @params['includedSamples'] = ''
+        @params['includedSamples', 'description'] = 'comma separated sample_accession SAMN-ids for samples to include'
         @params['name'] = 'ENA_Data'
         @params['projectID'] = ''
         @params['cmdOptions'] = ""
