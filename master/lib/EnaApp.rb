@@ -19,7 +19,8 @@ EOS
         @params['cores'] = '1'
         @params['ram'] = '15'
         @params['scratch'] = '300'
-        @params['paired'] = false
+        @params['supportedMode'] = ['paired', 'single']
+        @params['supportedMode', 'description'] = 'if mixed select either single read or paired end libraries from the study'
         @params['tarOutput'] = false
         @params['tarOutput', 'description'] = 'for 10x data'
         @params['excludedSamples'] = ''
