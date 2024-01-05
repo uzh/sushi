@@ -40,8 +40,6 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['enrichrDatabase'] = ['Tabula_Muris', 'Tabula_Sapiens', 'Azimuth_Cell_Types_2021', 'PanglaoDB_Augmented_2021', 'CellMarker_Augmented_2021', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Human_Gene_Atlas', 'Mouse_Gene_Atlas', ]
     @params['enrichrDatabase','multi_selection'] = true
     @params['enrichrDatabase','all_selected'] = true
-    @params['Azimuth'] = ["none", "adiposeref", "bonemarrowref", "fetusref", "heartref", "humancortexref", 
-                          "kidneyref", "lungref", "mousecortexref", "pancreasref", "pbmcref", "tonsilref"]
     @params['SingleR'] = ['none', 'BlueprintEncodeData', 'DatabaseImmuneCellExpressionData', 'HumanPrimaryCellAtlasData', 
                           'ImmGenData', 'MonacoImmuneData', 'MouseRNAseqData', 'NovershternHematopoieticData']
     @params['pcGenes'] = ''
@@ -50,8 +48,6 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['npcs', 'description'] = 'Number of principal components to use for dimensionality reduction. Do not use more pcs than pcGenes (when used).'
     @params['resolution'] = '0.6'
     @params['resolution', 'description'] = 'Value between 0 and 1. A higher value will lead to larger communities.'
-    @params['batchCorrection'] = ['true', 'false']
-    @params['batchCorrection', 'description'] = "Perform batch correction?"
     @params['SCT.regress.CellCycle'] = false
     @params['SCT.regress.CellCycle', 'description'] = "Variable to regress when processing the counts with the SCTransform method."
     @params['DE.method'] = ['wilcox', 'LR']
@@ -63,7 +59,7 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['min.pct', 'description'] = 'Used in calculating cluster markers: The minimum fraction of cells in either of the two tested populations.'
     @params['logfc.threshold'] = 0.25
     @params['logfc.threshold', 'description'] = 'Used in calculating cluster markers: Limit testing to genes which show, on average, at least X-fold difference (log-scale) between the two groups of cells.'
-    @params['integrationMethod'] = ['CCA', 'RPCA', 'Harmony', 'STACAS']
+    @params['integrationMethod'] = ['CCA', 'RPCA', 'Harmony', 'STACAS', 'none']
     @params['integrationMethod', 'description'] = 'use RPCA if the number of matching cells/cell types across your samples is small, STACAS if you have prior information on the labels'
     @params['additionalFactors'] = ''
     @params['additionalFactors', 'description'] = "A comma-separated list of additional column names from the input dataset to use to label cells from a give sample. Useful for adding additional variables beyond 'Condition' and 'Batch' to the object. This information is also used by Harmony if Harmony is selected as the integration method. Use only the column name without '[Factor]'. Example: Patient,Tissue"
