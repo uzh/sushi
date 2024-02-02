@@ -54,6 +54,8 @@ Single cell report<br/>
     @params['cellsFraction', 'description'] = 'A gene will be kept if it is expressed in at least this fraction of spots'
     @params['nUMIs'] = 1
     @params['nUMIs', 'description'] = 'A gene will be kept if it has at least nUMIs in the fraction of spots specified before'
+    @params['Azimuth'] = ["none", "adiposeref", "bonemarrowref", "fetusref", "heartref", "humancortexref",
+                          "kidneyref", "lungref", "mousecortexref", "pancreasref", "pbmcref", "tonsilref","/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0"]
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.3.2", "Dev/R/4.3.0", "Dev/R/4.2.2", "Dev/R/4.2.0"]
