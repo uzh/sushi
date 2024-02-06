@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'ffi'
 gem 'sassc-rails'
-gem 'rails', '6.1.7.2'
+gem 'rails', '7.0.8'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
