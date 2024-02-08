@@ -14,13 +14,13 @@ SushiFabric::Application.configure do
   config.serve_static_files = true
 
   # Compress JavaScripts and CSS
-  config.assets.compress = true
+  # config.assets.compress = true
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
-  config.assets.compile = true
+  # config.assets.compile = true
 
   # Generate digests for assets URLs
-  config.assets.digest = true
+  # config.assets.digest = true
 
   # Defaults to nil and saved in location specified by config.assets.prefix
   # config.assets.manifest = YOUR_PATH
@@ -30,7 +30,7 @@ SushiFabric::Application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  # config.force_ssl = true
 
   # See everything in the log (default is :info)
   # config.log_level = :debug
@@ -43,7 +43,7 @@ SushiFabric::Application.configure do
 
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
-  config.cache_store = :memory_store, { size: 64.megabytes }
+  config.cache_store = :memory_store, { size: 64 * 1024 * 1024 }
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
@@ -79,11 +79,10 @@ SushiFabric::Application.configure do
 
   # fgcz
   if config.fgcz?
-    GA.tracker = "UA-113893174-1"
-    #config.workflow_manager = "druby://fgcz-s-032:40001" # development
-    #config.workflow_manager = "druby://fgcz-s-032:50001" # production
-    #config.workflow_manager = "druby://fgcz-s-032:70001" # demo
-    config.workflow_manager = "druby://fgcz-h-031:40001" # debian10 production
+    #config.workflow_manager = "druby://fgcz-c-044:40001" # course1
+    #config.workflow_manager = "druby://fgcz-h-940:40001" # course2
+    #config.workflow_manager = "druby://fgcz-h-032:40001" # demo
+    config.workflow_manager = "druby://fgcz-h-031:40001" # production
     config.scratch_dir = "/scratch"
     #config.gstore_dir = File.join(Dir.pwd, 'public/gstore/projects')
     config.gstore_dir = "/srv/gstore/projects" # production
@@ -97,7 +96,6 @@ SushiFabric::Application.configure do
                           "http://fgcz-h-031:4000"
                         end
 
-    #ENV['PATH'] = "/usr/local/ngseq/packages/Dev/Python/3.6.8/bin/:/usr/local/ngseq/opt/GxTx_Scripts_in_Python3/g-bin/:" + ENV['PATH']
   end
 
 end
