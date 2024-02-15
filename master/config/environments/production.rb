@@ -82,20 +82,19 @@ SushiFabric::Application.configure do
     #config.workflow_manager = "druby://fgcz-c-044:40001" # course1
     #config.workflow_manager = "druby://fgcz-h-940:40001" # course2
     #config.workflow_manager = "druby://fgcz-h-032:40001" # demo
-    config.workflow_manager = "druby://fgcz-h-031:40001" # production
+    config.workflow_manager = "druby://fgcz-h-031:40001" # production, test
     config.scratch_dir = "/scratch"
-    #config.gstore_dir = File.join(Dir.pwd, 'public/gstore/projects')
-    config.gstore_dir = "/srv/gstore/projects" # production
-    #config.gstore_dir = "/srv/GT/analysis/course_sushi/public/gstore/projects" # demo
+    config.gstore_dir = "/srv/gstore/projects" # production, test
+    #config.gstore_dir = "/srv/GT/analysis/course_sushi/public/gstore/projects" # demo, course
     config.sushi_app_dir = Dir.pwd
     config.module_source = "/usr/local/ngseq/etc/lmod_profile"
-    config.course_mode = false
-    config.rails_host = if config.force_ssl
-                          "https://fgcz-sushi.uzh.ch"
-                        else
-                          "http://fgcz-h-031:4000"
-                        end
-
+    config.course_mode = false  # production, demo, test
+    #config.course_mode = true   # course
+    #config.rails_host = "https://fgcz-sushi.uzh.ch"         # production
+    #config.rails_host = "https://fgcz-sushi-demo.uzh.ch"    # demo
+    #config.rails_host = "https://fgcz-course1.bfabric.org"  # course1
+    #config.rails_host = "https://fgcz-course2.bfabric.org"  # course2
+    config.rails_host = "http://fgcz-h-032:4000"            # test
   end
 
 end
