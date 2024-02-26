@@ -3,7 +3,7 @@ module ApplicationHelper
     text.gsub(/\r\n|\r|\n/, "<br />")
   end
   def employee?
-    SushiFabric::Application.config.fgcz? and current_user and FGCZ.get_user_groups(current_user.login).include?('Employees')
+    SushiFabric::Application.config.fgcz? and current_user and FGCZ.employee?(current_user.login)
   end
   def user_projects
     if SushiFabric::Application.config.fgcz? and current_user

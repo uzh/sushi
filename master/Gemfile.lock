@@ -8,7 +8,7 @@ PATH
 PATH
   remote: /usr/local/ngseq/gems/fgcz
   specs:
-    fgcz (0.0.3)
+    fgcz (0.0.5)
 
 GEM
   remote: https://rubygems.org/
@@ -319,7 +319,7 @@ DEPENDENCIES
   devise
   devise_ldap_authenticatable (>= 0.8.6.1)!
   ffi
-  fgcz (>= 0.0.2)!
+  fgcz (>= 0.0.4)!
   google-analytics-rails
   hpricot
   jquery-rails
