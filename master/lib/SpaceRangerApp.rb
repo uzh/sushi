@@ -56,7 +56,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
         'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
         'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix'),
         'Read Count'=>@dataset['Read Count'],
-        'Count [File]'=>File.join(@report_dir, "#{@dataset['Name']}-counts.txt")        
+        'Count [File]'=>File.join(report_dir, "#{@dataset['Name']}-counts.txt")        
       }.merge(extract_columns(@inherit_tags))
     dataset
   end
