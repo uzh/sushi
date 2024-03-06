@@ -39,6 +39,9 @@ A simple <a href='https://fgcz-shiny.uzh.ch/10x_Sample2Barcode',>ShinyApp  </a> 
       @params['probesetFile'][File.basename(dir)] = File.basename(dir)
     end
     @params['probesetFile', 'description'] = 'set it only for probe-based single cell fixed RNA profiling (FRP)'
+    @params['customProbesFile'] = ''
+    @params['customProbesFile', 'upload'] = true
+    @params['customProbesFile', 'description'] = 'custom probeset csv according to 10x sepcifications (https://tinyurl.com/10xProbeSetCSVFormat). ONLY for probe-based single cell fixed RNA profiling (FRP)'
     @params['TenXLibrary'] = ['GEX', 'VDJ-T', 'VDJ-B', 'FeatureBarcoding', 'Multiplexing', 'fixedRNA']
     @params['TenXLibrary', 'description'] = "Which 10X libraries? Note: Not all library types can be processed simultaneously. See the <a href='https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/using/multi#when'>support page</a> for further details. E.g. for fixedRNA, must also specify GEX."
     @params['TenXLibrary', 'multi_selection'] = true
