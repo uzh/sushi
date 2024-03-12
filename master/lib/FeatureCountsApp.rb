@@ -40,6 +40,8 @@ EOS
     @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 'protein_coding'
+    @params['secondRef'] = ''
+    @params['secondRef', 'description'] = 'extra DNA/RNA sequences to use for alignment; needs to point to a file on FGCZ servers; ask for upload sushi@fgcz.ethz.ch '
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Dev/R"]
