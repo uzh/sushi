@@ -38,7 +38,7 @@ Single cell report<br/>
     @params['logfc.threshold', 'description'] = 'Used in calculating cluster markers: Limit testing to genes which show, on average, at least X-fold difference (log-scale) between the two groups of cells.'
     @params['pcGenes'] = ''
     @params['pcGenes', 'description'] = 'The genes used in supvervised clustering'
-    @params['resolution'] = [0.6, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    @params['resolution'] = [0.6, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 2.5, 3]
     @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
     @params['nreads'] = ''
     @params['nreads', 'description'] = 'Low quality spots have less than "nreads" reads. Only when applying fixed thresholds'
@@ -54,6 +54,10 @@ Single cell report<br/>
     @params['cellsFraction', 'description'] = 'A gene will be kept if it is expressed in at least this fraction of spots'
     @params['nUMIs'] = 1
     @params['nUMIs', 'description'] = 'A gene will be kept if it has at least nUMIs in the fraction of spots specified before'
+    @params['enrichrDatabase'] = ['Tabula_Muris', 'Tabula_Sapiens', 'Azimuth_Cell_Types_2021', 'PanglaoDB_Augmented_2021',
+                                  'CellMarker_Augmented_2021', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Human_Gene_Atlas', 'Mouse_Gene_Atlas']
+    @params['enrichrDatabase','multi_selection'] = true
+    @params['enrichrDatabase','all_selected'] = true
     @params['Azimuth'] = ["none", "adiposeref", "bonemarrowref", "fetusref", "heartref", "humancortexref",
                           "kidneyref", "lungref", "mousecortexref", "pancreasref", "pbmcref", "tonsilref","/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0"]
     @params['specialOptions'] = ''
