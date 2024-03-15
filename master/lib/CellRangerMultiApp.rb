@@ -71,7 +71,7 @@ A simple <a href='https://fgcz-shiny.uzh.ch/10x_Sample2Barcode',>ShinyApp  </a> 
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/seqtk", "Dev/R/4.3.2", "Dev/Python/3.8.3", "Tools/samtools"]
-    @params['CellRangerVersion'] = ["Aligner/CellRanger/7.2.0", "Aligner/CellRanger/7.1.0"]
+    @params['CellRangerVersion'] = ["Aligner/CellRanger/8.0.0", "Aligner/CellRanger/7.2.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
