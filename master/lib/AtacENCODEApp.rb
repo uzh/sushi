@@ -9,13 +9,13 @@ class AtacENCODEApp <  SushiFabric::SushiApp
   def initialize
     super
     @name = 'AtacENCODE'
-    @params['process_mode'] = 'DATASET'
+    @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'ATAC'
     @description =<<-EOS
     A ATAC-seq and DNase-seq processing pipeline from ENCODE. <br/>
     Fow now, it only supports human and mouse. <br/>
 
-    <a href='https://github.com/kundajelab/atac_dnase_pipelines'/>Github web-site</a>
+    <a href='https://github.com/ENCODE-DCC/atac-seq-pipeline'/>Github web-site</a>
     
 EOS
     @required_columns = ['Name','Read1','Read2','Species']
@@ -24,6 +24,7 @@ EOS
     @params['ram'] = '40'
     @params['scratch'] = '200'
     @params['paired'] = true
+    @params['nReads'] = 25000000
     @params['name'] = 'AtacENCODE'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
@@ -38,11 +39,11 @@ EOS
     end
   end
   def next_dataset
-    report_file = File.join(@result_dir, @params['name'])
-    report_link = File.join(report_file, "out", "#{@params['name']}_report.html")
-    {'Name'=>@params['name'],
-     'Report [File]'=>report_file,
-     'Html [Link]'=>report_link,
+     dataset = {
+      'Name'=>@dataset['Name'],
+      'Report [File]'=>File.join(@result_dir, "#{@dataset['Name']}_qc.html"),
+      'Stats [File]'=>File.join(@result_dir, "#{@dataset['Name']}_qc.json"),
+      'Html [Link]'=>File.join(@result_dir, "#{@dataset['Name']}_qc.html"),
     }
   end
   def commands
