@@ -47,7 +47,7 @@ EOS
     }
   end
   def commands
-    run_RApp('EzAppAtacENCODE', conda_env: 'encode-atac-seq-pipeline')
+    run_RApp('EzAppAtacENCODE') #, conda_env: 'encode-atac-seq-pipeline')
   end
 end
 
