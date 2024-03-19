@@ -181,4 +181,39 @@ namespace :ds do
     end
   end
 
+  desc "Check all datasets with registered in 3 days"
+  task check_unregistered_datasets: :environment do
+    t0 = Time.now
+    today = Date.today
+    #p today
+    #p (today - 3)
+    #p today.to_s
+    #p (today - 3).to_s
+    unregistered_datasets = []
+    unregistered_datasets_without_project = []
+    puts ["ID", "Project", "Date"]
+    DataSet.order("id").each_with_index do |dataset, i|
+        date = dataset.created_at.strftime("%Y-%m-%d")
+        unless dataset.bfabric_id
+          unregistered_datasets << dataset
+          if project = dataset.project
+            puts [dataset.id, "p#{project.number}", date.to_s].join("\t")
+          else
+            unregistered_datasets_without_project << dataset
+          end
+        end
+        #p date
+        #p (date < (today-3).to_s)
+        #p dataset.samples.first.to_hash
+        #if sample = dataset.samples.first.to_hash
+        #  p sample["BFabric Info [B-Fabric]"]
+        #  # here to check file existence in gstore
+        #end
+        #break
+    end
+    puts "# #unregistered_datasets: #{unregistered_datasets.length}"
+    puts "# #unregistered_datasets_without_project: #{unregistered_datasets_without_project.length}"
+    puts "# calc time: #{Time.now - t0} [s]"
+  end
+ 
 end
