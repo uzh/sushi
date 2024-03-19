@@ -191,25 +191,32 @@ namespace :ds do
     #p (today - 3).to_s
     unregistered_datasets = []
     unregistered_datasets_without_project = []
-    puts ["ID", "Project", "Date"]
+    puts ["ID", "Date", "Project", "OrderIDs"].join("\t")
     DataSet.order("id").each_with_index do |dataset, i|
         date = dataset.created_at.strftime("%Y-%m-%d")
         unless dataset.bfabric_id
+          order_ids = {}
+          dataset.samples.each do |sample|
+            order_id = sample.to_hash["Order Id [B-Fabric]"]
+            order_ids[order_id]
+          end
+          order_ids_ = unless order_ids.keys.empty?
+                         order_ids.keys.join(";")
+                       else
+                         ""
+                       end
+
           unregistered_datasets << dataset
           if project = dataset.project
-            puts [dataset.id, "p#{project.number}", date.to_s].join("\t")
+            puts [dataset.id, date.to_s, "p#{project.number}", order_ids_].join("\t")
           else
             unregistered_datasets_without_project << dataset
           end
         end
         #p date
         #p (date < (today-3).to_s)
-        #p dataset.samples.first.to_hash
-        #if sample = dataset.samples.first.to_hash
-        #  p sample["BFabric Info [B-Fabric]"]
-        #  # here to check file existence in gstore
-        #end
-        #break
+        #sample = dataset.samples.first.to_hash
+        #p sample["BFabric Info [B-Fabric]"]
     end
     puts "# #unregistered_datasets: #{unregistered_datasets.length}"
     puts "# #unregistered_datasets_without_project: #{unregistered_datasets_without_project.length}"
