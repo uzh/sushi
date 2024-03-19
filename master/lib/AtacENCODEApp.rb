@@ -28,7 +28,7 @@ EOS
     @params['name'] = 'AtacENCODE'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
-    @modules = ["Dev/jdk"]
+    @modules = ["Dev/Python//3.9.7_dev","Dev/jdk"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
