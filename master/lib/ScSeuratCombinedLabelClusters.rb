@@ -63,7 +63,7 @@ class ScSeuratCombinedLabelClusters < SushiFabric::SushiApp
     report_link = File.join(report_file, '00index.html')
     {'Name'=>@params['name'],
      'Species'=>(dataset = @dataset.first and dataset['Species']),
-     'refBuild'=>(dataset = @dataset.first and dataset['refBuild'].uniq.join(',')),
+     'refBuild'=>(dataset = @dataset.first and dataset['refBuild']),
      'Static Report [Link]'=>report_link,
      'Report [File]'=>report_file,
     }
