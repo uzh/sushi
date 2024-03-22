@@ -9,7 +9,7 @@ include GlobalVariables
 class ScSeuratCombinedLabelClusters < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'ScSeuratCombinedLabelClusters'
+    @name = 'LabelCombinedClusters'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'SingleCell'
     @description =<<-EOS
