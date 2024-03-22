@@ -11,7 +11,7 @@ class UnicyclerApp < SushiFabric::SushiApp
     @name = 'Unicycler'
     @analysis_category = 'Assemble'
     @description =<<-EOS
-SPAdes genome assembler
+Unicycler microbial genome assembler
 <a href='https://github.com/rrwick/Unicycler'>https://github.com/rrwick/Unicycler</a>
 EOS
 
@@ -26,6 +26,8 @@ EOS
     @params['long', 'description'] = "Do you have long reads with which you would like to do a hybrid assembly"
     @params['pathToLong'] = ''
     @params['pathToLong', 'description'] = "Specify the path to long reads, make sure the file has the right permissions."
+    @params['mode'] = ['normal', 'conservative', 'bold']
+    @params['mode', 'description'] = "Unicycler can be run in three modes. Default is normal. See documentation for more clarification."
     @params['unicyclerOpt'] = ''
     @params['unicyclerOpt', 'description'] = 'Predefine any options not already specified by default. By default is empty for genome assembly'
     
