@@ -68,7 +68,7 @@ class ScSeuratCombinedLabelClusters < SushiFabric::SushiApp
     }
   end
   def commands
-    run_RApp("EzAppScSeuratCombine")
+    run_RApp("EzAppScSeuratCombinedLabelClusters")
   end
 end
 
