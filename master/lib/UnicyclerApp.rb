@@ -79,9 +79,9 @@ EOS
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
-     'Assembly [File]'=>File.join(@result_dir, "assembly.fasta"),
-     'Graph [File]'=>File.join(@result_dir, "assembly.gfa"),
-     'Log [File]'=>File.join(@result_dir, "unicycler.log"),
+     'Assembly [File]'=>File.join(@result_dir, "#{@dataset['Name']}.assembly.fasta"),
+     'Graph [File]'=>File.join(@result_dir, "#{@dataset['Name']}.assembly.gfa"),
+     'Log [File]'=>File.join(@result_dir, "#{@dataset['Name']}.unicycler.log"),
      'Species'=>@dataset['Species'],
      'Read Count'=>@dataset['Read Count'],
     }.merge(extract_columns(@inherit_tags))
