@@ -15,7 +15,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     EOS
     @required_columns = ['Name', 'Read1', 'Read2', 'Species']
     @required_params = ['name']
-    @params['cores'] = ['8', '16', '32']
+    @params['cores'] = ['16', '8', '32']
     @params['ram'] = ['80', '120']
     @params['scratch'] = '200'
     @params['name'] = 'BDRhapsodySA'
@@ -52,9 +52,6 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     @params['mail'] = ""
     @modules = ["Dev/R"]
     @inherit_tags = ["Order Id", "Factor", "B-Fabric"]
-  end
-  def set_default_parameters
-    @params['partition'] = 'nextflow'
   end
   def next_dataset
     report_dir = File.join(@result_dir, "#{@dataset['Name']}")
