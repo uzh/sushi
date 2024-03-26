@@ -48,7 +48,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     @params['controlSeqs'] = ''
     @params['controlSeqs', 'description'] = 'The extra control sequences (such as spikein sequences) available in https://fgcz-gstore.uzh.ch/reference/controlSeqs.fa'
     @params['specialOptions'] = ''
-    @params['version'] = ['2.0', '2.1']
+    @params['version'] = ['2.1']
     @params['mail'] = ""
     @modules = ["Dev/R"]
     @inherit_tags = ["Order Id", "Factor", "B-Fabric"]
@@ -76,7 +76,8 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     dataset
   end
   def commands
-    run_RApp("EzAppBDRhapsodySA", conda_env: 'seven-bridges')
+    command = "module load Aligner/Rhapsody/#{@params["version"]}\n"
+    command << run_RApp("EzAppBDRhapsodySA")
   end
 end
 
