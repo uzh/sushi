@@ -32,6 +32,10 @@ Single cell report<br/>
     @params['DE.method', 'description'] ='Method to be used when calculating gene cluster markers. Use LR if you want to include cell cycle in the regression model.'
     @params['min.pct'] = 0.1
     @params['min.pct', 'description'] = 'Used in calculating cluster markers: The minimum fraction of cells in either of the two tested populations.'
+    @params['min.diff.pct'] = 0.1
+    @params['min.diff.pct', 'description'] = 'Used for filtering cluster markers: The minimum difference of cell fraction of the two tested populations.'
+    @params['pvalue_allMarkers'] = 0.01
+    @params['pvalue_allMarkers', 'description'] = 'Used for filtering cluster markers: adjusted pValue threshold for marker detection.'
     @params['logfc.threshold'] = 0.25
     @params['logfc.threshold', 'description'] = 'Used in calculating cluster markers: Limit testing to genes which show, on average, at least X-fold difference (log-scale) between the two groups of cells.'
     @params['tissue'] = []
