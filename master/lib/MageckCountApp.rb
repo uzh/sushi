@@ -52,7 +52,8 @@ EOS
      'Count [File]'=>count_file,
      'Log [File]'=>log_file,
      'Read Count'=>@dataset['Read Count'],
-     'libName'=>@params['libName']
+     'libName'=>@params['libName'],
+     'Species'=>@dataset['Species']
     }.merge(extract_columns(@inherit_tags))
   end
   def commands

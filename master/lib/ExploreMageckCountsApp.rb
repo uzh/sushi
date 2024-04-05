@@ -47,6 +47,7 @@ Quality control after counting sgRNAs  with Mageck<br/>
     {'Name'=>@params['name'],
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      #'refBuild'=>@params['refBuild'],
+     'libName'=>(dataset = @dataset.first and dataset['libName']),
      'Static Report [Link]'=>report_link,
      'Live Report [Link]'=>"#{SHINY_EXPLORE_COUNTS}?data=#{report_file}/counts-#{@random_string}-EzResult.RData",
      'Report [File]'=>report_file,
