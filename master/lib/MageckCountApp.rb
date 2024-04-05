@@ -48,7 +48,7 @@ EOS
     report_file = File.join(@result_dir,"#{@dataset['Name']}")
     {'Name'=>@dataset['Name'],
      'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.count.txt"),
-     'Log [File]'=>=>File.join(@result_dir, "#{@dataset['Name']}.log"),
+     'Log [File]'=>File.join(@result_dir, "#{@dataset['Name']}.log"),
      'Read Count'=>@dataset['Read Count'],
      'libName'=>@params['libName'],
      'Species'=>@dataset['Species']
