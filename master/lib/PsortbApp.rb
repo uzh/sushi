@@ -32,7 +32,6 @@ EOS
   def next_dataset
     {'Name'=>@dataset['Name'],
      'PsortbOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}.psortb.txt"),
-     'Proteins [File]' =>File.join(@result_dir, "#{@dataset['Name']}.proteins"),
      'Species'=>@dataset['Species'],
     }.merge(extract_columns(@inherit_tags))
   end
