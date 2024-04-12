@@ -109,10 +109,16 @@ class DataSet < ActiveRecord::Base
                       end
                     elsif parent_dataset and bfabric_id = parent_dataset.bfabric_id # child dataset
                       if order_id > 8000
-                        [python3, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id, bfabric_id, "--skip-file-check"].join(" ")
+                        [python3, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
                       else
-                        [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--skip-file-check"].join(" ")
+                        [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
                       end
+                    end
+                  elsif self.order_ids.uniq.length > 1 # multi order dataset
+                    if parent_dataset.nil? # root dataset
+                        [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id, "--skip-file-check"].join(" ")
+                    elsif parent_dataset and bfabric_id = parent_dataset.bfabric_id # child dataset
+                        [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
                     end
                   end
 
