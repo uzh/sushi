@@ -1,303 +1,141 @@
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SUSHI FAQ</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta id='page-params'
+    theme='spacelab'
+    title='SUSHI FAQ'
+    active='1'
+    root=''>
+    </head>
+    
+    
 
-<style type="text/css">
+<script src="Images/lightbox/js/jquery-1.11.0.min.js"></script>
+<script src="Images/lightbox/js/lightbox.min.js"></script>
+<link href="Images/lightbox/css/lightbox.css" rel="stylesheet" />
+
+<xmp theme="Spacelab" style="display:none;" toc toc-top-link>
+
+If anything is unclear: [sequencing@fgcz.ethz.ch](mailto:sequencing@fgcz.ethz.ch?subject=SUSHI)
+
+# 1. Subset Samples From DataSet
+
+***Process your raw data, without cooking it!***
+
+**SUSHI** can **S**upport **U**sers for **SH**ell script **I**ntegration, defined as a recursive acronym as usual, but someone might say after using it, SUSHI is a Super Ultra Special Hyper Incredible system!! Anyway, it is a sort of pipeline framework developed in Ruby on Rails in order to share useful pipeline scripts. SUSHI provides both web-based front end and command line interface. An instance is now running at [Functional Genomics Center Zurich](http://www.fgcz.ch/) to process the next genration sequence data for over 1000 projects. There have been some similar frameworks published such as [Galaxy](https://usegalaxy.org/), [Chipster](http://chipster.csc.fi/), and [GeneProf](http://www.geneprof.org/GeneProf/), but it is noteworthy that SUSHI is developed in Ruby on Rails, so that installing and updating follows the Ruby on Rails conventions and is quite simple.
+
+You can get started at the demo SUSHI server: [fgcz-sushi-demo.uzh.ch](http://fgcz-sushi-demo.uzh.ch), just go and play around with it, and feel what SUSHI tastes like. Select your project number and then **DataSet** to start analyzing data or viewing analysis results. You can find the basic usage here: [fgcz-sushi.uzh.ch/usage.html](http://fgcz-sushi.uzh.ch/usage.html).
+
+
+# 2. How to use
+
+## Login
+
+[fgcz-sushi.uzh.ch](http://fgcz-sushi.uzh.ch)
+<a href="Images/login_form.png" data-lightbox="login_form" data-title="Login Form">
+  <img class="shadow_box" width="500px" src="Images/login_form.png" />
+</a>
+* You need to get an account of [B-Fabric](http://fgcz-bfabric.uzh.ch/) in advance
+* The same account and password is valid also in SUSHI
+
+## Top menu
+
+Center
+* *DataSet*: see, edit and delete your DataSet
+* *Import DataSet*: import a DataSet from .tsv file
+* *Check Jobs*: check your submitted jobs and status
+* *gStore*: browse result files
+* *Help*: See the full list of SUSHI apps, find documentation, and help email
+* *Project*: select your project, and click 'GO' button
+
+Top right
+* *Sign out*: logout from Sushi
+
+
+
+## DataSet Listing
+
+The available DataSets are listed as a tree structure and as a simple table with the newest DataSets at the top.
+
+<a href="Images/datasetListing.png" data-lightbox="login_form" data-title="DataSet Listing">
+  <img class="shadow_box" width="500px" src="Images/datasetListing.png" />
+</a>
+
+The **DataSet** in SUSHI means a set of meta-information regarding processed data, which is simply import/export-able with .tsv (tab-separated-value) formated text file. The column header should the category of meta-information, and the row header should be sample name.
+
+## DataSet Inspection
+
+Click on a DataSet to view the details. The **Samples** table shows the meta-information about the samples and reference to data files and links to browsable reports (if available).
+
+<a href="Images/samples.png" data-lightbox="login_form" data-title="Samples">
+  <img class="shadow_box" width="500px" src="Images/samples.png" />
+</a>
+
+## DataSet Analysis
+
+At the bottom of every DataSet view there is the list of **SUSHI Applications** that are computable on the DataSet. 
+Select a DataSet by clicking on it. This will bring up the DataSet page where you can analyze the DataSet by selecting any of the available **SUSHI Applications** listed at the bottom. You will be asked to fill in the options and confirm your selections.
+
+<a href="Images/applications.png" data-lightbox="login_form" data-title="Applications">
+  <img class="shadow_box" width="500px" src="Images/applications.png" />
+</a>
+
+## Import DataSet
+
+Normally, DataSet is automatically imported in SUSHI after the sequencing at [FGCZ](http://www.fgcz.ch/). If you would like to import a custom DataSet (.tsv), go to **Import DataSet** from the top menu, select the .tsv file from your computer, put an appropriate DataSet Name, and click **load** button. Note that the same DataSet cannot be imported again.
+
 <!-- 
-/****************************************************
- * general settings
- ****************************************************/
+## Usacase
 
-html, body {
-    margin:0px;
-    padding:0px;
-  border:0px;
-}
+In this secion, a typical usage of SUSHI after we get the next generation sequence data is described below.
 
-body, th, td {
-  font-family: Verdana, Helvetica, Arial, sans-serif;
-  font-size: 12px;
-  color: #444444;
-  overflow: auto;
-}
-
-a, a:link, a:visited {
-  text-decoration:underline;
-  color:#333333;
-}
-
-a:hover, a:active, a:focus, a:active:hover, a:visited:hover {
-  text-decoration:underline;
-  color:#000000;
-}
-
-/****************************************************
- * blocks
- ****************************************************/
-
-#margins {
-    min-height: 100%;
-    height: 100%;
-}
-
-#screenhead {
-  border:0px;
-}
-
-.pathline {
-    line-height:10px;
-    padding:1px 0px 2px 14px;
-  font-size:10px;
-    text-decoration:none;
-  color:#000000;
-  background-color:#0099FF;
-  border:0px;
-  border-top: 2px solid;
-  border-color:#FFFFFF;
-}
-.pathline a, .pathline a:link, .pathline a:visited, .pathline span { color:#FFFFFF; text-decoration:none; }
-.pathline a:hover, .pathline a:active, .pathline a:focus { color:#333333; text-decoration:none; }
-
-#contentblock {
-  padding-left: 20px;
-  text-align:left;
-}
-
-/****************************************************
- * headings
- ****************************************************/
-
-h1, h2, h3 {
-  margin-top:20px;
-  font-weight:bold;
-  color:#333333;
-    clear:none;
-}
-
-h1 {
-  font-size:14px;
-  text-transform:none;
-  clear:right;
-}
-
-h2 {
-  font-size:12px;
-  text-transform:none;
-  clear:right;
-}
-
-h3 {
-    font-size:12px;
-}
-
-p, li {
-  font-size:12px;
-  line-height:25px;
-}
-
-th {
-  font-size: 11px;
-  color: #333333;
-  font-weight: bold;
-  line-height:25px;
-}
-
-table {
-    border-collapse:collapse;
-    border-spacing: 0px;
-}
-
-td {
-    padding: 0px;
-}
-
-tr {
-    padding: 0px;
-}
-
-/****************************************************
- * table header and fields within
- ****************************************************/
-
-.rh, .lh, .ch {
-  font-size: 11px;
-  color: #333333;
-  font-weight: bold;
-}
-.lh a, .lh a:link, .lh a:visited { color:#333333; text-decoration:none; }
-.lh a:hover, .lh a:active, .lh a:focus { color:#333333; text-decoration:none; }
-
-.rh {
-  text-align:right;
-  padding-right:10px;
-}
-
-.lh {
-  text-align:left;
-}
-
-.ch {
-    text-align:center;
-}
-
-.tdr, .rtd, .nrtd, .required, .notRequired {
-  color: #666666;
-  text-align:right;
-  vertical-align:top;
-  padding-right:10px;
-}
-
-.rtd {
-  width:170px;
-  padding-top:5px;
-}
-
-.nrtd {
-  padding-right:0px;
-}
-
-.tdr a, .tdr a:link, .tdr a:visited { color:#0099FF; }
-.tdr a:hover, .tdr a:active, .tdr a:focus { color:#000000; }
-
-.tdl, .ltd, .ltdpre {
-  color: #0099FF;
-  text-align:left;
-  vertical-align:top;
-}
-  
-.ltd, .ltdpre, .required, .notRequired  {
-  padding-top:5px;
-}
-
-.ltd, .ltdpre  {
-  width:590px;
-}
-
-.ltd a, .ltd a:link, .ltd a:visited, .tdl a, .tdl a:link, .tdl a:visited { color:#0099FF; }
-.ltd a:hover, .ltd a:active, .ltd a:focus, .tdl a:hover, .tdl a:active, .tdl a:focus { color:#000000; }
-
-/****************************************************
- * class for presentation of detail information, e. g. project X
- ****************************************************/
-
-.standard {
-    width:780px;   
-}
-
-.detail, .listing {
-  border:0px;
-  margin:0px;
-  padding:0px;
-  font-size: 12px;
-  line-height: 25px;
-}
-
-.detail a, .detail a:link, .detail a:visited { color:#0099FF; }
-.detail a:hover, .detail a:active, .detail a:focus { color:#000000; }
-.detail tr:hover tr:hover { background-color: #EEEEEE; }
-.detail tr { vertical-align:top; }
-.detail td { line-height: 25px; }
-
-
-.listing { white-space:nowrap; }
-.listing a, .listing a:link, .listing a:visited { color:#0099FF; }
-.listing a:hover, .listing a:active, .listing a:focus { color:#000000; }
-.listing tr:hover { background-color: #EEEEEE; }
-.listing tr { vertical-align:top; }
-.listing th, .listing td { 
-    line-height: 25px; 
-    vertical-align:top; 
-    padding:1px;
-}
-
-/****************************************************
- * block switcher
- ****************************************************/
-#switcher {
-  display: block;
-  position: absolute;
-  left: 350px;
-  top: 22px;
-  height: 15px;
-  margin: 0px;
-  padding: 0px;
-}
-
-#switcher li {
-  margin: 0px;
-  padding: 0px;
-  display: block;
-  float: left;
-  list-style: none;
-  font-size: 12px;
-  line-height: 15px;
-  border-style:solid;
-  border-width:0px 1px 0px 0px;
-  border-color:#FFFFFF;
-  background-color: #0099FF;
-}
-
-#switcher a {
-  padding: 1px 9px 1px 9px;
-  text-decoration: none;
-  color: #FFFFFF;
-  height: 100%;
-}
-
-#switcher .active {
-  background-color:#6EC0FE;
-  color: #333333;
-}
-
-#switcher .active a {
-  padding: 1px 9px 1px 9px;
-  text-decoration: none;
-  color: #333333;
-}
-
-#switcher li:hover, #switcher a:hover {
-  color:#333333;
-}
-
-img {
-  border: 0px;
-}
 -->
-</style>
-<title>SushiFabric Documentation</title>
-</head><body>
-<div id="margins">
-<table id="screenhead" bgcolor="#FFFFFF">
-<tbody><tr>
-<td class="identity-image" align="left" valign="bottom" width="800"><img src="Images/banner.png" alt="" usemap="#logo" height="70px" border="0"></td><td align="left" valign="bottom" width="200">
-</td><td align="left">&nbsp;</td>
-</tr>
-</tbody></table>
-<div class="pathline">
-<a href="http://www.fgcz.ethz.ch/" title="FGCZ Home">Functional Genomics Center Zurich</a>
-</div>
 
-<table>
-<tr>
-<td valign="top" align="left" id="contentblock">
-<div class="listing">
-<h1><a href="sushi_doc.html">Sushi Documentation</a> &mdash; FAQ</h1>
-<p>Currently under construction. Please check back later.</p>
-<h2>Q. What is Sushi?</h2>
-Sushi is 
-<ul>
-  <li><b>S</b>upporting <b>U</b>ser for <b>SH</b>ell-script <b>I</b>ntegration</li>
-  It is not  
-  <li><b>S</b>equence analysis of <b>U</b>seless <b>S</b>taff with <b>H</b>ighly <b>I</b>ntegration</li>
-  but it can be
-  <li><b>S</b>uper <b>U</b>seful <b>S</b>ystem for <b>HI</b>gh-throughput data</li>
-  or one might say it as 
-  <li><b>S</b>uper <b>U</b>ltra <b>S</b>pecial <b>H</b>yper <b>I</b>ncredible recipe!!</li>
-</ul>
-<table>
-<tbody><tr>
-<td id="contentblock" align="left" valign="top">
-<div class="listing">
+# 3. SUSHI Applications
 
-</div></td></tr></tbody></table></div>
+[http://fgcz-sushi-demo.uzh.ch/sushi_application](http://fgcz-sushi-demo.uzh.ch/sushi_application)
 
-</body></html>
+
+
+# 4. Download & Install
+
+Source code
+* [github.com/uzh/sushi](github.com/uzh/sushi)
+
+Installation
+* [README.rdoc](https://github.com/uzh/sushi/blob/master/README.rdoc)
+
+Demo
+* [demo SUSHI](http://fgcz-sushi-demo.uzh.ch)
+
+Presentation at ECCB'14 (The 13th European Conference on Computational Biology)
+* [Sushi_Demo_ECCB14.pptx](http://fgcz-sushi.uzh.ch/Sushi_Demo_ECCB14.pptx)
+
+
+<!-- 
+### FastQCApp
+
+### FastqScreenApp
+
+### STARApp
+### RSEMApp
+
+### CountFeatureApp
+-->
+
+</xmp>
+
+<script src="https://masaomi.github.io/strapdown/dist/strapdown.js"></script>
+<!-- 
+forked from 
+<script src="http://ndossougbe.github.io/strapdown/dist/strapdown.js"></script>
+-->
+</html>
+
+
+<!-- 
+<script src="http://smzg.github.io/strapdown/example/config/strapdown.js"></script>"
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+-->
