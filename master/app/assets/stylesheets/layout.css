@@ -88,6 +88,11 @@ table tr th {
   border-bottom: 2px solid black;
 }
 
+tr td.no-border {
+  border: none;
+  color: #808080;
+}
+
 /*
 table tr:nth-child(even) {
 	background: #bed2df;

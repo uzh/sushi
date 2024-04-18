@@ -50,17 +50,31 @@
       <% @sushi_app.params.each do |key, value| %>
         <% selected_value = @params_selected[key] %>
         <% if @sushi_app.params[key, 'employee'] and session[:employee] or !@sushi_app.params[key, 'employee'] %>
-        <tr>
-          <% if @sushi_app.params[key, 'hr'] %>
-            <tr>
+          <% if desc = @sushi_app.params[key, 'hr-header'] %>
+          <tr>
+              <td class="no-border" colspan=2>
+                <hr \>
+                <%= desc %>
+                <br \>
+              </td>
+          </tr>
+          <tr>
+              <td class="no-border" colspan=2>
+                &nbsp;
+              </td>
+          </tr>
+          <% elsif @sushi_app.params[key, 'hr'] %>
+          <tr>
               <th>
                 <hr \>
               </th>
               <td>
                 <hr \>
               </td>
-            </tr>
+          </tr>
           <% end %>
+
+        <tr>
           <th>
             <%= key %>
           </th>

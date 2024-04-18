@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20201215-140009'
+Version = '20240418-151840'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -40,7 +40,8 @@ EOS
     @params['twopassMode', 'description'] = 'Per-sample 2-pass mapping or 1-pass mapping in STAR. 2-pass mapping allows to detect more splices reads mapping to novel junctions.'
     # trimming options
     # general
-    @params['trimAdapter', 'hr'] = true
+    #@params['trimAdapter', 'hr'] = true
+    @params['trimAdapter', 'hr-header'] = "fastp parameters"
     @params['trimAdapter'] = true
     # Fastp
     ## trimming
