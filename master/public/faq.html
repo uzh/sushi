@@ -4,11 +4,11 @@
     <title>SUSHI FAQ</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta id='page-params'
-    theme='spacelab'
-    title='SUSHI FAQ'
+    theme='default'
+    title='SUSHI FAQ',
     active='1'
     root=''>
-    </head>
+  </head>
     
     
 
@@ -16,22 +16,75 @@
 <script src="Images/lightbox/js/lightbox.min.js"></script>
 <link href="Images/lightbox/css/lightbox.css" rel="stylesheet" />
 
-<xmp theme="Spacelab" style="display:none;" toc toc-top-link>
+<xmp theme="default" style="display:none;" toc toc-top-link>
 
 If anything is unclear: [sushi@fgcz.ethz.ch](mailto:sushi@fgcz.ethz.ch?subject=Question about SUSHI)
 
+--- 
 
-# How to subset samples?
+# Editing Sample Info
+
+## Subset Samples
+
+*How do I subset my DataSet to exclude/retain specific samples?*
 
 There are two possibilities:
 
 -   After starting an analysis you can use "samples" selection box to select/unselect the samples. This will not modify the parent DataSet but only the Child DataSet to be generated.![](Images/samples-parameter.png)
 
--   On a dataset, clicking on "edit table" brings you to the "edit screen" that lets you remove samples from the DataSet using the minus signs on the left. Subsequently do "save as child" to generat a Child DataSet with the subset of samples. Clickin on "save" will permanently modify the current DataSet.![](Images/subset-dataset.png)
+-   On a dataset, clicking on "edit table" brings you to the "edit screen" that lets you remove samples from the DataSet using the minus signs on the left. Subsequently do "save as child" to generat a Child DataSet with the subset of samples. Clicking on "save" will permanently modify the current DataSet.![](Images/subset-dataset.png)
 
 ---
 
-# How do I know whether/which app parameters I can/should change?
+<br>
+
+## Add More Columns
+
+*How do I add more columns of sample information to my DataSet, e.g., batch, sex?*
+
+-   First, click the `edit table` to the right of the DataSet title. 
+
+![](Images/FAQ_Q4_1.png)
+
+-   This will take you to the edit table page. Click the "+" at the very right of the table.
+
+-   You can also click the "edit table content" to modify any cell already in the table. 
+
+-   You can also delete columns by clicking the "-" next to a column title. 
+
+![](Images/FAQ_Q4_2.png)
+
+-   Once you've clicked to add a new column, the table will have a new empty column at the right. 
+
+-   In the column title, give the column a name. **It must not contain spaces or any special characters *other* than "-" and "."**. 
+
+-   **You must also ensure that you include " [Factor]" at the end of the column title!** *E.g.*, "Sex [Factor]".
+
+-   Then you can enter the data in the cells, again ensuring to avoid spaces and special characters. 
+
+-   You can then save these changes to the current DataSet with the "Save" button, or save the changed table as a new child DataSet. 
+
+-   You will then be returned to the main `edit table` page and can click the "Back to DataSet" at the top of the page. 
+
+-   Any column labelled as `[Factor]` can be used in the differential expression tests. 
+
+---
+
+<br>
+
+## Do My Results Automatically Update?
+
+*If I edit the DataSet (e.g., add a column, fix a spelling mistake), do my results change?*
+
+-   No, if you edit the DataSet in any way, your child DataSets (and Static and Live Reports) remain unchanged, and you will need to run apps again to have the results reflect the modified DataSet. 
+
+---
+
+<br><br>
+
+# App Parameters
+
+*How do I know whether/which app parameters I can/should change?*
 
 -   Critical settings are marked as required in red.
 
@@ -45,13 +98,18 @@ There are two possibilities:
 
 -   In cases where you've changed settings, you should make good use of the "Comment" text box at the top of the app parameters page, to aid later identification of multiple versions of the same app but with different settings
 
+-   If you are unsure of which settings you need to use, *e.g.*, paired or strandMode for mapping, ask your coach!
 
 ![](Images/FAQ_Q2_1.png)
 Essential settings are marked in red. In this case, "paired" and "strandMode" were autopopulated, but "refBuild" was not and will therefore need selecting. Be sure to make good use of the "Comment" box at the top so you can later easily see what settings you chose.
 
 ---
 
-# Static versus Live Reports: What's the difference and which should I use?
+<br><br>
+
+# Static/Live Reports
+
+*Static versus Live Reports: What's the difference and which should I use?*
 
 -   The data that goes into both these reports is identical, as produced by the app you used.
 
@@ -65,7 +123,21 @@ Essential settings are marked in red. In this case, "paired" and "strandMode" we
 
 ---
 
-# How do I add more columns to my DataSet, e.g., sex, batch, *etc*. 
+<br><br>
+
+# Deleting Data
+
+*Can I accidentally delete all my sequencing data? What happens if I delete something by accident?*
+
+-   Don't worry! It's deliberately very difficult to irretrievably delete all your raw sequencing data... **but not impossible!**
+
+-   You can, and should, delete old/broken child DataSets routinely, but they will never delete anything upstream. *E.g.*, if you delete a FeatureCounts DataSet, the parent BAM files remain untouched. 
+
+-   If you delete a DataSet with children DataSets, *e.g.*, a STAR BAM DataSet that has a child FeatureCounts DataSet, those BAM files will be deleted and the FeatureCounts becomes a new 'root' DataSet, *i.e.*, a top level DataSet. 
+
+-   But you cannot easily delete a root DataSet, *e.g.*, your raw FASTQ sequencing files. These are the most critical files, and everything else can be generated again. 
+
+-   If somehow you have managed to delete everything and are beginning to panic, just reach out to us ASAP and we can put it back for you! 
 
 
 
