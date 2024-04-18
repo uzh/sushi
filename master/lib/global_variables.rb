@@ -46,7 +46,7 @@ module GlobalVariables
   def ref_selector(value_replace_pattern=GENOME_REF_DIRS.inject({}){|hash, dir| hash[dir+"/"]=''; hash}, cache_name='ref_selector')
     selector = {'select'=>''}
     selector = Rails.cache.fetch(cache_name, expired_in: 1.hour) do
-      base_pattern_fovarite = GENOME_REF_DIRS_FAVORITE.map{|dir| "#{dir}/*/*/*/Annotation/Release*"}.flatten
+      base_pattern_favorite = GENOME_REF_DIRS_FAVORITE.map{|dir| "#{dir}/*/*/*/Annotation/Release*"}.flatten
       shown_replace_pattern_favorite = GENOME_REF_DIRS_FAVORITE.inject({}){|hash, dir| hash[dir+"/"]=''; hash}
       value_replace_pattern_favorite =GENOME_REF_DIRS_FAVORITE.inject({}){|hash, dir| hash[dir+"/"]=''; hash}
       refBuilds_favorites = refBuilder_selector(base_pattern_favorite, shown_replace_pattern_fovarite, value_replace_pattern_forvarite)
