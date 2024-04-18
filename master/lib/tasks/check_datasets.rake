@@ -262,9 +262,14 @@ namespace :ds do
           #puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s].join("\t")
        end
     end
+    noused_sushiapps = SushiApplication.all.to_a.map{|sushiapp| sushiapp.class_name}
     puts ["SUSHIApp", "#Used"].join("\t")
     sushiapp2count.sort_by{|sushi_app_name, count| count}.reverse.each do |sushi_app_name, count|
       puts [sushi_app_name, count].join("\t")
+      noused_sushiapps.delete(sushi_app_name)
+    end
+    noused_sushiapps.sort.each do |sushi_app_name|
+      puts [sushi_app_name, "0"].join("\t")
     end
     warn "# #sushiapps: #{sushiapp2count.keys.length}"
     warn "# run time: #{Time.now - t0} [s]"
