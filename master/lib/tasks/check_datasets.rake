@@ -249,7 +249,6 @@ namespace :ds do
     t0 = Time.now
     first_date = Date.new(2023,1,1)
     sushiapp2count = {}
-    puts ["ID", "Name", "Project", "SushiApp", "Samples", "Who", "Created", "BFabricID"].join("\t")
     DataSet.order("id").each_with_index do |dataset, i|
         date = dataset.created_at
         user = if user = dataset.user
@@ -263,12 +262,11 @@ namespace :ds do
           #puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s].join("\t")
        end
     end
-    puts "# #sushiapps: #{sushiapp2count.keys.length}"
-    puts "# sushiapp rank:"
     puts ["SUSHIApp", "#Used"].join("\t")
     sushiapp2count.sort_by{|sushi_app_name, count| count}.reverse.each do |sushi_app_name, count|
       puts [sushi_app_name, count].join("\t")
     end
+    warn "# #sushiapps: #{sushiapp2count.keys.length}"
     warn "# run time: #{Time.now - t0} [s]"
   end
 
