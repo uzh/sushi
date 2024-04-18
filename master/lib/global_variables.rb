@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 GENOME_REF_DIRS = ['/srv/GT/reference', '/srv/GT/assembly']
+GENOME_REF_DIRS_FAVORITE = ['/srv/GT/reference-favorite']
 EZ_GLOBAL_VARIABLES = '/usr/local/ngseq/opt/EZ_GLOBAL_VARIABLES.txt'
 #EZ_GLOBAL_VARIABLES = '/usr/local/ngseq/opt/EZ_GLOBAL_VARIABLES_DEMO.txt'
 
@@ -45,6 +46,13 @@ module GlobalVariables
   def ref_selector(value_replace_pattern=GENOME_REF_DIRS.inject({}){|hash, dir| hash[dir+"/"]=''; hash}, cache_name='ref_selector')
     selector = {'select'=>''}
     selector = Rails.cache.fetch(cache_name, expired_in: 1.hour) do
+      base_pattern_fovarite = GENOME_REF_DIRS_FAVORITE.map{|dir| "#{dir}/*/*/*/Annotation/Release*"}.flatten
+      shown_replace_pattern_favorite = GENOME_REF_DIRS_FAVORITE.inject({}){|hash, dir| hash[dir+"/"]=''; hash}
+      value_replace_pattern_favorite =GENOME_REF_DIRS_FAVORITE.inject({}){|hash, dir| hash[dir+"/"]=''; hash}
+      refBuilds_favorites = refBuilder_selector(base_pattern_favorite, shown_replace_pattern_fovarite, value_replace_pattern_forvarite)
+      separator = {'-'*50 => '-'}
+      refBuilds_favorites.merge!(separator)
+
       base_pattern = GENOME_REF_DIRS.map{|dir| "#{dir}/*/*/*"}
       shown_replace_pattern = GENOME_REF_DIRS.inject({}){|hash, dir| hash[dir+"/"]=''; hash}
       refBuilds = refBuilder_selector(base_pattern, shown_replace_pattern, value_replace_pattern)
@@ -65,6 +73,7 @@ module GlobalVariables
       end
       refBuilds.merge!(versions)
       refBuilds = refBuilds.sort.to_h
+      refBuilds = refBuilds_favorites.merge(refBuilds)
 
       selector.merge!(refBuilds)
       selector
