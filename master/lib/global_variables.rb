@@ -49,7 +49,7 @@ module GlobalVariables
       base_pattern_favorite = GENOME_REF_DIRS_FAVORITE.map{|dir| "#{dir}/*/*/*/Annotation/Release*"}.flatten
       shown_replace_pattern_favorite = GENOME_REF_DIRS_FAVORITE.inject({}){|hash, dir| hash[dir+"/"]=''; hash}
       value_replace_pattern_favorite =GENOME_REF_DIRS_FAVORITE.inject({}){|hash, dir| hash[dir+"/"]=''; hash}
-      refBuilds_favorites = refBuilder_selector(base_pattern_favorite, shown_replace_pattern_fovarite, value_replace_pattern_forvarite)
+      refBuilds_favorites = refBuilder_selector(base_pattern_favorite, shown_replace_pattern_favorite, value_replace_pattern_favorite)
       separator = {'-'*50 => '-'}
       refBuilds_favorites.merge!(separator)
 
