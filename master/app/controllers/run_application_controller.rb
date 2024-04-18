@@ -235,7 +235,7 @@ class RunApplicationController < ApplicationController
       end
     end
     @sushi_app.params.each do |key, value|
-      if @sushi_app.required_params and @sushi_app.required_params.include?(key) and value.to_s.empty? 
+      if @sushi_app.required_params and @sushi_app.required_params.include?(key) and (value.to_s.empty? or value.to_s == '-')
         @requires ||= {}
         @requires[key] = true 
       end
