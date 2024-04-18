@@ -36,6 +36,17 @@ $(document).ready(function(){
       }
     }
   });
+  $('#data_set_tree').on('mouseenter', '.jstree-icon', function() {
+    var isClosed = $(this).closest('li').hasClass('jstree-closed');
+    var tooltipText = isClosed ? 'open' : 'close';
+    $(this).attr('title', tooltipText);
+  });
+  $(document).tooltip({
+    items: ".jstree-icon",
+    content: function() {
+      return $(this).attr('title');
+    }
+  });
 });
 
 $(document).ready(function(){
