@@ -28,8 +28,11 @@ EOS
     @params['ram', 'description'] = '30/40 GB is enough for human and mouse data. Only use the 200GB option for very large genomes (e.g. plants)'
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
+    @params['refBuild', 'description'] = 'Select the reference genome you wish to map your reads to. Use the most recent version by default, unless you are matching a previous run.'
     @params['paired'] = false
+    @params['paired', 'description'] = 'If this is not autopopulated, check which sequencing config was used to determine. If you only have R1, set to false. If you have R1 and R2, set to true.'
     @params['strandMode'] = ['both', 'sense', 'antisense']
+    @params['strandMode', 'description'] = 'If this is not autopopulated, check which library kit was used to determine. If you are unsure, ask your coach.'
     @params['refFeatureFile'] = 'genes.gtf'
     @params['secondRef'] = ''
     @params['secondRef', 'description'] = 'extra DNA/RNA sequences to use for alignment; needs to point to a file on FGCZ servers; ask for upload sushi@fgcz.ethz.ch '
