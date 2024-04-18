@@ -46,13 +46,12 @@ EOS
   end
   def next_dataset
     report_file = File.join(@result_dir,"#{@dataset['Name']}")
-    count_file = File.join(report_file, "#{@dataset['Name']}.count.txt")
-    log_file = File.join(report_file, "#{@dataset['Name']}.log")
     {'Name'=>@dataset['Name'],
-     'Count [File]'=>count_file,
-     'Log [File]'=>log_file,
+     'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.count.txt"),
+     'Log [File]'=>File.join(@result_dir, "#{@dataset['Name']}.log"),
      'Read Count'=>@dataset['Read Count'],
-     'libName'=>@params['libName']
+     'libName'=>@params['libName'],
+     'Species'=>@dataset['Species']
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
