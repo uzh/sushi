@@ -86,7 +86,7 @@ A simple <a href='https://fgcz-shiny.uzh.ch/10x_Sample2Barcode',>ShinyApp  </a> 
       'featureLevel'=>@params['featureLevel'],
       'transcriptTypes'=>@params['transcriptTypes'],
       'SCDataOrigin'=>'10X',
-      'ResultDir [File]'=>report_dir,
+      'ResultDir [File,Link]'=>report_dir,
       'Read Count'=>@dataset['Read Count']
     }.merge(extract_columns(@inherit_tags))
     dataset
