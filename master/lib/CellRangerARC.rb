@@ -47,8 +47,10 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-multiome-
     @params['CellRangerARCVersion'] = ["Aligner/CellRangerARC/2.0.2", "Aligner/CellRangerARC/2.0.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
+  
   def set_default_parameters
   end
+  
   def next_dataset
     report_dir = File.join(@result_dir,"#{@dataset['Name']}")
       dataset = {
@@ -65,14 +67,11 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-multiome-
         'UnfilteredCountMatrix [Link]'=>File.join(report_dir, 'raw_feature_bc_matrix'),
         'Read Count'=>@dataset['Read Count']
       }.merge(extract_columns(@inherit_tags))
-    end
-    dataset
   end
   def commands
     command = "module load  #{@params["CellRangerARCVersion"]}\n"
     command << run_RApp("EzAppCellRangerARC")
   end
-end
 
 if __FILE__ == $0
 
