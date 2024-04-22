@@ -72,6 +72,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-multiome-
     command = "module load  #{@params["CellRangerARCVersion"]}\n"
     command << run_RApp("EzAppCellRangerARC")
   end
+end
 
 if __FILE__ == $0
 
