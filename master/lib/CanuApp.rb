@@ -38,7 +38,6 @@ EOS
     {'Name'=>@dataset['Name'],
      'Reads'=>@dataset['Reads'],
      'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),
-     'CanuOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
