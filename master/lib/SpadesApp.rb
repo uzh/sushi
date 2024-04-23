@@ -79,7 +79,6 @@ EOS
   def next_dataset
     {'Name'=>@dataset['Name'],
      'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.fasta"),
-     'SpadesOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
      'SpadesLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_spades.log"),
      'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
      'Species'=>@dataset['Species'],
