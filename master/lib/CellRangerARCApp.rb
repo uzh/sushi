@@ -51,21 +51,20 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-multiome-
   def set_default_parameters
   end
   
+
   def next_dataset
-    report_dir = File.join(@result_dir,"#{@dataset['Name']}")
+    report_dir = File.join(@result_dir, "#{@dataset['Name']}_ARC")
     dataset = {
-      'Name'=>@dataset['Name'],
-      'Species'=>@dataset['Species'],
-      'refBuild'=>@params['refBuild'],
-      'refFeatureFile'=>@params['refFeatureFile'],
-      'featureLevel'=>@params['featureLevel'],
-      'transcriptTypes'=>@params['transcriptTypes'],
-      'SCDataOrigin'=>'10X',
-      'ResultDir [File]'=>report_dir,
-      'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
-      'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix'),
-      'UnfilteredCountMatrix [Link]'=>File.join(report_dir, 'raw_feature_bc_matrix'),
-      'Read Count'=>@dataset['Read Count']
+      'Name' => "#{@dataset['Name']}_ARC",
+      'Species' => @dataset['Species'],
+      'refBuild' => @params['refBuild'],
+      'refFeatureFile' => @params['refFeatureFile'],
+      'featureLevel' => @params['featureLevel'],
+      'ResultDir [File]' => report_dir,
+      'Report [Link]' => File.join(report_dir, 'web_summary.html'),
+      'CountMatrix [Link]' => File.join(report_dir, 'filtered_feature_bc_matrix'),
+      'UnfilteredCountMatrix [Link]' => File.join(report_dir, 'raw_feature_bc_matrix'),
+      'Read Count' => @dataset['Read Count']
     }.merge(extract_columns(@inherit_tags))
     dataset
   end
