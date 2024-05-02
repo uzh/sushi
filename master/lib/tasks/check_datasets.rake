@@ -275,6 +275,43 @@ namespace :ds do
     warn "# run time: #{Time.now - t0} [s]"
   end
 
+  desc "Register datasets to BFabric"
+  task :register_datasets, [:year,:run] => :environment do |t, args|
+    # bundle exec rake ds:register_datasets[2024] RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+    # bundle exec rake ds:register_datasets[2024,run] RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+    run = args[:run]
+    t0 = Time.now
+    year = if year_ = args[:year]
+             year_.to_i
+           else
+             Date.today.year
+           end
+    first_date = Date.new(year,1,1)
+    datasets = []
+    puts ["ID", "Name", "Project", "SushiApp", "Samples", "Who", "Created", "BFabricID"].join("\t") unless run
+    DataSet.order("id").each_with_index do |dataset, i|
+        date = dataset.created_at
+        user = if user = dataset.user
+                 user.login
+               else
+                 "sushi_lover"
+               end
+        if date > first_date and dataset.project and dataset.bfabric_id.nil?
+          datasets << dataset
+          if run
+            command = "dataset.register_bfabric (DATASET_ID: #{dataset.id})"
+            puts command
+          else
+            puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s].join("\t")
+          end
+       end
+    end
+
+    unless run
+      puts "# #datasets: #{datasets.length}"
+      puts "# run time: #{Time.now - t0} [s]"
+    end
+  end
 
 end
 
