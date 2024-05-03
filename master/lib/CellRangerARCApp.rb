@@ -55,7 +55,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-multiome-
   def next_dataset
     report_dir = File.join(@result_dir, "#{@dataset['Name']}_ARC")
     dataset = {
-      'Name' => "#{@dataset['Name']}_ARC",
+      'Name' => "#{@dataset['Name']}",
       'Species' => @dataset['Species'],
       'refBuild' => @params['refBuild'],
       'refFeatureFile' => @params['refFeatureFile'],
