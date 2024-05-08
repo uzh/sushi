@@ -25,17 +25,22 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA']
-    @params['controlSeqs'] = ''
-    @params['controlSeqs', 'description'] = 'The extra control sequences (such as spikein sequences) available in https://fgcz-gstore.uzh.ch/reference/controlSeqs.fa'
     @params['probesetFile'] =  {'select'=>''}
     Dir["/srv/GT/databases/10x_Probesets/Visium/*"].sort.select{|design| File.file?(design)}.each do |dir|
       @params['probesetFile'][File.basename(dir)] = File.basename(dir)
     end
+    @params['customProbesFile', 'file_upload'] = true
+    @params['customProbesFile', 'description'] = 'Custom probeset CSV-file according to 10x specifications (https://tinyurl.com/VisiumProbeSetsDef).Note that all genes listed must have a corresponding entry in secondRef or controlSeqs. Custom probes must have the same length as the probes in the reference file.'
+
     @params['panelFile'] =  {'select'=>''}
     Dir["/srv/GT/databases/10x/Visium/panels/*"].sort.select{|design| File.file?(design)}.each do |dir|
       @params['panelFile'][File.basename(dir)] = File.basename(dir)
     end
     @params['panelFile', 'description'] = 'for protein panels'
+    @params['controlSeqs'] = ''
+    @params['controlSeqs', 'description'] = 'The extra control sequences (such as spikein sequences) available in https://fgcz-gstore.uzh.ch/reference/controlSeqs.fa'
+    @params['secondRef'] = ''
+    @params['secondRef', 'description'] = 'full path to fasta file with e.g. viralGenes'
     @params['keepBam'] = false
     @params['keepBam', 'description'] = 'Keep bam file produced by CellRanger? Usually it is not neccessary for downstream analyses'
     @params['cmdOptions'] = ''
