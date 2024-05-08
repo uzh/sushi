@@ -29,6 +29,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     Dir["/srv/GT/databases/10x_Probesets/Visium/*"].sort.select{|design| File.file?(design)}.each do |dir|
       @params['probesetFile'][File.basename(dir)] = File.basename(dir)
     end
+    @params['customProbesFile'] = ''
     @params['customProbesFile', 'file_upload'] = true
     @params['customProbesFile', 'description'] = 'Custom probeset CSV-file according to 10x specifications (https://tinyurl.com/VisiumProbeSetsDef).Note that all genes listed must have a corresponding entry in secondRef or controlSeqs. Custom probes must have the same length as the probes in the reference file.'
 
