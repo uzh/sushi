@@ -27,17 +27,17 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['recalibrateVariants', 'description'] = "perform Variant Quality Score Recalibration (VQSR)"
     @params['recalibrateInDels']=false
     @params['recalibrateInDels', 'description'] = "perform InDel recalibration. This tends to crash for smaller or targeted datasets"
-    @params['annotateVariants']=false
-    @params['annotateVariants', 'description'] = "perform functional annotation with SNPEff if annotation database is available"
+    @params['snpEffDB']=''
+    @params['snpEffDB', 'description'] = "perform functional annotation with SNPEff if annotation database is installed"
     @params['proteinCodingTranscriptsOnly']=false
     @params['proteinCodingTranscriptsOnly', 'description'] = "SNPEff annotate variants only with protCod variants"
     @params['specialOptions'] = ''
-    @params['dbNSFP_file'] = ["dbNSFP2.9_GRCh37.txt.gz", "dbNSFP4.3_GRCh38.txt.gz"]
+    @params['dbNSFP_file'] = ["dbNSFP4.3_GRCh38.txt.gz"]
     @params['dbNSFP_file','description'] = 'human data specific database to add MAF and prediction scores. Please use the version which matches your reference.'
-    @params['dbNSFP_fields'] = 'ExAC_AF,ExAC_AC,1000Gp1_EUR_AF,Uniprot_acc,Interpro_domain,phastCons100way_vertebrate,CADD_phred,Polyphen2_HDIV_pred,Polyphen2_HVAR_pred,SIFT_score,SIFT_pred'
+    @params['dbNSFP_fields'] = 'CADD_phred,Polyphen2_HDIV_score,Polyphen2_HDIV_pred,DANN_score,phastCons100way_vertebrate,gnomAD_exomes_AF,gnomAD_exomes_AC,gnomAD_genomes_AF,gnomAD_exomes_AC,clinvar_id,clinvar_clnsig,clinvar_review,clinvar_OMIM_id'
     @params['dbNSFP_fields','description'] = "details about available fields are available under <a href='https://sites.google.com/site/jpopgen/dbNSFP',>dbNSFP</a>"
     @params['mail'] = ""
-    @modules = ["Dev/jdk", "Variants/GATK", "Tools/Picard", "Variants/SnpEff", "Dev/R/4.3.0"]
+    @modules = ["Dev/jdk", "Variants/GATK", "Tools/Picard", "Variants/SnpEff", "Dev/R"]
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
