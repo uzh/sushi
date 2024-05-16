@@ -48,7 +48,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/seqtk", "Dev/R/4.3.2", "Dev/Python", "Tools/samtools"]
-    @params['CellRangerVersion'] = ["Aligner/CellRanger/8.0.0", "Aligner/CellRanger/7.2.0"]
+    @params['CellRangerVersion'] = ["Aligner/CellRanger/8.0.0", "Aligner/CellRanger/7.2.0", "Aligner/CellRanger/7.1.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
