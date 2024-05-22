@@ -47,7 +47,7 @@ Single cell report<br/>
       tissue[e["tissue_class"]] = true
     end
     @params['tissue'] = tissue.keys.sort
-    @params['tissue', 'description'] = 'Select the tissues of origin in the CellMarker2 database.'
+    @params['tissue', 'description'] = 'Select the tissues from the CellMarker2 database to identify celltypes using AUCell'
     @params['enrichrDatabase'] = ['Tabula_Muris', 'Tabula_Sapiens', 'Azimuth_Cell_Types_2021', 'PanglaoDB_Augmented_2021', 
                                   'CellMarker_Augmented_2021', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Human_Gene_Atlas', 'Mouse_Gene_Atlas', ]
     @params['enrichrDatabase','multi_selection'] = true
@@ -56,6 +56,7 @@ Single cell report<br/>
                           "kidneyref", "lungref", "mousecortexref", "pancreasref", "pbmcref", "tonsilref","/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0"]
     @params['SingleR'] = ['none', 'BlueprintEncodeData', 'DatabaseImmuneCellExpressionData', 'HumanPrimaryCellAtlasData', 
                           'ImmGenData', 'MonacoImmuneData', 'MouseRNAseqData', 'NovershternHematopoieticData']
+    @params['SingleR', 'description'] = "Use reference datasets from the celldex package to find marker-based celltype annotation with SingleR""
     @params['npcs'] = 20
     @params['npcs', 'description'] = 'The maximal top dimensions (pcs) to use for reduction. Do not use more principal components than pcGenes (when used).'
     @params['pcGenes'] = ''
