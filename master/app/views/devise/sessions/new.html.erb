@@ -1,3 +1,10 @@
+<!-- app/views/devise/sessions/new.html.erb -->
+<% if flash[:alert] %>
+  <script type="text/javascript">
+    alert('<%= j flash[:alert] %>');
+  </script>
+<% end %>
+
 <div id="login_form_wrapper">
   <div id="login_form">
     <div id="info">

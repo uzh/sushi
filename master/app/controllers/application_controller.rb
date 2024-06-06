@@ -23,7 +23,10 @@ class ApplicationController < ActionController::Base
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
     render :plain => exception, :status => 500
   end
-  protect_from_forgery
+  # protect_from_forgery
+  protect_from_forgery with: :exception
+
+  after_action :flash_to_headers
   
   if SushiFabric::Application.config.fgcz?
     before_action :authenticate_user!
@@ -156,5 +159,13 @@ class ApplicationController < ActionController::Base
         end
       end
     end
+  end
+
+  private
+
+  def flash_to_headers
+    return unless request.xhr?
+    response.headers['X-Message'] = flash[:error] || flash[:alert] || flash[:notice]
+    flash.discard
   end
 end
