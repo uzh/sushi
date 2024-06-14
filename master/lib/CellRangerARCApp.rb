@@ -43,7 +43,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-multiome-
     @params['cmdOptions', 'description'] = 'specify the commandline options for CellRanger (e.g. --include-introns for single nuclei data); do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/seqtk", "Dev/R/4.3.2", "Dev/Python", "Tools/samtools"]
+    @modules = ["Tools/seqtk", "Dev/R/4.4.0", "Dev/Python", "Tools/samtools"]
     @params['CellRangerARCVersion'] = ["Aligner/CellRangerARC/2.0.2", "Aligner/CellRangerARC/2.0.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end

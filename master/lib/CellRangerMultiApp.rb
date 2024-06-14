@@ -70,7 +70,7 @@ A simple <a href='https://fgcz-shiny.uzh.ch/10x_Sample2Barcode',>ShinyApp  </a> 
     @params['cmdOptions', 'description'] = 'specify the commandline options for CellRanger (e.g. --include-introns for single nuclei data); do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/seqtk", "Dev/R/4.3.2", "Dev/Python/3.8.3", "Tools/samtools"]
+    @modules = ["Tools/seqtk", "Dev/R/4.4.0", "Dev/Python/3.8.3", "Tools/samtools"]
     @params['CellRangerVersion'] = ["Aligner/CellRanger/8.0.0", "Aligner/CellRanger/7.2.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
