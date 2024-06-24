@@ -19,6 +19,7 @@ Merging fastq files from two illumina runs by name <br /><br />
     @params['SecondDataSet'] = ''
     @params['matchingColumn'] = ['Name', 'Tube', 'Sample Id']
     @params['Name'] = 'MergedRunData'
+    @params['minReadCount'] = 10000
     @required_columns = ['Name', 'Species', 'Read1']
     @required_params = ['SecondDataSet', 'paired']
     
