@@ -56,7 +56,7 @@ Single cell report<br/>
                           "kidneyref", "lungref", "mousecortexref", "pancreasref", "pbmcref", "tonsilref","/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0"]
     @params['SingleR'] = ['none', 'BlueprintEncodeData', 'DatabaseImmuneCellExpressionData', 'HumanPrimaryCellAtlasData', 
                           'ImmGenData', 'MonacoImmuneData', 'MouseRNAseqData', 'NovershternHematopoieticData']
-    @params['SingleR', 'description'] = "Use reference datasets from the celldex package to find marker-based celltype annotation with SingleR""
+    @params['SingleR', 'description'] = "Use reference datasets from the celldex package to find marker-based celltype annotation with SingleR"
     @params['npcs'] = 20
     @params['npcs', 'description'] = 'The maximal top dimensions (pcs) to use for reduction. Do not use more principal components than pcGenes (when used).'
     @params['pcGenes'] = ''
@@ -64,13 +64,13 @@ Single cell report<br/>
     @params['resolution'] = [0.6, 0.2, 0.4, 0.6, 0.8, 1]
     @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
     @params['nreads'] = ''
-    @params['nreads', 'description'] = 'Low quality cells have less than "nreads" reads. Only when applying fixed thresholds'
+    @params['nreads', 'description'] = "Low quality cells have less than 'nreads' reads. Only when applying fixed thresholds"
     @params['ngenes'] = ''
-    @params['ngenes', 'description'] = 'Low quality cells have less than "ngenes" genes. Only when applying fixed thresholds'
+    @params['ngenes', 'description'] = "Low quality cells have less than 'ngenes' genes. Only when applying fixed thresholds"
     @params['perc_mito'] = ''
-    @params['perc_mito', 'description'] = 'Low quality cells have more than "perc_mito" percent of mitochondrial genes. Only when applying fixed thresholds'
+    @params['perc_mito', 'description'] = "Low quality cells have more than 'perc_mito' percent of mitochondrial genes. Only when applying fixed thresholds"
     @params['perc_riboprot'] = '70'
-    @params['perc_riboprot', 'description'] = 'Low quality cells have more than "perc_ribo" percent of ribosomal genes. Only when applying fixed thresholds'
+    @params['perc_riboprot', 'description'] = "Low quality cells have more than 'perc_ribo' percent of ribosomal genes. Only when applying fixed thresholds"
     @params['cellsFraction'] = 0.0001
     @params['cellsFraction', 'description'] = 'A gene will be kept if it is expressed in at least this fraction of cells'
     @params['nUMIs'] = 1
