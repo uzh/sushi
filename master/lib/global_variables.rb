@@ -84,7 +84,14 @@ module GlobalVariables
     factors = get_columns_with_tag(type)
     dataset = {}
     factors.first.keys.each do |colname|
-      dataset[colname+" [#{type}]"] = @dataset[colname]
+      dataset[colname+" [#{type}]"] = if @params['process_mode'] == 'SAMPLE'
+                                        @dataset[colname]
+                                      else
+                                        first_row = @dataset[0]
+                                        # remove tags
+                                        first_row_wo_tags = Hash[*first_row.map{|key,value| [key.gsub(/\[.+\]/,'').strip, value]}.flatten]
+                                        first_row_wo_tags[colname]
+                                      end
     end
     dataset
   rescue
