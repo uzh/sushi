@@ -31,7 +31,6 @@ EOS
     @params['cmdOptions'] = ""
     @params['mail'] = ""
     @modules = ["QC/FastQC", "Dev/R", "Tools/Picard", "Tools/samtools", "Dev/Python"]
-    @inherit_tags = ["B-Fabric"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
@@ -49,7 +48,7 @@ EOS
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
      'MultiQC [Link]'=>reportMultiQC_link,
-    }.merge(extract_columns(@inherit_tags))
+    }
   end
   def commands
     run_RApp("EzAppFastqc")
