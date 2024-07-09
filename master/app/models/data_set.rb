@@ -82,7 +82,7 @@ class DataSet < ActiveRecord::Base
         if self.order_ids.empty?
            self.samples.each do |sample_|
              sample = sample_.to_hash
-             if order_id = sample["Order Id [B-Fabric]"]
+             if order_id = sample["Order Id [B-Fabric]"].strip
                order_ids_[order_id] = true
              end
            end
