@@ -299,8 +299,10 @@ namespace :ds do
         if date > first_date and dataset.project and dataset.bfabric_id.nil?
           datasets << dataset
           if run
-            command = "dataset.register_bfabric (DATASET_ID: #{dataset.id})"
-            puts command
+            #command = "dataset.register_bfabric (DATASET_ID: #{dataset.id})"
+            #puts command
+            puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s].join("\t")
+            dataset.register_bfabric
           else
             puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s].join("\t")
           end

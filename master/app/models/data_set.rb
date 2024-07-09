@@ -150,6 +150,8 @@ class DataSet < ActiveRecord::Base
             File.unlink dataset_tsv
             puts "# removed: #{dataset_tsv}"
           end
+        else
+          puts "# Not run DataSet#register_bfabric due to OrderID is missing in DataSet"
         end
         unless op == 'only_one'
           if child_data_sets = self.data_sets
@@ -159,6 +161,8 @@ class DataSet < ActiveRecord::Base
           end
         end
       end
+    else
+      puts "# Not run DataSet#register_bfabric because its parental dataset is not registered in bfabric"
     end
   end
   def update_resource_size
