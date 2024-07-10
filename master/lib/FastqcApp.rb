@@ -47,8 +47,8 @@ EOS
     {'Name'=>@params['name'],
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
-     'MultiQC [Link]'=>reportMultiQC_link,
-     'Order Id [B-Fabric]'=>@dataset['Order Id [B-Fabric]'].uniq.join(",")
+     'MultiQC [Link]'=>reportMultiQC_link
+     #'Order Id [B-Fabric]'=>@dataset['Order Id [B-Fabric]'].uniq.join(",")
     }
   end
   def commands
