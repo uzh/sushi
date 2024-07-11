@@ -80,6 +80,31 @@ module GlobalVariables
     end
     selector
   end
+  def get_columns_by_name(names)
+    @dataset_hash.map{|row|
+      Hash[*row.select{|k,v| k=~/#{names}\s+\[.+\]/}.flatten]
+    }
+  end
+  def extract_columns_by_name(names)
+    factors = get_columns_by_name(names)
+    dataset = {}
+    if @params['process_mode'] == 'SAMPLE'
+      factors.first.keys.each do |colname|
+        dataset[colname] = @dataset[colname]
+      end
+    else
+      dataset_ = {}
+      factors.first.keys.each do |colname|
+        @dataset.each do |row_hash|
+          (dataset_[colname] ||= []) << row_hash[colname]
+        end
+      end
+      dataset_.each do |colname, row|
+        dataset[colname] = row.uniq.join(",")
+      end
+    end
+    dataset
+  end
   def extract_column(type)
     factors = get_columns_with_tag(type)
     dataset = {}
@@ -97,13 +122,26 @@ module GlobalVariables
   rescue
     {}
   end
-  def extract_columns(tags)
+  def extract_columns_by_tag(tags)
     dataset = {}
     tags.each do |tag|
       additional = extract_column(tag)
       dataset.merge!(additional)
     end
     dataset
+  end
+  def extract_columns(*args, tags: nil, colnames: nil)
+    if args.any?
+      tags = args.first
+    end
+
+    if tags
+      extract_columns_by_tag(tags)
+    elsif colnames
+      extract_columns_by_name(colnames)
+    else
+      extract_columns_by_tag(tags)
+    end
   end
   def factor_dataset
     # deprecated

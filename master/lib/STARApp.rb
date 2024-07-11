@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20240418-151840'
+Version = '20240711-164725'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -114,7 +114,7 @@ EOS
         'IGV [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
         'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
         'STARLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_STAR.log")
-    }.merge(extract_columns(@inherit_tags))
+    }.merge(extract_columns(tags: @inherit_tags))
      if @params['getJunctions']
        dataset['Junctions [File]'] = File.join(@result_dir, "#{@dataset['Name']}_SJ.out.tab")
        dataset['Chimerics [File]'] = File.join(@result_dir, "#{@dataset['Name']}.chimeric")
