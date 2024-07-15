@@ -34,11 +34,12 @@ NestLink - an R data package to guide through Engineered Peptide Barcodes for In
     @params['specialOptions'] = ''
     @params['mail'] = ''
     @modules = ["Dev/R"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
      'NestLink Result [File]'=>File.join(@result_dir, "#{@dataset['Name']}")
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
   end

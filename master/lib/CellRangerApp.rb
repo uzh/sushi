@@ -65,7 +65,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
         'ResultDir [File]'=>report_dir,
         'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
         'Read Count'=>@dataset['Read Count']
-      }.merge(extract_columns(@inherit_tags))
+      }
     else
       dataset = {
         'Name'=>@dataset['Name'],
@@ -80,9 +80,9 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
         'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix'),
         'UnfilteredCountMatrix [Link]'=>File.join(report_dir, 'raw_feature_bc_matrix'),
         'Read Count'=>@dataset['Read Count']
-      }.merge(extract_columns(@inherit_tags))
+      }
     end
-    dataset
+    dataset.merge(extract_columns(@inherit_tags))
   end
   def commands
     command = "module load  #{@params["CellRangerVersion"]}\n"

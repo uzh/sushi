@@ -77,7 +77,7 @@ EOS
      nds['Bray Curtis Emperor Plot [Link]'] = File.join(@result_dir, 'Results_Folder/bray_curtis_emperor_plot.qzv.zip.folder/data/index.html')
      nds['Alpha rarefaction [Link]'] = File.join(@result_dir, 'Results_Folder/alpha-rarefaction.qzv.zip.folder/data/index.html')
      nds['Differential abundace [Link]'] = File.join(@result_dir, 'Results_Folder/ancom_group.qzv.zip.folder/data/index.html')
-     nds
+     nds.merge(extract_columns(@inherit_tags))
   end
   def commands
      run_RApp("EzAppQIIME2", conda_env: "qiime2-2022.2")

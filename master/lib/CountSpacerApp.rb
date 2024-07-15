@@ -98,7 +98,7 @@ EOS
      #'featureLevel'=>'smRNA',
      #'refFeatureFile'=>'',
      'Read Count'=>@dataset['Read Count'] 
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppCountSpacer")

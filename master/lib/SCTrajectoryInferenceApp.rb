@@ -45,6 +45,7 @@ Trajectory inference analysis for single cell data<br/>
     @params['specialOptions'] = ''
     @params['mail'] = ''
     @modules = ["Dev/R", "Dev/Python"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
     report_file = File.join(@result_dir, "#{@dataset['Name']}_SCTrajectoryInference")
@@ -52,7 +53,7 @@ Trajectory inference analysis for single cell data<br/>
     {'Name'=>@dataset['Name'],
      'Report [File]'=>report_file,
      'Static Report [Link]'=>report_link
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']

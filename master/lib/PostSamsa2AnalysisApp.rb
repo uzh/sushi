@@ -8,26 +8,26 @@ include GlobalVariables
 
 class PostSamsa2AnalysisApp < SushiFabric::SushiApp
 def initialize
-super
-@name = 'PostSamsa2Analysis'
-@analysis_category = 'Metagenomics'
-@description =<<-EOS
-Step_6 of Samsa2, data analysis and report. 
-  EOS
-@params['process_mode'] = 'DATASET'
-@required_columns = ['Name', 'annotationORGFileRefSeq', 'annotationFUNCFileRefSeq']
-@required_params = ['grouping', 'sampleGroup', 'refGroup'  ]
-@params['cores'] = '1'
-@params['ram'] = '7'
-@params['scratch'] = '10'
-@params['grouping'] = '' 
-@params['sampleGroup'] = '' 
-@params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
-@params['refGroup'] = '' 
-@params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
-@params['mail'] = ""
-@inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
-@modules = ["Dev/R"]
+  super
+  @name = 'PostSamsa2Analysis'
+  @analysis_category = 'Metagenomics'
+  @description =<<-EOS
+  Step_6 of Samsa2, data analysis and report. 
+EOS
+  @params['process_mode'] = 'DATASET'
+  @required_columns = ['Name', 'annotationORGFileRefSeq', 'annotationFUNCFileRefSeq']
+  @required_params = ['grouping', 'sampleGroup', 'refGroup'  ]
+  @params['cores'] = '1'
+  @params['ram'] = '7'
+  @params['scratch'] = '10'
+  @params['grouping'] = '' 
+  @params['sampleGroup'] = '' 
+  @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
+  @params['refGroup'] = '' 
+  @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
+  @params['mail'] = ""
+  @modules = ["Dev/R"]
+  @inherit_tags = ["Factor", "B-Fabric"]
 end
 
 def next_dataset
@@ -37,7 +37,7 @@ def next_dataset
 {'Name'=>@params['name'],
   'Report [File]'=>report_file,
   'Static Report [Link]'=>report_link,
-}
+}.merge(extract_columns(@inherit_tags))
 end
 def commands
 run_RApp("EzAppPostSamsa2Analysis")

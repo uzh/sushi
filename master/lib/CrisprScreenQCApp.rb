@@ -61,6 +61,7 @@ EOS
     ## additional commands
     @params['mail'] = ""
     @modules = ["QC/fastp"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
@@ -76,7 +77,7 @@ EOS
     {'Name'=>@params['name'],
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppCrisprScreenQC")

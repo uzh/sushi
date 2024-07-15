@@ -51,7 +51,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     @params['version'] = ['2.1']
     @params['mail'] = ""
     @modules = ["Dev/R"]
-    @inherit_tags = ["Order Id", "Factor", "B-Fabric"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
     report_dir = File.join(@result_dir, "#{@dataset['Name']}")

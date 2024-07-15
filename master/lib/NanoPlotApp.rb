@@ -24,12 +24,13 @@ EOS
     @params['cmdOptions'] = ""
     @params['mail'] = ""
     @modules = ["Dev/R"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
      'NanoPlot Result [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
      'Report [Link]'=>File.join(@result_dir, "#{@dataset['Name']}", "#{@dataset['Name']}.NanoPlot-report.html")
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppNanoPlot",conda_env: "nanoplot")

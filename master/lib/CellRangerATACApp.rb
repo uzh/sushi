@@ -27,7 +27,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-atac/soft
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R", "Aligner/CellRangerATAC"]
-    @inherit_tags = ["B-Fabric"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
   end

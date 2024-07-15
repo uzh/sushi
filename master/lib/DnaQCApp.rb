@@ -26,6 +26,7 @@ Quality control after the alignment of RNAseq reads<br/>
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/samtools", "QC/Qualimap", "Tools/Picard", "Dev/R"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
@@ -35,7 +36,7 @@ Quality control after the alignment of RNAseq reads<br/>
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile']
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']

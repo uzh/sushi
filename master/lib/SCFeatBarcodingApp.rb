@@ -72,6 +72,7 @@ Single cell report<br/>
     @params['specialOptions'] = ''
     @params['mail'] = ""
     # @params['Rversion'] = ["Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
@@ -85,7 +86,7 @@ Single cell report<br/>
      'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
      'Report [File]'=>report_file
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']

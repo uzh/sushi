@@ -28,6 +28,7 @@ EOS
     @params['cmdOptions'] = ""
     @params['mail'] = ""
     @modules = ["Tools/samtools"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
     {
@@ -38,7 +39,7 @@ EOS
      'refBuild'=>@params['refBuild'],
      'IGV [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
      'Pbmm2Log [File]'=>File.join(@result_dir, "#{@dataset['Name']}_pbmm2.log")
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppPbmm2")

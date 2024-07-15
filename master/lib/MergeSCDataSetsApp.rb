@@ -15,10 +15,10 @@ Assuming that all other columns than file path are same between datasets.<br />
 <br />
     EOS
     @analysis_category = 'SingleCell'
-    @params['BaseDataSet'] = ''
-    @params['TargetDataSet'] = []
+    @params['FirstDataSet'] = ''
+    @params['SecondDataSet'] = ''
     @required_columns = ['Name', 'Species', 'RawDataDir']
-    @required_params = ['TargetDataSet']
+    @required_params = ['SecondDataSet']
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
     @child = true # child flag: true means that the next dataset is a child dataset
   end
@@ -37,14 +37,15 @@ Assuming that all other columns than file path are same between datasets.<br />
     next_dataset_base['Species'] = @dataset['Species']
     next_dataset_base.merge(extract_columns(@inherit_tags))
   end
+
   def set_default_parameters
     if data_set = DataSet.find_by_id(@dataset_sushi_id)
-      @params['BaseDataSet'] = data_set.name
-      @params['TargetDataSet'] = Hash[*data_set.project.data_sets.map{|d| [d.name, d.id]}.flatten].to_a.reverse
+      @params['FirstDataSet'] = data_set.name
+      @params['SecondDataSet'] = Hash[*data_set.project.data_sets.map{|d| [d.name, d.id]}.flatten].to_a.reverse
     end
   end
   def preprocess
-    dataset_sushi_id = @params['TargetDataSet']
+    dataset_sushi_id = @params['SecondDataSet']
     dataset = DataSet.find_by_id(dataset_sushi_id)
     dataset_hash2 = {}
     if dataset = DataSet.find_by_id(dataset_sushi_id.to_i)

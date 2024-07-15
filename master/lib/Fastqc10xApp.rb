@@ -25,6 +25,7 @@ EOS
     @params['cmdOptions'] = ""
     @params['mail'] = ""
     @modules = ["QC/FastQC", "Tools/Picard", "Tools/samtools", "Dev/Python"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
@@ -34,7 +35,7 @@ EOS
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
      'MultiQC [Link]'=>reportMultiQC_link,
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppFastqc_10x")

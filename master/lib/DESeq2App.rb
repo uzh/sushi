@@ -59,7 +59,8 @@ class DESeq2App < SushiFabric::SushiApp
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.4.0","Dev/R/4.3.2", "Dev/R/4.3.0", "Dev/R/4.2.2", "Dev/R/4.2.0", "Dev/R/4.1.2", "Dev/R/4.1.0", "Dev/R/4.0.4", "Dev/R/4.0.3", "Dev/R/4.0.1"]
     @modules = ["Tools/samtools"]
-  end
+    @inherit_tags = ["Factor", "B-Fabric"]
+    end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
     @name = "#{@name}_#{@params['sampleGroup']}--over--#{@params['refGroup']}"
@@ -75,8 +76,8 @@ class DESeq2App < SushiFabric::SushiApp
      'refBuild'=>@params['refBuild'],
      'Static Report [Link]'=>report_link,
      'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/exploreDE?data=#{report_file}",
-     'Report [File]'=>report_file,
-    }
+     'Report [File]'=>report_file
+    }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']

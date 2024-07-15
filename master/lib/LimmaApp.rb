@@ -48,6 +48,7 @@ class LimmaApp < SushiFabric::SushiApp
     @params['expressionName'] = ''
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.4.0", "Dev/R/4.3.2", "Dev/R/4.3.0", "Dev/R/4.2.2", "Dev/R/4.2.0", "Dev/R/4.1.2", "Dev/R/4.0.4", "Dev/R/4.0.3", "Dev/R/4.0.1"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
    def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
@@ -64,7 +65,7 @@ class LimmaApp < SushiFabric::SushiApp
      'Static Report [Link]'=>report_link,
      'Live Report [Link]'=>"#{SHINY_EXPLORE_DE}?data=#{report_file}/result-#{@comparison}-#{@random_string}-EzResult.RData",
      'Report [File]'=>report_file,
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']

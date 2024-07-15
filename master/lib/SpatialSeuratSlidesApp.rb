@@ -11,7 +11,7 @@ class SpatialSeuratSlidesApp < SushiFabric::SushiApp
     super
     @name = 'SpatialSeuratSlides'
     @params['process_mode'] = 'DATASET'
-    @analysis_category = 'SpatialTrx'
+    @analysis_category = 'Spatial'
     @description =<<-EOS
     Combine multiple slides from Visium/plates<br/>
     EOS
@@ -58,7 +58,7 @@ class SpatialSeuratSlidesApp < SushiFabric::SushiApp
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'Static Report [Link]'=>report_link,
      'Report [File]'=>report_file,
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']

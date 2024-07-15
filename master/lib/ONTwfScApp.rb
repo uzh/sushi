@@ -32,13 +32,14 @@ EOS
     @params['cmdOptions'] = ""
     @params['mail'] = ""
     @modules = ["Dev/jdk", "Dev/R"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
     {
     'Name'=>@dataset['Name'],
      'OutDir [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
      'OutReport [Link]'=>File.join(@result_dir, "#{@dataset['Name']}", "wf-single-cell-report.html")
-    }
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppONTwfSc")

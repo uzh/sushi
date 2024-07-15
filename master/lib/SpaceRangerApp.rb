@@ -9,7 +9,7 @@ class SpaceRangerApp <  SushiFabric::SushiApp
   def initialize
     super
     @name = 'SpaceRangerCount'
-    @analysis_category = 'SpatialTrx'
+    @analysis_category = 'Spatial'
     @description =<<-EOS
 This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expression/software/pipelines/latest/using/count',>space ranger count</a> in Single-library analysis mode.
     EOS
