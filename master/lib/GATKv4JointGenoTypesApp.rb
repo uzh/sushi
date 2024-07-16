@@ -30,7 +30,7 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['MQRankSum'] = '-15.0'
     @params['specialOptions'] = ''
     @modules = ["Variants/GATK/4.2.0.0", "Tools/Picard/2.18.0"]
-    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
+    @inherit_columns = ["Order Id"]
   end
   def next_dataset
     {'Name'=>@params['name'],
@@ -38,7 +38,7 @@ genotype,merge and annotate gvcf-Files<br/>
      'Filtered VCF [File]'=>File.join(@result_dir, "#{@params['name']}.filtered.vcf.gz"),
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild']
-    }
+    }.merge(extract_columns(colnames: @inherit_columns))
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']

@@ -23,6 +23,7 @@ EOS
     @params['normalize'] = ['mapped', 'none']
     @params['mail'] = ""
     @modules = ["Dev/R", "Aligner/SpaceRanger"]
+    @inherit_columns = ["Order Id"]
   end
   def set_default_parameters
   end
@@ -38,7 +39,7 @@ EOS
         'ResultDir [File]'=>report_file,
         'Report [Link]'=>File.join(report_file, 'web_summary.html'),
         'CountMatrix [Link]'=>File.join(report_file, 'filtered_feature_bc_matrix')
-      }
+      }.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
     run_RApp("EzAppSpaceRangerAggr")

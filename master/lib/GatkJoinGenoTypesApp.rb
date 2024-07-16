@@ -38,7 +38,7 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['dbNSFP_fields','description'] = "details about available fields are available under <a href='https://sites.google.com/site/jpopgen/dbNSFP',>dbNSFP</a>"
     @params['mail'] = ""
     @modules = ["Dev/jdk", "Variants/GATK", "Tools/Picard", "Variants/SnpEff", "Dev/R"]
-    @inherit_tags = ["Factor", "B-Fabric"]
+    @inherit_columns = ["Order Id"]
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
@@ -47,7 +47,7 @@ genotype,merge and annotate gvcf-Files<br/>
 #     'Html [Link]'=>File.join(report_dir, '00index.html'),
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild']
-    }.merge(extract_columns(@inherit_tags))
+    }.merge(extract_columns(colnames: @inherit_columns))
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']

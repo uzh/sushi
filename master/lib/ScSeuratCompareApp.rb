@@ -37,7 +37,7 @@ class ScSeuratCompareApp < SushiFabric::SushiApp
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.4.0", "Dev/R/4.3.0", "Dev/R/4.2.2", "Dev/R/4.2.0", "Dev/R/4.1.2", "Dev/R/4.1.0"]
-    @inherit_tags = ["Factor", "B-Fabric"]
+    @inherit_columns = ["Order Id"]
   end
    def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
@@ -51,7 +51,7 @@ class ScSeuratCompareApp < SushiFabric::SushiApp
     {'Name'=>@comparison,
      'Static Report [Link]'=>report_link,
      'Report [File]'=>report_file,
-    }.merge(extract_columns(@inherit_tags))
+    }.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
     command = "module load #{@params["Rversion"]}\n"

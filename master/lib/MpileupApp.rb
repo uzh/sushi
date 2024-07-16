@@ -36,7 +36,7 @@ EOS
     @params['specialOptions', 'description'] = 'special unsupported options that the R wrapper may support, format: <key>=<value>'
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Tools/bcftools", "Dev/jdk", "Tools/Picard", "Dev/R"]
-    @inherit_tags = ["Factor", "B-Fabric"]
+    @inherit_columns = ["Order Id"]
   end
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
@@ -50,7 +50,7 @@ EOS
      'refBuild'=>@params['refBuild']
      #'IGV Starter [File]'=>File.join(@result_dir, "#{@params['name']}-igv.jnlp"),
      #'IGV Session [File]'=>File.join(@result_dir, "#{@params['name']}-igv.xml")
-    }.merge(extract_columns(@inherit_tags))
+    }.merge(extract_columns(colnames: @inherit_columns))
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']

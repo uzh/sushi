@@ -36,7 +36,7 @@ Quality control after counting sgRNAs  with Mageck<br/>
     @params['expressionName'] = 'sample1'
     @params['mail'] = ""
     @modules = ["Dev/R"]
-    @inherit_tags = ["B-Fabric"]
+    @inherit_columns = ["Order Id"]
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
@@ -51,7 +51,7 @@ Quality control after counting sgRNAs  with Mageck<br/>
      'Static Report [Link]'=>report_link,
      'Live Report [Link]'=>"#{SHINY_EXPLORE_COUNTS}?data=#{report_file}/counts-#{@random_string}-EzResult.RData",
      'Report [File]'=>report_file,
-    }.merge(extract_columns(@inherit_tags))
+    }.merge(extract_columns(colnames: @inherit_columns))
   end
   def set_default_parameters
     #@params['refBuild'] = @dataset[0]['refBuild']

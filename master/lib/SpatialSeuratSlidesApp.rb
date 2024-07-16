@@ -22,7 +22,6 @@ class SpatialSeuratSlidesApp < SushiFabric::SushiApp
     @params['ram'] = '30'
     @params['scratch'] = '50'
     @params['node'] = ''
-    @params['process_mode'] = 'DATASET'
     @params['name'] = 'SpatialSeuratSlides'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
@@ -49,7 +48,7 @@ class SpatialSeuratSlidesApp < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.4.0", "Dev/R/4.3.2", "Dev/R/4.3.0", "Dev/R/4.2.2","Dev/R/4.2.0"]
-    @inherit_tags = ["Factor", "B-Fabric"]
+    @inherit_columns = ["Order Id"]
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
@@ -58,7 +57,7 @@ class SpatialSeuratSlidesApp < SushiFabric::SushiApp
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'Static Report [Link]'=>report_link,
      'Report [File]'=>report_file,
-    }.merge(extract_columns(@inherit_tags))
+    }.merge(extract_columns(colnames: @inherit_columns))
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']

@@ -99,7 +99,7 @@ Single cell report<br/>
      'Static Report [Link]'=>report_link,
      'SC Cluster Report [File]'=>report_file,
      'SC Seurat'=>File.join(report_file, "scData.qs"),
-    }.merge(extract_columns(@inherit_tags))
+    }.merge(extract_columns(colnames: @inherit_columns))
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']

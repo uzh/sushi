@@ -27,7 +27,7 @@ EOS
   @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
   @params['mail'] = ""
   @modules = ["Dev/R"]
-  @inherit_tags = ["Factor", "B-Fabric"]
+    @inherit_columns = ["Order Id"]
 end
 
 def next_dataset
@@ -37,7 +37,7 @@ def next_dataset
 {'Name'=>@params['name'],
   'Report [File]'=>report_file,
   'Static Report [Link]'=>report_link,
-}.merge(extract_columns(@inherit_tags))
+}.merge(extract_columns(colnames: @inherit_columns))
 end
 def commands
 run_RApp("EzAppPostSamsa2Analysis")

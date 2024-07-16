@@ -49,7 +49,7 @@ EOS
     @params['reverse_primer', 'description'] = "Choose accoding to the same order as the primer parameter"
     @params['name'] = 'QIIME2'
     @params['mail'] = ""
-    @inherit_tags = ['B-Fabric']
+    @inherit_columns = ["Order Id"]
     @modules = ['Dev/R/4.2.2']
   end
    def preprocess
@@ -77,7 +77,7 @@ EOS
      nds['Bray Curtis Emperor Plot [Link]'] = File.join(@result_dir, 'Results_Folder/bray_curtis_emperor_plot.qzv.zip.folder/data/index.html')
      nds['Alpha rarefaction [Link]'] = File.join(@result_dir, 'Results_Folder/alpha-rarefaction.qzv.zip.folder/data/index.html')
      nds['Differential abundace [Link]'] = File.join(@result_dir, 'Results_Folder/ancom_group.qzv.zip.folder/data/index.html')
-     nds.merge(extract_columns(@inherit_tags))
+     nds.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
      run_RApp("EzAppQIIME2", conda_env: "qiime2-2022.2")

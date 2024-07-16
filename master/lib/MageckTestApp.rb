@@ -35,7 +35,7 @@ class MageckTestApp < SushiFabric::SushiApp
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     @params['mail'] = ""
     @modules = ["Dev/R"]
-    @inherit_tags = ["B-Fabric"]
+    @inherit_columns = ["Order Id"]
   end
   def preprocess
   end
@@ -47,7 +47,7 @@ class MageckTestApp < SushiFabric::SushiApp
     {'Name'=>@params['name'],
      'Report [File]'=>report_folder,
      'Report [Link]'=>File.join(report_folder, '00index.html')
-    }.merge(extract_columns(@inherit_tags))
+    }.merge(extract_columns(colnames: @inherit_columns))
   end
   def set_default_parameters
     @params['libName'] = @dataset[0]['libName']

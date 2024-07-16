@@ -22,7 +22,6 @@ class ScSeuratCombinedLabelClusters < SushiFabric::SushiApp
     @params['ram'] = '60'
     @params['scratch'] = '100'
     @params['node'] = ''
-    @params['process_mode'] = 'DATASET'
     @params['name'] = 'SCReportMultipleSamplesSeurat'
     @params['ClusterAnnotationFile'] = ''
     @params['ClusterAnnotationFile', 'file_upload'] = true
@@ -56,7 +55,7 @@ class ScSeuratCombinedLabelClusters < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]
-    @inherit_tags = ["Factor", "B-Fabric"]
+    @inherit_columns = ["Order Id"]
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
@@ -65,7 +64,7 @@ class ScSeuratCombinedLabelClusters < SushiFabric::SushiApp
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'Static Report [Link]'=>report_link,
      'Report [File]'=>report_file,
-    }.merge(extract_columns(@inherit_tags))
+    }.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
     run_RApp("EzAppScSeuratCombinedLabelClusters")

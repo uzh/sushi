@@ -43,7 +43,7 @@ EOS
     @params['cmdOptions', 'description'] = 'to define batches in the analysis to perform paired test, e.g. -batch 1 2 1 2'
     @params['mail'] = ""
     @modules = ["Dev/R", "Tools/HOMER", "Tools/samtools", "Tools/BEDTools"]
-    @inherit_tags = ["Factor", "B-Fabric"]
+    @inherit_columns = ["Order Id"]
   end
   def next_dataset
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"
@@ -54,7 +54,7 @@ EOS
     {'Name'=>@params['name'],
      'Report [File]'=>report_file,
      'DiffPeak [Link]'=>diffPeak_link,
-    }.merge(extract_columns(@inherit_tags))
+    }.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
     run_RApp("EzAppHomerDiffPeaks")

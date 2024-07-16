@@ -59,7 +59,7 @@ EOS
 @params['mail'] = ''
 
 @modules = ["Dev/R", "Aligner/kallisto", "QC/fastp", "Tools/samtools"]
-@inherit_tags = ["Factor", "B-Fabric"]
+@inherit_columns = ["Order Id"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
@@ -77,7 +77,7 @@ EOS
     {'Name'=>@params['name'],
      'Report [File]'=>report_file,
      'Report [Link]'=>report_file
-    }.merge(extract_columns(@inherit_tags))
+    }.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
     run_RApp("EzAppRnaComputeBias")

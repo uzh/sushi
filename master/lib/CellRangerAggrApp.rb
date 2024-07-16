@@ -29,7 +29,7 @@ EOS
     @params['normalize'] = ['mapped', 'none']
     @params['mail'] = ""
     @modules = ["Dev/R", "Aligner/CellRanger"]
-    @inherit_tags = ["Factor", "B-Fabric"]
+    @inherit_columns = ["Order Id"]
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
@@ -50,7 +50,7 @@ EOS
         'ResultDir [File]'=>report_file,
         'Report [Link]'=>File.join(report_file, 'web_summary.html'),
         'CountMatrix [Link]'=>File.join(report_file, 'count', 'filtered_feature_bc_matrix')
-      }.merge(extract_columns(@inherit_tags))
+      }.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
     run_RApp("EzAppCellRangerAggr")

@@ -70,6 +70,7 @@ EOS
     ## additional commands
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/fastp", "Tools/kraken", "QC/FastQScreen", "Dev/R", "Tools/Picard"]
+    @inherit_columns = ["Order Id"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
@@ -85,7 +86,7 @@ EOS
     {'Name'=>@params['name'],
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
-    }
+    }.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
     run_RApp("EzAppFastqScreen")

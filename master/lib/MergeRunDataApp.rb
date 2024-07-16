@@ -31,7 +31,6 @@ Merging fastq files from two illumina runs by name <br /><br />
     @params['mail'] = ''
     
     @modules = ["Dev/R"]
-    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
     @child = false # child flag: true means that the next dataset is a child dataset
   end
   def next_dataset

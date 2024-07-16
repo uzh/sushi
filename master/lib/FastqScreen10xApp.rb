@@ -60,7 +60,7 @@ EOS
     @params['mail'] = ""
     
     @modules = ["Aligner/BWA", "Tools/samtools", "Aligner/Bowtie2", "QC/fastp", "Tools/kraken", "QC/FastQScreen", "Tools/Picard"]
-    @inherit_tags = ["Factor", "B-Fabric"]
+    @inherit_columns = ["Order Id"]
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
@@ -68,7 +68,7 @@ EOS
     {'Name'=>@params['name'],
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
-    }.merge(extract_columns(@inherit_tags))
+    }.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
     commands = "export LANG=en_US.UTF-8 \n"
