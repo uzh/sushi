@@ -75,7 +75,11 @@ EOS
     @params['length_required'] = '18'
     @params['length_required','description'] = 'reads shorter than length_required will be discarded.'
     @params['cmdOptionsFastp'] = ''
+    @params['barcodePattern', 'hr-header'] = 'UMI tools'
+    @params['barcodePattern'] = '' 
+    @params['barcodePattern','description'] = 'optional for libraries which are including UMIs e.g. NNNNNNNN for TaKaRa SMARTer pico RNA kit v3' 
     ## additional commands
+    @params['markDuplicates', 'hr-header'] = 'Additional parameters'
     @params['markDuplicates'] = false
     @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
     @params['specialOptions'] = ''
