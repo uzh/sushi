@@ -15,7 +15,7 @@ class Minimap2App < SushiFabric::SushiApp
     <br/>
     EOS
     @required_columns = ['Name','Read1','Species']
-    @required_params = ['refBuild','paired']
+    @required_params = ['refBuild']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '30'
