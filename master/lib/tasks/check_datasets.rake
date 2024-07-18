@@ -288,7 +288,7 @@ namespace :ds do
            end
     first_date = Date.new(year,1,1)
     datasets = []
-    puts ["ID", "Name", "Project", "SushiApp", "Samples", "Who", "Created", "BFabricID"].join("\t") unless run
+    puts ["ID", "Name", "Project", "SushiApp", "Samples", "Who", "Created", "BFabricID", "Order IDs"].join("\t") unless run
     DataSet.order("id").each_with_index do |dataset, i|
         date = dataset.created_at
         user = if user = dataset.user
@@ -299,11 +299,11 @@ namespace :ds do
         if date > first_date and dataset.project and dataset.bfabric_id.nil?
           datasets << dataset
           if run
-            puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s].join("\t")
+            puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s. dataset.order_ids.joins(",")].join("\t")
             dataset.register_bfabric
             sleep 1
           else
-            puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s].join("\t")
+            puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s, dataset.order_ids.join(",")].join("\t")
           end
        end
     end
@@ -312,6 +312,34 @@ namespace :ds do
       puts "# #datasets: #{datasets.length}"
       puts "# run time: #{Time.now - t0} [s]"
     end
+  end
+  desc "No Order ID datasets list"
+  task :no_order_id_datasets, [:year] => :environment do |t, args|
+    # bundle exec rake ds:no_order_id_datasets[2024] RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+    t0 = Time.now
+    year = if year_ = args[:year]
+             year_.to_i
+           else
+             Date.today.year
+           end
+    first_date = Date.new(year,1,1)
+    puts ["ID", "Name", "Project", "SushiApp", "Samples", "Who", "Created"].join("\t")
+    datasets = []
+    DataSet.order("id").each_with_index do |dataset, i|
+        date = dataset.created_at
+        user = if user = dataset.user
+                 user.login
+               else
+                 "sushi_lover"
+               end
+        if date > first_date and dataset.project and dataset.bfabric_id.nil? and dataset.order_ids.empty?
+          datasets << dataset
+          puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d")].join("\t")
+       end
+    end
+
+    warn "# #datasets: #{datasets.length}"
+    warn "# run time: #{Time.now - t0} [s]"
   end
 
 end
