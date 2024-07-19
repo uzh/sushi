@@ -357,6 +357,8 @@ namespace :ds do
     first_date = Date.new(year,1,1)
     puts ["ID", "Name", "Project", "SushiApp", "Samples", "Who", "Created"].join("\t")
     datasets = []
+    not_order_ids = 0
+    add_order_ids = 0
     DataSet.order("id").each_with_index do |dataset, i|
       date = dataset.created_at
       user = if user = dataset.user
@@ -370,16 +372,20 @@ namespace :ds do
         if search_order_id
           if order_ids = dataset.search_order_id
             puts "\t# Order ID: #{order_ids}"
-            dataset.add_order_id_column(order_ids) if update
+            if update
+              dataset.add_order_id_column(order_ids)
+              add_order_ids += 1
+            end
           else
             puts "\t# Order ID not found"
+            not_order_ids += 1
           end
         end
       end
     end
 
-    warn "# #datasets: #{datasets.length}"
-    warn "# run time: #{Time.now - t0} [s]"
+    puts "# #datasets: #{datasets.length} (no Order Ids: #{not_order_ids}, added Order Ids: #{add_order_ids})"
+    puts "# run time: #{Time.now - t0} [s]"
   end
 
 end
