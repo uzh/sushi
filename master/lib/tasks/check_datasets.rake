@@ -299,7 +299,7 @@ namespace :ds do
         if date > first_date and dataset.project and dataset.bfabric_id.nil? and !dataset.order_ids.empty?
           datasets << dataset
           if run
-            puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s. dataset.order_ids.joins(",")].join("\t")
+            puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s. dataset.order_ids.join(",")].join("\t")
             dataset.register_bfabric
             sleep 1
           else
