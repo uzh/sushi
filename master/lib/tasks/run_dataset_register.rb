@@ -1,11 +1,12 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20240718-110347'
+# Version = '20240719-161655'
 
 require 'pathname'
 
 RAILS_ROOT='/srv/sushi/production/master'
 SLEEP_TIME = 60*60 # [s] = 1h, valid only for daemon-mode
+YEAR = Time.now.strftime("%Y")
 
 help =-> () do
   puts <<-eos
@@ -13,6 +14,12 @@ help =-> () do
    #{File.basename(__FILE__)} [task name] (--run, --year [YEAR], --rails-root [RAILS_ROOT], --daemon-mode)
 
   RAILS_ROOT (default): #{RAILS_ROOT}
+
+  default (for test run):
+   #{File.basename(__FILE__)} --year #{YEAR}
+
+  recommend (for production run):
+   #{File.basename(__FILE__)} --run --daemon-mode
 
   e.g.:
    #{File.basename(__FILE__)} --year 2024
