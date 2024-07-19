@@ -313,9 +313,41 @@ namespace :ds do
       puts "# run time: #{Time.now - t0} [s]"
     end
   end
+  class DataSet
+    def search_order_id(recursive = 1)
+      if parent = self.data_set 
+        if !parent.order_ids.empty?
+          print "\t"*recursive
+          puts "-parent dataset ID:#{parent.id}-parent.order_ids:#{parent.order_ids.join(",")}"
+          parent.order_ids.join(",")
+        else
+          print "\t"*recursive
+          puts "-parent dataset ID:#{parent.id}"
+          parent.search_order_id(recursive + 1)
+        end
+      end
+    end
+    def add_order_id_column(order_ids)
+      # add new column
+      new_header = "Order Id [B-Fabric]"
+      self.samples.each_with_index do |sample, i|
+        new_sample = sample.to_hash
+        new_sample[new_header] = order_ids.strip
+        self.samples[i].key_value = new_sample.to_s
+        self.samples[i].save
+      end
+      self.md5 = self.md5hexdigest
+      self.save
+      #save_dataset_tsv_in_gstore(self) #=> error, not found
+      puts "\t# Done: adding Order Ids (#{order_ids}) in dataset(#{self.id})"
+    end
+  end
   desc "No Order ID datasets list"
-  task :no_order_id_datasets, [:year] => :environment do |t, args|
+  task :no_order_id_datasets, [:year,:search_order_id,:update] => :environment do |t, args|
     # bundle exec rake ds:no_order_id_datasets[2024] RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+    search_order_id = args[:search_order_id]
+    update = args[:update]
+
     t0 = Time.now
     year = if year_ = args[:year]
              year_.to_i
@@ -326,16 +358,24 @@ namespace :ds do
     puts ["ID", "Name", "Project", "SushiApp", "Samples", "Who", "Created"].join("\t")
     datasets = []
     DataSet.order("id").each_with_index do |dataset, i|
-        date = dataset.created_at
-        user = if user = dataset.user
-                 user.login
-               else
-                 "sushi_lover"
-               end
-        if date > first_date and dataset.project and dataset.bfabric_id.nil? and dataset.order_ids.empty?
-          datasets << dataset
-          puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d")].join("\t")
-       end
+      date = dataset.created_at
+      user = if user = dataset.user
+               user.login
+             else
+               "sushi_lover"
+             end
+      if date > first_date and dataset.project and dataset.bfabric_id.nil? and dataset.order_ids.empty?
+        datasets << dataset
+        puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d")].join("\t")
+        if search_order_id
+          if order_ids = dataset.search_order_id
+            puts "\t# Order ID: #{order_ids}"
+            dataset.add_order_id_column(order_ids) if update
+          else
+            puts "\t# Order ID not found"
+          end
+        end
+      end
     end
 
     warn "# #datasets: #{datasets.length}"
