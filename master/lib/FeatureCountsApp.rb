@@ -41,7 +41,7 @@ EOS
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 'protein_coding'
     @params['secondRef'] = ''
-    @params['secondRef', 'description'] = 'extra DNA/RNA sequences to use for alignment; needs to point to a file on FGCZ servers; ask for upload sushi@fgcz.ethz.ch '
+    @params['secondRef', 'description'] = "extra DNA/RNA sequences to use for alignment; needs to point to a file on FGCZ servers; if the .fasta file has a corresponding .gtf file, this file needs to have the same base name, e.g. a file 'foo.fa' in folder /path/to/file/ requires a file 'foo.gtf' in the same folder in order for the gtf file to be used; ask for upload sushi@fgcz.ethz.ch."
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Dev/R"]
