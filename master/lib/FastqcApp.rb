@@ -43,6 +43,7 @@ EOS
   end
   def next_dataset
     @logger.error("building next_dataset fastqc")
+    puts "building next_dataset fastqc"
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
     reportMultiQC_link = File.join(report_file, 'multiqc_report.html')

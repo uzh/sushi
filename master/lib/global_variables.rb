@@ -132,6 +132,7 @@ module GlobalVariables
   end
   def extract_columns(*args, tags: nil, colnames: nil)
     @logger.error("extracting columns for next dataset")
+    puts "extracting columns for next dataset"
     if args.any?
       tags = args.first
     end
