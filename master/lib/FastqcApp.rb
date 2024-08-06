@@ -28,6 +28,7 @@ EOS
 #    @params['libQuantPlots'] = true
 #    @params['libQuantPlots', 'description'] = "make plot comparing library quantifications with read numbers"
     @params['name'] = 'FastQC_Result'
+    @params['specialOptions'] = ''
     @params['cmdOptions'] = ""
     @params['mail'] = ""
     @modules = ["QC/FastQC", "Dev/R", "Tools/Picard", "Tools/samtools", "Dev/Python"]
