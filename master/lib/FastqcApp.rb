@@ -42,8 +42,6 @@ EOS
     end
   end
   def next_dataset
-    puts "building next_dataset fastqc: #{@inherit_columns}"
-    #@logger.error("building next_dataset fastqc: #{@inherit_columns}")
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
     reportMultiQC_link = File.join(report_file, 'multiqc_report.html')
