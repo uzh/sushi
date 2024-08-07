@@ -81,7 +81,7 @@ module GlobalVariables
     selector
   end
   def get_columns_by_name(names)
-    @dataset_hash.map{|row|
+    (@dataset_hash||[{}]).map{|row|
       row.select { |k, v| names.any? { |name| k.gsub(/\[.+\]/,'').strip =~ /#{name}/ } }
     }
   end
