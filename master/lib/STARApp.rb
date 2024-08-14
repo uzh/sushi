@@ -24,8 +24,8 @@ EOS
     @required_params = ['refBuild','paired', 'strandMode']
     # optional params
     @params['cores'] = [8, 1, 2, 4, 8]
-    @params['ram'] = ['30', '40', '330']
-    @params['ram', 'description'] = '30/40 GB is enough for human and mouse data. Only use the 200GB option for very large genomes (e.g. plants)'
+    @params['ram'] = ['30', '40', '60', '330']
+    @params['ram', 'description'] = '30/40 GB is enough for human and mouse data, 60 GB for a hybrid genome. Only use the 200GB option for very large genomes (e.g. plants)'
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['refBuild', 'description'] = 'Select the reference genome you wish to map your reads to. Use the most recent version by default, unless you are matching a previous run.'
