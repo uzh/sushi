@@ -32,6 +32,7 @@ Merging fastq files from two illumina runs by name <br /><br />
     
     @modules = ["Dev/R"]
     @child = false # child flag: true means that the next dataset is a child dataset
+    @queue = "heavy"
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['Name'])
