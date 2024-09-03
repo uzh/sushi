@@ -84,7 +84,7 @@ GEM
       base64
       gyoku (>= 0.4.0)
       nokogiri
-    base64 (0.2.0)
+    base64 (0.1.1)
     bcrypt (3.1.20)
     bigdecimal (3.1.8)
     builder (3.3.0)
