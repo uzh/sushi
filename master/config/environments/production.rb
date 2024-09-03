@@ -30,7 +30,7 @@ SushiFabric::Application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  # config.force_ssl = true
 
   # See everything in the log (default is :info)
   # config.log_level = :debug
@@ -94,7 +94,7 @@ SushiFabric::Application.configure do
     #config.rails_host = "https://fgcz-sushi-demo.uzh.ch"    # demo
     #config.rails_host = "https://fgcz-course1.bfabric.org"  # course1
     #config.rails_host = "https://fgcz-course2.bfabric.org"  # course2
-    config.rails_host = "http://fgcz-h-032:4000"            # test
+    config.rails_host = "http://fgcz-h-035.fgcz-net.unizh.ch:4000"  # test
   end
 
 end
