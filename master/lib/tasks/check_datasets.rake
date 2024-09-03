@@ -288,6 +288,7 @@ namespace :ds do
            end
     first_date = Date.new(year,1,1)
     datasets = []
+    samples = 0
     puts ["ID", "Name", "Project", "SushiApp", "Samples", "Who", "Created", "BFabricID", "Order IDs"].join("\t") unless run
     DataSet.order("id").each_with_index do |dataset, i|
         date = dataset.created_at
@@ -304,12 +305,14 @@ namespace :ds do
             sleep 1
           else
             puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s, dataset.order_ids.join(",")].join("\t")
+            samples += dataset.completed_samples.to_i
           end
        end
     end
 
     unless run
       puts "# #datasets: #{datasets.length}"
+      puts "# #samples:  #{samples}"
       puts "# run time: #{Time.now - t0} [s]"
     end
   end
