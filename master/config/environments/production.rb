@@ -82,7 +82,7 @@ SushiFabric::Application.configure do
     #config.workflow_manager = "druby://fgcz-c-044:40001" # course1
     #config.workflow_manager = "druby://fgcz-h-940:40001" # course2
     #config.workflow_manager = "druby://fgcz-h-032:40001" # demo
-    config.workflow_manager = "druby://fgcz-h-031:40001" # production, test
+    config.workflow_manager = "druby://fgcz-h-036.fgcz-net.unizh.ch:40001" # production, test
     config.scratch_dir = "/scratch"
     config.gstore_dir = "/srv/gstore/projects" # production, test
     #config.gstore_dir = "/srv/GT/analysis/course_sushi/public/gstore/projects" # demo, course
