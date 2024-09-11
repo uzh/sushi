@@ -275,10 +275,44 @@ namespace :ds do
     warn "# run time: #{Time.now - t0} [s]"
   end
 
+  def dfs_sort_datasets(root_dataset, selected_datasets, result = [])
+    if selected_datasets.include?(root_dataset)
+      result << root_dataset
+    end
+
+    root_dataset.data_sets.order(:id).each do |child|
+      dfs_sort_datasets(child, selected_datasets, result)
+    end
+
+    result
+  end
+  def out_dataset_list(out_file, datasets, samples)
+    open(out_file, "w") do |out|
+      out.puts ["ID", "Project", "Name", "SushiApp", "Samples", "Who", "Created", "BFabricID", "Order IDs"].join("\t") 
+      datasets.each do |dataset|
+        date = dataset.created_at
+        user = if user = dataset.user
+                 user.login
+               else
+                 "sushi_lover"
+               end
+        out.puts [dataset.id, dataset.project.number, dataset.name, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s, dataset.order_ids.join(",")].join("\t")
+      end
+      out.puts "# #datasets: #{datasets.length}"
+      out.puts "# #samples:  #{samples}"
+    end
+    warn "# #{out_file} generated"
+  end
+
   desc "Register datasets to BFabric"
   task :register_datasets, [:year,:run] => :environment do |t, args|
     # bundle exec rake ds:register_datasets[2024] RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
     # bundle exec rake ds:register_datasets[2024,run] RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+    dataset_list_log = "unregistered_dataset_list.log"
+    dataset_tree_log = "unregistered_dataset_list_sorted.log"
+    black_list_log = "black_dataset_list.log"
+    completed_list_log = "registered_dataset_list.log"
+
     run = args[:run]
     t0 = Time.now
     year = if year_ = args[:year]
@@ -287,31 +321,45 @@ namespace :ds do
              Date.today.year
            end
     first_date = Date.new(year,1,1)
-    datasets = []
+    selected_datasets = []
     samples = 0
-    puts ["ID", "Name", "Project", "SushiApp", "Samples", "Who", "Created", "BFabricID", "Order IDs"].join("\t") unless run
-    DataSet.order("id").each_with_index do |dataset, i|
+
+    # keep unsorted dataset list
+    selected_datasets = DataSet.order("id").select do |dataset|
+      date = dataset.created_at
+      date > first_date && dataset.project && dataset.bfabric_id.nil?
+    end
+    samples = selected_datasets.inject(0){|sum, dataset| sum + dataset.completed_samples.to_i}
+
+    out_dataset_list(dataset_list_log, selected_datasets, samples)
+
+    # sorting dataset list
+    sorted_datasets = []
+    root_datasets = selected_datasets.select do |dataset|
+      dataset.data_set.nil? || !selected_datasets.include?(dataset.data_set)
+    end
+    root_datasets.each do |root_dataset|
+      dfs_sort_datasets(root_dataset, selected_datasets, sorted_datasets)
+    end
+    out_dataset_list(dataset_tree_log, sorted_datasets, samples)
+    
+    sorted_datasets.each do |dataset|
+      if run
         date = dataset.created_at
         user = if user = dataset.user
                  user.login
                else
                  "sushi_lover"
                end
-        if date > first_date and dataset.project and dataset.bfabric_id.nil?
-          datasets << dataset
-          if run
-            puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s, dataset.order_ids.join(",")].join("\t")
-            dataset.register_bfabric
-            sleep 1
-          else
-            puts [dataset.id, dataset.name, dataset.project.number, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s, dataset.order_ids.join(",")].join("\t")
-            samples += dataset.completed_samples.to_i
-          end
-       end
+        puts [dataset.id, dataset.project.number, dataset.name, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s, dataset.order_ids.join(",")].join("\t")
+        dataset.register_bfabric
+        sleep 1
+        puts
+      end
     end
 
     unless run
-      puts "# #datasets: #{datasets.length}"
+      puts "# #datasets: #{selected_datasets.length}"
       puts "# #samples:  #{samples}"
       puts "# run time: #{Time.now - t0} [s]"
     end
