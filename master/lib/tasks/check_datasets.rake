@@ -304,6 +304,15 @@ namespace :ds do
     warn "# #{out_file} generated"
   end
 
+  def collect_all_child_datasets(parent_dataset, sorted_datasets, result = [])
+    children = sorted_datasets.select { |dataset| dataset.parent_id == parent_dataset.id }
+    result.concat(children)
+    children.each do |child|
+      collect_all_child_datasets(child, sorted_datasets, result)
+    end
+    result
+  end
+ 
   desc "Register datasets to BFabric"
   task :register_datasets, [:year,:run] => :environment do |t, args|
     # bundle exec rake ds:register_datasets[2024] RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
@@ -343,6 +352,17 @@ namespace :ds do
     end
     out_dataset_list(dataset_tree_log, sorted_datasets, samples)
     
+    # keep child datasets
+    child_datasets = {}
+    sorted_datasets.each do |parent_dataset|
+      child_datasets[parent_dataset] = collect_all_child_datasets(parent_dataset, sorted_datasets)
+    end
+   
+    child_datasets.each do |parent_dataset, children|
+      puts "#{parent_dataset.id}: #{children.map{|child| child.id.to_s}.join(",")}"
+    end 
+
+    # for run
     sorted_datasets.each do |dataset|
       if run
         date = dataset.created_at
