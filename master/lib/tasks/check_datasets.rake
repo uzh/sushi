@@ -286,7 +286,12 @@ namespace :ds do
 
     result
   end
-  def out_dataset_list(out_file, datasets, samples)
+  def out_dataset_list(out_file, datasets)
+    class << datasets
+      attr_accessor :samples
+    end
+    samples = datasets.inject(0){|sum, dataset| sum + dataset.completed_samples.to_i}
+    datasets.samples = samples
     open(out_file, "w") do |out|
       out.puts ["ID", "Project", "Name", "SushiApp", "Samples", "Who", "Created", "BFabricID", "Order IDs"].join("\t") 
       datasets.each do |dataset|
@@ -301,7 +306,7 @@ namespace :ds do
       out.puts "# #datasets: #{datasets.length}"
       out.puts "# #samples:  #{samples}"
     end
-    warn "# #{out_file} generated"
+    warn "# [#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}] #{out_file} generated"
   end
 
   def collect_all_child_datasets(parent_dataset, sorted_datasets, result = [])
@@ -317,10 +322,9 @@ namespace :ds do
   task :register_datasets, [:year,:run] => :environment do |t, args|
     # bundle exec rake ds:register_datasets[2024] RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
     # bundle exec rake ds:register_datasets[2024,run] RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
-    dataset_list_log = "unregistered_dataset_list.log"
-    dataset_tree_log = "unregistered_dataset_list_sorted.log"
+    dataset_list_log = "selected_dataset_list.log"
+    dataset_tree_log = "sorted_dataset_list.log"
     black_list_log = "black_dataset_list.log"
-    completed_list_log = "registered_dataset_list.log"
 
     run = args[:run]
     t0 = Time.now
@@ -331,16 +335,13 @@ namespace :ds do
            end
     first_date = Date.new(year,1,1)
     selected_datasets = []
-    samples = 0
 
     # keep unsorted dataset list
     selected_datasets = DataSet.order("id").select do |dataset|
       date = dataset.created_at
       date > first_date && dataset.project && dataset.bfabric_id.nil?
     end
-    samples = selected_datasets.inject(0){|sum, dataset| sum + dataset.completed_samples.to_i}
-
-    out_dataset_list(dataset_list_log, selected_datasets, samples)
+    out_dataset_list(dataset_list_log, selected_datasets)
 
     # sorting dataset list
     sorted_datasets = []
@@ -350,17 +351,29 @@ namespace :ds do
     root_datasets.each do |root_dataset|
       dfs_sort_datasets(root_dataset, selected_datasets, sorted_datasets)
     end
-    out_dataset_list(dataset_tree_log, sorted_datasets, samples)
     
     # keep child datasets
     child_datasets = {}
     sorted_datasets.each do |parent_dataset|
       child_datasets[parent_dataset] = collect_all_child_datasets(parent_dataset, sorted_datasets)
     end
-   
-    child_datasets.each do |parent_dataset, children|
-      puts "#{parent_dataset.id}: #{children.map{|child| child.id.to_s}.join(",")}"
-    end 
+    #child_datasets.each do |parent_dataset, children|
+    #  puts "#{parent_dataset.id}: #{children.map{|child| child.id.to_s}.join(",")}"
+    #end 
+
+    black_list_datasets = []
+    # filter out expected failure datasets and the children
+    sorted_datasets.each do |dataset|
+      if !black_list_datasets.include?(dataset) and (parent_dataset = dataset.data_set and (parent_dataset.bfabric_id.nil? or black_list_datasets.include?(parent_dataset))) or
+        dataset.order_ids.empty?
+        black_list_datasets << dataset
+        black_list_datasets.concat(child_datasets[dataset])
+        sorted_datasets -= [dataset].concat(child_datasets[dataset])
+      end
+    end
+    black_list_datasets.uniq!
+    out_dataset_list(black_list_log, black_list_datasets)
+    out_dataset_list(dataset_tree_log, sorted_datasets)
 
     # for run
     sorted_datasets.each do |dataset|
@@ -379,8 +392,12 @@ namespace :ds do
     end
 
     unless run
-      puts "# #datasets: #{selected_datasets.length}"
-      puts "# #samples:  #{samples}"
+      puts "# #selected_datasets: #{selected_datasets.length}"
+      puts "# #selected_datasets.samples: #{selected_datasets.samples}"
+      puts "# #sorted_datasets: #{sorted_datasets.length}"
+      puts "# #sorted_datasets.samples: #{sorted_datasets.samples}"
+      puts "# #black_list_datasets: #{black_list_datasets.length}"
+      puts "# #black_list_datasets.samples: #{black_list_datasets.samples}"
       puts "# run time: #{Time.now - t0} [s]"
     end
   end
