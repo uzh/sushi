@@ -365,7 +365,8 @@ namespace :ds do
     # filter out expected failure datasets and the children
     sorted_datasets.each do |dataset|
       if !black_list_datasets.include?(dataset) and (parent_dataset = dataset.data_set and (parent_dataset.bfabric_id.nil? or black_list_datasets.include?(parent_dataset))) or
-        dataset.order_ids.empty?
+        dataset.order_ids.empty? or
+        dataset.completed_samples.to_i < dataset.num_samples.to_i
         black_list_datasets << dataset
         black_list_datasets.concat(child_datasets[dataset])
         sorted_datasets -= [dataset].concat(child_datasets[dataset])
