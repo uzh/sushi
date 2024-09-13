@@ -366,13 +366,16 @@ namespace :ds do
     sorted_datasets.each do |dataset|
       if !black_list_datasets.include?(dataset) and (parent_dataset = dataset.data_set and (parent_dataset.bfabric_id.nil? or black_list_datasets.include?(parent_dataset))) or
         dataset.order_ids.empty? or
-        dataset.completed_samples.to_i < dataset.num_samples.to_i
+        dataset.completed_samples.to_i < dataset.num_samples.to_i or
+        dataset.sushi_app_name.nil?
+
         black_list_datasets << dataset
         black_list_datasets.concat(child_datasets[dataset])
-        sorted_datasets -= [dataset].concat(child_datasets[dataset])
+        #sorted_datasets -= [dataset].concat(child_datasets[dataset])
       end
     end
     black_list_datasets.uniq!
+    sorted_datasets -= black_list_datasets
     out_dataset_list(black_list_log, black_list_datasets)
     out_dataset_list(dataset_tree_log, sorted_datasets)
 
