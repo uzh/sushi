@@ -131,9 +131,12 @@ class DataSet < ActiveRecord::Base
           open(dataset_tsv, "w") do |out|
             out.print self.tsv_string
           end
-          puts "# created: #{dataset_tsv}"
-          if File.exist?(dataset_tsv) and bfabric_ids = `#{command}`
-            puts "$ #{command}"
+          puts "# #{dataset_tsv} generated"
+          puts "$ #{command}"
+          if File.exist?(dataset_tsv) and bfabric_ids = `#{command}` and !bfabric_ids.chomp.empty?
+            #com = "cp #{dataset_tsv} ~/"
+            #system(com)
+            #puts com
             puts "# mode: #{op}"
             puts "# bfabric_ids: #{bfabric_ids}"
             if bfabric_ids.split(/\n/).uniq.length < 2
@@ -147,6 +150,7 @@ class DataSet < ActiveRecord::Base
               end
             else
               puts "# Not executed properly:"
+              puts "# DataSetID: #{self.id}"
               puts "# BFabricID: #{bfabric_id}"
             end
             File.unlink dataset_tsv
@@ -163,8 +167,9 @@ class DataSet < ActiveRecord::Base
           end
         end
       end
+      puts "# DataSet:#{self.id}, Parental DataSet:#{parent_dataset.id}, Parent BFabricID:#{parent_dataset.bfabric_id.to_s}, sushi_app:#{self.sushi_app_name.to_s}"
     else
-      puts "# Not run DataSet#register_bfabric because its parental dataset is not registered in bfabric"
+      puts "# Not run DataSet#register_bfabric because its parental dataset is not registered in bfabric(DataSet:#{self.id}, Parental DataSet:#{parent_dataset.id}), Parent BFabricID:#{parent_dataset.bfabric_id.to_s}, sushi_app:#{self.sushi_app_name.to_s}"
     end
   end
   def update_resource_size
