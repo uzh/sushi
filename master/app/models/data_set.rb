@@ -167,9 +167,9 @@ class DataSet < ActiveRecord::Base
           end
         end
       end
-      puts "# DataSet:#{self.id}, Parental DataSet:#{parent_dataset.id}, Parent BFabricID:#{parent_dataset.bfabric_id.to_s}, sushi_app:#{self.sushi_app_name.to_s}"
+      #puts "# DataSet:#{self.id}, Parental DataSet:#{parent_dataset.id}, Parent BFabricID:#{parent_dataset.bfabric_id.to_s}, sushi_app:#{self.sushi_app_name.to_s}"
     else
-      puts "# Not run DataSet#register_bfabric because its parental dataset is not registered in bfabric(DataSet:#{self.id}, Parental DataSet:#{parent_dataset.id}), Parent BFabricID:#{parent_dataset.bfabric_id.to_s}, sushi_app:#{self.sushi_app_name.to_s}"
+      #puts "# Not run DataSet#register_bfabric because its parental dataset is not registered in bfabric(DataSet:#{self.id}, Parental DataSet:#{parent_dataset.id}), Parent BFabricID:#{parent_dataset.bfabric_id.to_s}, sushi_app:#{self.sushi_app_name.to_s}"
     end
   end
   def update_resource_size
