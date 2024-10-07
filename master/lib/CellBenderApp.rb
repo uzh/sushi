@@ -25,6 +25,8 @@ CellBender is a software package for eliminating technical artifacts from high-t
     @params['gpuMode'] = false
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for CellBender'
+    @params['refBuild'] = ref_selector
+    @params['refFeatureFile'] = 'genes.gtf'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]
@@ -35,8 +37,8 @@ CellBender is a software package for eliminating technical artifacts from high-t
     report_link = File.join(report_file, 'cellbender_report.html')
     {'Name'=>@dataset['Name'],
      'Species'=>@dataset['Species'],
-     'refBuild'=>@dataset['refBuild'],
-     'refFeatureFile'=>@dataset['refFeatureFile'],
+     'refBuild'=>@params['refBuild'],
+     'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
      'ResultDir [File]'=>report_file,
      'Count Matrix [Link]'=>File.join(report_file,'cellbender_filtered_seurat.h5'),
