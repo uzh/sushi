@@ -36,7 +36,7 @@ CellBender is a software package for eliminating technical artifacts from high-t
     {'Name'=>@dataset['Name'],
      'Species'=>@dataset['Species'],
      'refBuild'=>@dataset['refBuild'],
-     'refFeatureFile'=>@params['refFeatureFile'],
+     'refFeatureFile'=>@dataset['refFeatureFile'],
      'Static Report [Link]'=>report_link,
      'ResultDir [File]'=>report_file,
      'Count Matrix [Link]'=>File.join(report_file,'cellbender_filtered_seurat.h5'),
