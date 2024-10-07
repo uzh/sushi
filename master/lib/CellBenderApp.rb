@@ -6,7 +6,7 @@ require_relative 'global_variables'
 include GlobalVariables
 
 
-class ScSeuratApp < SushiFabric::SushiApp
+class CellBenderApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'CellBender'
