@@ -41,7 +41,7 @@ CellBender is a software package for eliminating technical artifacts from high-t
      'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
      'ResultDir [File]'=>report_file,
-     'Count Matrix [Link]'=>File.join(report_file,'cellbender_filtered_seurat.h5'),
+     'CountMatrix [Link]'=>File.join(report_file,'cellbender_filtered_seurat.h5'),
      'UnfilteredCountMatrix [Link]'=>File.join(report_file,'cellbender_raw_seurat.h5'),
     }.merge(extract_columns(@inherit_tags))
   end
