@@ -54,8 +54,8 @@ class DataSet < ActiveRecord::Base
     self.num_samples
   end
   def register_bfabric(op = 'new', bfabric_application_number: nil)
-    python3 = "public/register_sushi_dataset_into_bfabric"
-    check = "public/check_dataset_bfabric"
+    python3 = "register_sushi_dataset_into_bfabric"
+    check = "check_dataset_bfabric"
     parent_dataset = self.data_set
     if parent_dataset.nil? or parent_dataset.bfabric_id
       if SushiFabric::Application.config.fgcz? and File.exist?(python3) and File.exist?(check)
