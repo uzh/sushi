@@ -54,8 +54,8 @@ class DataSet < ActiveRecord::Base
     self.num_samples
   end
   def register_bfabric(op = 'new', bfabric_application_number: nil)
-    python3 = "register_sushi_dataset_into_bfabric"
-    check = "check_dataset_bfabric"
+    register_command = "register_sushi_dataset_into_bfabric"
+    check_command = "check_dataset_bfabric"
     parent_dataset = self.data_set
     if parent_dataset.nil? or parent_dataset.bfabric_id
       if SushiFabric::Application.config.fgcz? and system("which #{register_command} > /dev/null 2>&1") and system("which #{check_command} > /dev/null 2>&1")
@@ -64,7 +64,7 @@ class DataSet < ActiveRecord::Base
         option_check = if ((op == 'new' or op == 'only_one') and !self.bfabric_id) or op == 'renewal'
                          true
                        elsif op == 'update' and bfabric_id = self.bfabric_id
-                         com = "#{check} #{bfabric_id}"
+                         com = "#{check_command} #{bfabric_id}"
                          puts "$ #{com}"
                          if out = `#{com}`
                            puts "# returned: #{out.chomp.downcase}"
@@ -102,22 +102,22 @@ class DataSet < ActiveRecord::Base
         command = if self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i
                     if parent_dataset.nil? # root dataset
                       if order_id > 8000
-                        [python3, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id, "--skip-file-check"].join(" ")
+                        [register_command, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id, "--skip-file-check"].join(" ")
                       else
-                        [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id, "--skip-file-check"].join(" ")
+                        [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, "--skip-file-check"].join(" ")
                       end
                     elsif parent_dataset and bfabric_id = parent_dataset.bfabric_id # child dataset
                       if order_id > 8000
-                        [python3, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
+                        [register_command, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
                       else
-                        [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
+                        [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
                       end
                     end
                   elsif self.order_ids.uniq.length > 1 # multi order dataset
                     if parent_dataset.nil? # root dataset
-                        [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id, "--skip-file-check"].join(" ")
+                        [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, "--skip-file-check"].join(" ")
                     elsif parent_dataset and bfabric_id = parent_dataset.bfabric_id # child dataset
-                        [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
+                        [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
                     end
                   end
 
