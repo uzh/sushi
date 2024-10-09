@@ -58,7 +58,7 @@ class DataSet < ActiveRecord::Base
     check = "check_dataset_bfabric"
     parent_dataset = self.data_set
     if parent_dataset.nil? or parent_dataset.bfabric_id
-      if SushiFabric::Application.config.fgcz? and File.exist?(python3) and File.exist?(check)
+      if SushiFabric::Application.config.fgcz? and system("which #{register_command} > /dev/null 2>&1") and system("which #{check_command} > /dev/null 2>&1")
         time = Time.new.strftime("%Y%m%d-%H%M%S")
         dataset_tsv = File.join(SushiFabric::Application.config.scratch_dir, "dataset.#{self.id}_#{time}.tsv")
         option_check = if ((op == 'new' or op == 'only_one') and !self.bfabric_id) or op == 'renewal'
@@ -71,13 +71,6 @@ class DataSet < ActiveRecord::Base
                            eval(out.chomp.downcase)
                          end
                        end
-#        command = if parent_dataset and bfabric_id = parent_dataset.bfabric_id
-#                     [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id].join(" ")
-#                  else
-#                     [python3, "p#{self.project.number}", dataset_tsv, self.name, self.id].join(" ")
-#                  end
-        # 20201008 MH
-        # Tentatively, only top level dataset with uniq order id in dataset table can be registered in BFabric
         order_ids_ = {}
         if self.order_ids.empty?
            self.samples.each do |sample_|
