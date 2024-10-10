@@ -14,5 +14,7 @@ which g-req = <%= `which g-req` %><br />
 which conda = <%= `which conda` %><br />
 whoami = <%= `whoami` %><br />
 Am I employee?(session[:employee]) = <%= session[:employee] %><br />
+<% if current_user %>
 current_user.login = <%= current_user.login %><br />
 FGCZ.employee?('<%= current_user.login %>') = <%= FGCZ.employee?(current_user.login) %><br />
+<% end %>
