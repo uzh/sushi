@@ -183,7 +183,7 @@ module GlobalVariables
   def run_RApp(app_name = self.class.to_s[0].downcase+self.class.to_s[1,20], lib_path: nil, conda_env: nil)
     command = ''
     if conda_env
-      command << ". '/usr/local/ngseq/miniconda3/etc/profile.d/conda.sh'\n"
+      command << ". '/usr/local/ngseq/miniforge3/etc/profile.d/conda.sh'\n"
       command << "conda activate #{conda_env}\n"
     end
     command << "R --vanilla --slave<<  EOT\n"
