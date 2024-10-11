@@ -58,12 +58,11 @@ Single cell report<br/>
                           'ImmGenData', 'MonacoImmuneData', 'MouseRNAseqData', 'NovershternHematopoieticData']
     @params['SingleR', 'description'] = "Use reference datasets from the celldex package to find marker-based celltype annotation with SingleR"
   
-  
-    @params['cellxgene'] = ''
-    #@params['cellxgene', 'description'] = 'Find the dataset id that you want to use, on the datasets page but not on the collections page. First, click the "explore" button of the interest datasets. Second, input the data set ID from the website address. For example, "https://cellxgene.cziscience.com/e/3faad104-2ab8-4434-816d-474d8d2641db.cxg/", the data set ID is "3faad104-2ab8-4434-816d-474d8d2641db".'
-    @params['column_name_of_cell_label'] = ''
-    #@params['column_name_of_cell_label', 'description'] = 'After clicking the "explore" button, on the left you will find the column name of cell label. For example, in this dataset, "https://cellxgene.cziscience.com/e/3faad104-2ab8-4434-816d-474d8d2641db.cxg/", the cell label name is "predicted.celltype.l2".'
-   
+    @params['cellxgeneUrl'] = ''
+    @params['cellxgeneUrl', 'description'] = 'Choose an download URL to an rds file of a dataset from here: https://cellxgene.cziscience.com/datasets'
+    @params['cellxgeneLabel'] = ''
+    @params['cellxgeneLabel', 'description'] = 'Specify the attribute of the dataset that should serve as cell type label'
+
    
    
    
