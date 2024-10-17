@@ -16,7 +16,7 @@ A quality control tool for NGS reads<br/>
 <a href='http://www.bioinformatics.babraham.ac.uk/projects/fastqc'/>Web-site with docu and a tutorial video</a>
 EOS
     @required_columns = ['Name','Read1']
-    @required_params = ['paired', 'showMultiQC']
+    @required_params = ['paired', 'showNativeReports']
     @params['cores'] = [8, 1, 2, 4, 8]
     @params['ram'] = [15, 30, 62]
     @params['ram', 'description'] = "GB"
