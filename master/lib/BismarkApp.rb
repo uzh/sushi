@@ -19,9 +19,9 @@ EOS
     @required_columns = ['Name','Read1','Species']
     @required_params = ['refBuild','paired']
     # optional params
-    @params['cores'] = '8'
+    @params['cores'] = ['8', '12', '16']
     @params['ram'] = '30'
-    @params['scratch'] = '100'
+    @params['scratch'] = '200'
     @params['refBuild'] = ref_selector
     @params['refBuild', 'description'] = 'the genome refBuild and annotation to use as reference.'
     @params['paired'] = false
