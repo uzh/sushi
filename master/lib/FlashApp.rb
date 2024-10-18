@@ -58,9 +58,10 @@ EOS
     @params['length_required','description'] = 'reads shorter than length_required will be discarded.'
     @params['cmdOptionsFastp'] = ''
     ## additional commands
-    @params['markDuplicates'] = true
+    @params['markDuplicates'] = false
     @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
-
+    @params['skipFlash'] = false
+    @params['skipFlash', 'description'] = 'should the Flash part be skipped'
     @params['mail'] = ""
     @modules = ["Tools/FLASH", "QC/fastp", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
@@ -74,13 +75,19 @@ EOS
     @params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
-    {'Name'=>@dataset['Name'],
-     'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.extendedFrags.fastq.gz"),
-     'FlashLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_flash.log"),
-     'TrimmomaticLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
+    dataset = {
+     'Name'=>@dataset['Name'],
+     'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.R1.fastq.gz"),
+     'Log [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
      'Species'=>@dataset['Species'],
      'Read Count'=>@dataset['Read Count'],
     }.merge(extract_columns(@inherit_tags))
+    if @params['skipFlash']
+      if @params['paired']
+         dataset['Read2 [File]']=>File.join(@result_dir, "#{@dataset['Name']}.R2.fastq.gz")
+      end
+    end
+    dataset
   end
   def commands
     run_RApp("EzAppFlash")
