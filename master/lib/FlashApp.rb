@@ -84,7 +84,7 @@ EOS
     }.merge(extract_columns(@inherit_tags))
     if @params['skipFlash']
       if @params['paired']
-         dataset['Read2 [File]']=>File.join(@result_dir, "#{@dataset['Name']}.R2.fastq.gz")
+         dataset['Read2 [File]']=File.join(@result_dir, "#{@dataset['Name']}.R2.fastq.gz")
       end
     end
     dataset
