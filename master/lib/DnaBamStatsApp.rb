@@ -23,7 +23,7 @@ EOS
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['sortedBam'] = true
-    @modules = ["Tools/Picard", "QC/Qualimap", "QC/SAMStat", "Tools/samtools"]
+    @modules = ["Dev/jdk", "Tools/Picard", "QC/Qualimap", "QC/SAMStat", "Tools/samtools"]
   end
   def next_dataset
     samstat_link = File.join(@result_dir, "#{@dataset['Name']}.samstat.html")
