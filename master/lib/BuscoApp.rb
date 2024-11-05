@@ -39,7 +39,7 @@ EOS
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
-    run_RApp("EzAppBusco",conda_env: "gi_busco5.7.1")
+    run_RApp("EzAppBusco",conda_env: "gi_busco5.8.0")
   end
 end
 
