@@ -72,8 +72,8 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
-    '. "/usr/local/ngseq/miniconda3/etc/profile.d/conda.sh"' +
-    "\nconda activate MACS2\n" +
+    '. "/usr/local/ngseq/miniforge3/etc/profile.d/conda.sh"' +
+    "\nconda activate gi_macs3\n" +
     run_RApp("EzAppMacs2")
   end
 end
