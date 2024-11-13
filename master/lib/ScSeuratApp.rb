@@ -57,14 +57,10 @@ Single cell report<br/>
     @params['SingleR'] = ['none', 'BlueprintEncodeData', 'DatabaseImmuneCellExpressionData', 'HumanPrimaryCellAtlasData', 
                           'ImmGenData', 'MonacoImmuneData', 'MouseRNAseqData', 'NovershternHematopoieticData']
     @params['SingleR', 'description'] = "Use reference datasets from the celldex package to find marker-based celltype annotation with SingleR"
-    
     @params['cellxgeneUrl'] = ''
     @params['cellxgeneUrl', 'description'] = 'Choose an download URL to an Seurat rds file of a dataset from here: https://cellxgene.cziscience.com/datasets'
     @params['cellxgeneLabel'] = ''
     @params['cellxgeneLabel', 'description'] = 'Specify the attribute of the dataset that should serve as cell type label'
-
-    
-    
     @params['npcs'] = 20
     @params['npcs', 'description'] = 'The maximal top dimensions (pcs) to use for reduction. Do not use more principal components than pcGenes (when used).'
     @params['pcGenes'] = ''

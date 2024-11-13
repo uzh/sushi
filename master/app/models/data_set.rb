@@ -57,7 +57,6 @@ class DataSet < ActiveRecord::Base
     register_command = "register_sushi_dataset_into_bfabric"
     check_command = "check_dataset_bfabric"
     parent_dataset = self.data_set
-
     if parent_dataset.nil? or parent_dataset.bfabric_id
       if SushiFabric::Application.config.fgcz? and system("which #{register_command} > /dev/null 2>&1") and system("which #{check_command} > /dev/null 2>&1")
         time = Time.new.strftime("%Y%m%d-%H%M%S")
@@ -72,8 +71,6 @@ class DataSet < ActiveRecord::Base
                            eval(out.chomp.downcase)
                          end
                        end
-        # 20201008 MH
-        # Tentatively, only top level dataset with uniq order id in dataset table can be registered in BFabric
         order_ids_ = {}
         if self.order_ids.empty?
            self.samples.each do |sample_|
@@ -131,12 +128,9 @@ class DataSet < ActiveRecord::Base
           open(dataset_tsv, "w") do |out|
             out.print self.tsv_string
           end
-          puts "# #{dataset_tsv} generated"
-          puts "$ #{command}"
-          if File.exist?(dataset_tsv) and bfabric_ids = `#{command}` and !bfabric_ids.chomp.empty?
-            #com = "cp #{dataset_tsv} ~/"
-            #system(com)
-            #puts com
+          puts "# created: #{dataset_tsv}"
+          if File.exist?(dataset_tsv) and bfabric_ids = `#{command}`
+            puts "$ #{command}"
             puts "# mode: #{op}"
             puts "# bfabric_ids: #{bfabric_ids}"
             if bfabric_ids.split(/\n/).uniq.length < 2
@@ -150,7 +144,6 @@ class DataSet < ActiveRecord::Base
               end
             else
               puts "# Not executed properly:"
-              puts "# DataSetID: #{self.id}"
               puts "# BFabricID: #{bfabric_id}"
             end
             File.unlink dataset_tsv
@@ -167,9 +160,8 @@ class DataSet < ActiveRecord::Base
           end
         end
       end
-      #puts "# DataSet:#{self.id}, Parental DataSet:#{parent_dataset.id}, Parent BFabricID:#{parent_dataset.bfabric_id.to_s}, sushi_app:#{self.sushi_app_name.to_s}"
     else
-      #puts "# Not run DataSet#register_bfabric because its parental dataset is not registered in bfabric(DataSet:#{self.id}, Parental DataSet:#{parent_dataset.id}), Parent BFabricID:#{parent_dataset.bfabric_id.to_s}, sushi_app:#{self.sushi_app_name.to_s}"
+      puts "# Not run DataSet#register_bfabric because its parental dataset is not registered in bfabric"
     end
   end
   def update_resource_size
