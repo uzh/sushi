@@ -58,7 +58,7 @@ EOS
 @params['cmdOptions'] = ''
 @params['mail'] = ''
 
-@modules = ["Dev/R", "Aligner/kallisto", "QC/fastp", "Tools/samtools"]
+@modules = ["Dev/R", "Aligner/kallisto/0.46.1_deb10", "QC/fastp", "Tools/samtools"]
 @inherit_columns = ["Order Id"]
   end
  def set_default_parameters

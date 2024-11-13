@@ -25,7 +25,7 @@ Quality control after the alignment of RNAseq reads<br/>
     @params['refFeatureFile'] = 'genes.gtf'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "QC/Qualimap", "Tools/Picard", "Dev/R"]
+    @modules = ["Tools/samtools", "QC/Qualimap", "Tools/Picard", "Dev/R", "Dev/jdk/8"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
