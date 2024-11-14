@@ -62,7 +62,7 @@ genotype,merge and annotate gvcf-Files<br/>
     intervals_list = annos.find{|list| File.exist?(list)}
     combined_raw_vcf = @params['name'] + ".raw.vcf.gz"
     combined_filtered_vcf = @params['name'] + ".filtered.vcf.gz"
-		jvm_options = ""
+		jvm_options = "-XX:ConcGCThreads=1 -Xmx#{@params['ram']}G -XX:ParallelGCThreads=#{@params['cores']}"
 		command = <<EOS
 > sample_list.txt
 tail -n +2 "\$INPUT_DATASET" | while IFS=$'\\t' read -r name gvcf gvcfindex rest; do
@@ -75,7 +75,7 @@ EOS
 							 else
 								 "gatk #{jvm_options} GenomicsDBImport -R #{ref} --sample-name-map sample_list.txt --genomicsdb-workspace-path genomics_db\n"
 							 end
-    command << "gatk GenotypeGVCFs -R #{ref} -V gendb://genomics_db -O #{combined_raw_vcf}\n"
+    command << "gatk #{jvm_options} GenotypeGVCFs -R #{ref} -V gendb://genomics_db -O #{combined_raw_vcf}\n"
     command +=<<EOS
 gatk VariantFiltration -R #{ref} -V #{combined_raw_vcf} -O #{combined_filtered_vcf} \\
 --filter-name "QD" --filter-expression "vc.hasAttribute('QD') && QD < #{@params['QD']}" \\
