@@ -99,7 +99,7 @@ EOS
     dataset
   end
   def commands
-    run_RApp("EzAppBismark")
+    run_RApp("EzAppBismark",conda_env: "gi_perl_gdgraph")
   end
 end
 
