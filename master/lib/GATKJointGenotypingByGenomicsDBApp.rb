@@ -31,9 +31,9 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['Xmx'] = '50'
     @params['Xmx', 'description'] = 'Maximum heap memory size for JVM'
 
-    @params['batch-size', 'hr-header'] = 'GenomicsDBImport options'
-    @params['batch-size'] = '10'
-    @params['reader-threads'] = '1'
+    #@params['batch-size', 'hr-header'] = 'GenomicsDBImport options'
+    #@params['batch-size'] = '10'
+    #@params['reader-threads'] = '1'
     @params['QD', 'hr-header'] = 'VariantFiltration options'
     @params['QD'] = '2.0'
     @params['FS'] = '60.0'
