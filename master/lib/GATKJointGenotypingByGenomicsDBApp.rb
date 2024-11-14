@@ -31,9 +31,7 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['Xmx'] = '30'
     @params['Xmx', 'description'] = 'Maximum heap memory size for JVM'
 
-    @params['intervals', 'hr-header'] = 'GenomicsDBImport options'
-    @params['intervals'] = ''
-    @params['intervals', 'file_upload'] = true
+    @params['batch-size', 'hr-header'] = 'GenomicsDBImport options'
     @params['batch-size'] = '10'
     @params['reader-threads'] = '1'
     @params['QD', 'hr-header'] = 'VariantFiltration options'
@@ -41,9 +39,9 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['FS'] = '60.0'
     @params['MQ'] = '40.0'
     @params['GQ'] = '20'
-    @params['ReadPosRankSum'] = '-8.0'
+    #@params['ReadPosRankSum'] = '-8.0'
     @params['MQRankSum'] = '-12.5'
-    @modules = ["Variants/GATK/4.6.0.0", "Tools/Picard/2.22.8"]
+    @modules = ["Variants/GATK/4.5.0.0"]
     @inherit_columns = ["Order Id"]
   end
   def next_dataset
@@ -60,23 +58,32 @@ genotype,merge and annotate gvcf-Files<br/>
   def commands
     refs = GENOME_REF_DIRS.map{|genome_ref_dir| File.join(genome_ref_dir, @params['refBuild'].split('/')[0,3].join("/")+"/Sequence/WholeGenomeFasta/genome.fa")}
     ref = refs.find{|fa| File.exist?(fa)}
+    annos = GENOME_REF_DIRS.map{|genome_ref_dir| File.join(genome_ref_dir, @params['refBuild']+"/Genes/intervals.list")}
+    intervals_list = annos.find{|list| File.exist?(list)}
     combined_raw_vcf = @params['name'] + ".raw.vcf.gz"
     combined_filtered_vcf = @params['name'] + ".filtered.vcf.gz"
 		jvm_options = ""
-    command = ""
-    sample_list = "sample_list.txt"
-		intervals = "intervals.list"
-		genomics_db = "genomics_db"
-    open(sample_list, "w") do |f|
-	    @dataset.each do |row|
-	      name = row['Name']
-	      gvcf_gz = File.join(@gstore_dir, row['GVCF [File]'])
-				f.puts [name, gvcf_gz].join("\t")
-	    end
-    end
-    command << "gatk #{jvm_options} GenomicsDBImport -R #{ref} --sample-name-map #{sample_list} -L #{intervals_list} --genomicsdb-workspace-path ${genomics_db}\n"
-    command << "gatk GenotypeGVCFs -R #{ref} -V gendb://${genomics_db} -O #{combined_raw_vcf}\n"
-    command << "gatk VariantFiltration -R #{ref} -V #{combined_raw_vcf} --filter-name \"QD\" --filter-expression \"vc.hasAttribute('QD') && QD < #{@params['QD']}\" --filter-name \"MQ\" --filter-expression \"vc.isSNP() && vc.hasAttribute('MQ') && MQ < #{@params['MQ']}\" --filter-name \"MQRankSum\" --filter-expression \"vc.hasAttribute('MQRankSum') && MQRankSum < #{@params['MQRankSum']}\" --genotype-filter-name \"GQ\" --genotype-filter-expression \"GQ < #{@params['GQ']}\" --filter-name \"DP\" --filter-expression \"vc.hasAttribute('DP') && (DP < #{@params['minDP']} || DP >= #{@params['maxDP']})\" -O #{combined_filter_vcf}\n"
+		command = <<EOS
+> sample_list.txt
+tail -n +2 "\$INPUT_DATASET" | while IFS=$'\\t' read -r name gvcf gvcfindex rest; do
+    gvcf_path="\$GSTORE_DIR/\$gvcf"
+    echo -e "\$name\\t\$gvcf_path" >> sample_list.txt
+done
+EOS
+    command << if intervals_list
+								 "gatk #{jvm_options} GenomicsDBImport -R #{ref} --sample-name-map sample_list.txt -L #{intervals_list} --genomicsdb-workspace-path genomics_db\n"
+							 else
+								 "gatk #{jvm_options} GenomicsDBImport -R #{ref} --sample-name-map sample_list.txt --genomicsdb-workspace-path genomics_db\n"
+							 end
+    command << "gatk GenotypeGVCFs -R #{ref} -V gendb://genomics_db -O #{combined_raw_vcf}\n"
+    command +=<<EOS
+gatk VariantFiltration -R #{ref} -V #{combined_raw_vcf} -O #{combined_filtered_vcf} \\
+--filter-name "QD" --filter-expression "vc.hasAttribute('QD') && QD < #{@params['QD']}" \\
+--filter-name "FS" --filter-expression "FS > #{@params['FS']}" \\
+--filter-name "MQ" --filter-expression "vc.isSNP() && vc.hasAttribute('MQ') && MQ < #{@params['MQ']}" \\
+--filter-name "MQRankSum" --filter-expression "vc.hasAttribute('MQRankSum') && MQRankSum < #{@params['MQRankSum']}" \\
+--genotype-filter-name "GQ" --genotype-filter-expression "GQ < #{@params['GQ']}"
+EOS
     command
   end
 end
