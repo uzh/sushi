@@ -28,7 +28,7 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['ConcGCThreads', 'description'] = 'Number of threads for releasing memory'
     @params['ParallelGCThreads'] = '8'
     @params['ParallelGCThreads', 'description'] = 'Number of threads concurrent garbage collectors will use'
-    @params['Xmx'] = '30'
+    @params['Xmx'] = '50'
     @params['Xmx', 'description'] = 'Maximum heap memory size for JVM'
 
     @params['batch-size', 'hr-header'] = 'GenomicsDBImport options'
@@ -62,7 +62,7 @@ genotype,merge and annotate gvcf-Files<br/>
     intervals_list = annos.find{|list| File.exist?(list)}
     combined_raw_vcf = @params['name'] + ".raw.vcf.gz"
     combined_filtered_vcf = @params['name'] + ".filtered.vcf.gz"
-		jvm_options = "-XX:ConcGCThreads=1 -Xmx#{@params['ram']}G -XX:ParallelGCThreads=#{@params['cores']}"
+		jvm_options = "-XX:ConcGCThreads=#{@params["ConcGCThreads"]} -Xmx#{@params['Xmx']}G -XX:ParallelGCThreads=#{@params['ParallelGCThreads']}"
 		command = <<EOS
 > sample_list.txt
 tail -n +2 "\$INPUT_DATASET" | while IFS=$'\\t' read -r name gvcf gvcfindex rest; do
