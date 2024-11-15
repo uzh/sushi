@@ -34,6 +34,10 @@ genotype,merge and annotate gvcf-Files<br/>
     #@params['batch-size', 'hr-header'] = 'GenomicsDBImport options'
     #@params['batch-size'] = '10'
     #@params['reader-threads'] = '1'
+		@params['intervals_list', 'hr-header'] = 'GenomicsDBImport options'
+		@params['intervals_list'] = ""
+    @params['intervals_list', 'multi_selection'] = true
+    @params['intervals_list', 'multi_selection_size'] = 5
     @params['QD', 'hr-header'] = 'VariantFiltration options'
     @params['QD'] = '2.0'
     @params['FS'] = '60.0'
@@ -54,6 +58,16 @@ genotype,merge and annotate gvcf-Files<br/>
   end
   def set_default_parameters
     @params['refBuild'] = @dataset[0]['refBuild']
+    annos = GENOME_REF_DIRS.map{|genome_ref_dir| File.join(genome_ref_dir, @params['refBuild']+"/Genes/intervals.list")}
+    intervals_list = annos.find{|list| File.exist?(list)}
+    refs = GENOME_REF_DIRS.map{|genome_ref_dir| File.join(genome_ref_dir, @params['refBuild'].split('/')[0,3].join("/")+"/Sequence/WholeGenomeFasta/genome.fa")}
+    ref = refs.find{|fa| File.exist?(fa)}
+		if intervals_list
+			@params['intervals_list'] = File.readlines(intervals_list).map{|line| line.chomp}
+		elsif ref
+			chrs = `grep '>' #{ref} | sed 's/^>//'`
+			@params['intervals_list'] = chrs.split(/\n/)
+		end
   end
   def commands
     refs = GENOME_REF_DIRS.map{|genome_ref_dir| File.join(genome_ref_dir, @params['refBuild'].split('/')[0,3].join("/")+"/Sequence/WholeGenomeFasta/genome.fa")}
@@ -70,8 +84,8 @@ tail -n +2 "\$INPUT_DATASET" | while IFS=$'\\t' read -r name gvcf gvcfindex rest
     echo -e "\$name\\t\$gvcf_path" >> sample_list.txt
 done
 EOS
-    command << if intervals_list
-								 "gatk --java-options \"#{jvm_options}\" GenomicsDBImport -R #{ref} --sample-name-map sample_list.txt -L #{intervals_list} --genomicsdb-workspace-path genomics_db\n"
+    command << unless @params['intervals_list'].empty?
+								 "gatk --java-options \"#{jvm_options}\" GenomicsDBImport -R #{ref} --sample-name-map sample_list.txt -L #{@params['intervals_list']} --genomicsdb-workspace-path genomics_db\n"
 							 else
 								 "gatk --java-options \"#{jvm_options}\" GenomicsDBImport -R #{ref} --sample-name-map sample_list.txt --genomicsdb-workspace-path genomics_db\n"
 							 end
