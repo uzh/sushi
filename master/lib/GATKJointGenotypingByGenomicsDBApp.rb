@@ -71,13 +71,13 @@ tail -n +2 "\$INPUT_DATASET" | while IFS=$'\\t' read -r name gvcf gvcfindex rest
 done
 EOS
     command << if intervals_list
-								 "gatk #{jvm_options} GenomicsDBImport -R #{ref} --sample-name-map sample_list.txt -L #{intervals_list} --genomicsdb-workspace-path genomics_db\n"
+								 "gatk --java-options #{jvm_options} GenomicsDBImport -R #{ref} --sample-name-map sample_list.txt -L #{intervals_list} --genomicsdb-workspace-path genomics_db\n"
 							 else
-								 "gatk #{jvm_options} GenomicsDBImport -R #{ref} --sample-name-map sample_list.txt --genomicsdb-workspace-path genomics_db\n"
+								 "gatk --java-options #{jvm_options} GenomicsDBImport -R #{ref} --sample-name-map sample_list.txt --genomicsdb-workspace-path genomics_db\n"
 							 end
-    command << "gatk #{jvm_options} GenotypeGVCFs -R #{ref} -V gendb://genomics_db -O #{combined_raw_vcf}\n"
+    command << "gatk --java-options #{jvm_options} GenotypeGVCFs -R #{ref} -V gendb://genomics_db -O #{combined_raw_vcf}\n"
     command +=<<EOS
-gatk VariantFiltration -R #{ref} -V #{combined_raw_vcf} -O #{combined_filtered_vcf} \\
+gatk --java-options #{jvm_options} VariantFiltration -R #{ref} -V #{combined_raw_vcf} -O #{combined_filtered_vcf} \\
 --filter-name "QD" --filter-expression "vc.hasAttribute('QD') && QD < #{@params['QD']}" \\
 --filter-name "FS" --filter-expression "FS > #{@params['FS']}" \\
 --filter-name "MQ" --filter-expression "vc.isSNP() && vc.hasAttribute('MQ') && MQ < #{@params['MQ']}" \\
