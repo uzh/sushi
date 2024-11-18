@@ -35,7 +35,7 @@ Somatic variant calling for DNA-seq<br/>
     dataset = {
     'Name'=>@dataset['Name'],
       'VCF [File]'=>File.join(@result_dir, "#{@dataset['Name']}.somatic.ann.vcf.gz"),
-      'VCFINDEX [File]'=>File.join(@result_dir, "#{@dataset['Name']}.somatic.vcf.gz.tbi"),
+      'VCFINDEX [File]'=>File.join(@result_dir, "#{@dataset['Name']}.somatic.ann.vcf.gz.tbi"),
       'Other [File]'=>File.join(@result_dir, "#{@dataset['Name']}_misc.zip"),
       'Species'=>@dataset['Species'],
       'refBuild'=>@params['refBuild']
