@@ -18,8 +18,8 @@ genotype,merge and annotate gvcf-Files<br/>
     @required_columns = ['Name', 'GVCF', 'GVCFINDEX', 'Species', 'refBuild', 'Dummy']
     @required_params = ['name']
     @params['cores'] = '8'
-    @params['ram'] = '50'
-    @params['scratch'] = '100'
+    @params['ram'] = '500'
+    @params['scratch'] = '800'
     @params['name'] = 'GATKJointGenotyping'
     @params['refBuild'] = ref_selector
 
@@ -28,7 +28,7 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['ConcGCThreads', 'description'] = 'Number of threads for releasing memory'
     @params['ParallelGCThreads'] = '8'
     @params['ParallelGCThreads', 'description'] = 'Number of threads concurrent garbage collectors will use'
-    @params['Xmx'] = '50'
+    @params['Xmx'] = '100'
     @params['Xmx', 'description'] = 'Maximum heap memory size for JVM'
 
     #@params['batch-size', 'hr-header'] = 'GenomicsDBImport options'
