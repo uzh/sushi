@@ -28,9 +28,13 @@ class ScSeuratCompareApp < SushiFabric::SushiApp
     @params['DE.regress','multi_selection'] = true
     @params['DE.regress', 'description'] = "Variables to regress when calculating differentially expressed genes. Only used with the LR method."
     @params['CellIdentity'] = 'ident'
-    @params['CellIdentity', 'description'] = "The Seurat metadata column which contains the cell clusters or types (usually 'seurat_clusters' or 'ident')"
+    @params['CellIdentity', 'description'] = "The Seurat metadata column which contains the cell clusters or types (usually or 'ident' 'cellTypes' if the clusters have been labeled)"
     @params['grouping'] = 'Condition'
     @params['grouping', 'description'] = "The Seurat metadata column which contains the sample grouping information"
+    @params['pseudoBulkMode'] = 'false'
+    @params['pseudoBulkMode', 'description'] = "Weather to aggregate the counts to the pseudo-bulk level prior to performing the DE experiments. Setting this to true also requires setting 'replicateGrouping'"
+    @params['replicateGrouping'] = ""
+    @params['replicateGrouping', 'description'] = "(pseudo-bulk mode only) The column in the Seurat metadata containing the replicate group information."
     @params['sampleGroup'] = ''
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
     @params['refGroup'] = ''
