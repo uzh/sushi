@@ -84,8 +84,9 @@ tail -n +2 "\$INPUT_DATASET" | while IFS=$'\\t' read -r name gvcf gvcfindex rest
     echo -e "\$name\\t\$gvcf_path" >> sample_list.txt
 done
 EOS
+    command << "echo #{@params["intervals_list"]}"
     command << unless @params['intervals_list'].empty?
-								 "gatk --java-options \"#{jvm_options}\" GenomicsDBImport -R #{ref} --sample-name-map sample_list.txt #{@params['intervals_list'].split(",").map{|chr| "-L #{chr}"}.join(" ")} --genomicsdb-workspace-path genomics_db\n"
+								 "gatk --java-options \"#{jvm_options}\" GenomicsDBImport -R #{ref} --sample-name-map sample_list.txt #{@params['intervals_list'].split(",").map{|chr| "-L #{chr.strip}"}.join(" ")} --genomicsdb-workspace-path genomics_db\n"
 							 else
 								 "gatk --java-options \"#{jvm_options}\" GenomicsDBImport -R #{ref} --sample-name-map sample_list.txt --genomicsdb-workspace-path genomics_db\n"
 							 end
