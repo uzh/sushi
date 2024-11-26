@@ -343,6 +343,13 @@ namespace :ds do
     end
     out_dataset_list(dataset_list_log, selected_datasets)
 
+    # check order_ids
+    selected_datasets.each do |dataset|
+      if dataset.order_ids.empty?
+        dataset.check_order_ids
+      end
+    end
+
     # sorting dataset list
     sorted_datasets = []
     root_datasets = selected_datasets.select do |dataset|
