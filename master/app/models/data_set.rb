@@ -53,6 +53,31 @@ class DataSet < ActiveRecord::Base
     end
     self.num_samples
   end
+  def check_order_ids
+    order_ids_ = {}
+    self.samples.each do |sample_|
+      sample = sample_.to_hash
+      if order_ids__ = sample["Order Id [B-Fabric]"]
+        order_ids__.strip!
+        order_ids__.split(",").each do |order_id|
+          order_id.strip!
+          order_ids_[order_id] = true
+        end
+      end
+    end
+    unless order_ids_.empty?
+      self.order_ids.concat(order_ids_.keys)
+      self.order_ids.uniq!
+      self.order_ids.sort!
+
+      # OrderID save
+      if self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i
+        self.order_id = order_id
+      end
+
+      self.save
+    end
+  end
   def register_bfabric(op = 'new', bfabric_application_number: nil)
     register_command = "register_sushi_dataset_into_bfabric"
     check_command = "check_dataset_bfabric"
@@ -71,31 +96,8 @@ class DataSet < ActiveRecord::Base
                            eval(out.chomp.downcase)
                          end
                        end
-        order_ids_ = {}
-        if self.order_ids.empty?
-           self.samples.each do |sample_|
-             sample = sample_.to_hash
-             if order_ids__ = sample["Order Id [B-Fabric]"]
-               order_ids__.strip!
-               order_ids__.split(",").each do |order_id|
-                 order_id.strip!
-                 order_ids_[order_id] = true
-               end
-             end
-           end
-        end
-        unless order_ids_.empty?
-          self.order_ids.concat(order_ids_.keys)
-          self.order_ids.uniq!
-          self.order_ids.sort!
 
-          # OrderID save
-          if parent_dataset.nil? and self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i
-            self.order_id = order_id
-          end
-
-          self.save
-        end
+        self.check_order_ids
 
         puts "parent_dataset.nil?= #{parent_dataset.nil?}"
         puts "self.order_ids= #{self.order_ids}"
