@@ -219,7 +219,7 @@ namespace :ds do
     end
     puts "# #unregistered_datasets: #{unregistered_datasets.length}"
     puts "# #unregistered_datasets_without_project: #{unregistered_datasets_without_project.length}"
-    puts "# run time: #{Time.now - t0} [s]"
+    puts "# run time: #{"%.2f" & (Time.now - t0)} [s]"
   end
 
   desc "Check all datasets in 2023"
@@ -241,7 +241,7 @@ namespace :ds do
        end
     end
     warn "# #datasets: #{datasets.length}"
-    warn "# run time: #{Time.now - t0} [s]"
+    warn "# run time: #{"%.2f" & (Time.now - t0)} [s]"
   end
 
   desc "Count #sushiapps in datasets and make sushiapp ranks"
@@ -272,7 +272,7 @@ namespace :ds do
       puts [sushi_app_name, "0"].join("\t")
     end
     warn "# #sushiapps: #{sushiapp2count.keys.length}"
-    warn "# run time: #{Time.now - t0} [s]"
+    warn "# run time: #{"%.2f" & (Time.now - t0)} [s]"
   end
 
   def dfs_sort_datasets(root_dataset, selected_datasets, result = [])
@@ -402,7 +402,7 @@ namespace :ds do
       puts "# #sorted_datasets.samples: #{sorted_datasets.samples}"
       puts "# #black_list_datasets: #{black_list_datasets.length}"
       puts "# #black_list_datasets.samples: #{black_list_datasets.samples}"
-      puts "# run time: #{Time.now - t0} [s]"
+      puts "# run time: #{"%.2f" & (Time.now - t0)} [s]"
     end
   end
   class DataSet
@@ -477,7 +477,7 @@ namespace :ds do
     end
 
     puts "# #datasets: #{datasets.length} (no Order Ids: #{not_order_ids}, added Order Ids: #{add_order_ids})"
-    puts "# run time: #{Time.now - t0} [s]"
+    puts "# run time: #{"%.2f" & (Time.now - t0)} [s]"
   end
 
 end
