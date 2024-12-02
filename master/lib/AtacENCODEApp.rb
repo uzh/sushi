@@ -28,7 +28,7 @@ EOS
     @params['name'] = 'AtacENCODE'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
-    @modules = ["Dev/Python/3.9.7_dev","Dev/jdk"]
+    @modules = ["Dev/jdk"]
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
@@ -47,7 +47,7 @@ EOS
     }
   end
   def commands
-    run_RApp('EzAppAtacENCODE') #, conda_env: 'encode-atac-seq-pipeline')
+    run_RApp('EzAppAtacENCODE', conda_env: 'gi_atac-seq-pipeline')
   end
 end
 
