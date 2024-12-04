@@ -38,9 +38,9 @@ EOS
     @params['comparison'] = @comparison
     @params['name'] = @comparison
     {'Name'=>@params['name'],
-      'CovObject [File]'=>'bismarkBSseq_filtered.rds',
-      'RegionFile [File]'=>'dmrseq_results.rds',
-      'BlockFile [File]'=>'large_blocks.rds'
+      'CovObject [File]'=>File.join(@result_dir,'bismarkBSseq_filtered.rds'),
+      'RegionFile [File]'=>File.join(@result_dir,'dmrseq_results.rds'),
+      'BlockFile [File]'=>File.join(@result_dir,'large_blocks.rds')
     }.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
