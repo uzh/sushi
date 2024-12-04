@@ -10,7 +10,7 @@ class DmrseqApp <  SushiFabric::SushiApp
     super
     @name = 'DmrseqApp'
     @params['process_mode'] = 'DATASET'
-    @analysis_category = 'Differential Methylation'
+    @analysis_category = 'DifferentialMethylation'
     @description =<<-EOS
     Finding differentially methylated regions via <a href='https://www.bioconductor.org/packages/release/bioc/html/dmrseq.html'/>Dmrseq</a> <br/>
     It requires cov file from Bismark. <br/>
