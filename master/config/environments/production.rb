@@ -93,6 +93,7 @@ SushiFabric::Application.configure do
     #config.rails_host = "https://fgcz-course1.bfabric.org"  # course1
     #config.rails_host = "https://fgcz-course2.bfabric.org"  # course2
     config.rails_host = "http://fgcz-h-037.fgcz-net.unizh.ch:4000"  # test
+    config.submit_job_script_dir = "/misc/fgcz01/sushi/job_scripts"  # production, demo, course, test
   end
 
 end
