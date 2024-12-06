@@ -48,7 +48,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     @params['cmdOptions', 'description'] = 'specify the commandline options for SpaceRanger; do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['SpaceRangerVersion'] = ["Aligner/SpaceRanger/3.0.1", "Aligner/SpaceRanger/2.1.1"]
+    @params['SpaceRangerVersion'] = ["Aligner/SpaceRanger/3.1.2","Aligner/SpaceRanger/3.0.1"]
     @modules = ["Dev/R", "Aligner/CellRanger"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
@@ -67,7 +67,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
         'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
         'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix'),
         'Read Count'=>@dataset['Read Count'],
-        'Count [File]'=>File.join(report_dir, "#{@dataset['Name']}-counts.txt")        
+        'Count [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.txt")        
       }.merge(extract_columns(@inherit_tags))
     dataset
   end

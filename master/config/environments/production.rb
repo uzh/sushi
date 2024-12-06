@@ -30,7 +30,7 @@ SushiFabric::Application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  # config.force_ssl = true
 
   # See everything in the log (default is :info)
   # config.log_level = :debug
@@ -79,10 +79,8 @@ SushiFabric::Application.configure do
 
   # fgcz
   if config.fgcz?
-    #config.workflow_manager = "druby://fgcz-c-044:40001" # course1
-    #config.workflow_manager = "druby://fgcz-h-940:40001" # course2
-    #config.workflow_manager = "druby://fgcz-h-032:40001" # demo
-    config.workflow_manager = "druby://fgcz-h-031:40001" # production, test
+    config.workflow_manager = "druby://fgcz-h-036.fgcz-net.unizh.ch:40001" # production, test
+    #config.workflow_manager = "druby://fgcz-h-035.fgcz-net.unizh.ch:40001" # demo, course
     config.scratch_dir = "/scratch"
     config.gstore_dir = "/srv/gstore/projects" # production, test
     #config.gstore_dir = "/srv/GT/analysis/course_sushi/public/gstore/projects" # demo, course
@@ -94,7 +92,7 @@ SushiFabric::Application.configure do
     #config.rails_host = "https://fgcz-sushi-demo.uzh.ch"    # demo
     #config.rails_host = "https://fgcz-course1.bfabric.org"  # course1
     #config.rails_host = "https://fgcz-course2.bfabric.org"  # course2
-    config.rails_host = "http://fgcz-h-032:4000"            # test
+    config.rails_host = "http://fgcz-h-037.fgcz-net.unizh.ch:4000"  # test
   end
 
 end

@@ -23,7 +23,7 @@ EOS
     @params['scratch'] = '100'
     @params['refBuild'] = ref_selector
     @params['sortedBam'] = true
-    @modules = ["Tools/Picard", "QC/Qualimap", "QC/SAMStat", "Tools/samtools"]
+    @modules = ["Dev/R", "Tools/Picard", "QC/Qualimap", "QC/SAMStat", "Tools/samtools", "Dev/jdk/8"]
   end
   def next_dataset
     samstat_link = File.join(@result_dir, "#{@dataset['Name']}.samstat.html")
@@ -55,7 +55,7 @@ mv {$FN,#{@dataset['Name']}}.samstat.html
 ###qualimap
 unset DISPLAY ; qualimap bamqc -bam $FN -c -nt #{@params['cores']} --java-mem-size=#{@params['ram']}G -outdir #{@dataset['Name']} > qualimap.out
 ###picard 
-java -Xmx#{@params['ram']}g -jar $Picard_jar CollectGcBiasMetrics OUTPUT=#{@dataset['Name']}.gc.dat SUMMARY_OUTPUT=#{@dataset['Name']}.gc.sum.dat INPUT=$FN CHART_OUTPUT=#{@dataset['Name']}.picard.pdf ASSUME_SORTED=#{@params['sortedBam']} REFERENCE_SEQUENCE=$REF VALIDATION_STRINGENCY=LENIENT > picard.out 2> picard.err
+/usr/local/ngseq/packages/Dev/jdk/21/bin/java -Xmx#{@params['ram']}g -jar $Picard_jar CollectGcBiasMetrics OUTPUT=#{@dataset['Name']}.gc.dat SUMMARY_OUTPUT=#{@dataset['Name']}.gc.sum.dat INPUT=$FN CHART_OUTPUT=#{@dataset['Name']}.picard.pdf ASSUME_SORTED=#{@params['sortedBam']} REFERENCE_SEQUENCE=$REF VALIDATION_STRINGENCY=LENIENT > picard.out 2> picard.err
 EOS
     command
   end

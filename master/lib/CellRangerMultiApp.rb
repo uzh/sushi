@@ -29,7 +29,7 @@ A simple <a href='https://fgcz-shiny.uzh.ch/10x_Sample2Barcode',>ShinyApp  </a> 
     @required_params = ['name', 'refBuild']
     @params['cores'] = ['8', '12', '16']
     @params['ram'] = ['60', '40', '80']
-    @params['scratch'] = '200'
+    @params['scratch'] = '500'
     @params['name'] = 'CellRangerMulti'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
@@ -70,8 +70,8 @@ A simple <a href='https://fgcz-shiny.uzh.ch/10x_Sample2Barcode',>ShinyApp  </a> 
     @params['cmdOptions', 'description'] = 'specify the commandline options for CellRanger (e.g. --include-introns for single nuclei data); do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/seqtk", "Dev/R/4.4.0", "Dev/Python/3.8.3", "Tools/samtools"]
-    @params['CellRangerVersion'] = ["Aligner/CellRanger/8.0.0", "Aligner/CellRanger/7.2.0"]
+    @modules = ["Tools/seqtk", "Dev/R/4.4.0", "Dev/Python", "Tools/samtools"]
+    @params['CellRangerVersion'] = ["Aligner/CellRanger/9.0.0", "Aligner/CellRanger/8.0.1"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters

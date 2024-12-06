@@ -53,11 +53,35 @@ class DataSet < ActiveRecord::Base
     end
     self.num_samples
   end
+  def check_order_ids
+    order_ids_ = {}
+    self.samples.each do |sample_|
+      sample = sample_.to_hash
+      if order_ids__ = sample["Order Id [B-Fabric]"]
+        order_ids__.strip!
+        order_ids__.split(",").each do |order_id|
+          order_id.strip!
+          order_ids_[order_id] = true
+        end
+      end
+    end
+    unless order_ids_.empty?
+      self.order_ids.concat(order_ids_.keys)
+      self.order_ids.uniq!
+      self.order_ids.sort!
+
+      # OrderID save
+      if self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i
+        self.order_id = order_id
+      end
+
+      self.save
+    end
+  end
   def register_bfabric(op = 'new', bfabric_application_number: nil)
     register_command = "register_sushi_dataset_into_bfabric"
     check_command = "check_dataset_bfabric"
     parent_dataset = self.data_set
-
     if parent_dataset.nil? or parent_dataset.bfabric_id
       if SushiFabric::Application.config.fgcz? and system("which #{register_command} > /dev/null 2>&1") and system("which #{check_command} > /dev/null 2>&1")
         time = Time.new.strftime("%Y%m%d-%H%M%S")
@@ -72,33 +96,8 @@ class DataSet < ActiveRecord::Base
                            eval(out.chomp.downcase)
                          end
                        end
-        # 20201008 MH
-        # Tentatively, only top level dataset with uniq order id in dataset table can be registered in BFabric
-        order_ids_ = {}
-        if self.order_ids.empty?
-           self.samples.each do |sample_|
-             sample = sample_.to_hash
-             if order_ids__ = sample["Order Id [B-Fabric]"]
-               order_ids__.strip!
-               order_ids__.split(",").each do |order_id|
-                 order_id.strip!
-                 order_ids_[order_id] = true
-               end
-             end
-           end
-        end
-        unless order_ids_.empty?
-          self.order_ids.concat(order_ids_.keys)
-          self.order_ids.uniq!
-          self.order_ids.sort!
 
-          # OrderID save
-          if parent_dataset.nil? and self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i
-            self.order_id = order_id
-          end
-
-          self.save
-        end
+        self.check_order_ids
 
         puts "parent_dataset.nil?= #{parent_dataset.nil?}"
         puts "self.order_ids= #{self.order_ids}"
@@ -109,18 +108,20 @@ class DataSet < ActiveRecord::Base
                       else
                         [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, "--skip-file-check"].join(" ")
                       end
-                    elsif parent_dataset and bfabric_id = parent_dataset.bfabric_id # child dataset
-                      if order_id > 8000
-                        [register_command, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
-                      else
-                        [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
-                      end
+                    # 20241126 Masa tentatively stop registration in child datast
+                    #elsif parent_dataset and bfabric_id = parent_dataset.bfabric_id # child dataset
+                    #  if order_id > 8000
+                    #    [register_command, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
+                    #  else
+                    #    [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
+                    #  end
                     end
                   elsif self.order_ids.uniq.length > 1 # multi order dataset
                     if parent_dataset.nil? # root dataset
                         [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, "--skip-file-check"].join(" ")
-                    elsif parent_dataset and bfabric_id = parent_dataset.bfabric_id # child dataset
-                        [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
+                  # 20241126 Masa tentatively stop registration in multi order child dataset
+                  #  elsif parent_dataset and bfabric_id = parent_dataset.bfabric_id # child dataset
+                  #      [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
                     end
                   end
 
@@ -131,12 +132,9 @@ class DataSet < ActiveRecord::Base
           open(dataset_tsv, "w") do |out|
             out.print self.tsv_string
           end
-          puts "# #{dataset_tsv} generated"
-          puts "$ #{command}"
-          if File.exist?(dataset_tsv) and bfabric_ids = `#{command}` and !bfabric_ids.chomp.empty?
-            #com = "cp #{dataset_tsv} ~/"
-            #system(com)
-            #puts com
+          puts "# created: #{dataset_tsv}"
+          if File.exist?(dataset_tsv) and bfabric_ids = `#{command}`
+            puts "$ #{command}"
             puts "# mode: #{op}"
             puts "# bfabric_ids: #{bfabric_ids}"
             if bfabric_ids.split(/\n/).uniq.length < 2
@@ -150,7 +148,6 @@ class DataSet < ActiveRecord::Base
               end
             else
               puts "# Not executed properly:"
-              puts "# DataSetID: #{self.id}"
               puts "# BFabricID: #{bfabric_id}"
             end
             File.unlink dataset_tsv
@@ -167,9 +164,8 @@ class DataSet < ActiveRecord::Base
           end
         end
       end
-      #puts "# DataSet:#{self.id}, Parental DataSet:#{parent_dataset.id}, Parent BFabricID:#{parent_dataset.bfabric_id.to_s}, sushi_app:#{self.sushi_app_name.to_s}"
     else
-      #puts "# Not run DataSet#register_bfabric because its parental dataset is not registered in bfabric(DataSet:#{self.id}, Parental DataSet:#{parent_dataset.id}), Parent BFabricID:#{parent_dataset.bfabric_id.to_s}, sushi_app:#{self.sushi_app_name.to_s}"
+      puts "# Not run DataSet#register_bfabric because its parental dataset is not registered in bfabric"
     end
   end
   def update_resource_size

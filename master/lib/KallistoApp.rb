@@ -79,7 +79,7 @@ EOS
     @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
       
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/kallisto", "QC/fastp", "Dev/R"]
+    @modules = ["Tools/samtools", "Aligner/kallisto/0.46.1", "QC/fastp", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess

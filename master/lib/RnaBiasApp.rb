@@ -13,7 +13,7 @@ class RnaBiasApp <  SushiFabric::SushiApp
     @analysis_category = 'QC'
     @description =<<-EOS 
 EOS
-    @required_columns = ['Name','Read1','Species']
+    @required_columns = ['Name','Read1','Species','PlateName']
     @required_params = ['name']
 
 @params['cores'] = '8'
@@ -58,7 +58,7 @@ EOS
 @params['cmdOptions'] = ''
 @params['mail'] = ''
 
-@modules = ["Dev/R", "Aligner/kallisto", "QC/fastp", "Tools/samtools"]
+@modules = ["Dev/R", "Aligner/kallisto/0.46.1_deb10", "QC/fastp", "Tools/samtools"]
 @inherit_columns = ["Order Id"]
   end
  def set_default_parameters

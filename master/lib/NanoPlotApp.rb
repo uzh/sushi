@@ -33,7 +33,7 @@ EOS
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
-    run_RApp("EzAppNanoPlot",conda_env: "nanoplot")
+    run_RApp("EzAppNanoPlot",conda_env: "gi_nanoplot1.43.0")
   end
 end
 
