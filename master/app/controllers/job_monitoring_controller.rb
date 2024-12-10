@@ -2,27 +2,30 @@ class JobMonitoringController < ApplicationController
   def index
     public_dir = File.expand_path('../../../public', __FILE__)
     @page_unit = 100
-    workflow_manager = DRbObject.new_with_uri(SushiFabric::WORKFLOW_MANAGER)
-    @job_list = if option=params[:option] and option[:all_job_list] 
-                  @page_unit = 1000
-                  @all_job_list=true
-                  session[:all_job_list] = true
-                  workflow_manager.job_list(false, nil)
-                elsif option=params[:option] and option[:project_job_list] 
-                  @all_job_list=false
-                  session[:all_job_list] = false
-                  workflow_manager.job_list(false, session[:project])
-                elsif session[:all_job_list]
-                  @page_unit = 1000
-                  @all_job_list=true
-                  session[:all_job_list] = true
-                  workflow_manager.job_list(false, nil)
-                else
-                  @all_job_list=false
-                  session[:all_job_list] = false
-                  workflow_manager.job_list(false, session[:project])
-                end
-    @job_list = @job_list.split(/\n/).map{|job| job.split(/,/)}
+    project_number = session[:project]
+    jobs = Job.joins(data_set: :project)
+              .where(projects: { number: project_number })
+              .order(id: :desc)
+              .limit(100)
+    @job_list = jobs.map{|job| [job.id, job.status.to_s, "job_script", job.start_time ? "#{job.start_time.to_s}/#{job.end_time.to_s}" : "" , job.user, project_number, job.next_dataset_id]}
+
+    if option=params[:option] and option[:all_job_list]
+      @page_unit = 1000
+      @all_job_list=true
+      session[:all_job_list] = true
+    elsif option=params[:option] and option[:project_job_list]
+      @all_job_list=false
+      session[:all_job_list] = false
+    elsif session[:all_job_list]
+      @page_unit = 1000
+      @all_job_list=true
+      session[:all_job_list] = true
+    else
+      @all_job_list=false
+      session[:all_job_list] = false
+    end
+
+
     @total = @job_list.length
 
     # pager
