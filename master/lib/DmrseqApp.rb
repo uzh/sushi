@@ -43,12 +43,9 @@ EOS
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"
     @params['comparison'] = @comparison
     @params['name'] = @comparison
+    report_file = File.join(@result_dir, "#{@params['comparison']}")
     {'Name'=>@params['name'],
-      'Report [File]'=>File.join(@result_dir,'00index.html'),
-      'CovObject [File]'=>File.join(@result_dir,'bismarkBSseq_filtered.rds'),
-      'RegionFile [File]'=>File.join(@result_dir,'dmrseq_results.rds'),
-      'BlockFile [File]'=>File.join(@result_dir,'large_blocks.rds'),
-      'Params [File]'=>File.join(@result_dir,'param.rds')
+      'Report [File]'=>report_file
     }.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
