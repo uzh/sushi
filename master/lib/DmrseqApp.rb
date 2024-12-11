@@ -44,8 +44,10 @@ EOS
     @params['comparison'] = @comparison
     @params['name'] = @comparison
     report_file = File.join(@result_dir, "#{@params['comparison']}")
+    report_link = File.join(report_file, '00index.html')
     {'Name'=>@params['name'],
-      'Report [File]'=>report_file
+      'Report [Link]'=>report_link,
+      'ResultFolder [File]'=>report_file
     }.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
