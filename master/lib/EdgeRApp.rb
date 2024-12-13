@@ -69,7 +69,7 @@ class EdgeRApp < SushiFabric::SushiApp
     @params['specialOptions'] = ''
     @params['expressionName'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.4.0"]
+    @params['Rversion'] = ["Dev/R/4.4.2"]
     @inherit_columns = ["Order Id"]
   end
    def preprocess

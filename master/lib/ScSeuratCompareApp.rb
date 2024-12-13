@@ -40,7 +40,7 @@ class ScSeuratCompareApp < SushiFabric::SushiApp
     @params['refGroup'] = ''
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.4.0", "Dev/R/4.3.0", "Dev/R/4.2.2", "Dev/R/4.2.0", "Dev/R/4.1.2", "Dev/R/4.1.0"]
+    @params['Rversion'] = ["Dev/R/4.4.2"]
     @inherit_columns = ["Order Id"]
   end
    def preprocess
