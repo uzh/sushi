@@ -47,7 +47,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['cmdOptions', 'description'] = 'specify the commandline options for CellRanger (e.g. --include-introns for single nuclei data); do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/seqtk", "Dev/R/4.4.0", "Dev/Python/3.11.5_dev", "Tools/samtools"]
+    @modules = ["Tools/seqtk", "Dev/R/4.4.2", "Dev/Python/3.11.5_dev", "Tools/samtools"]
     @params['CellRangerVersion'] = ["Aligner/CellRanger/9.0.0", "Aligner/CellRanger/8.0.1"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
