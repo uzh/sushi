@@ -52,14 +52,19 @@ class JobMonitoringController < ApplicationController
     @job_list = @job_list[start..last]
   end
   def print_log
-    public_dir = File.expand_path('../../../public', __FILE__)
-    text = @@workflow_manager.get_log(params[:job_id], :with_err)
+    text = 'no log found'
+    if @job_id = params[:job_id] and job = Job.find_by_id(@job_id) and
+      stdout_path = job.stdout_path and File.exist?(stdout_path) and
+      stderr_path = job.stderr_path and File.exist?(stderr_path)
+      stdout_text = File.read(stdout_path)
+      stderr_text = File.read(stderr_path)
+      text = [stdout_path, "-"*50, stdout_text, "___STDOUT_END___\n", stderr_path, "-"*50, stderr_text, "___STDERR_END___"].join("\n")
+    end
     render :plain => text
   end
   def print_script
     text = 'no script found'
-    if sushi_job_id = params[:sushi_job_id] and
-      job = Job.find_by_id(sushi_job_id.to_i) and
+    if @job_id = params[:job_id] and job = Job.find_by_id(@job_id) and
       script_path = job.script_path and File.exist?(script_path)
       text = File.read(script_path)
     else
