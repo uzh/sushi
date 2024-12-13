@@ -1,30 +1,45 @@
 class JobMonitoringController < ApplicationController
+  def fetch_jobs(params, project_number)
+    option = params[:option]
+
+    if option && option[:all_job_list] # all projects
+      configure_job_list(all_job_list: true, page_unit: 1000)
+      Job.joins(data_set: :project)
+         .where(projects: { number: project_number })
+         .order(id: :desc)
+         .limit(100)
+    elsif option && option[:project_job_list] # project specific
+      configure_job_list(all_job_list: false)
+      Job.joins(data_set: :project)
+         .order(id: :desc)
+         .limit(100)
+    elsif session[:all_job_list] # all projects from session
+      configure_job_list(all_job_list: true, page_unit: 1000)
+      Job.joins(data_set: :project)
+         .where(projects: { number: project_number })
+         .order(id: :desc)
+         .limit(100)
+    else # project specific
+      configure_job_list(all_job_list: false)
+      Job.joins(data_set: :project)
+         .where(projects: { number: project_number })
+         .order(id: :desc)
+    end
+  end
+  def configure_job_list(all_job_list:, page_unit: nil)
+    @all_job_list = all_job_list
+    session[:all_job_list] = all_job_list
+    @page_unit = page_unit if page_unit
+  end
+
   def index
     public_dir = File.expand_path('../../../public', __FILE__)
     @page_unit = 100
     project_number = session[:project]
-    jobs = Job.joins(data_set: :project)
-              .where(projects: { number: project_number })
-              .order(id: :desc)
-              .limit(100)
+
+    jobs = fetch_jobs(params, project_number)
+
     @job_list = jobs.map{|job| [job.id, job.status.to_s, "job_script", job.start_time ? "#{job.start_time.to_s}/#{job.end_time.to_s}" : "" , job.user, project_number, job.next_dataset_id]}
-
-    if option=params[:option] and option[:all_job_list]
-      @page_unit = 1000
-      @all_job_list=true
-      session[:all_job_list] = true
-    elsif option=params[:option] and option[:project_job_list]
-      @all_job_list=false
-      session[:all_job_list] = false
-    elsif session[:all_job_list]
-      @page_unit = 1000
-      @all_job_list=true
-      session[:all_job_list] = true
-    else
-      @all_job_list=false
-      session[:all_job_list] = false
-    end
-
 
     @total = @job_list.length
 
