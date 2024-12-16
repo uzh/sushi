@@ -50,7 +50,7 @@ EOS
     @params['name'] = 'QIIME2'
     @params['mail'] = ""
     @inherit_columns = ["Order Id"]
-    @modules = ['Dev/R/4.2.2']
+    @modules = ['Dev/R']
   end
    def preprocess
     if @params['paired']
@@ -80,7 +80,7 @@ EOS
      nds.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
-     run_RApp("EzAppQIIME2", conda_env: "qiime2-2022.2")
+     run_RApp("EzAppQIIME2", conda_env: "gi_qiime2-amplicon-2024.5")
   end
 end
 
