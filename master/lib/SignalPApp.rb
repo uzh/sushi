@@ -6,7 +6,7 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class PsortbApp < SushiFabric::SushiApp
+class SignalPApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'SignalP'
