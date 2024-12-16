@@ -24,7 +24,7 @@ EOS
     @params['scratch'] = '100'
     @params['paired'] = true
     @params['otherBasicOpt'] = ''
-    @params['otherBasicOpt', 'description'] = 'SPAdes basic options: --sc, --rna, --plasmid, Default is empty for genome assembly without MDA'
+    @params['otherBasicOpt', 'description'] = 'SPAdes basic options: --sc, --rna, --plasmid, --meta, Default is empty for genome assembly without MDA'
     @params['spadesPipeOpt'] = '--careful'
     @params['spadesPipeOpt', 'description'] = '--careful and --meta are mutually exclusive; SPAdes pipeline options: --only-assembler, --careful'
     @params['cmdOptions'] = ''
