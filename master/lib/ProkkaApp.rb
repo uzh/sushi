@@ -37,7 +37,7 @@ EOS
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
-    run_RApp("EzAppProkka",conda_env: "prokka")
+    run_RApp("EzAppProkka",conda_env: "gi_prokka1.14.5")
   end
 end
 
