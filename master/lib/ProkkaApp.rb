@@ -31,7 +31,7 @@ EOS
   end
   def next_dataset
     {'Name'=>@dataset['Name'],
-     #'outReport [Link]'=>File.join(@result_dir, "#{@dataset['Name']}", 'report.html'),
+     'Proteins [File]'=>File.join(@result_dir, "#{@dataset['Name']}", "#{@dataset['Name']}.faa"),
      'ProkkaOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}"),
      'Species'=>@dataset['Species'],
     }.merge(extract_columns(@inherit_tags))
