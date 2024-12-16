@@ -41,7 +41,7 @@ EOS
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
-    run_RApp("EzAppSignalPApp")
+    run_RApp("EzAppSignalP")
   end
 end
 
