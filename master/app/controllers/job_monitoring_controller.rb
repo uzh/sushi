@@ -74,10 +74,11 @@ class JobMonitoringController < ApplicationController
   end
   def kill_job
     @status = 'kill job failed'
-    if @job_id = params[:id]
-      public_dir = File.expand_path('../../../public', __FILE__)
-      @status = @@workflow_manager.kill_job(@job_id)
-      @command = "wfm_kill_job -i #{@job_id} -d #{SushiFabric::WORKFLOW_MANAGER}"
+    if @job_id = params[:id] and job = Job.find_by_id(@job_id)
+      job.status = "KILL"
+      job.save
+      @status = "Killing the job"
+      @command = "scancel #{@job_id}"
     end
   end
   def multi_kill_job
@@ -87,8 +88,12 @@ class JobMonitoringController < ApplicationController
     @statuses = ''
     @commands = ''
     @job_ids.each do |job_id|
-      @statuses << @@workflow_manager.kill_job(job_id) + "\n"
-      @commands << "wfm_kill_job -i #{job_id} -d #{SushiFabric::WORKFLOW_MANAGER}\n"
+      if job = Job.find_by_id(job_id)
+        job.status = "KILL"
+        job.save
+      end
+      @statuses << "Killing the job (#{job_id})" + "\n"
+      @commands << "scancel #{job_id}\n"
     end
   end
   def resubmit_job
