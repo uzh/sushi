@@ -243,9 +243,9 @@ class DataSetController < ApplicationController
               sample.to_hash.each do |header, file|
                 if header and (header.tag?('File') or header.tag?('Link') and file !~ /^http/)
                   if file
-                    file_path = File.join(SushiFabric::GSTORE_DIR, file)
-                    @sample_path << File.dirname(file)
-                    @file_exist[file] = File.exist?(file_path)
+                    file_list = file.split(",")
+                    @sample_path << file_list.map { |f| File.dirname(f)}
+                    @file_exist[file] = file_list.all? { |f| File.exist?(File.join(SushiFabric::GSTORE_DIR, f)) }
                   else
                     @file_exist[header] = false
                   end
