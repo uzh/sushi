@@ -245,7 +245,7 @@ class DataSetController < ApplicationController
                 if header and (header.tag?('File') or header.tag?('Link') and file !~ /^http/)
                   if file
                     file_list = file.split(",")
-                    @sample_path = @sample_path + file_list.map { |f| File.dirname(f)}.uniq
+                    @sample_path = @sample_path.concat(file_list.map { |f| File.dirname(f)}.uniq)
                     @file_exist[file] = file_list.all? { |f| File.exist?(File.join(SushiFabric::GSTORE_DIR, f)) }
                   else
                     @file_exist[header] = false
