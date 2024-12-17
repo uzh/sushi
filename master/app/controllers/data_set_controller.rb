@@ -21,8 +21,9 @@ class DataSetController < ApplicationController
         sample_available = 0
         data_set.samples.each do |sample|
           if sample_file = sample.to_hash.select{|header, file| header and header.tag?('File')}.first
-            file_path = File.join(SushiFabric::GSTORE_DIR, sample_file.last.to_s)
-            if File.exist?(file_path)
+            file_list = sample_file.split(",")
+            all_files_exist = file_list.all? { |f| File.exist?(File.join(SushiFabric::GSTORE_DIR, f)) }
+            if all_files_exist
               sample_available+=1
             end
           else # in case of no [File] tag sample
