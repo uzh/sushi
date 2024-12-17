@@ -335,7 +335,7 @@ $(document).ready(function(){
             <span class="alert"><%= File.basename(sample.to_hash[header].to_s) %></span>
           <% else %>
             <% file_path = sample.to_hash[header].to_s %>
-            <% file_name = file_path.split(",").map { |f| File.basename(f)}.joint(",") %>
+            <% file_name = file_path.split(",").map { |f| File.basename(f)}.join(",") %>
             <% if header.tag?('Link') %>
               <% if file_path =~ /^http/ %>
                 <%= link_to td(file_name), file_path, target: "_blank" %>
