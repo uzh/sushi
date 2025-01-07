@@ -39,7 +39,18 @@ class JobMonitoringController < ApplicationController
 
     jobs = fetch_jobs(params, project_number)
 
-    @job_list = jobs.map{|job| [job.id, job.status.to_s, "job_script", job.start_time ? "#{job.start_time.to_s}/#{job.end_time.to_s}" : "" , job.user, project_number, job.next_dataset_id]}
+    @job_list = jobs.map{|job|
+      start_time = if job.start_time
+                     job.start_time.strftime('%Y-%m-%d %H:%M:%S')
+                   else
+                     ""
+                   end
+      end_time = if job.end_time
+                   job.end_time.strftime('%Y-%m-%d %H:%M:%S')
+                 else
+                   ""
+                 end
+      [job.id, job.status.to_s, "job_script", job.start_time ? "#{start_time}/#{end_time}" : "" , job.user, project_number, job.next_dataset_id]}
 
     @total = @job_list.length
 
