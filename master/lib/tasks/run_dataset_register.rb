@@ -1,17 +1,16 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20240719-161655'
+# Version = '20250110-141350'
 
 require 'pathname'
 
 RAILS_ROOT='/srv/sushi/production/master'
-SLEEP_TIME = 60*60 # [s] = 1h, valid only for daemon-mode
 YEAR = Time.now.strftime("%Y")
 
 help =-> () do
   puts <<-eos
   usage:
-   #{File.basename(__FILE__)} [task name] (--run, --year [YEAR], --rails-root [RAILS_ROOT], --daemon-mode)
+   #{File.basename(__FILE__)} [task name] (--run, --year [YEAR], --rails-root [RAILS_ROOT], --daemon-mode, --help)
 
   RAILS_ROOT (default): #{RAILS_ROOT}
 
@@ -19,7 +18,10 @@ help =-> () do
    #{File.basename(__FILE__)} --year #{YEAR}
 
   recommend (for production run):
-   #{File.basename(__FILE__)} --run --daemon-mode
+   #{File.basename(__FILE__)} --run --daemon-mode > #{File.basename(__FILE__).gsub(/.rb/, "_#{Time.now.strftime("%Y%m%d")}.log")}
+
+  --daemon-mode
+   * start the registraiton process at 0:00 AM every night
 
   e.g.:
    #{File.basename(__FILE__)} --year 2024
@@ -31,7 +33,7 @@ help =-> () do
   exit
 end
 
-if i=ARGV.index("-h")
+if ARGV.index("-h") or ARGV.index("--help")
   help.()
 end
 
@@ -47,6 +49,10 @@ rails_root = if i=ARGV.index("--rails-root")
              else
                Pathname.new(RAILS_ROOT)
              end
+unless File.exist?(rails_root)
+  warn "# WARN: #{rails_root} does not exist"
+  help.()
+end
 
 daemon_mode = ARGV.index("--daemon-mode")
 
@@ -65,8 +71,11 @@ command = "bundle exec rake #{task_name_with_args}"
 Dir.chdir(rails_root) do
   if daemon_mode
     loop do
+      now = Time.now
+      next_midnight = Time.new(now.year, now.month, now.day + 1, 0, 0, 0)
+      wait_time = next_midnight - now
+      sleep(wait_time)
       system(command)
-      sleep SLEEP_TIME
     end
   else
     system(command)

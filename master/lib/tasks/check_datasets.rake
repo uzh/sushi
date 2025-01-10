@@ -396,7 +396,7 @@ namespace :ds do
                  "sushi_lover"
                end
         puts [dataset.id, dataset.project.number, dataset.name, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s, dataset.order_ids.join(",")].join("\t")
-        dataset.register_bfabric
+        dataset.register_bfabric(register_child_dataset_too: true)
         sleep 1
         puts
       end
