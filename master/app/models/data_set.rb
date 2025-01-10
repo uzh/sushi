@@ -78,7 +78,7 @@ class DataSet < ActiveRecord::Base
       self.save
     end
   end
-  def register_bfabric(op = 'new', bfabric_application_number: nil)
+  def register_bfabric(op = 'new', bfabric_application_number: nil, register_child_dataset_too: nil)
     register_command = "register_sushi_dataset_into_bfabric"
     check_command = "check_dataset_bfabric"
     parent_dataset = self.data_set
@@ -108,20 +108,18 @@ class DataSet < ActiveRecord::Base
                       else
                         [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, "--skip-file-check"].join(" ")
                       end
-                    # 20241126 Masa tentatively stop registration in child datast
-                    #elsif parent_dataset and bfabric_id = parent_dataset.bfabric_id # child dataset
-                    #  if order_id > 8000
-                    #    [register_command, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
-                    #  else
-                    #    [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
-                    #  end
+                    elsif parent_dataset and bfabric_id = parent_dataset.bfabric_id and register_child_dataset_too # child dataset
+                      if order_id > 8000
+                        [register_command, "o#{self.order_ids.first}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
+                      else
+                        [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
+                      end
                     end
                   elsif self.order_ids.uniq.length > 1 # multi order dataset
                     if parent_dataset.nil? # root dataset
                         [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, "--skip-file-check"].join(" ")
-                  # 20241126 Masa tentatively stop registration in multi order child dataset
-                  #  elsif parent_dataset and bfabric_id = parent_dataset.bfabric_id # child dataset
-                  #      [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
+                    elsif parent_dataset and bfabric_id = parent_dataset.bfabric_id and register_child_dataset_too # child dataset
+                        [register_command, "p#{self.project.number}", dataset_tsv, self.name, self.id, bfabric_id, "--sushi-app #{self.sushi_app_name} --skip-file-check"].join(" ")
                     end
                   end
 
