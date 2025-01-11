@@ -387,30 +387,29 @@ namespace :ds do
     out_dataset_list(dataset_tree_log, sorted_datasets)
 
     # for run
-    sorted_datasets.each do |dataset|
-      if run
-        date = dataset.created_at
-        user = if user = dataset.user
-                 user.login
-               else
-                 "sushi_lover"
-               end
-        puts [dataset.id, dataset.project.number, dataset.name, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s, dataset.order_ids.join(",")].join("\t")
-        dataset.register_bfabric(register_child_dataset_too: true)
-        sleep 1
-        puts
+    if run
+      puts ["dataset.id", "project.number", "dataset.name", "sushi_app_name", "completed_samples/num_samples", "user", "date", "bfabric_id", "order_ids"].join("\t")
+      sorted_datasets.each do |dataset|
+          date = dataset.created_at
+          user = if user = dataset.user
+                   user.login
+                 else
+                   "sushi_lover"
+                 end
+          puts [dataset.id, dataset.project.number, dataset.name, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s, dataset.order_ids.join(",")].join("\t")
+          dataset.register_bfabric
+          sleep 1
+          puts
       end
     end
 
-    unless run
-      puts "# #selected_datasets: #{selected_datasets.length}"
-      puts "# #selected_datasets.samples: #{selected_datasets.samples}"
-      puts "# #sorted_datasets: #{sorted_datasets.length}"
-      puts "# #sorted_datasets.samples: #{sorted_datasets.samples}"
-      puts "# #black_list_datasets: #{black_list_datasets.length}"
-      puts "# #black_list_datasets.samples: #{black_list_datasets.samples}"
-      puts "# run time: #{"%.2f" % (Time.now - t0)} [s]"
-    end
+    puts "# #selected_datasets: #{selected_datasets.length}"
+    puts "# #selected_datasets.samples: #{selected_datasets.samples}"
+    puts "# #sorted_datasets: #{sorted_datasets.length}"
+    puts "# #sorted_datasets.samples: #{sorted_datasets.samples}"
+    puts "# #black_list_datasets: #{black_list_datasets.length}"
+    puts "# #black_list_datasets.samples: #{black_list_datasets.samples}"
+    puts "# run time: #{"%.2f" % (Time.now - t0)} [s]"
   end
   class DataSet
     def search_order_id(recursive = 1)
