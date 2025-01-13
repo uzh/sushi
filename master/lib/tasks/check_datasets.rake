@@ -409,7 +409,7 @@ namespace :ds do
     puts "# #sorted_datasets.samples: #{sorted_datasets.samples}"
     puts "# #black_list_datasets: #{black_list_datasets.length}"
     puts "# #black_list_datasets.samples: #{black_list_datasets.samples}"
-    puts "# run time: #{"%.2f" % (Time.now - t0)} [s]"
+    puts "# run time: #{"%.2f" % (Time.now - t0)} [s] (#{Time.now.strftime("%Y%m%d-%H:%M:%S")})"
   end
   class DataSet
     def search_order_id(recursive = 1)
