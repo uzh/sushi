@@ -64,6 +64,8 @@ EOS
     @params['length_required','description'] = 'reads shorter than length_required will be discarded.'
     @params['cmdOptionsFastp'] = ''
     @params['generateBigWig'] = false
+    @params['EM_QC'] = false
+    @params['EM_QC','description'] = 'Generate Boxplot for known methylated and unmethylated sites of Lambda/pUC19 control'
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Aligner/Bowtie2", "Aligner/Bismark", "QC/fastp", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
@@ -95,6 +97,9 @@ EOS
     }.merge(extract_columns(@inherit_tags))
     if @params['generateBigWig']
        dataset['BigWig [File]'] = File.join(@result_dir, "#{@dataset['Name']}_Cov.bw")
+    end
+   if @params['EM_QC']
+       dataset['EM_QC [File]'] = File.join(@result_dir, "#{@dataset['Name']}_Meth.png")
     end
     dataset
   end
