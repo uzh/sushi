@@ -99,6 +99,7 @@ EOS
        dataset['BigWig [File]'] = File.join(@result_dir, "#{@dataset['Name']}_Cov.bw")
     end
    if @params['EM_QC']
+       dataset['EM_QC [Link]'] = File.join(@result_dir, "#{@dataset['Name']}_Meth.png")
        dataset['EM_QC [File]'] = File.join(@result_dir, "#{@dataset['Name']}_Meth.png")
     end
     dataset
