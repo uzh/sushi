@@ -96,6 +96,10 @@ EOS
     if @params['generateBigWig']
        dataset['BigWig [File]'] = File.join(@result_dir, "#{@dataset['Name']}.bw")
     end
+    if !@params['secondRef'].empty?
+      dataset['SecondRefCoverage [Link]'] = File.join(@result_dir, "Coverage_#{@dataset['Name']}_secondRef.png")
+      dataset['SecondRefCoverage [File]'] = File.join(@result_dir, "Coverage_#{@dataset['Name']}_secondRef.png")
+    end
     dataset
   end
   def commands
