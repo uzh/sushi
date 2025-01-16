@@ -29,6 +29,8 @@ Quality control after counting reads<br/>
     @params['runGO'] = ['true', 'false']
     @params['backgroundExpression'] = 10
     @params['backgroundExpression', "description"] = "counts to be added to shrink estimated log2 ratios"
+    @params['topGeneSize'] = 100
+    @params['selectByFtest'] = ['false', 'true']
     @params['transcriptTypes'] = ''
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 0
