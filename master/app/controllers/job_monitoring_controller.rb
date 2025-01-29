@@ -86,7 +86,7 @@ class JobMonitoringController < ApplicationController
   def kill_job
     @status = 'kill job failed'
     if @job_id = params[:id] and job = Job.find_by_id(@job_id)
-      job.status = "KILLME"
+      job.status = "KILL_ME"
       job.save
       @status = "Killing the job (job ID: #{@job_id})"
       @command = "scancel #{job.submit_job_id}"
@@ -100,7 +100,7 @@ class JobMonitoringController < ApplicationController
     @commands = ''
     @job_ids.each do |job_id|
       if job = Job.find_by_id(job_id)
-        job.status = "KILLME"
+        job.status = "KILL_ME"
         job.save
       end
       @statuses << "Killing the job (job ID: #{job_id})" + "\n"
