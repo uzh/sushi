@@ -25,7 +25,7 @@ Somatic variant calling for DNA-seq<br/>
     @params['specialOptions'] = ''
     @params['cmdOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/jdk", "Variants/GATK", "Variants/SnpEff/4.3","Dev/R"]
+    @modules = ["Dev/jdk", "Variants/GATK", "Variants/SnpEff/4.3","Dev/R", "Tools/Picard"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters
