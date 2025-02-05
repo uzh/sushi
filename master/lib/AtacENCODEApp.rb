@@ -10,7 +10,7 @@ class AtacENCODEApp <  SushiFabric::SushiApp
     super
     @name = 'AtacENCODE'
     @params['process_mode'] = 'SAMPLE'
-    @analysis_category = 'ATAC'
+    @analysis_category = 'QC'
     @description =<<-EOS
     A ATAC-seq and DNase-seq processing pipeline from ENCODE. <br/>
     Fow now, it only supports human and mouse. <br/>
