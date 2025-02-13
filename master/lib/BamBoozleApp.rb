@@ -33,7 +33,7 @@ BAMboozle: Versatile removal of human sequence variation data for open data shar
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
-    {'Name'=>@dataset['Name'],
+    dataset = {'Name'=>@dataset['Name'],
      'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}_cleaned_R1.fastq.gz"),
      'Species'=>@dataset['Species'],
      'Read Count'=>@dataset['Read Count']
