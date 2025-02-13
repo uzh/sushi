@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'ffi'
 gem 'sassc-rails'
-gem 'rails', '7.0.8'
+gem 'rails', '7.0.8.7'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -70,7 +70,7 @@ gem "chartkick", ">= 3.4.0"
 gem 'mysql2', '0.5.3'
 gem 'yaml_db'
 gem "jstree-rails-4"
-gem 'thin'
+gem 'puma'
 gem 'google-analytics-rails'
 gem "nokogiri", ">= 1.13.4"
 gem "loofah", ">= 2.19.1"
