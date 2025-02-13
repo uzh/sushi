@@ -37,7 +37,7 @@ BAMboozle: Versatile removal of human sequence variation data for open data shar
      'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}_cleaned_R1.fastq.gz"),
      'Species'=>@dataset['Species'],
      'Read Count'=>@dataset['Read Count']
-    }.merge(extract_columns(@inherit_tags))d
+    }.merge(extract_columns(@inherit_tags))
     if @params['paired']
       dataset['Read2 [File]'] = File.join(@result_dir, "#{@dataset['Name']}_cleaned_R2.fastq.gz")
     end
