@@ -309,7 +309,7 @@ GEM
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
     sqlite3 (1.4.4)
-    sushi_fabric (1.3.3)
+    sushi_fabric (1.3.4)
       csv
       drb
     thor (1.3.2)
