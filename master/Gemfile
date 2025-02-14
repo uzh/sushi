@@ -67,7 +67,7 @@ end
 
 gem 'sushi_fabric'
 gem "chartkick", ">= 3.4.0"
-gem 'mysql2', '0.5.3'
+gem 'mysql2', '>= 0.5.5'
 gem 'yaml_db'
 gem "jstree-rails-4"
 gem 'puma'
