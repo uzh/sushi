@@ -7,8 +7,8 @@
   <% @job_list.each do |job| %>
   <tr>
     <td><%= job[0] %></td>
-    <td><%= link_to job[2], "/job_monitoring/print_script?job_id=#{job[0]}&sushi_job_id=#{@sushi_job_ids[job[0]]}" %></td>
-    <td><%= link_to job[2].gsub(/.sh/, '.log'), "/job_monitoring/print_log?job_id=#{job[0]}" %></td>
+    <td><%= link_to job[1], "/job_monitoring/print_script?job_id=#{job[0]}" %></td>
+    <td><%= link_to job[2], "/job_monitoring/print_log?job_id=#{job[0]}" %></td>
   </tr>
   <% end %>
   </tr>

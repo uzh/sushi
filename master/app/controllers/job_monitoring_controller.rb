@@ -1,28 +1,57 @@
 class JobMonitoringController < ApplicationController
+  def fetch_jobs(params, project_number)
+    option = params[:option]
+
+    if option && option[:all_job_list] # all projects
+      configure_job_list(all_job_list: true, page_unit: 1000)
+      Job.joins(data_set: :project)
+         .where(projects: { number: project_number })
+         .order(id: :desc)
+         .limit(100)
+    elsif option && option[:project_job_list] # project specific
+      configure_job_list(all_job_list: false)
+      Job.joins(data_set: :project)
+         .order(id: :desc)
+         .limit(100)
+    elsif session[:all_job_list] # all projects from session
+      configure_job_list(all_job_list: true, page_unit: 1000)
+      Job.joins(data_set: :project)
+         .where(projects: { number: project_number })
+         .order(id: :desc)
+         .limit(100)
+    else # project specific
+      configure_job_list(all_job_list: false)
+      Job.joins(data_set: :project)
+         .where(projects: { number: project_number })
+         .order(id: :desc)
+    end
+  end
+  def configure_job_list(all_job_list:, page_unit: nil)
+    @all_job_list = all_job_list
+    session[:all_job_list] = all_job_list
+    @page_unit = page_unit if page_unit
+  end
+
   def index
     public_dir = File.expand_path('../../../public', __FILE__)
     @page_unit = 100
-    workflow_manager = DRbObject.new_with_uri(SushiFabric::WORKFLOW_MANAGER)
-    @job_list = if option=params[:option] and option[:all_job_list] 
-                  @page_unit = 1000
-                  @all_job_list=true
-                  session[:all_job_list] = true
-                  workflow_manager.job_list(false, nil)
-                elsif option=params[:option] and option[:project_job_list] 
-                  @all_job_list=false
-                  session[:all_job_list] = false
-                  workflow_manager.job_list(false, session[:project])
-                elsif session[:all_job_list]
-                  @page_unit = 1000
-                  @all_job_list=true
-                  session[:all_job_list] = true
-                  workflow_manager.job_list(false, nil)
-                else
-                  @all_job_list=false
-                  session[:all_job_list] = false
-                  workflow_manager.job_list(false, session[:project])
-                end
-    @job_list = @job_list.split(/\n/).map{|job| job.split(/,/)}
+    project_number = session[:project]
+
+    jobs = fetch_jobs(params, project_number)
+
+    @job_list = jobs.map{|job|
+      start_time = if job.start_time
+                     job.start_time.strftime('%Y-%m-%d %H:%M:%S')
+                   else
+                     ""
+                   end
+      end_time = if job.end_time
+                   job.end_time.strftime('%Y-%m-%d %H:%M:%S')
+                 else
+                   ""
+                 end
+      [job.id, job.status.to_s, "job_script", job.start_time ? "#{start_time}/#{end_time}" : "" , job.user, project_number, job.next_dataset_id]}
+
     @total = @job_list.length
 
     # pager
@@ -34,14 +63,19 @@ class JobMonitoringController < ApplicationController
     @job_list = @job_list[start..last]
   end
   def print_log
-    public_dir = File.expand_path('../../../public', __FILE__)
-    text = @@workflow_manager.get_log(params[:job_id], :with_err)
+    text = 'no log found'
+    if @job_id = params[:job_id] and job = Job.find_by_id(@job_id) and
+      stdout_path = job.stdout_path and File.exist?(stdout_path) and
+      stderr_path = job.stderr_path and File.exist?(stderr_path)
+      stdout_text = File.read(stdout_path)
+      stderr_text = File.read(stderr_path)
+      text = [stdout_path, "-"*50, stdout_text, "___STDOUT_END___\n", stderr_path, "-"*50, stderr_text, "___STDERR_END___"].join("\n")
+    end
     render :plain => text
   end
   def print_script
     text = 'no script found'
-    if sushi_job_id = params[:sushi_job_id] and
-      job = Job.find_by_id(sushi_job_id.to_i) and
+    if @job_id = params[:job_id] and job = Job.find_by_id(@job_id) and
       script_path = job.script_path and File.exist?(script_path)
       text = File.read(script_path)
     else
@@ -51,10 +85,11 @@ class JobMonitoringController < ApplicationController
   end
   def kill_job
     @status = 'kill job failed'
-    if @job_id = params[:id]
-      public_dir = File.expand_path('../../../public', __FILE__)
-      @status = @@workflow_manager.kill_job(@job_id)
-      @command = "wfm_kill_job -i #{@job_id} -d #{SushiFabric::WORKFLOW_MANAGER}"
+    if @job_id = params[:id] and job = Job.find_by_id(@job_id)
+      job.status = "KILL_ME"
+      job.save
+      @status = "Killing the job (job ID: #{@job_id})"
+      @command = "scancel #{job.submit_job_id}"
     end
   end
   def multi_kill_job
@@ -64,52 +99,33 @@ class JobMonitoringController < ApplicationController
     @statuses = ''
     @commands = ''
     @job_ids.each do |job_id|
-      @statuses << @@workflow_manager.kill_job(job_id) + "\n"
-      @commands << "wfm_kill_job -i #{job_id} -d #{SushiFabric::WORKFLOW_MANAGER}\n"
+      if job = Job.find_by_id(job_id)
+        job.status = "KILL_ME"
+        job.save
+      end
+      @statuses << "Killing the job (job ID: #{job_id})" + "\n"
+      @commands << "scancel #{job.submit_job_id}\n"
     end
   end
   def resubmit_job
-    if @job_id = params[:id]
-      gstore_script_dir = if job = Job.find_by_submit_job_id(@job_id)
-                            @data_set_id = if data_set = job.data_set
-                                             data_set.id
-                                           end
-                            File.dirname(job.script_path)
-                          end
-      prev_params = {}
-      if parameters_tsv = File.join(File.dirname(gstore_script_dir), "parameters.tsv") and File.exist?(parameters_tsv)
-        File.readlines(parameters_tsv).each do |line|
-          name, value = line.chomp.split
-          prev_params[name] = value.to_s.delete('"')
-        end
-        script_content = @@workflow_manager.get_script(@job_id)
-        script_path = @@workflow_manager.get_script_path(@job_id)
-        project_number = session[:project]
-        gsub_options = []
-        gsub_options << "-c #{prev_params['cores']}" unless prev_params['cores'].to_s.empty?
-        gsub_options << "-n #{prev_params['node']}" unless prev_params['node'].to_s.empty?
-        gsub_options << "-p #{prev_params['partition']}" unless prev_params['partition'].to_s.empty?
-        gsub_options << "-r #{prev_params['ram']}" unless prev_params['ram'].to_s.empty?
-        gsub_options << "-s #{prev_params['scratch']}" unless prev_params['scratch'].to_s.empty?
-        gsub_options << "-i #{prev_params['nice']}" unless prev_params['nice'].to_s.empty?
-      end
+    if @job_id = params[:id] and job = Job.find_by_id(@job_id)
+      @data_set_id = if data_set = job.data_set
+                       data_set.id
+                     end
 
-      if script_path and current_user and script_content and project_number and gstore_script_dir and @data_set_id and File.exist?(parameters_tsv)
-        new_job_id = @@workflow_manager.start_monitoring3(script_path, script_content, current_user.login, project_number, gsub_options.join(' '), gstore_script_dir, job.next_dataset_id, SushiFabric::RAILS_HOST)
-        puts "job_id: #{new_job_id}"
-        new_job = Job.new
-        new_job.submit_job_id = new_job_id.to_i
-        new_job.script_path = script_path
-        new_job.next_dataset_id = job.next_dataset_id
-        new_job.save
-        new_job.data_set.jobs << new_job
-        new_job.data_set.save
+      file_base_name = File.basename(job.script_path)
+      submit_job_script_dir = SushiFabric::Application.config.submit_job_script_dir
+      new_stdout_path = File.join(submit_job_script_dir, file_base_name + "_o.log")
+      new_stderr_path = File.join(submit_job_script_dir, file_base_name + "_e.log")
+      job.stdout_path = new_stdout_path
+      job.stderr_path = new_stderr_path
+      job.status = "CREATED"
+      job.save
 
-        puts "RESUBMITTED"
-      else
-        #raise "SOMETHING WRONG"
-        puts "FAILED resubmission"
-      end
+      puts "RESUBMITTED"
+    else
+      #raise "SOMETHING WRONG"
+      puts "FAILED resubmission"
     end
   end
   def change_status

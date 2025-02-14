@@ -136,13 +136,11 @@ class DataSetController < ApplicationController
     data_set = if id = params[:format]
                  DataSet.find_by_id(id)
                end
-    @job_list = if job_ids = data_set.jobs.map{|job| job.submit_job_id} and
-                   project = session[:project]
-                  job_ids = job_ids.join(",")
-                  @@workflow_manager.job_list(false, session[:project], job_ids:job_ids)
+    @job_list = if data_set
+                  data_set.jobs.map{|job| [job.id, File.basename(job.stdout_path), File.basename(job.stdout_path)]}
+                else
+                  {}
                 end
-    @sushi_job_ids = Hash[*data_set.jobs.map{|job| [job.submit_job_id.to_s, job.id]}.flatten]
-    @job_list = @job_list.split(/\n/).map{|job| job.split(/,/)}
   end
   def set_runnable_apps(refresh = true)
     if @data_set = DataSet.find_by_id(params[:id]) or (@data_set_id and @data_set = DataSet.find_by_id(@data_set_id))
