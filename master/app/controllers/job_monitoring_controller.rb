@@ -50,7 +50,12 @@ class JobMonitoringController < ApplicationController
                  else
                    ""
                  end
-      [job.id, job.status.to_s, "job_script", job.start_time ? "#{start_time}/#{end_time}" : "" , job.user, project_number, job.next_dataset_id]}
+      job_script = if job.script_path
+                     File.basename(job.script_path)
+                   else
+                     ""
+                   end
+      [job.id, job.status.to_s, job_script, job.start_time ? "#{start_time}/#{end_time}" : "" , job.user, project_number, job.next_dataset_id]}
 
     @total = @job_list.length
 
@@ -77,9 +82,12 @@ class JobMonitoringController < ApplicationController
     text = 'no script found'
     if @job_id = params[:job_id] and job = Job.find_by_id(@job_id) and
       script_path = job.script_path and File.exist?(script_path)
-      text = File.read(script_path)
-    else
-      text = @@workflow_manager.get_script(params[:job_id])
+      script_text = File.read(script_path)
+      text_lines = script_text.lines
+      if text_lines.size > 1
+        text_lines.insert(1, "##{script_path}")
+        text = text_lines.join
+      end
     end
     render :plain => text
   end
