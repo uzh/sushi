@@ -113,12 +113,6 @@ class JobMonitoringController < ApplicationController
                        data_set.id
                      end
 
-      file_base_name = File.basename(job.script_path)
-      submit_job_script_dir = SushiFabric::Application.config.submit_job_script_dir
-      new_stdout_path = File.join(submit_job_script_dir, file_base_name + "_o.log")
-      new_stderr_path = File.join(submit_job_script_dir, file_base_name + "_e.log")
-      job.stdout_path = new_stdout_path
-      job.stderr_path = new_stderr_path
       job.status = "CREATED"
       job.save
 
