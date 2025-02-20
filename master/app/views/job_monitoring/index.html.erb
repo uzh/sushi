@@ -99,9 +99,9 @@ $(document).ready(function(){
         <td>
           <% if job[6] %>
             <% if @all_job_list %>
-              <%= link_to td("DataSet (p#{job[5]})"), :controller=>:data_set, :action=>:show, :id=>job[6], :project=>job[5] %>
+              <%= link_to td("#{job[7]} (p#{job[5]})"), :controller=>:data_set, :action=>:show, :id=>job[6], :project=>job[5] %>
             <% else %>
-              <%= link_to 'DataSet', "/data_set/#{job[6]}" %>
+              <%= link_to "#{job[7]}", "/data_set/#{job[6]}" %>
             <% end %>
           <% end %>
         </td>

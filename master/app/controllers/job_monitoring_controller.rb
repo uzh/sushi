@@ -5,22 +5,30 @@ class JobMonitoringController < ApplicationController
     if option && option[:all_job_list] # all projects
       configure_job_list(all_job_list: true, page_unit: 1000)
       Job.joins(data_set: :project)
+         .joins('LEFT JOIN data_sets AS next_data_set ON jobs.next_dataset_id = next_data_set.id')
+         .select('jobs.*, projects.number AS project_number, next_data_set.name AS next_dataset_name')
          .order(id: :desc)
          .limit(1000)
     elsif option && option[:project_job_list] # project specific
       configure_job_list(all_job_list: false)
       Job.joins(data_set: :project)
+         .joins('LEFT JOIN data_sets AS next_data_set ON jobs.next_dataset_id = next_data_set.id')
+         .select('jobs.*, projects.number AS project_number, next_data_set.name AS next_dataset_name')
          .where(projects: { number: project_number })
          .order(id: :desc)
          .limit(100)
     elsif session[:all_job_list] # all projects from session
       configure_job_list(all_job_list: true, page_unit: 1000)
       Job.joins(data_set: :project)
+         .joins('LEFT JOIN data_sets AS next_data_set ON jobs.next_dataset_id = next_data_set.id')
+         .select('jobs.*, projects.number AS project_number, next_data_set.name AS next_dataset_name')
          .order(id: :desc)
          .limit(1000)
     else # project specific
       configure_job_list(all_job_list: false)
       Job.joins(data_set: :project)
+         .joins('LEFT JOIN data_sets AS next_data_set ON jobs.next_dataset_id = next_data_set.id')
+         .select('jobs.*, projects.number AS project_number, next_data_set.name AS next_dataset_name')
          .where(projects: { number: project_number })
          .order(id: :desc)
          .limit(100)
@@ -55,7 +63,7 @@ class JobMonitoringController < ApplicationController
                    else
                      ""
                    end
-      [job.id, job.status.to_s, job_script, job.start_time ? "#{start_time}/#{end_time}" : "" , job.user, project_number, job.next_dataset_id]}
+      [job.id, job.status.to_s, job_script, job.start_time ? "#{start_time}/#{end_time}" : "" , job.user, job.project_number, job.next_dataset_id, job.next_dataset_name]}
 
     @total = @job_list.length
 
