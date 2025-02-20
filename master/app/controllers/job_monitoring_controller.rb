@@ -5,25 +5,25 @@ class JobMonitoringController < ApplicationController
     if option && option[:all_job_list] # all projects
       configure_job_list(all_job_list: true, page_unit: 1000)
       Job.joins(data_set: :project)
-         .where(projects: { number: project_number })
          .order(id: :desc)
-         .limit(100)
+         .limit(1000)
     elsif option && option[:project_job_list] # project specific
       configure_job_list(all_job_list: false)
       Job.joins(data_set: :project)
+         .where(projects: { number: project_number })
          .order(id: :desc)
          .limit(100)
     elsif session[:all_job_list] # all projects from session
       configure_job_list(all_job_list: true, page_unit: 1000)
       Job.joins(data_set: :project)
-         .where(projects: { number: project_number })
          .order(id: :desc)
-         .limit(100)
+         .limit(1000)
     else # project specific
       configure_job_list(all_job_list: false)
       Job.joins(data_set: :project)
          .where(projects: { number: project_number })
          .order(id: :desc)
+         .limit(100)
     end
   end
   def configure_job_list(all_job_list:, page_unit: nil)
