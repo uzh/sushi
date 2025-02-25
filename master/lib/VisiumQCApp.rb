@@ -17,7 +17,7 @@ MultiSample Quality control after SpaceRanger<br/>
     @required_columns = ['Name','Report','Slide']
     @required_params = ['name']
     @params['cores'] = '1'
-    @params['ram'] = '10'
+    @params['ram'] = '20'
     @params['scratch'] = '100'
     @params['name'] = 'VisiumQC'
     @params['specialOptions'] = ''
