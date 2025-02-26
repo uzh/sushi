@@ -75,10 +75,12 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
     report_link = File.join(report_file, '00index.html')
+    seurat_file = File.join(report_file, 'scData.qs2')
     {'Name'=>@params['name'],
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'Static Report [Link]'=>report_link,
      'Report [File]'=>report_file,
+     'SeuratObject'=>seurat_file
     }.merge(extract_columns(colnames: @inherit_columns))
   end
   def set_default_parameters
