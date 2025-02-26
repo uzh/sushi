@@ -20,7 +20,8 @@ MultiSample Quality control after SpaceRanger<br/>
     @params['ram'] = '20'
     @params['scratch'] = '100'
     @params['name'] = 'VisiumQC'
-    @params['specialOptions'] = ''
+    @params['name'] = 'VisiumQC'
+    @params['sizeFactors'] = '1,3,5,10,20,30'
     @params['mail'] = ""
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric"]
