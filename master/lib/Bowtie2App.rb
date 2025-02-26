@@ -101,7 +101,7 @@ EOS
       dataset['SecondRefCoverage [File]'] = File.join(@result_dir, "Coverage_#{@dataset['Name']}_secondRef.png")
     end
     if @params['markDuplicates']
-      dataset['DupMetrics [File]'] = File.join(@result_dir, "#{@dataset['Name']}__metrics.txt")
+      dataset['DupMetrics [File]'] = File.join(@result_dir, "#{@dataset['Name']}_metrics.txt")
     end
     dataset
   end
