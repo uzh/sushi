@@ -16,7 +16,7 @@ class ScSeuratCompareApp < SushiFabric::SushiApp
     Empirical analysis of digital gene expression data in R<br/>
 <a href='https://bioconductor.org/packages/release/bioc/html/DifferentialState.html'>DifferentialState</a><br/>
     EOS
-    @required_columns = ['Name', 'Report']
+    @required_columns = ['Name', 'Report', 'SeuratObject']
     @required_params = ['CellIdentity', 'grouping', 'sampleGroup', 'refGroup', 'pseudoBulkMode']
     # optional params
     @params['cores'] = '4'
