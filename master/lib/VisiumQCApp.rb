@@ -17,9 +17,8 @@ MultiSample Quality control after SpaceRanger<br/>
     @required_columns = ['Name','Report','Slide']
     @required_params = ['name']
     @params['cores'] = '1'
-    @params['ram'] = '20'
+    @params['ram'] = '30'
     @params['scratch'] = '100'
-    @params['name'] = 'VisiumQC'
     @params['name'] = 'VisiumQC'
     @params['sizeFactors'] = '1,3,5,10,20,30'
     @params['mail'] = ""
@@ -29,11 +28,11 @@ MultiSample Quality control after SpaceRanger<br/>
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
     {'Name'=>@params['name'],
-     'Html [File]'=>File.join(report_dir, '00index.html'),
+     'Report [File]'=>report_dir,
+     'Report [Link]'=>File.join(report_dir, '00index.html'),
      'Species'=>(dataset = @dataset.first and dataset['Species'])
     }
   end
-
   def commands
     run_RApp("EzAppVisiumQC")
   end
