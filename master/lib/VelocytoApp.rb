@@ -26,7 +26,7 @@ This wrapper runs <a href='http://velocyto.org/',>velocyto</a> in Single-library
     @params['cmdOptions', 'description'] = 'specify the commandline options for Velocyto  do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Dev/R", "Dev/Python/3.8.3"]
+    @modules = ["Dev/R", "Dev/Python/3.11.5_dev", "Tools/samtools"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
