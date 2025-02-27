@@ -455,31 +455,24 @@ class DataSetController < ApplicationController
     unless @project
       @project = Project.find_by_number(session[:project].to_i)
     end
-    root = []
-    project_dataset_ids = Hash[*(@project.data_sets.map{|data_set| [data_set.id, true]}.flatten)]
-    @project.data_sets.each do |data_set|
-      node = {"id" => data_set.id,
-              "text" => data_set.data_sets.length.to_s+" "+data_set.name+" <small><font color='gray'>"+data_set.comment.to_s+"</font></small>",
-              "a_attr" => {"href"=>"/data_set/p#{@project.number}/#{data_set.id}"}
-              }
-      if parent = data_set.data_set and project_dataset_ids[parent.id]
-        node["parent"] = parent.id
-      else
-        node["parent"] = "#"
-      end
-      root << node
-    end
-    json = root.sort_by{|node| node["id"]}.reverse.to_json
-    @@workflow_manager.save_dataset_tree(@project.number, json)
-    json
-  end
-  def whole_treeviews
-    @project = Project.find_by_number(session[:project].to_i)
-    unless json = @@workflow_manager.load_dataset_tree(@project.number)
-      json = make_whole_tree
+
+    project_dataset_ids = @project.data_sets.pluck(:id).index_with(true)
+    node_info_array = @project.data_sets.includes(:data_sets).map do |data_set|
+      [data_set.id, data_set.name, data_set.comment, data_set.parent_id, data_set.data_sets.length]
     end
 
-    render :json => json
+    root = node_info_array.map do |node_info|
+         {
+           "id" => node_info[0],
+           "text" => "#{node_info[4]} #{node_info[1]} <small><font color='gray'>#{node_info[2]}</font></small>",
+           "a_attr" => { "href" => "/data_set/p#{@project.number}/#{node_info[0]}" },
+           "parent" => (node_info[3] && project_dataset_ids[node_info[3]] ? node_info[3] : "#")
+         }
+    end
+    json = root.sort_by{|node| node["id"]}.reverse.to_json
+  end
+  def whole_treeviews
+    render :json => make_whole_tree
   end
   def import_from_gstore
     params[:project] = session[:project]
