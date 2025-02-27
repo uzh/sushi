@@ -457,17 +457,19 @@ class DataSetController < ApplicationController
     end
 
     project_dataset_ids = @project.data_sets.pluck(:id).index_with(true)
-    node_info_array = @project.data_sets.includes(:data_sets).map do |data_set|
+    node_infos = @project.data_sets.includes(:data_sets).map do |data_set|
       [data_set.id, data_set.name, data_set.comment, data_set.parent_id, data_set.data_sets.length]
     end
 
-    root = node_info_array.map do |node_info|
-         {
-           "id" => node_info[0],
-           "text" => "#{node_info[4]} #{node_info[1]} <small><font color='gray'>#{node_info[2]}</font></small>",
-           "a_attr" => { "href" => "/data_set/p#{@project.number}/#{node_info[0]}" },
-           "parent" => (node_info[3] && project_dataset_ids[node_info[3]] ? node_info[3] : "#")
-         }
+    project_number = @project.number
+    root = node_infos.map do |node_info|
+      data_set_id, name, comment, parent_id, num_children = node_info
+      {
+        "id" => data_set_id,
+        "text" => "#{num_children} #{name} <small><font color='gray'>#{comment}</font></small>",
+        "a_attr" => { "href" => "/data_set/p#{project_number}/#{data_set_id}" },
+        "parent" => (parent_id && project_dataset_ids[parent_id] ? parent_id : "#")
+      }
     end
     json = root.sort_by{|node| node["id"]}.reverse.to_json
   end
