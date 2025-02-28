@@ -10,9 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_16_090858) do
-
-  create_table "data_sets", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+ActiveRecord::Schema[7.0].define(version: 2025_02_14_143735) do
+  create_table "data_sets", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
     t.integer "parent_id"
     t.string "name"
@@ -36,30 +35,38 @@ ActiveRecord::Schema.define(version: 2023_05_16_090858) do
     t.index ["order_id"], name: "index_data_sets_on_order_id"
   end
 
-  create_table "jobs", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "jobs", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "submit_job_id"
     t.integer "input_dataset_id"
     t.integer "next_dataset_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "script_path"
+    t.string "stdout_path"
+    t.string "stderr_path"
+    t.text "submit_command"
+    t.string "status"
+    t.string "user"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.index ["status"], name: "index_jobs_on_status"
   end
 
-  create_table "projects", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "projects", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "data_set_tree", size: :medium
   end
 
-  create_table "samples", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "samples", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.text "key_value"
     t.integer "data_set_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "sushi_applications", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "sushi_applications", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "class_name"
     t.string "analysis_category"
     t.text "required_columns"
@@ -70,7 +77,7 @@ ActiveRecord::Schema.define(version: 2023_05_16_090858) do
     t.boolean "employee"
   end
 
-  create_table "users", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "users", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "sign_in_count", default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
