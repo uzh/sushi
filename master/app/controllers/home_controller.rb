@@ -68,8 +68,22 @@ class HomeController < ApplicationController
       end
       @files = @files[start..last]
       @fgcz = SushiFabric::Application.config.fgcz?
+
       if @fgcz and !@files
-        redirect_to "https://fgcz-gstore.uzh.ch/projects/#{@path}.#{params[:format]}"
+        file_ext = params[:format]
+        file_path = "#{@path}.#{file_ext}"
+        file_full_path = File.join(SushiFabric::GSTORE_DIR, file_path)
+
+        case file_ext
+        when /gz$|bam$/
+          redirect_to "https://fgcz-gstore.uzh.ch/projects/#{file_path}"
+        when /html$/
+          send_file file_full_path, disposition: 'inline', type: 'text/html'
+        when /log$|tsv$|txt$|sh$/
+          send_file file_full_path, disposition: 'inline', type: 'text/plain'
+        else
+          send_file file_full_path, disposition: 'inline'
+        end
       end
     end
   end
