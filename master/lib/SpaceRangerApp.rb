@@ -42,13 +42,13 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     @params['controlSeqs', 'description'] = 'The extra control sequences (such as spikein sequences) available in https://fgcz-gstore.uzh.ch/reference/controlSeqs.fa'
     @params['secondRef'] = ''
     @params['secondRef', 'description'] = 'full path to fasta file with e.g. viralGenes'
-    @params['keepBam'] = true
-    @params['keepBam', 'description'] = 'Keep bam file produced by CellRanger? Usually it is not neccessary for downstream analyses'
+    @params['keepAlignment'] = true
+    @params['keepAlignment', 'description'] = 'Keep bam/cram file produced by SpaceRanger? Usually it is not neccessary for downstream analyses'
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify the commandline options for SpaceRanger; do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['SpaceRangerVersion'] = ["Aligner/SpaceRanger/3.1.2","Aligner/SpaceRanger/3.0.1"]
+    @params['SpaceRangerVersion'] = ["Aligner/SpaceRanger/3.1.3","Aligner/SpaceRanger/3.1.2","Aligner/SpaceRanger/3.0.1"]
     @modules = ["Dev/R", "Aligner/CellRanger", "Tools/samtools"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
@@ -69,6 +69,9 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
         'Read Count'=>@dataset['Read Count'],
         'Count [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.txt")        
       }.merge(extract_columns(@inherit_tags))
+   if @params['keepAlignment']
+       dataset['AlignmentFile [Link]'] = File.join(report_dir, 'possorted_genome_bam.cram')
+    end    
     dataset
   end
   def commands
