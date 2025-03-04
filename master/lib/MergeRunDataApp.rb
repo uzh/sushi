@@ -30,7 +30,7 @@ Merging fastq files from two illumina runs by name <br /><br />
     @params['paired'] = false
     @params['mail'] = ''
     
-    @modules = ["Dev/R"]
+    @modules = ["Dev/R", "Dev/Python"]
     @child = false # child flag: true means that the next dataset is a child dataset
     @queue = "heavy"
   end
