@@ -31,7 +31,7 @@ EOS
         @params['projectID'] = ''
         @params['cmdOptions'] = ""
         @params['mail'] = ""
-        @modules = ["Dev/R"]
+        @modules = ["Dev/R", "Dev/Python"]
   end
   def set_default_parameters
     @params['projectID'] = @dataset[0]['projectID']
