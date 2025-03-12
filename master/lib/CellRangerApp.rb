@@ -41,8 +41,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
     @params['runVeloCyto', 'description'] = 'generate loom file by velocyto?'
     @params['bamStats'] = false
     @params['bamStats', 'description'] = 'Compute stats per cell from the bam file?'
-    @params['keepBam'] = true
-    @params['keepBam', 'description'] = 'Keep bam file produced by CellRanger? Usually it is not neccessary for downstream analyses'
+    @params['keepAlignment'] = true
+    @params['keepAlignment', 'description'] = 'Keep cram/bam file produced by CellRanger? Usually it is not neccessary for downstream analyses'
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify the commandline options for CellRanger (e.g. --include-introns for single nuclei data); do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
@@ -81,6 +81,9 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expr
         'UnfilteredCountMatrix [Link]'=>File.join(report_dir, 'raw_feature_bc_matrix'),
         'Read Count'=>@dataset['Read Count']
       }
+      if @params['keepAlignment']
+       dataset['AlignmentFile [Link]'] = File.join(report_dir, 'possorted_genome_bam.cram')
+      end
     end
     dataset.merge(extract_columns(@inherit_tags))
   end
