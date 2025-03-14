@@ -13,7 +13,7 @@ class VelocytoApp <  SushiFabric::SushiApp
     @description =<<-EOS
 This wrapper runs <a href='http://velocyto.org/',>velocyto</a> in Single-library analysis mode.
     EOS
-    @required_columns = ['Name', 'ResultDir']
+    @required_columns = ['Name', 'ResultDir', 'AlignmentFile']
     @required_params = ['name', 'refBuild']
     @params['cores'] = '8'
     @params['ram'] = '30'
