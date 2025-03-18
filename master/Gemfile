@@ -65,7 +65,7 @@ group :test do
   gem 'simplecov-rcov'
 end
 
-gem 'sushi_fabric'
+gem 'sushi_fabric', path: 'lib/sushi_fabric'
 gem "chartkick", ">= 3.4.0"
 gem 'mysql2', '>= 0.5.5'
 gem 'yaml_db'
