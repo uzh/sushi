@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250306-144345'
+# Version = '20250318-111206'
 
 require 'csv'
 require 'fileutils'
@@ -10,9 +10,22 @@ gem 'rails'
 #require 'rails/all'
 require 'rails'
 require 'google-analytics-rails'
+require 'active_record'
+require 'active_job'
 
 module SushiFabric
   class Application < Rails::Application
+    config.load_defaults 7.0 # for Rails 7
+    # After applying Rails default settings, forcefully define action_controller
+    unless config.respond_to?(:action_controller)
+      config.define_singleton_method(:action_controller) do
+        @action_controller ||= ActiveSupport::OrderedOptions.new
+      end
+    end
+
+    # Forcefully set `config.action_controller` if it is undefined
+    config.action_controller ||= ActiveSupport::OrderedOptions.new
+
     # default parameters
     default_root = Rails.root||Dir.pwd
     config.workflow_manager = 'druby://localhost:12345'
@@ -29,6 +42,7 @@ module SushiFabric
   mode = ENV['RAILS_ENV']||'production'
   config_file = File.join(Rails.root, 'config/environments', mode + ".rb")
   if File.exist?(config_file)
+    SushiFabric::Application.config.action_controller ||= ActiveSupport::OrderedOptions.new
     load config_file
   else
     FileUtils.mkdir_p File.dirname(config_file)
@@ -37,6 +51,8 @@ module SushiFabric
       out.print <<-EOF
 module SushiFabric
   class Application < Rails::Application
+    config.load_defaults 7.0 # for Rails 7
+    config.action_controller ||= ActiveSupport::OrderedOptions.new
     # default parameters
     config.workflow_manager = 'druby://localhost:12345'
     config.gstore_dir = File.join(#{default_root}, 'public/gstore/projects')
