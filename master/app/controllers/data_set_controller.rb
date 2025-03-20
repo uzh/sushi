@@ -137,7 +137,7 @@ class DataSetController < ApplicationController
                  DataSet.find_by_id(id)
                end
     @job_list = if data_set
-                  data_set.jobs.map{|job| [job.id, File.basename(job.stdout_path), File.basename(job.stdout_path)]}
+                  data_set.jobs.map{|job| [job.id, File.basename(job.script_path), File.basename(job.stdout_path)]}
                 else
                   {}
                 end
