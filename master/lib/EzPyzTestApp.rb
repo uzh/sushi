@@ -10,7 +10,7 @@ class EzPyzTestApp <  SushiFabric::SushiApp
     super
     @name = 'EzPyzTestApp'
     @params['process_mode'] = 'DATASET'
-    @analysis_category = 'Spatial'
+    @analysis_category = 'Testing'
     @description =<<-EOS
 MultiSample Quality control after SpaceRanger<br/>
     EOS
@@ -34,6 +34,6 @@ MultiSample Quality control after SpaceRanger<br/>
     }
   end
   def commands
-    run_RApp("EzAppVisiumQC")
+    run_PyApp("EzPyzTestApp")
   end
 end
