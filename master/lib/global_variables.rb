@@ -223,4 +223,51 @@ module GlobalVariables
     command
   end
 
+  def run_PyApp(app_name = self.class.to_s[0].downcase+self.class.to_s[1,20], lib_path: nil, conda_env: nil)
+    command = ''
+    if conda_env
+      command << ". '/usr/local/ngseq/miniforge3/etc/profile.d/conda.sh'\n"
+      command << "conda activate #{conda_env}\n"
+    end
+    command << "python3 << EOT\n"
+    command << "EZ_GLOBAL_VARIABLES = '#{EZ_GLOBAL_VARIABLES}'\n"
+
+    if lib_path
+      command << "import sys\n"
+      command << "sys.path.append('#{lib_path}')\n"
+    end
+        
+    command << "import ezpyz\n"
+
+    command << "param = {}\n"
+    param = @params
+    param.keys.each do |key|
+      command << "param['#{key}'] = '#{param[key]}'\n"
+    end
+    command << "param['dataRoot'] = '#{@gstore_dir}'\n"
+    command << "param['resultDir'] = '#{@result_dir}'\n"
+    command << "param['isLastJob'] = #{@last_job.to_s.capitalize}\n"
+    command << "output = {}\n"
+    output = next_dataset
+    output.keys.each do |key|
+      command << "output['#{key}'] = '#{output[key]}'\n"
+    end
+    if @params['process_mode'] == 'DATASET'
+      command <<  "input = '#{@input_dataset_tsv_path}'\n"
+    else # sample mode
+      command << "input = {}\n" 
+      input = @dataset
+      input.keys.each do |key|
+        command << "input['#{key}'] = '#{input[key]}'\n" 
+      end
+    end
+    command<< "from ezpyz import EzAppTest, EzParam\n" #these are test sepcific and must be changed -RDG
+    command<< "app = EzAppTest()\n" #these are test sepcific and must be changed -RDG
+    command<< "params = EzParam()\n"
+    command<< "print(app.run(None, None, params))\n"
+    #command<<  "#{app_name}\\$new()\\$run(input=input, output=output, param=param)\n"
+    command<<  "EOT\n"
+    command
+  end
+
 end
