@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250318-111206'
+# Version = '20250320-152559'
 
 require 'csv'
 require 'fileutils'
@@ -724,7 +724,7 @@ rm -rf #{@scratch_dir} || exit 1
       if selected_samples[@dataset['Name']]
         sample_name = @dataset['Name']||@dataset.first
         @job_script = if @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
-                        File.join(@job_script_dir, @analysis_category + '_' + sample_name) + '_' + dataset.name.gsub(/\s+/,'_') + '.sh'
+                        File.join(@job_script_dir, @analysis_category + '_' + sample_name) + '_' + dataset.name.gsub(/\s+/,'_') + "_" + @dataset_sushi_id.to_s + '.sh'
                       else
                         File.join(@job_script_dir, @analysis_category + '_' + sample_name) + '.sh'
                       end
@@ -749,7 +749,7 @@ rm -rf #{@scratch_dir} || exit 1
       end
     end
     @job_script = if @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
-                    File.join(@job_script_dir, @analysis_category + '_' + dataset.name.gsub(/[\s+,\/]/,'_') + '.sh')
+                    File.join(@job_script_dir, @analysis_category + '_' + dataset.name.gsub(/[\s+,\/]/,'_') + "_" + @dataset_sushi_id.to_s + '.sh')
                   else 
                     File.join(@job_script_dir, @analysis_category + '_' + 'job_script.sh')
                   end
