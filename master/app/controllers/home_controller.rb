@@ -88,47 +88,36 @@ class HomeController < ApplicationController
     end
   end
   def sushi_rank
-    count_name = {}
-    first_date = []
-    this_month = Time.now.to_s.split.first.split(/-/)[0,2].join('-')
-    monthly_mvp = {}
-    @count_month = {}
-    @count_users = {}
-    @total_users = []
-    job_list = @@workflow_manager.job_list(false, nil)
-    job_list.split(/\n/).each do |line|
-      # e.g. "564201,fail,QC_sample_dataset.sh,2013-07-12 17:38:21,masaomi,1001\n"
-      id, stat, script, date, name, project = line.chomp.split(/,/)
-      count_name[name]||=0
-      count_name[name]+=1
-      date = date.split.first.split(/-/)[0,2].join('-')
-      if date == this_month
-        monthly_mvp[name]||=0
-        monthly_mvp[name]+=1
-      end
-      @count_month[date]||=0
-      @count_month[date]+=1
-      first_date << date
 
-      @count_users[date]||=0
-      if count_name[name] == 1
-        @count_users[date]+=1
-      end
-    end
-    @count_month = @count_month.to_a.sort
-    @count_users = @count_users.to_a.sort
+    start_of_month = Time.current.beginning_of_month
+    end_of_month = Time.current.end_of_month
+    @rank = Job.where.not(user: nil).group(:user).count.sort_by{|name, count| -count}
+    @count_month = Job.where.not(user: nil)
+                     .group("DATE_FORMAT(created_at, '%Y-%m')")
+                     .count
+                     .sort
+    @monthly_mvp = Job.where.not(user: nil)
+                     .where(created_at: start_of_month..end_of_month)
+                     .group(:user)
+                     .count
+    @mvp = unless @monthly_mvp.empty?
+             @monthly_mvp.sort_by{|name, count| count}.reverse.first.first
+           else
+             {}
+           end
+    @first_date = @count_month.first.first
+    subquery = Job.select("user, MIN(created_at) AS first_job_date")
+                 .where.not(user: nil)
+                 .group(:user)
+    @count_users = Job.from(subquery, :first_jobs)
+                     .group("DATE_FORMAT(first_jobs.first_job_date, '%Y-%m')")
+                     .count
+                     .sort
+    @total_users = []
     total_users = 0
     @count_users.each do |date,users|
       total_users += users.to_i
       @total_users << [date, total_users]
     end
-    @rank = count_name.sort_by{|name, count| count}.reverse
-    @monthly_mvp = monthly_mvp
-    @mvp = unless @monthly_mvp.empty?
-             monthly_mvp.sort_by{|name, count| count}.reverse.first.first
-           else
-             {}
-           end
-    @first_date = first_date.sort.first.split.first
   end
 end
