@@ -94,7 +94,9 @@ SushiFabric::Application.configure do
     #config.rails_host = "https://fgcz-course1.bfabric.org"  # course1
     #config.rails_host = "https://fgcz-course2.bfabric.org"  # course2
     #config.rails_host = "http://fgcz-h-037.fgcz-net.unizh.ch:4000"  # test
-    config.copy_command = "g-req copy"
+    #config.sushi_server_class = "SushiFabric::ProdSushi"
+    #config.sushi_server_class = "SushiFabric::DemoSushi"
+    #config.sushi_server_class = "SushiFabric::CourseSushi"
     config.sushi_server_class = "SushiFabric::TestSushi"
   end
 
