@@ -6,8 +6,7 @@ class SubmitJob < ApplicationJob
     require class_name
     sushi_app = eval(class_name).new
     sushi_app.logger = logger
-    workflow_manager = DRbObject.new_with_uri(SushiFabric::WORKFLOW_MANAGER)
-    sushi_app.workflow_manager = workflow_manager
+    sushi_app.sushi_server = eval(SushiFabric::Application.config.sushi_server_class).new
     sushi_app.user = params[:user]
     sushi_app.next_dataset_name = params[:next_dataset_name]
     sushi_app.next_dataset_comment = params[:next_dataset_comment]

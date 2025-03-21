@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250320-152559'
+# Version = '20250321-114904'
 
 require 'csv'
 require 'fileutils'
@@ -28,7 +28,7 @@ module SushiFabric
 
     # default parameters
     default_root = Rails.root||Dir.pwd
-    config.workflow_manager = 'druby://localhost:12345'
+    #config.workflow_manager = 'druby://localhost:12345'
     config.gstore_dir = File.join(default_root, 'public/gstore/projects')
     config.sushi_app_dir = default_root
     config.scratch_dir = '/tmp/scratch'
@@ -36,6 +36,7 @@ module SushiFabric
     config.course_mode = nil
     config.rails_host = nil
     config.submit_job_script_dir = nil
+    config.sushi_server_class = nil
   end
 
   # load custmized parameters if there is
@@ -54,7 +55,7 @@ module SushiFabric
     config.load_defaults 7.0 # for Rails 7
     config.action_controller ||= ActiveSupport::OrderedOptions.new
     # default parameters
-    config.workflow_manager = 'druby://localhost:12345'
+    #config.workflow_manager = 'druby://localhost:12345'
     config.gstore_dir = File.join(#{default_root}, 'public/gstore/projects')
     config.sushi_app_dir = #{default_root}
     config.scratch_dir = '/tmp/scratch'
@@ -62,6 +63,7 @@ module SushiFabric
     config.course_mode = nil
     config.rails_host = nil
     config.submit_job_script_dir = nil
+    config.sushi_server_class = nil
   end
 end
       EOF
@@ -69,7 +71,8 @@ end
   end
 
   config = SushiFabric::Application.config
-  WORKFLOW_MANAGER = config.workflow_manager
+  #WORKFLOW_MANAGER = config.workflow_manager
+  SUSHI_SERVER = config.sushi_server_class
   GSTORE_DIR = config.gstore_dir
   SUSHI_APP_DIR = config.sushi_app_dir
   SCRATCH_DIR = config.scratch_dir
@@ -243,7 +246,8 @@ class SushiApp
   attr_accessor :next_dataset_name
   attr_accessor :dataset_name
   attr_accessor :next_dataset_comment
-  attr_accessor :workflow_manager
+  #attr_accessor :workflow_manager
+  attr_accessor :sushi_server
   attr_accessor :current_user
   attr_accessor :logger
   attr_accessor :off_bfabric_registration
@@ -637,11 +641,11 @@ rm -rf #{@scratch_dir} || exit 1
     file_path
   end
   def copy_commands(org_dir, dest_parent_dir, now=nil, queue="light")
-    @workflow_manager||=DRbObject.new_with_uri(WORKFLOW_MANAGER)
+    @sushi_server||=eval(SushiFabric::Application.config.sushi_server_class).new
     com = ''
     cnt_retry = 0
     begin
-      com = @workflow_manager.copy_commands(org_dir, dest_parent_dir, now, queue)
+      com = @sushi_server.copy_commands(org_dir, dest_parent_dir, now, queue)
     rescue => e
       time = Time.now.strftime("[%Y.%m.%d %H:%M:%S]")
       @logger.error("*"*50)
@@ -693,14 +697,14 @@ rm -rf #{@scratch_dir} || exit 1
     command = "rm -rf #{@scratch_result_dir}"
     `#{command}`
   end
-  def cluster_nodes
-    @workflow_manager||=DRbObject.new_with_uri(WORKFLOW_MANAGER)
-    @workflow_manager.cluster_nodes
-  end
-  def default_node
-    @workflow_manager||=DRbObject.new_with_uri(WORKFLOW_MANAGER)
-    @workflow_manager.default_node
-  end
+  #def cluster_nodes
+  #  @workflow_manager||=DRbObject.new_with_uri(WORKFLOW_MANAGER)
+  #  @workflow_manager.cluster_nodes
+  #end
+  #def default_node
+  #  @workflow_manager||=DRbObject.new_with_uri(WORKFLOW_MANAGER)
+  #  @workflow_manager.default_node
+  #end
 
   def make_job_script(append = false)
     @out = if append
@@ -1175,19 +1179,21 @@ rm -rf #{@scratch_dir} || exit 1
       end
     end
 
-    print 'check workflow manager: '
+    print 'check sushi server instance: '
     begin
-      @workflow_manager||=DRbObject.new_with_uri(WORKFLOW_MANAGER)
-      hello = @workflow_manager.hello
+      #@workflow_manager||=DRbObject.new_with_uri(WORKFLOW_MANAGER)
+      @sushi_server||=eval(SushiFabric::Application.config.sushi_server_class).new
+      hello = @sushi_server.hello
     rescue
     end
     unless hello =~ /hello/
-      err_msg = "\e[31mFAILURE\e[0m: workflow_manager does not reply. check if workflow_manager is working"
+      err_msg = "\e[31mFAILURE\e[0m: sushi server does not reply. check if sushi server is working"
       puts err_msg
       err_msgs.concat([err_msg])
       failures += 1
     else
-      puts "\e[32mPASSED\e[0m: #{WORKFLOW_MANAGER}"
+      #puts "\e[32mPASSED\e[0m: #{WORKFLOW_MANAGER}"
+      puts "\e[32mPASSED\e[0m: #{SUSHI_SERVER}"
     end
 
     if failures > 0
@@ -1202,5 +1208,45 @@ rm -rf #{@scratch_dir} || exit 1
   end
 end
 
-
+class SushiServerClass
+    def copy_commands(org_dir, dest_parent_dir, now=nil, queue="light")
+    end
+    def delete_command(target)
+    end
+    def hello
+      "hello"
+    end
 end
+
+class DemoSushi < SushiServerClass
+  def copy_commands(org_dir, dest_parent_dir, now=nil, queue="light")
+    commands = ["rsync -r #{org_dir} #{dest_parent_dir}/"]
+  end
+  def delete_command(target)
+    command = "rm -rf #{target}"
+  end
+end
+
+CourseSushi = DemoSushi
+
+class ProdSushi < SushiServerClass
+  def copy_commands(org_dir, dest_parent_dir, now=nil, queue="light")
+    commands = if now == "force"
+                 target_file = File.join(dest_parent_dir, File.basename(org_dir))
+                 ["g-req copynow -f #{org_dir} #{dest_parent_dir}"]
+               elsif now
+                 ["g-req copynow #{org_dir} #{dest_parent_dir}"]
+               elsif queue.nil? or queue == "light"
+                 ["g-req -w copy #{org_dir} #{dest_parent_dir}"]
+               else
+                 ["g-req -w copy -f heavy #{org_dir} #{dest_parent_dir}"]
+               end
+  end
+  def delete_command(target)
+    command = "g-req remove #{target}"
+  end
+end
+
+TestSushi = ProdSushi
+
+end # SushiFabric

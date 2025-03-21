@@ -103,7 +103,7 @@ class RunApplicationController < ApplicationController
     class_name = params[:app]
     require class_name
     @sushi_app = eval(class_name).new
-    @sushi_app.workflow_manager = @@workflow_manager
+    @sushi_app.sushi_server = @@sushi_server
     resubmit_data_set_id = nil
     data_set_id = if data_set = params[:data_set] # usual case
                     data_set[:id]

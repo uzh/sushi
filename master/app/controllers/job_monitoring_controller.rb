@@ -139,17 +139,17 @@ class JobMonitoringController < ApplicationController
     end
   end
   def change_status
-    if @job_id = params[:id]
-      public_dir = File.expand_path('../../../public', __FILE__)
-      status = @@workflow_manager.status(@job_id)
-      if status and @status = status.split(',').first
-        if @status == 'success'
-          @@workflow_manager.status(@job_id, "fail")
-        elsif @status == 'fail'
-          @@workflow_manager.status(@job_id, "success")
-        end
-      end
-    end
+  #  if @job_id = params[:id]
+  #    public_dir = File.expand_path('../../../public', __FILE__)
+  #    status = @@workflow_manager.status(@job_id)
+  #    if status and @status = status.split(',').first
+  #      if @status == 'success'
+  #        @@workflow_manager.status(@job_id, "fail")
+  #      elsif @status == 'fail'
+  #        @@workflow_manager.status(@job_id, "success")
+  #      end
+  #    end
+  #  end
     redirect_to :controller => "job_monitoring"
   end
 end

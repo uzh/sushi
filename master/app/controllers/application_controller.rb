@@ -31,7 +31,9 @@ class ApplicationController < ActionController::Base
   if SushiFabric::Application.config.fgcz?
     before_action :authenticate_user!
   end
-  @@workflow_manager = DRbObject.new_with_uri(SushiFabric::WORKFLOW_MANAGER)
+  #@@workflow_manager = DRbObject.new_with_uri(SushiFabric::WORKFLOW_MANAGER)
+  #@@workflow_manager = SushiFabric::TestSushi.new
+  @@sushi_server = eval(SushiFabric::Application.config.sushi_server_class).new
 
   def employee?
     view_context.employee?
@@ -152,7 +154,7 @@ class ApplicationController < ActionController::Base
         target_dir = File.join(SushiFabric::GSTORE_DIR, dataset_path)
         target_dataset_tsv = File.join(target_dir, data_set_file_name)
         #print File.read(out_tsv)
-        commands = @@workflow_manager.copy_commands(out_tsv, target_dir, "force")
+        commands = @@sushi_server.copy_commands(out_tsv, target_dir, "force")
         commands.each do |command|
           #puts command
           `#{command}`
