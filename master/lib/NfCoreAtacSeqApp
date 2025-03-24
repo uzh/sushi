@@ -1,0 +1,56 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+require 'sushi_fabric'
+require_relative 'global_variables'
+include GlobalVariables
+
+class NfCoreAtacSeqApp <  SushiFabric::SushiApp
+  def initialize
+    super
+    @name = 'NfCoreAtacSeqApp'
+    @params['process_mode'] = 'DATASET'
+    @analysis_category = 'ATAC'
+    @description =<<-EOS
+    A ATAC-seq processing pipeline from NF-Core. <br/>
+   <a href='https://nf-co.re/atacseq</a>
+    
+EOS
+    @required_columns = ['Name','Read1','Read2','Species']
+    @required_params = ['name', 'paired']
+    @params['cores'] = '8'
+    @params['ram'] = '40'
+    @params['scratch'] = '200'
+    @params['paired'] = true
+    @params['refBuild'] = ref_selector
+    @params['refFeatureFile'] = 'genes.gtf'
+    @params['readLength'] = ['150', '100', '50']
+    @params['peakStyle'] = ['broad', 'narrow']
+    @params['varStabilizationMethod'] = ['vst', 'rlogTransf'] 
+    @params['name'] = 'NfCoreAtacSeqApp'
+    @params['cmdOptions'] = ""
+    @params['mail'] = ""
+    @modules = ["Dev/jdk"]
+  end
+ def set_default_parameters
+   @params['refBuild'] = @dataset[0]['refBuild']
+    if dataset_has_column?('refFeatureFile')
+      @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
+    end
+  end
+  def next_dataset
+     report_file = File.join(@result_dir, @params['name'])
+     {'Name'=>@params['name'],
+     'Species'=>(dataset = @dataset.first and dataset['Species']),
+     'refBuild'=>@params['refBuild'],
+     'Report [File]'=>report_file,
+    }.merge(extract_columns(colnames: @inherit_columns))
+  end
+  def commands
+    run_RApp('EzAppNfCoreAtacSeq')
+  end
+end
+
+if __FILE__ == $0
+  
+end
