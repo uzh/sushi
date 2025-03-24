@@ -223,7 +223,7 @@ module GlobalVariables
     command
   end
 
-  def run_PyApp(app_name = self.class.to_s[0].downcase+self.class.to_s[1,20], lib_path: nil, conda_env: nil)
+  def run_PyApp(app_name = self.class.to_s.downcase, lib_path: nil, conda_env: nil)
     command = ''
     if conda_env
       command << ". '/usr/local/ngseq/miniforge3/etc/profile.d/conda.sh'\n"
@@ -237,7 +237,7 @@ module GlobalVariables
       command << "sys.path.append('#{lib_path}')\n"
     end
         
-    command << "import ezpyz\n"
+    command << "from ezpyz_#{app_name.downcase}.app import EzApp#{app_name.capitalize}\n"
 
     command << "param = {}\n"
     param = @params
@@ -261,8 +261,8 @@ module GlobalVariables
         command << "input['#{key}'] = '#{input[key]}'\n" 
       end
     end
-    command<< "from ezpyz import EzAppTest, EzParam\n" #these are test sepcific and must be changed -RDG
-    command<< "app = EzAppTest()\n" #these are test sepcific and must be changed -RDG
+    command<< "from ezpyz.param import EzParam\n" #these are test sepcific and must be changed -RDG
+    command<< "app = EzApp#{app_name.capitalize}()\n" #these are test sepcific and must be changed -RDG
     command<< "params = EzParam()\n"
     command<< "print(app.run(None, None, params))\n"
     #command<<  "#{app_name}\\$new()\\$run(input=input, output=output, param=param)\n"
