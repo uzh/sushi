@@ -13,7 +13,7 @@ class NfCoreAtacSeqApp <  SushiFabric::SushiApp
     @analysis_category = 'ATAC'
     @description =<<-EOS
     A ATAC-seq processing pipeline from NF-Core. <br/>
-   <a href='https://nf-co.re/atacseq</a>    
+   <a href='https://nf-co.re/atacseq'>NF-Core ATAC-seq</a>
 EOS
     @required_columns = ['Name','Read1','Read2','Species']
     @required_params = ['refBuild','readLength', 'peakStyle']
@@ -32,9 +32,8 @@ EOS
     @modules = ["Dev/jdk"]
   end
  def set_default_parameters
-   @params['refBuild'] = @dataset[0]['refBuild']
-    if dataset_has_column?('refFeatureFile')
-      @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
+    if @params['paired']
+      @required_columns<<  'Read2'
     end
   end
   def next_dataset
@@ -42,7 +41,7 @@ EOS
      {'Name'=>@params['name'],
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
-     'Report [File]'=>report_file,
+     'Report [File]'=>report_file
     }.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
