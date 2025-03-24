@@ -13,11 +13,10 @@ class NfCoreAtacSeqApp <  SushiFabric::SushiApp
     @analysis_category = 'ATAC'
     @description =<<-EOS
     A ATAC-seq processing pipeline from NF-Core. <br/>
-   <a href='https://nf-co.re/atacseq</a>
-    
+   <a href='https://nf-co.re/atacseq</a>    
 EOS
     @required_columns = ['Name','Read1','Read2','Species']
-    @required_params = ['name', 'paired']
+    @required_params = ['refBuild','readLength', 'peakStyle']
     @params['cores'] = '8'
     @params['ram'] = '40'
     @params['scratch'] = '200'
