@@ -8,7 +8,7 @@ include GlobalVariables
 class NfCoreAtacSeqApp <  SushiFabric::SushiApp
   def initialize
     super
-    @name = 'NfCoreAtacSeqApp'
+    @name = 'NfCoreAtacSeq'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'ATAC'
     @description =<<-EOS
@@ -30,6 +30,7 @@ EOS
     @params['cmdOptions'] = ""
     @params['mail'] = ""
     @modules = ["Dev/jdk"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
  def set_default_parameters
     if @params['paired']
@@ -42,13 +43,9 @@ EOS
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
      'Report [File]'=>report_file
-    }.merge(extract_columns(colnames: @inherit_columns))
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp('EzAppNfCoreAtacSeq')
   end
-end
-
-if __FILE__ == $0
-  
 end
