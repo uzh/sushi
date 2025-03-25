@@ -26,11 +26,10 @@ EOS
     @params['readLength'] = ['150', '100', '50']
     @params['peakStyle'] = ['broad', 'narrow']
     @params['varStabilizationMethod'] = ['vst', 'rlogTransf'] 
-    @params['name'] = 'NfCoreAtacSeqApp'
+    @params['name'] = 'NfCoreAtacSeq'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
     @modules = ["Dev/jdk"]
-    @inherit_tags = ["Factor", "B-Fabric"]
   end
  def set_default_parameters
     if @params['paired']
@@ -38,12 +37,14 @@ EOS
     end
   end
   def next_dataset
-     report_file = File.join(@result_dir, @params['name'])
+     report_file = File.join(@result_dir, "#{@params['name']}_results")
+     report_link = File.join(@result_dir, "#{@params['name']}_results", "#{@params['peakStyle']}_peak", "multiqc_report.html")
      {'Name'=>@params['name'],
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
-     'Report [File]'=>report_file
-    }.merge(extract_columns(@inherit_tags))
+     'Result [File]'=>report_file,
+     'Report [Link]'=>report_link  
+    }
   end
   def commands
     run_RApp('EzAppNfCoreAtacSeq')
