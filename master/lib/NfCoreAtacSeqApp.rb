@@ -18,7 +18,7 @@ EOS
     @required_columns = ['Name','Read1','Read2','Species']
     @required_params = ['refBuild','readLength', 'peakStyle']
     @params['cores'] = '8'
-    @params['ram'] = '40'
+    @params['ram'] = '100'
     @params['scratch'] = '200'
     @params['paired'] = true
     @params['refBuild'] = ref_selector
