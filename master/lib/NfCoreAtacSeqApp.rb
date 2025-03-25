@@ -23,7 +23,7 @@ EOS
     @params['paired'] = true
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['readLength'] = ['150', '100', '50']
+    @params['readLength'] = ['150', '100', '50', '75', '200']
     @params['peakStyle'] = ['broad', 'narrow']
     @params['varStabilizationMethod'] = ['vst', 'rlogTransf'] 
     @params['name'] = 'NfCoreAtacSeq'
