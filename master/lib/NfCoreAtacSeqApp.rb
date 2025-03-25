@@ -38,7 +38,7 @@ EOS
   end
   def next_dataset
      report_file = File.join(@result_dir, "#{@params['name']}_results")
-     report_link = File.join(@result_dir, "#{@params['name']}_results", "#{@params['peakStyle']}_peak", "multiqc_report.html")
+     report_link = File.join(@result_dir, "#{@params['name']}_results", "multiqc", "#{@params['peakStyle']}_peak", "multiqc_report.html")
      {'Name'=>@params['name'],
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
