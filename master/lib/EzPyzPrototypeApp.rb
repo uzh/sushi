@@ -5,14 +5,14 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class EzPyzTestApp <  SushiFabric::SushiApp
+class EzPyzPrototypeApp <  SushiFabric::SushiApp
   def initialize
     super
     @name = 'EzPyzPrototypeApp'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Testing'
     @description =<<-EOS
-A test app for ezPyz<br/>
+    A test app for ezPyz<br/>
     EOS
     @required_columns = ['Name','IsTest']
     @required_params = ['name']

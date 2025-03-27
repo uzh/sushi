@@ -249,12 +249,12 @@ module GlobalVariables
     end
     if @params['process_mode'] == 'DATASET'
       command <<  "input = ['#{@input_dataset_tsv_path}']\n"
-    # sample mode
-    command << "input = []\n"
-    input = @dataset
-    input.keys.each do |key|
-      command << "input.append('#{input[key]}')\n"
-    end
+    else # sample mode
+      command << "input = {}\n" 
+      input = @dataset
+      input.each do |key, value| 
+        command << "input['#{key}'] = '#{value}'\n"
+      end
     end
     command<< "app = EzApp#{app_name.capitalize}()\n" 
     command<< "params = {}\n"
