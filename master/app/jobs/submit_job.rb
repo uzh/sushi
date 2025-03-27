@@ -27,7 +27,5 @@ class SubmitJob < ApplicationJob
     elsif params[:submit_type] == "MockRun"
       sushi_app.mock_run
     end
-
-    MakeWholeTreeJob.perform_later(params[:project_id])
   end
 end

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250321-114904'
+# Version = '20250327-160717'
 
 require 'csv'
 require 'fileutils'
@@ -932,11 +932,6 @@ rm -rf #{@scratch_dir} || exit 1
       end
     end
 
-    # Update dataset tree
-    if @project_id
-      puts "# Update dataset tree by ActiveJob"
-      MakeWholeTreeJob.perform_later(@project_id)
-    end
     copy_nextdataset
   end
   def run
