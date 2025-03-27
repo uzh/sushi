@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250327-160717'
+# Version = '20250327-161327'
 
 require 'csv'
 require 'fileutils'
@@ -105,7 +105,6 @@ end
     require "#{SUSHI_APP_DIR}/app/models/sample"
     require "#{SUSHI_APP_DIR}/app/models/job"
     require "#{SUSHI_APP_DIR}/app/jobs/application_job"
-    require "#{SUSHI_APP_DIR}/app/jobs/make_whole_tree_job"
   else
     NO_ROR = true
   end
