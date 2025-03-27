@@ -53,7 +53,6 @@ class SampleController < ApplicationController
         @data_set.child = true
         @data_set.save
         save_dataset_tsv_in_gstore(@data_set)
-        MakeWholeTreeJob.perform_later(@data_set.project.id)
       end
     end
 

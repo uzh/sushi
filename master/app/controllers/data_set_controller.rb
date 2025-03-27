@@ -311,7 +311,6 @@ class DataSetController < ApplicationController
       data_set = DataSet.find_by_id(id)
       data_set.comment = comment
       data_set.save
-      MakeWholeTreeJob.perform_later(data_set.project.id)
     end 
     redirect_to(:action => "show") and return
   end
@@ -321,7 +320,6 @@ class DataSetController < ApplicationController
       data_set.name = name
       data_set.save
       session[:latest_data_set_id] = data_set.id
-      MakeWholeTreeJob.perform_later(data_set.project.id)
     end
     redirect_to(:action => "show") and return
   end
@@ -573,7 +571,6 @@ class DataSetController < ApplicationController
         update_completed_samples_(@data_set_id)
       end
     end
-    MakeWholeTreeJob.perform_later(data_set.project.id)
 
     redirect_to :controller => "data_set"
   end
@@ -739,7 +736,6 @@ class DataSetController < ApplicationController
           Process.waitpid pid
         end
         update_completed_samples_(@data_set_id)
-        MakeWholeTreeJob.perform_later(data_set.project.id)
       elsif file = params[:file] and tsv = file[:name] and @warning.nil?
         @warning = "There might be the same DataSet that has exactly same samples saved in SUSHI. Please check it."
       end
@@ -930,9 +926,6 @@ class DataSetController < ApplicationController
         @data_set = DataSet.find_by_id(params[:id])
         delete_candidates(@data_set)
         render action: "confirm_delete_only_data_files"
-      end
-      if @project_id
-        MakeWholeTreeJob.perform_later(@project_id)
       end
       params[:project_id] = "p#{session[:project]}" if session[:project]
       @deleted_data_set
