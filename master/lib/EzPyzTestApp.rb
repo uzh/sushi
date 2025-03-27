@@ -8,21 +8,21 @@ include GlobalVariables
 class EzPyzTestApp <  SushiFabric::SushiApp
   def initialize
     super
-    @name = 'EzPyzTestApp'
+    @name = 'EzPyzPrototypeApp'
     @params['process_mode'] = 'DATASET'
-    @analysis_category = 'Spatial'
+    @analysis_category = 'Testing'
     @description =<<-EOS
-MultiSample Quality control after SpaceRanger<br/>
+A test app for ezPyz<br/>
     EOS
     @required_columns = ['Name','IsTest']
     @required_params = ['name']
     @params['cores'] = '1'
     @params['ram'] = '30'
     @params['scratch'] = '100'
-    @params['name'] = 'EzPyzTestApp'
+    @params['name'] = 'EzPyzPrototypeApp'
     @params['sizeFactors'] = '1,3,5,10,20,30'
     @params['mail'] = ""
-    @modules = ["Dev/R"]
+    @modules = []
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
@@ -34,6 +34,6 @@ MultiSample Quality control after SpaceRanger<br/>
     }
   end
   def commands
-    run_RApp("EzAppVisiumQC")
+    run_PyApp("Prototype",conda_env: 'tmp_ezpyz')
   end
 end
