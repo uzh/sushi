@@ -80,8 +80,6 @@ SushiFabric::Application.configure do
 
   # fgcz
   if config.fgcz?
-    #config.workflow_manager = "druby://fgcz-h-036.fgcz-net.unizh.ch:40001" # production, test
-    #config.workflow_manager = "druby://fgcz-h-035.fgcz-net.unizh.ch:40001" # demo, course
     config.scratch_dir = "/scratch"
     config.gstore_dir = "/srv/gstore/projects" # production, test
     #config.gstore_dir = "/srv/GT/analysis/course_sushi/public/gstore/projects" # demo, course
@@ -89,11 +87,6 @@ SushiFabric::Application.configure do
     config.module_source = "/usr/local/ngseq/etc/lmod_profile"
     config.course_mode = false  # production, demo, test
     #config.course_mode = true   # course
-    #config.rails_host = "https://fgcz-sushi.uzh.ch"         # production
-    #config.rails_host = "https://fgcz-sushi-demo.uzh.ch"    # demo
-    #config.rails_host = "https://fgcz-course1.bfabric.org"  # course1
-    #config.rails_host = "https://fgcz-course2.bfabric.org"  # course2
-    #config.rails_host = "http://fgcz-h-037.fgcz-net.unizh.ch:4000"  # test
     #config.sushi_server_class = "SushiFabric::ProdSushi"
     #config.sushi_server_class = "SushiFabric::DemoSushi"
     #config.sushi_server_class = "SushiFabric::CourseSushi"
