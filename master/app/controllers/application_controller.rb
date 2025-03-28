@@ -31,8 +31,6 @@ class ApplicationController < ActionController::Base
   if SushiFabric::Application.config.fgcz?
     before_action :authenticate_user!
   end
-  #@@workflow_manager = DRbObject.new_with_uri(SushiFabric::WORKFLOW_MANAGER)
-  #@@workflow_manager = SushiFabric::TestSushi.new
   @@sushi_server = eval(SushiFabric::Application.config.sushi_server_class).new
 
   def employee?
