@@ -12,7 +12,6 @@ SushiFabric::Application.routes.draw do
     member do
       get :kill_job
       get :resubmit_job
-      post :change_status
     end
     collection do
       post :index
