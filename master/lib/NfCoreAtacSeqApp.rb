@@ -16,7 +16,7 @@ class NfCoreAtacSeqApp <  SushiFabric::SushiApp
    <a href='https://nf-co.re/atacseq'>NF-Core ATAC-seq</a>
 EOS
     @required_columns = ['Name','Read1','Read2','Species']
-    @required_params = ['refBuild','readLength', 'peakStyle']
+    @required_params = ['refBuild','readLength', 'peakStyle', 'grouping']
     @params['cores'] = '8'
     @params['ram'] = '100'
     @params['scratch'] = '200'
@@ -25,7 +25,11 @@ EOS
     @params['refFeatureFile'] = 'genes.gtf'
     @params['readLength'] = ['150', '100', '50', '75', '200']
     @params['peakStyle'] = ['broad', 'narrow']
-    @params['varStabilizationMethod'] = ['vst', 'rlogTransf'] 
+    @params['varStabilizationMethod'] = ['vst', 'rlogTransf']
+    @params['grouping'] = ''
+    @params['grouping', 'description'] = 'grouping information needs to be filled in the input dataset'
+    @params['runTwoGroupAnalysis'] = false
+    @params['runTwoGroupAnalysis', 'description'] = 'perform all two group analysis based on the grouping information'
     @params['name'] = 'NfCoreAtacSeq'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
@@ -42,8 +46,9 @@ EOS
      {'Name'=>@params['name'],
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
+     'grouping'=>@params['grouping'],
      'Result [File]'=>report_file,
-     'Report [Link]'=>report_link  
+     'Report [Link]'=>report_link
     }
   end
   def commands
