@@ -12,7 +12,7 @@ class DnaQCApp <  SushiFabric::SushiApp
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
     @description =<<-EOS
-Quality control after the alignment of RNAseq reads<br/>
+Quality control after the alignment of DNA reads for multiple samples. In case of only one sample please use the DnaBamStatsApp instead. <br/>
     EOS
     @required_columns = ['Name','BAM','BAI', 'refBuild', 'Species']
     @required_params = ['name', 'paired']
