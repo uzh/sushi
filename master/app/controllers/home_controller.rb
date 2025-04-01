@@ -16,7 +16,7 @@ class HomeController < ApplicationController
     render action: "index"
   end
   def valid_file_path?(file_path)
-    file_path.match?(/\Ap\d{5,}\/[\w\-\.\/]+\z/)
+    file_path.match?(/\Ap\d{4,}\/[\w\-\._\/]+\z/)
   end
   def gstore
     view_context.project_init
