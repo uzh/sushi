@@ -15,6 +15,9 @@ class HomeController < ApplicationController
     end
     render action: "index"
   end
+  def valid_file_path?(file_path)
+    file_path.match?(/\Ap\d{4,}\/[\w\-\._\/]+\z/)
+  end
   def gstore
     view_context.project_init
     if !session[:employee] and project_id = params[:project_id] and number = project_id.gsub(/^p/, '') and !session[:projects].include?(number.to_i)
@@ -75,10 +78,14 @@ class HomeController < ApplicationController
         file_full_path = File.join(SushiFabric::GSTORE_DIR, file_path)
 
         case file_ext
-        when /gz$|bam$/
-          redirect_to "https://fgcz-gstore.uzh.ch/projects/#{file_path}"
-        when /html$/
-          send_file file_full_path, disposition: 'inline', type: 'text/html'
+        when /gz$|bam$|html$/
+          if valid_file_path?(file_path)
+            redirect_to "https://fgcz-gstore.uzh.ch/projects/#{file_path}", allow_other_host: true
+          else
+            render plain: "Invalid file path", status: :bad_request
+          end
+        #when /html$/
+        #  send_file file_full_path, disposition: 'inline', type: 'text/html'
         when /log$|tsv$|txt$|sh$/
           send_file file_full_path, disposition: 'inline', type: 'text/plain'
         else
