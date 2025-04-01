@@ -16,14 +16,13 @@ class NfCoreAtacSeqApp <  SushiFabric::SushiApp
    <a href='https://nf-co.re/atacseq'>NF-Core ATAC-seq</a>
 EOS
     @required_columns = ['Name','Read1','Read2','Species']
-    @required_params = ['refBuild','readLength', 'peakStyle', 'grouping']
+    @required_params = ['refBuild', 'peakStyle', 'grouping']
     @params['cores'] = '8'
     @params['ram'] = '100'
     @params['scratch'] = '200'
     @params['paired'] = true
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['readLength'] = ['150', '100', '50', '75', '200']
     @params['peakStyle'] = ['broad', 'narrow']
     @params['varStabilizationMethod'] = ['vst', 'rlogTransf']
     @params['grouping'] = ''
