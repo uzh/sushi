@@ -187,4 +187,49 @@ class DataSet < ActiveRecord::Base
     file_name = out_file||"#{self.name}_dataset.tsv"
     File.write(file_name, tsv_string)
   end
+
+  def self.save_dataset_to_database(data_set_arr:, headers:, rows:, user: nil, child: nil)
+    data_set_hash = Hash[*data_set_arr]
+    
+    # Find or create project
+    project = Project.find_by_number(data_set_hash['ProjectNumber'].to_i)
+    unless project
+      project = Project.new
+      project.number = data_set_hash['ProjectNumber'].to_i
+      project.save
+    end
+
+    # Create new dataset
+    data_set = DataSet.new
+    data_set.user = user if user
+    data_set.name = data_set_hash['DataSetName']
+    data_set.project = project
+    data_set.child = child if child
+
+    # Set parent dataset if exists
+    if parent_id = data_set_hash['ParentID']
+      parent_data_set = DataSet.find_by_id(parent_id.to_i)
+      data_set.data_set = parent_data_set if parent_data_set
+    end
+
+    # Set comment if exists
+    if comment = data_set_hash['Comment'] and !comment.to_s.empty?
+      data_set.comment = comment
+    end
+
+    # Create samples
+    sample_hash = {}
+    rows.each do |row|
+      headers.each_with_index do |header, i|
+        sample_hash[header] = row[i]
+      end
+      sample = Sample.new
+      sample.key_value = sample_hash.to_s
+      sample.save
+      data_set.samples << sample
+    end
+
+    data_set.save
+    data_set.id
+  end
 end
