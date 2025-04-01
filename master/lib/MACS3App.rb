@@ -6,10 +6,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class MACS2App < SushiFabric::SushiApp
+class MACS3App < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'MACS2'
+    @name = 'MACS3'
     @analysis_category = 'Peaks'
     @description =<<-EOS
 Capturing the influence of genome complexity to evaluate the significance of enriched ChIP regions<br/>
@@ -29,14 +29,13 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @params['annotatePeaks'] = true
     @params['refFeatureFile'] = 'genes.gtf'
     @params['mode'] = ['ChIP-seq', 'ATAC-seq']
-    @params['mode', 'description'] = 'Call MACS2 for ChIP-seq or ATAC-seq data.'
+    @params['mode', 'description'] = 'Call MACS3 for ChIP-seq or ATAC-seq data.'
     @params['cmdOptions'] = '--nomodel --bw 200'
     @params['removeDuplicates'] = true
     @params['removeDuplicates', 'description'] = 'remove duplicates before running MACS. The resulting processed.bam does not contain duplicates anymore.'
     @params['specialOptions'] = ''
     @params['mail'] = ''
     @modules = ["Tools/samtools", "Tools/UCSC", "Tools/BEDTools", "Dev/R", "Tools/Picard"]
-    # MACS2 is in Python2 bin
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def set_default_parameters
@@ -74,7 +73,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
   def commands
     '. "/usr/local/ngseq/miniforge3/etc/profile.d/conda.sh"' +
     "\nconda activate gi_macs3\n" +
-    run_RApp("EzAppMacs2")
+    run_RApp("EzAppMacs3")
   end
 end
 
