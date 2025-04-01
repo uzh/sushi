@@ -48,7 +48,12 @@ class SampleController < ApplicationController
       data_set << "ProjectNumber" << project.number
       data_set << "ParentID" << @data_set.id 
       headers = @data_set.headers
-      if data_set_id = save_data_set(data_set, headers, samples, current_user)
+      if data_set_id = DataSet.save_dataset_to_database(
+          data_set_arr: data_set,
+          headers: headers,
+          rows: samples,
+          user: current_user
+        )
         @data_set = DataSet.find_by_id(data_set_id)
         @data_set.child = true
         @data_set.save

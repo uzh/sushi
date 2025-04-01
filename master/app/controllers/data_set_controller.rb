@@ -509,7 +509,12 @@ class DataSetController < ApplicationController
             rows << row
           else
             unless headers.include?(nil)
-              @data_set_id = save_data_set(data_set, headers, rows, current_user)
+              @data_set_id = DataSet.save_dataset_to_database(
+                  data_set_arr: data_set,
+                  headers: headers,
+                  rows: rows,
+                  user: current_user
+                )
             else
               session['import_fail'] = 'There must be a blank column. Please check it. Import is incomplete.'
             end
@@ -540,7 +545,12 @@ class DataSetController < ApplicationController
           end
         end
         unless headers.include?(nil)
-          @data_set_id = save_data_set(data_set, headers, rows, current_user)
+          @data_set_id = DataSet.save_dataset_to_database(
+              data_set_arr: data_set,
+              headers: headers,
+              rows: rows,
+              user: current_user
+            )
         else
           session['import_fail'] = 'There must be a blank column. Please check it. Import is incomplete.'
         end
@@ -661,7 +671,12 @@ class DataSetController < ApplicationController
             end
           end
           unless headers.include?(nil)
-            @data_set_id = save_data_set(data_set, headers, rows, current_user)
+            @data_set_id = DataSet.save_dataset_to_database(
+                data_set_arr: data_set,
+                headers: headers,
+                rows: rows,
+                user: current_user
+              )
           else
             @warning = 'There must be a blank column. Please check it. Import is incomplete.'
           end
@@ -704,7 +719,12 @@ class DataSetController < ApplicationController
             end
           end
           unless headers.include?(nil)
-            @data_set_id = save_data_set(data_set, headers, rows, current_user)
+            @data_set_id = DataSet.save_dataset_to_database(
+                data_set_arr: data_set,
+                headers: headers,
+                rows: rows,
+                user: current_user
+              )
           else
             @warning = 'There must be a blank column. Please check it. Import is incomplete.'
           end

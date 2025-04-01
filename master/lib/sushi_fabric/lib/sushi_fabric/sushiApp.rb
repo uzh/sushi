@@ -174,56 +174,6 @@ class ::String
     scan(/\[(.*)\]/).flatten.join =~ /#{tag}/
   end
 end
-def save_data_set(data_set_arr, headers, rows, user=nil)
-  data_set_hash = Hash[*data_set_arr]
-  unless project = Project.find_by_number(data_set_hash['ProjectNumber'].to_i)
-    project = Project.new
-    project.number = data_set_hash['ProjectNumber'].to_i
-    project.save
-  end
-  if project = Project.find_by_number(data_set_hash['ProjectNumber'].to_i)
-    data_set = DataSet.new
-    if user
-      data_set.user = user
-    end
-    data_set.name = data_set_hash['DataSetName']
-    data_set.project = project
-    if parent_id = data_set_hash['ParentID'] and parent_data_set = DataSet.find_by_id(parent_id.to_i)
-      data_set.data_set = parent_data_set
-    end
-    if comment = data_set_hash['Comment'] and !comment.to_s.empty?
-      data_set.comment = comment
-    end
-
-    sample_hash = {}
-    rows.each do |row|
-      headers.each_with_index do |header, i|
-       sample_hash[header]=row[i]
-      end
-      sample = Sample.new
-      sample.key_value = sample_hash.to_s
-      data_set.samples << sample
-    end
-
-    data_set.md5 = data_set.md5hexdigest
-		if data_set_ = DataSet.find_by_md5(data_set.md5) and data_set_.project_id == data_set.project_id
-			data_set = data_set_
-		else
-			data_set.samples.each do |sample|
-				sample.save
-			end
-			project.data_sets << data_set
-			parent_data_set.data_sets << data_set if parent_data_set
-			data_set.save
-			if user
-				user.data_sets << data_set
-				user.save
-			end
-		end
-    data_set.id
-  end
-end
-#module_function :save_data_set
 
 class SushiApp
   attr_reader :params
@@ -305,7 +255,7 @@ class SushiApp
       end
       unless NO_ROR
         @current_user ||= nil
-        if @dataset_sushi_id = save_data_set(data_set_arr.to_a.flatten, headers, rows, @current_user)
+        if @dataset_sushi_id = DataSet.save_dataset_to_database(data_set_arr: data_set_arr.to_a.flatten, headers: headers, rows: rows, user: @current_user)
           unless @off_bfabric_registration
             if dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
               dataset.register_bfabric(bfabric_application_number: @input_dataset_bfabric_application_number)
@@ -334,7 +284,7 @@ class SushiApp
     }
   end
   def set_default_parameters
-    # this should be overwritten in a subclass
+    # this should be overwritten in a subclass
   end
   def dataset_has_column?(colname)
     flag = false
@@ -372,7 +322,7 @@ class SushiApp
   end
   def check_application_parameters
     if @required_params and (@required_params - @params.keys).empty?
-      # PD, 20230623, the following fix changed parameters.tsv info, and reverted
+      # PD, 20230623, the following fix changed parameters.tsv info, and reverted
       #@output_params = {"sushi_app" => self.class.name}.merge(@params.clone)
       @output_params = @params.clone
     end
@@ -531,7 +481,7 @@ conda activate sushi
     end
     @out.print <<-EOF
 cd #{SCRATCH_DIR}
-rm -rf #{@scratch_dir} || exit 1
+rm -rf #{@scratch_dir} || exit 1
 
     EOF
 
@@ -541,10 +491,10 @@ rm -rf #{@scratch_dir} || exit 1
     @out.print commands, "\n\n"
   end
   def next_dataset
-    # this should be overwritten in a subclass
+    # this should be overwritten in a subclass
   end
   def commands
-    # this should be overwritten in a subclass
+    # this should be overwritten in a subclass
   end
   def generate_new_job_script(script_name, script_content)
     new_job_script = File.basename(script_name) + "_" + Time.now.strftime("%Y%m%d%H%M%S%L")
@@ -584,7 +534,7 @@ rm -rf #{@scratch_dir} || exit 1
     [submit_command, new_script_path, stdout_path, stderr_path]
   end
   def preprocess
-    # this should be overwritten in a subclass
+    # this should be overwritten in a subclass
   end
   def set_file_paths
     @parameter_file = 'parameters.tsv'
@@ -773,64 +723,6 @@ rm -rf #{@scratch_dir} || exit 1
     end
     @job_scripts << @job_script
   end
-  def save_data_set(data_set_arr, headers, rows, user=nil, child=nil)
-    data_set_hash = Hash[*data_set_arr]
-    unless project = Project.find_by_number(data_set_hash['ProjectNumber'].to_i)
-      project = Project.new
-      project.number = data_set_hash['ProjectNumber'].to_i
-      project.save
-    end
-    if project = Project.find_by_number(data_set_hash['ProjectNumber'].to_i)
-      data_set = DataSet.new
-      if user
-        data_set.user = user
-      end
-      data_set.name = data_set_hash['DataSetName']
-      data_set.project = project
-      if parent_id = data_set_hash['ParentID'] and parent_data_set = DataSet.find_by_id(parent_id.to_i)
-        data_set.data_set = parent_data_set
-        data_set.sushi_app_name = self.class.name
-      end
-      if comment = data_set_hash['Comment'] and !comment.to_s.empty?
-        data_set.comment = comment
-      end
-      if @mango_run_name
-        data_set.run_name_order_id = @mango_run_name
-      end
-
-      sample_hash = {}
-      rows.each do |row|
-        headers.each_with_index do |header, i|
-         sample_hash[header]=row[i]
-        end
-        sample = Sample.new
-        sample.key_value = sample_hash.to_s
-        #sample.save # skip exact-match search
-        data_set.samples << sample
-      end
-
-      if child
-        data_set.child = true
-      end
-
-      data_set.md5 = data_set.md5hexdigest
-			if data_set_ = DataSet.find_by_md5(data_set.md5) and data_set_.project_id == data_set.project_id
-				data_set = data_set_
-			else
-				data_set.samples.each do |sample|
-					sample.save
-				end
-				project.data_sets << data_set
-				parent_data_set.data_sets << data_set if parent_data_set
-				data_set.save
-				if user
-					user.data_sets << data_set
-					user.save
-				end
-			end
-      data_set.id
-    end
-  end
   def save_parameters_in_sushi_db
     if @next_dataset_id and next_dataset = DataSet.find_by_id(@next_dataset_id)
       next_dataset.job_parameters = @output_params
@@ -888,7 +780,7 @@ rm -rf #{@scratch_dir} || exit 1
       end
       unless NO_ROR
         @current_user ||= nil
-        @next_dataset_id = save_data_set(data_set_arr.to_a.flatten, headers, rows, @current_user, @child)
+        @next_dataset_id = DataSet.save_dataset_to_database(data_set_arr: data_set_arr.to_a.flatten, headers: headers, rows: rows, user: @current_user, child: @child)
         save_parameters_in_sushi_db
       end
     end
