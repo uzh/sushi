@@ -5,10 +5,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class EzPyzPrototypeApp <  SushiFabric::SushiApp
+class EzPyzExampleApp <  SushiFabric::SushiApp
   def initialize
     super
-    @name = 'EzPyzPrototypeApp'
+    @name = 'EzPyzExampleApp'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Testing'
     @description =<<-EOS
@@ -19,7 +19,7 @@ class EzPyzPrototypeApp <  SushiFabric::SushiApp
     @params['cores'] = '1'
     @params['ram'] = '30'
     @params['scratch'] = '100'
-    @params['name'] = 'EzPyzPrototypeApp'
+    @params['name'] = 'EzPyzExampleApp'
     @params['sizeFactors'] = '1,3,5,10,20,30'
     @params['mail'] = ""
     @modules = []
@@ -34,6 +34,6 @@ class EzPyzPrototypeApp <  SushiFabric::SushiApp
     }
   end
   def commands
-    run_PyApp("Prototype",conda_env: 'tmp_ezpyz')
+    run_PyApp("Example",conda_env: 'tmp_ezpyz') #change to App specific env soon
   end
 end
