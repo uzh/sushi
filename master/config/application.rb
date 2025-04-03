@@ -60,5 +60,21 @@ module SushiFabric
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+    
+    # Add fgcz? method to fix the error
+    def self.fgcz?
+      false
+    end
+  end
+end
+
+# Add fgcz? method to Rails::Application::Configuration
+module Rails
+  class Application
+    class Configuration
+      def fgcz?
+        false
+      end
+    end
   end
 end

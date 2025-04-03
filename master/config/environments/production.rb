@@ -73,6 +73,12 @@ SushiFabric::Application.configure do
   config.logger.level = Logger::ERROR
   config.log_level = :info
   config.eager_load = true
+  
+  # Set a secret key base for production
+  config.secret_key_base = 'dummy_secret_key_base_for_development_purposes_only_change_this_in_production'
+
+  # Default sushi server class
+  config.sushi_server_class = "SushiFabric::TestSushi"
 
   def config.fgcz?
     @fgcz ||= (`hostname`.chomp =~ /fgcz/)
@@ -90,7 +96,7 @@ SushiFabric::Application.configure do
     #config.sushi_server_class = "SushiFabric::ProdSushi"
     #config.sushi_server_class = "SushiFabric::DemoSushi"
     #config.sushi_server_class = "SushiFabric::CourseSushi"
-    config.sushi_server_class = "SushiFabric::TestSushi"
+    #config.sushi_server_class = "SushiFabric::TestSushi"
   end
 
 end

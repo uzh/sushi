@@ -20,17 +20,19 @@ module Savon
 end
 
 class ApplicationController < ActionController::Base
-  rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
-    render :plain => exception, :status => 500
-  end
-  # protect_from_forgery
+  # Temporarily disable LDAP exception handling
+  # rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
+  #   render :plain => exception, :status => 500
+  # end
+  #  protect_from_forgery
   protect_from_forgery with: :exception
 
   after_action :flash_to_headers
   
-  if SushiFabric::Application.config.fgcz?
-    before_action :authenticate_user!
-  end
+  # Temporarily disable authentication for development
+  # if SushiFabric::Application.config.fgcz?
+  #   before_action :authenticate_user!
+  # end
   @@sushi_server = eval(SushiFabric::Application.config.sushi_server_class).new
 
   def employee?

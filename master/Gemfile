@@ -40,7 +40,6 @@ gem 'jquery-rails'
 gem 'devise'
 #if `hostname`.chomp =~ /fgcz-s-032/
 #gem 'devise_ldap_authenticatable', '>= 0.8.6.1', :path => '/srv/SushiFabric/Gems/devise_ldap_authenticatable_forked_20190712'
-gem 'devise_ldap_authenticatable', '>= 0.8.6.1', :path => '/usr/local/ngseq/gems/devise_ldap_authenticatable_forked_20190712'
 #else
 #gem 'devise_ldap_authenticatable'
 #end
@@ -55,7 +54,7 @@ gem 'ruby_parser'
 #    gem 'fgcz'
 gem 'savon'
 #if `hostname`.chomp =~ /fgcz-s-032/
-gem 'fgcz', '>= 0.0.4', :path => '/usr/local/ngseq/gems/fgcz'
+#gem 'fgcz', '>= 0.0.4', :path => '/usr/local/ngseq/gems/fgcz'
 #end
 
 group :test do

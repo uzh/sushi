@@ -92,7 +92,7 @@ end
 
     NO_ROR = false
     
-    database_config = YAML.load(File.read(database_yml))
+    database_config = YAML.safe_load(File.read(database_yml), aliases: true)
     db = database_config["production"]
     ActiveRecord::Base.establish_connection(
                 :adapter => db["adapter"],
