@@ -14,7 +14,7 @@ class EzPyzExampleApp <  SushiFabric::SushiApp
     @description =<<-EOS
     A test app for ezPyz<br/>
     EOS
-    @required_columns = ['Name','IsTest']
+    @required_columns = ['Name','ResultDir [File]','IsTest']
     @required_params = ['name']
     @params['cores'] = '1'
     @params['ram'] = '30'
