@@ -33,7 +33,10 @@ RUN gem install bundler rubygems-bundler && \
     gem regenerate_binstubs
 
 # Create a non-root user
-RUN useradd -m sushi
+# Add masaomi user and required group
+RUN groupadd -g 10147 SG_Employees && \
+    groupadd -g 55611 SG_p35611 && \
+    useradd -m -u 42366 -g 10147 -G 55611 masaomi
 
 # Set working directory
 WORKDIR /app
@@ -43,8 +46,8 @@ COPY master/entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 
 COPY master/ ./
-RUN chown -R sushi:sushi /app && \
-    su sushi -c "bundle config set --local path 'vendor/bundle' && bundle install"
+RUN chown -R masaomi:SG_Employees /app && \
+    su masaomi -c "bundle config set --local path 'vendor/bundle' && bundle install"
 
 # Expose port 3000
 EXPOSE 3000

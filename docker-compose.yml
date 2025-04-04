@@ -8,13 +8,32 @@ services:
     volumes:
       - ./master:/app
       - bundle:/app/vendor/bundle
+      - /srv/gstore/projects:/srv/gstore/projects:shared
+      - ./shared:/shared
     environment:
       - RAILS_ENV=production
       - RAILS_LOG_TO_STDOUT=true
       - BUNDLE_PATH=/app/vendor/bundle
     entrypoint: ["entrypoint.sh"]
     command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+    cap_add:
+      - SYS_PTRACE  # Required for inotifywait
+
+  # Service to monitor for automount triggers
+  mount_monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile.monitor
+    volumes:
+      - /srv/gstore/projects:/srv/gstore/projects:shared
+      - ./shared:/shared
+      - ./monitor_gstore_access.sh:/monitor_gstore_access.sh
+    command: ["bash", "/monitor_gstore_access.sh"]
+    privileged: true
+    depends_on:
+      - sushi
 
 volumes:
-  bundle: 
+  bundle:
+  shared: 
 

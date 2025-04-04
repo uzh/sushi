@@ -18,5 +18,9 @@ elif [ "$RAILS_ENV" = "production" ] && [ ! -f /app/db/production.sqlite3 ]; the
   bundle exec rails db:seed
 fi
 
+# Make sure the gstore projects directory exists and is accessible
+mkdir -p /srv/gstore/projects
+chmod 755 /srv/gstore/projects
+
 # Then exec the container's main process (what's set as CMD in the Dockerfile).
 exec "$@" 
