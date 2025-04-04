@@ -5,15 +5,16 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class DmrseqApp <  SushiFabric::SushiApp
+class DiffMethylationApp <  SushiFabric::SushiApp
   def initialize
     super
-    @name = 'DmrseqApp'
+    @name = 'DiffMethylation'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'DifferentialMethylation'
     @description =<<-EOS
     Finding differentially methylated regions via <a href='https://www.bioconductor.org/packages/release/bioc/html/dmrseq.html'/>Dmrseq</a> <br/>
-    It requires cov file from Bismark. <br/>
+    and <a href='https://www.bioconductor.org/packages/release/bioc/html/DSS.html'/>DSS</a> <br/>
+    It requires the cov files from Bismark. <br/>
 EOS
     @required_columns = ['Name','COV']
     @required_params = ['grouping', 'sampleGroup', 'refGroup', 'refBuild']
@@ -28,8 +29,12 @@ EOS
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
     @params['refGroup'] = ''
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
-    @params['qval'] = '0.1'
-    @params['qval', 'description'] = 'FDR cutoff'
+    @params['qVal'] = '0.1'
+    @params['qVal', 'description'] = 'FDR cutoff for regions'
+    @params['qVal_perSite'] = '0.001'
+    @params['qVal_perSite', 'description'] = 'FDR cutoff for individual CpGs'
+    @params['minDelta'] = '0.1'
+    @params['minDelta', 'description'] = 'minimal difference to be reported'
     @params['cmdOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]
@@ -51,7 +56,7 @@ EOS
     }.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
-    run_RApp("EzAppDmrseq")
+    run_RApp("EzAppDiffMethylation")
   end
 end
 
