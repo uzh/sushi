@@ -14,7 +14,7 @@ class EzPyzBin2CellApp <  SushiFabric::SushiApp
     @description =<<-EOS
     A Bin2Cell app for VisiumHD data<br/>
     EOS
-    @required_columns = ['Name','BinnedOutputs2um [File]','SourceImage [File]','SpaceRanger [File]']
+    @required_columns = ['Name','BinnedOutputs2um','SourceImage','SpaceRanger']
     @required_params = ['name']
     @params['cores'] = '1'
     @params['ram'] = '30'
@@ -28,11 +28,11 @@ class EzPyzBin2CellApp <  SushiFabric::SushiApp
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
     {'Name'=>@params['name'],
-     'Figures [File]'=>File.join(report_dir, 'Figures'),
+     'Figures [File]'=>File.join(report_dir, 'figures'),
      'Report [File]'=>File.join(report_dir, 'stardist')
     }
   end
   def commands
-    run_PyApp("Bin2cell",conda_env: 'tmp_bin2cell') #change to App specific env soon
+    run_PyApp("Bin2cell",conda_env: 'tmp_bin2cell')
   end
 end
