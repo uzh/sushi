@@ -3,6 +3,7 @@ version: '3.8'
 services:
   sushi:
     build: .
+    user: "42366:10147"  # masaomi UID:GID
     ports:
       - "3000:3000"
     volumes:
@@ -30,8 +31,6 @@ services:
       - ./monitor_gstore_access.sh:/monitor_gstore_access.sh
     command: ["bash", "/monitor_gstore_access.sh"]
     privileged: true
-    depends_on:
-      - sushi
 
 volumes:
   bundle:

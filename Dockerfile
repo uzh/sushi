@@ -38,16 +38,20 @@ RUN groupadd -g 10147 SG_Employees && \
     groupadd -g 55611 SG_p35611 && \
     useradd -m -u 42366 -g 10147 -G 55611 masaomi
 
-# Set working directory
-WORKDIR /app
-
-# Copy entrypoint script
+# Copy entrypoint script and set permissions (as root)
 COPY master/entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 
+# Set working directory
+WORKDIR /app
+
+# Copy application files
 COPY master/ ./
-RUN chown -R masaomi:SG_Employees /app && \
-    su masaomi -c "bundle config set --local path 'vendor/bundle' && bundle install"
+RUN chown -R masaomi:SG_Employees /app
+
+# Switch to masaomi user for bundle install
+USER masaomi
+RUN bundle config set --local path 'vendor/bundle' && bundle install
 
 # Expose port 3000
 EXPOSE 3000

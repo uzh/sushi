@@ -85,7 +85,7 @@ SushiFabric::Application.configure do
   end
 
   # fgcz
-  if config.fgcz?
+  # if config.fgcz?
     config.scratch_dir = "/scratch"
     config.gstore_dir = "/srv/gstore/projects" # production, test
     #config.gstore_dir = "/srv/GT/analysis/course_sushi/public/gstore/projects" # demo, course
@@ -97,6 +97,6 @@ SushiFabric::Application.configure do
     #config.sushi_server_class = "SushiFabric::DemoSushi"
     #config.sushi_server_class = "SushiFabric::CourseSushi"
     #config.sushi_server_class = "SushiFabric::TestSushi"
-  end
+  # end
 
 end

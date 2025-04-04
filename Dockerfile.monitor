@@ -1,0 +1,24 @@
+FROM debian:bookworm-slim
+
+# Install required packages
+RUN apt-get update && apt-get install -y \
+    inotify-tools \
+    procps \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create masaomi user with the same UID/GID
+RUN groupadd -g 10147 SG_Employees && \
+    groupadd -g 55611 SG_p35611 && \
+    useradd -m -u 42366 -g 10147 -G 55611 masaomi
+
+# Create directories
+RUN mkdir -p /srv/gstore/projects /shared && \
+    chmod 777 /shared
+
+# Switch to masaomi user
+USER masaomi
+
+# Working directory
+WORKDIR /
+
+CMD ["bash", "/monitor_gstore_access.sh"] 
