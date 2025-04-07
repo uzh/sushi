@@ -16,6 +16,8 @@ class EzPyzBin2CellApp <  SushiFabric::SushiApp
     EOS
     @required_columns = ['Name','BinnedOutputs2um','SourceImage','SpaceRanger']
     @required_params = ['name']
+    @params['mpp'] = '0.5'
+    @params['prob_thresh'] = '0.05'
     @params['cores'] = '1'
     @params['ram'] = '30'
     @params['scratch'] = '100'
