@@ -28,8 +28,9 @@ class EzPyzBin2CellApp <  SushiFabric::SushiApp
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
     {'Name'=>@params['name'],
-     'Figures [File]'=>File.join(report_dir, 'figures'),
-     'Report [File]'=>File.join(report_dir, 'stardist')
+    'Bin2Cell [File]'=>report_dir,
+    'Figures [Link]'=>File.join(report_dir, 'figures'),
+    'Report [Link]'=>File.join(report_dir, 'stardist')
     }
   end
   def commands
