@@ -256,9 +256,8 @@ module GlobalVariables
         command << "input['#{key}'] = '#{value}'\n"
       end
     end
-    command<< "app = EzApp#{app_name.capitalize}()\n" 
-    command<< "params = {}\n"
-    command<< "print(app.run(input, output, params))\n"
+    command<< "app = EzApp#{app_name.capitalize}()\n"
+    command<< "print(app.run(input, output, param))\n"
     command<< "EOT\n"
     command
   end

@@ -17,7 +17,8 @@ class EzPyzBin2CellApp <  SushiFabric::SushiApp
     @required_columns = ['Name','BinnedOutputs2um','SourceImage','SpaceRanger']
     @required_params = ['name']
     @params['mpp'] = '0.5'
-    @params['prob_thresh'] = '0.05'
+    @params['prob_thresh_HE'] = '0.01'
+    @params['prob_thresh_GEX'] = '0.05'
     @params['cores'] = '1'
     @params['ram'] = '30'
     @params['scratch'] = '100'
@@ -32,7 +33,8 @@ class EzPyzBin2CellApp <  SushiFabric::SushiApp
     {'Name'=>@params['name'],
     'Bin2Cell [File]'=>report_dir,
     'Figures [Link]'=>File.join(report_dir, 'figures'),
-    'Report [Link]'=>File.join(report_dir, 'stardist')
+    'Anndata [Link]'=>File.join(report_dir, 'cdata.h5ad'),
+    'Stardist [Link]'=>File.join(report_dir, 'stardist')
     }
   end
   def commands
