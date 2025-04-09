@@ -17,9 +17,16 @@ class EzPyzBin2CellApp <  SushiFabric::SushiApp
     @required_columns = ['Name','BinnedOutputs2um','SourceImage','SpaceRanger']
     @required_params = ['name']
     @params['mpp'] = '0.5'
+    @params['mpp','description'] = 'Microns per pixel. This is the pixel size of the image in microns.'
     @params['prob_thresh_HE'] = '0.01'
+    @params['prob_thresh_HE','description'] = 'lowering `prob_thresh` to make the calls less stringent is recommended, for H&E image segmentation'
     @params['prob_thresh_GEX'] = '0.05'
-    @params['cores'] = '1'
+    @params['prob_thresh_GEX','description'] = 'lowering `prob_thresh` to make the calls less stringent is recommended, for gene expression image segmentation'
+    @params['roi_x'] = '-1'
+    @params['roi_x','description'] = 'X coordinate of the region of interest (ROI) in pixels. If set to -1, the center of the image will be used.'
+    @params['roi_y'] = '-1'
+    @params['roi_x','description'] = 'Y coordinate of the region of interest (ROI) in pixels. If set to -1, the center of the image will be used.'
+    @params['cores'] = '8'
     @params['ram'] = '30'
     @params['scratch'] = '100'
     @params['name'] = 'EzPyzBin2CellApp'
