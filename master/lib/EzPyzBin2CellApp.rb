@@ -25,7 +25,7 @@ class EzPyzBin2CellApp <  SushiFabric::SushiApp
     @params['roi_x'] = '-1'
     @params['roi_x','description'] = 'X coordinate of the region of interest (ROI) in pixels. If set to -1, the center of the image will be used.'
     @params['roi_y'] = '-1'
-    @params['roi_x','description'] = 'Y coordinate of the region of interest (ROI) in pixels. If set to -1, the center of the image will be used.'
+    @params['roi_y','description'] = 'Y coordinate of the region of interest (ROI) in pixels. If set to -1, the center of the image will be used.'
     @params['cores'] = '8'
     @params['ram'] = '30'
     @params['scratch'] = '100'
