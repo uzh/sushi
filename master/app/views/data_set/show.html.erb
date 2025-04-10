@@ -179,6 +179,9 @@ $(document).ready(function(){
 - <a href="#" id="opener">download</a>
 - <%= link_to 'scripts', "/data_set/script_log.#{@data_set.id}", :method=>:get %>
 - <%= link_to 'parameters', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>
+<% if @fgcz and current_user and current_user.login %>
+- <%= link_to 'call GEO-uploader', "https://geo-uploader.fgcz.uzh.ch/api/dataset/#{@data_set.id}", target: "_blank" %>
+<% end %>
 <% if @data_set.data_set and @data_set.sushi_app_name %>
 -  <%= link_to "resubmit", {:controller=>"run_application", :action=>"set_parameters", data_set_id: @data_set.data_set.id, resubmit_data_set_id: @data_set.id,  app: @data_set.sushi_app_name}, :method=>:post %>
 <% end %>
