@@ -57,6 +57,19 @@ unless opt.dataset_id or opt.dataset_tsv
   exit
 end
 
+# If only dataset is specified without class, just register the dataset
+if opt.dataset_tsv and !opt.class_name
+  usecase = SushiFabric::SushiApp.new
+  usecase.project = opt.project
+  usecase.user = opt.user
+  usecase.dataset_tsv_file = opt.dataset_tsv
+  if opt.dataset_name
+    usecase.dataset_name = opt.dataset_name
+  end
+  usecase.test_run
+  exit
+end
+
 begin
   require opt.class_name
   klass = eval(opt.class_name)
