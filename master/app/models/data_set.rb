@@ -90,17 +90,17 @@ class DataSet < ActiveRecord::Base
                          true
                        elsif op == 'update' and bfabric_id = self.bfabric_id
                          com = "#{check_command} #{bfabric_id}"
-                         puts "$ #{com}"
+                         warn "$ #{com}"
                          if out = `#{com}`
-                           puts "# returned: #{out.chomp.downcase}"
+                           warn "# returned: #{out.chomp.downcase}"
                            eval(out.chomp.downcase)
                          end
                        end
 
         self.check_order_ids
 
-        puts "parent_dataset.nil?= #{parent_dataset.nil?}"
-        puts "self.order_ids= #{self.order_ids}"
+        warn "parent_dataset.nil?= #{parent_dataset.nil?}"
+        warn "self.order_ids= #{self.order_ids}"
         command = if self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i
                     if parent_dataset.nil? # root dataset
                       if order_id > 8000
@@ -130,29 +130,29 @@ class DataSet < ActiveRecord::Base
           open(dataset_tsv, "w") do |out|
             out.print self.tsv_string
           end
-          puts "# created: #{dataset_tsv}"
+          warn "# created: #{dataset_tsv}"
           if File.exist?(dataset_tsv) and bfabric_ids = `#{command}`
-            puts "$ #{command}"
-            puts "# mode: #{op}"
-            puts "# bfabric_ids: #{bfabric_ids}"
+            warn "$ #{command}"
+            warn "# mode: #{op}"
+            warn "# bfabric_ids: #{bfabric_ids}"
             if bfabric_ids.split(/\n/).uniq.length < 2
               workunit_id, dataset_id = bfabric_ids.chomp.split(',')
               if workunit_id.to_i > 0
                 self.bfabric_id = dataset_id.to_i
                 self.workunit_id = workunit_id.to_i
-                puts "# DataSetID  (BFabric): #{self.bfabric_id}"
-                puts "# WorkunitID (BFabric): #{self.workunit_id}"
+                warn "# DataSetID  (BFabric): #{self.bfabric_id}"
+                warn "# WorkunitID (BFabric): #{self.workunit_id}"
                 self.save
               end
             else
-              puts "# Not executed properly:"
-              puts "# BFabricID: #{bfabric_id}"
+              warn "# Not executed properly:"
+              warn "# BFabricID: #{bfabric_id}"
             end
             File.unlink dataset_tsv
-            puts "# removed: #{dataset_tsv}"
+            warn "# removed: #{dataset_tsv}"
           end
         else
-          puts "# Not run DataSet#register_bfabric due to OrderID is missing in DataSet"
+          warn "# Not run DataSet#register_bfabric due to OrderID is missing in DataSet"
         end
 
         # Update completed_samples if requested
@@ -186,7 +186,7 @@ class DataSet < ActiveRecord::Base
         end
       end
     else
-      puts "# Not run DataSet#register_bfabric because its parental dataset is not registered in bfabric"
+      warn "# Not run DataSet#register_bfabric because its parental dataset is not registered in bfabric"
     end
   end
   def update_resource_size

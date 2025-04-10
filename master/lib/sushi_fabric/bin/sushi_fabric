@@ -27,7 +27,7 @@ Usage:
   o.on(:input_dataset_application, '-a bfabric_application_number', '--input_dataset_application', 'BFabric Application Number for input DataSet')
   o.on(:next_dataset_application, '-A bfabric_application_number', '--next_dataset_application', 'BFabric Application Number for next DataSet')
   o.on_tail("-v", "--version", "Show version") do
-    puts "v#{SushiFabric::VERSION}"
+    warn "v#{SushiFabric::VERSION}"
     exit
   end
   o.parse!(ARGV)
@@ -47,18 +47,18 @@ end
 if opt.class_name
   # When class is specified, either dataset_id or dataset_tsv is required
   unless opt.dataset_id or opt.dataset_tsv
-    puts
+    warn ""
     warn "\e[31mERROR\e[0m: When --class is specified, either --dataset_id or --dataset is required"
-    puts
+    warn ""
     warn opt.help
-    exit
+    exit 1
   end
 else
   # When class is not specified, dataset_tsv is required
   unless opt.dataset_tsv
-    puts
+    warn ""
     warn "\e[31mERROR\e[0m: When --class is not specified, --dataset is required"
-    puts
+    warn ""
     warn opt.help
     exit
   end
@@ -89,8 +89,9 @@ if opt.dataset_tsv and !opt.class_name
   if opt.dataset_name
     usecase.dataset_name = opt.dataset_name
   end
-  usecase.test_run
-  exit
+  dataset_id = usecase.test_run
+  puts dataset_id
+  exit 0
 end
 
 begin
@@ -102,7 +103,8 @@ rescue #NameError, LoadError # uninitialized constant
   warn "\e[31mERROR\e[0m: The class #{opt.class_name} cannot be loaded. Add path with -I option."
   warn "" 
   warn "Current library load path(s):"
-  puts $:.map{|dir| "\t"+dir}
+  warn $:.map{|dir| "\t"+dir}
+  exit 1
 end
 
 usecase.project = opt.project
@@ -128,9 +130,13 @@ end
 if opt.next_dataset_application
   usecase.next_dataset_bfabric_application_number = opt.next_dataset_application
 end
+
 if opt.run_mode
-  usecase.run
+  dataset_id = usecase.run
 else
-  usecase.test_run
+  dataset_id = usecase.test_run
 end
+
+puts dataset_id
+exit 0
 
