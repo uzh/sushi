@@ -8,10 +8,11 @@ require 'sushi_fabric'
 opt = OptionParser.new do |o|
   o.banner = <<-EOT
 Usage: 
-  #{File.basename(__FILE__)} --class [SushiApp class] [options]
-  \t(Either --dataset_id or --dataset_tsv is \e[31mrequired\e[0m)
+  #{File.basename(__FILE__)} [options]
+  \t(When --class is specified, either --dataset_id or --dataset_tsv is required)
+  \t(When --class is not specified, --dataset_tsv is required)
   EOT
-  o.on(:class_name, '-c class_name', '--class', "SushiApp class name (\e[31mrequired\e[0m)")
+  o.on(:class_name, '-c class_name', '--class', "SushiApp class name")
   o.on(:dataset_id, '-i dataset_id', '--dataset_id', Integer, 'DataSet ID in Sushi DB')
   o.on(:dataset_tsv, '-d dataset_tsv', '--dataset', String, 'DataSet file (.tsv) (This option is prior to dataset_id option)')
   o.on(:dataset_name, '-s dataset_name', '--dataset_name', String, 'DataSet name in Sushi (This will be used with --dataset option, default: tsv file base name)')
@@ -42,22 +43,28 @@ if opt.load_path
   end
 end
 
-unless opt.class_name
-  puts
-  warn "\e[31mERROR\e[0m: --class is required"
-  puts
-  warn opt.help
-  exit
-end
-unless opt.dataset_id or opt.dataset_tsv
-  puts
-  warn "\e[31mERROR\e[0m: Either --dataset_id or --dataset_tsv is required"
-  puts
-  print opt.help
-  exit
+# Check if dataset options are valid based on class presence
+if opt.class_name
+  # When class is specified, either dataset_id or dataset_tsv is required
+  unless opt.dataset_id or opt.dataset_tsv
+    puts
+    warn "\e[31mERROR\e[0m: When --class is specified, either --dataset_id or --dataset_tsv is required"
+    puts
+    warn opt.help
+    exit
+  end
+else
+  # When class is not specified, dataset_tsv is required
+  unless opt.dataset_tsv
+    puts
+    warn "\e[31mERROR\e[0m: When --class is not specified, --dataset_tsv is required"
+    puts
+    warn opt.help
+    exit
+  end
 end
 
-# If only dataset is specified without class, just register the dataset
+# If only dataset_tsv is specified without class, just register the dataset
 if opt.dataset_tsv and !opt.class_name
   usecase = SushiFabric::SushiApp.new
   usecase.project = opt.project
