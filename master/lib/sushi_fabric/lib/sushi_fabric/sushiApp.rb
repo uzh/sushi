@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250327-161327'
+# Version = '20250410-160533'
 
 require 'csv'
 require 'fileutils'
@@ -616,10 +616,10 @@ rm -rf #{@scratch_dir} || exit 1
       @uploaded_files.compact.select{|file| !file.empty?}.each do |file|
         FileUtils.cp(file, @uploaded_files_dir)
         command = "cp #{file} #{@uploaded_files_dir}"
-        puts command
+        warn command
         FileUtils.rm_r(File.dirname(file))
         command = "rm -rf #{File.dirname(file)}"
-        puts command
+        warn command
       end
     end
   end
@@ -627,8 +627,8 @@ rm -rf #{@scratch_dir} || exit 1
     org = @scratch_result_dir
     dest = @gstore_project_dir
     copy_commands(org, dest, 'now').each do |command|
-      puts `which python`
-      puts command
+      warn `which python`
+      warn command
       unless system command
         raise "fails in copying input_dataset, parameters and jobscript files from /scratch to /gstore"
       end
@@ -639,8 +639,8 @@ rm -rf #{@scratch_dir} || exit 1
     org = @next_dataset_tsv_path
     dest = File.join(@gstore_project_dir, @result_dir_base)
     copy_commands(org, dest, 'now').each do |command|
-      puts `which python`
-      puts command
+      warn `which python`
+      warn command
       unless system command
         raise "fails in copying next_dataset files from /scratch to /gstore"
       end
@@ -751,8 +751,8 @@ rm -rf #{@scratch_dir} || exit 1
       make_dummy_files
     end
 
-    print 'result dataset: '
-    p @result_dataset
+    warn 'result dataset: '
+    warn @result_dataset
 
     # copy application data to gstore 
     @next_dataset_tsv_path = save_next_dataset_as_tsv
@@ -799,11 +799,11 @@ rm -rf #{@scratch_dir} || exit 1
       gstore_job_script_paths << File.join(@gstore_script_dir, File.basename(job_script))
     end
 
-    puts
-    print 'job scripts: '
-    p @job_scripts
-    print 'gstore_job_script_paths: '
-    p gstore_job_script_paths
+    warn ""
+    warn 'job scripts: '
+    warn @job_scripts
+    warn 'gstore_job_script_paths: '
+    warn gstore_job_script_paths
 
 
     #unless @job_ids.empty? or NO_ROR
@@ -868,7 +868,7 @@ rm -rf #{@scratch_dir} || exit 1
     end
     dirs.each do |dir|
       command = "mkdir -p #{File.join(@scratch_result_dir, dir)}"
-      puts command
+      warn command
       `#{command}`
     end
     dummy_files.each do |file|
@@ -877,7 +877,7 @@ rm -rf #{@scratch_dir} || exit 1
                 else
                   "touch #{File.join(@scratch_result_dir, file)}"
                 end
-      puts command
+      warn command
       `#{command}`
     end
   end
