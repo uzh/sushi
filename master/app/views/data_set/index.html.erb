@@ -133,6 +133,20 @@
         }
     })
 
+    $('#btn_geo_uploader').click(function () {
+        var selected_ids = [];
+        $('.target').each(function () {
+            if ($(this).prop("checked")) {
+                selected_ids.push($(this).val());
+            }
+        });
+        if (selected_ids.length > 0) {
+            var url = "https://geo-uploader.fgcz.uzh.ch/api/dataset/" + selected_ids.join(',');
+            window.open(url, '_blank');
+        } else {
+            alert('Please select at least one DataSet.');
+        }
+    });
 
 </script>
 
@@ -142,6 +156,9 @@
   - <%= link_to "Full table view", "/data_set/index_full" %><br>
 <% elsif @project and data_sets = @project.data_sets and data_sets.length != @data_sets.length %>
   - <%= link_to "Tree view", "/data_set/index_tree" %> - <%= link_to "Full table view", "/data_set/index_full" %>
+<% end %>
+<% if @fgcz and current_user and current_user.login %>
+- <a href="#" id="btn_geo_uploader">call GEO-uploader</a>
 <% end %>
 </span>
 </h3>
