@@ -258,7 +258,7 @@ class SushiApp
         if @dataset_sushi_id = DataSet.save_dataset_to_database(data_set_arr: data_set_arr.to_a.flatten, headers: headers, rows: rows, user: @current_user)
           unless @off_bfabric_registration
             if dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
-              dataset.register_bfabric(bfabric_application_number: @input_dataset_bfabric_application_number)
+              dataset.register_bfabric(bfabric_application_number: @input_dataset_bfabric_application_number, update_completed_samples: true)
             end
           end
         elsif data_set = headers[0] and data_set.instance_of?(DataSet)

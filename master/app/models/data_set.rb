@@ -78,7 +78,7 @@ class DataSet < ActiveRecord::Base
       self.save
     end
   end
-  def register_bfabric(op = 'new', bfabric_application_number: nil, register_child_dataset_too: nil)
+  def register_bfabric(op = 'new', bfabric_application_number: nil, register_child_dataset_too: nil, update_completed_samples: false)
     register_command = "register_sushi_dataset_into_bfabric"
     check_command = "check_dataset_bfabric"
     parent_dataset = self.data_set
@@ -154,10 +154,33 @@ class DataSet < ActiveRecord::Base
         else
           puts "# Not run DataSet#register_bfabric due to OrderID is missing in DataSet"
         end
+
+        # Update completed_samples if requested
+        if update_completed_samples
+          sample_available = 0
+          if self.completed_samples.to_i != self.samples_length
+            self.samples.each do |sample|
+              if sample_file = sample.to_hash.select{|header, file| header and header.tag?('File')}.first
+                file_list = sample_file.last.split(",") ## sample_file is an array holding the header and the file
+                all_files_exist = file_list.all? { |f| File.exist?(File.join(SushiFabric::GSTORE_DIR, f)) }
+                if all_files_exist
+                  sample_available+=1
+                end
+              else # in case of no [File] tag sample
+                sample_available+=1
+              end
+            end
+          else
+            sample_available = self.samples_length
+          end
+          self.completed_samples = sample_available
+          self.save
+        end
+
         unless op == 'only_one'
           if child_data_sets = self.data_sets
             child_data_sets.each do |child_data_set|
-              child_data_set.register_bfabric(op)
+              child_data_set.register_bfabric(op, update_completed_samples: update_completed_samples)
             end
           end
         end
