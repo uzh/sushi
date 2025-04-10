@@ -124,6 +124,36 @@
                 alert('Please select at least one DataSet.');
             }
         });
+        $('#btn_geo_uploader').click(function () {
+            var flag = false;
+            var jstree_selected = [];
+            if($("#data_set_tree").length){
+              var tree = $("#data_set_tree").jstree(true);
+              var jstree_selected = tree._data.checkbox.selected;
+            }
+            $('.target').each(function () {
+                if ($(this).prop("checked")) {
+                    flag = true;
+                    return false;
+                }
+            });
+            if ((flag == true) || (jstree_selected.length>0)) {
+                var selected_ids = [];
+                // jstree checkbox search
+                if(jstree_selected.length>0){
+                  $.each(tree._data.checkbox.selected, function(i, val){
+                    selected_ids.push(val);
+                  });
+                }
+                var url = "https://geo-uploader.fgcz.uzh.ch/api/dataset/" + selected_ids.join(',');
+                //alert(url);
+                window.open(url, '_blank');
+            } else {
+                // no selected
+                alert('Please select at least one DataSet.');
+            }
+
+        });
     })
 
     $(function () {
@@ -133,20 +163,6 @@
         }
     })
 
-    $('#btn_geo_uploader').click(function () {
-        var selected_ids = [];
-        $('.target').each(function () {
-            if ($(this).prop("checked")) {
-                selected_ids.push($(this).val());
-            }
-        });
-        if (selected_ids.length > 0) {
-            var url = "https://geo-uploader.fgcz.uzh.ch/api/dataset/" + selected_ids.join(',');
-            window.open(url, '_blank');
-        } else {
-            alert('Please select at least one DataSet.');
-        }
-    });
 
 </script>
 

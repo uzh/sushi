@@ -42,6 +42,7 @@ class DataSetController < ApplicationController
     render plain: sample_available
   end
   def index
+    @fgcz = SushiFabric::Application.config.fgcz?
     if warning = session['import_fail']
       @warning = warning
       session['import_fail'] = nil
