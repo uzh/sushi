@@ -73,6 +73,8 @@ if opt.dataset_tsv and !opt.class_name
   if opt.dataset_name
     usecase.dataset_name = opt.dataset_name
   end
+  # Set a default name for dataset registration
+  usecase.name = "DatasetRegistration"
   usecase.test_run
   exit
 end
