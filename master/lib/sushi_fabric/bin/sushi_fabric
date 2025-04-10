@@ -66,15 +66,19 @@ end
 
 # If only dataset_tsv is specified without class, just register the dataset
 if opt.dataset_tsv and !opt.class_name
-  usecase = SushiFabric::SushiApp.new
+  class DatasetRegistrationApp < SushiFabric::SushiApp
+    def initialize
+      super
+      @name = 'DatasetRegistration'
+    end
+  end
+  usecase = DatasetRegistrationApp.new
   usecase.project = opt.project
   usecase.user = opt.user
   usecase.dataset_tsv_file = opt.dataset_tsv
   if opt.dataset_name
     usecase.dataset_name = opt.dataset_name
   end
-  # Set a default name for dataset registration
-  usecase.name = "DatasetRegistration"
   usecase.test_run
   exit
 end
