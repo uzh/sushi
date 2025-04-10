@@ -70,9 +70,16 @@ if opt.dataset_tsv and !opt.class_name
     def initialize
       super
       @name = 'DatasetRegistration'
+      @analysis_category = 'DatasetRegistration'
+      @required_columns = []
+      @required_params = []
+      @output_files = []
     end
     def next_dataset
       {}  # Return empty hash since we don't need to generate next dataset
+    end
+    def commands
+      'echo "Dataset registration completed"'  # Dummy command since we don't need to run any actual commands
     end
   end
   usecase = DatasetRegistrationApp.new
