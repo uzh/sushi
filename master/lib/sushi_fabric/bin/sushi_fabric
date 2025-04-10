@@ -71,6 +71,9 @@ if opt.dataset_tsv and !opt.class_name
       super
       @name = 'DatasetRegistration'
     end
+    def next_dataset
+      {}  # Return empty hash since we don't need to generate next dataset
+    end
   end
   usecase = DatasetRegistrationApp.new
   usecase.project = opt.project
