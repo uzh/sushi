@@ -73,10 +73,32 @@
                 $('.target').each(function () {
                     $(this).prop("checked", true);
                 });
+                // Check all nodes in the tree
+                var tree = $("#data_set_tree").jstree(true);
+                tree.select_all();
+                tree.check_all();
             } else {
                 $('.target').each(function () {
                     $(this).prop("checked", false);
                 });
+                // Uncheck all nodes in the tree
+                var tree = $("#data_set_tree").jstree(true);
+                tree.deselect_all();
+                tree.uncheck_all();
+            }
+        });
+
+        // Add event handler for table checkboxes
+        $('.target').change(function() {
+            var datasetId = $(this).attr('id').replace('delete_flag_', '');
+            var isChecked = $(this).prop('checked');
+            
+            // Update tree checkbox
+            var tree = $("#data_set_tree").jstree(true);
+            if (isChecked) {
+                tree.check_node(datasetId);
+            } else {
+                tree.uncheck_node(datasetId);
             }
         });
 
