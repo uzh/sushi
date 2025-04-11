@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: sushi
+      MYSQL_USER: sushi_lover
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
   sushi:
     build: .
     user: "42366:10147"  # masaomi UID:GID
@@ -21,6 +33,12 @@ services:
     command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
     cap_add:
       - SYS_PTRACE  # Required for inotifywait
+    depends_on:
+      - db
+    env_file:
+      - .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   # Service to monitor for automount triggers
   mount_monitor:
@@ -38,4 +56,5 @@ volumes:
   bundle:
   shared:
   db_data: 
+  mysql_data:
 
