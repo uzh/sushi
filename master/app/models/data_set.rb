@@ -210,6 +210,18 @@ class DataSet < ActiveRecord::Base
     file_name = out_file||"#{self.name}_dataset.tsv"
     File.write(file_name, tsv_string)
   end
+  def sample_paths
+    paths = []
+    self.samples.each do |sample|
+      sample.to_hash.each do |header, file|
+        if (header.tag?('File') or header.tag?('Link')) and file !~ /http/
+          paths << File.dirname(file)
+        end
+      end
+    end
+    paths.uniq!
+    paths.map{|path| path.split('/')[0,2].join('/')}
+  end
 
   def self.save_dataset_to_database(data_set_arr:, headers:, rows:, user: nil, child: nil, sushi_app_name: nil)
     data_set_hash = Hash[*data_set_arr]
