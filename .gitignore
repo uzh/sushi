@@ -28,3 +28,4 @@ sushi.Rproj
 
 # Environment variables
 .env
+.env.production
