@@ -214,7 +214,7 @@ class DataSet < ActiveRecord::Base
     paths = []
     self.samples.each do |sample|
       sample.to_hash.each do |header, file|
-        if (header.tag?('File') or header.tag?('Link')) and file !~ /http/
+        if (header.tag?('File') or header.tag?('Link')) and file !~ /http/ and !file.nil?
           paths << File.dirname(file)
         end
       end
