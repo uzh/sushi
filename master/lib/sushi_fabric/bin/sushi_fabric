@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250410-135028'
+# Version = '20250411-093633'
+
 
 require 'logger'
 require 'sushi_fabric'
@@ -88,6 +89,9 @@ if opt.dataset_tsv and !opt.class_name
   usecase.dataset_tsv_file = opt.dataset_tsv
   if opt.dataset_name
     usecase.dataset_name = opt.dataset_name
+  end
+  if opt.input_dataset_application
+    usecase.input_dataset_bfabric_application_number = opt.input_dataset_application
   end
   dataset_id = usecase.test_run
   puts dataset_id
