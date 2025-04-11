@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250410-160533'
+# Version = '20250411-134956'
 
 require 'csv'
 require 'fileutils'
@@ -783,7 +783,7 @@ rm -rf #{@scratch_dir} || exit 1
       end
       unless NO_ROR
         @current_user ||= nil
-        @next_dataset_id = DataSet.save_dataset_to_database(data_set_arr: data_set_arr.to_a.flatten, headers: headers, rows: rows, user: @current_user, child: @child)
+        @next_dataset_id = DataSet.save_dataset_to_database(data_set_arr: data_set_arr.to_a.flatten, headers: headers, rows: rows, user: @current_user, child: @child, sushi_app_name: self.class.name)
         save_parameters_in_sushi_db
       end
     end

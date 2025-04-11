@@ -211,7 +211,7 @@ class DataSet < ActiveRecord::Base
     File.write(file_name, tsv_string)
   end
 
-  def self.save_dataset_to_database(data_set_arr:, headers:, rows:, user: nil, child: nil)
+  def self.save_dataset_to_database(data_set_arr:, headers:, rows:, user: nil, child: nil, sushi_app_name: nil)
     data_set_hash = Hash[*data_set_arr]
     
     # Find or create project
@@ -239,6 +239,9 @@ class DataSet < ActiveRecord::Base
     if comment = data_set_hash['Comment'] and !comment.to_s.empty?
       data_set.comment = comment
     end
+
+    # Set sushi_app_name if exists
+    data_set.sushi_app_name = sushi_app_name if sushi_app_name
 
     # Create samples
     sample_hash = {}
