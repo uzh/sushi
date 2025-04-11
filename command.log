@@ -1,0 +1,24 @@
+# 20250411 masa /srv/sushi/docker_test_sushi_20250411
+sudo docker compose build
+# docker: 'compose' is not a docker command.
+
+docker --version
+# Docker version 20.10.24+dfsg1, build 297e128
+
+# SUSHI-Docker-Compose-install-20250411
+# https://chatgpt.com/c/67f8d3c1-6f74-800e-9f75-c433335d8a41
+mkdir -p ~/.docker/cli-plugins/
+curl -SL https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+chmod +x ~/.docker/cli-plugins/docker-compose
+
+docker compose version
+# Docker Compose version v2.27.0
+
+sudo mkdir -p /usr/local/lib/docker/cli-plugins/
+chmod 755 ~/.docker/
+sudo cp /home/masaomi/.docker/cli-plugins/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose
+sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+
+sudo docker compose version
+# Docker Compose version v2.27.0
+master/app/models/data_set.rb
