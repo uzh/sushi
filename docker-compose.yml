@@ -9,8 +9,8 @@ services:
       MYSQL_DATABASE: sushi
       MYSQL_USER: sushi_lover
       MYSQL_PASSWORD: password
-    ports:
-      - "3306:3306"
+    #ports: # this is not needed if no access from host
+    #  - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
   sushi:

@@ -59,7 +59,7 @@ RUN mkdir -p /app/db && chown -R masaomi:SG_Employees /app/db
 USER masaomi
 
 # Run database migrations
-RUN bundle exec rake db:migrate:status RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+#RUN bundle exec rake db:migrate:status RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1
 
 # Expose port 3000
 EXPOSE 3000
