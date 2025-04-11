@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250411-134956'
+# Version = '20250411-143604'
 
 require 'csv'
 require 'fileutils'
@@ -325,9 +325,8 @@ class SushiApp
   end
   def check_application_parameters
     if @required_params and (@required_params - @params.keys).empty?
-      # PD, 20230623, the following fix changed parameters.tsv info, and reverted
-      #@output_params = {"sushi_app" => self.class.name}.merge(@params.clone)
-      @output_params = @params.clone
+      #@output_params = @params.clone
+      @output_params = {"sushi_app" => self.class.name}.merge(@params.clone)
     end
   end
   def set_user_parameters
@@ -550,7 +549,7 @@ rm -rf #{@scratch_dir} || exit 1
   def save_parameters_as_tsv
     file_path = File.join(@scratch_result_dir, @parameter_file)
     CSV.open(file_path, 'w', :col_sep=>"\t") do |out|
-      out << ["sushi_app", self.class.name]
+      #out << ["sushi_app", self.class.name]
       @output_params.each do |key, value|
         if @output_params[key, 'file_upload'] and !value.to_s.empty?
           uploaded_file_path = File.join(@result_dir, "uploaded", File.basename(value))
