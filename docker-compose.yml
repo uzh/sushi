@@ -6,6 +6,7 @@ services:
     user: "42366:10147"  # masaomi UID:GID
     ports:
       - "3000:3000"
+    #network_mode: "host"  # Use host network directly
     volumes:
       - ./master:/app
       - bundle:/app/vendor/bundle
@@ -15,6 +16,7 @@ services:
       - RAILS_ENV=production
       - RAILS_LOG_TO_STDOUT=true
       - BUNDLE_PATH=/app/vendor/bundle
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     entrypoint: ["entrypoint.sh"]
     command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
     cap_add:
@@ -25,6 +27,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.monitor
+    # network_mode: "host"  # Use host network directly
     volumes:
       - /srv/gstore/projects:/srv/gstore/projects:shared
       - ./shared:/shared

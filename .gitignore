@@ -25,3 +25,6 @@ master/bak
 .Rproj.user
 .Rhistory
 sushi.Rproj
+
+# Environment variables
+.env
