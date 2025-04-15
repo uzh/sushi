@@ -35,9 +35,10 @@ class EzPyzBin2CellApp <  SushiFabric::SushiApp
     @modules = []
     @inherit_tags = ["Factor", "B-Fabric"]
   end
-  def next_dataset
-    report_dir = File.join(@result_dir, "#{@dataset['Name']}")
-    {'Name'=>"#{@params['name']}_#{@dataset['Name']}",
+  def next_dataset    
+    dir_name = "#{@params['name']}_#{@dataset['Name']}"
+    report_dir = File.join(@result_dir, dir_name)
+    {'Name'=> dir_name,
     'Bin2Cell [File]'=>report_dir,
     'Figures [Link]'=>File.join(report_dir, 'figures'),
     'Anndata [Link]'=>File.join(report_dir, 'cdata.h5ad'),
