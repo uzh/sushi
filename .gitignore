@@ -14,7 +14,7 @@ master/lib/*.yml
 master/config/environments/development.rb
 master/.bundle/
 master/config/ldap.yml
-master/config/database.yml
+#master/config/database.yml
 master/config/initializers/devise.rb
 master/.Rproj.user
 master/.Rhistory

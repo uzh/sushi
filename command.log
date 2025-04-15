@@ -22,3 +22,13 @@ sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 sudo docker compose version
 # Docker Compose version v2.27.0
 master/app/models/data_set.rb
+
+# 20250415 SUSHI Docker compose DB container
+sudo docker container ps -a
+sudo docker container prune
+sudo docker images prune
+
+sudo docker compose exec db mysql -u sushi_lover -ppassword sushi
+# show tables;
+# select * from data_sets;
+
