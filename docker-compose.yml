@@ -9,7 +9,7 @@ services:
       MYSQL_DATABASE: sushi
       MYSQL_USER: sushi_lover
       MYSQL_PASSWORD: password
-    #ports: # this is not needed if no access from host
+    #ports: # this is not needed if no access from host
     #  - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
@@ -24,6 +24,7 @@ services:
       - /srv/gstore/projects:/srv/gstore/projects:shared
       - ./shared:/shared
       - db_data:/app/db
+      - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock  # Add MySQL socket
     environment:
       - RAILS_ENV=production
       - RAILS_LOG_TO_STDOUT=true
@@ -37,6 +38,8 @@ services:
       - db
     env_file:
       - .env
+      # - .env.production.db  # Container MySQL settings (commented out)
+      - .env.production.host  # Host MySQL settings (uncommented)
     extra_hosts:
       - "host.docker.internal:host-gateway"
 

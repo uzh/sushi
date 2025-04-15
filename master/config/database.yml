@@ -19,12 +19,23 @@ test:
 #   <<: *default
 #   database: db/production.sqlite3
 
-# New production settings for MySQL
+# Production settings for container MySQL
+# production:
+#   adapter: mysql2
+#   encoding: utf8mb4
+#   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+#   username: sushi_lover
+#   password: password
+#   host: db
+#   database: sushi
+
+# Production settings for host MySQL using Unix socket
 production:
   adapter: mysql2
-  encoding: utf8mb4
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: sushi_lover
-  password: password
-  host: db
-  database: sushi
+  pool: 10
+  username: <%= ENV.fetch("MYSQL_USER") %>
+  password: <%= ENV.fetch("MYSQL_PASSWORD") %>
+  database: <%= ENV.fetch("MYSQL_DATABASE") %>
+  encoding: utf8
+  socket: /var/run/mysqld/mysqld.sock
+  reconnect: true
