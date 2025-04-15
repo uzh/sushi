@@ -9,7 +9,7 @@ class EzPyzBin2CellApp <  SushiFabric::SushiApp
   def initialize
     super
     @name = 'EzPyzBin2CellApp'
-    @params['process_mode'] = 'DATASET'
+    @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'Spatial'
     @description =<<-EOS
     A Bin2Cell app for VisiumHD data<br/>
@@ -29,15 +29,15 @@ class EzPyzBin2CellApp <  SushiFabric::SushiApp
     @params['cores'] = '8'
     @params['ram'] = '30'
     @params['scratch'] = '100'
-    @params['name'] = 'EzPyzBin2CellApp'
+    @params['name'] = 'Bin2CellApp'
     @params['sizeFactors'] = '1,3,5,10,20,30'
     @params['mail'] = ""
     @modules = []
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
-    report_dir = File.join(@result_dir, @params['name'])
-    {'Name'=>@params['name'],
+    report_dir = File.join(@result_dir, "#{@dataset['Name']}")
+    {'Name'=>"#{@params['name']}_#{@dataset['Name']}",
     'Bin2Cell [File]'=>report_dir,
     'Figures [Link]'=>File.join(report_dir, 'figures'),
     'Anndata [Link]'=>File.join(report_dir, 'cdata.h5ad'),
