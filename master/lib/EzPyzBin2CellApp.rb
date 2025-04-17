@@ -30,7 +30,6 @@ class EzPyzBin2CellApp <  SushiFabric::SushiApp
     @params['ram'] = '30'
     @params['scratch'] = '100'
     @params['name'] = 'Bin2CellApp'
-    @params['sizeFactors'] = '1,3,5,10,20,30'
     @params['mail'] = ""
     @modules = []
     @inherit_tags = ["Factor", "B-Fabric"]
