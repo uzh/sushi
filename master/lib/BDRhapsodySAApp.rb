@@ -70,6 +70,12 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
       'UnfilteredCountMatrix [Link]'=>File.join(report_dir, "#{dashed_name}_RSEC_MolsPerCell_Unfiltered_MEX"),
       'Read Count'=>@dataset['Read Count']
     }.merge(extract_columns(@inherit_tags))
+    
+    # Add AlignmentFile column if generateBamOutput is true
+    if @params['generateBamOutput']
+      dataset['AlignmentFile [File]'] = File.join(report_dir, "#{dashed_name}_Alignment.bam")
+    end
+    
     dataset
   end
   def commands
