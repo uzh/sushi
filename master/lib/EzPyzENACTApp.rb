@@ -14,7 +14,7 @@ class EzPyzENACTApp <  SushiFabric::SushiApp
     @description =<<-EOS
     An ENACT app for VisiumHD data<br/>
     EOS
-    @required_columns = ['Name','BinnedOutputs2um','SourceImage','SpaceRanger']
+    @required_columns = ['Name','BinnedOutputs2um','SourceImage']
     @required_params = ['name']
     @params['cores'] = '8'
     @params['ram'] = '30'
@@ -38,7 +38,7 @@ class EzPyzENACTApp <  SushiFabric::SushiApp
     @params['cell_annotation_method', 'default'] = 'celltypist'
     @params['cell_annotation_method', 'single_selection'] = true
     @params['cell_typist_model'] = ''
-    @params['cell_typist_model', 'description'] = 'Specify the model to use with CellTypist (if selected above)'
+    @params['cell_typist_model', 'description'] = 'Specify the model to use with CellTypist (if selected above), models can be found here: https://www.celltypist.org/models'
     @modules = []
     @inherit_tags = ["Factor", "B-Fabric"]
   end
@@ -47,7 +47,7 @@ class EzPyzENACTApp <  SushiFabric::SushiApp
     report_dir = File.join(@result_dir, dir_name) #might need to add equiv of ENACT_output_files/ENACTApp_VisiumHD_Colon_Cancer
     {'Name'=> dir_name,
     'ENACT [File]'=> report_dir,
-    'Anndata [File]' => File.join(report_dir, "#{@params['bin_to_cell_method']}", "#{@params['cell_annotation_method']}_results", 'cells_adata.csv'),
+    'Anndata [Link]' => File.join(report_dir, "chunks", "#{@params['bin_to_cell_method']}", "#{@params['cell_annotation_method']}_results", 'cells_adata.h5'),
     'TissUUmap [Link]'=> File.join(report_dir, 'tmap')
     }
   end
