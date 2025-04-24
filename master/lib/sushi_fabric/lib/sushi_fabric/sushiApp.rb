@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250411-143604'
+# Version = '20250424-100614'
 
 require 'csv'
 require 'fileutils'
@@ -168,6 +168,12 @@ class ::Hash
       get(k1)
     end
   end
+  def deep_clone_with_desc
+    new_hash = self.clone
+    new_hash.instance_variable_set(:@desc, @desc.clone) if @desc
+    new_hash.instance_variable_set(:@defaults, @defaults.clone) if @defaults
+    new_hash
+  end
 end
 class ::String
   def tag?(tag)
@@ -325,8 +331,9 @@ class SushiApp
   end
   def check_application_parameters
     if @required_params and (@required_params - @params.keys).empty?
-      #@output_params = @params.clone
-      @output_params = {"sushi_app" => self.class.name}.merge(@params.clone)
+      @output_params = @params.deep_clone_with_desc
+      @output_params["sushi_app"] = self.class.name
+      @output_params
     end
   end
   def set_user_parameters
@@ -549,7 +556,6 @@ rm -rf #{@scratch_dir} || exit 1
   def save_parameters_as_tsv
     file_path = File.join(@scratch_result_dir, @parameter_file)
     CSV.open(file_path, 'w', :col_sep=>"\t") do |out|
-      #out << ["sushi_app", self.class.name]
       @output_params.each do |key, value|
         if @output_params[key, 'file_upload'] and !value.to_s.empty?
           uploaded_file_path = File.join(@result_dir, "uploaded", File.basename(value))
