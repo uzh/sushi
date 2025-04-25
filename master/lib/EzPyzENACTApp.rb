@@ -37,7 +37,7 @@ class EzPyzENACTApp <  SushiFabric::SushiApp
     @params['cell_annotation_method','description'] = 'Use the cell-wise transcript counts to infer the cell labels/ phenotypes using methods used for single-cell RNA seq analysis'    
     @params['cell_annotation_method', 'default'] = 'celltypist'
     @params['cell_annotation_method', 'single_selection'] = true
-    @params['cell_typist_model'] = ''
+    @params['cell_typist_model'] = ['Immune_All_Low.pkl', 'Immune_All_High.pkl', 'Adult_Mouse_Gut.pkl', 'COVID19_Immune_Landscape.pkl', 'Cells_Fetal_Lung.pkl', 'Cells_Intestinal_Tract.pkl', 'Cells_Lung_Airway.pkl', 'Developing_Mouse_Brain.pkl', 'Healthy_COVID19_PBMC.pkl', 'Human_Lung_Atlas.pkl', 'Nuclei_Lung_Airway.pkl', 'Pan_Fetal_Human.pkl']
     @params['cell_typist_model', 'description'] = 'Specify the model to use with CellTypist (if selected above), models can be found here: https://www.celltypist.org/models'
     @modules = []
     @inherit_tags = ["Factor", "B-Fabric"]
