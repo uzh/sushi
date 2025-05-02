@@ -75,7 +75,8 @@ SushiFabric::Application.configure do
   config.eager_load = true
 
   def config.fgcz?
-    @fgcz ||= (`hostname`.chomp =~ /fgcz/)
+    #@fgcz ||= (`hostname`.chomp =~ /fgcz/)
+    @fgcz = true
   end
 
   # fgcz
@@ -93,4 +94,5 @@ SushiFabric::Application.configure do
     config.sushi_server_class = "SushiFabric::TestSushi"
   end
 
+  config.secret_key_base = 'dummy_secret_key_base_for_development_purposes_only_change_this_in_production'
 end
