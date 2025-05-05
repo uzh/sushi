@@ -29,6 +29,16 @@ class EzPyzENACTApp <  SushiFabric::SushiApp
     @params['bin_to_cell_assignment', 'description'] = 'Run the bin_to_cell_assignment step'
     @params['cell_type_annotation'] = true
     @params['cell_type_annotation', 'description'] = 'Run the cell_type_annotation step'
+
+    @params['destripe_norm'] = true
+    @params['destripe_norm', 'description'] = 'Run the destriping step (same as in bin2cell)'
+    @params['prob_thresh'] = 0.005
+    @params['prob_thresh', 'description'] = 'Probability threshold for stardist cell detection'
+    @params['expand_by_nbins'] = 2
+    @params['expand_by_nbins', 'description'] = 'Distance (in bin lengths) to expand the nuclei to obtain cell areas'
+    @params['n_hvg'] = 1000
+    @params['n_hvg', 'description'] = 'Number of highly variable genes to use (20k means all genes)'
+
     @params['bin_to_cell_method'] = ['weighted_by_area', 'naive', 'weighted_by_cluster', 'weighted_by_gene']
     @params['bin_to_cell_method', 'description'] = 'Method to assign bins to cells'
     @params['bin_to_cell_method', 'default'] = 'weighted_by_area'
@@ -37,7 +47,61 @@ class EzPyzENACTApp <  SushiFabric::SushiApp
     @params['cell_annotation_method','description'] = 'Use the cell-wise transcript counts to infer the cell labels/ phenotypes using methods used for single-cell RNA seq analysis'    
     @params['cell_annotation_method', 'default'] = 'celltypist'
     @params['cell_annotation_method', 'single_selection'] = true
-    @params['cell_typist_model'] = ['Immune_All_Low.pkl', 'Immune_All_High.pkl', 'Adult_Mouse_Gut.pkl', 'COVID19_Immune_Landscape.pkl', 'Cells_Fetal_Lung.pkl', 'Cells_Intestinal_Tract.pkl', 'Cells_Lung_Airway.pkl', 'Developing_Mouse_Brain.pkl', 'Healthy_COVID19_PBMC.pkl', 'Human_Lung_Atlas.pkl', 'Nuclei_Lung_Airway.pkl', 'Pan_Fetal_Human.pkl']
+    @params['cell_typist_model'] = ['Immune_All_Low.pkl', 
+                                    'Immune_All_High.pkl', 
+                                    'Adult_COVID19_PBMC.pkl', 
+                                    'Adult_CynomolgusMacaque_Hippocampus.pkl', 
+                                    'Adult_Human_MTG.pkl', 
+                                    'Adult_Human_PancreaticIslet.pkl', 
+                                    'Adult_Human_PrefrontalCortex.pkl', 
+                                    'Adult_Human_Skin.pkl', 
+                                    'Adult_Human_Vascular.pkl', 
+                                    'Adult_Mouse_Gut.pkl', 
+                                    'Adult_Mouse_OlfactoryBulb.pkl', 
+                                    'Adult_Pig_Hippocampus.pkl', 
+                                    'Adult_RhesusMacaque_Hippocampus.pkl', 
+                                    'Autopsy_COVID19_Lung.pkl', 
+                                    'COVID19_HumanChallenge_Blood.pkl', 
+                                    'COVID19_Immune_Landscape.pkl', 
+                                    'Cells_Adult_Breast.pkl', 
+                                    'Cells_Fetal_Lung.pkl', 
+                                    'Cells_Human_Tonsil.pkl', 
+                                    'Cells_Intestinal_Tract.pkl', 
+                                    'Cells_Lung_Airway.pkl', 
+                                    'Developing_Human_Brain.pkl', 
+                                    'Developing_Human_Gonads.pkl', 
+                                    'Developing_Human_Hippocampus.pkl', 
+                                    'Developing_Human_Organs.pkl', 
+                                    'Developing_Human_Thymus.pkl', 
+                                    'Developing_Mouse_Brain.pkl', 
+                                    'Developing_Mouse_Hippocampus.pkl', 
+                                    'Fetal_Human_AdrenalGlands.pkl', 
+                                    'Fetal_Human_Pancreas.pkl', 
+                                    'Fetal_Human_Pituitary.pkl', 
+                                    'Fetal_Human_Retina.pkl', 
+                                    'Fetal_Human_Skin.pkl', 
+                                    'Healthy_Adult_Heart.pkl', 
+                                    'Healthy_COVID19_PBMC.pkl', 
+                                    'Healthy_Human_Liver.pkl', 
+                                    'Healthy_Mouse_Liver.pkl', 
+                                    'Human_AdultAged_Hippocampus.pkl', 
+                                    'Human_Colorectal_Cancer.pkl', 
+                                    'Human_Developmental_Retina.pkl', 
+                                    'Human_Embryonic_YolkSac.pkl', 
+                                    'Human_Endometrium_Atlas.pkl', 
+                                    'Human_IPF_Lung.pkl', 
+                                    'Human_Longitudinal_Hippocampus.pkl', 
+                                    'Human_Lung_Atlas.pkl', 
+                                    'Human_PF_Lung.pkl', 
+                                    'Human_Placenta_Decidua.pkl', 
+                                    'Lethal_COVID19_Lung.pkl', 
+                                    'Mouse_Dentate_Gyrus.pkl', 
+                                    'Mouse_Isocortex_Hippocampus.pkl', 
+                                    'Mouse_Postnatal_DentateGyrus.pkl', 
+                                    'Mouse_Whole_Brain.pkl', 
+                                    'Nuclei_Lung_Airway.pkl', 
+                                    'Pan_Fetal_Human.pkl'
+                                  ]
     @params['cell_typist_model', 'description'] = 'Specify the model to use with CellTypist (if selected above), models can be found here: https://www.celltypist.org/models'
     @modules = []
     @inherit_tags = ["Factor", "B-Fabric"]
@@ -52,6 +116,6 @@ class EzPyzENACTApp <  SushiFabric::SushiApp
     }
   end
   def commands
-    run_PyApp("ENACT",conda_env: 'tmp_enact')
+    run_PyApp("ENACT",conda_env: 'tmp_benact')
   end
 end
