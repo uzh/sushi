@@ -15,8 +15,9 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     EOS
     @required_columns = ['Name', 'Read1', 'Read2', 'Species']
     @required_params = ['name']
-    @params['cores'] = ['8', '16', '32']
-    @params['ram'] = ['120', '240', '480']
+    @params['cores'] = ['8', '16', '32', '64']
+    @params['cores', 'description'] = "Note: Set a very high thread count for runs containing VDJ assays"
+    @params['ram'] = ['120', '240', '480', '960']
     @params['ram', 'description'] = "If `generateBamOutput=true`, you may need to set a high amount of RAM"
     @params['scratch'] = ['200', '500', '800']
     @params['scratch', 'description'] = "If `generateBamOutput=true`, you may need to set a high amount of scratch space."
