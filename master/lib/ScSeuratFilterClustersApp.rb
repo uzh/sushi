@@ -55,11 +55,11 @@ Single cell report<br/>
                           "kidneyref", "lungref", "mousecortexref", "pancreasref", "pbmcref", "tonsilref","/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0"]
     @params['SingleR'] = ['none', 'BlueprintEncodeData', 'DatabaseImmuneCellExpressionData', 'HumanPrimaryCellAtlasData', 
                           'ImmGenData', 'MonacoImmuneData', 'MouseRNAseqData', 'NovershternHematopoieticData']
-    @params['npcs'] = 20
+    @params['npcs'] = 15
     @params['npcs', 'description'] = 'The maximal top dimensions (pcs) to use for reduction. Do not use more principal components than pcGenes (when used).'
     @params['resolution'] = [0.6, 0.2, 0.4, 0.6, 0.8, 1]
     @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
-    @params['computePathwayTFActivity'] = true
+    @params['computePathwayTFActivity'] = false
     @params['computePathwayTFActivity', 'description'] = 'Whether to calculate the TF and pathway activities (Note: Only for human and mouse)'
     @params['specialOptions'] = ''
     @params['mail'] = ""
