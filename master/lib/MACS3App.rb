@@ -59,7 +59,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     bam_link = File.join(@result_dir, "#{@dataset['Name']}_processed.bam")
     bai_link = File.join(@result_dir, "#{@dataset['Name']}_processed.bam.bai")
     
-    peakfile_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.xls")
+    peakfile_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.xlsx")
     bedfile_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.bed")
     peakseq_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.fa")
 
