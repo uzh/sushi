@@ -35,6 +35,8 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @params['cmdOptions', 'description'] = 'default options deactivate model building and extend reads in 5p->3p direction to fix-sized fragments.'
     @params['genomeSize'] = '0'
     @params['genomeSize', 'description'] = 'if you keep 0 the genome size is calculated from the given reference genome'
+    @params['qValue'] = '0.05'
+    @params['qValue', 'description'] = 'The q-value (minimum FDR) cutoff to call significant regions. Default is 0.05. For broad marks, you can try 0.01 as the cutoff.'
     @params['removeDuplicates'] = true
     @params['removeDuplicates', 'description'] = 'remove duplicates before running MACS3. The resulting processed.bam does not contain duplicates anymore.'
     @params['specialOptions'] = ''
