@@ -27,6 +27,8 @@ Single cell report<br/>
     @params['ClusterAnnotationFile'] = ''
     @params['ClusterAnnotationFile', 'file_upload'] = true
     @params['ClusterAnnotationFile', 'description'] = "A 3-column mapping of old cluster to new cluster labels in .xlsx format. Use the 'clusterInfos.xlsx' file as a template. The first column indicates the sample name. The second column are the old cluster labels. The third column indicates if the cluster should be kept or not. The first row should be a header indicating the column names. We recommend using the names provided in 'clusterInfos.xlsx', namely 'Sample', 'Cluster', and 'ClusterLabel'. To remove a cluster, label it as REMOVE."
+    @params['identityColumn'] = 'seurat_clusters'
+    @params['identityColumn', 'description'] = "The name of the identity column to use for calculating the markers and annotate the cells after the subsetting. By default, the column 'seurat_clusters', the variable of the new clusterings, is used. Change this option if you want to e.g. re-use previous labels"
     @params['SCT.regress.CellCycle'] = false
     @params['SCT.regress.CellCycle', 'description'] = 'Choose CellCycle to be regressed out when using the SCTransform method if it is a bias.'
     @params['DE.method'] = ['wilcox', 'LR']
