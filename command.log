@@ -4,7 +4,7 @@
 git clone git@gitlab.bfabric.org:Genomics/gtools.git
 cp -r /usr/local/ngseq/gems/ master/
 
-cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/devise.rb master/config/initialize/devise.rb
+cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/devise.rb master/config/initializers/devise.rb
 cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/docker-compose.yml .
 cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/Dockerfile .
 cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/Dockerfile.monitor .
