@@ -75,7 +75,7 @@ Single cell report<br/>
      'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
      'SC Cluster Report [File]'=>report_file,
-     'SC Seurat [File]'=>File.join(report_file, "scData.qs2"),
+     'SC Seurat [Link]'=>File.join(report_file, "scData.qs2"),
     }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
