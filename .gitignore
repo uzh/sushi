@@ -26,5 +26,9 @@ master/bak
 .Rhistory
 sushi.Rproj
 
+shared/
+gtools/
+master/gems/
+
 # Environment variables
 .env.production.host

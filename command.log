@@ -1,0 +1,17 @@
+# 20250508
+# conda activate py3.11.5_websocket
+# python run_gstore_ws_server.py
+git clone git@gitlab.bfabric.org:Genomics/gtools.git
+cp -r /usr/local/ngseq/gems/ master/
+
+cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/devise.rb master/config/initialize/devise.rb
+cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/docker-compose.yml .
+cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/Dockerfile .
+cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/Dockerfile.monitor .
+cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/FGCZ_CA_2019.crt .
+cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/gstore-list_wrapper.py .
+cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/gstore-request_wrapper.py .
+cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/run_gstore_ws_server.py .
+cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/slurm_20250425.conf .
+cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/test_gstore-list_ws_client.py .
+cp /srv/sushi/sushi_setup_script/docker_file_set_20250508/.env.production.* .
