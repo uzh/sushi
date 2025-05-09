@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250424-100614'
+# Version = '20250509-094052'
 
 require 'csv'
 require 'fileutils'
@@ -810,24 +810,25 @@ rm -rf #{@scratch_dir} || exit 1
     warn 'gstore_job_script_paths: '
     warn gstore_job_script_paths
 
-
     #unless @job_ids.empty? or NO_ROR
     #unless submit_jobs.empty?
     unless gstore_job_script_paths.empty?
       # save job and dataset relation in Sushi DB
       gstore_job_script_paths.each do |script_path|
-        new_job = Job.new
-        new_job.script_path = script_path
-        new_job.next_dataset_id = @next_dataset_id
-        new_job.status = "CREATED"
-        new_job.user = (@user || "sushi_lover")
-        new_job.input_dataset_id = dataset.id if dataset
-        new_job.save
-        #if dataset
-        #  new_job.data_set = dataset
-        #  new_job.data_set.jobs << new_job
-        #  new_job.data_set.save
-        #end
+        unless mock
+          new_job = Job.new
+          new_job.script_path = script_path
+          new_job.next_dataset_id = @next_dataset_id
+          new_job.status = "CREATED"
+          new_job.user = (@user || "sushi_lover")
+          new_job.input_dataset_id = dataset.id if dataset
+          new_job.save
+          #if dataset
+          #  new_job.data_set = dataset
+          #  new_job.data_set.jobs << new_job
+          #  new_job.data_set.save
+          #end
+        end
       end
     end
 
