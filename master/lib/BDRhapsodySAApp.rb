@@ -17,9 +17,9 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     @required_params = ['name']
     @params['cores'] = ['8', '16', '32', '48', '64']
     @params['cores', 'description'] = "Note: Set a very high thread count for runs containing VDJ assays"
-    @params['ram'] = ['120', '240', '480', '960']
+    @params['ram'] = ['120', '240', '480', '720', '960']
     @params['ram', 'description'] = "If `generateBamOutput=true`, you may need to set a high amount of RAM"
-    @params['scratch'] = ['200', '500', '800']
+    @params['scratch'] = ['200', '500', '900']
     @params['scratch', 'description'] = "If `generateBamOutput=true`, you may need to set a high amount of scratch space."
     @params['name'] = 'BDRhapsodySA'
     @params['refBuild'] = ref_selector
