@@ -15,7 +15,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     EOS
     @required_columns = ['Name', 'Read1', 'Read2', 'Species']
     @required_params = ['name']
-    @params['cores'] = ['8', '16', '32', '64']
+    @params['cores'] = ['8', '16', '32', '48', '64']
     @params['cores', 'description'] = "Note: Set a very high thread count for runs containing VDJ assays"
     @params['ram'] = ['120', '240', '480', '960']
     @params['ram', 'description'] = "If `generateBamOutput=true`, you may need to set a high amount of RAM"
@@ -76,7 +76,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     
     # Add AlignmentFile column if generateBamOutput is true
     if @params['generateBamOutput']
-      dataset['AlignmentFile [File]'] = File.join(report_dir, "#{dashed_name}_Alignment.bam")
+      dataset['AlignmentFile [Link]'] = File.join(report_dir, "Combined_#{dashed_name}_Bioproduct.bam")
     end
     
     dataset
