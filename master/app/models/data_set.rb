@@ -274,4 +274,14 @@ class DataSet < ActiveRecord::Base
     data_set.save
     data_set.id
   end
+  def file_paths
+    samples.flat_map do |sample|
+      begin
+        sample.to_hash.select{|header, file| header and header.tag?('File')}.values
+      rescue => e
+        Rails.logger.warn "Failed to parse key_value for Sample ID=#{sample.id}: #{e}"
+        []
+      end
+    end.uniq
+  end
 end
