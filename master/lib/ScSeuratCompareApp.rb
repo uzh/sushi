@@ -32,7 +32,7 @@ class ScSeuratCompareApp < SushiFabric::SushiApp
     @params['grouping'] = 'Condition'
     @params['grouping', 'description'] = "The Seurat metadata column which contains the sample grouping information"
     @params['pseudoBulkMode'] = false
-    @params['pseudoBulkMode', 'description'] = "Weather to aggregate the counts to the pseudo-bulk level prior to performing the DE experiments. Setting this to true also requires setting 'replicateGrouping'"
+    @params['pseudoBulkMode', 'description'] = "Whether to aggregate the counts to the pseudo-bulk level prior to performing the DE experiments. Setting this to true also requires setting 'replicateGrouping'"
     @params['replicateGrouping'] = ""
     @params['replicateGrouping', 'description'] = "(pseudo-bulk mode only) The column in the Seurat metadata containing the replicate group information."
     @params['sampleGroup'] = ''
