@@ -429,7 +429,7 @@ class SushiApp
     @out.print <<-EOF
 #!/bin/bash
 #{hold_jid_option}
-set -e
+set -eux
 set -o pipefail
 umask 0002
 
