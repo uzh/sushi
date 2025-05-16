@@ -78,7 +78,7 @@ class DataSet < ActiveRecord::Base
       self.save
     end
   end
-  def register_bfabric(op = 'new', bfabric_application_number: nil, register_child_dataset_too: nil)
+  def register_bfabric(op = 'new', bfabric_application_number: nil, register_child_dataset_too: nil, update_completed_samples: false)
     register_command = "register_sushi_dataset_into_bfabric"
     check_command = "check_dataset_bfabric"
     parent_dataset = self.data_set
@@ -90,17 +90,17 @@ class DataSet < ActiveRecord::Base
                          true
                        elsif op == 'update' and bfabric_id = self.bfabric_id
                          com = "#{check_command} #{bfabric_id}"
-                         puts "$ #{com}"
+                         warn "$ #{com}"
                          if out = `#{com}`
-                           puts "# returned: #{out.chomp.downcase}"
+                           warn "# returned: #{out.chomp.downcase}"
                            eval(out.chomp.downcase)
                          end
                        end
 
         self.check_order_ids
 
-        puts "parent_dataset.nil?= #{parent_dataset.nil?}"
-        puts "self.order_ids= #{self.order_ids}"
+        warn "parent_dataset.nil?= #{parent_dataset.nil?}"
+        warn "self.order_ids= #{self.order_ids}"
         command = if self.order_ids.uniq.length == 1 and order_id = self.order_ids.first.to_i
                     if parent_dataset.nil? # root dataset
                       if order_id > 8000
@@ -130,40 +130,63 @@ class DataSet < ActiveRecord::Base
           open(dataset_tsv, "w") do |out|
             out.print self.tsv_string
           end
-          puts "# created: #{dataset_tsv}"
+          warn "# created: #{dataset_tsv}"
           if File.exist?(dataset_tsv) and bfabric_ids = `#{command}`
-            puts "$ #{command}"
-            puts "# mode: #{op}"
-            puts "# bfabric_ids: #{bfabric_ids}"
+            warn "$ #{command}"
+            warn "# mode: #{op}"
+            warn "# bfabric_ids: #{bfabric_ids}"
             if bfabric_ids.split(/\n/).uniq.length < 2
               workunit_id, dataset_id = bfabric_ids.chomp.split(',')
               if workunit_id.to_i > 0
                 self.bfabric_id = dataset_id.to_i
                 self.workunit_id = workunit_id.to_i
-                puts "# DataSetID  (BFabric): #{self.bfabric_id}"
-                puts "# WorkunitID (BFabric): #{self.workunit_id}"
+                warn "# DataSetID  (BFabric): #{self.bfabric_id}"
+                warn "# WorkunitID (BFabric): #{self.workunit_id}"
                 self.save
               end
             else
-              puts "# Not executed properly:"
-              puts "# BFabricID: #{bfabric_id}"
+              warn "# Not executed properly:"
+              warn "# BFabricID: #{bfabric_id}"
             end
             File.unlink dataset_tsv
-            puts "# removed: #{dataset_tsv}"
+            warn "# removed: #{dataset_tsv}"
           end
         else
-          puts "# Not run DataSet#register_bfabric due to OrderID is missing in DataSet"
+          warn "# Not run DataSet#register_bfabric due to OrderID is missing in DataSet"
         end
+
+        # Update completed_samples if requested
+        if update_completed_samples
+          sample_available = 0
+          if self.completed_samples.to_i != self.samples_length
+            self.samples.each do |sample|
+              if sample_file = sample.to_hash.select{|header, file| header and header.tag?('File')}.first
+                file_list = sample_file.last.split(",") ## sample_file is an array holding the header and the file
+                all_files_exist = file_list.all? { |f| File.exist?(File.join(SushiFabric::GSTORE_DIR, f)) }
+                if all_files_exist
+                  sample_available+=1
+                end
+              else # in case of no [File] tag sample
+                sample_available+=1
+              end
+            end
+          else
+            sample_available = self.samples_length
+          end
+          self.completed_samples = sample_available
+          self.save
+        end
+
         unless op == 'only_one'
           if child_data_sets = self.data_sets
             child_data_sets.each do |child_data_set|
-              child_data_set.register_bfabric(op)
+              child_data_set.register_bfabric(op, update_completed_samples: update_completed_samples)
             end
           end
         end
       end
     else
-      puts "# Not run DataSet#register_bfabric because its parental dataset is not registered in bfabric"
+      warn "# Not run DataSet#register_bfabric because its parental dataset is not registered in bfabric"
     end
   end
   def update_resource_size
@@ -187,8 +210,24 @@ class DataSet < ActiveRecord::Base
     file_name = out_file||"#{self.name}_dataset.tsv"
     File.write(file_name, tsv_string)
   end
+  def sample_paths
+    paths = []
+    self.samples.each do |sample|
+      begin
+        sample.to_hash.each do |header, file|
+          if (header.tag?('File') or header.tag?('Link')) and file !~ /http/ and !file.nil?
+            paths << File.dirname(file)
+          end
+        end
+      rescue => e
+        warn "Error in sample #{sample}: #{e.message}"
+      end
+    end
+    paths.uniq!
+    paths.map{|path| path.split('/')[0,2].join('/')}
+  end
 
-  def self.save_dataset_to_database(data_set_arr:, headers:, rows:, user: nil, child: nil)
+  def self.save_dataset_to_database(data_set_arr:, headers:, rows:, user: nil, child: nil, sushi_app_name: nil)
     data_set_hash = Hash[*data_set_arr]
     
     # Find or create project
@@ -217,6 +256,9 @@ class DataSet < ActiveRecord::Base
       data_set.comment = comment
     end
 
+    # Set sushi_app_name if exists
+    data_set.sushi_app_name = sushi_app_name if sushi_app_name
+
     # Create samples
     sample_hash = {}
     rows.each do |row|
@@ -231,5 +273,15 @@ class DataSet < ActiveRecord::Base
 
     data_set.save
     data_set.id
+  end
+  def file_paths
+    samples.flat_map do |sample|
+      begin
+        sample.to_hash.select{|header, file| header and header.tag?('File')}.values
+      rescue => e
+        Rails.logger.warn "Failed to parse key_value for Sample ID=#{sample.id}: #{e}"
+        []
+      end
+    end.uniq
   end
 end

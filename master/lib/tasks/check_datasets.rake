@@ -397,7 +397,7 @@ namespace :ds do
                    "sushi_lover"
                  end
           puts [dataset.id, dataset.project.number, dataset.name, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s, dataset.order_ids.join(",")].join("\t")
-          dataset.register_bfabric
+          dataset.register_bfabric(register_child_dataset_too: true)
           sleep 1
           puts
       end
@@ -483,6 +483,47 @@ namespace :ds do
     end
 
     puts "# #datasets: #{datasets.length} (no Order Ids: #{not_order_ids}, added Order Ids: #{add_order_ids})"
+    puts "# run time: #{"%.2f" % (Time.now - t0)} [s]"
+  end
+
+  desc "Check datasets with sushi_app_name missing"
+  task check_datasets_sushi_app_name_missing: :environment do
+    t0 = Time.now
+    count_datasets_sushi_app_name_missing = 0
+    count_updated = 0
+
+    DataSet.all.each do |data_set|
+      next if data_set.sushi_app_name
+
+      count_datasets_sushi_app_name_missing += 1
+
+      sample_path = data_set.sample_paths.first
+      next unless sample_path
+
+      parameters_tsv = File.join(SushiFabric::GSTORE_DIR, sample_path, "parameters.tsv")
+      next unless File.exist?(parameters_tsv)
+
+      # load parameters.tsv and search sushi_app_name
+      sushi_app_name_value = nil
+      File.foreach(parameters_tsv) do |line|
+        key, value = line.chomp.split("\t", 2)
+        if key == "sushi_app"
+          sushi_app_name_value = value
+          break
+        end
+      end
+
+      # if sushi_app_name found, update data_set
+      if sushi_app_name_value
+        data_set.sushi_app_name = sushi_app_name_value
+        data_set.save
+        count_updated += 1
+        puts "# Updated dataset #{data_set.id} with sushi_app_name: #{sushi_app_name_value}"
+      end
+    end
+
+    puts "# datasets missing sushi_app_name: #{count_datasets_sushi_app_name_missing}"
+    puts "# datasets updated: #{count_updated}"
     puts "# run time: #{"%.2f" % (Time.now - t0)} [s]"
   end
 

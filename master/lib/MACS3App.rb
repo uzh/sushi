@@ -13,7 +13,7 @@ class MACS3App < SushiFabric::SushiApp
     @analysis_category = 'Peaks'
     @description =<<-EOS
 Capturing the influence of genome complexity to evaluate the significance of enriched ChIP regions<br/>
-<a href='http://liulab.dfci.harvard.edu/MACS/00README.html'>http://liulab.dfci.harvard.edu/MACS/00README.html</a>
+<a href='https://macs3-project.github.io/MACS/'>https://macs3-project.github.io/MACS/</a>
     EOS
     @required_columns = ['Name','BAM','BAI', 'refBuild']
     @required_params = ['refBuild','paired']
@@ -24,15 +24,21 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     @params['refBuild'] = ref_selector
     @params['paired'] = false
     @params['useControl'] = false
+    @params['useControl', 'description'] = 'Input or other controls needs to be specified in the input_dataset with a separate Control [File] column linking to the bam file'
     @params['shiftATAC'] = false
     @params['shiftATAC', 'description'] = 'should all reads aligning to + strand were offset by +4bp, all reads aligning to the - strand are offset -5 bp'
     @params['annotatePeaks'] = true
     @params['refFeatureFile'] = 'genes.gtf'
     @params['mode'] = ['ChIP-seq', 'ATAC-seq']
     @params['mode', 'description'] = 'Call MACS3 for ChIP-seq or ATAC-seq data.'
-    @params['cmdOptions'] = '--nomodel --bw 200'
+    @params['cmdOptions'] = '--nomodel --bw 200 --extsize 147'
+    @params['cmdOptions', 'description'] = 'default options deactivate model building and extend reads in 5p->3p direction to fix-sized fragments.'
+    @params['genomeSize'] = '0'
+    @params['genomeSize', 'description'] = 'if you keep 0 the genome size is calculated from the given reference genome'
+    @params['qValue'] = '0.05'
+    @params['qValue', 'description'] = 'The q-value (minimum FDR) cutoff to call significant regions. Default is 0.05. For broad marks, you can try 0.01 as the cutoff.'
     @params['removeDuplicates'] = true
-    @params['removeDuplicates', 'description'] = 'remove duplicates before running MACS. The resulting processed.bam does not contain duplicates anymore.'
+    @params['removeDuplicates', 'description'] = 'remove duplicates before running MACS3. The resulting processed.bam does not contain duplicates anymore.'
     @params['specialOptions'] = ''
     @params['mail'] = ''
     @modules = ["Tools/samtools", "Tools/UCSC", "Tools/BEDTools", "Dev/R", "Tools/Picard"]
@@ -53,7 +59,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     bam_link = File.join(@result_dir, "#{@dataset['Name']}_processed.bam")
     bai_link = File.join(@result_dir, "#{@dataset['Name']}_processed.bam.bai")
     
-    peakfile_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.xls")
+    peakfile_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.xlsx")
     bedfile_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.bed")
     peakseq_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.fa")
 

@@ -27,6 +27,8 @@ Single cell report<br/>
     @params['ClusterAnnotationFile'] = ''
     @params['ClusterAnnotationFile', 'file_upload'] = true
     @params['ClusterAnnotationFile', 'description'] = "A 3-column mapping of old cluster to new cluster labels in .xlsx format. Use the 'clusterInfos.xlsx' file as a template. The first column indicates the sample name. The second column are the old cluster labels. The third column indicates if the cluster should be kept or not. The first row should be a header indicating the column names. We recommend using the names provided in 'clusterInfos.xlsx', namely 'Sample', 'Cluster', and 'ClusterLabel'. To remove a cluster, label it as REMOVE."
+    @params['identityColumn'] = 'seurat_clusters'
+    @params['identityColumn', 'description'] = "The name of the identity column to use for calculating the markers and annotate the cells after the subsetting. By default, the column 'seurat_clusters', the variable of the new clusterings, is used. Change this option if you want to e.g. re-use previous labels"
     @params['SCT.regress.CellCycle'] = false
     @params['SCT.regress.CellCycle', 'description'] = 'Choose CellCycle to be regressed out when using the SCTransform method if it is a bias.'
     @params['DE.method'] = ['wilcox', 'LR']
@@ -53,11 +55,11 @@ Single cell report<br/>
                           "kidneyref", "lungref", "mousecortexref", "pancreasref", "pbmcref", "tonsilref","/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0"]
     @params['SingleR'] = ['none', 'BlueprintEncodeData', 'DatabaseImmuneCellExpressionData', 'HumanPrimaryCellAtlasData', 
                           'ImmGenData', 'MonacoImmuneData', 'MouseRNAseqData', 'NovershternHematopoieticData']
-    @params['npcs'] = 20
+    @params['npcs'] = 15
     @params['npcs', 'description'] = 'The maximal top dimensions (pcs) to use for reduction. Do not use more principal components than pcGenes (when used).'
     @params['resolution'] = [0.6, 0.2, 0.4, 0.6, 0.8, 1]
     @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
-    @params['computePathwayTFActivity'] = true
+    @params['computePathwayTFActivity'] = false
     @params['computePathwayTFActivity', 'description'] = 'Whether to calculate the TF and pathway activities (Note: Only for human and mouse)'
     @params['specialOptions'] = ''
     @params['mail'] = ""
@@ -73,7 +75,7 @@ Single cell report<br/>
      'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
      'SC Cluster Report [File]'=>report_file,
-     'SC Seurat'=>File.join(report_file, "scData.rds"),
+     'SC Seurat [Link]'=>File.join(report_file, "scData.qs2"),
     }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters

@@ -42,6 +42,7 @@ class DataSetController < ApplicationController
     render plain: sample_available
   end
   def index
+    @fgcz = SushiFabric::Application.config.fgcz?
     if warning = session['import_fail']
       @warning = warning
       session['import_fail'] = nil
@@ -1036,7 +1037,8 @@ class DataSetController < ApplicationController
     data_set = DataSet.find_by_id(params[:id])
     pid = Process.fork do
       Process.fork do
-        data_set.register_bfabric("only_one")
+        #data_set.register_bfabric("only_one")
+        data_set.register_bfabric("only_one", register_child_dataset_too: true)
       end # grand-child process
     end # child process
     Process.waitpid pid

@@ -231,8 +231,7 @@ module GlobalVariables
     end
     command << "python3 << EOT\n"
         
-
-    command << "from ezpyz_#{app_name.downcase}.app import EzApp#{app_name.capitalize}\n"
+    command << "from ezpyz_#{app_name.downcase}.app import EzApp#{app_name.capitalize}\n" #This defines a naming convention in EzPyZ!
 
     command << "param = {}\n"
     param = @params
@@ -256,9 +255,8 @@ module GlobalVariables
         command << "input['#{key}'] = '#{value}'\n"
       end
     end
-    command<< "app = EzApp#{app_name.capitalize}()\n" 
-    command<< "params = {}\n"
-    command<< "print(app.run(input, output, params))\n"
+    command<< "app = EzApp#{app_name.capitalize}()\n"
+    command<< "print(app.run(input, output, param))\n"
     command<< "EOT\n"
     command
   end

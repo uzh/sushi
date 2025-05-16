@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250327-161327'
+# Version = '20250509-094052'
 
 require 'csv'
 require 'fileutils'
@@ -168,6 +168,12 @@ class ::Hash
       get(k1)
     end
   end
+  def deep_clone_with_desc
+    new_hash = self.clone
+    new_hash.instance_variable_set(:@desc, @desc.clone) if @desc
+    new_hash.instance_variable_set(:@defaults, @defaults.clone) if @defaults
+    new_hash
+  end
 end
 class ::String
   def tag?(tag)
@@ -258,11 +264,13 @@ class SushiApp
         if @dataset_sushi_id = DataSet.save_dataset_to_database(data_set_arr: data_set_arr.to_a.flatten, headers: headers, rows: rows, user: @current_user)
           unless @off_bfabric_registration
             if dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
-              dataset.register_bfabric(bfabric_application_number: @input_dataset_bfabric_application_number)
+              dataset.register_bfabric(bfabric_application_number: @input_dataset_bfabric_application_number, update_completed_samples: true)
             end
           end
+          return @dataset_sushi_id
         elsif data_set = headers[0] and data_set.instance_of?(DataSet)
           @dataset_sushi_id = data_set.id
+          return @dataset_sushi_id
         end
       end
     elsif @dataset_sushi_id
@@ -274,6 +282,7 @@ class SushiApp
           @dataset << sample.to_hash
         end
       end
+      return @dataset_sushi_id
     end
     @dataset_hash
   end
@@ -322,9 +331,9 @@ class SushiApp
   end
   def check_application_parameters
     if @required_params and (@required_params - @params.keys).empty?
-      # PD, 20230623, the following fix changed parameters.tsv info, and reverted
-      #@output_params = {"sushi_app" => self.class.name}.merge(@params.clone)
-      @output_params = @params.clone
+      @output_params = @params.deep_clone_with_desc
+      @output_params["sushi_app"] = self.class.name
+      @output_params
     end
   end
   def set_user_parameters
@@ -547,7 +556,6 @@ rm -rf #{@scratch_dir} || exit 1
   def save_parameters_as_tsv
     file_path = File.join(@scratch_result_dir, @parameter_file)
     CSV.open(file_path, 'w', :col_sep=>"\t") do |out|
-      out << ["sushi_app", self.class.name]
       @output_params.each do |key, value|
         if @output_params[key, 'file_upload'] and !value.to_s.empty?
           uploaded_file_path = File.join(@result_dir, "uploaded", File.basename(value))
@@ -613,10 +621,10 @@ rm -rf #{@scratch_dir} || exit 1
       @uploaded_files.compact.select{|file| !file.empty?}.each do |file|
         FileUtils.cp(file, @uploaded_files_dir)
         command = "cp #{file} #{@uploaded_files_dir}"
-        puts command
+        warn command
         FileUtils.rm_r(File.dirname(file))
         command = "rm -rf #{File.dirname(file)}"
-        puts command
+        warn command
       end
     end
   end
@@ -624,8 +632,8 @@ rm -rf #{@scratch_dir} || exit 1
     org = @scratch_result_dir
     dest = @gstore_project_dir
     copy_commands(org, dest, 'now').each do |command|
-      puts `which python`
-      puts command
+      warn `which python`
+      warn command
       unless system command
         raise "fails in copying input_dataset, parameters and jobscript files from /scratch to /gstore"
       end
@@ -636,8 +644,8 @@ rm -rf #{@scratch_dir} || exit 1
     org = @next_dataset_tsv_path
     dest = File.join(@gstore_project_dir, @result_dir_base)
     copy_commands(org, dest, 'now').each do |command|
-      puts `which python`
-      puts command
+      warn `which python`
+      warn command
       unless system command
         raise "fails in copying next_dataset files from /scratch to /gstore"
       end
@@ -748,8 +756,8 @@ rm -rf #{@scratch_dir} || exit 1
       make_dummy_files
     end
 
-    print 'result dataset: '
-    p @result_dataset
+    warn 'result dataset: '
+    warn @result_dataset
 
     # copy application data to gstore 
     @next_dataset_tsv_path = save_next_dataset_as_tsv
@@ -780,7 +788,7 @@ rm -rf #{@scratch_dir} || exit 1
       end
       unless NO_ROR
         @current_user ||= nil
-        @next_dataset_id = DataSet.save_dataset_to_database(data_set_arr: data_set_arr.to_a.flatten, headers: headers, rows: rows, user: @current_user, child: @child)
+        @next_dataset_id = DataSet.save_dataset_to_database(data_set_arr: data_set_arr.to_a.flatten, headers: headers, rows: rows, user: @current_user, child: @child, sushi_app_name: self.class.name)
         save_parameters_in_sushi_db
       end
     end
@@ -796,37 +804,38 @@ rm -rf #{@scratch_dir} || exit 1
       gstore_job_script_paths << File.join(@gstore_script_dir, File.basename(job_script))
     end
 
-    puts
-    print 'job scripts: '
-    p @job_scripts
-    print 'gstore_job_script_paths: '
-    p gstore_job_script_paths
-
+    warn ""
+    warn 'job scripts: '
+    warn @job_scripts
+    warn 'gstore_job_script_paths: '
+    warn gstore_job_script_paths
 
     #unless @job_ids.empty? or NO_ROR
     #unless submit_jobs.empty?
     unless gstore_job_script_paths.empty?
       # save job and dataset relation in Sushi DB
       gstore_job_script_paths.each do |script_path|
-        new_job = Job.new
-        new_job.script_path = script_path
-        new_job.next_dataset_id = @next_dataset_id
-        new_job.status = "CREATED"
-        new_job.user = (@user || "sushi_lover")
-        new_job.input_dataset_id = dataset.id if dataset
-        new_job.save
-        #if dataset
-        #  new_job.data_set = dataset
-        #  new_job.data_set.jobs << new_job
-        #  new_job.data_set.save
-        #end
+        unless mock
+          new_job = Job.new
+          new_job.script_path = script_path
+          new_job.next_dataset_id = @next_dataset_id
+          new_job.status = "CREATED"
+          new_job.user = (@user || "sushi_lover")
+          new_job.input_dataset_id = dataset.id if dataset
+          new_job.save
+          #if dataset
+          #  new_job.data_set = dataset
+          #  new_job.data_set.jobs << new_job
+          #  new_job.data_set.save
+          #end
+        end
       end
     end
 
     copy_nextdataset
   end
   def run
-    test_run
+    dataset_id = test_run
 
     ## the user presses RUN
     prepare_result_dir
@@ -836,6 +845,7 @@ rm -rf #{@scratch_dir} || exit 1
     save_input_dataset_as_tsv
 
     main
+    dataset_id
   end
   def make_dummy_files
     dummy_files_header = []
@@ -864,7 +874,7 @@ rm -rf #{@scratch_dir} || exit 1
     end
     dirs.each do |dir|
       command = "mkdir -p #{File.join(@scratch_result_dir, dir)}"
-      puts command
+      warn command
       `#{command}`
     end
     dummy_files.each do |file|
@@ -873,7 +883,7 @@ rm -rf #{@scratch_dir} || exit 1
                 else
                   "touch #{File.join(@scratch_result_dir, file)}"
                 end
-      puts command
+      warn command
       `#{command}`
     end
   end
@@ -885,7 +895,7 @@ rm -rf #{@scratch_dir} || exit 1
     main(true)
   end
   def test_run
-    set_input_dataset
+    dataset_id = set_input_dataset
     set_dir_paths
     preprocess
     set_output_files
@@ -893,34 +903,34 @@ rm -rf #{@scratch_dir} || exit 1
 
     failures = 0
     err_msgs = []
-    print 'check project name: '
+    warn 'check project name: '
     unless @project
       err_msg = []
       err_msg << "\e[31mFAILURE\e[0m: project number is required but not found. you should set it in usecase."
       err_msg << "\tex.)"
       err_msg << "\tapp = #{self.class}.new"
       err_msg << "\tapp.project = 'p1001'"
-      puts err_msg.join("\n")
+      warn err_msg.join("\n")
       err_msgs.concat(err_msg)
       failures += 1
     else
-      puts "\e[32mPASSED\e[0m:\n\t@project=#{@project}"
+      warn "\e[32mPASSED\e[0m:\n\t@project=#{@project}"
     end
 
-    print 'check user name: '
+    warn 'check user name: '
     unless @user
       err_msg = []
       err_msg << "\e[31mWARNING\e[0m: user number is ought to be added but not found. you should set it in usecase. Default will be 'sushi lover'"
       err_msg << "\tex.)"
       err_msg << "\tapp = #{self.class}.new"
       err_msg << "\tapp.user = 'masa'"
-      puts err_msg.join("\n")
+      warn err_msg.join("\n")
       err_msgs.concat(err_msg)
     else
-      puts "\e[32mPASSED\e[0m:\n\t@user=#{@user}"
+      warn "\e[32mPASSED\e[0m:\n\t@user=#{@user}"
     end
 
-    print 'check application name: '
+    warn 'check application name: '
     if @name.to_s.empty?
       err_msg = []
       err_msg << "\e[31mFAILURE\e[0m: application name is required but not found. you should set it in application class."
@@ -930,14 +940,14 @@ rm -rf #{@scratch_dir} || exit 1
       err_msg << "\t  @name = '#{self.class}'"
       err_msg << "\t end"
       err_msg << "\tend"
-      puts err_msg.join("\n")
+      warn err_msg.join("\n")
       err_msgs.concat(err_msg)
       failures += 1
     else
-      puts "\e[32mPASSED\e[0m:\n\t@name=#{@name}"
+      warn "\e[32mPASSED\e[0m:\n\t@name=#{@name}"
     end
 
-    print 'check analysis_category: '
+    warn 'check analysis_category: '
     if @analysis_category.to_s.empty?
       err_msg = []
       err_msg << "\e[31mFAILURE\e[0m: analysis_category is required but not found. you should set it in application class."
@@ -947,44 +957,44 @@ rm -rf #{@scratch_dir} || exit 1
       err_msg << "\t  @analysis_category = 'Mapping'"
       err_msg << "\t end"
       err_msg << "\tend"
-      puts err_msg.join("\n")
+      warn err_msg.join("\n")
       err_msgs.concat(err_msg)
       failures += 1
     else
-      puts "\e[32mPASSED\e[0m:\n\t@analysis_category=#{@analysis_category}"
+      warn "\e[32mPASSED\e[0m:\n\t@analysis_category=#{@analysis_category}"
     end
 
-    print 'check dataset: '
+    warn 'check dataset: '
     if !@dataset_hash or @dataset_hash.empty?
       err_msg = []
       err_msg << "\e[31mFAILURE\e[0m: dataset is not found. you should set it by using #{self.class}#dataset_sushi_id or #{self.class}#dataset_tsv_file properties"
       err_msg << "\tex.)"
       err_msg << "\tusecase = #{self.class}.new"
       err_msg << "\tusecase.dataset_tsv_file = \"dataset.tsv\""
-      puts err_msg.join("\n")
+      warn err_msg.join("\n")
       err_msgs.concat(err_msg)
       failures += 1
     else
-      puts "\e[32mPASSED\e[0m:\n\t@dataset_hash.length = #{@dataset_hash.length}"
+      warn "\e[32mPASSED\e[0m:\n\t@dataset_hash.length = #{@dataset_hash.length}"
     end
 
-    print 'check required columns: '
+    warn 'check required columns: '
     unless check_required_columns
       err_msg = []
       err_msg << "\e[31mFAILURE\e[0m: required_column(s) is not found in dataset. you should set it in application class."
       err_msg << "\tex.)"
       err_msg << "\tdef initialize"
       err_msg << "\t  @required_columns = ['Name', 'Read1']"
-      puts err_msg.join("\n")
+      warn err_msg.join("\n")
       err_msgs.concat(err_msg)
       failures += 1
     else
-      puts "\e[32mPASSED\e[0m:"
+      warn "\e[32mPASSED\e[0m:"
     end
-    puts "\trequired columns: #{@required_columns}"
-    puts "\tdataset  columns: #{@dataset_hash.map{|row| row.keys}.flatten.uniq}" if @dataset_hash
+    warn "\trequired columns: #{@required_columns}"
+    warn "\tdataset  columns: #{@dataset_hash.map{|row| row.keys}.flatten.uniq}" if @dataset_hash
 
-    print 'check required parameters: '
+    warn 'check required parameters: '
     unless check_application_parameters
       err_msg = []
       err_msg << "\e[31mFAILURE\e[0m: required_param(s) is not set yet. you should set it in usecase"
@@ -996,16 +1006,16 @@ rm -rf #{@scratch_dir} || exit 1
       else
         err_msg << "\tusecase.params['parameter name'] = default_parameter"
       end
-      puts err_msg.join("\n")
+      warn err_msg.join("\n")
       err_msgs.concat(err_msg)
       failures += 1
     else
-      puts "\e[32mPASSED\e[0m:"
+      warn "\e[32mPASSED\e[0m:"
     end
-    puts "\tparameters: #{@params.keys}"
-    puts "\trequired  : #{@required_params}"
+    warn "\tparameters: #{@params.keys}"
+    warn "\trequired  : #{@required_params}"
 
-    print 'check next dataset: '
+    warn 'check next dataset: '
     if @params['process_mode'] == 'SAMPLE'
       @dataset={}
     end
@@ -1013,27 +1023,27 @@ rm -rf #{@scratch_dir} || exit 1
       err_msg = []
       err_msg << "\e[31mFAILURE\e[0m: next dataset is not set yet. you should overwrite SushiApp#next_dataset method in #{self.class}"
       err_msg << "\tnote: the return value should be Hash (key: column title, value: value in a tsv table)"
-      puts err_msg.join("\n")
+      warn err_msg.join("\n")
       err_msgs.concat(err_msg)
       failures += 1
     else
-      puts "\e[32mPASSED\e[0m:"
+      warn "\e[32mPASSED\e[0m:"
     end
 
-    print 'check output files: '
+    warn 'check output files: '
     if !@output_files or @output_files.empty?
       err_msg = []
       err_msg << "\e[31mWARNING\e[0m: no output files. you will not get any output files after the job running. you can set @output_files (array) in #{self.class}"
       err_msg << "\tnote: usually it should be define in initialize method"
       err_msg << "\t      the elements of @output_files should be chosen from #{self.class}#next_dataset.keys"
       err_msg << "\t      #{self.class}#next_dataset.keys: #{self.next_dataset.keys}" if self.next_dataset
-      puts err_msg.join("\n")
+      warn err_msg.join("\n")
       err_msgs.concat(err_msg)
     else
-      puts "\e[32mPASSED\e[0m:"
+      warn "\e[32mPASSED\e[0m:"
     end
 
-    print 'check commands: '
+    warn 'check commands: '
     if @params['process_mode'] == 'SAMPLE'
       @dataset_hash.each do |row|
         @dataset = Hash[*row.map{|key,value| [key.gsub(/\[.+\]/,'').strip, value]}.flatten]
@@ -1041,13 +1051,13 @@ rm -rf #{@scratch_dir} || exit 1
           err_msg = []
           err_msg << "\e[31mFAILURE\e[0m: any commands is not defined yet. you should overwrite SushiApp#commands method in #{self.class}"
           err_msg << "\tnote: the return value should be String (this will be in the main body of submitted job script)"
-          puts err_msg.join("\n")
+          warn err_msg.join("\n")
           err_msgs.concat(err_msg)
           failures += 1
         else
-          puts "\e[32mPASSED\e[0m:"
-          puts "generated command will be:"
-          puts "\t"+com.split(/\n/).join("\n\t")+"\n"
+          warn "\e[32mPASSED\e[0m:"
+          warn "generated command will be:"
+          warn "\t"+com.split(/\n/).join("\n\t")+"\n"
         end
       end
     elsif @params['process_mode'] == 'DATASET'
@@ -1055,17 +1065,17 @@ rm -rf #{@scratch_dir} || exit 1
         err_msg = []
         err_msg << "\e[31mFAILURE\e[0m: any commands is not defined yet. you should overwrite SushiApp#commands method in #{self.class}"
         err_msg << "\tnote: the return value should be String (this will be in the main body of submitted job script)"
-        puts err_msg.join("\n")
+        warn err_msg.join("\n")
         err_msgs.concat(err_msg)
         failures += 1
       else
-        puts "\e[32mPASSED\e[0m:"
-        puts "generated command will be:"
-        puts "\t"+com.split(/\n/).join("\n\t")+"\n"
+        warn "\e[32mPASSED\e[0m:"
+        warn "generated command will be:"
+        warn "\t"+com.split(/\n/).join("\n\t")+"\n"
       end
     end
 
-    print 'check sushi server instance: '
+    warn 'check sushi server instance: '
     begin
       #@workflow_manager||=DRbObject.new_with_uri(WORKFLOW_MANAGER)
       @sushi_server||=eval(SushiFabric::Application.config.sushi_server_class).new
@@ -1074,23 +1084,25 @@ rm -rf #{@scratch_dir} || exit 1
     end
     unless hello =~ /hello/
       err_msg = "\e[31mFAILURE\e[0m: sushi server does not reply. check if sushi server is working"
-      puts err_msg
+      warn err_msg
       err_msgs.concat([err_msg])
       failures += 1
     else
-      #puts "\e[32mPASSED\e[0m: #{WORKFLOW_MANAGER}"
-      puts "\e[32mPASSED\e[0m: #{SUSHI_SERVER}"
+      #warn "\e[32mPASSED\e[0m: #{WORKFLOW_MANAGER}"
+      warn "\e[32mPASSED\e[0m: #{SUSHI_SERVER}"
     end
 
     if failures > 0
-      puts
+      warn ""
       err_msg = "\e[31mFailures (#{failures})\e[0m: All failures should be solved"
-      puts err_msg
+      warn err_msg
       err_msgs.unshift(err_msg)
       raise "\n"+err_msgs.join("\n")+"\n\n"
     else
-      puts "All checks \e[32mPASSED\e[0m"
+      warn "All checks \e[32mPASSED\e[0m"
     end
+
+    dataset_id
   end
 end
 

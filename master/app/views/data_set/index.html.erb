@@ -73,10 +73,32 @@
                 $('.target').each(function () {
                     $(this).prop("checked", true);
                 });
+                // Check all nodes in the tree
+                var tree = $("#data_set_tree").jstree(true);
+                tree.select_all();
+                tree.check_all();
             } else {
                 $('.target').each(function () {
                     $(this).prop("checked", false);
                 });
+                // Uncheck all nodes in the tree
+                var tree = $("#data_set_tree").jstree(true);
+                tree.deselect_all();
+                tree.uncheck_all();
+            }
+        });
+
+        // Add event handler for table checkboxes
+        $('.target').change(function() {
+            var datasetId = $(this).attr('id').replace('delete_flag_', '');
+            var isChecked = $(this).prop('checked');
+            
+            // Update tree checkbox
+            var tree = $("#data_set_tree").jstree(true);
+            if (isChecked) {
+                tree.check_node(datasetId);
+            } else {
+                tree.uncheck_node(datasetId);
             }
         });
 
@@ -124,6 +146,36 @@
                 alert('Please select at least one DataSet.');
             }
         });
+        $('#btn_geo_uploader').click(function () {
+            var flag = false;
+            var jstree_selected = [];
+            if($("#data_set_tree").length){
+              var tree = $("#data_set_tree").jstree(true);
+              var jstree_selected = tree._data.checkbox.selected;
+            }
+            $('.target').each(function () {
+                if ($(this).prop("checked")) {
+                    flag = true;
+                    return false;
+                }
+            });
+            if ((flag == true) || (jstree_selected.length>0)) {
+                var selected_ids = [];
+                // jstree checkbox search
+                if(jstree_selected.length>0){
+                  $.each(tree._data.checkbox.selected, function(i, val){
+                    selected_ids.push(val);
+                  });
+                }
+                var url = "https://geo-uploader.fgcz.uzh.ch/sessions/new/datasets/" + selected_ids.join(',');
+                //alert(url);
+                window.open(url, '_blank');
+            } else {
+                // no selected
+                alert('Please select at least one DataSet.');
+            }
+
+        });
     })
 
     $(function () {
@@ -142,6 +194,9 @@
   - <%= link_to "Full table view", "/data_set/index_full" %><br>
 <% elsif @project and data_sets = @project.data_sets and data_sets.length != @data_sets.length %>
   - <%= link_to "Tree view", "/data_set/index_tree" %> - <%= link_to "Full table view", "/data_set/index_full" %>
+<% end %>
+<% if @fgcz and current_user and current_user.login %>
+- <a href="#" id="btn_geo_uploader">call GEO-uploader</a>
 <% end %>
 </span>
 </h3>

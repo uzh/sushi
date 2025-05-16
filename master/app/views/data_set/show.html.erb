@@ -195,6 +195,9 @@ $(document).ready(function(){
   - <%= link_to "announce", {:action=>"announce_template_set", :id=>@data_set.id}, :method=>:post %>
   <% end %>
 <% end %>
+<% if @fgcz and current_user and current_user.login %>
+- <%= link_to 'call GEO-uploader', "https://geo-uploader.fgcz.uzh.ch/sessions/new/datasets/#{@data_set.id}", target: "_blank" %>
+<% end %>
 <div id="download_dialog" title="Donwload links">
   <p>
     - Java downloader from B-Fabric:

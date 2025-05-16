@@ -67,7 +67,7 @@ EOS
     @params['EM_QC'] = false
     @params['EM_QC','description'] = 'Generate Boxplot for known methylated and unmethylated sites of Lambda/pUC19 control'
     @params['mail'] = ""
-    @modules = ["Tools/samtools", "Aligner/Bowtie2", "Aligner/Bismark", "QC/fastp", "Dev/R"]
+    @modules = ["Tools/samtools", "Aligner/Bowtie2", "Aligner/Bismark", "QC/fastp", "Dev/R", "Dev/Perl"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess

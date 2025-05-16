@@ -80,7 +80,7 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'Static Report [Link]'=>report_link,
      'Report [File]'=>report_file,
-     'SeuratObject'=>seurat_file
+     'SeuratObject [Link]'=>seurat_file
     }.merge(extract_columns(colnames: @inherit_columns))
   end
   def set_default_parameters

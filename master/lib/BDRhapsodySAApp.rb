@@ -15,9 +15,12 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     EOS
     @required_columns = ['Name', 'Read1', 'Read2', 'Species']
     @required_params = ['name']
-    @params['cores'] = ['16', '8', '32']
-    @params['ram'] = ['80', '120']
-    @params['scratch'] = '200'
+    @params['cores'] = ['16', '32', '48', '60']
+    @params['cores', 'description'] = "Note: Set a very high thread count for runs containing VDJ assays"
+    @params['ram'] = ['240', '480', '720', '960']
+    @params['ram', 'description'] = "If `generateBamOutput=true`, you may need to set a high amount of RAM"
+    @params['scratch'] = ['200', '500', '900', '1300']
+    @params['scratch', 'description'] = "If `generateBamOutput=true`, you may need to set a high amount of scratch space."
     @params['name'] = 'BDRhapsodySA'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
@@ -48,7 +51,7 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     @params['controlSeqs'] = ''
     @params['controlSeqs', 'description'] = 'The extra control sequences (such as spikein sequences) available in https://fgcz-gstore.uzh.ch/reference/controlSeqs.fa'
     @params['specialOptions'] = ''
-    @params['version'] = ['2.2.1', '2.1']
+    @params['version'] = ['2.3', '2.2.1', '2.1']
     @params['mail'] = ""
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric"]
@@ -70,6 +73,12 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
       'UnfilteredCountMatrix [Link]'=>File.join(report_dir, "#{dashed_name}_RSEC_MolsPerCell_Unfiltered_MEX"),
       'Read Count'=>@dataset['Read Count']
     }.merge(extract_columns(@inherit_tags))
+    
+    # Add AlignmentFile column if generateBamOutput is true
+    if @params['generateBamOutput']
+      dataset['AlignmentFile [Link]'] = File.join(report_dir, "Combined_#{dashed_name}_Bioproduct.bam")
+    end
+    
     dataset
   end
   def commands
