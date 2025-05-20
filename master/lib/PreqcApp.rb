@@ -79,7 +79,7 @@ EOS
     }.merge(extract_columns(@inherit_tags))
   end
  def commands
-    run_RApp("EzAppPreqc",conda_env: "weihong")
+    run_RApp("EzAppPreqc",conda_env: "gi_sga0.10.15")
   end 
 end
 
