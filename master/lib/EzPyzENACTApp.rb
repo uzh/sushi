@@ -35,7 +35,7 @@ class EzPyzENACTApp <  SushiFabric::SushiApp
     @params['prob_thresh'] = 0.005
     @params['prob_thresh', 'description'] = 'Probability threshold for stardist cell detection'
     @params['expand_by_nbins'] = 2
-    @params['expand_by_nbins', 'description'] = 'Distance (in bin lengths) to expand the nuclei to obtain cell areas'
+    @params['expand_by_nbins', 'description'] = 'Distance (in bin lengths) to expand the nuclei to obtain cell areas (0 for false)'
     @params['n_hvg'] = 1000
     @params['n_hvg', 'description'] = 'Number of highly variable genes to use (20k means all genes)'
 
