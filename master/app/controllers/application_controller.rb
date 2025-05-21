@@ -106,7 +106,7 @@ class ApplicationController < ActionController::Base
       refresh_sushi_application
     end
     sushi_apps = SushiApplication.all.select do |app|
-      (app.required_columns - data_set_headers.map{|colname| colname.to_s.gsub(/\[.+\]/,'').strip}).empty?
+      app.required_columns_satisfied_by?(data_set_headers)
     end
   end
   def employee_apps

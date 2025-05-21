@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250509-094052'
+# Version = '20250521-134856'
 
 require 'csv'
 require 'fileutils'
@@ -323,10 +323,21 @@ class SushiApp
     end
   end
   def check_required_columns
-    if @dataset_hash and @required_columns and (@required_columns-@dataset_hash.map{|row| row.keys}.flatten.uniq.map{|colname| colname.gsub(/\[.+\]/,'').strip}).empty?
-      true
+    return false unless @dataset_hash && @required_columns
+
+    present_columns = @dataset_hash.map { |row| row.keys }.flatten.uniq
+    normalized_present = present_columns.map { |col| col.gsub(/\[.+\]/, '').strip }
+
+    # xor-mode if required_columns is nested array
+    if @required_columns.all? { |entry| entry.is_a?(Array) }
+      satisfied_options = @required_columns.count do |option|
+        Array(option).all? { |req| normalized_present.include?(req.gsub(/\[.+\]/, '').strip) }
+      end
+      satisfied_options == 1
     else
-      false
+      # normal and-mode
+      missing = @required_columns - normalized_present
+      missing.empty?
     end
   end
   def check_application_parameters

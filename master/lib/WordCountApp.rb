@@ -32,7 +32,7 @@ class WordCountApp < SushiFabric::SushiApp
     @params['cellType', 'multi_selection'] = true
     @params['note'] = '' 
     @params['note', 'employee'] = true
-    @required_columns = ['Name', 'Read1']
+    @required_columns = [['Name', 'Read1'], ['Name', 'Read2']]
     @required_params = ['test_option3']
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
     @queue = "heavy"
