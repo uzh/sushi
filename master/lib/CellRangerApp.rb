@@ -13,7 +13,7 @@ class CellRangerApp <  SushiFabric::SushiApp
     @description =<<-EOS
 This wrapper runs <a href='https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/count',>cellranger count</a> in Single-library analysis mode.
      EOS
-    @required_columns = ['Name','RawDataDir','Species']
+    @required_columns = [['Name','RawDataDir','Species'], ['Name', 'Read1', 'Read2', 'Species']]
     @required_params = ['name', 'refBuild']
     @params['cores'] = ['8', '12', '16']
     @params['ram'] = ['60', '40', '80']
