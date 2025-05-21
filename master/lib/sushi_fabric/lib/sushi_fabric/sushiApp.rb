@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250521-134856'
+# Version = '20250521-153407'
 
 require 'csv'
 require 'fileutils'
@@ -1125,6 +1125,9 @@ class SushiServerClass
     def hello
       "hello"
     end
+    def command_available?(cmd)
+      system("which #{cmd} > /dev/null 2>&1")
+    end
 end
 
 class DemoSushi < SushiServerClass
@@ -1151,8 +1154,12 @@ class ProdSushi < SushiServerClass
                  ["g-req -w copy -f heavy #{org_dir} #{dest_parent_dir}"]
                end
   end
-  def delete_command(target)
-    command = "g-req remove #{target}"
+  def delete_command(target, bfabric_dataset_id: nil)
+    command = if command_available?("delete_workunit_by_dataset_id") and bfabric_dataset_id
+                "g-req remove --bfabric-dataset-id #{bfabric_dataset_id} #{target}"
+              else
+                "g-req remove #{target}"
+              end
   end
 end
 
