@@ -29,6 +29,7 @@ sushi.Rproj
 shared/
 gtools/
 master/gems/
+docker_files/
 
 # Environment variables
 .env.production.host
