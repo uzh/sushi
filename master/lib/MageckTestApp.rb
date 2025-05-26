@@ -20,7 +20,7 @@ class MageckTestApp < SushiFabric::SushiApp
     @required_params = ['species','libName','sampleGroup','refGroup']
     # optional params
     @params['cores'] = ['1']
-    @params['ram'] = ['4']
+    @params['ram'] = ['8']
     @params['scratch'] = ['10']
     @params['name'] = 'MAGeCK_Test'
     @params['species'] = ['hsa', 'mmu']
