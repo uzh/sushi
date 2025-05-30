@@ -62,7 +62,7 @@ Single cell report<br/>
                           "kidneyref", "lungref", "mousecortexref", "pancreasref", "pbmcref", "tonsilref","/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0"]
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.4.2"]
+    @params['Rversion'] = ["Dev/R/4.5.0","Dev/R/4.4.2"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def preprocess
