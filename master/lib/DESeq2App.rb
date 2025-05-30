@@ -36,7 +36,7 @@ class DESeq2App < SushiFabric::SushiApp
     @params['grouping2'] = ''
     @params['grouping2', 'description'] =  'specify the column name of your secondary co-variate (factor or numeric, 
     assuming there is one). Ensure the 
-    column name is in the format "NAME [Factor]" or "NAME [Numeric]"'
+    column name in the input dataset (not here) is in the format "NAME [Factor]" or "NAME [Numeric]"'
     @params['backgroundExpression'] = 10
     @params['backgroundExpression', "description"] = "additive offset used in heatmaps"
     @params['transcriptTypes'] = ''
