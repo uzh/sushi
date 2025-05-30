@@ -24,6 +24,7 @@ class RunApplicationController < ApplicationController
       factor_key = @factor_colums.keys.first unless factor_key
       @factors = @factor_colums[factor_key]
       params[:grouping] = factor_key
+      params[:grouping2] = factor_key
       params[:sampleGroup] = @factor_colums[params[:grouping]]
       params[:sampleGroupBaseline] = @factor_colums[params[:grouping]]
       params[:refGroup] = @factor_colums[params[:grouping]]
@@ -34,6 +35,7 @@ class RunApplicationController < ApplicationController
 	end
 	def factor_select
 		init_factor(params[:grouping])
+		init_factor(params[:grouping2])
 	end
   def index
     @data_sets = if project_number = session[:project] and project = Project.find_by_number(project_number.to_i)
