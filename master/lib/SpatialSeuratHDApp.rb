@@ -34,7 +34,7 @@ Single cell report<br/>
     @params['logfc.threshold', 'description'] = 'Used in calculating cluster markers: Limit testing to genes which show, on average, at least X-fold difference (log-scale) between the two groups of cells.'
     @params['pcGenes'] = ''
     @params['pcGenes', 'description'] = 'The genes used in supvervised clustering'
-    @params['resolution'] = [2, 0.5, 0.75, 1, 1.25, 1,5, 1.75, 2.5, 3]
+    @params['resolution'] = [2, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2.5, 3]
     @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
     @params['nreads'] = ''
     @params['nreads', 'description'] = 'Low quality spots have less than "nreads" reads. Only when applying fixed thresholds'
