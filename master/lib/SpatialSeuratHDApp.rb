@@ -52,7 +52,7 @@ Single cell report<br/>
     @params['nUMIs', 'description'] = 'A gene will be kept if it has at least nUMIs in the fraction of bins specified before'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.4.2"]
+    @params['Rversion'] = ["Dev/R/4.5.0","Dev/R/4.4.2"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def preprocess
