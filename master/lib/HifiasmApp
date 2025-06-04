@@ -17,14 +17,14 @@ Hifiasm long read genome assembler
 EOS
 
     @required_columns = ['Name','Read1']
-    @required_params = ['ReadOpt']
+    @required_params = ['inputType']
     # optional params
     @params['cores'] = '8'
     @params['ram'] = '30'
     @params['scratch'] = '400'
-    @params['ReadOpt'] = '--hifi'
-    @params['ReadOpt', 'description'] = 'input read types: --ont for ONT reads. --hifi for PacBio HiFi reads.'
-    @params['cmdOptions', 'description'] = 'specify other commandline options for Hifiasm; do not specify any option that is already covered by the dedicated input fields'
+    @params['inputType'] = ["PacBio HiFi", "ONT"]
+    @params['inputType', 'description'] = 'PacBio HiFi reads or Oxford nanopore reads'
+    @params['cmdOptions', 'description'] = 'specify other commandline options for Canu; do not specify any option that is already covered by the dedicated input fields'
     @params['mail'] = ""
     @modules = ["Assembly/hifiasm", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
