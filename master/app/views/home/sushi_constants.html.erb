@@ -18,3 +18,6 @@ Am I employee?(session[:employee]) = <%= session[:employee] %><br />
 current_user.login = <%= current_user.login %><br />
 FGCZ.employee?('<%= current_user.login %>') = <%= FGCZ.employee?(current_user.login) %><br />
 <% end %>
+
+<h1>Environmental Variables</h1>
+BFABRICPY_CONFIG_ENV = <%= ENV['BFABRICPY_CONFIG_ENV'] %>
