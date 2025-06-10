@@ -35,7 +35,7 @@ EOS
   def next_dataset
     {'Name'=>@dataset['Name'],
      'Reads'=>@dataset['Reads'],
-     'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.p_ctg.fasta"),
+     'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.p_ctg.fa"),
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
