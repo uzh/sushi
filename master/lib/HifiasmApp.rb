@@ -6,7 +6,7 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class CanuApp < SushiFabric::SushiApp
+class HifiasmApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'Hifiasm'
@@ -44,7 +44,7 @@ EOS
 end
 
 if __FILE__ == $0
-  run CanuApp
+  run HifiasmApp
   #usecase = Bowtie2App.new
 
   #usecase.project = "p1001"
