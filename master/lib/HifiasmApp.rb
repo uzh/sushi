@@ -26,6 +26,7 @@ EOS
     @params['inputType', 'description'] = 'PacBio HiFi reads or Oxford Nanopore reads'
     @params['ploidy'] = '2'
     @params['ploidy', 'description'] = 'number of haplotypes'
+    @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for hifiasm; do not specify any option that is already covered by the dedicated input fields'
     @params['mail'] = ""
     @modules = ["Assembly/hifiasm", "Dev/R"]
