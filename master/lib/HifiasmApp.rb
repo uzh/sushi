@@ -22,9 +22,11 @@ EOS
     @params['cores'] = '8'
     @params['ram'] = '30'
     @params['scratch'] = '400'
-    @params['inputType'] = ["PacBio HiFi", "ONT"]
-    @params['inputType', 'description'] = 'PacBio HiFi reads or Oxford nanopore reads'
-    @params['cmdOptions', 'description'] = 'specify other commandline options for Canu; do not specify any option that is already covered by the dedicated input fields'
+    @params['inputType'] = ["HiFi", "ONT"]
+    @params['inputType', 'description'] = 'PacBio HiFi reads or Oxford Nanopore reads'
+    @params['ploidy'] = '2'
+    @params['ploidy', 'description'] = 'number of haplotypes'
+    @params['cmdOptions', 'description'] = 'specify other commandline options for hifiasm; do not specify any option that is already covered by the dedicated input fields'
     @params['mail'] = ""
     @modules = ["Assembly/hifiasm", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
@@ -32,7 +34,7 @@ EOS
   def next_dataset
     {'Name'=>@dataset['Name'],
      'Reads'=>@dataset['Reads'],
-     'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.contigs.fasta"),
+     'Draft [File]'=>File.join(@result_dir, "#{@dataset['Name']}.p_ctg.fasta"),
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
