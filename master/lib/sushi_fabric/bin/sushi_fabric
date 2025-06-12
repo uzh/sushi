@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250411-093633'
+# Version = '20250612-152003'
 
 
 require 'logger'
@@ -72,7 +72,7 @@ if opt.dataset_tsv and !opt.class_name
       super
       @name = 'DatasetRegistration'
       @analysis_category = 'DatasetRegistration'
-      @required_columns = []
+      @required_columns = ['Name']
       @required_params = []
       @output_files = []
     end
