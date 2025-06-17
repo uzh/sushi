@@ -29,7 +29,7 @@ class EzPyzAnndataReportApp <  SushiFabric::SushiApp
     report_dir = File.join(@result_dir, dir_name)
     {'Name'=> dir_name,
     'Report Folder [File]'=>report_dir,
-    'Report [Link]'=>File.join(report_dir, 'report/report.html')
+    'Report [Link]'=>File.join(report_dir, 'report/AnnData_quality_report.html')
     }
   end
   def commands
