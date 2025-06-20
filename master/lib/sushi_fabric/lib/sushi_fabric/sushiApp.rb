@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250521-153407'
+# Version = '20250620-102347'
 
 require 'csv'
 require 'fileutils'
@@ -1134,7 +1134,7 @@ class DemoSushi < SushiServerClass
   def copy_commands(org_dir, dest_parent_dir, now=nil, queue="light")
     commands = ["rsync -r #{org_dir} #{dest_parent_dir}/"]
   end
-  def delete_command(target)
+  def delete_command(target, bfabric_dataset_id: nil)
     command = "rm -rf #{target}"
   end
 end
