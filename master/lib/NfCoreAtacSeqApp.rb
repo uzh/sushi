@@ -42,7 +42,7 @@ EOS
   def next_dataset
      report_file = File.join(@result_dir, "#{@params['name']}_results")
      report_link = File.join(@result_dir, "#{@params['name']}_results", "multiqc", "#{@params['peakStyle']}_peak", "multiqc_report.html")
-     diffReport_link = File.join(@result_dir, "#{@params['name']}_results", "differentialAnalysis", "#{@params['peakStyle']}_peak", "DifferentialPeakAnalysisReport.html")
+     diffReport_link = File.join(@result_dir, "#{@params['name']}_results", "differentialAnalysis", "DifferentialPeakAnalysisReport.html")
      {'Name'=>@params['name'],
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
