@@ -44,6 +44,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     @params['secondRef', 'description'] = 'full path to fasta file with e.g. viralGenes'
     @params['keepAlignment'] = true
     @params['keepAlignment', 'description'] = 'Keep bam/cram file produced by SpaceRanger? Usually it is not neccessary for downstream analyses'
+    @params['runSegmentation'] = false
+    @params['runSegmentation', 'description'] = '10x built in segmentation for H&E images, currently very experimental and only available for >=v4'
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify the commandline options for SpaceRanger; do not specify any option that is already covered by the dedicated input fields'
     @params['specialOptions'] = ''
