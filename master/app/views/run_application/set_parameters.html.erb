@@ -7,6 +7,11 @@
        })
 
       $("#go_next").on('click', function(){
+        <% if @reference_required_and_unavailable %>
+          alert("Genome reference applications are currently unavailable. Please try again later.");
+          return false;
+        <% end %>
+        
         var prohibit_char = /[^a-zA-Z0-9_-]/;
         var next_dataset_name = $("#next_dataset_name").val();
 
@@ -23,6 +28,13 @@
 </script>
 
 <h2><%= @sushi_app.class %> <span style="color:gray;font-size:medium">Set Parameters</span></h2>
+
+<% if @reference_required_and_unavailable %>
+  <div class="alert alert-warning" style="margin-bottom: 20px;">
+    <strong>Warning:</strong> Genome reference applications are currently unavailable.
+  </div>
+<% end %>
+
 <blockquote>
   <%= @sushi_app.description.to_s.html_safe %>
 </blockquote>
@@ -143,7 +155,7 @@
     </table>
   <br />
   <br />
-  <%= submit_tag 'Next', :id=>"go_next", :class=>"btn btn-info btn-sm raised" %>
+  <%= submit_tag 'Next', :id=>"go_next", :class=>"btn btn-info btn-sm raised#{' disabled' if @reference_required_and_unavailable}", :disabled=>@reference_required_and_unavailable %>
 <% end %>
 
 

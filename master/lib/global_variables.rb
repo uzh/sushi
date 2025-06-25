@@ -17,6 +17,18 @@ end
 
 module GlobalVariables
   SUSHI = 'Supercalifragilisticexpialidocious!!'
+  
+  # Check if reference directories are accessible
+  def reference_directories_accessible?
+    GENOME_REF_DIRS.any? { |dir| Dir.exist?(dir) }
+  end
+  
+  # Check if the application requires reference directory
+  def requires_reference_directory?
+    # Check if the application has refBuild parameter
+    @params && @params.key?('refBuild')
+  end
+  
   def fetch_genome_root(reference)
     selector = ref_selector({}, 'fetch_genome_root')
     if full_path = selector[reference]

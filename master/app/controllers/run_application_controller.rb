@@ -106,6 +106,12 @@ class RunApplicationController < ApplicationController
     require class_name
     @sushi_app = eval(class_name).new
     @sushi_app.sushi_server = @@sushi_server
+    
+    # Check if the application requires reference directory and if it's accessible
+    @requires_reference = @sushi_app.requires_reference_directory?
+    @reference_directories_accessible = @sushi_app.reference_directories_accessible?
+    @reference_required_and_unavailable = @requires_reference && !@reference_directories_accessible
+    
     resubmit_data_set_id = nil
     data_set_id = if data_set = params[:data_set] # usual case
                     data_set[:id]
