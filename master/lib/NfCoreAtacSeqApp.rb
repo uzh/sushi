@@ -42,15 +42,17 @@ EOS
   def next_dataset
      report_file = File.join(@result_dir, "#{@params['name']}_results")
      report_link = File.join(@result_dir, "#{@params['name']}_results", "multiqc", "#{@params['peakStyle']}_peak", "multiqc_report.html")
-     diffReport_link = File.join(@result_dir, "#{@params['name']}_results", "differentialAnalysis", "DifferentialPeakAnalysisReport.html")
-     {'Name'=>@params['name'],
+     dataset = {'Name'=>@params['name'],
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
      'grouping'=>@params['grouping'],
      'Result [File]'=>report_file,
-     'GeneralReport [Link]'=>report_link,
-     'DifferentialPeakAnalysis [Link]'=>diffReport_link  
-    }
+     'GeneralReport [Link]'=>report_link}
+    if @params['runTwoGroupAnalysis']
+      diffReport_link = File.join(@result_dir, "#{@params['name']}_results", "differentialAnalysis", "DifferentialPeakAnalysisReport.html")
+      dataset['DifferentialPeakAnalysis [Link]'] = diffReport_link
+    end
+    dataset
   end
   def commands
     run_RApp('EzAppNfCoreAtacSeq')
