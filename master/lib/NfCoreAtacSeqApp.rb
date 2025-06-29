@@ -49,7 +49,7 @@ EOS
      'Result [File]'=>report_file,
      'GeneralReport [Link]'=>report_link}
     if @params['runTwoGroupAnalysis']
-      diffReport_link = File.join(@result_dir, "#{@params['name']}_results", "differentialAnalysis", "DifferentialPeakAnalysisReport.html")
+      diffReport_link = File.join(@result_dir, "#{@params['name']}_results", "diffpeak_analysis", "DifferentialPeakAnalysisReport.html")
       dataset['DifferentialPeakAnalysis [Link]'] = diffReport_link
     end
     dataset
