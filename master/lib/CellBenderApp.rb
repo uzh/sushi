@@ -13,7 +13,7 @@ class CellBenderApp < SushiFabric::SushiApp
     @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'SingleCell'
     @description =<<-EOS
-CellBender is a software package for eliminating technical artifacts from high-throughput single-cell RNA sequencing (scRNA-seq) data. ToolLink: https://github.com/broadinstitute/CellBender<br/>
+CellBender is a software package for eliminating technical artifacts from high-throughput single-cell RNA sequencing (scRNA-seq) data. It is often also referred to by its French name, Le plieur de cellules. ToolLink: https://github.com/broadinstitute/CellBender<br/>
     EOS
     @required_columns = ['Name', 'Species', 'refBuild', 'refFeatureFile', 'CountMatrix']
     @required_params = ['name']
