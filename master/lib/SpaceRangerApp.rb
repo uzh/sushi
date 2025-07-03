@@ -13,7 +13,7 @@ class SpaceRangerApp <  SushiFabric::SushiApp
     @description =<<-EOS
 This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expression/software/pipelines/latest/using/count',>space ranger count</a> in Single-library analysis mode.
     EOS
-    @required_columns = ['Name','RawDataDir','Species', 'Slide', 'Area']
+    @required_columns = ['Name','RawDataDir','Species','Slide','Area']
     @required_params = ['name', 'refBuild']
     @params['cores'] = '8'
     @params['ram'] = '60'
@@ -69,6 +69,14 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
         'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
         'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix'),
         'Read Count'=>@dataset['Read Count'],
+        'Anndata [Link]' => (
+          @params['SpaceRangerVersion'] == "Aligner/SpaceRanger/4.0.1" ?
+            File.join(report_dir, 'segmented_outputs/filtered_feature_cell_matrix.h5') :
+            File.join(report_dir, 'binned_outputs/square_008um/filtered_feature_bc_matrix.h5')
+        ),
+        'SourceImage [Link]'=>@dataset['Image'],
+        'BinnedOutputs2um [Link]'=>File.join(report_dir, 'binned_outputs/square_002um'),
+        'Spaceranger [Link]'=>File.join(report_dir, 'spatial'),
         'Count [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.txt")        
       }.merge(extract_columns(@inherit_tags))
    if @params['keepAlignment']
