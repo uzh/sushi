@@ -63,7 +63,7 @@ EOS
     @params['length_required'] = '18'
     @params['length_required','description'] = 'reads shorter than length_required will be discarded.'
     @params['mail'] = ""
-    @modules = ["Dev/R", "QC/fastp", "Dev/Python/3.8.3"]
+    @modules = ["Dev/R", "QC/fastp"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
