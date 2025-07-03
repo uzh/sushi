@@ -12,7 +12,9 @@ class EzPyzAnndataReportApp <  SushiFabric::SushiApp
     @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'Spatial'
     @description =<<-EOS
-    A Anndata report app for Spatial Trancriptomics data<br/>
+    A Anndata report app for Spatial Trancriptomics data.<br/>
+    This app is running fully on Python, therefore, check the implementation in ezPyz: https://github.com/fgcz/EzPyzApps . There you can find the required information and the implementation of the app.<br/>
+    The compiled code lives in the conda environment `tmp_anndata_report`<br/>
     EOS
     @required_columns = ['Name','Anndata']
     @required_params = ['name']

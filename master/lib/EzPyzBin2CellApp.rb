@@ -12,7 +12,11 @@ class EzPyzBin2CellApp <  SushiFabric::SushiApp
     @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'Spatial'
     @description =<<-EOS
-    A Bin2Cell app for VisiumHD data<br/>
+    A Bin2Cell app for VisiumHD data. Bin2cell is a tool for converting binned spatial transcriptomics data into single-cell format.<br/>
+    The code is based on the original Bin2Cell app, find their github page here https://github.com/Teichlab/bin2cell?tab=readme-ov-file <br/>
+    The Paper by Polanski et al is available here: https://academic.oup.com/bioinformatics/article/40/9/btae546/7754061?login=true <br/>
+    This app is running fully on Python, therefore, check the implementation in ezPyz: https://github.com/fgcz/EzPyzApps .there you can find the required information and the implementation of the app.<br/>
+    The compiled code lives in the conda environment `tmp_bin2cell`<br/>
     EOS
     @required_columns = ['Name','BinnedOutputs2um','SourceImage','SpaceRanger']
     @required_params = ['name']
