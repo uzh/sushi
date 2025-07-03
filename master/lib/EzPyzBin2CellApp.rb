@@ -51,6 +51,6 @@ class EzPyzBin2CellApp <  SushiFabric::SushiApp
     }
   end
   def commands
-    run_PyApp("Bin2cell",conda_env: 'tmp_bin2cell')
+    run_PyApp("Bin2cell",conda_env: 'gi_bin2cell')
   end
 end

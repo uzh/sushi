@@ -121,6 +121,6 @@ class EzPyzENACTApp <  SushiFabric::SushiApp
     }
   end
   def commands
-    run_PyApp("ENACT",conda_env: 'tmp_benact')
+    run_PyApp("ENACT",conda_env: 'gi_enact')
   end
 end
