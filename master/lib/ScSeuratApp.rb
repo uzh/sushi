@@ -48,19 +48,30 @@ Single cell report<br/>
     end
     @params['tissue'] = tissue.keys.sort
     @params['tissue', 'description'] = 'Select the tissues from the CellMarker2 database to identify celltypes using AUCell'
-    @params['enrichrDatabase'] = ['Tabula_Muris', 'Tabula_Sapiens', 'Azimuth_Cell_Types_2021', 'PanglaoDB_Augmented_2021', 
-                                  'CellMarker_Augmented_2021', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Human_Gene_Atlas', 'Mouse_Gene_Atlas', ]
+    @params['enrichrDatabase'] = ['Human_Gene_Atlas', 'Tabula_Sapiens', 'Azimuth_2023', 'PanglaoDB_Augmented_2021', 
+                                  'CellMarker_2024', 'HuBMAP_ASCTplusB_augmented_2022', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Mouse_Gene_Atlas', 'Tabula_Muris', ]
     @params['enrichrDatabase','multi_selection'] = true
     @params['enrichrDatabase','all_selected'] = true
-    @params['Azimuth'] = ["none", "adiposeref", "bonemarrowref", "fetusref", "heartref", "humancortexref", 
-                          "kidneyref", "lungref", "mousecortexref", "pancreasref", "pbmcref", "tonsilref","/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0"]
-    @params['SingleR'] = ['none', 'BlueprintEncodeData', 'DatabaseImmuneCellExpressionData', 'HumanPrimaryCellAtlasData', 
-                          'ImmGenData', 'MonacoImmuneData', 'MouseRNAseqData', 'NovershternHematopoieticData']
+    @params['Azimuth'] = ["none", "adiposeref (human)", "bonemarrowref (human)", "fetusref (human)", "heartref (human)", "humancortexref (human)", 
+                          "kidneyref (human)", "lungref (human)", "pancreasref (human)", "pbmcref (human)", "tonsilref (human)", "/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0 (human)", 
+                          "mousecortexref (mouse)"]
+    @params['AzimuthPanHuman'] = false
+    @params['AzimuthPanHuman', 'description'] = 'Enable Azimuth Pan-Human neural network-based cell type annotation (HUMAN DATASETS ONLY)'
+    @params['AzimuthPanHuman.confidence.threshold'] = 0.5
+    @params['AzimuthPanHuman.confidence.threshold', 'description'] = 'Confidence threshold for Azimuth Pan-Human annotation (0.0-1.0)'
+    @params['SingleR'] = ['none', 'BlueprintEncodeData (human)', 'DatabaseImmuneCellExpressionData (human)', 'HumanPrimaryCellAtlasData (human)', 
+                          'MonacoImmuneData (human)', 'NovershternHematopoieticData (human)', 'ImmGenData (mouse)', 'MouseRNAseqData (mouse)']
     @params['SingleR', 'description'] = "Use reference datasets from the celldex package to find marker-based celltype annotation with SingleR"
     @params['cellxgeneUrl'] = ''
     @params['cellxgeneUrl', 'description'] = 'Choose an download URL to an Seurat rds file of a dataset from here: https://cellxgene.cziscience.com/datasets'
     @params['cellxgeneLabel'] = ''
     @params['cellxgeneLabel', 'description'] = 'Specify the attribute of the dataset that should serve as cell type label'
+    @params['sctype.enabled'] = true
+    @params['sctype.enabled', 'description'] = 'Enable scType automatic cell type annotation (human and mouse supported)'
+    @params['sctype.tissue'] = ["auto", "Immune system", "Liver", "Pancreas", "Kidney", "Eye", "Brain", "Lung", "Adrenal", "Heart", "Intestine", "Muscle", "Placenta", "Spleen", "Stomach", "Thymus"]
+    @params['sctype.tissue', 'description'] = 'Tissue type for scType annotation. Select "auto" for automatic detection or specify the tissue type for more accurate results'
+    @params['sctype.confidence.threshold'] = 0.25
+    @params['sctype.confidence.threshold', 'description'] = 'Confidence threshold for scType annotation'
     @params['npcs'] = 20
     @params['npcs', 'description'] = 'The maximal top dimensions (pcs) to use for reduction. Do not use more principal components than pcGenes (when used).'
     @params['pcGenes'] = ''
