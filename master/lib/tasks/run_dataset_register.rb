@@ -71,11 +71,28 @@ command = "bundle exec rake #{task_name_with_args}"
 Dir.chdir(rails_root) do
   if daemon_mode
     loop do
-      now = Time.now
-      next_midnight = Time.new(now.year, now.month, now.day + 1, 0, 0, 0)
-      wait_time = next_midnight - now
-      sleep(wait_time)
-      system(command)
+      begin
+        now = Time.now
+        # Calculate next midnight using a safer method
+        next_midnight = (now + 86400).beginning_of_day
+        wait_time = next_midnight - now
+        sleep(wait_time)
+        system(command)
+      rescue ArgumentError => e
+        # Fallback when Time.new argument error occurs
+        puts "Warning: Time calculation error occurred: #{e.message}"
+        puts "Using fallback method to calculate next midnight..."
+        now = Time.now
+        # Move 24 hours from current time and then set to 0:00
+        next_midnight = Time.at(now.to_i + 86400).beginning_of_day
+        wait_time = next_midnight - now
+        sleep(wait_time)
+        system(command)
+      rescue => e
+        puts "Error in daemon mode: #{e.message}"
+        puts "Waiting 60 seconds before retrying..."
+        sleep(60)
+      end
     end
   else
     system(command)
