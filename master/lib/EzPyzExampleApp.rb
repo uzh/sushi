@@ -35,6 +35,6 @@ class EzPyzExampleApp <  SushiFabric::SushiApp
     }
   end
   def commands
-    run_PyApp("Example",conda_env: 'tmp_ezpyz') #change to App specific env soon
+    run_PyApp("Example",conda_env: 'tmp_ezpyz') #change to App specific env
   end
 end

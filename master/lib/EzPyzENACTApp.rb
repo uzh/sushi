@@ -17,7 +17,7 @@ class EzPyzENACTApp <  SushiFabric::SushiApp
     ENACT is a tool for converting binned spatial transcriptomics data into single-cell format.<br/>
     Their paper can be found here: https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btaf094/8063614<br/>
     This app is running fully on Python, therefore, check the implementation in ezPyz: https://github.com/fgcz/EzPyzApps . There you can find the required information and the implementation of the app.<br/>
-    The compiled code lives in the conda environment `tmp_benact`<br/>
+    The compiled code lives in the conda environment `gi_enact`<br/>
     EOS
     @required_columns = ['Name','BinnedOutputs2um','SourceImage']
     @required_params = ['name']
