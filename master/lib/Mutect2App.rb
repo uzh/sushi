@@ -22,6 +22,8 @@ Somatic variant calling for DNA-seq<br/>
     @params['name'] = 'GATK_somaticDnaVariants'
     @params['refBuild'] = ref_selector
     @params['snpEffDB'] = ''
+    @params['TumorOnlyMode'] = false
+    @params['TumorOnlyMode', 'description'] = 'default mode is tumor with matched normal,  TumorOnlyMode=true ignores the normal sample'
     @params['specialOptions'] = ''
     @params['cmdOptions'] = ''
     @params['mail'] = ""
