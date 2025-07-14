@@ -35,6 +35,12 @@ Assuming that all other columns than file path are same between datasets.<br />
       next_dataset_base[new_colname] = @dataset[colname]
     end
     next_dataset_base['Species'] = @dataset['Species']
+    
+    # Include Read Count column if it exists
+    if @dataset['Read Count']
+      next_dataset_base['Read Count'] = @dataset['Read Count']
+    end
+    
     next_dataset_base.merge(extract_columns(@inherit_tags))
   end
 
