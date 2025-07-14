@@ -54,13 +54,20 @@ Assuming that all other columns than file path are same between datasets.<br />
         dataset_hash2[name] = sample.to_hash
       end
     end
-    # here
-    # merge dataset_hash2 with @dataset_hash
+    # here
+    # merge dataset_hash2 with @dataset_hash
     dataset_hash1 = @dataset_hash.clone
     dataset_hash1.each_with_index do |sample, i|
       name = sample['Name']
       if dataset_hash2[name] and dataset_hash2[name]['RawDataDir [File]']
         @dataset_hash[i]["RawDataDir [File]"] += ",#{dataset_hash2[name]['RawDataDir [File]']}"
+      end
+      
+      # Merge Read Count column by summing the values
+      if dataset_hash2[name] and dataset_hash2[name]['Read Count']
+        current_count = @dataset_hash[i]['Read Count'].to_i
+        additional_count = dataset_hash2[name]['Read Count'].to_i
+        @dataset_hash[i]['Read Count'] = (current_count + additional_count).to_s
       end
     end
     @dataset_hash.sort_by!{|row| row['Name']}
