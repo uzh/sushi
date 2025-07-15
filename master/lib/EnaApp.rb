@@ -34,7 +34,6 @@ EOS
         @modules = ["Dev/R", "Dev/Python"]
   end
   def set_default_parameters
-    if data_set = DataSet.find_by_id(@dataset_sushi_id)
       @params['projectID'] = @dataset[0]['projectID']
       @params['datasetId'] = @dataset_sushi_id
   end
