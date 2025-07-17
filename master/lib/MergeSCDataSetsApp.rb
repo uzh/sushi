@@ -28,7 +28,7 @@ Assuming that all other columns than file path are same between datasets.<br />
     }
     @dataset.keys.select{|colname| colname =~ /RawDataDir\d*/ or colname =~ /Read\d+/}.each do |colname|
       new_colname = if colname == "RawDataDir"
-                      "RawDataDir"
+                      "RawDataDir [File]"
                     else
                       "#{colname}"
                     end
