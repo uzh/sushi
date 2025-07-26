@@ -92,7 +92,7 @@ EOS
     {'Name'=>@dataset['Name'],
      'Report [File]'=>report_file,
      'Html [Link]'=>report_link,
-     'Count [File]'=>count_file, 
+     'Count [Link]'=>count_file, 
      'Species'=>@dataset['Species'],
      #'refBuild'=>'',
      #'featureLevel'=>'smRNA',
