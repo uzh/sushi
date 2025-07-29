@@ -38,7 +38,7 @@ Note
       'Name'=>@dataset['Name'],
     }
     @dataset.keys.select{|colname| colname =~ /Read\d+/}.each do |colname|
-      new_colname = "#{colname}"
+      new_colname = "#{colname} [File]"
       next_dataset_base[new_colname] = @dataset[colname]
     end
     next_dataset_base['Species'] = @dataset['Species']
