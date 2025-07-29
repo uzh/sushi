@@ -5,10 +5,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class MergeRunDataApp < SushiFabric::SushiApp
+class MergeRunDataLegacyApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'MergeRunData'
+    @name = 'MergeRunDataLegacy'
     @description =<<-EOS
 Merging fastq files from two illumina runs by name <br /><br />
 <br />
