@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-# Version = '20250110-141350'
+# Version = '20250730-053958'
 
 require 'pathname'
+require 'active_support/core_ext/time'
 
 RAILS_ROOT='/srv/sushi/production/master'
 YEAR = Time.now.strftime("%Y")
