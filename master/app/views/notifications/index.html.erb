@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Notifications
+            <% if @notifications.unread.any? %>
+              <%= link_to "Mark All as Read", mark_all_as_read_notifications_path, 
+                          method: :post, 
+                          class: "btn btn-sm btn-default pull-right",
+                          data: { confirm: "Mark all notifications as read?" } %>
+            <% end %>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <% if @notifications.any? %>
+            <div class="list-group">
+              <% @notifications.each do |notification| %>
+                <div class="list-group-item <%= 'list-group-item-warning' unless notification.read %>">
+                  <div class="row">
+                    <div class="col-md-10">
+                      <h4 class="list-group-item-heading">
+                        <%= notification.notification_type.humanize %>
+                        <% unless notification.read %>
+                          <span class="badge">New</span>
+                        <% end %>
+                      </h4>
+                      <p class="list-group-item-text">
+                        <%= simple_format(notification.message) %>
+                      </p>
+                      <small class="text-muted">
+                        <%= notification.created_at.strftime("%Y-%m-%d %H:%M:%S") %>
+                      </small>
+                    </div>
+                    <div class="col-md-2 text-right">
+                      <% unless notification.read %>
+                        <%= link_to "Mark as Read", 
+                                    mark_as_read_notification_path(notification), 
+                                    method: :post, 
+                                    class: "btn btn-xs btn-success" %>
+                      <% else %>
+                        <span class="text-muted">Read</span>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="text-center">
+              <p class="text-muted">No notifications found.</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

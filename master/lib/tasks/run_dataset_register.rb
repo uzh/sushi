@@ -8,6 +8,30 @@ require 'active_support/core_ext/time'
 RAILS_ROOT='/srv/sushi/production/master'
 YEAR = Time.now.strftime("%Y")
 
+# Load Rails environment for notification service
+def load_rails_environment
+  require 'bundler/setup'
+  require File.join(RAILS_ROOT, 'config', 'environment')
+rescue LoadError => e
+  puts "Warning: Could not load Rails environment: #{e.message}"
+  puts "Notifications will not be sent."
+  return false
+end
+
+# Send notification for errors or warnings
+def send_notification(error_message = nil, warning_message = nil)
+  puts "Sending notification - Error: #{error_message}, Warning: #{warning_message}"
+  return unless load_rails_environment
+  
+  begin
+    notification_service = NotificationService.new
+    notification_service.notify_dataset_registration_issues(error_message, warning_message)
+    puts "Notification sent successfully"
+  rescue => e
+    puts "Error sending notification: #{e.message}"
+  end
+end
+
 help =-> () do
   puts <<-eos
   usage:
@@ -78,7 +102,17 @@ Dir.chdir(rails_root) do
         next_midnight = (now + 86400).beginning_of_day
         wait_time = next_midnight - now
         sleep(wait_time)
-        system(command)
+        
+        # Execute the command and capture output
+        puts "Executing dataset registration task at #{Time.now}"
+        result = system(command)
+        unless result
+          error_message = "Dataset registration task failed with exit code #{$?.exitstatus}"
+          puts error_message
+          send_notification(error_message)
+        else
+          puts "Dataset registration task completed successfully"
+        end
       rescue ArgumentError => e
         # Fallback when Time.new argument error occurs
         puts "Warning: Time calculation error occurred: #{e.message}"
@@ -88,15 +122,35 @@ Dir.chdir(rails_root) do
         next_midnight = Time.at(now.to_i + 86400).beginning_of_day
         wait_time = next_midnight - now
         sleep(wait_time)
-        system(command)
+        
+        puts "Executing dataset registration task at #{Time.now}"
+        result = system(command)
+        unless result
+          error_message = "Dataset registration task failed with exit code #{$?.exitstatus}"
+          puts error_message
+          send_notification(error_message)
+        else
+          puts "Dataset registration task completed successfully"
+        end
       rescue => e
-        puts "Error in daemon mode: #{e.message}"
+        error_message = "Error in daemon mode: #{e.message}"
+        puts error_message
+        send_notification(error_message)
         puts "Waiting 60 seconds before retrying..."
         sleep(60)
       end
     end
   else
-    system(command)
+    # Execute the command and capture output
+    puts "Executing dataset registration task at #{Time.now}"
+    result = system(command)
+    unless result
+      error_message = "Dataset registration task failed with exit code #{$?.exitstatus}"
+      puts error_message
+      send_notification(error_message)
+    else
+      puts "Dataset registration task completed successfully"
+    end
   end
 end
 

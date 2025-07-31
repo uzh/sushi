@@ -8,6 +8,20 @@ SushiFabric::Application.routes.draw do
     sessions: 'users/sessions'
   }
   
+  # Notification settings routes
+  resource :notification_setting, only: [:show, :update]
+  
+  # Notifications routes
+  resources :notifications, only: [:index] do
+    member do
+      post :mark_as_read
+    end
+    collection do
+      post :mark_all_as_read
+      get :unread_count
+    end
+  end
+  
   resources :job_monitoring do
     member do
       get :kill_job

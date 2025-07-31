@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Dataset Registration Notification Settings</h3>
+        </div>
+        <div class="panel-body">
+          <p class="text-muted">
+            This page allows you to control your personal notification settings for dataset registration errors and warnings.
+            Only Employee users can receive notifications when errors or warnings occur during the daily dataset registration process.
+          </p>
+          
+          <%= form_for @notification_setting do |f| %>
+            <div class="form-group">
+              <div class="checkbox">
+                <label>
+                  <%= f.check_box :notification_enabled %>
+                  Enable notifications for dataset registration issues
+                </label>
+              </div>
+              <small class="text-muted">
+                When enabled, you will receive notifications when errors or warnings occur during the daily dataset registration process.
+                This setting is personal and only affects your own notifications.
+              </small>
+            </div>
+            
+            <div class="form-group">
+              <h4>Your Notification History</h4>
+              <table class="table table-striped">
+                <tr>
+                  <td><strong>Last Notification Date:</strong></td>
+                  <td><%= @notification_setting.last_notification_date ? @notification_setting.last_notification_date.strftime("%Y-%m-%d %H:%M:%S") : "Never" %></td>
+                </tr>
+                <tr>
+                  <td><strong>Last Error Date:</strong></td>
+                  <td><%= @notification_setting.last_error_date ? @notification_setting.last_error_date.strftime("%Y-%m-%d %H:%M:%S") : "Never" %></td>
+                </tr>
+                <tr>
+                  <td><strong>Last Warning Date:</strong></td>
+                  <td><%= @notification_setting.last_warning_date ? @notification_setting.last_warning_date.strftime("%Y-%m-%d %H:%M:%S") : "Never" %></td>
+                </tr>
+              </table>
+            </div>
+            
+            <div class="form-group">
+              <%= f.submit "Update Settings", class: "btn btn-primary" %>
+              <%= link_to "Back", root_path, class: "btn btn-default" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

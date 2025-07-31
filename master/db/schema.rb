@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_02_14_143735) do
+ActiveRecord::Schema[7.0].define(version: 2025_07_31_140138) do
   create_table "data_sets", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
     t.integer "parent_id"
@@ -52,6 +52,27 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_14_143735) do
     t.index ["status"], name: "index_jobs_on_status"
   end
 
+  create_table "notification_settings", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.boolean "notification_enabled"
+    t.datetime "last_notification_date"
+    t.datetime "last_error_date"
+    t.datetime "last_warning_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_notification_settings_on_user_id"
+  end
+
+  create_table "notifications", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.text "message"
+    t.string "notification_type"
+    t.boolean "read"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
   create_table "projects", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "number"
     t.datetime "created_at", null: false
@@ -91,4 +112,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_14_143735) do
     t.index ["login"], name: "index_users_on_login", unique: true
   end
 
+  add_foreign_key "notification_settings", "users"
+  add_foreign_key "notifications", "users"
 end

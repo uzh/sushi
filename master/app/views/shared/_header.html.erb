@@ -6,6 +6,24 @@
          $('#project_number').val(project_number);
          this.form.submit();
        })
+       
+       // Update notification count periodically
+       function updateNotificationCount() {
+         $.get('/notifications/unread_count', function(data) {
+           var count = data.count;
+           if (count > 0) {
+             $('#notification-count').text(count).show();
+           } else {
+             $('#notification-count').hide();
+           }
+         });
+       }
+       
+       // Update count on page load
+       updateNotificationCount();
+       
+       // Update count every 60 seconds
+       setInterval(updateNotificationCount, 60000);
    });
 </script>
 
@@ -58,10 +76,67 @@
         <% end %>
         <%= link_to "Sign out", destroy_user_session_path, :method => :delete, :class => 'homelinks' %></span>
 		</li>
+		<% if session[:employee] %>
+		<li class="dropdown" style="padding: 0">
+			<a href="#" style="padding: 0px 10px;line-height:60px;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				<i class="fa fa-bell"></i>
+				<span id="notification-count" class="badge" style="display: none; background-color: #d9534f;"><%= current_user.unread_notifications_count %></span>
+			</a>
+			<ul class="dropdown-menu dropdown-menu-right" style="width: 300px;">
+				<li class="dropdown-header">
+					<strong>Notifications</strong>
+					<% if current_user.unread_notifications_count > 0 %>
+						<%= link_to "Mark All Read", mark_all_as_read_notifications_path, 
+									method: :post, 
+									class: "btn btn-xs btn-default pull-right",
+									style: "margin-top: -2px;" %>
+					<% end %>
+				</li>
+				<li role="separator" class="divider"></li>
+				<% current_user.recent_notifications(5).each do |notification| %>
+					<li>
+						<a href="#" onclick="markNotificationAsRead(<%= notification.id %>); return false;" style="white-space: normal;">
+							<div class="<%= 'text-bold' unless notification.read %>">
+								<%= notification.notification_type.humanize %>
+								<% unless notification.read %>
+									<span class="badge" style="background-color: #d9534f;">New</span>
+								<% end %>
+							</div>
+							<div style="font-size: 12px; color: #666;">
+								<%= truncate(notification.message, length: 100) %>
+							</div>
+							<div style="font-size: 11px; color: #999;">
+								<%= time_ago_in_words(notification.created_at) %> ago
+							</div>
+						</a>
+					</li>
+				<% end %>
+				<% if current_user.recent_notifications(5).empty? %>
+					<li><a href="#" style="text-align: center; color: #999;">No notifications</a></li>
+				<% end %>
+				<li role="separator" class="divider"></li>
+				<li><%= link_to "View All Notifications", notifications_path %></li>
+				<li><%= link_to "Notification Settings", notification_setting_path %></li>
+			</ul>
+		</li>
+		<% end %>
 	    </ul>
  <% end %>
 	</div>
         <!-- END menu navigation bar -->
     </div>
 </nav>
+
+<script>
+function markNotificationAsRead(notificationId) {
+  $.post('/notifications/' + notificationId + '/mark_as_read', function(data) {
+    if (data.success) {
+      // Update notification count
+      updateNotificationCount();
+      // Reload the dropdown content
+      location.reload();
+    }
+  });
+}
+</script>
 
