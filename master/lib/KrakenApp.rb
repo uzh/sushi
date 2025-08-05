@@ -23,8 +23,8 @@ EOS
     @params['scratch'] = '500'
     @params['paired'] = false
     
-    @params['krakenDBOpt'] = ['bacteria', 'viruses']
-    @params['krakenDBOpt', 'description'] = 'kraken database options: viruses or bacteria. Default is bacteria'
+    @params['krakenDBOpt'] = ['Viral', 'Standard', 'PlusPF', 'core_nt']
+    @params['krakenDBOpt', 'description'] = 'kraken database options (https://benlangmead.github.io/aws-indexes/k2). Default is Standard'
     @params['krakenConfidenceOpt'] = '0.0'
     @params['krakenConfidenceOpt', 'description'] = 'Confidence score threshold, between 0 and 1'
     @params['krakenPhredOpt'] = '0'
