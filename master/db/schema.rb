@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_07_31_140138) do
+ActiveRecord::Schema[7.0].define(version: 2025_08_05_092031) do
   create_table "data_sets", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
     t.integer "parent_id"
@@ -49,6 +49,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_31_140138) do
     t.string "user"
     t.datetime "start_time"
     t.datetime "end_time"
+    t.index ["id", "next_dataset_id"], name: "index_jobs_on_id_and_next_dataset_id"
+    t.index ["input_dataset_id"], name: "index_jobs_on_input_dataset_id"
+    t.index ["next_dataset_id"], name: "index_jobs_on_next_dataset_id"
     t.index ["status"], name: "index_jobs_on_status"
   end
 

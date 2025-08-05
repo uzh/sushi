@@ -4,14 +4,16 @@ class JobMonitoringController < ApplicationController
 
     if option && option[:all_job_list] # all projects
       configure_job_list(all_job_list: true, page_unit: 1000)
-      Job.joins(data_set: :project)
+      Job.includes(data_set: :project)
+         .joins(data_set: :project)
          .joins('LEFT JOIN data_sets AS next_data_set ON jobs.next_dataset_id = next_data_set.id')
          .select('jobs.*, projects.number AS project_number, next_data_set.name AS next_dataset_name')
          .order(id: :desc)
          .limit(1000)
     elsif option && option[:project_job_list] # project specific
       configure_job_list(all_job_list: false)
-      Job.joins(data_set: :project)
+      Job.includes(data_set: :project)
+         .joins(data_set: :project)
          .joins('LEFT JOIN data_sets AS next_data_set ON jobs.next_dataset_id = next_data_set.id')
          .select('jobs.*, projects.number AS project_number, next_data_set.name AS next_dataset_name')
          .where(projects: { number: project_number })
@@ -19,14 +21,16 @@ class JobMonitoringController < ApplicationController
          .limit(100)
     elsif session[:all_job_list] # all projects from session
       configure_job_list(all_job_list: true, page_unit: 1000)
-      Job.joins(data_set: :project)
+      Job.includes(data_set: :project)
+         .joins(data_set: :project)
          .joins('LEFT JOIN data_sets AS next_data_set ON jobs.next_dataset_id = next_data_set.id')
          .select('jobs.*, projects.number AS project_number, next_data_set.name AS next_dataset_name')
          .order(id: :desc)
          .limit(1000)
     else # project specific
       configure_job_list(all_job_list: false)
-      Job.joins(data_set: :project)
+      Job.includes(data_set: :project)
+         .joins(data_set: :project)
          .joins('LEFT JOIN data_sets AS next_data_set ON jobs.next_dataset_id = next_data_set.id')
          .select('jobs.*, projects.number AS project_number, next_data_set.name AS next_dataset_name')
          .where(projects: { number: project_number })
