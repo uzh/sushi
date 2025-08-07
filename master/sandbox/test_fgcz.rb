@@ -1,5 +1,6 @@
 
 require 'fgcz'
+require 'net/ldap'
 
 #load '/usr/local/ngseq/Repositories/gem-fgcz/lib/fgcz.rb'
 puts FGCZ.get_user_groups 'tanguy'
@@ -16,4 +17,5 @@ puts '---'
 p FGCZ.get_user_groups('hogehoge')
 p FGCZ.get_user_projects('hogehoge')
 
-
+puts "FGCZ.get_bioinformatician_users:"
+p FGCZ.get_bioinformatician_users
