@@ -3,13 +3,13 @@ class NotificationService
     @logger = Rails.logger
   end
   
-  # Send notification to employee users about dataset registration errors/warnings
+  # Send notification to bioinformatician users about dataset registration errors/warnings
   def notify_dataset_registration_issues(error_message = nil, warning_message = nil)
-    employee_users = get_employee_users
-    return if employee_users.empty?
+    bioinformatician_users = get_bioinformatician_users
+    return if bioinformatician_users.empty?
     
     # Update notification settings for users who should receive notifications
-    employee_users.each do |user|
+    bioinformatician_users.each do |user|
       setting = user.notification_setting_or_create
       
       if error_message
@@ -28,11 +28,18 @@ class NotificationService
     end
   end
   
-  # Get all employee users with notifications enabled
-  def get_employee_users
+  # Get all bioinformatician users with notifications enabled (efficient version)
+  def get_bioinformatician_users
+    return [] unless SushiFabric::Application.config.fgcz?
+    
+    # Get bioinformatician logins from LDAP (single LDAP query)
+    bioinformatician_logins = FGCZ.get_bioinformatician_users
+    return [] if bioinformatician_logins.empty?
+    
+    # Filter users from database using the login list
     User.joins(:notification_setting)
         .where(notification_settings: { notification_enabled: true })
-        .select { |user| employee?(user) }
+        .where(login: bioinformatician_logins)
   end
   
   # Check if user is an employee

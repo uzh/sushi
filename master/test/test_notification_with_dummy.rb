@@ -6,7 +6,7 @@ ENV['RAILS_ENV'] = 'production'
 ENV['DISABLE_DATABASE_ENVIRONMENT_CHECK'] = '1'
 
 require 'bundler/setup'
-require File.join(File.dirname(__FILE__), '..', 'config', 'environment')
+require File.expand_path('config/environment', Dir.pwd)
 
 puts "Testing notification functionality with dummy error messages..."
 
@@ -86,18 +86,24 @@ rescue => e
   puts "Error checking notification settings: #{e.message}"
 end
 
-# Test 5: Test employee user detection
-puts "\n5. Testing employee user detection..."
+# Test 5: Test bioinformatician user detection
+puts "\n5. Testing bioinformatician user detection..."
 begin
   all_users = User.all
-  employee_users = all_users.select { |u| notification_service.employee?(u) }
   puts "Total users: #{all_users.count}"
-  puts "Employee users: #{employee_users.count}"
-  employee_users.each do |user|
+  
+  # Test FGCZ.get_bioinformatician_users
+  bioinformatician_logins = FGCZ.get_bioinformatician_users rescue []
+  puts "Bioinformatician logins from LDAP: #{bioinformatician_logins}"
+  
+  # Test get_bioinformatician_users method
+  bioinformatician_users = notification_service.get_bioinformatician_users
+  puts "Bioinformatician users with notifications enabled: #{bioinformatician_users.count}"
+  bioinformatician_users.each do |user|
     puts "  - #{user.login}"
   end
 rescue => e
-  puts "Error detecting employee users: #{e.message}"
+  puts "Error detecting bioinformatician users: #{e.message}"
 end
 
 puts "\nDummy notification test completed!"
