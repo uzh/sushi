@@ -8,7 +8,7 @@ PATH
 PATH
   remote: /usr/local/ngseq/gems/fgcz
   specs:
-    fgcz (0.0.5)
+    fgcz (0.0.6)
 
 PATH
   remote: lib/sushi_fabric
