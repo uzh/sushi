@@ -47,7 +47,7 @@ A simple <a href='https://fgcz-shiny.uzh.ch/10x_Sample2Barcode',>ShinyApp  </a> 
     @params['TenXLibrary', 'multi_selection'] = true
     @params['TenXLibrary', 'selected'] = ['GEX', 'Multiplexing']
     @params['MultiplexingType'] = {'select'=>'', 'On chip multiplexing (OCM)'=>'ocm', 'Hashing with Antibody Capture'=>'antibody', "3' Cell Multiplexing with CMOs (CellPlex)"=>'cellplex'}
-    @params['MultiplexingType', 'description'] = "Which type of 3' multiplexing technology is used? https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-3p-multi"
+    @params['MultiplexingType', 'description'] = "Which type of 3' multiplexing technology is used? See the <a href='https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-3p-multi'>support page</a> for further details."
     @params['FeatureBarcodeFile'] = ''
     @params['FeatureBarcodeFile', 'file_upload'] = true
     @params['FeatureBarcodeFile', 'description'] = '(e.g. for CITEseq)'
