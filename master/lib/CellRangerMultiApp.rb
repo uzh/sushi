@@ -45,12 +45,13 @@ A simple <a href='https://fgcz-shiny.uzh.ch/10x_Sample2Barcode',>ShinyApp  </a> 
     @params['TenXLibrary'] = ['GEX', 'VDJ-T', 'VDJ-B', 'FeatureBarcoding', 'Multiplexing', 'fixedRNA','Antigen (BEAM)']
     @params['TenXLibrary', 'description'] = "Which 10X libraries? Note: Not all library types can be processed simultaneously. See the <a href='https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/using/multi#when'>support page</a> for further details. E.g. for fixedRNA, must also specify GEX."
     @params['TenXLibrary', 'multi_selection'] = true
-    @params['TenXLibrary', 'selected'] = ['GEX', 'Multiplexing'] 
+    @params['TenXLibrary', 'selected'] = ['GEX', 'Multiplexing']
+    @params['MultiplexingType'] = {'select'=>'', 'On chip multiplexing (OCM)'=>'ocm', 'Hashing with Antibody Capture'=>'antibody', "3' Cell Multiplexing with CMOs (CellPlex)"=>'cellplex'}
+    @params['MultiplexingType', 'description'] = "Which type of 3' multiplexing technology is used? https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-3p-multi"
     @params['FeatureBarcodeFile'] = ''
     @params['FeatureBarcodeFile', 'file_upload'] = true
     @params['FeatureBarcodeFile', 'description'] = '(e.g. for CITEseq)'
     @params['MultiplexBarcodeSet'] = {'select'=>''}
-    @params['MultiplexBarcodeSet'] =  {'select'=>''}
     Dir["/srv/GT/databases/10x/CMO_files/*"].sort.select{|design| File.file?(design)}.each do |dir|
       @params['MultiplexBarcodeSet'][File.basename(dir)] = File.basename(dir)
     end
