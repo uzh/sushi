@@ -23,7 +23,7 @@ Note: that running this app usually requires manual curation of the input datase
 </tbody>
 </table>
 <br> 
-A simple <a href='https://fgcz-shiny.uzh.ch/10x_Sample2Barcode',>ShinyApp  </a> can be used to provide the barcoding information for multiplexed samples/fixed RNA with or without feature barcoding.                  
+When specifying multiplexing, use our simple <a href='http://fgcz-r-029.uzh.ch/shiny/fgcz_Sample2Barcode_app'>ShinyApp</a> can be used to provide the barcoding information with or without feature barcoding.                  
     EOS
     @required_columns = ['Name','RawDataDir','Species']
     @required_params = ['name', 'refBuild']
@@ -47,7 +47,7 @@ A simple <a href='https://fgcz-shiny.uzh.ch/10x_Sample2Barcode',>ShinyApp  </a> 
     @params['TenXLibrary', 'multi_selection'] = true
     @params['TenXLibrary', 'selected'] = ['GEX', 'Multiplexing']
     @params['MultiplexingType'] = {'select'=>'', 'On chip multiplexing (OCM)'=>'ocm', 'Hashing with Antibody Capture'=>'antibody', "3' Cell Multiplexing with CMOs (CellPlex)"=>'cellplex'}
-    @params['MultiplexingType', 'description'] = "Which type of 3' multiplexing technology is used? See the <a href='https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-3p-multi'>support page</a> for further details."
+    @params['MultiplexingType', 'description'] = "(Beta) Which type of 3' multiplexing technology is used? See the <a href='https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-3p-multi'>support page</a> for further details. Currently, only 'Hashing with Antibody Capture' affects the app's behaviour. Must also select corresponding 'AntibodyCapture' csv file."
     @params['FeatureBarcodeFile'] = ''
     @params['FeatureBarcodeFile', 'file_upload'] = true
     @params['FeatureBarcodeFile', 'description'] = '(e.g. for CITEseq)'
