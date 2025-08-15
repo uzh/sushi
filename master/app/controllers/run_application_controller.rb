@@ -303,7 +303,7 @@ class RunApplicationController < ApplicationController
 
 		cache_key = ['param_desc', app, param, (value.presence || '-')].join(':')
 		resp = Rails.cache.fetch(cache_key, expires_in: 7.days) do
-			base = ENV.fetch('PARAM_DESC_API_BASE', 'http://fgcz-h-036:5002')
+			base = ENV.fetch('PARAM_DESC_API_BASE', 'http://fgcz-h-037:5002')
 			uri  = URI.parse("#{base}/generate/application_parameter_description/app")
 			body_param = value.present? ? "#{param}=#{value}" : param
 
