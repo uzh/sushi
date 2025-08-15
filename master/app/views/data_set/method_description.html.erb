@@ -1,0 +1,13 @@
+<h3 style="display: inline">Method Description</h3>
+ - <%= link_to 'back to dataset', "/data_set/#{@data_set&.id}" %>
+<hr />
+
+<% if @error_message %>
+  <div class="alert"><%= @error_message %></div>
+<% else %>
+  <div class="method-description">
+    <%= render_markdown(@html) %>
+  </div>
+<% end %>
+
+

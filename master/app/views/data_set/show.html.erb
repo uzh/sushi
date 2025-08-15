@@ -198,6 +198,7 @@ $(document).ready(function(){
 <% if @fgcz and current_user and current_user.login %>
 - <%= link_to 'call GEO-uploader', "https://geo-uploader.fgcz.uzh.ch/sessions/new/datasets/#{@data_set.id}", target: "_blank" %>
 <% end %>
+- <%= link_to 'method description', "/data_set/method_description.#{@data_set.id}", :method=>:get %>
 <div id="download_dialog" title="Donwload links">
   <p>
     - Java downloader from B-Fabric:

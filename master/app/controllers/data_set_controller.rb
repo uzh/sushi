@@ -996,6 +996,43 @@ class DataSetController < ApplicationController
       end
     end
   end
+  def method_description
+    @data_set = if id = params[:format]
+                  DataSet.find_by_id(id)
+                end
+    @job = @data_set&.jobs&.order(:created_at)&.first
+
+    @error_message = nil
+    @html = nil
+
+    if @data_set.nil?
+      @error_message = 'DataSet not found.'
+    elsif @job.nil?
+      @error_message = 'No jobs found for this dataset.'
+    else
+      begin
+        base = ENV.fetch('METHOD_DESC_API_BASE', 'http://fgcz-h-037:5002')
+        uri  = URI.parse("#{base}/generate/method_description/job/#{@job.id}")
+        req  = Net::HTTP::Get.new(uri, { 'Accept' => 'application/json' })
+
+        res = Net::HTTP.start(uri.hostname, uri.port, open_timeout: 2, read_timeout: 15) { |h| h.request(req) }
+        if res.is_a?(Net::HTTPSuccess)
+          json = JSON.parse(res.body) rescue {}
+          method_desc_text = json['method_description'].to_s
+          if method_desc_text.empty?
+            @error_message = 'No method description returned.'
+          else
+            @html = method_desc_text
+          end
+        else
+          @error_message = "Upstream error: #{res.code}"
+        end
+      rescue => e
+        @error_message = "Request failed: #{e.class}: #{e.message}"
+        Rails.logger.warn("method_description fetch failed for job=#{@job.id}: #{e.class}: #{e.message}")
+      end
+    end
+  end
   def project_paths(data_set)
     paths = []
     if sample = data_set.samples.first

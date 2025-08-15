@@ -1,4 +1,78 @@
 module ApplicationHelper
+  # Lightweight Markdown-like renderer without external gems.
+  # Supports:
+  # - Bold (**text**), Italic (*text*), Inline code (`code`)
+  # - Headings (1. , 2. or # , ## are converted to <hN>)
+  # - Unordered list (- , * ) and ordered list (1. 2. ...)
+  # - Paragraphs and line breaks
+  def render_markdown(text)
+    return ''.html_safe if text.to_s.strip.empty?
+
+    safe = h(text)
+
+    # Inline formatting
+    safe.gsub!(/\*\*(.+?)\*\*/, '<strong>\1</strong>')
+    safe.gsub!(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/, '<em>\1</em>')
+    safe.gsub!(/`([^`]+)`/, '<code>\1</code>')
+
+    lines = safe.split(/\r?\n/)
+    html_lines = []
+    in_ul = false
+    in_ol = false
+
+    lines.each do |line|
+      if line.strip.empty?
+        if in_ul
+          html_lines << '</ul>'
+          in_ul = false
+        end
+        if in_ol
+          html_lines << '</ol>'
+          in_ol = false
+        end
+        html_lines << '<br />'
+        next
+      end
+
+      # Headings like "1. Title:" or markdown-style '# Title'
+      if line =~ /^\s*#+\s+(.*)$/
+        level = [line[/^\s*(#+)/, 1].length, 6].min
+        html_lines << "<h#{level}>#{Regexp.last_match(1).strip}</h#{level}>"
+        next
+      elsif line =~ /^\s*(\d+)\.\s+(.*)$/
+        # Ordered list detection will handle list items, but for a single leading number followed by bold title like '1. **Job Summary:**'
+        # treat as paragraph if it contains bold colon title
+        content = Regexp.last_match(2)
+        if content =~ /<strong>.*:<\/strong>/
+          html_lines << "<p>#{Regexp.last_match(1)}. #{content}</p>"
+          next
+        end
+      end
+
+      # List items
+      if line =~ /^\s*[-\*]\s+(.*)$/
+        html_lines << '<ul>' unless in_ul
+        in_ul = true
+        html_lines << "<li>#{Regexp.last_match(1)}</li>"
+        next
+      elsif line =~ /^\s*\d+\.\s+(.*)$/
+        html_lines << '<ol>' unless in_ol
+        in_ol = true
+        html_lines << "<li>#{Regexp.last_match(1)}</li>"
+        next
+      end
+
+      # Paragraph
+      html_lines << "<p>#{line.strip}</p>"
+    end
+
+    html_lines << '</ul>' if in_ul
+    html_lines << '</ol>' if in_ol
+
+    allowed_tags = %w(p br b i em strong a ul ol li code pre h1 h2 h3 h4 h5 h6 blockquote hr)
+    allowed_attrs = %w(href title)
+    sanitize(html_lines.join("\n"), tags: allowed_tags, attributes: allowed_attrs)
+  end
   def linebreak_to_br(text)
     text.gsub(/\r\n|\r|\n/, "<br />")
   end

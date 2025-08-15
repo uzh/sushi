@@ -60,6 +60,7 @@ SushiFabric::Application.routes.draw do
       post :delete
       get :script_log
       get :job_parameter
+      get :method_description
       post :multi_delete
       post :multi_destroy
       get :index_full
