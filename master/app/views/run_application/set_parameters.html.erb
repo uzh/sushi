@@ -24,6 +24,74 @@
         }
       });
 
+      // --- Parameter help tooltip (lazy load + in-page cache) ---
+      var __paramHelpMem = {};
+      function __showParamTip($el, text){
+        var $tip = $el.data('tip');
+        if(!$tip){
+          $tip = $('<div/>').addClass('param-help-tip').css({
+            position: 'absolute', zIndex: 9999, display: 'none',
+            maxWidth: 420, background: '#333', color: '#fff',
+            padding: '8px 10px', borderRadius: 4, fontSize: 12,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.25)', whiteSpace: 'normal'
+          }).appendTo('body');
+          $el.data('tip', $tip);
+        }
+        $tip.text(text);
+        var o = $el.offset();
+        $tip.css({ top: o.top + $el.outerHeight() + 4, left: o.left }).show();
+      }
+      function __hideParamTip($el){
+        var $tip = $el.data('tip'); if($tip) $tip.hide();
+      }
+      function __hideAllParamTips(){
+        $('.param-help').each(function(){
+          var $t = $(this).data('tip'); if($t) $t.hide();
+        });
+      }
+      $(document).on('mouseenter click', '.param-help', function(){
+        __hideAllParamTips();
+        var $el = $(this);
+        var app = $el.data('app');
+        var param = $el.data('param');
+
+        // Find current value in the same row
+        var $row = $el.closest('tr');
+        var $field = $row.find('[name="parameters[' + param + ']"]');
+        var value = '';
+        if($field.length){
+          if($field.is('select') && $field.prop('multiple')){
+            value = ($field.val() || []).join(',');
+          }else{
+            value = $field.val() || '';
+          }
+        }
+
+        var memKey = [app, param, value].join('|');
+        if(__paramHelpMem[memKey]){ __showParamTip($el, __paramHelpMem[memKey]); return; }
+
+        __showParamTip($el, 'Loading...');
+        $.get('/run_application/parameter_description', { application: app, parameter: param, value: value })
+          .done(function(res){
+            var text = (res && res.success && res.response) ? res.response : 'No description available.';
+            __paramHelpMem[memKey] = text;
+            __showParamTip($el, text);
+          })
+          .fail(function(){
+            var text = 'Failed to load description.';
+            __paramHelpMem[memKey] = text;
+            __showParamTip($el, text);
+          });
+      }).on('mouseleave', '.param-help', function(){ __hideParamTip($(this)); })
+      .on('mouseleave', '.param-help-tip', function(){ $(this).hide(); });
+
+      // Hide tips when clicking outside or scrolling
+      $(document).on('click', function(e){
+        if(!$(e.target).closest('.param-help, .param-help-tip').length){
+          __hideAllParamTips();
+        }
+      });
+      $(window).on('scroll resize', function(){ __hideAllParamTips(); });
    });
 </script>
 
@@ -89,6 +157,9 @@
         <tr>
           <th>
             <%= key %>
+            <span class="param-help"
+                  data-app="<%= @sushi_app.name %>"
+                  data-param="<%= key %>"> ⓘ</span>
           </th>
           <td>
           <% case key %>

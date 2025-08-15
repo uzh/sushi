@@ -105,6 +105,7 @@ SushiFabric::Application.routes.draw do
       post :submit_jobs
 			get  :factor_select
 			post  :factor_result
+      get  :parameter_description
     end
   end
 

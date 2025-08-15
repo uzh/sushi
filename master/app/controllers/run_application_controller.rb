@@ -1,3 +1,6 @@
+require 'net/http'
+require 'json'
+
 class RunApplicationController < ApplicationController
 	def init_factor(factor_key=nil)
 		@factor_colums = {}
@@ -287,4 +290,39 @@ class RunApplicationController < ApplicationController
 
     SubmitJob.perform_later(active_job_params)
   end
+
+	# Fetch parameter description via external API (proxied + cached)
+	def parameter_description
+		app   = params[:application].to_s
+		param = params[:parameter].to_s
+		value = params[:value].to_s
+
+		if app.empty? || param.empty?
+			return render json: { success: false, response: 'Missing params' }, status: 422
+		end
+
+		cache_key = ['param_desc', app, param, (value.presence || '-')].join(':')
+		resp = Rails.cache.fetch(cache_key, expires_in: 7.days) do
+			base = ENV.fetch('PARAM_DESC_API_BASE', 'http://fgcz-h-036:5002')
+			uri  = URI.parse("#{base}/generate/application_parameter_description/app")
+			body_param = value.present? ? "#{param}=#{value}" : param
+
+			req = Net::HTTP::Post.new(uri, { 'Content-Type' => 'application/json', 'Accept' => 'application/json' })
+			req.body = { application: app, parameter: body_param }.to_json
+
+			begin
+				res = Net::HTTP.start(uri.hostname, uri.port, open_timeout: 2, read_timeout: 5) { |h| h.request(req) }
+				if res.is_a?(Net::HTTPSuccess)
+					json = JSON.parse(res.body) rescue {}
+					{ success: json['success'], response: (json['response'].to_s.presence || 'No description') }
+				else
+					{ success: false, response: "Upstream error: #{res.code}" }
+				end
+			rescue => e
+				{ success: false, response: "Request failed: #{e.class}: #{e.message}" }
+			end
+		end
+
+		render json: resp
+	end
 end
