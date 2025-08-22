@@ -5,10 +5,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class NfCoreCutAndRunApp <  SushiFabric::SushiApp
+class NfCoreCutNRunApp <  SushiFabric::SushiApp
   def initialize
     super
-    @name = 'NfCoreCutAndRun'
+    @name = 'NfCoreCutNRun'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'CutAndRun'
     @description =<<-EOS
