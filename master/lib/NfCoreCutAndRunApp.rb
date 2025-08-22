@@ -5,7 +5,7 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class NfCoreAtacSeqApp <  SushiFabric::SushiApp
+class NfCoreCutAndRunApp <  SushiFabric::SushiApp
   def initialize
     super
     @name = 'NfCoreCutAndRun'
