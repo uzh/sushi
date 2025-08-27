@@ -30,8 +30,8 @@ EOS
     @params['normalization'] = ['Spikein', 'RPKM', 'CPM', 'BPM', 'None']
     @params['grouping'] = ''
     @params['grouping', 'description'] = 'grouping information needs to be filled in the input dataset'
-    @params['control'] = ''
-    @params['control', 'description'] = 'control information needs to be filled in the input dataset'
+    @params['refGroup'] = ''
+    @params['refGroup', 'description'] = 'indicate the control samples'
     builds = ['GRCm39', 'GRCm38', 'GRCh38', 'GRCh37']
     build_name = @params['refBuild']
     black_path = '/scratch/mnotaro/test-nfcore/.nextflow/assets/nf-core/cutandrun/assets/blacklists/' # move to a global path
