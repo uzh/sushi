@@ -40,7 +40,7 @@ EOS
     else
       ""
     end
-    @params['name'] = ['NfCoreCutAndRun']
+    @params['name'] = 'NfCoreCutNRun'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
     @modules = ["Dev/jdk"]
