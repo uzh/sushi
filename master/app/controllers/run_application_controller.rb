@@ -37,6 +37,7 @@ class RunApplicationController < ApplicationController
 	def factor_select
 		init_factor(params[:grouping])
 		init_factor(params[:grouping2])
+		init_factor(params[:controlColumn])
 	end
   def index
     @data_sets = if project_number = session[:project] and project = Project.find_by_number(project_number.to_i)
