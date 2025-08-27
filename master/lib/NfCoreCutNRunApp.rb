@@ -32,15 +32,7 @@ EOS
     @params['grouping', 'description'] = 'grouping information needs to be filled in the input dataset'
     @params['controlColumn'] = ''
     @params['controlColumn', 'description'] = 'indicate the column with the control samples'
-    builds = ['GRCm39', 'GRCm38', 'GRCh38', 'GRCh37']
-    build_name = @params['refBuild']
-    black_path = '/scratch/mnotaro/test-nfcore/.nextflow/assets/nf-core/cutandrun/assets/blacklists/' # move to a global path
-    @params['blacklist'] = if builds.include?(build_name)
-      "#{black_path}#{build_name}-blacklist.bed"
-    else
-      ""
-    end
-    @params['name'] = 'NfCoreCutNRun'
+    @params['name'] = 'NfCoreCutAndRun'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
     @modules = ["Dev/jdk"]
@@ -56,7 +48,6 @@ EOS
      {'Name'=>@params['name'],
       'Result [File]'=>report_file,
       'Report [Link]'=>report_link,
-      'Report [File]'=>report_file,
       'Species'=>(dataset = @dataset.first and dataset['Species']),
       'refBuild'=>@params['refBuild']
     }
