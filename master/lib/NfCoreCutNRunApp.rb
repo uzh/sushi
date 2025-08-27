@@ -48,7 +48,6 @@ EOS
      {'Name'=>@params['name'],
       'Result [File]'=>report_file,
       'Report [Link]'=>report_link,
-      'Report [File]'=>report_file,
       'Species'=>(dataset = @dataset.first and dataset['Species']),
       'refBuild'=>@params['refBuild']
     }
