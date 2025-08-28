@@ -16,7 +16,7 @@ class NfCoreCutNRunApp <  SushiFabric::SushiApp
    <a href='https://nf-co.re/cutandrun'>NF-Core CUT&RUN</a>
 EOS
     @required_columns = ['Name','Read1','Read2','Species']
-    @required_params = ['refBuild', 'peakStyle', 'grouping', 'control', 'normalization', 'spikeinGenome']
+    @required_params = ['refBuild', 'peakStyle', 'grouping', 'controlColumn', 'normalization', 'spikeinGenome']
     @params['cores'] = '8'
     @params['ram'] = '100'
     @params['scratch'] = '200'
