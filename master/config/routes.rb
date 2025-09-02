@@ -99,6 +99,11 @@ SushiFabric::Application.routes.draw do
   get "/api/:method" => "api#index"
   post "/api/:method" => "api#index"
   
+  # Prompt Templates UI (application_parameter_description only)
+  get  "/prompt_templates/application_parameter_description" => "prompt_templates#show"
+  put  "/prompt_templates/application_parameter_description" => "prompt_templates#update"
+  post "/prompt_templates/application_parameter_description/reset" => "prompt_templates#reset"
+
   resources :run_application, :only => [:index] do
     collection do 
       post :set_parameters

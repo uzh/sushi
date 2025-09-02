@@ -79,6 +79,14 @@
 		<% if session[:employee] %>
 		<li class="dropdown" style="padding: 0">
 			<a href="#" style="padding: 0px 10px;line-height:60px;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				Admin<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a href="/prompt_templates/application_parameter_description">Prompt Config</a></li>
+			</ul>
+		</li>
+		<li class="dropdown" style="padding: 0">
+			<a href="#" style="padding: 0px 10px;line-height:60px;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 				<i class="fa fa-bell"></i>
 				<span id="notification-count" class="badge" style="display: none; background-color: #d9534f;"><%= current_user.unread_notifications_count %></span>
 			</a>

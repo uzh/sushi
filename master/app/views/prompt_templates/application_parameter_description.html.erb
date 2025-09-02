@@ -1,0 +1,26 @@
+<div class="container" style="max-width: 1100px; margin-top: 80px;">
+  <h2>Prompt Template: <code>application_parameter_description</code></h2>
+
+  <% if flash[:notice] %>
+    <div class="alert alert-success"><%= flash[:notice] %></div>
+  <% end %>
+  <% if flash[:alert] %>
+    <div class="alert alert-danger"><%= flash[:alert] %></div>
+  <% end %>
+
+  <p>This page allows employees to view, edit, and reset the prompt template for application parameter descriptions used by the FastAPI service.</p>
+
+  <%= form_tag('/prompt_templates/application_parameter_description', method: :put, class: 'form') do %>
+    <div class="form-group">
+      <label for="template">Current Template</label>
+      <%= text_area_tag :template, @template, rows: 24, class: 'form-control', style: 'font-family: monospace;' %>
+    </div>
+    <div class="form-group">
+      <%= submit_tag 'Save Template', class: 'btn btn-primary' %>
+      <%= button_to 'Reset to Default', '/prompt_templates/application_parameter_description/reset', method: :post, form: { data: { confirm: 'Reset to default template. Are you sure?' }, class: 'inline' }, class: 'btn btn-warning' %>
+      <%= link_to 'Cancel', '/', class: 'btn btn-default' %>
+    </div>
+  <% end %>
+</div>
+
+
