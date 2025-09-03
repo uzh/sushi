@@ -24,6 +24,7 @@ Single cell report<br/>
     @params['name'] = 'SpatialSeuratHD'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['binSize'] = 16
     @params['DE.method'] = ['wilcox', 'LR']
     @params['DE.method', 'description'] ='Method to be used when calculating gene cluster markers. Use LR if you want to include cell cycle in the regression model.'
     @params['npcs'] = 50
@@ -52,7 +53,7 @@ Single cell report<br/>
     @params['nUMIs', 'description'] = 'A gene will be kept if it has at least nUMIs in the fraction of bins specified before'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.5.0","Dev/R/4.4.2"]
+    @params['Rversion'] = ["Dev/R/4.5.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def preprocess
