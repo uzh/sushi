@@ -25,6 +25,7 @@ Single cell report<br/>
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['binSize'] = 16
+    @params['binSize','description'] = 'Standard binSizes are 8 and 16. Other binSize are only available if the parameter --custom-bin-size was used in SpaceRanger'
     @params['DE.method'] = ['wilcox', 'LR']
     @params['DE.method', 'description'] ='Method to be used when calculating gene cluster markers. Use LR if you want to include cell cycle in the regression model.'
     @params['npcs'] = 50
