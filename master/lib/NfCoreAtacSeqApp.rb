@@ -29,6 +29,8 @@ EOS
     @params['grouping', 'description'] = 'grouping information needs to be filled in the input dataset'
     @params['runTwoGroupAnalysis'] = false
     @params['runTwoGroupAnalysis', 'description'] = 'perform all two group analysis based on the grouping information'
+    @params['keepBams'] = false
+    @params['keepBams', 'description'] = 'delete BAM and BAI files from the result folder'
     @params['name'] = 'NfCoreAtacSeq'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
