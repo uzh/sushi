@@ -1035,6 +1035,11 @@ class DataSetController < ApplicationController
   end
   def register_bfabric
     data_set = DataSet.find_by_id(params[:id])
+    # Abort if duplicate headers exist when ignoring tag suffixes (e.g., "[File]", "[Link]")
+    if data_set && (dup = data_set.send(:duplicate_headers_ignoring_tags)).any?
+      flash[:alert] = "BFabric registration aborted: duplicate column names (ignoring tags): #{dup.join(', ')}"
+      redirect_to :controller => "data_set", :action => "show", :id => data_set.id and return
+    end
     pid = Process.fork do
       Process.fork do
         #data_set.register_bfabric("only_one")
