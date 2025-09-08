@@ -46,6 +46,14 @@ class DataSet < ActiveRecord::Base
     end
     string
   end
+  
+  # Detect duplicate column headers when ignoring tag suffixes like "[File]" or "[Link]".
+  # Returns an array of base header names that appear more than once after tag removal.
+  def duplicate_headers_ignoring_tags
+    normalized_headers = headers.map { |header| header.to_s.gsub(/\s*\[.+\]/, '').strip }
+    normalized_headers.tally.select { |_, count| count > 1 }.keys
+  end
+  private :duplicate_headers_ignoring_tags
   def samples_length
     unless self.num_samples
       self.num_samples=self.samples.length
@@ -86,6 +94,11 @@ class DataSet < ActiveRecord::Base
       if SushiFabric::Application.config.fgcz? and system("which #{register_command} > /dev/null 2>&1") and system("which #{check_command} > /dev/null 2>&1")
         time = Time.new.strftime("%Y%m%d-%H%M%S")
         dataset_tsv = File.join(SushiFabric::Application.config.scratch_dir, "dataset.#{self.id}_#{time}.tsv")
+        # Abort early if there are duplicate headers ignoring tag suffixes (e.g., "[File]", "[Link]")
+        if (duplicate_columns = duplicate_headers_ignoring_tags).any?
+          warn "# Not run DataSet#register_bfabric due to duplicate column names (ignoring tags): #{duplicate_columns.join(', ')}"
+          return false
+        end
         option_check = if ((op == 'new' or op == 'only_one') and !self.bfabric_id) or op == 'renewal'
                          true
                        elsif op == 'update' and bfabric_id = self.bfabric_id
