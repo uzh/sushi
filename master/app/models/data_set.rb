@@ -47,6 +47,12 @@ class DataSet < ActiveRecord::Base
     string
   end
   
+  # Returns true if the dataset has at least one column tagged with "[File]"
+  def has_file_tag_column?
+    headers.any? { |header| header && header.tag?('File') }
+  end
+  private :has_file_tag_column?
+
   # Detect duplicate column headers when ignoring tag suffixes like "[File]" or "[Link]".
   # Returns an array of base header names that appear more than once after tag removal.
   def duplicate_headers_ignoring_tags
@@ -97,6 +103,11 @@ class DataSet < ActiveRecord::Base
         # Abort early if there are duplicate headers ignoring tag suffixes (e.g., "[File]", "[Link]")
         if (duplicate_columns = duplicate_headers_ignoring_tags).any?
           warn "# Not run DataSet#register_bfabric due to duplicate column names (ignoring tags): #{duplicate_columns.join(', ')}"
+          return false
+        end
+        # Abort if there is no [File]-tagged column in the dataset
+        unless has_file_tag_column?
+          warn "# Not run DataSet#register_bfabric due to no [File] tag column in dataset"
           return false
         end
         option_check = if ((op == 'new' or op == 'only_one') and !self.bfabric_id) or op == 'renewal'

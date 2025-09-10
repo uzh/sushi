@@ -1040,6 +1040,11 @@ class DataSetController < ApplicationController
       flash[:alert] = "BFabric registration aborted: duplicate column names (ignoring tags): #{dup.join(', ')}"
       redirect_to :controller => "data_set", :action => "show", :id => data_set.id and return
     end
+    # Abort if there is no [File]-tagged column
+    if data_set && !data_set.send(:has_file_tag_column?)
+      flash[:alert] = "BFabric registration aborted: dataset has no [File] tag column"
+      redirect_to :controller => "data_set", :action => "show", :id => data_set.id and return
+    end
     pid = Process.fork do
       Process.fork do
         #data_set.register_bfabric("only_one")
