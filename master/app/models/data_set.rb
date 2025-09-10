@@ -47,6 +47,13 @@ class DataSet < ActiveRecord::Base
     string
   end
   
+  # Executes external command and returns [stdout, exit_status]
+  def run_external_command(command)
+    out = `#{command}`
+    [out, $?.exitstatus]
+  end
+  private :run_external_command
+  
   # Returns true if the dataset has at least one column tagged with "[File]"
   def has_file_tag_column?
     headers.any? { |header| header && header.tag?('File') }
@@ -155,10 +162,17 @@ class DataSet < ActiveRecord::Base
             out.print self.tsv_string
           end
           warn "# created: #{dataset_tsv}"
-          if File.exist?(dataset_tsv) and bfabric_ids = `#{command}`
+          if File.exist?(dataset_tsv)
+            bfabric_ids, exit_status = run_external_command(command)
             warn "$ #{command}"
             warn "# mode: #{op}"
             warn "# bfabric_ids: #{bfabric_ids}"
+            if exit_status != 0
+              warn "# register_sushi_dataset_into_bfabric exited with status #{exit_status}"
+              File.unlink dataset_tsv
+              warn "# removed: #{dataset_tsv}"
+              return false
+            end
             if bfabric_ids.split(/\n/).uniq.length < 2
               workunit_id, dataset_id = bfabric_ids.chomp.split(',')
               if workunit_id.to_i > 0

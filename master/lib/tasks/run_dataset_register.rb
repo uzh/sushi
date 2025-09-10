@@ -10,8 +10,9 @@ YEAR = Time.now.strftime("%Y")
 
 # Load Rails environment for notification service
 def load_rails_environment
+  root = (defined?($RUNNER_RAILS_ROOT) && $RUNNER_RAILS_ROOT && !$RUNNER_RAILS_ROOT.to_s.empty?) ? $RUNNER_RAILS_ROOT : RAILS_ROOT
   require 'bundler/setup'
-  require File.join(RAILS_ROOT, 'config', 'environment')
+  require File.join(root, 'config', 'environment')
 rescue LoadError => e
   puts "Warning: Could not load Rails environment: #{e.message}"
   puts "Notifications will not be sent."
@@ -79,6 +80,9 @@ unless File.exist?(rails_root)
   help.()
 end
 
+# share rails_root with notification loader
+$RUNNER_RAILS_ROOT = rails_root.to_s
+
 daemon_mode = ARGV.index("--daemon-mode")
 
 ENV['RAILS_ENV'] = 'production'
@@ -93,6 +97,24 @@ task_name_with_args = if ARGV[0] =~ /^ds\:register_datasets/
                       end
 
 command = "bundle exec rake #{task_name_with_args}"
+
+# Run command and capture stdout/stderr separately; notify if stderr seen or non-zero exit
+def run_and_monitor(command)
+  r_out, w_out = IO.pipe
+  r_err, w_err = IO.pipe
+  pid = Process.spawn(command, out: w_out, err: w_err)
+  w_out.close
+  w_err.close
+
+  stderr_buf = +""
+  t_out = Thread.new { r_out.each_line { |l| puts l } }
+  t_err = Thread.new { r_err.each_line { |l| STDERR.puts l; stderr_buf << l } }
+
+  _, status = Process.wait2(pid)
+  t_out.join
+  t_err.join
+  [status.success?, stderr_buf, status.exitstatus]
+end
 Dir.chdir(rails_root) do
   if daemon_mode
     loop do
@@ -105,11 +127,11 @@ Dir.chdir(rails_root) do
         
         # Execute the command and capture output
         puts "Executing dataset registration task at #{Time.now}"
-        result = system(command)
-        unless result
-          error_message = "Dataset registration task failed with exit code #{$?.exitstatus}"
-          puts error_message
-          send_notification(error_message)
+        success, stderr_buf, exitstatus = run_and_monitor(command)
+        if !success || !stderr_buf.strip.empty?
+          msg = "Dataset registration task issue: exit=#{exitstatus}, stderr:\n" + stderr_buf.lines.first(200).join
+          puts msg
+          send_notification(msg)
         else
           puts "Dataset registration task completed successfully"
         end
@@ -124,11 +146,11 @@ Dir.chdir(rails_root) do
         sleep(wait_time)
         
         puts "Executing dataset registration task at #{Time.now}"
-        result = system(command)
-        unless result
-          error_message = "Dataset registration task failed with exit code #{$?.exitstatus}"
-          puts error_message
-          send_notification(error_message)
+        success, stderr_buf, exitstatus = run_and_monitor(command)
+        if !success || !stderr_buf.strip.empty?
+          msg = "Dataset registration task issue: exit=#{exitstatus}, stderr:\n" + stderr_buf.lines.first(200).join
+          puts msg
+          send_notification(msg)
         else
           puts "Dataset registration task completed successfully"
         end
@@ -143,11 +165,11 @@ Dir.chdir(rails_root) do
   else
     # Execute the command and capture output
     puts "Executing dataset registration task at #{Time.now}"
-    result = system(command)
-    unless result
-      error_message = "Dataset registration task failed with exit code #{$?.exitstatus}"
-      puts error_message
-      send_notification(error_message)
+    success, stderr_buf, exitstatus = run_and_monitor(command)
+    if !success || !stderr_buf.strip.empty?
+      msg = "Dataset registration task issue: exit=#{exitstatus}, stderr:\n" + stderr_buf.lines.first(200).join
+      puts msg
+      send_notification(msg)
     else
       puts "Dataset registration task completed successfully"
     end
