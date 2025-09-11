@@ -35,9 +35,8 @@ EOS
      'Name'=>@dataset['Name'],
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-     'IGV [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
+     'IGV [File,Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
      'refBuild'=>@params['refBuild'],
-     'IGV [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
      'Pbmm2Log [File]'=>File.join(@result_dir, "#{@dataset['Name']}_pbmm2.log")
     }.merge(extract_columns(@inherit_tags))
   end

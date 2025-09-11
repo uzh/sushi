@@ -28,7 +28,7 @@ MultiSample Quality control after SpaceRanger<br/>
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
     {'Name'=>@params['name'],
-     'Report [File]'=>report_dir,
+     'ReportData [File]'=>report_dir,
      'Report [Link]'=>File.join(report_dir, '00index.html'),
      'Species'=>(dataset = @dataset.first and dataset['Species'])
     }

@@ -75,8 +75,7 @@ EOS
   def next_dataset
     report_file = File.join(@result_dir,'report-RNAseq-bias.pdf')    
     {'Name'=>@params['name'],
-     'Report [File]'=>report_file,
-     'Report [Link]'=>report_file
+     'Report [File,Link]'=>report_file,
     }.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands

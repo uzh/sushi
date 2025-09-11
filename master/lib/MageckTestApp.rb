@@ -45,7 +45,7 @@ class MageckTestApp < SushiFabric::SushiApp
     @params['name'] = @comparison
     report_folder = File.join(@result_dir, "#{@params['comparison']}")
     {'Name'=>@params['name'],
-     'Report [File]'=>report_folder,
+     'ReportData [File]'=>report_folder,
      'Report [Link]'=>File.join(report_folder, '00index.html')
     }.merge(extract_columns(colnames: @inherit_columns))
   end

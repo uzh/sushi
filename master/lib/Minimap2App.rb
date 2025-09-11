@@ -66,14 +66,13 @@ class Minimap2App < SushiFabric::SushiApp
     {'Name'=>@dataset['Name'],
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-     'IGV [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
+     'IGV [File,Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'paired'=>false,
      'refFeatureFile'=>@params['refFeatureFile'],
      'strandMode'=>@params['strandMode'],
      'Read Count'=>@dataset['Read Count'],
-     'IGV [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
      'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
     }.merge(extract_columns(@inherit_tags))
   end

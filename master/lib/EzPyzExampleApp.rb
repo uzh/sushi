@@ -29,7 +29,7 @@ class EzPyzExampleApp <  SushiFabric::SushiApp
     dir_name = "test_#{@params['name']}"
     report_dir = File.join(@result_dir, dir_name)
     {'Name'=> dir_name,
-     'Report [File]'=>report_dir,
+     'ReportData [File]'=>report_dir,
      'Report [Link]'=>File.join(report_dir, '00index.html'),
      'Species'=>(dataset = @dataset.first and dataset['Species'])
     }
