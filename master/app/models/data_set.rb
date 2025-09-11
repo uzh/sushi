@@ -47,10 +47,24 @@ class DataSet < ActiveRecord::Base
     string
   end
   
-  # Executes external command and returns [stdout, exit_status]
+  # Executes external command and returns [stdout, stderr, exit_status]
   def run_external_command(command)
-    out = `#{command}`
-    [out, $?.exitstatus]
+    r_out, w_out = IO.pipe
+    r_err, w_err = IO.pipe
+    pid = Process.spawn(command, out: w_out, err: w_err)
+    w_out.close
+    w_err.close
+
+    stdout_buf = +""
+    stderr_buf = +""
+    t_out = Thread.new { r_out.each_line { |l| stdout_buf << l } }
+    t_err = Thread.new { r_err.each_line { |l| stderr_buf << l } }
+
+    _, status = Process.wait2(pid)
+    t_out.join
+    t_err.join
+
+    [stdout_buf, stderr_buf, status.exitstatus]
   end
   private :run_external_command
   
@@ -163,12 +177,12 @@ class DataSet < ActiveRecord::Base
           end
           warn "# created: #{dataset_tsv}"
           if File.exist?(dataset_tsv)
-            bfabric_ids, exit_status = run_external_command(command)
+            bfabric_ids, err, exit_status = run_external_command(command)
             warn "$ #{command}"
             warn "# mode: #{op}"
             warn "# bfabric_ids: #{bfabric_ids}"
             if exit_status != 0
-              warn "# register_sushi_dataset_into_bfabric exited with status #{exit_status}"
+              warn "# register_sushi_dataset_into_bfabric exited with status #{exit_status}; stderr: #{err}"
               File.unlink dataset_tsv
               warn "# removed: #{dataset_tsv}"
               return false
