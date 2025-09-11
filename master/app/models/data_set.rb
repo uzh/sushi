@@ -109,12 +109,12 @@ class DataSet < ActiveRecord::Base
         dataset_tsv = File.join(SushiFabric::Application.config.scratch_dir, "dataset.#{self.id}_#{time}.tsv")
         # Abort early if there are duplicate headers ignoring tag suffixes (e.g., "[File]", "[Link]")
         if (duplicate_columns = duplicate_headers_ignoring_tags).any?
-          warn "# Not run DataSet#register_bfabric due to duplicate column names (ignoring tags): #{duplicate_columns.join(', ')}"
+          warn "# Not run DataSet#register_bfabric for DataSet(id=#{self.id}, name=\"#{self.name}\") due to duplicate column names (ignoring tags): #{duplicate_columns.join(', ')}"
           return false
         end
         # Abort if there is no [File]-tagged column in the dataset
         unless has_file_tag_column?
-          warn "# Not run DataSet#register_bfabric due to no [File] tag column in dataset"
+          warn "# Not run DataSet#register_bfabric for DataSet(id=#{self.id}, name=\"#{self.name}\") due to no [File] tag column in dataset"
           return false
         end
         option_check = if ((op == 'new' or op == 'only_one') and !self.bfabric_id) or op == 'renewal'
