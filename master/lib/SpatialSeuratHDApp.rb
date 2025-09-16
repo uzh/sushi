@@ -21,7 +21,7 @@ Single cell report<br/>
     @params['cores'] = '4'
     @params['ram'] = '100'
     @params['scratch'] = '50'
-    @params['name'] = 'SpatialSeuratHD'
+    @params['name'] = 'Visium_HD'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
     @params['binSize'] = 16
