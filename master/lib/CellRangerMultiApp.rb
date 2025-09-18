@@ -23,7 +23,7 @@ Note: that running this app usually requires manual curation of the input datase
 </tbody>
 </table>
 <br> 
-When specifying multiplexing, use our simple <a href='http://fgcz-r-029.uzh.ch/shiny/fgcz_Sample2Barcode_app'>ShinyApp</a> can be used to provide the barcoding information with or without feature barcoding.                  
+When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/app/sample2barcode'>ShinyApp</a> can be used to provide the barcoding information with or without feature barcoding.                  
     EOS
     @required_columns = ['Name','RawDataDir','Species']
     @required_params = ['name', 'refBuild']
