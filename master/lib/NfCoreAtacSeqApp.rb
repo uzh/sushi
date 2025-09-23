@@ -42,17 +42,20 @@ EOS
     end
   end
   def next_dataset
-     report_file = File.join(@result_dir, "#{@params['name']}_results")
-     report_link = File.join(@result_dir, "#{@params['name']}_results", "multiqc", "#{@params['peakStyle']}_peak", "multiqc_report.html")
+     report_file = File.join(@result_dir, "#{@params['name']}_result")
+     multiqc_link = File.join(@result_dir, "#{@params['name']}_result", "multiqc", "#{@params['peakStyle']}_peak", "multiqc_report.html")
+     ataqv_link = File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/ataqv", "#{@params['peakStyle']}_peak", "html/index.html")
+     igv_link = File.join(@result_dir, "#{@params['name']}_result", "igv", "#{@params['peakStyle']}_peak", "igv_session.html")
      dataset = {'Name'=>@params['name'],
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
-     'grouping'=>@params['grouping'],
-     'Result [File]'=>report_file,
-     'GeneralReport [Link]'=>report_link}
+     'ATAC_Result [File]'=>report_file,
+     'Multiqc [Link]'=>multiqc_link},
+     'Ataqv [Link]'=> ataqv_link},
+     'IGV [Link]'=>igv_link},
     if @params['runTwoGroupAnalysis']
-      diffReport_link = File.join(@result_dir, "#{@params['name']}_results", "diffpeak_analysis", "DifferentialPeakAnalysisReport.html")
-      dataset['DifferentialPeakAnalysis [Link]'] = diffReport_link
+      diffReport_link = File.join(@result_dir, "#{@params['name']}_results", "diffpeak_analysis", "DifferentialPeaks.html")
+      dataset['DifferentialPeaks [Link]'] = diffReport_link
     end
     dataset
   end
