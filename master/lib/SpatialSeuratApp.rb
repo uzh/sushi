@@ -50,7 +50,7 @@ Single cell report<br/>
     @params['perc_ribo', 'description'] = 'Low quality spots have more than "perc_ribo" percent of ribosomal genes. Only when applying fixed thresholds'
     @params['nmad'] = 3
     @params['nmad', 'description'] = 'Median absolute deviation (MAD) from the median value of each metric across all spots'
-    @params['cellsFraction'] = 0.05
+    @params['cellsFraction'] = 0.0
     @params['cellsFraction', 'description'] = 'A gene will be kept if it is expressed in at least this fraction of spots'
     @params['nUMIs'] = 1
     @params['nUMIs', 'description'] = 'A gene will be kept if it has at least nUMIs in the fraction of spots specified before'

@@ -63,7 +63,7 @@ Single cell report<br/>
     @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
     @params['all2allMarkers'] = false
     @params['all2allMarkers', 'description'] = 'Run all against all cluster comparisons?'
-    @params['cellsFraction'] = 0.05
+    @params['cellsFraction'] = 0.0
     @params['cellsFraction', 'description'] = 'A gene will be kept if it is expressed in at least this fraction of cells'
     @params['nUMIs'] = 1
     @params['nUMIs', 'description'] = 'A gene will be kept if it has at least nUMIs in the fraction of cells specified before'

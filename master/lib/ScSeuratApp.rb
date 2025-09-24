@@ -86,7 +86,7 @@ Single cell report<br/>
     @params['perc_mito', 'description'] = "Low quality cells have more than 'perc_mito' percent of mitochondrial genes. Only when applying fixed thresholds"
     @params['perc_riboprot'] = '70'
     @params['perc_riboprot', 'description'] = "Low quality cells have more than 'perc_ribo' percent of ribosomal genes. Only when applying fixed thresholds"
-    @params['cellsFraction'] = 0.0001
+    @params['cellsFraction'] = 0.0
     @params['cellsFraction', 'description'] = 'A gene will be kept if it is expressed in at least this fraction of cells'
     @params['nUMIs'] = 1
     @params['nUMIs', 'description'] = 'A gene will be kept if it has at least nUMIs in the fraction of cells specified before'
