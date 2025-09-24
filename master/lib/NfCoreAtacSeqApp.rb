@@ -50,9 +50,10 @@ EOS
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
      'ATAC_Result [File]'=>report_file,
-     'Multiqc [Link]'=>multiqc_link},
-     'Ataqv [Link]'=> ataqv_link},
-     'IGV [Link]'=>igv_link},
+     'Multiqc [Link]'=>multiqc_link,
+     'Ataqv [Link]'=> ataqv_link,
+     'IGV [Link]'=>igv_link
+     }
     if @params['runTwoGroupAnalysis']
       diffReport_link = File.join(@result_dir, "#{@params['name']}_results", "diffpeak_analysis", "DifferentialPeaks.html")
       dataset['DifferentialPeaks [Link]'] = diffReport_link
