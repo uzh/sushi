@@ -499,6 +499,16 @@ conda activate sushi
         end
       end
     end
+    # Copy grandchild dataset files
+    grandchild_datasets.each do |ds|
+      ds.keys.select{|header| header.tag?('File')}.each do |header|
+        file = ds[header]
+        next if file.to_s.empty?
+        src_file = File.basename(file)
+        dest_dir = File.dirname(File.join(@gstore_dir, file))
+        @out.print copy_commands(src_file, dest_dir, nil, @queue).join("\n"), "\n"
+      end
+    end
     @out.print <<-EOF
 cd #{SCRATCH_DIR}
 rm -rf #{@scratch_dir} || exit 1
@@ -512,6 +522,11 @@ rm -rf #{@scratch_dir} || exit 1
   end
   def next_dataset
     # this should be overwritten in a subclass
+  end
+  def grandchild_datasets
+    # this should be overwritten in a subclass
+    # returns an array of hashes
+    []
   end
   def commands
     # this should be overwritten in a subclass
@@ -607,6 +622,31 @@ rm -rf #{@scratch_dir} || exit 1
       end
     end
     file_path
+  end
+  def save_grandchild_datasets_as_tsv
+    grandchild_data = grandchild_datasets
+    return [] if grandchild_data.empty?
+
+    grandchild_tsv_paths = []
+    
+    grandchild_data.each_with_index do |dataset_hash, index|
+      file_name = "grandchild_dataset_#{index + 1}.tsv"
+      file_path = File.join(@scratch_result_dir, file_name)
+      
+      CSV.open(file_path, 'w', :col_sep=>"\t") do |out|
+        # Write header
+        out << dataset_hash.keys
+        # Write single row (since each grandchild_dataset represents one dataset)
+        out << dataset_hash.keys.map { |key| 
+          val = dataset_hash[key]
+          val.to_s.empty? ? nil : val
+        }
+      end
+      
+      grandchild_tsv_paths << file_path
+    end
+    
+    grandchild_tsv_paths
   end
   def copy_commands(org_dir, dest_parent_dir, now=nil, queue="light")
     @sushi_server||=eval(SushiFabric::Application.config.sushi_server_class).new
@@ -748,6 +788,48 @@ rm -rf #{@scratch_dir} || exit 1
       next_dataset.save
     end
   end
+  def save_grandchild_datasets_to_database
+    return if @grandchild_dataset_tsv_paths.nil? || @grandchild_dataset_tsv_paths.empty? || !@next_dataset_id
+
+    grandchild_data = grandchild_datasets
+    @grandchild_dataset_ids = []
+
+    @grandchild_dataset_tsv_paths.each_with_index do |tsv_path, index|
+      headers = []
+      rows = []
+      
+      csv = CSV.readlines(tsv_path, :col_sep=>"\t")
+      csv.each do |row|
+        if headers.empty?
+          headers = row
+        else
+          rows << row
+        end
+      end
+      
+      grandchild_dataset_name = grandchild_data[index]['Name'] || "#{@name}_grandchild_#{index + 1}"
+      grandchild_comment = "Grandchild dataset #{index + 1}"
+      
+      data_set_arr = {
+        'DataSetName' => grandchild_dataset_name, 
+        'ProjectNumber' => @project.gsub(/p/,''), 
+        'ParentID' => @next_dataset_id,
+        'Comment' => grandchild_comment.to_s
+      }
+      
+      unless NO_ROR
+        grandchild_dataset_id = DataSet.save_dataset_to_database(
+          data_set_arr: data_set_arr.to_a.flatten, 
+          headers: headers, 
+          rows: rows, 
+          user: @current_user, 
+          child: @child, 
+          sushi_app_name: self.class.name
+        )
+        @grandchild_dataset_ids << grandchild_dataset_id
+      end
+    end
+  end
   def main(mock=false)
     ## sushi writes creates the job scripts and builds the result data set that is to be generated
     @result_dataset = []
@@ -772,6 +854,9 @@ rm -rf #{@scratch_dir} || exit 1
 
     # copy application data to gstore 
     @next_dataset_tsv_path = save_next_dataset_as_tsv
+    
+    # Save grandchild datasets as TSV files
+    @grandchild_dataset_tsv_paths = save_grandchild_datasets_as_tsv
 
     if @dataset_sushi_id and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
       @project_id = dataset.project.id
@@ -801,6 +886,9 @@ rm -rf #{@scratch_dir} || exit 1
         @current_user ||= nil
         @next_dataset_id = DataSet.save_dataset_to_database(data_set_arr: data_set_arr.to_a.flatten, headers: headers, rows: rows, user: @current_user, child: @child, sushi_app_name: self.class.name)
         save_parameters_in_sushi_db
+        
+        # Save grandchild datasets to database
+        save_grandchild_datasets_to_database
       end
     end
     copy_uploaded_files
@@ -1039,6 +1127,26 @@ rm -rf #{@scratch_dir} || exit 1
       failures += 1
     else
       warn "\e[32mPASSED\e[0m:"
+    end
+
+    # Add grandchild datasets check
+    warn 'check grandchild datasets: '
+    grandchild_data = self.grandchild_datasets
+    if grandchild_data.any?
+      # Validate that each grandchild dataset has a unique Name
+      names = grandchild_data.map { |ds| ds['Name'] }.compact
+      if names.length != names.uniq.length
+        err_msg = []
+        err_msg << "\e[31mFAILURE\e[0m: grandchild datasets must have unique 'Name' values"
+        err_msg << "\tfound names: #{names}"
+        warn err_msg.join("\n")
+        err_msgs.concat(err_msg)
+        failures += 1
+      else
+        warn "\e[32mPASSED\e[0m: #{grandchild_data.length} grandchild dataset(s) defined"
+      end
+    else
+      warn "\e[32mINFO\e[0m: No grandchild datasets defined"
     end
 
     warn 'check output files: '

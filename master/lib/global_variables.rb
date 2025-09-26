@@ -221,6 +221,28 @@ module GlobalVariables
     output.keys.each do |key|
       command << "output[['#{key}']] = '#{output[key]}'\n"
     end
+    
+    # Add grandchild_output processing
+    grandchild_data = grandchild_datasets
+    if !grandchild_data.empty?
+      command << "grandchild_output = list()\n"
+      grandchild_data.each_with_index do |dataset, index|
+        command << "grandchild_output[[#{index + 1}]] = list()\n"
+        dataset.keys.each do |key|
+          # Escape single quotes in values for R
+          escaped_value = dataset[key].to_s.gsub("'", "\\'")
+          command << "grandchild_output[[#{index + 1}]][['#{key}']] = '#{escaped_value}'\n"
+        end
+      end
+      # Add names to the list for easier access in R
+      names = grandchild_data.map { |ds| ds['Name'] }.compact
+      if names.any?
+        command << "names(grandchild_output) = c(#{names.map { |name| "'#{name.gsub("'", "\\'")}'" }.join(', ')})\n"
+      end
+    else
+      command << "grandchild_output = list()\n"
+    end
+    
     if @params['process_mode'] == 'DATASET'
       command <<  "input = '#{@input_dataset_tsv_path}'\n"
     else # sample mode
