@@ -2,40 +2,23 @@ class JobMonitoringController < ApplicationController
   def fetch_jobs(params, project_number)
     option = params[:option]
 
+    base_scope =
+      Job.joins(data_set: :project)
+         .select('jobs.id, jobs.status, jobs.script_path, jobs.start_time, jobs.end_time, jobs.user, jobs.next_dataset_id, projects.number AS project_number, data_sets.name AS next_dataset_name')
+         .order(id: :desc)
+
     if option && option[:all_job_list] # all projects
       configure_job_list(all_job_list: true, page_unit: 1000)
-      Job.includes(data_set: :project)
-         .joins(data_set: :project)
-         .joins('LEFT JOIN data_sets AS next_data_set ON jobs.next_dataset_id = next_data_set.id')
-         .select('jobs.*, projects.number AS project_number, next_data_set.name AS next_dataset_name')
-         .order(id: :desc)
-         .limit(1000)
+      base_scope.limit(1000)
     elsif option && option[:project_job_list] # project specific
       configure_job_list(all_job_list: false)
-      Job.includes(data_set: :project)
-         .joins(data_set: :project)
-         .joins('LEFT JOIN data_sets AS next_data_set ON jobs.next_dataset_id = next_data_set.id')
-         .select('jobs.*, projects.number AS project_number, next_data_set.name AS next_dataset_name')
-         .where(projects: { number: project_number })
-         .order(id: :desc)
-         .limit(100)
+      base_scope.where(projects: { number: project_number }).limit(100)
     elsif session[:all_job_list] # all projects from session
       configure_job_list(all_job_list: true, page_unit: 1000)
-      Job.includes(data_set: :project)
-         .joins(data_set: :project)
-         .joins('LEFT JOIN data_sets AS next_data_set ON jobs.next_dataset_id = next_data_set.id')
-         .select('jobs.*, projects.number AS project_number, next_data_set.name AS next_dataset_name')
-         .order(id: :desc)
-         .limit(1000)
+      base_scope.limit(1000)
     else # project specific
       configure_job_list(all_job_list: false)
-      Job.includes(data_set: :project)
-         .joins(data_set: :project)
-         .joins('LEFT JOIN data_sets AS next_data_set ON jobs.next_dataset_id = next_data_set.id')
-         .select('jobs.*, projects.number AS project_number, next_data_set.name AS next_dataset_name')
-         .where(projects: { number: project_number })
-         .order(id: :desc)
-         .limit(100)
+      base_scope.where(projects: { number: project_number }).limit(100)
     end
   end
   def configure_job_list(all_job_list:, page_unit: nil)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_08_05_092031) do
+ActiveRecord::Schema[7.0].define(version: 2025_09_26_000000) do
   create_table "data_sets", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
     t.integer "parent_id"
@@ -33,6 +33,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_08_05_092031) do
     t.text "job_parameters"
     t.integer "order_id"
     t.index ["order_id"], name: "index_data_sets_on_order_id"
+    t.index ["parent_id"], name: "index_data_sets_on_parent_id"
+    t.index ["project_id"], name: "index_data_sets_on_project_id"
   end
 
   create_table "jobs", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
@@ -51,6 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_08_05_092031) do
     t.datetime "end_time"
     t.index ["id", "next_dataset_id"], name: "index_jobs_on_id_and_next_dataset_id"
     t.index ["input_dataset_id"], name: "index_jobs_on_input_dataset_id"
+    t.index ["next_dataset_id", "id"], name: "index_jobs_on_next_dataset_id_and_id"
     t.index ["next_dataset_id"], name: "index_jobs_on_next_dataset_id"
     t.index ["status"], name: "index_jobs_on_status"
   end
@@ -81,6 +84,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_08_05_092031) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "data_set_tree", size: :medium
+    t.index ["number"], name: "index_projects_on_number"
   end
 
   create_table "samples", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
@@ -88,6 +92,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_08_05_092031) do
     t.integer "data_set_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["data_set_id"], name: "index_samples_on_data_set_id"
   end
 
   create_table "sushi_applications", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
