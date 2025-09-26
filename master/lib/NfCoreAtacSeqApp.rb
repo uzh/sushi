@@ -42,6 +42,8 @@ EOS
     end
   end
   def next_dataset
+     ## the line below demonstrates that access to @dataset does not work as expected when in dataset_mode
+     #foo = @dataset['Name']
      report_file = File.join(@result_dir, "#{@params['name']}_result")
      multiqc_link = File.join(@result_dir, "#{@params['name']}_result", "multiqc", "#{@params['peakStyle']}_peak", "multiqc_report.html")
      ataqv_link = File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/ataqv", "#{@params['peakStyle']}_peak", "html/index.html")
@@ -61,18 +63,19 @@ EOS
     dataset
   end
   def grandchild_datasets
-    # Example implementation - returns array of hashes
+    ## TODO ... this is a workaround to get grandchild_data that is per sample; I need the grandchild data per sample in _one_ dataset
+    my_dataset = []
     grandchild_data = []
-    
-    report_file = File.join(@result_dir, "#{@params['name']}_result")
-    dataset2 = {'Name'=>@dataset['Name'],
-     'Count [File]'=>File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/macs2/broad_peak/consensus", "#{@dataset['Name']}.txt"),
-     'BigWig [File]'=>File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/bigwig", "#{@dataset['Name']}.bigWig"),
-     'Species'=>@dataset['Species'],
-     'refBuild'=>@params['refBuild'],
-     'featureLevel'=>@params['peakStyle'],
-    }.merge(extract_columns(@inherit_tags))
-    grandchild_data << dataset2
+    @dataset_hash.each_with_index do |row, i|
+      my_dataset = Hash[*row.map{|key,value| [key.gsub(/\[.+\]/,'').strip, value]}.flatten]
+      grandchild_data << {'Name'=>my_dataset['Name'],
+        'Count [File]'=>File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/macs2/broad_peak/consensus", "#{my_dataset['Name']}.txt"),
+        'BigWig [File]'=>File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/bigwig", "#{my_dataset['Name']}.bigWig"),
+        'Species'=>my_dataset['Species'],
+        'refBuild'=>@params['refBuild'],
+     '   featureLevel'=>@params['peakStyle']
+      } ## TODO I would like to merge from the parent .merge(extract_columns(@inherit_tags))
+    end
     grandchild_data
   end
   def commands
