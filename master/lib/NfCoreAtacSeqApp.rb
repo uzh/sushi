@@ -60,6 +60,21 @@ EOS
     end
     dataset
   end
+  def grandchild_datasets
+    # Example implementation - returns array of hashes
+    grandchild_data = []
+    
+    report_file = File.join(@result_dir, "#{@params['name']}_result")
+    dataset2 = {'Name'=>@dataset['Name'],
+     'Count [File]'=>File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/macs2/broad_peak/consensus", "#{@dataset['Name']}.txt"),
+     'BigWig [File]'=>File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/bigwig", "#{@dataset['Name']}.bigWig"),
+     'Species'=>@dataset['Species'],
+     'refBuild'=>@params['refBuild'],
+     'featureLevel'=>@params['peakStyle'],
+    }.merge(extract_columns(@inherit_tags))
+    grandchild_data << dataset2
+    grandchild_data
+  end
   def commands
     run_RApp('EzAppNfCoreAtacSeq')
   end
