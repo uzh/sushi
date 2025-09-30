@@ -128,8 +128,8 @@ Dir.chdir(rails_root) do
         # Execute the command and capture output
         puts "Executing dataset registration task at #{Time.now}"
         success, stderr_buf, exitstatus = run_and_monitor(command)
-        if !success || !stderr_buf.strip.empty?
-          msg = "Dataset registration task issue: exit=#{exitstatus}, stderr:\n" + stderr_buf.lines.first(200).join
+        if !success
+          msg = "Dataset registration task failed: exit=#{exitstatus}"
           puts msg
           send_notification(msg)
         else
@@ -147,8 +147,8 @@ Dir.chdir(rails_root) do
         
         puts "Executing dataset registration task at #{Time.now}"
         success, stderr_buf, exitstatus = run_and_monitor(command)
-        if !success || !stderr_buf.strip.empty?
-          msg = "Dataset registration task issue: exit=#{exitstatus}, stderr:\n" + stderr_buf.lines.first(200).join
+        if !success
+          msg = "Dataset registration task failed: exit=#{exitstatus}"
           puts msg
           send_notification(msg)
         else
@@ -166,8 +166,8 @@ Dir.chdir(rails_root) do
     # Execute the command and capture output
     puts "Executing dataset registration task at #{Time.now}"
     success, stderr_buf, exitstatus = run_and_monitor(command)
-    if !success || !stderr_buf.strip.empty?
-      msg = "Dataset registration task issue: exit=#{exitstatus}, stderr:\n" + stderr_buf.lines.first(200).join
+    if !success
+      msg = "Dataset registration task failed: exit=#{exitstatus}"
       puts msg
       send_notification(msg)
     else

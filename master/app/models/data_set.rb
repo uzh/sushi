@@ -177,18 +177,21 @@ class DataSet < ActiveRecord::Base
           end
           warn "# created: #{dataset_tsv}"
           if File.exist?(dataset_tsv)
-            bfabric_ids, err, exit_status = run_external_command(command)
-            warn "$ #{command}"
-            warn "# mode: #{op}"
-            warn "# bfabric_ids: #{bfabric_ids}"
-            if exit_status != 0
-              warn "# register_sushi_dataset_into_bfabric exited with status #{exit_status}; stderr: #{err}"
-              File.unlink dataset_tsv
-              warn "# removed: #{dataset_tsv}"
-              return false
-            end
-            if bfabric_ids.split(/\n/).uniq.length < 2
-              workunit_id, dataset_id = bfabric_ids.chomp.split(',')
+          bfabric_ids, err, exit_status = run_external_command(command)
+          warn "$ #{command}"
+          warn "# mode: #{op}"
+          warn "# bfabric_ids: #{bfabric_ids}"
+          # Treat as success if an IDs line ("<int>,<int>") exists, even when exit status is non-zero.
+          ids_line = bfabric_ids.lines.find { |l| l.strip.match?(/^\d+\s*,\s*\d+$/) }
+          if exit_status != 0 && !ids_line
+            warn "# register_sushi_dataset_into_bfabric exited with status #{exit_status}; stderr: #{err}"
+            File.unlink dataset_tsv
+            warn "# removed: #{dataset_tsv}"
+            return false
+          end
+          parsed_line = (ids_line ? ids_line.strip : bfabric_ids.chomp)
+          if parsed_line.split(/\n/).uniq.length < 2
+            workunit_id, dataset_id = parsed_line.split(',').map(&:strip)
               if workunit_id.to_i > 0
                 self.bfabric_id = dataset_id.to_i
                 self.workunit_id = workunit_id.to_i
