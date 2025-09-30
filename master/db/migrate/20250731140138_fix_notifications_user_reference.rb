@@ -1,23 +1,38 @@
 class FixNotificationsUserReference < ActiveRecord::Migration[7.0]
   def up
-    # Drop the existing table if it exists
-    drop_table :notifications if table_exists?(:notifications)
-    
-    # Recreate the table with correct column types
-    create_table :notifications do |t|
-      t.integer :user_id, null: false
-      t.text :message
-      t.string :notification_type
-      t.boolean :read
+    if table_exists?(:notifications)
+      # Existing table: adjust column type safely while preserving data
+      remove_foreign_key :notifications, :users if foreign_key_exists?(:notifications, :users)
+      remove_index :notifications, :user_id if index_exists?(:notifications, :user_id)
 
-      t.timestamps
+      change_column :notifications, :user_id, :bigint, null: false
+
+      add_index :notifications, :user_id
+      add_foreign_key :notifications, :users
+    else
+      # New table: create with correct column types
+      create_table :notifications do |t|
+        t.bigint :user_id, null: false
+        t.text :message
+        t.string :notification_type
+        t.boolean :read
+
+        t.timestamps
+      end
+
+      add_index :notifications, :user_id
+      add_foreign_key :notifications, :users
     end
-    
-    add_index :notifications, :user_id
-    add_foreign_key :notifications, :users
   end
 
   def down
-    drop_table :notifications
+    if table_exists?(:notifications)
+      remove_foreign_key :notifications, :users if foreign_key_exists?(:notifications, :users)
+      remove_index :notifications, :user_id if index_exists?(:notifications, :user_id)
+
+      change_column :notifications, :user_id, :integer
+
+      add_index :notifications, :user_id
+    end
   end
 end
