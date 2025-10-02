@@ -31,10 +31,6 @@ EOS
     @params['fragment-length', 'description'] = 'estimated average fragment length (required for single-end reads but should be set to 0 for paired-end reads)'
     @params['sd'] = 0
     @params['sd', 'description'] = 'estimated fragment length standard deviation (required for single-end reads but should be set to 0 for paired-end reads)'
-    @params['bias'] = true
-    @params['bias', 'description'] = 'perform sequence based bias correction'
-    @params['pseudobam'] = false
-    @params['pseudobam', 'description'] = 'generate a bam file with pseudoalignments'
     @params['secondRef'] = ''
     @params['secondRef', 'description'] = 'extra DNA/RNA sequences to use for alignment; needs to point to a file on FGCZ servers; ask for upload sushi@fgcz.ethz.ch '
     @params['transcriptFasta'] = ''
