@@ -13,7 +13,7 @@ class RnaBiasApp <  SushiFabric::SushiApp
     @analysis_category = 'QC'
     @description =<<-EOS 
 EOS
-    @required_columns = ['Name','Read1','Species','PlateName']
+    @required_columns = ['Name','Read1','Species','Order Id','PlateName']
     @required_params = ['name']
 
 @params['cores'] = '8'
