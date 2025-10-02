@@ -101,12 +101,6 @@ EOS
       'runInfo [File]'=>File.join(@result_dir, "#{@dataset['Name']}.json"),
       'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
     }
-    if @params['pseudobam']
-      ds.merge!(
-       'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
-       'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai")
-      )
-    end
     ds.merge(
       'Species'=>@dataset['Species'],
       'refBuild'=>@params['refBuild'],
