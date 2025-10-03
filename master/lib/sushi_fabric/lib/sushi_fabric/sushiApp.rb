@@ -231,7 +231,7 @@ class SushiApp
     @modules = []
     #@workflow_manager = workflow_manager_instance||DRbObject.new_with_uri(WORKFLOW_MANAGER)
     @last_job = true
-    @grandchild = false
+    @grandchild = true
   end
   def set_input_dataset
     if @dataset_tsv_file
