@@ -160,6 +160,31 @@ module GlobalVariables
     # please use extract_column() method
     extract_column("Factor")
   end
+  def grandchild_base_name
+    parent_name = @next_dataset_name if @next_dataset_name && !@next_dataset_name.to_s.strip.empty?
+    base_name = parent_name.to_s.strip.empty? ? 'grandchild_by_sample' : "#{parent_name}_by_sample"
+  end
+  def set_default_grandchild_names_by_dataset!(grandchild_data, parent_name=nil)
+
+    parent_name = if parent_name.nil? and @next_dataset_name && !@next_dataset_name.to_s.strip.empty?
+                    @next_dataset_name
+                  else
+                    ""
+                  end
+
+    grandchild_data.each_with_index do |child, index|
+      next if child['Name'] && !child['Name'].to_s.strip.empty?
+
+      result_row = @result_dataset[index] || {}
+      base_name = result_row['Name']
+
+      next unless base_name && !base_name.to_s.strip.empty?
+
+      child['Name'] = "#{parent_name}_#{base_name}"
+    end
+
+    grandchild_data
+  end
   def run(class_name)
     opt = OptionParser.new do |o|
       o.banner = "Usage: ruby #{__FILE__} [options]"

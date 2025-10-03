@@ -5,7 +5,7 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class FastqcApp <  SushiFabric::SushiApp
+class FastqcTestApp <  SushiFabric::SushiApp
   def initialize
     super
     @name = 'FastqcTest'
@@ -16,7 +16,7 @@ A quality control tool for NGS reads<br/>
 <a href='http://www.bioinformatics.babraham.ac.uk/projects/fastqc'/>Web-site with docu and a tutorial video</a>
 EOS
     @required_columns = ['Name','Read1']
-    @required_params = ['paired', 'showNativeReports']
+    @required_params = ['paired']
     @params['cores'] = [8, 1, 2, 4, 8]
     @params['ram'] = [15, 30, 62]
     @params['ram', 'description'] = "GB"
@@ -25,8 +25,6 @@ EOS
     @params['paired'] = false
     @params['showNativeReports'] = false
     @params['showNativeReports', 'description'] = "uses the multi qc summary as primary report; native reports are generated and can be downloaded"
-#    @params['libQuantPlots'] = true
-#    @params['libQuantPlots', 'description'] = "make plot comparing library quantifications with read numbers"
     @params['specialOptions'] = ''
     @params['cmdOptions'] = ""
     @params['mail'] = ""
@@ -62,27 +60,22 @@ EOS
     ds.merge(extract_columns(colnames: @inherit_columns))
   end
   def grandchild_datasets
-    # Example implementation - returns array of hashes
     grandchild_data = []
-    
-    # First grandchild dataset - summary statistics
-    summary_file = File.join(@result_dir, 'summary_stats')
-    grandchild_data << {
-      'Name' => 'FastQC_Summary',
-      'Summary Report [Link]' => File.join(summary_file, 'summary.html'),
-      'Summary [File]' => summary_file
-    }
-    
-    # Second grandchild dataset - detailed analysis (if showNativeReports is enabled)
-    if @params['showNativeReports']
-      detail_file = File.join(@result_dir, 'detailed_analysis')
+
+    return grandchild_data unless @result_dataset && !@result_dataset.empty?
+
+    @result_dataset.each do |_row|
+      # First grandchild dataset - summary statistics
+      summary_file = File.join(@result_dir, 'summary_stats')
+
       grandchild_data << {
-        'Name' => 'FastQC_Details', 
-        'Detail Report [Link]' => File.join(detail_file, 'details.html'),
-        'Detail [File]' => detail_file
+        'Name' => grandchild_base_name,
+        'Summary Report [Link]' => File.join(summary_file, 'summary.html'),
+        'Summary [File]' => summary_file
       }
     end
-    
+
+    #set_default_grandchild_names_by_dataset!(grandchild_data)
     grandchild_data
   end
   def commands
