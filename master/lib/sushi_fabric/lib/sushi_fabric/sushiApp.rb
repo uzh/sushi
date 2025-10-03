@@ -209,6 +209,7 @@ class SushiApp
   attr_accessor :mango_run_name
   attr_accessor :input_dataset_bfabric_application_number
   attr_accessor :next_dataset_bfabric_application_number
+  attr_accessor :grandchild
   attr_reader :inactivate_nodes
   attr_reader :employee
   attr_accessor :queue
@@ -230,6 +231,7 @@ class SushiApp
     @modules = []
     #@workflow_manager = workflow_manager_instance||DRbObject.new_with_uri(WORKFLOW_MANAGER)
     @last_job = true
+    @grandchild = false
   end
   def set_input_dataset
     if @dataset_tsv_file
@@ -833,12 +835,14 @@ rm -rf #{@scratch_dir} || exit 1
       }
       
       unless NO_ROR
+        # Determine child flag: if @grandchild is true, force true; else inherit @child
+        grandchild_child_flag = @grandchild ? true : !!@child
         grandchild_dataset_id = DataSet.save_dataset_to_database(
           data_set_arr: data_set_arr.to_a.flatten, 
           headers: headers, 
           rows: rows, 
           user: @current_user, 
-          child: @child, 
+          child: grandchild_child_flag, 
           sushi_app_name: self.class.name
         )
         @grandchild_dataset_ids << grandchild_dataset_id

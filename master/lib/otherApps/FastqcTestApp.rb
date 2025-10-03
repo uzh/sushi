@@ -17,17 +17,17 @@ A quality control tool for NGS reads<br/>
 EOS
     @required_columns = ['Name','Read1']
     @required_params = ['paired']
-    @params['cores'] = [8, 1, 2, 4, 8]
+    @params['cores'] = [1, 1, 2, 4, 8]
     @params['ram'] = [15, 30, 62]
     @params['ram', 'description'] = "GB"
-    @params['scratch'] = [100, 10, 50, 100]
+    @params['scratch'] = [10, 10, 50, 100]
     @params['scratch', 'description'] = "GB"
     @params['paired'] = false
     @params['showNativeReports'] = false
     @params['showNativeReports', 'description'] = "uses the multi qc summary as primary report; native reports are generated and can be downloaded"
     @params['specialOptions'] = ''
     @params['cmdOptions'] = ""
-    @params['mail'] = ""
+    @params['mail'] = "masaomi.hatakeyama@uzh.ch"
     @modules = ["QC/FastQC", "Dev/R", "Tools/Picard", "Tools/samtools", "Dev/Python",  "QC/fastp"]
     @inherit_columns = ["Order Id"]
   end
@@ -60,6 +60,7 @@ EOS
     ds.merge(extract_columns(colnames: @inherit_columns))
   end
   def grandchild_datasets
+    @grandchild = true
     grandchild_data = []
 
     return grandchild_data unless @result_dataset && !@result_dataset.empty?
@@ -75,7 +76,7 @@ EOS
       }
     end
 
-    #set_default_grandchild_names_by_dataset!(grandchild_data)
+    # set_default_grandchild_names_by_dataset!(grandchild_data)
     grandchild_data
   end
   def commands
