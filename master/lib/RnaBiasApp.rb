@@ -17,7 +17,7 @@ EOS
     @required_params = ['name']
 
 @params['cores'] = '8'
-@params['ram'] = '20'
+@params['ram'] = '50'
 @params['scratch'] = '100'
 @params['name'] = 'RNA_Bias_Result'
 @params['paired'] = false
