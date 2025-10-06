@@ -28,8 +28,6 @@ EOS
 @params['seed'] = '42'
 @params['fragment-length'] = '150'
 @params['sd'] = '70'
-@params['bias'] = true
-@params['pseudobam'] = true
 @params['transcriptFasta'] = ''
 @params['transcriptTypes'] = 'protein_coding'
 @params['trimAdapter'] = true
