@@ -68,12 +68,14 @@ EOS
     grandchild_data = []
     @dataset_hash.each_with_index do |row, i|
       my_dataset = Hash[*row.map{|key,value| [key.gsub(/\[.+\]/,'').strip, value]}.flatten]
-      grandchild_data << {'Name'=>my_dataset['Name'],
+      grandchild_data << {
+        'Name'=>my_dataset['Name'],
+        
         'Count [File]'=>File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/macs2/broad_peak/consensus", "#{my_dataset['Name']}.txt"),
         'BigWig [File]'=>File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/bigwig", "#{my_dataset['Name']}.bigWig"),
         'Species'=>my_dataset['Species'],
         'refBuild'=>@params['refBuild'],
-     '   featureLevel'=>@params['peakStyle']
+        'featureLevel'=>@params['peakStyle']
       } ## TODO I would like to merge from the parent .merge(extract_columns(@inherit_tags))
     end
     grandchild_data
