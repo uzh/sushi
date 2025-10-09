@@ -80,7 +80,7 @@ EOS
         'featureLevel'=>@params['peakStyle']
       }.merge(extract_columns(@inherit_tags))
     end
-    grandchild_data
+    grandchild_dataset
   end
   def commands
     run_RApp('EzAppNfCoreAtacSeq')
