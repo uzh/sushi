@@ -16,16 +16,16 @@ class SeuratVisiumHDApp < SushiFabric::SushiApp
     @description =<<-EOS
 Single cell report<br/>
     EOS
-    @required_columns = ['Name', 'Species', 'refBuild', 'CountMatrix', 'ResultDir']
+    @required_columns = ['Name', 'Species', 'refBuild', 'SpaceRangerDir', 'BinnedOutput']
     @required_params = ['name']
     # optional params
     @params['cores'] = '4'
     @params['ram'] = '100'
     @params['scratch'] = '50'
-    @params['name'] = 'Visium_HD'
+    @params['name'] = 'SeuratVisiumHD'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['binSize'] = 16
+    @params['binSize'] = ['binned_outpus/square_008um', 'binned_outpus/square_016um', 'segmented_outputs'}]
     @params['binSize','description'] = 'Standard binSizes are 8 and 16. Other binSize are only available if the parameter --custom-bin-size was used in SpaceRanger'
     @params['DE.method'] = ['wilcox', 'LR']
     @params['DE.method', 'description'] ='Method to be used when calculating gene cluster markers. Use LR if you want to include cell cycle in the regression model.'
@@ -37,8 +37,8 @@ Single cell report<br/>
     @params['logfc.threshold', 'description'] = 'Used in calculating cluster markers: Limit testing to genes which show, on average, at least X-fold difference (log-scale) between the two groups of cells.'
     @params['pcGenes'] = ''
     @params['pcGenes', 'description'] = 'The genes used in supvervised clustering'
-    @params['resolution'] = [2, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2.5, 3]
-    @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
+    @params['clusterResolution'] = [2, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2.5, 3]
+    @params['clusterResolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
     @params['nreads'] = ''
     @params['nreads', 'description'] = 'Low quality spots have less than "nreads" reads. Only when applying fixed thresholds'
     @params['ngenes'] = ''
@@ -49,10 +49,6 @@ Single cell report<br/>
     @params['perc_ribo', 'description'] = 'Low quality spots have more than "perc_ribo" percent of ribosomal genes. Only when applying fixed thresholds'
     @params['nmad'] = 3
     @params['nmad', 'description'] = 'Median absolute deviation (MAD) from the median value of each metric across all bins'
-    @params['cellsFraction'] = 0.0
-    @params['cellsFraction', 'description'] = 'A gene will be kept if it is expressed in at least this fraction of bins'
-    @params['nUMIs'] = 1
-    @params['nUMIs', 'description'] = 'A gene will be kept if it has at least nUMIs in the fraction of bins specified before'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.5.0"]
