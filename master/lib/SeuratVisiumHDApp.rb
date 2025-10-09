@@ -76,7 +76,7 @@ Single cell report<br/>
   end
   def commands
     command = "module load #{@params["Rversion"]}\n"
-    command << run_RApp("SeuratVisiumHDApp")
+    command << run_RApp("EzAppSeuratVisiumHD")
   end
 end
 
