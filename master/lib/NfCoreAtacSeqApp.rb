@@ -68,11 +68,11 @@ EOS
     grandchild_dataset = []
     rows = @dataset.is_a?(Array) ? @dataset : []
     return grandchild_dataset if rows.empty?
+    @params['grandchildName'] = "details" ## TODO: order name should be kept
     rows.each_with_index do |row, i|
       sample = Hash[*row.map{|key,value| [key.gsub(/\[.+\]/,'').strip, value]}.flatten]
       grandchild_dataset << {
         'Name'=>sample['Name'],
-        
         'Count [Link]'=>File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/macs2/broad_peak/consensus", "#{sample['Name']}.txt"),
         'BigWig' =>File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/bigwig", "#{sample['Name']}.bigWig"),
         'Species'=>sample['Species'],
