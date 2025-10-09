@@ -25,7 +25,7 @@ Single cell report<br/>
     @params['name'] = 'SeuratVisiumHD'
     @params['refBuild'] = ref_selector
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['binSize'] = ['binned_outpus/square_008um', 'binned_outpus/square_016um', 'segmented_outputs']
+    @params['binSize'] = ['binned_outputs/square_008um', 'binned_outputs/square_016um', 'segmented_outputs']
     @params['binSize','description'] = 'Standard binSizes are 8 and 16. Other binSize are only available if the parameter --custom-bin-size was used in SpaceRanger'
     @params['DE.method'] = ['wilcox', 'LR']
     @params['DE.method', 'description'] ='Method to be used when calculating gene cluster markers. Use LR if you want to include cell cycle in the regression model.'
