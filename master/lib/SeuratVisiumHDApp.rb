@@ -65,7 +65,7 @@ Single cell report<br/>
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
-     'Report [File]'=>report_file,
+     'Seurat Visium HD [File]'=>report_file,
     }.merge(extract_columns(@inherit_tags))
   end
   def set_default_parameters
