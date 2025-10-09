@@ -15,7 +15,8 @@ class NfCoreAtacSeqApp <  SushiFabric::SushiApp
     A ATAC-seq processing pipeline from NF-Core. <br/>
    <a href='https://nf-co.re/atacseq'>NF-Core ATAC-seq</a>
 EOS
-    @required_columns = ['Name','Read1','Read2','Species']
+    @required_columns = ['Name','Read1', 'Species']
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
     @required_params = ['refBuild', 'peakStyle', 'grouping']
     @params['cores'] = '8'
     @params['ram'] = '100'
@@ -64,20 +65,20 @@ EOS
     dataset
   end
   def grandchild_datasets
-    ## TODO ... this is a workaround to get grandchild_data that is per sample; I need the grandchild data per sample in _one_ dataset
-    my_dataset = []
-    grandchild_data = []
-    @dataset_hash.each_with_index do |row, i|
-      my_dataset = Hash[*row.map{|key,value| [key.gsub(/\[.+\]/,'').strip, value]}.flatten]
-      grandchild_data << {
-        'Name'=>my_dataset['Name'],
+    grandchild_dataset = []
+    rows = @dataset.is_a?(Array) ? @dataset : []
+    return grandchild_dataset if rows.empty?
+    rows.each_with_index do |row, i|
+      sample = Hash[*row.map{|key,value| [key.gsub(/\[.+\]/,'').strip, value]}.flatten]
+      grandchild_dataset << {
+        'Name'=>sample['Name'],
         
-        'Count'=>File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/macs2/broad_peak/consensus", "#{my_dataset['Name']}.txt"),
-        'BigWig' =>File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/bigwig", "#{my_dataset['Name']}.bigWig"),
-        'Species'=>my_dataset['Species'],
+        'Count [Link]'=>File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/macs2/broad_peak/consensus", "#{sample['Name']}.txt"),
+        'BigWig' =>File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/bigwig", "#{sample['Name']}.bigWig"),
+        'Species'=>sample['Species'],
         'refBuild'=>"", ##@params['refBuild'],
         'featureLevel'=>@params['peakStyle']
-      } ## TODO I would like to merge from the parent .merge(extract_columns(@inherit_tags))
+      }.merge(extract_columns(@inherit_tags))
     end
     grandchild_data
   end
