@@ -820,7 +820,9 @@ rm -rf #{@scratch_dir} || exit 1
         end
       end
       
-      grandchild_dataset_name = if grandchild_data[index] && grandchild_data[index]['Name'] && !grandchild_data[index]['Name'].to_s.strip.empty?
+      grandchild_dataset_name = if @params && @params['grandchildName'] && !@params['grandchildName'].to_s.strip.empty?
+                                  @params['grandchildName']
+                                elsif grandchild_data[index] && grandchild_data[index]['Name'] && !grandchild_data[index]['Name'].to_s.strip.empty?
                                   grandchild_data[index]['Name']
                                 else
                                   "#{@name}_grandchild_#{index + 1}"

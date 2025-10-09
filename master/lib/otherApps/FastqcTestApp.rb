@@ -30,9 +30,29 @@ EOS
     @params['mail'] = "masaomi.hatakeyama@uzh.ch"
     @modules = ["QC/FastQC", "Dev/R", "Tools/Picard", "Tools/samtools", "Dev/Python",  "QC/fastp"]
     @inherit_columns = ["Order Id"]
+    @params['grandchildName'] = ''
+    @params['grandchildName', 'description'] = 'Override aggregated grandchild dataset name (leave empty for default)'
   end
  def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
+    # Set default for grandchildName to OrderNumber_SUSHIAppName_grandchild if possible
+    if @params['grandchildName'].to_s.strip.empty?
+      order_id = nil
+      if @dataset_hash && @dataset_hash.first
+        # Find a header that represents Order Id (tag-insensitive)
+        order_header = @dataset_hash.first.keys.find { |k| k.gsub(/\[.+\]/,'').strip =~ /Order Id/ }
+        if order_header
+          # Take the first non-empty order id across rows
+          order_id = @dataset_hash.map { |row| row[order_header] }.compact.find { |v| !v.to_s.strip.empty? }
+        end
+      end
+      base_name = if order_id && !order_id.to_s.strip.empty?
+                    "#{order_id}_#{@name}"
+                  else
+                    @name
+                  end
+      @params['grandchildName'] = "#{base_name}_grandchild"
+    end
   end
   def preprocess
     if @params['paired']
@@ -60,34 +80,45 @@ EOS
     ds.merge(extract_columns(colnames: @inherit_columns))
   end
   def grandchild_datasets
-    @grandchild = true
-    grandchild_data = []
-
-    return grandchild_data unless @result_dataset && !@result_dataset.empty?
-
-    @result_dataset.each do |_row|
-      # First grandchild dataset - summary statistics
-      summary_file = File.join(@result_dir, 'summary_stats')
-
-      grandchild_data << {
-        'Name' => grandchild_base_name,
-        'Summary Report [Link]' => File.join(summary_file, 'summary.html'),
-        'Summary [File]' => summary_file
-      }
+    #@grandchild = true
+    grandchild_dataset = []
+    rows = @dataset.is_a?(Array) ? @dataset : []
+    return grandchild_dataset if rows.empty?
+    
+    # Use @dataset instead of @dataset_hash to respect sample selection
+    # In DATASET mode, @dataset contains only selected samples
+    rows.each_with_index do |row, i|
+      sample = Hash[*row.map{|key,value| [key.gsub(/\[.+\]/,'').strip, value]}.flatten]
+      
+      # Create per-sample grandchild dataset
+      grandchild_dataset << {
+        'Name' => "#{@params['name']}_#{sample['Name']}",
+        'FastQC Report [Link]' => File.join(@result_dir, @params['name'], "#{sample['Name']}_fastqc.html"),
+        'FastQC Data [File]' => File.join(@result_dir, @params['name'], "#{sample['Name']}_fastqc_data.txt"),
+      }.merge(extract_columns(colnames: @inherit_columns || []))
     end
-
-    # set_default_grandchild_names_by_dataset!(grandchild_data)
-    grandchild_data
+    
+    grandchild_dataset
   end
   def commands
     commands = ""
-    # Create dummy outputs for grandchild datasets so copy phase won't fail
-    commands << "mkdir -p summary_stats\n"
-    commands << "echo '<html><body>Dummy summary</body></html>' > summary_stats/summary.html\n"
+    
+    # Create dummy outputs for each selected sample
+    rows = @dataset.is_a?(Array) ? @dataset : []
+    rows.each do |row|
+      sample = Hash[*row.map{|key,value| [key.gsub(/\[.+\]/,'').strip, value]}.flatten]
+      sample_name = sample['Name']
+      
+      commands << "mkdir -p #{@params['name']}\n"
+      commands << "echo 'FastQC data for #{sample_name}' > #{@params['name']}/#{sample_name}_fastqc_data.txt\n"
+      commands << "echo '<html><body>FastQC report for #{sample_name}</body></html>' > #{@params['name']}/#{sample_name}_fastqc.html\n"
+    end
+    
     if @params['showNativeReports']
       commands << "mkdir -p detailed_analysis\n"
       commands << "echo '<html><body>Dummy details</body></html>' > detailed_analysis/details.html\n"
     end
+    
     commands << "\n"
     commands << run_RApp("EzAppFastqc")
     commands
