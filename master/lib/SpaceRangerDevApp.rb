@@ -74,7 +74,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
         'Image'=>@dataset['Image'],
         ## TODO: the attribute below should only be there if the Slide column starts with H1 (V1, V4, V4 slides are SD slides)
         'BinnedOutput'=>File.join(report_dir, 'binned_outputs/square_002um'),
-        'GeneCount [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.txt")        
+        'GeneCount [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.txt"),
         'refFeatureFile'=>@params['refFeatureFile'],
         'featureLevel'=>@params['featureLevel'],
         'transcriptTypes'=>@params['transcriptTypes'],
