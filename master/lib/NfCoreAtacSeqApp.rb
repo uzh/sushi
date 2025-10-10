@@ -78,9 +78,9 @@ EOS
         'Species'=>sample['Species'],
         'refBuild'=>"", ##@params['refBuild'],
         'featureLevel'=>@params['peakStyle']
-      }
+      }.merge(extract_columns(@inherit_tags))
     end
-    grandchild_dataset.merge(extract_columns(@inherit_tags))
+    grandchild_dataset
   end
   def commands
     run_RApp('EzAppNfCoreAtacSeq')
