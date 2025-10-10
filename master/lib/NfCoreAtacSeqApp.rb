@@ -78,7 +78,7 @@ EOS
         'Species'=>sample['Species'],
         'refBuild'=>"", ##@params['refBuild'],
         'featureLevel'=>@params['peakStyle']
-      }.merge(extract_columns(@inherit_tags))
+      }.merge(extract_columns(tags: @inherit_tags, sample_name: sample['Name'])))
     end
     grandchild_dataset
   end
