@@ -147,27 +147,53 @@ module GlobalVariables
     end
     dataset
   end
-  def extract_column(type)
+  def extract_column(type, sample_name: nil, strict: false)
     factors = get_columns_with_tag(type)
     dataset = {}
     factors.first.keys.each do |colname|
-      dataset[colname+" [#{type}]"] = if @params['process_mode'] == 'SAMPLE'
-                                        @dataset[colname]
-                                      else
-                                        first_row = @dataset[0]
-                                        # remove tags
-                                        first_row_wo_tags = Hash[*first_row.map{|key,value| [key.gsub(/\[.+\]/,'').strip, value]}.flatten]
-                                        first_row_wo_tags[colname]
-                                      end
+      if @params['process_mode'] == 'SAMPLE'
+        dataset[colname+" [#{type}]"] = @dataset[colname]
+      else
+        # DATASET mode
+        if sample_name && @dataset.is_a?(Array)
+          target_row = @dataset.find do |row|
+            row_wo_tags = Hash[*row.map { |key, value| [key.gsub(/\[.+\]/,'').strip, value] }.flatten]
+            row_wo_tags['Name'] == sample_name
+          end
+          if target_row
+            row_wo_tags = Hash[*target_row.map { |key, value| [key.gsub(/\[.+\]/,'').strip, value] }.flatten]
+            dataset[colname+" [#{type}]"] = row_wo_tags[colname]
+          else
+            if strict
+              return {}
+            end
+            # Fallback to legacy-like behavior: aggregate across rows (match name-case behavior)
+            values = []
+            @dataset.each do |row_hash|
+              row_wo_tags = Hash[*row_hash.map { |key, value| [key.gsub(/\[.+\]/,'').strip, value] }.flatten]
+              values << row_wo_tags[colname]
+            end
+            dataset[colname+" [#{type}]"] = values.compact.uniq.join(",")
+          end
+        else
+          # No sample_name given: aggregate across rows to mirror name-case
+          values = []
+          @dataset.each do |row_hash|
+            row_wo_tags = Hash[*row_hash.map { |key, value| [key.gsub(/\[.+\]/,'').strip, value] }.flatten]
+            values << row_wo_tags[colname]
+          end
+          dataset[colname+" [#{type}]"] = values.compact.uniq.join(",")
+        end
+      end
     end
     dataset
   rescue
     {}
   end
-  def extract_columns_by_tag(tags)
+  def extract_columns_by_tag(tags, sample_name: nil, strict: false)
     dataset = {}
     tags.each do |tag|
-      additional = extract_column(tag)
+      additional = extract_column(tag, sample_name: sample_name, strict: strict)
       dataset.merge!(additional)
     end
     dataset
@@ -178,11 +204,11 @@ module GlobalVariables
     end
 
     if tags
-      extract_columns_by_tag(tags)
+      extract_columns_by_tag(tags, sample_name: sample_name, strict: strict)
     elsif colnames
       extract_columns_by_name(colnames, sample_name: sample_name, strict: strict)
     else
-      extract_columns_by_tag(tags)
+      extract_columns_by_tag(tags, sample_name: sample_name, strict: strict)
     end
   end
   def factor_dataset
