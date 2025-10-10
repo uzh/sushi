@@ -29,7 +29,7 @@ EOS
     @params['cmdOptions'] = ""
     @params['mail'] = "masaomi.hatakeyama@uzh.ch"
     @modules = ["QC/FastQC", "Dev/R", "Tools/Picard", "Tools/samtools", "Dev/Python",  "QC/fastp"]
-    @inherit_columns = ["Order Id"]
+    @inherit_columns = ["Order Id", "BFabric Info"]
     @params['grandchildName'] = ''
     @params['grandchildName', 'description'] = 'Override aggregated grandchild dataset name (leave empty for default)'
   end
@@ -95,7 +95,9 @@ EOS
         'Name' => "#{@params['name']}_#{sample['Name']}",
         'FastQC Report [Link]' => File.join(@result_dir, @params['name'], "#{sample['Name']}_fastqc.html"),
         'FastQC Data [File]' => File.join(@result_dir, @params['name'], "#{sample['Name']}_fastqc_data.txt"),
-      }.merge(extract_columns(colnames: @inherit_columns || []))
+      }.merge(extract_columns(colnames: @inherit_columns || [], sample_name: sample['Name']))
+      #}.merge(extract_columns(colnames: @inherit_columns || [], sample_name: sample['Name'], strict: true))
+      #}.merge(extract_columns(colnames: @inherit_columns || []))
     end
     
     grandchild_dataset

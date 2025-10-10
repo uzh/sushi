@@ -97,7 +97,7 @@ module GlobalVariables
       row.select { |k, v| names.any? { |name| k.gsub(/\[.+\]/,'').strip =~ /#{name}/ } }
     }
   end
-  def extract_columns_by_name(names)
+  def extract_columns_by_name(names, sample_name: nil, strict: false)
     factors = get_columns_by_name(names)
     dataset = {}
     if @params['process_mode'] == 'SAMPLE'
@@ -105,14 +105,44 @@ module GlobalVariables
         dataset[colname] = @dataset[colname]
       end
     else
-      dataset_ = {}
-      factors.first.keys.each do |colname|
-        @dataset.each do |row_hash|
-          (dataset_[colname] ||= []) << row_hash[colname]
+      # If sample_name is provided, try to extract values from the matching row by Name
+      if sample_name && @dataset.is_a?(Array)
+        target_row = @dataset.find do |row|
+          row_wo_tags = Hash[*row.map{ |key, value| [key.gsub(/\[.+\]/,'').strip, value] }.flatten]
+          row_wo_tags['Name'] == sample_name
         end
-      end
-      dataset_.each do |colname, row|
-        dataset[colname] = row.uniq.join(",")
+
+        if target_row
+          factors.first.keys.each do |colname|
+            dataset[colname] = target_row[colname]
+          end
+        else
+          # If strict, do not fallback; return empty dataset to indicate no match
+          if strict
+            return {}
+          end
+          # Fallback to legacy behavior: aggregate across rows
+          dataset_ = {}
+          factors.first.keys.each do |colname|
+            @dataset.each do |row_hash|
+              (dataset_[colname] ||= []) << row_hash[colname]
+            end
+          end
+          dataset_.each do |colname, row|
+            dataset[colname] = row.uniq.join(",")
+          end
+        end
+      else
+        # Legacy behavior: aggregate across rows
+        dataset_ = {}
+        factors.first.keys.each do |colname|
+          @dataset.each do |row_hash|
+            (dataset_[colname] ||= []) << row_hash[colname]
+          end
+        end
+        dataset_.each do |colname, row|
+          dataset[colname] = row.uniq.join(",")
+        end
       end
     end
     dataset
@@ -142,7 +172,7 @@ module GlobalVariables
     end
     dataset
   end
-  def extract_columns(*args, tags: nil, colnames: nil)
+  def extract_columns(*args, tags: nil, colnames: nil, sample_name: nil, strict: false)
     if args.any?
       tags = args.first
     end
@@ -150,7 +180,7 @@ module GlobalVariables
     if tags
       extract_columns_by_tag(tags)
     elsif colnames
-      extract_columns_by_name(colnames)
+      extract_columns_by_name(colnames, sample_name: sample_name, strict: strict)
     else
       extract_columns_by_tag(tags)
     end
