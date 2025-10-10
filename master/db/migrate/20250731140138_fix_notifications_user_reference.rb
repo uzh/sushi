@@ -4,7 +4,7 @@ class FixNotificationsUserReference < ActiveRecord::Migration[7.0]
     drop_table :notifications if table_exists?(:notifications)
     
     # Recreate the table with correct column types
-    create_table :notifications do |t|
+    create_table :notifications, id: :integer do |t|
       t.integer :user_id, null: false
       t.text :message
       t.string :notification_type

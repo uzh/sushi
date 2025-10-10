@@ -11,13 +11,13 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2025_09_26_000000) do
-  create_table "data_sets", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+  create_table "data_sets", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "project_id"
     t.integer "parent_id"
     t.string "name"
     t.string "md5"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "comment"
     t.text "runnable_apps"
     t.boolean "refreshed_apps"
@@ -37,12 +37,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_26_000000) do
     t.index ["project_id"], name: "index_data_sets_on_project_id"
   end
 
-  create_table "jobs", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+  create_table "jobs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "submit_job_id"
     t.integer "input_dataset_id"
     t.integer "next_dataset_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "script_path"
     t.string "stdout_path"
     t.string "stderr_path"
@@ -51,14 +51,13 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_26_000000) do
     t.string "user"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.index ["id", "next_dataset_id"], name: "index_jobs_on_id_and_next_dataset_id"
     t.index ["input_dataset_id"], name: "index_jobs_on_input_dataset_id"
     t.index ["next_dataset_id", "id"], name: "index_jobs_on_next_dataset_id_and_id"
     t.index ["next_dataset_id"], name: "index_jobs_on_next_dataset_id"
     t.index ["status"], name: "index_jobs_on_status"
   end
 
-  create_table "notification_settings", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "notification_settings", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "user_id", null: false
     t.boolean "notification_enabled"
     t.datetime "last_notification_date"
@@ -69,7 +68,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_26_000000) do
     t.index ["user_id"], name: "index_notification_settings_on_user_id"
   end
 
-  create_table "notifications", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "notifications", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "user_id", null: false
     t.text "message"
     t.string "notification_type"
@@ -79,43 +78,43 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_26_000000) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
-  create_table "projects", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+  create_table "projects", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.text "data_set_tree", size: :medium
     t.index ["number"], name: "index_projects_on_number"
   end
 
-  create_table "samples", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+  create_table "samples", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.text "key_value"
     t.integer "data_set_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["data_set_id"], name: "index_samples_on_data_set_id"
   end
 
-  create_table "sushi_applications", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+  create_table "sushi_applications", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "class_name"
     t.string "analysis_category"
     t.text "required_columns"
     t.text "next_dataset_keys"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.text "description"
     t.boolean "employee"
   end
 
-  create_table "users", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+  create_table "users", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "sign_in_count", default: 0
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.integer "selected_project", default: -1
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "remember_created_at"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "remember_created_at", precision: nil
     t.string "login", default: "", null: false
     t.index ["login"], name: "index_users_on_login", unique: true
   end
