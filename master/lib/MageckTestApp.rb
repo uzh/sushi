@@ -33,6 +33,10 @@ class MageckTestApp < SushiFabric::SushiApp
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
     @params['refGroup'] = ''
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
+    @params['useControls'] = true
+    @params['useControls', 'description'] = 'use control sgRNAs for generating the null distribution of RRA' 
+    @params['normalizationMethod'] = ['median', 'control', 'total', 'none']
+    @params['geneLFCMethod'] = ['median','alphamedian','mean','alphamean','secondbest']
     @params['mail'] = ""
     @modules = ["Dev/R"]
     @inherit_columns = ["Order Id"]
