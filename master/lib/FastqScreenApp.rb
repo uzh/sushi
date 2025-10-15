@@ -74,11 +74,8 @@ EOS
     @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/fastp", "Tools/kraken", "QC/FastQScreen", "Dev/R", "Tools/Picard"]
     @inherit_columns = ["Order Id"]
   end
- def set_default_parameters
-    @params['paired'] = dataset_has_column?('Read2')
-  end
   def preprocess
-    if @params['paired']
+    if @params['readFileToUse'] == 'both'
       @required_columns<<  'Read2'
     end
   end
