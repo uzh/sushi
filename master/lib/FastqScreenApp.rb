@@ -20,7 +20,6 @@ EOS
     @params['cores'] = '8'
     @params['ram'] = '60'
     @params['scratch'] = '100'
-    @params['paired'] = false
     @params['name'] = 'FastqScreen_Result'
     @params['nReads'] = '100000'
     @params['readFileToUse', 'description'] = 'Which reads should be used for analysis'
