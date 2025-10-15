@@ -23,7 +23,7 @@ EOS
     @params['name'] = 'FastqScreen_Result'
     @params['nReads'] = '100000'
     @params['paired'] = false
-    @params['readFileToUse', 'description'] = 'Which reads should be used for analysis'
+    @params['readFileToUse', 'description'] = 'Which reads should be used for analysis. Can be used to override "paired" parameter.'
     @params['readFileToUse'] = ['Read1', 'Read2', 'both']
     @params['nTopSpecies'] = '5'
     @params['minAlignmentScore'] = '-20'
@@ -78,10 +78,8 @@ EOS
     @params['paired'] = dataset_has_column?('Read2')
   end
   def preprocess
-    if @params['readFileToUse'] == 'both'
+    if @params['readFileToUse'] != 'Read1'
       @required_columns<<  'Read2'
-    else
-      @params['paired'] = false
     end
   end
   def next_dataset
