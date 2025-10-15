@@ -16,7 +16,7 @@ Screen files for contaminations or ribosomal RNA content<br/>
 <a target='_blank' href='http://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/'>fastq_screen web site</a>
 EOS
     @required_columns = ['Name','Read1','Read Count']
-    @required_params = ['name', 'paired']
+    @required_params = ['name']
     @params['cores'] = '8'
     @params['ram'] = '60'
     @params['scratch'] = '100'
