@@ -22,6 +22,7 @@ EOS
     @params['scratch'] = '100'
     @params['name'] = 'FastqScreen_Result'
     @params['nReads'] = '100000'
+    @params['paired'] = false
     @params['readFileToUse', 'description'] = 'Which reads should be used for analysis'
     @params['readFileToUse'] = ['Read1', 'Read2', 'both']
     @params['nTopSpecies'] = '5'
@@ -73,9 +74,14 @@ EOS
     @modules = ["Tools/samtools", "Aligner/Bowtie2", "QC/fastp", "Tools/kraken", "QC/FastQScreen", "Dev/R", "Tools/Picard"]
     @inherit_columns = ["Order Id"]
   end
+  def set_default_parameters
+    @params['paired'] = dataset_has_column?('Read2')
+  end
   def preprocess
     if @params['readFileToUse'] == 'both'
       @required_columns<<  'Read2'
+    else
+      @params['paired'] = false
     end
   end
   def next_dataset
