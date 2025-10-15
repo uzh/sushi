@@ -23,6 +23,8 @@ EOS
     @params['paired'] = false
     @params['name'] = 'FastqScreen_Result'
     @params['nReads'] = '100000'
+    @params['readFileToUse', 'description'] = 'Which reads should be used for analysis'
+    @params['readFileToUse'] = ['Read1', 'Read2', 'both']
     @params['nTopSpecies'] = '5'
     @params['minAlignmentScore'] = '-20'
     @params['minAlignmentScore', 'description'] = 'the alignment score for bowtie2; can be negative'
