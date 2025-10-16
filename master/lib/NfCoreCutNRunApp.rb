@@ -37,7 +37,7 @@ EOS
     @params['name'] = 'NfCoreCutAndRun'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
-    @modules = ["Dev/jdk"]
+    @modules = ["Dev/jdk", "Tools/BEDTools"]
   end
  def set_default_parameters
     if @params['paired']
