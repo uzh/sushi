@@ -32,6 +32,8 @@ EOS
     @params['grouping', 'description'] = 'grouping information needs to be filled in the input dataset'
     @params['controlColumn'] = ''
     @params['controlColumn', 'description'] = 'indicate the column with the control samples'
+    @params['keepBams'] = false
+    @params['keepBams', 'description'] = 'delete BAM and BAI files from alignment folder'
     @params['name'] = 'NfCoreCutAndRun'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
@@ -44,10 +46,14 @@ EOS
   end
   def next_dataset
      report_file = File.join(@result_dir, "#{@params['name']}_results")
-     report_link = File.join(@result_dir, "#{@params['name']}_results", "04_reporting", "multiqc", "multiqc_report.html")
+     multiqc_report_link = File.join(@result_dir, "#{@params['name']}_results", "04_reporting", "multiqc", "multiqc_report.html")
+     cutandrun_report_link = File.join(@result_dir, "#{@params['name']}_results", "04_reporting", "00index.html")
+     igv_link = "https://igv.org/app/?sessionURL=https://fgcz-gstore.uzh.ch/projects/#{report_file}/igv_session.json"
      {'Name'=>@params['name'],
-      'Result [File]'=>report_file,
-      'Report [Link]'=>report_link,
+      'CutAndRun_Result [File]'=>report_file,
+      'Multiqc [Link]'=>multiqc_report_link,
+      'CutAndRun_Report [Link]'=>cutandrun_report_link,
+      'IGV [Link]'=>igv_link,
       'Species'=>(dataset = @dataset.first and dataset['Species']),
       'refBuild'=>@params['refBuild']
     }
