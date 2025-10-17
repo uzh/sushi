@@ -1,0 +1,16 @@
+<% if maintenance_announcement_enabled? %>
+  <div class="alert <%= maintenance_announcement_alert_class %> maintenance-announcement" 
+       style="margin: 0; border-radius: 0; border-left: 0; border-right: 0; border-top: 0; position: relative; padding-right: 50px;">
+    <div class="container" style="width: 90%; margin: 0 auto;">
+      <strong>
+        <i class="fa <%= maintenance_announcement_icon %>"></i> 
+        <%= maintenance_announcement_label %>:
+      </strong>
+      <%= maintenance_announcement_message.html_safe %>
+    </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" 
+            style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%);">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% end %>

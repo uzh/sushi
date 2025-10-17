@@ -90,3 +90,52 @@ p.notice {
   border: 2px solid #fff;
   border-radius: 50%;
 }
+
+/* Maintenance Announcement Banner Styles */
+.maintenance-announcement {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.maintenance-announcement .close {
+  opacity: 0.6;
+  font-size: 1.5em;
+  font-weight: 300;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+}
+
+.maintenance-announcement .close:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+/* Different alert type styles for maintenance announcement */
+.maintenance-announcement.alert-info {
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #31708f;
+}
+
+.maintenance-announcement.alert-warning {
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+  color: #8a6d3b;
+}
+
+.maintenance-announcement.alert-danger {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}

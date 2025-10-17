@@ -97,4 +97,57 @@ module ApplicationHelper
     end
     list
   end
+  
+  # System Maintenance Announcement helper methods
+  def maintenance_announcement_enabled?
+    Rails.application.config.respond_to?(:maintenance_announcement_enabled) &&
+      Rails.application.config.maintenance_announcement_enabled
+  end
+  
+  def maintenance_announcement_type
+    Rails.application.config.maintenance_announcement_type || 'info'
+  end
+  
+  def maintenance_announcement_message
+    Rails.application.config.maintenance_announcement_message || ''
+  end
+  
+  def maintenance_announcement_alert_class
+    case maintenance_announcement_type
+    when 'info'
+      'alert-info'
+    when 'warning'
+      'alert-warning'
+    when 'danger'
+      'alert-danger'
+    else
+      'alert-info'
+    end
+  end
+  
+  def maintenance_announcement_icon
+    case maintenance_announcement_type
+    when 'info'
+      'fa-info-circle'
+    when 'warning'
+      'fa-exclamation-triangle'
+    when 'danger'
+      'fa-exclamation-circle'
+    else
+      'fa-info-circle'
+    end
+  end
+  
+  def maintenance_announcement_label
+    case maintenance_announcement_type
+    when 'info'
+      'Notice'
+    when 'warning'
+      'Warning'
+    when 'danger'
+      'Important'
+    else
+      'Notice'
+    end
+  end
 end

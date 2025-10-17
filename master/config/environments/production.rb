@@ -93,4 +93,13 @@ SushiFabric::Application.configure do
     config.sushi_server_class = "SushiFabric::TestSushi"
   end
 
+  # System Maintenance Announcement Settings
+  config.maintenance_announcement_enabled = true  # set to true to display the announcement banner
+  config.maintenance_announcement_type = 'warning'  # 'info', 'warning', 'danger'
+  config.maintenance_announcement_message = <<-MESSAGE
+    <strong>Scheduled Maintenance Notice</strong><br>
+    System maintenance will be performed on 17.10.2025 from 17:00 to 23:59.
+    SUSHI will be temporarily unavailable during this period.
+  MESSAGE
+
 end
