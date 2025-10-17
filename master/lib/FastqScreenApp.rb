@@ -75,6 +75,7 @@ EOS
     @inherit_columns = ["Order Id"]
   end
   def set_default_parameters
+    @params['readFileToUse'] = 'Read1'
     @params['paired'] = dataset_has_column?('Read2')
   end
   def preprocess
