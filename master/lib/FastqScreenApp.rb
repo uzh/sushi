@@ -81,6 +81,9 @@ EOS
     if @params['readFileToUse'] != 'Read1'
       @required_columns<<  'Read2'
     end
+    if !dataset_has_column?('Read2')
+      @params['readFileToUse'] = ['Read1']
+    end
   end
   def next_dataset
     report_file = File.join(@result_dir, @params['name'])
