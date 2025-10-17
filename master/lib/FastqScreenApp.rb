@@ -25,9 +25,6 @@ EOS
     @params['paired'] = false
     @params['readFileToUse', 'description'] = 'Which reads should be used for analysis. Can be used to override "paired" parameter.'
     @params['readFileToUse'] = ['Read1', 'Read2', 'both']
-    if !dataset_has_column?('Read2')
-      @params['readFileToUse'] = ['Read1']
-    end
     @params['nTopSpecies'] = '5'
     @params['minAlignmentScore'] = '-20'
     @params['minAlignmentScore', 'description'] = 'the alignment score for bowtie2; can be negative'
