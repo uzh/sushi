@@ -78,7 +78,7 @@ EOS
     dataset = {
      'Name'=>@dataset['Name'],
      'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}.R1.fastq.gz"),
-     'Log [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
+     'Log [File,Link]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
      'Species'=>@dataset['Species'],
      'Read Count'=>@dataset['Read Count'],
     }.merge(extract_columns(@inherit_tags))
