@@ -84,24 +84,22 @@ EOS
      'Name'=>@dataset['Name'],
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
-     'IGV [Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
+     'IGV [File,Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count'],
-     'IGV [File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
-     'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
-     'Bowtie2Log [File]'=>File.join(@result_dir, "#{@dataset['Name']}_bowtie2.log")
+     'PreprocessingLog [File,Link]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
+     'Bowtie2Log [File,Link]'=>File.join(@result_dir, "#{@dataset['Name']}_bowtie2.log")
     }.merge(extract_columns(@inherit_tags))
     if @params['generateBigWig']
        dataset['BigWig [File]'] = File.join(@result_dir, "#{@dataset['Name']}.bw")
     end
     if !@params['secondRef'].empty?
-      dataset['SecondRefCoverage [Link]'] = File.join(@result_dir, "Coverage_#{@dataset['Name']}_secondRef.png")
-      dataset['SecondRefCoverage [File]'] = File.join(@result_dir, "Coverage_#{@dataset['Name']}_secondRef.png")
+      dataset['SecondRefCoverage [File,Link]'] = File.join(@result_dir, "Coverage_#{@dataset['Name']}_secondRef.png")
     end
     if @params['markDuplicates']
-      dataset['DupMetrics [File]'] = File.join(@result_dir, "#{@dataset['Name']}_metrics.txt")
+      dataset['DupMetrics [File,Link]'] = File.join(@result_dir, "#{@dataset['Name']}_metrics.txt")
     end
     dataset
   end
