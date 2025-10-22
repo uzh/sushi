@@ -49,6 +49,8 @@ Single cell report<br/>
     @params['perc_ribo', 'description'] = 'Low quality spots have more than "perc_ribo" percent of ribosomal genes. Only when applying fixed thresholds'
     @params['nmad'] = 3
     @params['nmad', 'description'] = 'Median absolute deviation (MAD) from the median value of each metric across all bins'
+    @params['lambda'] = 0.8
+    @params['lambda', 'description'] = 'BANKSY lambda: spatial weighting parameter (0-1). Larger values (0.8) find spatial domains; smaller values (0.2) perform cell typing.'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.5.0"]
