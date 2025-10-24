@@ -66,8 +66,9 @@ For more information, see: <a href='https://github.com/AntonioDeFalco/SCEVAN'>SC
 
     # ========================================================================
     # REQUIRED DATASET COLUMNS
+    # Accept datasets from EITHER ScSeuratCombine OR ScSeurat apps
     # ========================================================================
-    @required_columns = ['Name', 'SeuratObject', 'Species']
+    @required_columns = [['Name', 'SeuratObject', 'Species'], ['Name', 'SC Seurat', 'Species']]
 
     # ========================================================================
     # REQUIRED PARAMETERS
