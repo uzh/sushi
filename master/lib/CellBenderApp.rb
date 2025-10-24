@@ -21,6 +21,7 @@ CellBender is a software package for eliminating technical artifacts from high-t
     @params['cores'] = '8'
     @params['ram'] = '30'
     @params['scratch'] = '100'
+    @params['gpu'] = '1'
     @params['name'] = 'CellBender'
     @params['gpuMode'] = false
     @params['cmdOptions'] = ''
