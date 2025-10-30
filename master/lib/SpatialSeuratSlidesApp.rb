@@ -19,12 +19,17 @@ class SpatialSeuratSlidesApp < SushiFabric::SushiApp
     @required_params = []
     # optional params
     @params['cores'] = '4'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '50'
+    @params['scratch', "context"] = "slurm"
     @params['node'] = ''
     @params['name'] = 'SpatialSeuratSlides'
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "SpatialSeuratSlides"
     @params['pcGenes'] = ''
     @params['pcGenes', 'description'] = 'The genes used in supvervised clustering'
     @params['npcs'] = '30'

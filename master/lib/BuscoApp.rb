@@ -19,14 +19,20 @@ EOS
     @required_params = ['cores', 'ram', 'scratch', 'mode', 'lineage']
     # optional params
     @params['cores'] = '4'
+    @params['cores', \"context\"] = \"slurm\"
     @params['ram'] = '30'
+    @params['ram', \"context\"] = \"slurm\"
     @params['scratch'] = '50'
+    @params['scratch', \"context\"] = \"slurm\"
     @params['mode'] = ['geno', 'tran',  'prot']
     @params['mode', 'description'] = 'analysis mode: genome, transcriptome, proteins'
+    @params['mode', "context"] = "Busco"
     @params['lineage'] = ''
     @params['lineage', 'description'] = 'the name of the BUSCO lineage dataset to be used, such as bacteria_odb10 or more specifically gammaproteobacteria_odb10. A complete list of available datasets can be found under https://fgcz-gstore.uzh.ch/reference/BUSCO/v5/busco_datasets.txt'
+    @params['lineage', "context"] = "Busco"
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for prokka; do not specify any option that is already covered by the dedicated input fields'
+    @params['cmdOptions', "context"] = "Busco"
     @params['mail'] = ""
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]

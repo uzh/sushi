@@ -20,13 +20,19 @@ BAMboozle: Versatile removal of human sequence variation data for open data shar
     @required_params = ['name', 'refBuild', 'paired']
     # optional params
     @params['cores'] = '8'
+    @params['cores', \"context\"] = \"slurm\"
     @params['ram'] = '30'
+    @params['ram', \"context\"] = \"slurm\"
     @params['scratch'] = '100'
+    @params['scratch', \"context\"] = \"slurm\"
     @params['name'] = 'BamBoozle'
     @params['paired'] = false
+    @params['paired', "context"] = "BamBoozle"
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['cmdOptions'] = '--keepunmapped --strict'
     @params['cmdOptions', 'description'] = 'specify other commandline options for BAMBoozle'
+    @params['cmdOptions', "context"] = "BamBoozle"
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R", "Dev/Python", "Tools/samtools", "Tools/BEDTools"]

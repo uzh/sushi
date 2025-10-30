@@ -18,10 +18,14 @@ EOS
 @required_columns = ['Name', 'Read1']
 @required_params = ['useSubsystemDB']
 @params['cores'] = '8'
+@params['cores', "context"] = "slurm"
 @params['ram'] = '30'
+@params['ram', "context"] = "slurm"
 @params['scratch'] = '50'
+@params['scratch', "context"] = "slurm"
 @params['useSubsystemDB'] = false
 @params['useSubsystemDB', 'description'] = 'Should the metatranscriptome be annotated also against Subsystem? Not supported at the moment.'
+@params['useSubsystemDB', "context"] = "Samsa2"
 @params['mail'] = ""
 @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
 @modules = ["Dev/R", "Dev/jdk"]

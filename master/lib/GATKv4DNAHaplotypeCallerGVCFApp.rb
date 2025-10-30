@@ -17,11 +17,16 @@ Haplotype calling for DNA-seq with > version 4.0 in GVCF mode<br/>
     @required_columns = ['Name', 'BAM', 'refBuild', "Dummy"]
     @required_params = ['name']
     @params['cores'] = '4'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '50'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'GATKv4_gVCF'
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['specialOptions'] = ''
+    @params['specialOptions', "context"] = "GATKv4DNAHaplotypeCallerGVCF"
     @params['mail'] = ""
     @modules = ["Tools/samtools/1.11", "Variants/GATK/4.2.0.0", "Tools/Picard/2.22.8"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]

@@ -19,15 +19,23 @@ CellBender is a software package for eliminating technical artifacts from high-t
     @required_params = ['name']
     # optional params
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['gpu'] = '1'
+    @params['gpu', "context"] = "CellBender"
     @params['name'] = 'CellBender'
     @params['gpuMode'] = false
+    @params['gpuMode', "context"] = "CellBender"
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for CellBender'
+    @params['cmdOptions', "context"] = "CellBender"
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "CellBender"
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]

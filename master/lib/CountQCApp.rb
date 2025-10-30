@@ -19,12 +19,18 @@ Quality control after counting reads<br/>
     @required_params = []
     # optional params
     @params['cores'] = ['1', '2']
+    @params['cores', "context"] = "slurm"
     @params['ram'] = ['8', '12', '50']
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = ['10', '20']
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'Count_QC'
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "CountQC"
     @params['featureLevel'] = ['gene', 'isoform']
+    @params['featureLevel', "context"] = "CountQC"
     @params['normMethod'] = 'logMean'
     @params['runGO'] = ['true', 'false']
     @params['backgroundExpression'] = 10

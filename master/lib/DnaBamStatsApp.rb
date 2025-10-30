@@ -19,10 +19,15 @@ EOS
     @required_columns = ['Name','BAM']
     @required_params = ['cores','ram','refBuild','sortedBam']
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['sortedBam'] = true
+    @params['sortedBam', "context"] = "DnaBamStats"
     @modules = ["Dev/R", "Tools/Picard", "QC/Qualimap", "QC/SAMStat", "Tools/samtools", "Dev/jdk/8"]
   end
   def next_dataset

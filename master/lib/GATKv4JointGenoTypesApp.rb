@@ -17,10 +17,14 @@ genotype,merge and annotate gvcf-Files<br/>
     @required_columns = ['Name', 'GVCF', 'GVCFINDEX', 'Species', 'refBuild', 'Dummy']
     @required_params = ['name']
     @params['cores'] = '1'
+    @params['cores', \"context\"] = \"slurm\"
     @params['ram'] = '50'
+    @params['ram', \"context\"] = \"slurm\"
     @params['scratch'] = '100'
+    @params['scratch', \"context\"] = \"slurm\"
     @params['name'] = 'GATKv4_Genotyping'
     @params['refBuild'] = ref_selector
+    @params['refBuild', \"context\"] = \"referfence genome assembly\"
     @params['only_SNP'] = true
     @params['QD'] = '2.0'
     @params['MQ'] = '30.0'
@@ -29,6 +33,7 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['maxDP'] = '10000'
     @params['MQRankSum'] = '-15.0'
     @params['specialOptions'] = ''
+    @params['specialOptions', "context"] = "GATKv4JointGenoTypes"
     @modules = ["Variants/GATK/4.2.0.0", "Tools/Picard/2.18.0"]
     @inherit_columns = ["Order Id"]
   end

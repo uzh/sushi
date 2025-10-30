@@ -18,11 +18,16 @@ EOS
     @required_columns = ['Name','RawDataDir', 'Read Count']
     @required_params = ['name', 'paired']
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '300'
+    @params['scratch', "context"] = "slurm"
     @params['paired'] = true
+    @params['paired', "context"] = "Fastqc10x"
     @params['name'] = 'FastQC_Result'
     @params['cmdOptions'] = ""
+    @params['cmdOptions', "context"] = "Fastqc10x"
     @params['mail'] = ""
     @modules = ["QC/FastQC", "Tools/Picard", "Tools/samtools", "Dev/Python"]
     @inherit_columns = ["Order Id"]

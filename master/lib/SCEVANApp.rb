@@ -80,12 +80,15 @@ For more information, see: <a href='https://github.com/AntonioDeFalco/SCEVAN'>SC
     # ========================================================================
     # Number of CPU cores (SCEVAN benefits from high parallelization)
     @params['cores'] = '48'
+    @params['cores', "context"] = "slurm"
 
     # RAM in GB (SCEVAN requires >500 GB for typical datasets)
     @params['ram'] = ['500', '600', '800']
+    @params['ram', "context"] = "slurm"
 
     # Scratch space in GB
     @params['scratch'] = '200'
+    @params['scratch', "context"] = "slurm"
 
     # ========================================================================
     # OUTPUT NAME

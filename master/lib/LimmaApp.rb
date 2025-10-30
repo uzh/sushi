@@ -20,11 +20,17 @@ class LimmaApp < SushiFabric::SushiApp
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
     # optional params
     @params['cores'] = '1'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '2'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '10'
+    @params['scratch', "context"] = "slurm"
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "Limma"
     @params['featureLevel'] = ['gene', 'isoform']
+    @params['featureLevel', "context"] = "Limma"
     @params['modelMethod'] = ['limma-trend', 'voom']
     @params['modelMethod', 'description'] = 'Which model method to use'
     @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'

@@ -17,10 +17,14 @@ MultiSample Quality control after SpaceRanger<br/>
     @required_columns = ['Name','Report','Slide']
     @required_params = ['name']
     @params['cores'] = '1'
+    @params['cores', \"context\"] = \"slurm\"
     @params['ram'] = '30'
+    @params['ram', \"context\"] = \"slurm\"
     @params['scratch'] = '100'
+    @params['scratch', \"context\"] = \"slurm\"
     @params['name'] = 'VisiumQC'
     @params['sizeFactors'] = '1,3,5,10,20,30'
+    @params['sizeFactors', "context"] = "VisiumQC"
     @params['mail'] = ""
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric"]

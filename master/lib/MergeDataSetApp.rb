@@ -22,6 +22,7 @@ Note
     EOS
     @analysis_category = 'Polyploid'
     @params['DataSet'] = []
+    @params['DataSet', "context"] = "MergeDataSet"
     @required_columns = ['Name', 'BAM', 'refBuild', 'Species']
     @required_params = ['DataSet']
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]

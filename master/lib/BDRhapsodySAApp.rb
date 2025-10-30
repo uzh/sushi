@@ -17,14 +17,20 @@ class BDRhapsodySAApp < SushiFabric::SushiApp
     @required_params = ['name']
     @params['cores'] = ['16', '32', '48', '60']
     @params['cores', 'description'] = "Note: Set a very high thread count for runs containing VDJ assays"
+    @params['cores', "context"] = "slurm"
     @params['ram'] = ['240', '480', '720', '960']
     @params['ram', 'description'] = "If `generateBamOutput=true`, you may need to set a high amount of RAM"
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = ['200', '500', '900', '1300']
     @params['scratch', 'description'] = "If `generateBamOutput=true`, you may need to set a high amount of scratch space."
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'BDRhapsodySA'
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "BDRhapsodySA"
     @params['featureLevel'] = 'gene'
+    @params['featureLevel', "context"] = "BDRhapsodySA"
     @params['abSeqReference'] = ''
     @params['abSeqReference', 'file_upload'] = true
     @params['abSeqReference', 'description'] = 'FASTA AbSeq reference file generated from https://abseq-ref-gen.genomics.bd.com/'

@@ -19,11 +19,16 @@ Single cell report<br/>
     @required_params = ['name']
     # optional params
     @params['cores'] = '4'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '100'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '50'
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'Visium_HD'
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "SpatialSeuratHD"
     @params['binSize'] = 16
     @params['binSize','description'] = 'Standard binSizes are 8 and 16. Other binSize are only available if the parameter --custom-bin-size was used in SpaceRanger'
     @params['DE.method'] = ['wilcox', 'LR']

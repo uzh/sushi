@@ -19,11 +19,17 @@ EOS
     @required_columns = ['Name','COV']
     @required_params = ['grouping', 'sampleGroup', 'refGroup', 'refBuild']
     @params['cores'] = '4'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '80'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['paired'] = true
+    @params['paired', "context"] = "DiffMethylation"
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "DiffMethylation"
     @params['grouping'] = ''
     @params['sampleGroup'] = ''
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'

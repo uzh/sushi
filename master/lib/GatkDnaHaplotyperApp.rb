@@ -17,10 +17,14 @@ Haplotype calling for DNA-seq<br/>
     @required_columns = ['Name','BAM','BAI', 'refBuild']
     @required_params = ['name']
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '50'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'GATK_DnaVariants'
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['targetFile'] = {'select'=>''}
     if defined?(TARGET_ENRICHMENT_DESIGN_DIR)
       Dir["#{TARGET_ENRICHMENT_DESIGN_DIR}/*.bed"].sort.select{|bed| File.file?(bed)}.each do |file|

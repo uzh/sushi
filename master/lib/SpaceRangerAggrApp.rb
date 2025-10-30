@@ -17,10 +17,14 @@ EOS
     @required_columns = ['Name','CountMatrix']
     @required_params = ['name']
     @params['cores'] = '1'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = ['7', '15']
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = ['100', '150']
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'SpaceRangerAggr_Result'
     @params['normalize'] = ['mapped', 'none']
+    @params['normalize', "context"] = "SpaceRangerAggr"
     @params['mail'] = ""
     @modules = ["Dev/R", "Aligner/SpaceRanger"]
     @inherit_columns = ["Order Id"]

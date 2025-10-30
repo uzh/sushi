@@ -25,9 +25,13 @@ Merging fastq files from two illumina runs by name <br /><br />
     
     # optional params
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '10'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '200'
+    @params['scratch', "context"] = "slurm"
     @params['paired'] = false
+    @params['paired', "context"] = "MergeRunDataLegacy"
     @params['mail'] = ''
     
     @modules = ["Dev/R", "Dev/Python"]

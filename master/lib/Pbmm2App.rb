@@ -19,13 +19,19 @@ EOS
     @required_params = ['refBuild','ReadOpt']
     # optional params
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['refBuild'] = ref_selector
     @params['refBuild', 'description'] = 'the genome refBuild and annotation to use as reference.'
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['ReadOpt'] = 'HIFI'
     @params['ReadOpt', 'description'] = 'input read types: SUBREAD, CCS, HIFI, ISOSEQ, UNROLLED. Default is HIFI'
+    @params['ReadOpt', "context"] = "Pbmm2"
     @params['cmdOptions'] = ""
+    @params['cmdOptions', "context"] = "Pbmm2"
     @params['mail'] = ""
     @modules = ["Tools/samtools"]
     @inherit_tags = ["Factor", "B-Fabric"]

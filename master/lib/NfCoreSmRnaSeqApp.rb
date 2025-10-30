@@ -19,16 +19,23 @@ EOS
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
     @required_params = ['referenceGenome','mirtraceSpecies','pipelineVersion']
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '200'
+    @params['scratch', "context"] = "slurm"
     @params['referenceGenome'] = 'hg38'
     @params['referenceGenome', 'description'] = 'all supported genomes are listed under https://github.com/nf-core/rnaseq/blob/e049f51f0214b2aef7624b9dd496a404a7c34d14/conf/igenomes.config'
+    @params['referenceGenome', "context"] = "NfCoreSmRnaSeq"
     @params['mirtraceSpecies'] = 'hsa'
     @params['mirtraceSpecies', 'description'] = 'It should point to the 3-letter species name used by miRBase'
+    @params['mirtraceSpecies', "context"] = "NfCoreSmRnaSeq"
     @params['name'] = 'NfCoreSmRnaSeq'
     @params['pipelineVersion'] = '2.4.0'
     @params['pipelineVersion', 'description'] = 'specify pipeline version of nf-core pipeline'
+    @params['pipelineVersion', "context"] = "NfCoreSmRnaSeq"
     @params['cmdOptions'] = ""
+    @params['cmdOptions', "context"] = "NfCoreSmRnaSeq"
     @params['mail'] = ""
     @modules = ["Dev/jdk"]
   end

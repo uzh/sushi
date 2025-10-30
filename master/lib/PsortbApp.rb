@@ -19,12 +19,17 @@ EOS
     @required_params = ['cores', 'ram', 'scratch']
     # optional params
     @params['cores'] = '4'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '50'
+    @params['scratch', "context"] = "slurm"
     @params['org'] = ['--negative', '--positive', '--archea']
     @params['org', 'description'] = 'type of organism: gram negative/ gram positive bacteria or archea'
+    @params['org', "context"] = "Psortb"
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options; do not specify any option that is already covered by the dedicated input fields'
+    @params['cmdOptions', "context"] = "Psortb"
     @params['mail'] = ""
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]

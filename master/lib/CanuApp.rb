@@ -20,14 +20,20 @@ EOS
     @required_params = ['canuReadOpt', 'canuGenomeSize']
     # optional params
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '400'
+    @params['scratch', "context"] = "slurm"
     @params['canuReadOpt'] = '-pacbio-raw'
     @params['canuReadOpt', 'description'] = 'input read types: -pacbio-raw, -pacbio-corrected, -nanopore-raw, -nanopore-corrected. Default is pacbio raw data'
+    @params['canuReadOpt', "context"] = "Canu"
     @params['canuGenomeSize'] = '5000'
     @params['canuGenomeSize', 'description'] = 'estimated genome size in Kbp'
+    @params['canuGenomeSize', "context"] = "Canu"
     @params['cmdOptions'] = 'useGrid=false'
     @params['cmdOptions', 'description'] = 'specify other commandline options for Canu; do not specify any option that is already covered by the dedicated input fields'
+    @params['cmdOptions', "context"] = "Canu"
     @params['mail'] = ""
     @modules = ["Assembly/Canu", "Dev/R", "Dev/jdk"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]

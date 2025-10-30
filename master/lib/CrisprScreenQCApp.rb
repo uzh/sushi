@@ -17,14 +17,22 @@ EOS
     @required_columns = ['Name','Read1']
     @required_params = ['name', 'paired']
     @params['cores'] = '1'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '20'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['paired'] = false
+    @params['paired', "context"] = "CrisprScreenQC"
     @params['name'] = 'CrisprScreenQC_Result'
     @params['libPath'] = '/srv/GT/databases/GEML/sgRNA_Libs'
+    @params['libPath', "context"] = "CrisprScreenQC"
     @params['nReads'] = '100000'
+    @params['nReads', "context"] = "CrisprScreenQC"
     @params['topFeatures'] = '10'
+    @params['topFeatures', "context"] = "CrisprScreenQC"
     @params['cmdOptions'] = ""
+    @params['cmdOptions', "context"] = "CrisprScreenQC"
     
     # general
     # @params['trimAdapter', 'hr'] = true

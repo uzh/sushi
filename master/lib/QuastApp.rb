@@ -19,14 +19,20 @@ EOS
     @required_params = ['cores', 'ram', 'scratch']
     # optional params
     @params['cores'] = '4'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '50'
+    @params['scratch', "context"] = "slurm"
     @params['refGenome'] = ''
     @params['refGenome', 'description'] = 'full path to a reference genome as a multi-fasta file'
+    @params['refGenome', "context"] = "Quast"
     @params['refGene'] = ''
     @params['refGene', 'description'] = 'full path to a gene annotation file of the reference genome. Must be in gff or bed format'
+    @params['refGene', "context"] = "Quast"
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for QUAST; do not specify any option that is already covered by the dedicated input fields'
+    @params['cmdOptions', "context"] = "Quast"
     @params['mail'] = ""
     @modules = ["QC/QUAST", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]

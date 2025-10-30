@@ -20,9 +20,13 @@ EOS
     @required_columns = ['Name','BAM']
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
     @params['cores'] = '4'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '15'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['paired'] = true
+    @params['paired', "context"] = "HomerDiffPeaks"
     @params['grouping'] = ''
     @params['sampleGroup'] = ''
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
@@ -41,6 +45,7 @@ EOS
     @params['style', 'description'] = 'Style of peaks found by findPeaks during features selection'
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'to define batches in the analysis to perform paired test, e.g., -batch 1 2 1 2'
+    @params['cmdOptions', "context"] = "HomerDiffPeaks"
     @params['mail'] = ""
     @modules = ["Dev/R", "Tools/HOMER", "Tools/samtools", "Tools/BEDTools"]
     @inherit_columns = ["Order Id"]

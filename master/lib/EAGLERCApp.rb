@@ -21,8 +21,11 @@ EAGLE: Explicit Alternative Genome Likelihood Evaluator <br />
     @required_params = []
     # optional params
     @params['cores'] = '1'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '100'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @inactivate_nodes = ["fgcz-c-048", "fgcz-c-045", "fgcz-c-046"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
     @modules = ["Tools/EAGLE/1.1.3"]

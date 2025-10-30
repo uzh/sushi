@@ -22,9 +22,13 @@ EOS
     # parameters
     ## general
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['refBuild'] = ['Homo_sapiens/UCSC/hg38', 'Mus_musculus/UCSC/mm10']  ## this param substitutes exceRpt_smallRNA's vaibale: "MAIN_ORGANISM_GENOME_ID"
+    @params['refBuild', "context"] = "referfence genome assembly"
 
     ## tunable parameters exceRpt_smallRNA
     @params['ENDOGENOUS_LIB_PRIORITY'] = 'miRNA,tRNA,piRNA,gencode,circRNA'

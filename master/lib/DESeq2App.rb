@@ -20,11 +20,17 @@ class DESeq2App < SushiFabric::SushiApp
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
     # optional params
     @params['cores'] = ['4', '2']
+    @params['cores', "context"] = "slurm"
     @params['ram'] = ['12', '8']
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = ['10', '20']
+    @params['scratch', "context"] = "slurm"
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "DESeq2"
     @params['featureLevel'] = ['gene', 'isoform']
+    @params['featureLevel', "context"] = "DESeq2"
     @params['grouping'] = ''
     @params['sampleGroup'] = ''
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'

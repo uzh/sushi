@@ -27,7 +27,9 @@ Note
     @params['FirstDataSet'] = ''
     @params['SecondDataSet'] = ''
     @params['matchingColumn'] = ['Name', 'Tube', 'Sample Id']
+    @params['matchingColumn', "context"] = "MergeRunDataSets"
     @params['paired'] = false
+    @params['paired', "context"] = "MergeRunDataSets"
     @required_columns = ['Name', 'Species', 'Read1']
     @required_params = ['SecondDataSet']
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]

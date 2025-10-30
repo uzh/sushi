@@ -19,9 +19,13 @@ EOS
     @required_columns = ['Name','Read1']
     @required_params = ['cores']
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['cmdOptions'] = ""
+    @params['cmdOptions', "context"] = "NanoPlot"
     @params['mail'] = ""
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric"]

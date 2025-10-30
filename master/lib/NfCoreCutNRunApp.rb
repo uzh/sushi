@@ -18,11 +18,17 @@ EOS
     @required_columns = ['Name','Read1','Read2','Species']
     @required_params = ['refBuild', 'peakStyle', 'grouping', 'controlColumn', 'normalization', 'spikeinGenome']
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '100'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '200'
+    @params['scratch', "context"] = "slurm"
     @params['paired'] = true
+    @params['paired', "context"] = "NfCoreCutNRun"
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "NfCoreCutNRun"
     @params['peakStyle'] = ['broad', 'narrow']
     @params['peakCaller'] = ['macs2', 'seacr']
     @params['spikeinGenome'] = ['K12-MG1655', 'R64-1-1', 'BDGP6']

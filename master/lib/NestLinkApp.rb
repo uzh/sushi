@@ -16,10 +16,15 @@ NestLink - an R data package to guide through Engineered Peptide Barcodes for In
     @required_columns = ['Name','Read1', 'FlashLog']
     @required_params = ['NB_Linker1', 'NB_Linker2', 'ProteaseSite','FC_Linker','knownNBPath']
     @params['cores'] = '1'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '40'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '30'
+    @params['scratch', "context"] = "slurm"
     @params['nReads'] = '0'
+    @params['nReads', "context"] = "NestLink"
     @params['maxMismatch'] = '1'
+    @params['maxMismatch', "context"] = "NestLink"
     @params['NB_Linker1'] = "GGCCggcggGGCC"
     @params['NB_Linker2'] = "GCAGGAGGA"
     @params['ProteaseSite'] = "TTAGTCCCAAGA"

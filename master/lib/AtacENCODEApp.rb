@@ -21,12 +21,18 @@ EOS
     @required_columns = ['Name','Read1','Read2','Species']
     @required_params = ['name', 'paired']
     @params['cores'] = '16'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '40'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '200'
+    @params['scratch', "context"] = "slurm"
     @params['paired'] = true
+    @params['paired', "context"] = "AtacENCODE"
     @params['nReads'] = 25000000
+    @params['nReads', "context"] = "AtacENCODE"
     @params['name'] = 'AtacENCODE'
     @params['cmdOptions'] = ""
+    @params['cmdOptions', "context"] = "AtacENCODE"
     @params['mail'] = ""
     @modules = ["Dev/jdk"]
   end

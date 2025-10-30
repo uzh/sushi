@@ -18,10 +18,14 @@ genotype,merge and annotate gvcf-Files<br/>
     @required_columns = ['Name', 'GVCF', 'GVCFINDEX', 'Species', 'refBuild', 'Dummy']
     @required_params = ['name']
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '500'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '800'
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'GATKJointGenotyping'
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
 
     @params['ConcGCThreads', 'hr-header'] = "JavaVM options"
     @params['ConcGCThreads'] = '1'

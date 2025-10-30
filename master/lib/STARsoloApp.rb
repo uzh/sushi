@@ -17,12 +17,18 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
     @required_columns = ['Name','RawDataDir','Species']
     @required_params = ['name', 'refBuild']
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '60'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '300'
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'STARsolo'
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "STARsolo"
     @params['featureLevel'] = 'gene'
+    @params['featureLevel', "context"] = "STARsolo"
 
     ## STARsolo parameters
     @params['soloType'] = ['CB_UMI_Simple','CB_UMI_Complex']
@@ -50,6 +56,7 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
     
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'Specify the commandline options for CellRanger; do not specify any option that is already covered by the dedicated input fields'
+    @params['cmdOptions', "context"] = "STARsolo"
     @params['specialOptions'] = ''
     @params['mail'] = ""
     

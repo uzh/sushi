@@ -19,10 +19,14 @@ EOS
     @required_columns = ['Name', 'Read1']
     @required_params = ['paired','trim_left','truncate_len','sampling_depth','max_rarefaction_depth','min_freq','min_samples','group']
     @params['cores'] = '2'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '10'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '10'
+    @params['scratch', "context"] = "slurm"
     @params['paired'] = false
     @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
+    @params['paired', "context"] = "QIIME2"
     @params['trim_left'] = '0'
     @params['trim_left', 'description'] = 'Position at which sequences should be trimmed due to low quality. Default:0, assuming good quality reads.'
     @params['truncate_len'] = '150'

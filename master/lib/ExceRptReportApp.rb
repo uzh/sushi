@@ -19,8 +19,11 @@ EOS
     @required_params = ['name']
     
     @params['cores'] = '1'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '2'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '10'
+    @params['scratch', "context"] = "slurm"
     @params['name'] = "Excerpt_Report"
     
     @params['mail'] = ""

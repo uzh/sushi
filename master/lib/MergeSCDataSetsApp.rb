@@ -16,7 +16,9 @@ Assuming that all other columns than file path are same between datasets.<br />
     EOS
     @analysis_category = 'SingleCell'
     @params['FirstDataSet'] = ''
+    @params['FirstDataSet', "context"] = "MergeSCDataSets"
     @params['SecondDataSet'] = ''
+    @params['SecondDataSet', "context"] = "MergeSCDataSets"
     @required_columns = ['Name', 'Species', 'RawDataDir']
     @required_params = ['SecondDataSet']
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]

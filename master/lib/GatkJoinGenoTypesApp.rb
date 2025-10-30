@@ -17,11 +17,16 @@ genotype,merge and annotate gvcf-Files<br/>
     @required_columns = ['Name','GVCF','GVCFINDEX','Species','refBuild']
     @required_params = ['name','grouping']
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '50'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'GATK_Genotyping'
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['grouping'] = ''
+    @params['grouping', "context"] = "GatkJoinGenoTypes"
     @params['targetFile'] = ''
     @params['recalibrateVariants']=true
     @params['recalibrateVariants', 'description'] = "perform Variant Quality Score Recalibration (VQSR)"

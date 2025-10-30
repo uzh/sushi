@@ -16,9 +16,13 @@ filtering out SNPs by the VCF coming from reference accession<br/>
     @required_columns = ['Name', 'Raw VCF', 'Filtered VCF', 'Species', 'refBuild']
     @required_params = []
     @params['cores'] = '1'
+    @params['cores', \"context\"] = \"slurm\"
     @params['ram'] = '50'
+    @params['ram', \"context\"] = \"slurm\"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['DataSet'] = []
+    @params['DataSet', "context"] = "GATKv4FilteringSNPsByReferenceVCF"
     @modules = ["Dev/Ruby/3.1.3"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end

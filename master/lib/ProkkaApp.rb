@@ -19,12 +19,17 @@ EOS
     @required_params = ['cores', 'ram', 'scratch', 'kingdom']
     # optional params
     @params['cores'] = '4'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '50'
+    @params['scratch', "context"] = "slurm"
     @params['kingdom'] = ['Bacteria', 'Archaea',  'Mitochondria', 'Viruses']
     @params['kingdom', 'description'] = 'annotation mode and genetic code'
+    @params['kingdom', "context"] = "Prokka"
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for prokka; do not specify any option that is already covered by the dedicated input fields'
+    @params['cmdOptions', "context"] = "Prokka"
     @params['mail'] = ""
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]

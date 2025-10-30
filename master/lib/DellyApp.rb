@@ -19,15 +19,22 @@ EOS
     @required_params = ['refBuild','ReadOpt']
     # optional params
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['refBuild'] = ref_selector
     @params['refBuild', 'description'] = 'the genome refBuild and annotation to use as reference.'
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['ReadOpt'] = 'sr'
     @params['ReadOpt', 'description'] = 'input read types: sr, pb, ont. Default is sr'
+    @params['ReadOpt', "context"] = "Delly"
     @params['types'] = 'ALL'
     @params['types', 'description'] = 'SV types to call: DEL, INS, DUP, INV, BND, ALL. Default is ALL'
+    @params['types', "context"] = "Delly"
     @params['cmdOptions'] = ""
+    @params['cmdOptions', "context"] = "Delly"
     @params['mail'] = ""
     @modules = ["Variants/SURVIVOR", "Dev/R"]
   end

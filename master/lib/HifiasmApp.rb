@@ -20,14 +20,20 @@ EOS
     @required_params = ['inputType']
     # optional params
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '400'
+    @params['scratch', "context"] = "slurm"
     @params['inputType'] = ["HiFi", "ONT"]
     @params['inputType', 'description'] = 'PacBio HiFi reads or Oxford Nanopore reads'
+    @params['inputType', "context"] = "Hifiasm"
     @params['ploidy'] = '2'
     @params['ploidy', 'description'] = 'number of haplotypes'
+    @params['ploidy', "context"] = "Hifiasm"
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for hifiasm; do not specify any option that is already covered by the dedicated input fields'
+    @params['cmdOptions', "context"] = "Hifiasm"
     @params['mail'] = ""
     @modules = ["Assembly/hifiasm", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]

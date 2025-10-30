@@ -20,14 +20,20 @@ class MageckTestApp < SushiFabric::SushiApp
     @required_params = ['species','libName','sampleGroup','refGroup']
     # optional params
     @params['cores'] = ['1']
+    @params['cores', "context"] = "slurm"
     @params['ram'] = ['8']
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = ['10']
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'MAGeCK_Test'
     @params['species'] = ['hsa', 'mmu']
+    @params['species', "context"] = "MageckTest"
     @params['libName'] = ''
+    @params['libName', "context"] = "MageckTest"
     @params['specialOptions'] = ''
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for MAGeCK_Test; do not specify any option that is already covered by the dedicated input fields'
+    @params['cmdOptions', "context"] = "MageckTest"
     @params['grouping'] = ''
     @params['sampleGroup'] = ''
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'

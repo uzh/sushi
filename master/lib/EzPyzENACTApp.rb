@@ -22,16 +22,22 @@ class EzPyzENACTApp <  SushiFabric::SushiApp
     @required_columns = ['Name','BinnedOutputs2um','SourceImage']
     @required_params = ['name']
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'ENACTApp'
     @params['mail'] = ''    
     @params['segmentation'] = true
     @params['segmentation', 'description'] = 'Run the segmentation step'
+    @params['segmentation', "context"] = "EzPyzENACT"
     @params['bin_to_geodataframes'] = true
     @params['bin_to_geodataframes', 'description'] = 'Run the bin_to_geodataframes step'
+    @params['bin_to_geodataframes', "context"] = "EzPyzENACT"
     @params['bin_to_cell_assignment'] = true
     @params['bin_to_cell_assignment', 'description'] = 'Run the bin_to_cell_assignment step'
+    @params['bin_to_cell_assignment', "context"] = "EzPyzENACT"
     @params['cell_type_annotation'] = true
     @params['cell_type_annotation', 'description'] = 'Run the cell_type_annotation step'
 

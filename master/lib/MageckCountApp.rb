@@ -23,8 +23,11 @@ EOS
     @required_params = ['libName']
     # optional params
     @params['cores'] = '1'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
 
     @params['name'] = 'MAGeCK_CountResult'
     @params['libName'] = ''

@@ -19,8 +19,11 @@ Each region is treated as a separate sample in the report.
     @required_columns = ['Name','XeniumPath']
     @required_params = ['name']
     @params['cores'] = '1'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'XeniumQC'
     @params['mail'] = ""
     @modules = ["Dev/R"]

@@ -20,11 +20,17 @@ class EdgeRApp < SushiFabric::SushiApp
     @required_params = ['grouping', 'sampleGroup', 'refGroup']
     # optional params
     @params['cores'] = ['4', '2']
+    @params['cores', "context"] = "slurm"
     @params['ram'] = ['16', '12', '8']
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = ['10', '20']
+    @params['scratch', "context"] = "slurm"
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "EdgeR"
     @params['featureLevel'] = ['gene', 'isoform']
+    @params['featureLevel', "context"] = "EdgeR"
     @params['testMethod'] = ['glm', 'exactTest']
     @params['deTest'] = ['QL', 'LR']
     @params['deTest', 'description'] = 'This option only works for glm method. Quasi-likelihood (QL) F-test or likelihood ratio (LR) test. LR is prefered for single-cell data.'

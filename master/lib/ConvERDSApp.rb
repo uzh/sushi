@@ -18,10 +18,15 @@ This converts the result DataSet of EAGLERCApp to an input DataSet of DNAHaploty
     @required_params = ['parent', 'type']
     # optional params
     @params['cores'] = '1'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '10'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '10'
+    @params['scratch', "context"] = "slurm"
     @params['parent'] = ['1', '2']
+    @params['parent', "context"] = "ConvERDSApp"
     @params['type'] = ['ref', 'alt', 'unk']
+    @params['type', "context"] = "ConvERDSApp"
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess

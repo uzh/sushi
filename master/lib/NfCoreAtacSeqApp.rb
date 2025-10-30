@@ -19,11 +19,17 @@ EOS
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
     @required_params = ['refBuild', 'peakStyle', 'grouping']
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '100'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '200'
+    @params['scratch', "context"] = "slurm"
     @params['paired'] = true
+    @params['paired', "context"] = "NfCoreAtacSeq"
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "NfCoreAtacSeq"
     @params['peakStyle'] = ['broad', 'narrow']
     @params['varStabilizationMethod'] = ['vst', 'rlogTransf']
     @params['grouping'] = ''
@@ -36,6 +42,7 @@ EOS
     @params['pipelineVersion'] = '2.1.2'
     @params['pipelineVersion', 'description'] = 'specify pipeline version of nf-core pipeline'
     @params['cmdOptions'] = ""
+    @params['cmdOptions', "context"] = "NfCoreAtacSeq"
     @params['mail'] = ""
     @modules = ["Dev/jdk"]
   end

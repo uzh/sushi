@@ -20,14 +20,19 @@ EOS
     @required_params = ['paired']
     # optional params
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
 
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify the commandline options for flash; do not specify any option that is already covered by the dedicated input fields'
+    @params['cmdOptions', "context"] = "Flash"
         # general
     @params['trimAdapter', 'hr'] = true
     @params['trimAdapter'] = true
+    @params['trimAdapter', "context"] = "OpenGene/fastp"
     # Fastp
     ## trimming
     @params['trim_front1'] = '0'

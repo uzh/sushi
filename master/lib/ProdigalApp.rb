@@ -19,14 +19,20 @@ EOS
     @required_params = ['cores', 'ram', 'scratch']
     # optional params
     @params['cores'] = '4'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '50'
+    @params['scratch', "context"] = "slurm"
     @params['translation_table'] = ['11', '5', '2']
     @params['translation_table', 'description'] = 'translation table to use (default 11)'
+    @params['translation_table', "context"] = "Prodigal"
     @params['format'] = ['gbk', 'gff', 'sco']
     @params['format', 'description'] = 'Select output format (gbk, gff, or sco).  Default is gbk.'
+    @params['format', "context"] = "Prodigal"
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for prokka; do not specify any option that is already covered by the dedicated input fields'
+    @params['cmdOptions', "context"] = "Prodigal"
     @params['mail'] = ""
     @modules = ["Dev/R","Tools/Prodigal"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]

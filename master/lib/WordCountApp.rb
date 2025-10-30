@@ -14,9 +14,13 @@ class WordCountApp < SushiFabric::SushiApp
     @description = "test applicaiton #{GlobalVariables::SUSHI}"
     @analysis_category = 'Stats'
     @params['cores'] = '1'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '10'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '10'
+    @params['scratch', "context"] = "slurm"
     @params['grouping'] = '' ### TODO: this should be filled by a column selector that allows to select a column with the tag 'Factor'
+    @params['grouping', "context"] = "WordCount"
     @params['sampleGroup'] = '' ## TODO: this should be a value from the selected column
     @params['refGroup'] = '' ## TODO: this should be a value from the selected column
     @params['count_option'] = ['', '-c', '-l', '-m', '-w']

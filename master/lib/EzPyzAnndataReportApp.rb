@@ -19,8 +19,11 @@ class EzPyzAnndataReportApp <  SushiFabric::SushiApp
     @required_columns = ['Name','Anndata']
     @required_params = ['name']
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'AnndataReportApp'
     @params['mail'] = ""
     @modules = []

@@ -19,14 +19,22 @@ Single cell report<br/>
     @required_params = ['name']
     # optional params
     @params['cores'] = '4'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '50'
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'SCFeatBarcoding'
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['paired'] = false
+    @params['paired', "context"] = "SCFeatBarcoding"
     @params['strandMode'] = ['both', 'sense', 'antisense']
+    @params['strandMode', "context"] = "SCFeatBarcoding"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "SCFeatBarcoding"
     @params['featureLevel'] = ['gene', 'isoform']
+    @params['featureLevel', "context"] = "SCFeatBarcoding"
     @params['transcriptTypes'] = ''
     @params['transcriptTypes', 'multi_selection'] = true
     @params['transcriptTypes', 'selected'] = 0

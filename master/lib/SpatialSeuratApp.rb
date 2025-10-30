@@ -19,11 +19,16 @@ Single cell report<br/>
     @required_params = ['name']
     # optional params
     @params['cores'] = '4'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '20'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '50'
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'SpatialSeurat'
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "SpatialSeurat"
     @params['spotClean'] = false
     @params['spotClean', 'description'] = "run R Package spotClean on the raw count output of SpaceRanger instead of using the filtered output of SpaceRanger"
     @params['SCT.regress.CellCycle'] = false

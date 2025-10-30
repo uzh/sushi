@@ -17,10 +17,14 @@ class EzPyzExampleApp <  SushiFabric::SushiApp
     @required_columns = ['Name','ResultDir','IsTest']
     @required_params = ['name']
     @params['cores'] = '1'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'EzPyzExampleApp'
     @params['sizeFactors'] = '1,3,5,10,20,30'
+    @params['sizeFactors', "context"] = "EzPyzExampleApp"
     @params['mail'] = ""
     @modules = []
     @inherit_tags = ["Factor", "B-Fabric"]

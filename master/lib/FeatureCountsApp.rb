@@ -20,13 +20,21 @@ EOS
     @required_params = ['refBuild','paired', 'strandMode']
     # optional params
     @params['cores'] = '8'
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '20'
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '10'
+    @params['scratch', "context"] = "slurm"
     @params['refBuild'] = ref_selector
+    @params['refBuild', "context"] = "referfence genome assembly"
     @params['paired'] = false
+    @params['paired', "context"] = "FeatureCounts"
     @params['strandMode'] = ['both', 'sense', 'antisense']
+    @params['strandMode', "context"] = "FeatureCounts"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "FeatureCounts"
     @params['featureLevel'] = 'gene'
+    @params['featureLevel', "context"] = "FeatureCounts"
     @params['gtfFeatureType'] = 'exon'
     @params['gtfFeatureType', 'description'] = "which atomic features of the gtf should be used to define the meta-features; see featureLevel"
     @params['allowMultiOverlap'] = true
