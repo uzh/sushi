@@ -35,6 +35,8 @@ EOS
     @params['keepBams'] = false
     @params['keepBams', 'description'] = 'delete BAM and BAI files from alignment folder'
     @params['name'] = 'NfCoreCutAndRun'
+    @params['pipelineVersion'] = '3.2.2'
+    @params['pipelineVersion', 'description'] = 'specify pipeline version of nf-core pipeline'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
     @modules = ["Dev/jdk", "Tools/BEDTools"]
