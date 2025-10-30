@@ -33,6 +33,8 @@ EOS
     @params['keepBams'] = false
     @params['keepBams', 'description'] = 'delete BAM and BAI files from the result folder'
     @params['name'] = 'NfCoreAtacSeq'
+    @params['pipelineVersion'] = '2.1.2'
+    @params['pipelineVersion', 'description'] = 'specify pipeline version of nf-core pipeline'
     @params['cmdOptions'] = ""
     @params['mail'] = ""
     @modules = ["Dev/jdk"]
