@@ -94,7 +94,7 @@ SushiFabric::Application.configure do
   end
 
   # System Maintenance Announcement Settings
-  config.maintenance_announcement_enabled = true  # set to true to display the announcement banner
+  config.maintenance_announcement_enabled = false  # set to true to display the announcement banner
   config.maintenance_announcement_type = 'warning'  # 'info', 'warning', 'danger'
   config.maintenance_announcement_message = <<-MESSAGE
     <strong>Scheduled Maintenance Notice</strong><br>
