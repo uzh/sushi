@@ -25,7 +25,7 @@ EOS
     @params['referenceGenome', 'description'] = 'all supported genomes are listed under https://github.com/nf-core/rnaseq/blob/e049f51f0214b2aef7624b9dd496a404a7c34d14/conf/igenomes.config'
     @params['mirtraceSpecies'] = 'hsa'
     @params['mirtraceSpecies', 'description'] = 'It should point to the 3-letter species name used by miRBase'
-    @params['name'] = 'NfCoreAtacSeq'
+    @params['name'] = 'NfCoreSmRnaSeq'
     @params['pipelineVersion'] = '2.4.0'
     @params['pipelineVersion', 'description'] = 'specify pipeline version of nf-core pipeline'
     @params['cmdOptions'] = ""
