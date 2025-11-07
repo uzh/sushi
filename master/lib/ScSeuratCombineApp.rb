@@ -19,11 +19,11 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @required_params = []
     # optional params
     @params['cores'] = '8'
-    @params['cores', \"context\"] = \"slurm\"
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '60'
     @params['ram','description'] = 'use at least 20G per sample'
     @params['scratch'] = '100'
-    @params['scratch', \"context\"] = \"slurm\"
+    @params['scratch', "context"] = "slurm"
     @params['node'] = ''
     @params['name'] = 'SCReportMultipleSamplesSeurat'
     @params['refBuild'] = ref_selector
