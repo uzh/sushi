@@ -17,11 +17,11 @@ EOS
         @required_columns = ['Name','projectID']
         @required_params = ['name', 'projectID']
         @params['cores'] = '1'
-    @params['cores', \"context\"] = \"slurm\"
+    @params['cores', "context"] = "slurm"
         @params['ram'] = '15'
-    @params['ram', \"context\"] = \"slurm\"
+    @params['ram', "context"] = "slurm"
         @params['scratch'] = '300'
-    @params['scratch', \"context\"] = \"slurm\"
+    @params['scratch', "context"] = "slurm"
         @params['supportedMode'] = ['paired', 'single']
         @params['supportedMode', 'description'] = 'if mixed select either single read or paired end libraries from the study'
         @params['supportedMode', "context"] = "Ena"

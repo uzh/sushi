@@ -20,11 +20,11 @@ BAMboozle: Versatile removal of human sequence variation data for open data shar
     @required_params = ['name', 'refBuild', 'paired']
     # optional params
     @params['cores'] = '8'
-    @params['cores', \"context\"] = \"slurm\"
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
-    @params['ram', \"context\"] = \"slurm\"
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
-    @params['scratch', \"context\"] = \"slurm\"
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'BamBoozle'
     @params['paired'] = false
     @params['paired', "context"] = "BamBoozle"

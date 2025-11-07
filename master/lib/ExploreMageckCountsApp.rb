@@ -19,14 +19,14 @@ Quality control after counting sgRNAs  with Mageck<br/>
     @required_params = []
     # optional params
     @params['cores'] = ['1', '2']
-    @params['cores', \"context\"] = \"slurm\"
+    @params['cores', "context"] = "slurm"
     @params['ram'] = ['4', '7', '50']
-    @params['ram', \"context\"] = \"slurm\"
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = ['10', '20']
-    @params['scratch', \"context\"] = \"slurm\"
+    @params['scratch', "context"] = "slurm"
     @params['name'] = 'ExploreMageckCounts'
     #@params['refBuild'] = ref_selector
-    @params['refBuild', \"context\"] = \"referfence genome assembly\"
+    @params['refBuild', "context"] = "referfence genome assembly"
     #@params['refFeatureFile'] = 'genes.gtf'
     #@params['featureLevel'] = ['gene', 'isoform']
     @params['normMethod'] = 'logMean'

@@ -19,11 +19,11 @@ EOS
     @required_params = ['cores', 'ram', 'scratch', 'mode', 'lineage']
     # optional params
     @params['cores'] = '4'
-    @params['cores', \"context\"] = \"slurm\"
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
-    @params['ram', \"context\"] = \"slurm\"
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '50'
-    @params['scratch', \"context\"] = \"slurm\"
+    @params['scratch', "context"] = "slurm"
     @params['mode'] = ['geno', 'tran',  'prot']
     @params['mode', 'description'] = 'analysis mode: genome, transcriptome, proteins'
     @params['mode', "context"] = "Busco"

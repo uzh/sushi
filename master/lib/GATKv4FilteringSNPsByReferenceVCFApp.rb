@@ -16,9 +16,9 @@ filtering out SNPs by the VCF coming from reference accession<br/>
     @required_columns = ['Name', 'Raw VCF', 'Filtered VCF', 'Species', 'refBuild']
     @required_params = []
     @params['cores'] = '1'
-    @params['cores', \"context\"] = \"slurm\"
+    @params['cores', "context"] = "slurm"
     @params['ram'] = '50'
-    @params['ram', \"context\"] = \"slurm\"
+    @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
     @params['scratch', "context"] = "slurm"
     @params['DataSet'] = []
