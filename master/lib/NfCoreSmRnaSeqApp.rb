@@ -64,7 +64,8 @@ EOS
         'Count [Link]'=>File.join(@result_dir, "#{@params['name']}_result", "mirna_quant", "mirtop", "#{sample['Name']}.txt"),
         'Species'=>sample['Species'],
         'refBuild'=>"", 
-        'featureLevel'=>"smRNA"
+        'featureLevel'=>"smRNA",
+        'refFeatureFile'=>"",
       }.merge(extract_columns(tags: @inherit_tags, sample_name: sample['Name']))
     end
     grandchild_dataset
