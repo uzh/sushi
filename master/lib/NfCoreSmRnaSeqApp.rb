@@ -43,7 +43,7 @@ EOS
      ## the line below demonstrates that access to @dataset does not work as expected when in dataset_mode
      #foo = @dataset['Name']
      report_file = File.join(@result_dir, "#{@params['name']}_result")
-     multiqc_link = File.join(@result_dir, "#{@params['name']}_result", "multiqc", "#{@params['peakStyle']}_peak", "multiqc_report.html")
+     multiqc_link = File.join(@result_dir, "#{@params['name']}_result", "multiqc", "multiqc_report.html")
      dataset = {'Name'=>@params['name'],
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'referenceGenome'=>@params['referenceGenome'],
@@ -61,7 +61,7 @@ EOS
       sample = Hash[*row.map{|key,value| [key.gsub(/\[.+\]/,'').strip, value]}.flatten]
       grandchild_dataset << {
         'Name'=>sample['Name'],
-        'Count [Link]'=>File.join(@result_dir, "#{@params['name']}_result", "mirna_quant", "#{sample['Name']}.txt"),
+        'Count [Link]'=>File.join(@result_dir, "#{@params['name']}_result", "mirna_quant", "mirtop", "#{sample['Name']}.txt"),
         'Species'=>sample['Species'],
         'refBuild'=>"", 
         'featureLevel'=>"smRNA"
