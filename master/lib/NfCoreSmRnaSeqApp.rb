@@ -20,7 +20,7 @@ EOS
     @required_params = ['referenceGenome','mirtraceSpecies','pipelineVersion']
     @params['cores'] = '8'
     @params['cores', "context"] = "slurm"
-    @params['ram'] = '30'
+    @params['ram'] = '120'
     @params['ram', "context"] = "slurm"
     @params['scratch'] = '200'
     @params['scratch', "context"] = "slurm"
