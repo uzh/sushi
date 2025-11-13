@@ -371,6 +371,112 @@ class SushiApp
     end
     @params
   end
+  def load_project_defaults
+    # Load project-specific default parameters from project_default_parametersets.tsv
+    # Parameters are scoped by app name (e.g., FastqcApp::cores)
+    return unless @project and @gstore_dir
+    
+    project_defaults_file = File.join(@gstore_dir, @project, 'project_default_parametersets.tsv')
+    return unless File.exist?(project_defaults_file)
+    
+    begin
+      app_name = self.class.name
+      File.readlines(project_defaults_file).each do |line|
+        line.chomp!
+        next if line.strip.empty?
+        
+        scoped_param, value = line.split("\t", 2)
+        next unless scoped_param && value
+        
+        # Parse scoped parameter (e.g., "FastqcApp::cores")
+        if scoped_param =~ /^(.+)::(.+)$/
+          param_app_name = $1
+          param_name = $2
+          
+          # Only apply parameters for the current app
+          if param_app_name == app_name
+            # Only set if the parameter exists in @params and hasn't been set yet
+            if @params.keys.include?(param_name)
+              # Parse value based on data type
+              @params[param_name] = if @params.data_type(param_name) == String or value.nil?
+                                      value
+                                    else
+                                      begin
+                                        eval(value)
+                                      rescue
+                                        value
+                                      end
+                                    end
+            end
+          end
+        end
+      end
+    rescue => e
+      # Silently fail if there's an error reading the file
+      warn "Warning: Could not load project defaults from #{project_defaults_file}: #{e.message}"
+    end
+  end
+  def save_project_defaults
+    # Save current parameters as project-specific defaults to a temporary file
+    # Returns the path to the temporary file that needs to be copied to the project folder
+    # Parameters are scoped by app name (e.g., FastqcApp::cores)
+    return nil unless @project and @gstore_dir
+    
+    project_defaults_file = File.join(@gstore_dir, @project, 'project_default_parametersets.tsv')
+    
+    begin
+      # Read existing defaults to preserve other apps' settings
+      existing_defaults = {}
+      if File.exist?(project_defaults_file)
+        File.readlines(project_defaults_file).each do |line|
+          line.chomp!
+          next if line.strip.empty?
+          
+          scoped_param, value = line.split("\t", 2)
+          existing_defaults[scoped_param] = value if scoped_param
+        end
+      end
+      
+      # Update with current app's parameters
+      app_name = self.class.name
+      @params.each do |key, value|
+        # Skip internal/system parameters
+        next if ['process_mode', 'samples', 'node', 'sushi_app'].include?(key)
+        
+        scoped_param = "#{app_name}::#{key}"
+        # Convert value to string representation
+        value_str = if value.is_a?(String)
+                      value
+                    else
+                      value.inspect
+                    end
+        existing_defaults[scoped_param] = value_str
+      end
+      
+      # Create temporary directory with unique name to avoid conflicts
+      # Using Process.pid, millisecond timestamp, and random hex for uniqueness
+      require 'securerandom'
+      temp_dir = File.join('/tmp', "project_defaults_#{Process.pid}_#{Time.now.strftime("%Y%m%d%H%M%S%L")}_#{SecureRandom.hex(4)}")
+      FileUtils.mkdir_p(temp_dir)
+      
+      # Write to file with the correct final name
+      temp_file = File.join(temp_dir, 'project_default_parametersets.tsv')
+      File.open(temp_file, 'w') do |f|
+        existing_defaults.sort.each do |scoped_param, value|
+          f.puts "#{scoped_param}\t#{value}"
+        end
+      end
+      
+      # Set appropriate permissions
+      FileUtils.chmod(0664, temp_file) if File.exist?(temp_file)
+      
+      return temp_file
+    rescue => e
+      # Log error but don't fail the job
+      warn "Warning: Could not save project defaults to temporary file: #{e.message}"
+      return nil
+    end
+  end
   def set_dir_paths
     ## sushi figures out where to put the resulting dataset
     unless @name and @project

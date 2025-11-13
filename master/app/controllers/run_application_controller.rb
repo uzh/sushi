@@ -124,6 +124,15 @@ class RunApplicationController < ApplicationController
     @sushi_app.dataset_sushi_id = data_set_id.to_i
     @sushi_app.set_input_dataset
     @sushi_app.set_default_parameters
+    
+    # Load project defaults if requested
+    if params[:use_project_defaults] == '1'
+      if @data_set and project = @data_set.project
+        @sushi_app.project = 'p' + project.number.to_s
+        @sushi_app.load_project_defaults
+      end
+    end
+    
     @params_selected = {}
     if resubmit_data_set_id
       # load parameters
@@ -283,6 +292,7 @@ class RunApplicationController < ApplicationController
     active_job_params[:off_bfabric_registration] = session[:off_bfabric_registration]
     active_job_params[:submit_type] = params[:submit_type]
     active_job_params[:project_id] = project.id
+    active_job_params[:save_as_default] = params[:save_as_default] == '1'
     if active_job_params[:parameters]["process_mode"] == "SAMPLE" and active_job_params[:parameters]["samples"].split(",").length > 20
       active_job_params[:parameters]["nice"] = "100"
     end

@@ -41,6 +41,10 @@ sushi_app class <%= @sushi_app.class %><br /><br />
     <% end %>
 
   <% else %>
+    <div style="margin-bottom: 10px;">
+      <%= check_box_tag :save_as_default, '1', false %>
+      <%= label_tag :save_as_default, 'Save these parameters as project defaults' %>
+    </div>
     <%= submit_tag 'Submit', :name=>'submit_type', :class=>"btn btn-danger btn-sm raised" %>
     <% if session[:employee] %>
       <%= submit_tag 'MockRun', :name=>'submit_type', :class=>"btn btn-info btn-sm raised" %>

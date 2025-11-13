@@ -4,6 +4,10 @@
   <% else %>
     <%= form_tag(:controller => 'run_application', :action => 'set_parameters') do %>
       <%= hidden_field :data_set, :id, :value=>@data_set.id %>
+      <div style="margin-bottom: 10px;">
+        <%= check_box_tag :use_project_defaults, '1', true %>
+        <%= label_tag :use_project_defaults, 'Use project default parameters' %>
+      </div>
       <table>
         <th>Category</th><th>Application</th>
       <% @sushi_apps_category.each do |category| %>
