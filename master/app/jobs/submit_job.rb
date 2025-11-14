@@ -32,8 +32,8 @@ class SubmitJob < ApplicationJob
           # Copy the temporary file to the project folder using copy_commands
           project_dir = File.join(SushiFabric::GSTORE_DIR, params[:project])
           
-          # Use copy_commands to copy the file to gstore
-          copy_cmds = sushi_app.copy_commands(temp_file, project_dir, 'now')
+          # Use copy_commands to copy the file to gstore (force to overwrite existing file)
+          copy_cmds = sushi_app.copy_commands(temp_file, project_dir, 'force')
           copy_cmds.each do |command|
             logger.info "Copying project defaults: #{command}"
             unless system command
