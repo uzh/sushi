@@ -42,6 +42,16 @@ Note
   
   def next_dataset
     # In DATASET mode, @dataset is an array, so we use the first sample as reference
+    # Handle refresh case where @dataset might be empty hash or nil
+    if @dataset.is_a?(Hash) || @dataset.nil? || @dataset.empty?
+      # Return minimal dataset structure for app registration
+      return {
+        'Name' => 'sample',
+        'Read1 [File]' => 'file.fastq.gz',
+        'Species' => 'species'
+      }
+    end
+    
     sample = @dataset.first
     
     next_dataset_base = {
