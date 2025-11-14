@@ -21,10 +21,13 @@ class DataSetController < ApplicationController
         sample_available = 0
         data_set.samples.each do |sample|
           if sample_file = sample.to_hash.select{|header, file| header and header.tag?('File')}.first
-            file_list = sample_file.last.split(",") ## sample_file is an array holding the header and the file
-            all_files_exist = file_list.all? { |f| File.exist?(File.join(SushiFabric::GSTORE_DIR, f)) }
-            if all_files_exist
-              sample_available+=1
+            # Check if file value is not nil before splitting
+            if sample_file.last && !sample_file.last.to_s.empty?
+              file_list = sample_file.last.split(",") ## sample_file is an array holding the header and the file
+              all_files_exist = file_list.all? { |f| File.exist?(File.join(SushiFabric::GSTORE_DIR, f)) }
+              if all_files_exist
+                sample_available+=1
+              end
             end
           else # in case of no [File] tag sample
             sample_available+=1
@@ -1137,5 +1140,43 @@ class DataSetController < ApplicationController
     @bfab_order_number = if @replaces["DATASET_NAME"] =~ /_o(\d+)/ or @replaces["DATASET_NAME"] =~ /^o(\d+)_/
                            $1
                          end
+  end
+  
+  # Display merge dialog (AJAX)
+  def merge_dialog
+    @current_dataset = DataSet.find_by_id(params[:id])
+    unless @current_dataset
+      render plain: "Dataset not found", status: :not_found
+      return
+    end
+    
+    @project = @current_dataset.project
+    @available_datasets = @project.data_sets.where.not(id: @current_dataset.id).order(created_at: :desc)
+    render partial: 'merge_dialog', layout: false
+  end
+  
+  # Merge datasets action
+  def merge_with_dataset
+    dataset1 = DataSet.find_by_id(params[:id])
+    dataset2 = DataSet.find_by_id(params[:second_dataset_id])
+    
+    unless dataset1 && dataset2
+      flash[:error] = "One or both datasets not found"
+      redirect_to data_set_path(params[:id]) and return
+    end
+    
+    begin
+      merged_dataset = dataset1.merge_with(dataset2, options: {
+        merged_dataset_name: params[:merged_name],
+        user: current_user,
+        excluded_columns: ['Sample Id [B-Fabric]']
+      })
+      
+      flash[:notice] = "Successfully merged datasets. New dataset: #{merged_dataset.name} (ID: #{merged_dataset.id})"
+      redirect_to data_set_path(merged_dataset)
+    rescue => e
+      flash[:error] = "Failed to merge datasets: #{e.message}"
+      redirect_to data_set_path(dataset1)
+    end
   end
 end

@@ -339,4 +339,151 @@ class DataSet < ActiveRecord::Base
       end
     end.uniq
   end
+  
+  # Instance method: Merge this dataset with another dataset
+  # Creates a new child dataset with concatenated Read files
+  # @param other_dataset [DataSet] The dataset to merge with
+  # @param options [Hash] Merge options
+  # @return [DataSet] The newly created merged dataset
+  def merge_with(other_dataset, options: {})
+    require 'set'
+    
+    raise "Other dataset is required" unless other_dataset
+    raise "Other dataset must be a DataSet object" unless other_dataset.is_a?(DataSet)
+    
+    # Parse options
+    matching_column = options[:matching_column] || 'Name'
+    excluded_columns = options[:excluded_columns] || ['Sample Id [B-Fabric]']
+    merged_dataset_name = options[:merged_dataset_name] || "MergedReads_#{self.id}_#{other_dataset.id}"
+    user = options[:user]
+    parent_id = options[:parent_id] || self.id
+    
+    # Build hash of samples from other dataset
+    dataset_hash2 = {}
+    other_dataset.samples.each do |sample|
+      sample_hash = sample.to_hash
+      key = sample_hash[matching_column]
+      dataset_hash2[key] = sample_hash if key
+    end
+    
+    # Process this dataset's samples and merge with other dataset
+    merged_samples = []
+    processed_samples = Set.new
+    all_headers = Set.new
+    
+    self.samples.each do |sample|
+      sample_hash = sample.to_hash.clone
+      key = sample_hash[matching_column]
+      processed_samples.add(key)
+      
+      # Collect all headers
+      sample_hash.keys.each { |h| all_headers.add(h) }
+      
+      # Merge with dataset2 if match exists
+      if key && dataset_hash2[key]
+        sample2 = dataset_hash2[key]
+        
+        # Merge all columns from dataset2
+        sample2.keys.each do |col|
+          # Skip matching column (already same)
+          next if col == matching_column
+          
+          # Handle Read1/Read2 specially (concatenate with comma)
+          if col =~ /^Read[12]\s*\[File\]/
+            if sample_hash[col] && sample2[col]
+              sample_hash[col] = "#{sample_hash[col]},#{sample2[col]}"
+            elsif sample2[col]
+              sample_hash[col] = sample2[col]
+            end
+          # Handle Read Count (sum)
+          elsif col == 'Read Count'
+            if sample_hash[col] && sample2[col]
+              count1 = sample_hash[col].to_i
+              count2 = sample2[col].to_i
+              sample_hash[col] = (count1 + count2).to_s
+            elsif sample2[col]
+              sample_hash[col] = sample2[col]
+            end
+          # For other columns, take value from dataset2 if dataset1 doesn't have it
+          else
+            sample_hash[col] = sample2[col] unless sample_hash[col]
+          end
+        end
+        
+        # Collect headers from sample2
+        sample2.keys.each { |h| all_headers.add(h) }
+      end
+      
+      # Remove excluded columns
+      excluded_columns.each { |col| sample_hash.delete(col) }
+      
+      merged_samples << sample_hash
+    end
+    
+    # Add samples that exist only in dataset2
+    dataset_hash2.each do |key, sample_data|
+      unless processed_samples.include?(key)
+        sample_hash = sample_data.clone
+        
+        # Collect headers
+        sample_hash.keys.each { |h| all_headers.add(h) }
+        
+        # Remove excluded columns
+        excluded_columns.each { |col| sample_hash.delete(col) }
+        
+        merged_samples << sample_hash
+      end
+    end
+    
+    # Sort by matching column
+    merged_samples.sort_by! { |row| row[matching_column] || '' }
+    
+    # Remove excluded columns from headers
+    excluded_columns.each { |col| all_headers.delete(col) }
+    headers = all_headers.to_a
+    
+    # Build rows array for save_dataset_to_database
+    rows = []
+    merged_samples.each do |sample_hash|
+      row = headers.map { |header| sample_hash[header] }
+      rows << row
+    end
+    
+    # Prepare dataset array
+    data_set_arr = [
+      'DataSetName', merged_dataset_name,
+      'ProjectNumber', self.project.number,
+      'ParentID', parent_id,
+      'Comment', "Merged datasets: #{self.name} + #{other_dataset.name}"
+    ]
+    
+    # Save to database
+    merged_dataset_id = DataSet.save_dataset_to_database(
+      data_set_arr: data_set_arr,
+      headers: headers,
+      rows: rows,
+      user: user,
+      child: true,
+      sushi_app_name: 'MergeReadDatasets'
+    )
+    
+    # Return the new dataset
+    DataSet.find_by_id(merged_dataset_id)
+  end
+  
+  # Class method: Merge two datasets by ID (for backward compatibility)
+  # @param dataset1_id [Integer] ID of the first dataset
+  # @param dataset2_id [Integer] ID of the second dataset
+  # @param options [Hash] Merge options
+  # @return [DataSet] The newly created merged dataset
+  def self.merge_datasets(dataset1_id:, dataset2_id:, options: {})
+    dataset1 = DataSet.find_by_id(dataset1_id.to_i)
+    dataset2 = DataSet.find_by_id(dataset2_id.to_i)
+    
+    raise "Dataset1 (ID: #{dataset1_id}) not found" unless dataset1
+    raise "Dataset2 (ID: #{dataset2_id}) not found" unless dataset2
+    
+    # Call instance method
+    dataset1.merge_with(dataset2, options: options)
+  end
 end

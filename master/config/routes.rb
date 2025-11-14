@@ -72,6 +72,8 @@ SushiFabric::Application.routes.draw do
       post :announce_template_set
       post :announce_replace_set
       post :announce
+      get :merge_dialog
+      post :merge_with_dataset
     end
   end
   # aliases

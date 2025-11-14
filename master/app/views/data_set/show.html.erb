@@ -163,6 +163,29 @@ $(document).ready(function(){
     $( "#opener" ).on( "click", function() {
       $( "#download_dialog" ).dialog( "open" );
     });
+
+    // Merge datasets dialog
+    $( "#merge_datasets_dialog" ).dialog({
+      width: 600,
+      height: 450,
+      autoOpen: false,
+      modal: true
+    });
+    $("#merge_datasets_btn").click(function(){
+      $.ajax({
+        type: 'GET',
+        url: '/data_set/merge_dialog',
+        data: {'id': $("#data_set_id").val()},
+        success: function(data){
+          $("#merge_datasets_dialog").html(data);
+          $("#merge_datasets_dialog").dialog("open");
+        },
+        error: function(xhr, status, error){
+          alert("Failed to load merge dialog: " + error);
+        }
+      });
+      return false;
+    });
 });
 </script>
 <%= form_tag('/data_set/multi_delete', :id=>"multi_delete") do %>
@@ -178,6 +201,9 @@ $(document).ready(function(){
 <%= hidden_field :bfab_data_set, :id, :value=>@data_set.bfabric_id.to_s %>
 - <a href="#" id="opener">download</a>
 - <%= link_to 'scripts', "/data_set/script_log.#{@data_set.id}", :method=>:get %>
+<% if session[:employee] %>
+- <a href="#" id="merge_datasets_btn">merge with another dataset</a>
+<% end %>
 - <%= link_to 'parameters', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>
 <% if @data_set.data_set and @data_set.sushi_app_name %>
 -  <%= link_to "resubmit", {:controller=>"run_application", :action=>"set_parameters", data_set_id: @data_set.data_set.id, resubmit_data_set_id: @data_set.id,  app: @data_set.sushi_app_name}, :method=>:post %>
@@ -404,4 +430,7 @@ $(document).ready(function(){
   <% end %>
 </div>
 <hr />
+
+<!-- Merge Datasets Dialog -->
+<div id="merge_datasets_dialog" title="Merge Datasets" style="display:none;"></div>
 

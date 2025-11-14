@@ -1,0 +1,51 @@
+<h3>Merge Datasets</h3>
+<%= form_tag({controller: 'data_set', action: 'merge_with_dataset', id: @current_dataset.id}, method: :post, id: 'merge_form') do %>
+  <p>
+    <strong>Current Dataset:</strong> <%= @current_dataset.name %> (ID: <%= @current_dataset.id %>)<br/>
+    <strong>Samples:</strong> <%= @current_dataset.samples.length %>
+  </p>
+  
+  <p style="background-color: #f0f8ff; padding: 10px; border-left: 4px solid #4682b4;">
+    <em>Note: Samples are matched by <strong>Name</strong> column. Read files (Read1/Read2) will be concatenated with comma.</em>
+  </p>
+  
+  <p>
+    <label for="second_dataset_id"><strong>Select dataset to merge with:</strong></label><br/>
+    <select name="second_dataset_id" id="second_dataset_id" required="required" style="width: 100%; padding: 5px;">
+      <option value="">Select a dataset...</option>
+      <% @available_datasets.each do |ds| %>
+        <option value="<%= ds.id %>" data-name="<%= ds.name %>"><%= ds.name %> (ID: <%= ds.id %>, <%= ds.samples.length %> samples)</option>
+      <% end %>
+    </select>
+  </p>
+  
+  <p>
+    <label for="merged_name"><strong>Merged dataset name:</strong></label><br/>
+    <%= text_field_tag 'merged_name', "MergedDataSet_#{@current_dataset.name}_", 
+        {size: 50, required: true, style: 'width: 100%; padding: 5px;', id: 'merged_name_input', 
+         data: {base_name: @current_dataset.name}} %>
+  </p>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('#second_dataset_id').change(function(){
+        var selectedOption = $(this).find('option:selected');
+        var selectedName = selectedOption.data('name');
+        var baseName = $('#merged_name_input').data('base-name');
+        
+        if (selectedName) {
+          $('#merged_name_input').val('MergedDataSet_' + baseName + '_' + selectedName);
+        } else {
+          $('#merged_name_input').val('MergedDataSet_' + baseName + '_');
+        }
+      });
+    });
+  </script>
+  
+  <p style="margin-top: 15px;">
+    <%= submit_tag 'Merge Datasets', class: 'btn btn-primary btn-sm raised' %>
+    <%= button_tag 'Cancel', type: 'button', class: 'btn btn-secondary btn-sm raised', 
+        onclick: "$('#merge_datasets_dialog').dialog('close'); return false;" %>
+  </p>
+<% end %>
+
