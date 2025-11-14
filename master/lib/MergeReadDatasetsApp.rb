@@ -5,10 +5,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class MergeRunDataSetsApp < SushiFabric::SushiApp
+class MergeReadDatasetsApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'MergeRunDataSets'
+    @name = 'MergeReadDatasets'
     @description =<<-EOS
 Merging two DataSets with Read1 and Read2 files by sample name<br /><br />
 Concatenates Read1 and Read2 file paths from two datasets. Handles cases where samples exist in only one dataset.<br />
@@ -24,12 +24,13 @@ Note
 </ol>
     EOS
     @analysis_category = 'Prep'
+    @params['process_mode'] = 'DATASET'
     @params['FirstDataSet'] = ''
     @params['SecondDataSet'] = ''
     @params['matchingColumn'] = ['Name', 'Tube', 'Sample Id']
-    @params['matchingColumn', "context"] = "MergeRunDataSets"
+    @params['matchingColumn', "context"] = "MergeReadDatasets"
     @params['paired'] = false
-    @params['paired', "context"] = "MergeRunDataSets"
+    @params['paired', "context"] = "MergeReadDatasets"
     @required_columns = ['Name', 'Species', 'Read1']
     @required_params = ['SecondDataSet']
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
@@ -40,22 +41,48 @@ Note
   end
   
   def next_dataset
+    # In DATASET mode, @dataset is an array, so we use the first sample as reference
+    sample = @dataset.first
+    
     next_dataset_base = {
-      'Name'=>@dataset['Name'],
+      'Name'=>sample['Name'],
     }
-    @dataset.keys.select{|colname| colname =~ /Read\d+/}.each do |colname|
-      new_colname = "#{colname} [File]"
-      next_dataset_base[new_colname] = @dataset[colname]
+    
+    # Handle Read columns - add [File] tag only if not already present
+    sample.keys.select{|colname| colname =~ /Read\d+/}.each do |colname|
+      # Check if the column already has a [File] tag using regex
+      if colname =~ /\[File\]/
+        # Already has [File] tag, use as is
+        next_dataset_base[colname] = sample[colname]
+      else
+        # No [File] tag, add it
+        new_colname = "#{colname} [File]"
+        next_dataset_base[new_colname] = sample[colname]
+      end
     end
-    next_dataset_base['Species'] = @dataset['Species']
+    
+    next_dataset_base['Species'] = sample['Species']
     
     # Include Read Count column if it exists
-    if @dataset['Read Count']
-      next_dataset_base['Read Count'] = @dataset['Read Count']
+    if sample['Read Count']
+      next_dataset_base['Read Count'] = sample['Read Count']
     end
     
-    # Extract columns with inherit tags and remove excluded columns
+    # Extract columns with inherit tags (Factor, B-Fabric, Characteristic)
     inherited_columns = extract_columns(@inherit_tags)
+    
+    # Also include all other columns that are not already included (to preserve columns without tags)
+    sample.keys.each do |colname|
+      # Skip if already included or if it's a special column we handle separately
+      next if next_dataset_base.key?(colname)
+      next if colname =~ /Read\d+/  # Already handled above
+      next if colname == 'Name' || colname == 'Species' || colname == 'Read Count'
+      # Add the column
+      next_dataset_base[colname] = sample[colname]
+    end
+    
+    # Remove excluded columns
+    remove_excluded_columns(next_dataset_base)
     remove_excluded_columns(inherited_columns)
     
     next_dataset_base.merge(inherited_columns)
@@ -129,7 +156,7 @@ Note
   def commands
     coms = ""
     coms << "echo '#{GlobalVariables::SUSHI}'\n"
-    coms << "echo '#{GlobalVariables::SUSHI}' > #{@dataset['Name']}_dummy.txt\n"
+    coms << "echo '#{GlobalVariables::SUSHI}' > #{@dataset[0]['Name']}_dummy.txt\n"
     coms
   end
 end
