@@ -19,6 +19,7 @@ master/config/initializers/devise.rb
 master/.Rproj.user
 master/.Rhistory
 master/*.Rproj
+master/cursor_log
 .DS_Store
 lib/WordCountApp.rb
 master/bak
