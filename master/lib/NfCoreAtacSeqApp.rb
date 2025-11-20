@@ -58,7 +58,7 @@ EOS
      multiqc_link = File.join(@result_dir, "#{@params['name']}_result", "multiqc", "#{@params['peakStyle']}_peak", "multiqc_report.html")
      ataqv_link = File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/ataqv", "#{@params['peakStyle']}_peak", "html/index.html")
      ##igv_link = File.join(@result_dir, "#{@params['name']}_result", "igv", "#{@params['peakStyle']}_peak", "igv_session.html")
-     igv_link = "https://igv.org/app/?sessionURL=https://fgcz-gstore.uzh.ch/projects/#{report_file}/igv_session.html"
+     igv_link = "https://fgcz-gstore.uzh.ch/projects/#{report_file}/igv_session.html"
      dataset = {'Name'=>@params['name'],
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
