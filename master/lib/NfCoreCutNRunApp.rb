@@ -56,7 +56,7 @@ EOS
      report_file = File.join(@result_dir, "#{@params['name']}_results")
      multiqc_report_link = File.join(@result_dir, "#{@params['name']}_results", "04_reporting", "multiqc", "multiqc_report.html")
      cutandrun_report_link = File.join(@result_dir, "#{@params['name']}_results", "04_reporting", "00index.html")
-     igv_link = "https://igv.org/app/?sessionURL=https://fgcz-gstore.uzh.ch/projects/#{report_file}/igv_session.json"
+     igv_link = "https://igv.org/app/?sessionURL=https://fgcz-gstore.uzh.ch/projects/#{report_file}/igv_session.html"
      {'Name'=>@params['name'],
       'CutAndRun_Result [File]'=>report_file,
       'Multiqc [Link]'=>multiqc_report_link,
