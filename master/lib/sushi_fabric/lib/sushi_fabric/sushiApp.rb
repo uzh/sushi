@@ -455,8 +455,11 @@ class SushiApp
       
       # Create temporary directory with unique name to avoid conflicts
       # Using Process.pid, millisecond timestamp, and random hex for uniqueness
+      # Use shared directory instead of /tmp to avoid PrivateTmp issues with Apache/Passenger
       require 'securerandom'
-      temp_dir = File.join('/tmp', "project_defaults_#{Process.pid}_#{Time.now.strftime("%Y%m%d%H%M%S%L")}_#{SecureRandom.hex(4)}")
+      shared_tmp_base = File.join(SushiFabric::Application.config.scratch_dir, "tmp")
+      FileUtils.mkdir_p(shared_tmp_base) unless Dir.exist?(shared_tmp_base)
+      temp_dir = File.join(shared_tmp_base, "project_defaults_#{Process.pid}_#{Time.now.strftime("%Y%m%d%H%M%S%L")}_#{SecureRandom.hex(4)}")
       FileUtils.mkdir_p(temp_dir)
       
       # Write to file with the correct final name
