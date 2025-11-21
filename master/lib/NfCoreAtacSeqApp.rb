@@ -86,7 +86,7 @@ EOS
         'BigWig' =>File.join(@result_dir, "#{@params['name']}_result", "bwa/merged_library/bigwig", "#{sample['Name']}.bigWig"),
         'Species'=>sample['Species'],
         'refBuild'=>"", ##@params['refBuild'],
-        'featureLevel'=>@params['peakStyle']
+        'featureLevel'=>"peaks"
       }.merge(extract_columns(tags: @inherit_tags, sample_name: sample['Name']))
     end
     grandchild_dataset
