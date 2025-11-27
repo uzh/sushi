@@ -15,7 +15,7 @@ class ScSeuratCombinedLabelClusters < SushiFabric::SushiApp
     @description =<<-EOS
     The report of merged single cell samples/plates<br/>
     EOS
-    @required_columns = ['Name', 'Species', 'Static Report', 'Report']
+    @required_columns = ['Name', 'Species', 'Static Report', 'Report', 'SeuratObject']
     @required_params = ['ClusterAnnotationFile']
     # optional params
     @params['cores'] = '8'
