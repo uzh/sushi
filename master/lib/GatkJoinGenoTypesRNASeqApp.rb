@@ -8,7 +8,7 @@ include GlobalVariables
 class GatkJoinGenoTypesRNASeqApp <  SushiFabric::SushiApp
   def initialize
     super
-    @name = 'GATK JoinGenotypes for RNASeq data'
+    @name = 'GATK JoinGenotypesRNASeq'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Variants'
     @description =<<-EOS
