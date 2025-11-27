@@ -16,7 +16,7 @@ class MageckTestApp < SushiFabric::SushiApp
     Note: SampleNames starting with a number are not supported and will result in a crash of the software. 
     EOS
     @params['process_mode'] = 'DATASET'
-    @required_columns = ['Name','Count']
+    @required_columns = ['Name','Count', 'libName']
     @required_params = ['species','libName','sampleGroup','refGroup']
     # optional params
     @params['cores'] = ['1']
