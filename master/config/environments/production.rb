@@ -82,6 +82,7 @@ SushiFabric::Application.configure do
   if config.fgcz?
     config.scratch_dir = "/scratch"
     config.gstore_dir = "/srv/gstore/projects" # production, test
+    config.ezpyz_dir = "/misc/fgcz01/EzPyzApps"
     #config.gstore_dir = "/srv/GT/analysis/course_sushi/public/gstore/projects" # demo, course
     config.sushi_app_dir = Dir.pwd
     config.module_source = "/usr/local/ngseq/etc/lmod_profile"
