@@ -10,7 +10,7 @@ class NfCoreAtacSeqApp <  SushiFabric::SushiApp
     super
     @name = 'NfCoreAtacSeq'
     @params['process_mode'] = 'DATASET'
-    @analysis_category = 'ATAC'
+    @analysis_category = 'GeneRegulation'
     @description =<<-EOS
     A ATAC-seq processing pipeline from NF-Core. <br/>
    <a href='https://nf-co.re/atacseq'>NF-Core ATAC-seq</a>

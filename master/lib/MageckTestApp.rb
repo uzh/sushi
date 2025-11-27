@@ -10,7 +10,7 @@ class MageckTestApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'MageckTest'
-    @analysis_category = 'QC'
+    @analysis_category = 'GenomeEditing'
     @description =<<-EOS
     Run test module in the tool Model-based Analysis of Genome-wide CRISPR-Cas9 Knockout (<a href='https://sourceforge.net/p/mageck/wiki/Home/'>MAGeCK</a>)
     Note: SampleNames starting with a number are not supported and will result in a crash of the software. 

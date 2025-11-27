@@ -10,7 +10,7 @@ class MageckCountApp < SushiFabric::SushiApp
     super
     @name = 'MageckCount'
     @params['process_mode'] = 'SAMPLE'
-    @analysis_category = 'Misc'
+    @analysis_category = 'GenomeEditing'
     @description =<<-EOS
     
 Model-based Analysis of Genome-wide CRISPR-Cas9 Knockout (<a href='https://sourceforge.net/p/mageck/wiki/Home/'>MAGeCK</a>) is a computational tool to identify important genes from the recent genome-scale CRISPR-Cas9 knockout screens

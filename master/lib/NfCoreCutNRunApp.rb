@@ -10,7 +10,7 @@ class NfCoreCutNRunApp <  SushiFabric::SushiApp
     super
     @name = 'NfCoreCutNRun'
     @params['process_mode'] = 'DATASET'
-    @analysis_category = 'CutAndRun'
+    @analysis_category = 'GeneRegulation'
     @description =<<-EOS
     A CUT&RUN processing pipeline from NF-Core. <br/>
    <a href='https://nf-co.re/cutandrun'>NF-Core CUT&RUN</a>

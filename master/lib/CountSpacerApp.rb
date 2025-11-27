@@ -10,7 +10,7 @@ class CountSpacerApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'CountSpacer'
-    @analysis_category = 'Misc'
+    @analysis_category = 'GenomeEditing'
     @description =<<-EOS
 QC Tool for sgRNA libraries.
 <a href='https://github.com/fengzhanglab/Screening_Protocols_manuscript'>https://github.com/fengzhanglab/Screening_Protocols_manuscript</a>
