@@ -9,7 +9,7 @@ class MemeApp <  SushiFabric::SushiApp
   def initialize
     super
     @name = 'MemeApp'
-    @analysis_category = 'Motif'
+    @analysis_category = 'GeneRegulation'
     @description =<<-EOS
 Perform motif discovery on DNA, RNA or protein datasets<br/>
 <a href='http://meme-suite.org/tools/meme'>http://meme-suite.org/tools/meme</a>
