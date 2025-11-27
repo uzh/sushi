@@ -15,7 +15,7 @@ class ExploreMageckCountsApp < SushiFabric::SushiApp
 Quality control after counting sgRNAs  with Mageck<br/>
     EOS
     @params['process_mode'] = 'DATASET'
-    @required_columns = ['Name','Count', 'Species']
+    @required_columns = ['Name','Count', 'Species', 'libName']
     @required_params = []
     # optional params
     @params['cores'] = ['1', '2']
