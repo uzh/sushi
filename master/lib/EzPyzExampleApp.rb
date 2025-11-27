@@ -39,6 +39,6 @@ class EzPyzExampleApp <  SushiFabric::SushiApp
     }
   end
   def commands
-    run_PyApp("Example", pixi_enabled: true) #change to App specific env
+    run_PyApp("Example", pixi_enabled: true)  # Name must match [name] in 'ezpyz_[name]' format
   end
 end
