@@ -10,7 +10,7 @@ class HomerDiffPeaksApp <  SushiFabric::SushiApp
     super
     @name = 'HomerDiffPeaks'
     @params['process_mode'] = 'DATASET'
-    @analysis_category = 'ATAC'
+    @analysis_category = 'GeneRegulation'
     @description =<<-EOS
     Finding Peaks and Differential Peaks with or without Replicates from HOMER. <br/>
     It requires bam file mapped to UCSC reference genome (chr1 format). <br/>
