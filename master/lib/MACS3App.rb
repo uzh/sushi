@@ -10,7 +10,7 @@ class MACS3App < SushiFabric::SushiApp
   def initialize
     super
     @name = 'MACS3'
-    @analysis_category = 'Peaks'
+    @analysis_category = 'GeneRegulation'
     @description =<<-EOS
 Capturing the influence of genome complexity to evaluate the significance of enriched ChIP regions<br/>
 <a href='https://macs3-project.github.io/MACS/'>https://macs3-project.github.io/MACS/</a>
