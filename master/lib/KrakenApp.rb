@@ -27,7 +27,7 @@ EOS
     @params['paired'] = false
     @params['paired', "context"] = "Kraken"
     
-    @params['krakenDBOpt'] = ['Standard', 'Viral', 'PlusPF', 'core_nt']
+    @params['krakenDBOpt'] = ['Standard', 'Viral', 'PlusPF', 'core_nt','k2_standard']
     @params['krakenDBOpt', 'description'] = 'kraken database options (https://benlangmead.github.io/aws-indexes/k2). Default is Standard'
     @params['krakenDBOpt', "context"] = "Kraken"
     @params['krakenConfidenceOpt'] = '0.0'
