@@ -52,14 +52,14 @@ When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/
     @params['TenXLibrary', 'selected'] = ['GEX', 'Multiplexing']
     @params['MultiplexingType'] = {'select'=>'', 'On chip multiplexing (OCM)'=>'ocm', 'Hashing with Antibody Capture'=>'antibody', "3' Cell Multiplexing with CMOs (CellPlex)"=>'cellplex'}
     @params['MultiplexingType', 'description'] = "(Beta) Which type of 3' multiplexing technology is used? See the <a href='https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-3p-multi'>support page</a> for further details. Currently, only 'Hashing with Antibody Capture' affects the app's behaviour. Must also select corresponding 'AntibodyCapture' csv file."
-    @params['FeatureBarcodeFile'] = ''
-    @params['FeatureBarcodeFile', 'file_upload'] = true
-    @params['FeatureBarcodeFile', 'description'] = '(e.g. for CITEseq)'
     @params['MultiplexBarcodeSet'] = {'select'=>''}
     Dir["/srv/GT/databases/10x/CMO_files/*"].sort.select{|design| File.file?(design)}.each do |dir|
       @params['MultiplexBarcodeSet'][File.basename(dir)] = File.basename(dir)
     end
     @params['MultiplexBarcodeSet', 'description'] = 'Used when CellPlex libraries. New files needs to be installed under /srv/GT/databases/10x/CMO_files'
+    @params['FeatureBarcodeFile'] = ''
+    @params['FeatureBarcodeFile', 'file_upload'] = true
+    @params['FeatureBarcodeFile', 'description'] = '(e.g. for CITEseq)'
     @params['includeIntrons'] = true
     @params['includeIntrons', 'description'] = 'set to false to reproduce the default behavior in cell ranger v6 and earlier (NOTE: Ignored for fixedRNA)'
     @params['expectedCells'] = ''
