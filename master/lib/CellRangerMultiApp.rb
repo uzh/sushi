@@ -38,14 +38,6 @@ When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/
     @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = 'gene'
-    @params['probesetFile'] =  {'select'=>''}
-    Dir["/srv/GT/databases/10x_Probesets/Chromium/*"].sort.select{|design| File.file?(design)}.each do |dir|
-      @params['probesetFile'][File.basename(dir)] = File.basename(dir)
-    end
-    @params['probesetFile', 'description'] = 'set it only for probe-based single cell fixed RNA profiling (FRP)'
-    @params['customProbesFile'] = ''
-    @params['customProbesFile', 'file_upload'] = true
-    @params['customProbesFile', 'description'] = 'Custom probeset CSV-file according to 10X specifications (https://tinyurl.com/10xProbeSetCSVFormat). ONLY for probe-based single cell fixed RNA profiling (FRP). Note that all genes listed must have a corresponding entry in secondRef or controlSeqs. Custom probes must have the same length as the probes in the reference file.'
     @params['TenXLibrary'] = ['GEX', 'VDJ-T', 'VDJ-B', 'FeatureBarcoding', 'Multiplexing', 'fixedRNA']
     @params['TenXLibrary', 'description'] = "Which 10X libraries? Note: Not all library types can be processed simultaneously. See the <a href='https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/using/multi#when'>support page</a> for further details. E.g. for fixedRNA, must also specify GEX."
     @params['TenXLibrary', 'multi_selection'] = true
@@ -57,6 +49,14 @@ When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/
       @params['MultiplexBarcodeSet'][File.basename(dir)] = File.basename(dir)
     end
     @params['MultiplexBarcodeSet', 'description'] = 'Used when CellPlex libraries. New files needs to be installed under /srv/GT/databases/10x/CMO_files'
+    @params['probesetFile'] =  {'select'=>''}
+    Dir["/srv/GT/databases/10x_Probesets/Chromium/*"].sort.select{|design| File.file?(design)}.each do |dir|
+      @params['probesetFile'][File.basename(dir)] = File.basename(dir)
+    end
+    @params['probesetFile', 'description'] = 'set it only for probe-based single cell fixed RNA profiling (FRP)'
+    @params['customProbesFile'] = ''
+    @params['customProbesFile', 'file_upload'] = true
+    @params['customProbesFile', 'description'] = 'Custom probeset CSV-file according to 10X specifications (https://tinyurl.com/10xProbeSetCSVFormat). ONLY for probe-based single cell fixed RNA profiling (FRP). Note that all genes listed must have a corresponding entry in secondRef or controlSeqs. Custom probes must have the same length as the probes in the reference file.'
     @params['FeatureBarcodeFile'] = ''
     @params['FeatureBarcodeFile', 'file_upload'] = true
     @params['FeatureBarcodeFile', 'description'] = '(e.g. for CITEseq)'
