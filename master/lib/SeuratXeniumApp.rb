@@ -32,16 +32,55 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     @params['Niche_resolution'] = '0.5'
     @params['Niche_resolution', 'description'] = 'Resolution for BANKSY spatial niche clustering (higher = more niches)'
     @params['rctdReference'] = ['None',
-      'allen (mouse)',
-      'azimuth (mouse)',
-      'tabula_muris_senis (mouse)',
-      'archmap (human)',
-      'celltypist (human)',
-      'disco (human)'
+      # Mouse references
+      'allen/allen_cortex_rctd.rds (mouse brain)',
+      'azimuth/pan_mouse_pansci_rctd.rds (mouse pan-tissue)',
+      'tabula_muris_senis/Bladder_rctd.rds (mouse)',
+      'tabula_muris_senis/Bone_marrow_rctd.rds (mouse)',
+      'tabula_muris_senis/Heart_rctd.rds (mouse)',
+      'tabula_muris_senis/Kidney_rctd.rds (mouse)',
+      'tabula_muris_senis/Large_intestine_rctd.rds (mouse)',
+      'tabula_muris_senis/Limb_muscle_rctd.rds (mouse)',
+      'tabula_muris_senis/Liver_rctd.rds (mouse)',
+      'tabula_muris_senis/Lung_rctd.rds (mouse)',
+      'tabula_muris_senis/Mammary_gland_rctd.rds (mouse)',
+      'tabula_muris_senis/Pancreas_rctd.rds (mouse)',
+      'tabula_muris_senis/Skin_rctd.rds (mouse)',
+      'tabula_muris_senis/Spleen_rctd.rds (mouse)',
+      'tabula_muris_senis/Thymus_rctd.rds (mouse)',
+      'tabula_muris_senis/Tongue_rctd.rds (mouse)',
+      'tabula_muris_senis/Trachea_rctd.rds (mouse)',
+      # Human references - archmap
+      'archmap/Glioblastoma_rctd.rds (human brain tumor)',
+      'archmap/HLCA_rctd.rds (human lung)',
+      'archmap/NSCLC_rctd.rds (human lung cancer)',
+      # Human references - celltypist
+      'celltypist/Blood_rctd.rds (human)',
+      'celltypist/Bone_marrow_rctd.rds (human)',
+      'celltypist/Heart_rctd.rds (human)',
+      'celltypist/Hippocampus_rctd.rds (human brain)',
+      'celltypist/Intestine_rctd.rds (human)',
+      'celltypist/Kidney_rctd.rds (human)',
+      'celltypist/Liver_rctd.rds (human)',
+      'celltypist/Lung_rctd.rds (human)',
+      'celltypist/Lymph_node_rctd.rds (human)',
+      'celltypist/Pancreas_rctd.rds (human)',
+      'celltypist/Skeletal_muscle_rctd.rds (human)',
+      'celltypist/Spleen_rctd.rds (human)',
+      # Human references - disco (selected)
+      'disco/brain_rctd.rds (human)',
+      'disco/breast_rctd.rds (human)',
+      'disco/heart_rctd.rds (human)',
+      'disco/intestine_rctd.rds (human)',
+      'disco/kidney_rctd.rds (human)',
+      'disco/liver_cell_rctd.rds (human)',
+      'disco/lung_rctd.rds (human)',
+      'disco/pancreas_cell_rctd.rds (human)',
+      'disco/skin_rctd.rds (human)'
     ]
-    @params['rctdReference', 'description'] = 'RCTD Reference folder. WARNING: RCTD requires 200GB-1TB RAM depending on dataset size. Available .rds files will be listed in the report.'
+    @params['rctdReference', 'description'] = 'RCTD Reference atlas. Format: folder/file.rds (species tissue). WARNING: RCTD requires 200GB+ RAM.'
     @params['rctdFile'] = ''
-    @params['rctdFile', 'description'] = 'Specific .rds file within reference folder (leave empty to see available files)'
+    @params['rctdFile', 'description'] = 'Manual override: Full path to custom RCTD reference .rds file (leave empty to use dropdown selection)'
     @params['rctdUMImin'] = '100'
     @params['rctdUMImin', 'description'] = 'Minimum UMI count for RCTD annotation. Cells below this threshold will not be classified.'
     @modules = ["Dev/R"]
