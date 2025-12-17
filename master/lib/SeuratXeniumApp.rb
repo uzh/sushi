@@ -83,6 +83,8 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     @params['rctdFile', 'description'] = 'Manual override: Full path to custom RCTD reference .rds file (leave empty to use dropdown selection)'
     @params['rctdUMImin'] = '100'
     @params['rctdUMImin', 'description'] = 'Minimum UMI count for RCTD annotation. Cells below this threshold will not be classified.'
+    @params['specialOptions'] = ''
+    @params['mail'] = ""
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
