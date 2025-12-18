@@ -9,7 +9,7 @@ class SeuratXeniumApp <  SushiFabric::SushiApp
   def initialize
     super
     @name = 'SeuratXenium'
-    @params['process_mode'] = 'DATASET'
+    @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'Spatial'
     @description =<<-EOS
 Seurat Analysis for Xenium Spatial Transcriptomics.<br/>
@@ -83,17 +83,21 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     @params['rctdFile', 'description'] = 'Manual override: Full path to custom RCTD reference .rds file (leave empty to use dropdown selection)'
     @params['rctdUMImin'] = '100'
     @params['rctdUMImin', 'description'] = 'Minimum UMI count for RCTD annotation. Cells below this threshold will not be classified.'
+    @params['generateVitessceZarr'] = 'true'
+    @params['generateVitessceZarr', 'description'] = 'Generate pre-computed Zarr for Vitessce visualization (enables fast loading in exploreVitessceXenium)'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
-    report_dir = File.join(@result_dir, @params['name'])
-    {'Name'=>@params['name'],
+    # In SAMPLE mode, @dataset contains only the current sample
+    sample_name = @dataset.first['Name']
+    report_dir = File.join(@result_dir, sample_name)
+    {'Name'=>sample_name,
      'ReportData [File]'=>report_dir,
      'Report [Link]'=>File.join(report_dir, '00index.html'),
-     'Species'=>(dataset = @dataset.first and dataset['Species'])
+     'Species'=>@dataset.first['Species']
     }
   end
   def commands
