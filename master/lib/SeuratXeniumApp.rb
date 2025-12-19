@@ -83,8 +83,6 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     @params['rctdFile', 'description'] = 'Manual override: Full path to custom RCTD reference .rds file (leave empty to use dropdown selection)'
     @params['rctdUMImin'] = '100'
     @params['rctdUMImin', 'description'] = 'Minimum UMI count for RCTD annotation. Cells below this threshold will not be classified.'
-    @params['generateVitessceZarr'] = 'true'
-    @params['generateVitessceZarr', 'description'] = 'Generate pre-computed Zarr for Vitessce visualization (enables fast loading in exploreVitessceXenium)'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]
