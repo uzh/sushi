@@ -93,7 +93,8 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
   end
   def next_dataset
     # In SAMPLE mode, @dataset is a single hash (not an array)
-    sample_name = @dataset['Name']
+    # Handle case where @dataset may be empty during set_output_files call
+    sample_name = @dataset['Name'] || @params['name']
     report_dir = File.join(@result_dir, sample_name)
     {'Name'=>sample_name,
      'ReportData [File]'=>report_dir,
