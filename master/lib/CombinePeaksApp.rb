@@ -43,7 +43,7 @@ EOS
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count'],
       'PeakCountResult [File]'=>resultPath
-    }.merge(extract_columns(@inherit_tags))
+    }.merge(extract_columns(@inherit_columns))
     dataset
   end
   def commands
