@@ -28,7 +28,7 @@ BAMboozle: Versatile removal of human sequence variation data for open data shar
     @params['name'] = 'BamBoozle'
     @params['paired'] = false
     @params['paired', "context"] = "BamBoozle"
-    @params['outputFormat'] = ["fastq", "cram"]
+    @params['outputFormat'] = ['fastq', 'cram']
     @params['outputFormat', "context"] = "choose fastq for NCBI GEO and cram for ENA"  
     @params['refBuild'] = ref_selector
     @params['refBuild', "context"] = "reference genome assembly"
