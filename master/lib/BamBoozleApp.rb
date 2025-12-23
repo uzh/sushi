@@ -28,8 +28,10 @@ BAMboozle: Versatile removal of human sequence variation data for open data shar
     @params['name'] = 'BamBoozle'
     @params['paired'] = false
     @params['paired', "context"] = "BamBoozle"
+    @params['outputFormat'] = ["fastq", "cram"]
+    @params['outputFormat', "context"] = "choose fastq for NCBI GEO and cram for ENA"  
     @params['refBuild'] = ref_selector
-    @params['refBuild', "context"] = "referfence genome assembly"
+    @params['refBuild', "context"] = "reference genome assembly"
     @params['cmdOptions'] = '--keepunmapped --strict'
     @params['cmdOptions', 'description'] = 'specify other commandline options for BAMBoozle'
     @params['cmdOptions', "context"] = "BamBoozle"
@@ -39,16 +41,38 @@ BAMboozle: Versatile removal of human sequence variation data for open data shar
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
-    dataset = {'Name'=>@dataset['Name'],
-     'Read1 [File]'=>File.join(@result_dir, "#{@dataset['Name']}_cleaned_R1.fastq.gz"),
-     'Species'=>@dataset['Species'],
-     'Read Count'=>@dataset['Read Count']
-    }.merge(extract_columns(@inherit_tags))
+  dataset = {
+    'Name'        => @dataset['Name'],
+    'Species'     => @dataset['Species'],
+    'Read Count'  => @dataset['Read Count']
+  }.merge(extract_columns(@inherit_tags))
+
+  case @params['outputFormat']
+  when 'fastq'
+    dataset['Read1 [File]'] = File.join(
+      @result_dir,
+      "#{@dataset['Name']}_cleaned_R1.fastq.gz"
+    )
+
     if @params['paired']
-      dataset['Read2 [File]'] = File.join(@result_dir, "#{@dataset['Name']}_cleaned_R2.fastq.gz")
+      dataset['Read2 [File]'] = File.join(
+        @result_dir,
+        "#{@dataset['Name']}_cleaned_R2.fastq.gz"
+      )
     end
-    dataset
+
+  when 'cram'
+    dataset['CRAM [File]'] = File.join(
+      @result_dir,
+      "#{@dataset['Name']}_cleaned.cram"
+    )
+
+  else
+    raise "Unsupported outputFormat: #{@params['outputFormat']}"
   end
+
+  dataset
+end
   def set_default_parameters
      @params['refBuild'] = @dataset[0]['refBuild']
      @params['paired'] = @dataset[0]['paired']
