@@ -18,11 +18,8 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     @required_columns = ['Name','XeniumPath']
     @required_params = ['name']
     @params['cores'] = '8'
-    @params['cores', 'context'] = 'slurm'
     @params['ram'] = '200'
-    @params['ram', 'context'] = 'slurm'
     @params['scratch'] = '200'
-    @params['scratch', 'context'] = 'slurm'
     @params['name'] = 'SeuratXenium'
     @params['minCounts'] = '10'
     @params['minCounts', 'description'] = 'Minimum counts per cell for QC filtering'
@@ -92,14 +89,13 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
-    # In SAMPLE mode, @dataset is a single hash (not an array)
-    # Handle case where @dataset may be empty during set_output_files call
-    sample_name = @dataset['Name'] || @params['name']
+    # In SAMPLE mode, @dataset contains only the current sample
+    sample_name = @dataset.first['Name']
     report_dir = File.join(@result_dir, sample_name)
     {'Name'=>sample_name,
      'ReportData [File]'=>report_dir,
      'Report [Link]'=>File.join(report_dir, '00index.html'),
-     'Species'=>@dataset['Species']
+     'Species'=>@dataset.first['Species']
     }
   end
   def commands
