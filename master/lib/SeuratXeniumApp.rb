@@ -67,16 +67,38 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
       'celltypist/Pancreas_rctd.rds (human)',
       'celltypist/Skeletal_muscle_rctd.rds (human)',
       'celltypist/Spleen_rctd.rds (human)',
-      # Human references - disco (selected)
+      # Human references - disco (complete)
+      'disco/adipose_rctd.rds (human)',
+      'disco/adrenal_gland_rctd.rds (human)',
+      'disco/bladder_rctd.rds (human)',
+      'disco/blood_rctd.rds (human)',
+      'disco/bone_marrow_rctd.rds (human)',
       'disco/brain_rctd.rds (human)',
       'disco/breast_rctd.rds (human)',
+      'disco/eye_rctd.rds (human)',
+      'disco/fallopian_tube_rctd.rds (human)',
+      'disco/gingiva_rctd.rds (human)',
       'disco/heart_rctd.rds (human)',
       'disco/intestine_rctd.rds (human)',
       'disco/kidney_rctd.rds (human)',
       'disco/liver_cell_rctd.rds (human)',
       'disco/lung_rctd.rds (human)',
+      'disco/ovary_rctd.rds (human)',
       'disco/pancreas_cell_rctd.rds (human)',
-      'disco/skin_rctd.rds (human)'
+      'disco/placenta_rctd.rds (human)',
+      'disco/skeletal_muscle_rctd.rds (human)',
+      'disco/skin_rctd.rds (human)',
+      'disco/stomach_rctd.rds (human)',
+      'disco/testis_rctd.rds (human)',
+      'disco/thymus_rctd.rds (human)',
+      'disco/tonsil_rctd.rds (human)',
+      # Human disease-specific references - disco
+      'disco/AD_frontal_cortex_parenchyma_rctd.rds (human Alzheimer)',
+      'disco/COVID-19_blood_rctd.rds (human COVID-19)',
+      'disco/Crohns_disease_ileum_rctd.rds (human Crohn)',
+      'disco/PDAC_pancreas_rctd.rds (human pancreatic cancer)',
+      'disco/type_1_diabetes_pancreas_rctd.rds (human T1D)',
+      'disco/type_2_diabetes_pancreas_rctd.rds (human T2D)'
     ]
     @params['rctdReference', 'description'] = 'RCTD Reference atlas. Format: folder/file.rds (species tissue). WARNING: RCTD requires 200GB+ RAM.'
     @params['rctdFile'] = ''
