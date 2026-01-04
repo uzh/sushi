@@ -120,7 +120,8 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
   end
   def next_dataset
     # In SAMPLE mode, @dataset is a Hash (not Array) containing the current sample
-    sample_name = @dataset['Name']
+    # During check phase, @dataset may be empty - return placeholder structure
+    sample_name = @dataset['Name'] || 'placeholder'
     report_dir = File.join(@result_dir, sample_name)
     {'Name'=>sample_name,
      'ReportData [File]'=>report_dir,
