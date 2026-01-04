@@ -99,14 +99,14 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
       'disco/PDAC_pancreas_rctd.rds (human pancreatic cancer)',
       'disco/type_1_diabetes_pancreas_rctd.rds (human T1D)',
       'disco/type_2_diabetes_pancreas_rctd.rds (human T2D)',
-      # Uveal Melanoma project references (human + melanoma cells)
-      'p36005_UM_references/brain/brain_ref_downsampled.qs2 (human brain + melanoma)',
-      'p36005_UM_references/breast/breast_melanoma_reference_raw_counts.qs2 (human breast + melanoma)',
-      'p36005_UM_references/duodenum/duod_ref_downsampled.qs2 (human duodenum + melanoma)',
-      'p36005_UM_references/eye/eye_ref_downsampled.qs2 (human eye/retina + melanoma)',
-      'p36005_UM_references/liver/ref_downsampled.qs (human liver + melanoma)',
-      'p36005_UM_references/skin/skin_ref_downsampled.qs2 (human skin + melanoma)',
-      'p36005_UM_references/thyroid/thyroid_ref_downsampled.qs2 (human thyroid + melanoma)'
+      # Uveal Melanoma project references (human + melanoma cells) - pre-built RCTD format
+      'p36005_UM_references/brain/brain_rctd.rds (human brain + melanoma)',
+      'p36005_UM_references/breast/breast_rctd.rds (human breast + melanoma)',
+      'p36005_UM_references/duodenum/duodenum_rctd.rds (human duodenum + melanoma)',
+      'p36005_UM_references/eye/eye_rctd.rds (human eye + melanoma)',
+      'p36005_UM_references/liver/liver_rctd.rds (human liver + melanoma)',
+      'p36005_UM_references/skin/skin_rctd.rds (human skin + melanoma)',
+      'p36005_UM_references/thyroid/thyroid_rctd.rds (human thyroid + melanoma)'
     ]
     @params['rctdReference', 'description'] = 'RCTD Reference atlas. Format: folder/file.rds (species tissue). WARNING: RCTD requires 200GB+ RAM.'
     @params['rctdFile'] = ''
