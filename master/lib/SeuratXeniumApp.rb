@@ -111,7 +111,7 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     @params['rctdReference', 'description'] = 'RCTD Reference atlas. Format: folder/file.rds (species tissue). WARNING: RCTD requires 200GB+ RAM.'
     @params['rctdFile'] = ''
     @params['rctdFile', 'description'] = 'Manual override: Full path to custom RCTD reference .rds file (leave empty to use dropdown selection)'
-    @params['rctdUMImin'] = '100'
+    @params['rctdUMImin'] = '20'
     @params['rctdUMImin', 'description'] = 'Minimum UMI count for RCTD annotation. Cells below this threshold will not be classified.'
     @params['specialOptions'] = ''
     @params['mail'] = ""
