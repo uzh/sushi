@@ -119,13 +119,13 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
-    # In SAMPLE mode, @dataset contains only the current sample
-    sample_name = @dataset.first['Name']
+    # In SAMPLE mode, @dataset is a Hash (not Array) containing the current sample
+    sample_name = @dataset['Name']
     report_dir = File.join(@result_dir, sample_name)
     {'Name'=>sample_name,
      'ReportData [File]'=>report_dir,
      'Report [Link]'=>File.join(report_dir, '00index.html'),
-     'Species'=>@dataset.first['Species']
+     'Species'=>@dataset['Species']
     }
   end
   def commands
