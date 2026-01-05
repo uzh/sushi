@@ -14,7 +14,7 @@ class CombinePeaksApp <  SushiFabric::SushiApp
     @description =<<-EOS
     Determine consensus peaks of ATAC Seq or ChIP Seq data and quantify them <br/>
 EOS
-    @required_columns = ['Name','BED', 'BAM', 'refBuild', 'refFeatureFile', 'Species', 'paired','Read Count']
+    @required_columns = ['Name','BED', 'BAM', 'refBuild', 'refFeatureFile', 'Species', 'paired']
     @required_params = ['skipExtraChr', 'minSamples']
     @params['cores'] = '8'
     @params['cores', "context"] = "slurm"
