@@ -29,23 +29,38 @@ EOS
     @params['name'] = 'peakCountResult'
     @params['mail'] = ""
     @modules = ["Dev/R"]
-    #@inherit_tags = ["Factor", "B-Fabric"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
-  
   def next_dataset
+    ds = @dataset.first
     resultPath = File.join(@result_dir, "#{@params['name']}")
-    dataset = {'Name'=>@dataset['Name'],
-     'Count [File,Link]'=>File.join(resultPath, "#{@dataset['Name']}_peak_counts.txt"),
-     'Species'=>@dataset['Species'],
-     'refBuild'=>@dataset['refBuild'],
-     'featureLevel'=>'peak',
-     'refFeatureFile'=>@dataset['refFeatureFile'],
-     'paired'=>@dataset['paired'],
-     'Read Count'=>@dataset['Read Count'],
+    dataset = {'Name'=>@params['name']
       'PeakCountResult [File]'=>resultPath
+      'Species'=>ds['Species'],
+      'refBuild'=>ds['refBuild']
     }#.merge(extract_columns(@inherit_tags))
     dataset
   end
+  def grandchild_datasets
+    grandchild_dataset = []
+    rows = @dataset.is_a?(Array) ? @dataset : []
+    return grandchild_dataset if rows.empty?
+    @params['grandchildName'] = "details" ## TODO: order name should be kept
+    rows.each_with_index do |row, i|
+      sample = Hash[*row.map{|key,value| [key.gsub(/\[.+\]/,'').strip, value]}.flatten]
+      grandchild_dataset << {
+        'Name'=>sample['Name'],
+        'Count [Link]'=>File.join(@result_dir, "#{@params['name']}", "#{sample['Name']}_peak_counts.txt"),
+        'Species'=>sample['Species'],
+        'refBuild'=>sample['refBuild'], 
+        'featureLevel'=>"peak",
+        'refFeatureFile'=>sample['refFeatureFile'],
+      }.merge(extract_columns(tags: @inherit_tags, sample_name: sample['Name']))
+    end
+    grandchild_dataset
+  end
+
+  
   def commands
     run_RApp("EzAppPeakCombiner")
   end
