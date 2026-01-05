@@ -34,8 +34,8 @@ EOS
   def next_dataset
     ds = @dataset.first
     resultPath = File.join(@result_dir, "#{@params['name']}")
-    dataset = {'Name'=>@params['name']
-      'PeakCountResult [File]'=>resultPath
+    dataset = {'Name'=>@params['name'],
+      'PeakCountResult [File]'=>resultPath,
       'Species'=>ds['Species'],
       'refBuild'=>ds['refBuild']
     }#.merge(extract_columns(@inherit_tags))
