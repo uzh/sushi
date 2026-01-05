@@ -14,7 +14,7 @@ class CombinePeaksApp <  SushiFabric::SushiApp
     @description =<<-EOS
     Determine consensus peaks of ATAC Seq or ChIP Seq data and quantify them <br/>
 EOS
-    @required_columns = ['Name','BED', 'BAM']
+    @required_columns = ['Name','BED', 'BAM', 'refBuild', 'refFeatureFile', 'Species', 'paired','Read Count']
     @required_params = ['skipExtraChr', 'minSamples']
     @params['cores'] = '8'
     @params['cores', "context"] = "slurm"
@@ -29,21 +29,21 @@ EOS
     @params['name'] = 'peakCountResult'
     @params['mail'] = ""
     @modules = ["Dev/R"]
-    #@inherit_tags = ["Factor", "B-Fabric"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
   
   def next_dataset
     resultPath = File.join(@result_dir, "#{@params['name']}")
     dataset = {'Name'=>@dataset['Name'],
      'Count [File,Link]'=>File.join(resultPath, "#{@dataset['Name']}_peak_counts.txt"),
-     'Species'=>@dataset['Species'],
-     'refBuild'=>@params['refBuild'],
-     'featureLevel'=>@params['featureLevel'],
-     'refFeatureFile'=>@params['refFeatureFile'],
-     'paired'=>@params['paired'],
+     'Species'=>@dataset['Species']
+     'refBuild'=>@dataset['refBuild'],
+     'featureLevel'=>'peak',
+     'refFeatureFile'=>@dataset['refFeatureFile'],
+     'paired'=>@dataset['paired'],
      'Read Count'=>@dataset['Read Count'],
       'PeakCountResult [File]'=>resultPath
-    }#.merge(extract_columns(@inherit_tags))
+    }.merge(extract_columns(@inherit_tags))
     dataset
   end
   def commands
