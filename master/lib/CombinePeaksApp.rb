@@ -36,7 +36,7 @@ EOS
     resultPath = File.join(@result_dir, "#{@params['name']}")
     dataset = {'Name'=>@dataset['Name'],
      'Count [File,Link]'=>File.join(resultPath, "#{@dataset['Name']}_peak_counts.txt"),
-     'Species'=>@dataset['Species']
+     'Species'=>@dataset['Species'],
      'refBuild'=>@dataset['refBuild'],
      'featureLevel'=>'peak',
      'refFeatureFile'=>@dataset['refFeatureFile'],
