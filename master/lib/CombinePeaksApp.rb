@@ -29,7 +29,7 @@ EOS
     @params['name'] = 'peakCountResult'
     @params['mail'] = ""
     @modules = ["Dev/R"]
-    @inherit_columns = ["Order Id"]
+    @inherit_tags = ["Factor", "B-Fabric"]
   end
   
   def next_dataset
@@ -43,7 +43,7 @@ EOS
      'paired'=>@params['paired'],
      'Read Count'=>@dataset['Read Count'],
       'PeakCountResult [File]'=>resultPath
-    }.merge(extract_columns(@inherit_columns))
+    }.merge(extract_columns(@inherit_tags))
     dataset
   end
   def commands
