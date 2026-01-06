@@ -35,7 +35,7 @@ EOS
     @params['annotationMethod', 'description'] = 'peaks can be annotated with three different tools'
     @params['cmdOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/R"]
+    @modules = ["Dev/R", "Tools/HOMER"]
     @inherit_columns = ["Order Id"]
   end
   def set_default_parameters
