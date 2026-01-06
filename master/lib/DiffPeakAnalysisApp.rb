@@ -16,7 +16,7 @@ class DiffPeakAnalysisApp <  SushiFabric::SushiApp
 EOS
     @required_columns = ['Name','Count', 'BigWig']
     @required_params = ['grouping', 'sampleGroup', 'refGroup', 'refBuild']
-    @params['cores'] = '1'
+    @params['cores'] = '4'
     @params['cores', "context"] = "slurm"
     @params['ram'] = '20'
     @params['ram', "context"] = "slurm"
