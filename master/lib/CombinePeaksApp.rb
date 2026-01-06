@@ -53,8 +53,9 @@ EOS
         'Count [Link]'=>File.join(@result_dir, "#{@params['name']}", "#{sample['Name']}_peak_counts.txt"),
         'Species'=>sample['Species'],
         'refBuild'=>sample['refBuild'], 
-        'featureLevel'=>"peak",
+        'featureLevel'=>"peaks",
         'refFeatureFile'=>sample['refFeatureFile'],
+        'BigWig'=>sample['BigWigFile'],
       }.merge(extract_columns(tags: @inherit_tags, sample_name: sample['Name']))
     end
     grandchild_dataset
