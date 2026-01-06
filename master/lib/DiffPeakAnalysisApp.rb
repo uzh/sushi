@@ -31,7 +31,7 @@ EOS
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
     @params['refGroup'] = ''
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
-    @params['annotationMethod'] = ['chippeakanno', 'chipseeker', 'homer']
+    @params['annotationMethod'] = ['homer', 'chippeakanno', 'chipseeker']
     @params['annotationMethod', 'description'] = 'peaks can be annotated with three different tools'
     @params['cmdOptions'] = ''
     @params['mail'] = ""
