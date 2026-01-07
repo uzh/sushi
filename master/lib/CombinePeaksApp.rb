@@ -41,7 +41,7 @@ EOS
     dataset = {'Name'=>@params['name'],
       'PeakCountResult [File]'=>resultPath,
       'Species'=>ds['Species'],
-      'refBuild'=>@params['refFeatureFile'],
+      'refBuild'=>@params['refBuild'],
       'IGV_Session [Link]' => File.join(resultPath, "igv_session.html")
     }.merge(extract_columns(@inherit_tags))
     dataset
