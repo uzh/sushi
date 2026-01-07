@@ -22,6 +22,7 @@ EOS
     @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
     @params['scratch', "context"] = "slurm"
+    @params['refBuild'] = ref_selector
     @params['skipExtraChr'] = true
     @params['minSamples'] = 2
     @params['cmdOptions'] = ''
@@ -31,14 +32,18 @@ EOS
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
+  def set_default_parameters
+    @params['refBuild'] = @dataset[0]['refBuild']
+  end  
   def next_dataset
     ds = @dataset.first
     resultPath = File.join(@result_dir, "#{@params['name']}")
     dataset = {'Name'=>@params['name'],
       'PeakCountResult [File]'=>resultPath,
       'Species'=>ds['Species'],
-      'refBuild'=>ds['refBuild']
-    }#.merge(extract_columns(@inherit_tags))
+      'refBuild'=>@params['refFeatureFile'],
+      'IGV_Session [Link]' => File.join(resultPath, "igv_session.html")
+    }.merge(extract_columns(@inherit_tags))
     dataset
   end
   def grandchild_datasets
