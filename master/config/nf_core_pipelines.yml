@@ -11,8 +11,8 @@ pipelines:
       - Name
       - Read1
     params:
-      cores: 4
-      ram: 16
+      cores: 1
+      ram: 50
       scratch: 50
 
   rnaseq:
