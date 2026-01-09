@@ -1,0 +1,19 @@
+pipelines:
+  demo:
+    name: NfCoreDemo
+    analysis_category: QC
+    description: |
+      Demo pipeline from nf-core for testing.
+      <a href='https://nf-co.re/demo'>nf-core/demo</a>
+    nf_core_name: demo
+    default_version: "1.0.2"
+    required_columns:
+      - Name
+      - Read1
+    params:
+      cores: 4
+      ram: 16
+      scratch: 50
+
+  rnaseq:
+    nf_core_name: rnaseq
