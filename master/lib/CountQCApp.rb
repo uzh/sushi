@@ -56,7 +56,7 @@ Quality control after counting reads<br/>
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
      'Static Report [Link]'=>report_link,
-     'Live Report [Link]'=>"#{https://fgcz-shiny.uzh.ch/app/exploreDE}?data=#{report_file}/counts-#{@random_string}-EzResult.RData",
+     'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/exploreDE?data=#{report_file}/counts-#{@random_string}-EzResult.RData",
      'Report [File]'=>report_file,
     }.merge(extract_columns(colnames: @inherit_columns))
   end
