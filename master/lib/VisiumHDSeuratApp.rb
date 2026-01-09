@@ -10,7 +10,7 @@ class VisiumHDSeuratApp < SushiFabric::SushiApp
   def initialize
     super
     @employee = true
-    @name = 'SeuratVisiumHDApp'
+    @name = 'VisiumHDSeuratApp'
     @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'Spatial'
     @description =<<-EOS
