@@ -43,7 +43,7 @@ When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/
     @params['TenXLibrary', 'multi_selection'] = true
     @params['TenXLibrary', 'selected'] = ['GEX', 'Multiplexing']
     @params['MultiplexingType'] = {'select'=>'', 'On chip multiplexing (OCM)'=>'ocm', 'Hashing with Antibody Capture'=>'antibody'}
-    @params['MultiplexingType', 'description'] = "(Beta) Which type of 3' multiplexing technology is used? See the <a href='https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-3p-multi'>support page</a> for further details. Currently, only 'Hashing with Antibody Capture' affects the app's behaviour. Must also select corresponding 'AntibodyCapture' csv file."
+    @params['MultiplexingType', 'description'] = "Which type of 3' multiplexing technology is used? See the <a href='https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-3p-multi'>support page</a> for further details. For OCM (On-chip Multiplexing), no MultiplexBarcodeSet is needed - Sample2Barcode file must have 'ocm_barcode_ids' column (OB1-OB4). For Hashing, select the corresponding TotalSeq AntibodyCapture csv file."
     @params['MultiplexBarcodeSet'] = {'select'=>''}
     Dir["/srv/GT/databases/10x/CMO_files/*"].sort.select{|design| File.file?(design)}.each do |dir|
       @params['MultiplexBarcodeSet'][File.basename(dir)] = File.basename(dir)
