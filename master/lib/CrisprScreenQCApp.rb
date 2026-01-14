@@ -10,7 +10,7 @@ class CrisprScreenQCApp <  SushiFabric::SushiApp
     super
     @name = 'CrisprScreenQC'
     @params['process_mode'] = 'DATASET'
-    @analysis_category = 'QC'
+    @analysis_category = 'GenomeEditing'
 @description =<<-EOS
 Screens of CRISPR samples for contaminations
 EOS
