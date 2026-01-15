@@ -20,6 +20,11 @@ master/.Rproj.user
 master/.Rhistory
 master/*.Rproj
 master/cursor_log
+master/.nextflow/
+master/.nextflow.log*
+master/*.bak
+master/null/
+master/tmp/nfcore_cache/
 .DS_Store
 lib/WordCountApp.rb
 master/bak

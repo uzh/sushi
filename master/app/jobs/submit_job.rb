@@ -3,7 +3,17 @@ class SubmitJob < ApplicationJob
 
   def perform(params)
     class_name = params[:class_name]
-    require class_name
+    # For dynamically defined nf-core apps, ensure they are registered in this process
+    unless Object.const_defined?(class_name)
+      begin
+        require 'nf_core_app_factory'
+        NfCoreAppFactory.register_dynamic_apps
+      rescue LoadError
+        # nf_core_app_factory not available, continue with normal require
+      end
+    end
+    # Still try require if class is not defined (for static .rb files)
+    require class_name unless Object.const_defined?(class_name)
     sushi_app = eval(class_name).new
     sushi_app.logger = logger
     sushi_app.sushi_server = eval(SushiFabric::Application.config.sushi_server_class).new

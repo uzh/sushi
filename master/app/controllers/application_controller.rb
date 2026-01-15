@@ -44,10 +44,20 @@ class ApplicationController < ActionController::Base
     lib_dir = File.expand_path('../../../lib', __FILE__)
     sushi_apps = Dir[File.join(lib_dir, '*.rb')].select{|script| !non_sushi_apps.include?(File.basename(script))}.to_a.map{|script| File.basename(script)}
     sushi_apps.concat Dir[File.join(lib_dir, '*.sh')].map{|script| File.basename(script)}
+    
+    # Add dynamically registered nf-core apps
+    if defined?(NfCoreAppFactory)
+      nf_core_apps = NfCoreAppFactory.registered_class_names.map { |name| "#{name}.rb" }
+      sushi_apps.concat(nf_core_apps)
+      sushi_apps.uniq!
+    end
+
     sushi_apps.each do |script|
       if script =~ /\.rb/
         class_name = script.gsub(/\.rb/,'')
-        require class_name
+        unless Object.const_defined?(class_name)
+          require class_name
+        end
       elsif script =~ /\.sh/
         sushi_wrap = SushiWrap.new(File.join(lib_dir, script))
         sushi_wrap.define_class
