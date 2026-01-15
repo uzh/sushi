@@ -5,10 +5,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class SeuratXeniumApp <  SushiFabric::SushiApp
+class XeniumSeuratApp <  SushiFabric::SushiApp
   def initialize
     super
-    @name = 'SeuratXenium'
+    @name = 'XeniumSeurat'
     @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'Spatial'
     @description =<<-EOS
@@ -20,17 +20,17 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     @params['cores'] = '8'
     @params['ram'] = '200'
     @params['scratch'] = '200'
-    @params['name'] = 'SeuratXenium'
+    @params['name'] = 'XeniumSeurat'
     @params['minCounts'] = '10'
     @params['minCounts', 'description'] = 'Minimum counts per cell for QC filtering'
     @params['minFeatures'] = '5'
     @params['minFeatures', 'description'] = 'Minimum features per cell for QC filtering'
-    @params['Cluster_resolution'] = '0.5'
-    @params['Cluster_resolution', 'description'] = 'Resolution for Seurat clustering (higher = more clusters)'
+    @params['clusterResolution'] = '0.5'
+    @params['clusterResolution', 'description'] = 'Resolution for Seurat clustering (higher = more clusters)'
     @params['lambda'] = '0.8'
     @params['lambda', 'description'] = 'BANKSY spatial weighting (0-1). Higher values give more weight to spatial neighbors.'
-    @params['Niche_resolution'] = '0.5'
-    @params['Niche_resolution', 'description'] = 'Resolution for BANKSY spatial niche clustering (higher = more niches)'
+    @params['nicheResolution'] = '0.5'
+    @params['nicheResolution', 'description'] = 'Resolution for BANKSY spatial niche clustering (higher = more niches)'
     @params['rctdReference'] = ['None',
       # Mouse references
       'allen/allen_cortex_rctd.rds (mouse brain)',
@@ -124,12 +124,12 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     sample_name = @dataset['Name'] || 'placeholder'
     report_dir = File.join(@result_dir, sample_name)
     {'Name'=>sample_name,
-     'ReportData [File]'=>report_dir,
-     'Report [Link]'=>File.join(report_dir, '00index.html'),
+     'XeniumSeurat [File]'=>report_dir,
+     'XeniumSeurat Report [Link]'=>File.join(report_dir, '00index.html'),
      'Species'=>@dataset['Species']
     }
   end
   def commands
-    run_RApp("EzAppSeuratXenium")
+    run_RApp("EzAppXeniumSeurat")
   end
 end
