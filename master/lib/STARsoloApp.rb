@@ -33,8 +33,8 @@ This wrapper runs <a href='https://github.com/alexdobin/STAR/blob/2.7.3a/docs/ST
     ## STARsolo parameters
     @params['soloType'] = ['CB_UMI_Simple','CB_UMI_Complex']
     @params['soloType', 'description'] = 'CB_UMI_Simple (a.k.a. Droplet), CB_UMI_Complex (e.g. Droplet).'
-    @params['soloCBwhitelist'] = ['SC3Pv3', 'SC3Pv2', 'SC3Pv1']
-    @params['soloCBwhitelist', 'description'] = 'Automatically select assay configuration and barcode whitelist path.'
+    @params['soloCBwhitelist'] = ['SC3Pv4', 'SC3Pv3', 'SC3Pv2', 'SC3Pv1']
+    @params['soloCBwhitelist', 'description'] = 'Select barcode whitelist. For details on which one to use, see: https://kb.10xgenomics.com/s/article/115004506263-What-is-a-barcode-inclusion-list-formerly-barcode-whitelist'
     @params['soloCBstart'] = '1'
     @params['soloCBstart', 'description'] = 'Cell barcode start base.'
     @params['soloCBlen'] = '16'
