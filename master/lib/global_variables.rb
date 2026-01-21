@@ -338,14 +338,16 @@ module GlobalVariables
     command
   end
 
-  def run_PyApp(app_name = self.class.to_s.downcase, conda_env: nil)
+  def run_PyApp(app_name = self.class.to_s.downcase, conda_env: nil, pixi_enabled: false)
     command = ''
-    if conda_env
+    if pixi_enabled
+      command << "pixi run --manifest-path #{SushiFabric::Application.config.ezpyz_dir}/ezpyz_#{app_name} python3 << EOT\n"
+    else
       command << ". '/usr/local/ngseq/miniforge3/etc/profile.d/conda.sh'\n"
       command << "conda activate #{conda_env}\n"
+      command << "python3 << EOT\n"
     end
-    command << "python3 << EOT\n"
-        
+            
     command << "from ezpyz_#{app_name.downcase}.app import EzApp#{app_name.capitalize}\n" #This defines a naming convention in EzPyZ!
 
     command << "param = {}\n"
