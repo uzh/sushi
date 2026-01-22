@@ -1,19 +1,139 @@
+# nf-core Pipeline Configuration
+#
+# This file allows manual override of nf-core pipeline settings.
+# API-fetched values are used by default, but settings here take precedence.
+#
+# === Input Types ===
+# Different nf-core pipelines expect different input formats:
+#   - samplesheet: Standard CSV with sample info (default for most pipelines)
+#   - id_list: Text file with accession IDs (e.g., fetchngs)
+#   - fasta_list: Text file with FASTA file paths
+#   - custom: Pipeline-specific format
+#
+# If input_type is not specified, it will be auto-detected from schema_input.json
+#
+# === Samplesheet Mapping ===
+# Maps SUSHI dataset columns to nf-core samplesheet columns.
+# Format: nf_core_column: sushi_column
+#
+# === Custom Parameters ===
+# Define pipeline-specific parameters that aren't in the standard schema.
+#
 pipelines:
-  demo:
-    name: NfCoreDemo
-    analysis_category: QC
-    description: |
-      Demo pipeline from nf-core for testing.
-      <a href='https://nf-co.re/demo'>nf-core/demo</a>
-    nf_core_name: demo
-    default_version: "1.0.2"
-    required_columns:
-      - Name
-      - Read1
-    params:
-      cores: 1
-      ram: 50
-      scratch: 50
-
+  # ============================================================
+  # rnaseq - RNA sequencing analysis
+  # ============================================================
   rnaseq:
     nf_core_name: rnaseq
+    default_version: "3.22.2"
+    analysis_category: Transcriptomics
+    input_type: samplesheet
+    samplesheet_mapping:
+      sample: Name
+      fastq_1: "Read1 [File]"
+      fastq_2: "Read2 [File]"
+      strandedness: StrandMode
+    params:
+      cores: 8
+      ram: 30
+      scratch: 100
+
+  # ============================================================
+  # fetchngs - Fetch data from public databases
+  # ============================================================
+  fetchngs:
+    nf_core_name: fetchngs
+    input_type: id_list
+    analysis_category: DataFetch
+    custom_params:
+      - name: accession_ids
+        type: text_area
+        required: true
+        default: ""
+        description: "Enter SRA/ENA/GEO/DDBJ accession IDs separated by comma or space (e.g., SRR9984183,ERR1160846,GSM4432381)"
+    params:
+      cores: 4
+      ram: 16
+      scratch: 500
+
+  # ============================================================
+  # chipseq - ChIP-seq analysis
+  # ============================================================
+  chipseq:
+    nf_core_name: chipseq
+    input_type: samplesheet
+    analysis_category: Epigenetics
+    samplesheet_mapping:
+      sample: Name
+      fastq_1: "Read1 [File]"
+      fastq_2: "Read2 [File]"
+      antibody: Antibody
+      control: Control
+    params:
+      cores: 8
+      ram: 30
+      scratch: 100
+
+  # ============================================================
+  # atacseq - ATAC-seq analysis
+  # ============================================================
+  atacseq:
+    nf_core_name: atacseq
+    input_type: samplesheet
+    analysis_category: Epigenetics
+    samplesheet_mapping:
+      sample: Name
+      fastq_1: "Read1 [File]"
+      fastq_2: "Read2 [File]"
+    params:
+      cores: 8
+      ram: 30
+      scratch: 100
+
+  # ============================================================
+  # sarek - Variant calling pipeline
+  # ============================================================
+  sarek:
+    nf_core_name: sarek
+    input_type: samplesheet
+    analysis_category: Genomics
+    samplesheet_mapping:
+      patient: Patient
+      sample: Name
+      lane: Lane
+      fastq_1: "Read1 [File]"
+      fastq_2: "Read2 [File]"
+    params:
+      cores: 8
+      ram: 64
+      scratch: 200
+
+  # ============================================================
+  # taxprofiler - Taxonomic profiling
+  # ============================================================
+  taxprofiler:
+    nf_core_name: taxprofiler
+    input_type: samplesheet
+    analysis_category: Metagenomics
+    samplesheet_mapping:
+      sample: Name
+      fastq_1: "Read1 [File]"
+      fastq_2: "Read2 [File]"
+    params:
+      cores: 8
+      ram: 64
+      scratch: 200
+
+# ============================================================
+# Default settings for pipelines not explicitly configured
+# ============================================================
+defaults:
+  input_type: auto  # Will be detected from schema_input.json
+  samplesheet_mapping:
+    sample: Name
+    fastq_1: "Read1 [File]"
+    fastq_2: "Read2 [File]"
+  params:
+    cores: 8
+    ram: 30
+    scratch: 100

@@ -54,8 +54,18 @@ EOS
   
   def commands
     cmd = run_RApp('EzAppNfCoreGeneric')
+    
+    # Add Apptainer cache settings
+    cache_settings = <<~SHELL
+      export NXF_SINGULARITY_CACHEDIR=/misc/fgcz01/nextflow_apptainer_cache/
+      export SINGULARITY_CACHEDIR=/misc/fgcz01/nextflow_apptainer_cache/
+    SHELL
+    
+    cmd = cache_settings + cmd
+    
     # Insert source() after the if block closes, before param = list()
-    cmd.sub!("}\nparam = list()", "}\nsource('#{File.expand_path('../R/EzAppNfCoreGeneric.R', __FILE__)}')\nparam = list()")
+    r_app_path = '/srv/GT/analysis/masaomi/2026/FGCZ/nf_core_sushi_app_20260109/EzAppNfCoreGeneric.R'
+    cmd.sub!("}\nparam = list()", "}\nsource('#{r_app_path}')\nparam = list()")
     cmd
   end
 end

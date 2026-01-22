@@ -151,12 +151,25 @@ class DataSetController < ApplicationController
       sushi_apps = runnable_application(@data_set.headers, refresh)
       @sushi_apps_category = sushi_apps.map{|app| app.analysis_category}.uniq.sort
       @sushi_apps = {}
+      @nfcore_apps = []
       sushi_apps.sort_by{|app| app.class_name.to_s}.each do |app|
-        @sushi_apps[app.analysis_category] ||= []
-        @sushi_apps[app.analysis_category] << app.class_name.to_s
+        # Separate nf-core apps from regular apps
+        if app.class_name.to_s =~ /^NfCore/
+          @nfcore_apps << app.class_name.to_s
+        else
+          @sushi_apps[app.analysis_category] ||= []
+          @sushi_apps[app.analysis_category] << app.class_name.to_s
+        end
       end
       @data_set.runnable_apps = @sushi_apps
-      @data_set.save
+      @data_set.nfcore_apps = @nfcore_apps
+      saved = @data_set.save
+      
+      # Debug output
+      puts "DEBUG set_runnable_apps: @nfcore_apps count: #{@nfcore_apps.size}"
+      puts "DEBUG set_runnable_apps: @data_set.nfcore_apps count after save: #{@data_set.nfcore_apps.size}"
+      puts "DEBUG set_runnable_apps: save result: #{saved}"
+      $stdout.flush
     end
   end
   def show
@@ -282,6 +295,13 @@ class DataSetController < ApplicationController
           @employee_apps = employee_apps
           @sushi_apps = @data_set.runnable_apps
           @sushi_apps_category = @sushi_apps.keys.sort
+          @nfcore_apps = @data_set.nfcore_apps || []
+          
+          # Debug output for nf-core apps
+          puts "DEBUG show: @sushi_apps keys: #{@sushi_apps.keys.inspect}"
+          puts "DEBUG show: @nfcore_apps count: #{@nfcore_apps.size}"
+          puts "DEBUG show: @nfcore_apps first 5: #{@nfcore_apps.first(5).inspect}"
+          $stdout.flush
         else
           @url_not_found = true
           index

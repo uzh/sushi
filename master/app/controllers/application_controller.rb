@@ -66,6 +66,17 @@ class ApplicationController < ActionController::Base
     sushi_apps
   end
   def refresh_sushi_application
+    # Re-register dynamic nf-core apps (they may not exist in this process)
+    if defined?(NfCoreAppFactory)
+      NfCoreAppFactory.register_dynamic_apps
+    end
+    
+    # Get dynamically registered nf-core app names for special handling
+    nfcore_class_names = if defined?(NfCoreAppFactory)
+                           NfCoreAppFactory.registered_class_names
+                         else
+                           []
+                         end
 
     # new check
     sushi_apps = all_sushi_applications
@@ -77,10 +88,26 @@ class ApplicationController < ActionController::Base
     end
     sushi_apps.select{|app| app =~ /\.rb$/}.each do |app|
       class_name = app.gsub(/\.rb/,'')
-      updated_at = File.stat(File.join(lib_dir, app)).mtime
-      unless sushi_app = SushiApplication.find_by_class_name(class_name) and updated_at < sushi_app.updated_at
-        if sushi_app 
-          load File.join(lib_dir, app)
+      
+      # For dynamically registered nf-core apps, skip file check
+      is_dynamic_nfcore = nfcore_class_names.include?(class_name)
+      file_path = File.join(lib_dir, app)
+      
+      if is_dynamic_nfcore
+        # Dynamic nf-core app - always update if not in DB
+        updated_at = Time.now
+        sushi_app = SushiApplication.find_by_class_name(class_name)
+      elsif File.exist?(file_path)
+        updated_at = File.stat(file_path).mtime
+        sushi_app = SushiApplication.find_by_class_name(class_name)
+      else
+        # Skip if file doesn't exist and not a dynamic nf-core app
+        next
+      end
+      
+      unless sushi_app and !is_dynamic_nfcore and updated_at < sushi_app.updated_at
+        if sushi_app and !is_dynamic_nfcore and File.exist?(file_path)
+          load file_path
         end
         begin
           sushi_app_instance = eval(class_name).new
@@ -94,6 +121,11 @@ class ApplicationController < ActionController::Base
           sushi_app_entry.description = sushi_app_instance.description
           sushi_app_entry.employee = sushi_app_instance.employee
           sushi_app_entry.save
+          # Debug output for nf-core apps
+          if is_dynamic_nfcore
+            puts "DEBUG: Saved #{class_name} with required_columns=#{sushi_app_entry.required_columns.inspect}"
+            $stdout.flush
+          end
         rescue => err
           warn err
           warn "#{class_name} cannot be imported"
@@ -115,9 +147,24 @@ class ApplicationController < ActionController::Base
     if refresh
       refresh_sushi_application
     end
-    sushi_apps = SushiApplication.all.select do |app|
+    
+    # Debug: count nf-core apps in database
+    all_apps = SushiApplication.all
+    nfcore_apps_in_db = all_apps.select { |app| app.class_name =~ /^NfCore/ }
+    puts "DEBUG: Total apps in DB: #{all_apps.size}, NfCore apps: #{nfcore_apps_in_db.size}"
+    puts "DEBUG: Dataset headers: #{data_set_headers.inspect}"
+    $stdout.flush
+    
+    sushi_apps = all_apps.select do |app|
       app.required_columns_satisfied_by?(data_set_headers)
     end
+    
+    # Debug: count filtered nf-core apps
+    filtered_nfcore = sushi_apps.select { |app| app.class_name =~ /^NfCore/ }
+    puts "DEBUG: After filtering - Total: #{sushi_apps.size}, NfCore: #{filtered_nfcore.size}"
+    $stdout.flush
+    
+    sushi_apps
   end
   def employee_apps
     apps = {}

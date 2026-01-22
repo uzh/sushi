@@ -1,6 +1,34 @@
 class SubmitJob < ApplicationJob
   queue_as :default
 
+  # Safely evaluate parameter values - only allow numeric/boolean/array literals
+  def safe_eval(value)
+    return value if value.nil?
+    str = value.to_s.strip
+    
+    # Boolean
+    return true if str == 'true'
+    return false if str == 'false'
+    
+    # Integer
+    return str.to_i if str =~ /\A-?\d+\z/
+    
+    # Float
+    return str.to_f if str =~ /\A-?\d+\.\d+\z/
+    
+    # Array literal (simple cases only)
+    if str =~ /\A\[.*\]\z/
+      begin
+        return JSON.parse(str)
+      rescue
+        return value
+      end
+    end
+    
+    # Default: return as string
+    value
+  end
+
   def perform(params)
     class_name = params[:class_name]
     # For dynamically defined nf-core apps, ensure they are registered in this process
@@ -25,7 +53,7 @@ class SubmitJob < ApplicationJob
       sushi_app.params[key] = if sushi_app.params.data_type(key) == String
                                        value
                                      else
-                                       eval(value)
+                                       safe_eval(value)
                                      end
     end
     sushi_app.project = params[:project]

@@ -6,6 +6,7 @@ class DataSet < ActiveRecord::Base
   has_many :data_sets, :foreign_key => :parent_id
   belongs_to :data_set, :foreign_key => :parent_id
   serialize :runnable_apps, Hash
+  serialize :nfcore_apps, Array
   belongs_to :user
   serialize :order_ids, Array
   serialize :job_parameters, Hash

@@ -1,8 +1,27 @@
 <div id='container_sushi_application_list' style="display: inline-block;">
-  <% if @sushi_apps.empty? %>
+  <%
+    # Extract nf-core apps from all categories
+    nfcore_apps_list = []
+    regular_apps = {}
+    @sushi_apps.each do |category, apps|
+      apps.each do |app|
+        if app.to_s =~ /^NfCore/
+          nfcore_apps_list << app
+        else
+          regular_apps[category] ||= []
+          regular_apps[category] << app
+        end
+      end
+    end
+    # Also include @nfcore_apps if it exists
+    nfcore_apps_list.concat(@nfcore_apps.to_a) if @nfcore_apps
+    nfcore_apps_list.uniq!
+    regular_categories = regular_apps.keys.sort
+  %>
+  <% if regular_apps.empty? && nfcore_apps_list.empty? %>
     <span class="alert">No Available Application for this DataSet</span><br />
   <% else %>
-    <%= form_tag(:controller => 'run_application', :action => 'set_parameters') do %>
+    <%= form_tag(:controller => 'run_application', :action => 'set_parameters', id: 'sushi_app_form') do %>
       <%= hidden_field :data_set, :id, :value=>@data_set.id %>
       <div style="margin-bottom: 10px;">
         <%= check_box_tag :use_project_defaults, '1', true %>
@@ -10,14 +29,30 @@
       </div>
       <table>
         <th>Category</th><th>Application</th>
-      <% @sushi_apps_category.each do |category| %>
+      <% regular_categories.each do |category| %>
         <tr><td><%= category %></td>
           <td style="padding: 2px;">
-            <% @sushi_apps[category].each do |app| %>
+            <% regular_apps[category].each do |app| %>
               <% if (session['employee'] and @employee_apps[app]) or !@employee_apps[app] %>
                 <%= submit_tag app.to_s, :name=>'app', :class=>"btn btn-info btn-sm raised", :style=>"padding: 2px" %>
               <% end %>
             <% end %>
+          </td>
+        </tr>
+      <% end %>
+      <% if nfcore_apps_list && !nfcore_apps_list.empty? %>
+        <tr>
+          <td>nf-core</td>
+          <td style="padding: 2px;">
+            <input type="text" id="nfcore-search" placeholder="Search nf-core pipelines..." style="width: 200px; margin-right: 5px; padding: 4px;">
+            <select id="nfcore-app-select" style="width: 250px; padding: 4px;">
+              <option value="">-- Select nf-core pipeline --</option>
+              <% nfcore_apps_list.sort.each do |app| %>
+                <option value="<%= app %>"><%= app %></option>
+              <% end %>
+            </select>
+            <input type="hidden" id="nfcore-app-hidden" name="app" value="">
+            <button type="submit" id="nfcore-submit" class="btn btn-info btn-sm raised" style="padding: 2px; margin-left: 5px;">Next</button>
           </td>
         </tr>
       <% end %>
@@ -26,3 +61,45 @@
   <% end %>
 </div>
 
+<script type="text/javascript">
+$(document).ready(function(){
+  var nfcoreSelect = $('#nfcore-app-select');
+  var nfcoreSearch = $('#nfcore-search');
+  var nfcoreHidden = $('#nfcore-app-hidden');
+  var originalOptions = nfcoreSelect.find('option').clone();
+  
+  // Update hidden input when selection changes
+  nfcoreSelect.on('change', function(){
+    nfcoreHidden.val($(this).val());
+  });
+  
+  // Search functionality
+  nfcoreSearch.on('input', function(){
+    var searchTerm = $(this).val().toLowerCase();
+    nfcoreSelect.empty();
+    
+    originalOptions.each(function(){
+      var optionText = $(this).text().toLowerCase();
+      var optionValue = $(this).val();
+      
+      if (optionValue === '' || optionText.indexOf(searchTerm) !== -1) {
+        nfcoreSelect.append($(this).clone());
+      }
+    });
+    // Reset hidden value when search changes
+    nfcoreHidden.val('');
+  });
+  
+  // Submit button click handler - validate before submit
+  $('#nfcore-submit').on('click', function(e){
+    var selectedApp = nfcoreSelect.val();
+    if (!selectedApp || selectedApp === '') {
+      e.preventDefault();
+      alert('Please select an nf-core pipeline first.');
+      return false;
+    }
+    nfcoreHidden.val(selectedApp);
+    return true;
+  });
+});
+</script>

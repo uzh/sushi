@@ -103,6 +103,56 @@ class RunApplicationController < ApplicationController
     end
     nodes
   end
+  
+  # Safely evaluate parameter values - only allow numeric/boolean/array literals
+  def safe_eval(value)
+    return value if value.nil?
+    str = value.to_s.strip
+    
+    # Boolean
+    return true if str == 'true'
+    return false if str == 'false'
+    
+    # Integer
+    return str.to_i if str =~ /\A-?\d+\z/
+    
+    # Float
+    return str.to_f if str =~ /\A-?\d+\.\d+\z/
+    
+    # Array literal (simple cases only)
+    if str =~ /\A\[.*\]\z/
+      begin
+        # Use JSON.parse for safe array parsing
+        return JSON.parse(str)
+      rescue
+        # If JSON fails, return as string
+        return value
+      end
+    end
+    
+    # Default: return as string (don't eval arbitrary code)
+    value
+  end
+  
+  # Load nf-core pipeline configuration from YAML
+  def load_nfcore_pipeline_config(pipeline_name)
+    config_path = Rails.root.join('config', 'nf_core_pipelines.yml')
+    return {} unless File.exist?(config_path)
+    
+    yaml_content = YAML.load_file(config_path) || {}
+    pipelines = yaml_content['pipelines'] || {}
+    defaults = yaml_content['defaults'] || {}
+    
+    # Get pipeline-specific config or fall back to defaults
+    pipeline_config = pipelines[pipeline_name] || {}
+    
+    # Merge with defaults (pipeline config takes precedence)
+    defaults.merge(pipeline_config)
+  rescue => e
+    Rails.logger.warn "Failed to load nf-core pipeline config: #{e.message}"
+    {}
+  end
+  
   def set_parameters
     class_name = params[:app]
     require class_name unless Object.const_defined?(class_name)
@@ -124,6 +174,111 @@ class RunApplicationController < ApplicationController
     @sushi_app.dataset_sushi_id = data_set_id.to_i
     @sushi_app.set_input_dataset
     @sushi_app.set_default_parameters
+    
+    # For nf-core apps: dynamically load parameters based on input type and schema
+    if class_name =~ /^NfCore/ && defined?(NfCoreInfoFetcher)
+      begin
+        pipeline_name = @sushi_app.params['nfcorePipeline']
+        pipeline_version = @sushi_app.params['pipelineVersion'] || 'master'
+        
+        # Get input configuration (from YAML config or auto-detect)
+        input_type = @sushi_app.params['inputType']
+        
+        # Auto-detect if not set
+        if input_type.nil? || input_type == 'auto' || input_type.empty?
+          input_type = NfCoreInfoFetcher.detect_input_type(pipeline_name)
+          @sushi_app.params['inputType'] = input_type
+          Rails.logger.info "NfCore: Auto-detected input type '#{input_type}' for #{pipeline_name}"
+        end
+        
+        # Load custom params from YAML config
+        yaml_config = load_nfcore_pipeline_config(pipeline_name)
+        custom_params = yaml_config['custom_params'] || []
+        
+        # If no custom params in YAML, use auto-detected ones
+        if custom_params.empty? && input_type != 'samplesheet'
+          auto_config = NfCoreInfoFetcher.get_input_config(pipeline_name)
+          custom_params = auto_config['custom_params'] || []
+        end
+        
+        # Add custom params to @sushi_app.params
+        custom_params.each do |param_def|
+          param_name = param_def['name']
+          next if @sushi_app.params.key?(param_name)
+          
+          case param_def['type']
+          when 'text_area'
+            # Use string with hint for multi-value input (comma/newline separated)
+            @sushi_app.params[param_name] = param_def['default'] || ''
+          when 'boolean'
+            @sushi_app.params[param_name] = param_def['default'] == true
+          when 'integer'
+            @sushi_app.params[param_name] = (param_def['default'] || 0).to_i
+          when 'select', 'enum'
+            @sushi_app.params[param_name] = param_def['options'] || param_def['enum'] || []
+          else
+            @sushi_app.params[param_name] = param_def['default'] || ''
+          end
+          
+          prefix = param_def['required'] ? "[REQUIRED] " : ""
+          @sushi_app.params[param_name, 'description'] = "#{prefix}#{param_def['description']}"
+          
+          # Add to @required_params if required
+          if param_def['required']
+            @sushi_app.required_params ||= []
+            @sushi_app.required_params << param_name unless @sushi_app.required_params.include?(param_name)
+          end
+        end
+        
+        # Load nextflow_schema.json params
+        all_params = NfCoreInfoFetcher.fetch_all_params(pipeline_name, pipeline_version)
+        @nfcore_required_params = all_params['required'] || []
+        @nfcore_optional_params = all_params['optional'] || []
+        
+        # Add required params from schema
+        @nfcore_required_params.each do |param_info|
+          param_name = param_info['name']
+          next if @sushi_app.params.key?(param_name)
+          
+          default_value = param_info['default']
+          if param_info['enum']
+            @sushi_app.params[param_name] = param_info['enum']
+            @sushi_app.params[param_name, 'description'] = "[REQUIRED] #{param_info['description']}"
+          elsif param_info['type'] == 'boolean'
+            @sushi_app.params[param_name] = default_value == true
+          elsif param_info['type'] == 'integer'
+            @sushi_app.params[param_name] = default_value.to_i
+          else
+            @sushi_app.params[param_name] = default_value || ''
+            @sushi_app.params[param_name, 'description'] = "[REQUIRED] #{param_info['description']}"
+          end
+        end
+        
+        # Add useful optional params (first 10)
+        @nfcore_optional_params.first(10).each do |param_info|
+          param_name = param_info['name']
+          next if @sushi_app.params.key?(param_name)
+          
+          default_value = param_info['default']
+          if param_info['enum']
+            @sushi_app.params[param_name] = param_info['enum']
+            @sushi_app.params[param_name, 'description'] = param_info['description']
+          elsif param_info['type'] == 'boolean'
+            @sushi_app.params[param_name] = default_value == true
+          elsif param_info['type'] == 'integer'
+            @sushi_app.params[param_name] = default_value.to_i
+          else
+            @sushi_app.params[param_name] = default_value || ''
+            @sushi_app.params[param_name, 'description'] = param_info['description']
+          end
+        end
+        
+        Rails.logger.info "NfCore: Loaded params for #{pipeline_name} (input_type: #{input_type})"
+      rescue => e
+        Rails.logger.warn "NfCore: Failed to load params for #{class_name}: #{e.message}"
+        Rails.logger.warn e.backtrace.first(5).join("\n")
+      end
+    end
     
     # Load project defaults if requested
     if params[:use_project_defaults] == '1'
@@ -242,11 +397,12 @@ class RunApplicationController < ApplicationController
                                    @uploaded_file_name = file.original_filename
                                  end
                                  temp_file
-                               elsif @sushi_app.params.data_type(key) == String
-                                 value
-                               else
-                                 eval(value)
-                               end
+                              elsif @sushi_app.params.data_type(key) == String
+                                value
+                              else
+                                # Safely evaluate only numeric/array literals, otherwise keep as string
+                                safe_eval(value)
+                              end
     end
     @sushi_app.params.each do |key, value|
       if @sushi_app.params[key, "multi_selection"] and !params[:parameters][key]
