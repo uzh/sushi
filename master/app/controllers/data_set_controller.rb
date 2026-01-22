@@ -1067,6 +1067,87 @@ class DataSetController < ApplicationController
     Process.waitpid pid
     redirect_to :controller => "data_set", :action => "show"
   end
+
+  # Generate Materials & Methods document and save to gstore
+  def generate_mm
+    @data_set = DataSet.find_by_id(params[:id])
+    
+    unless @data_set
+      flash[:alert] = "DataSet not found"
+      redirect_to :controller => "data_set", :action => "index" and return
+    end
+
+    # Generate M&M content
+    @mm_content = @data_set.generate_materials_and_methods
+
+    # Get dataset path
+    @sample_path = sample_path(@data_set)
+    
+    unless @sample_path
+      flash[:alert] = "Could not determine dataset path"
+      redirect_to :controller => "data_set", :action => "show", :id => @data_set.id and return
+    end
+
+    # Save to scratch first, then copy to gstore using g-req
+    gstore_dir = File.join(SushiFabric::GSTORE_DIR, @sample_path)
+    @gstore_file = File.join(gstore_dir, "materials_and_methods.md")
+    
+    @copy_success = false
+    @copy_error = nil
+    
+    # Create temporary file in /scratch with final filename
+    scratch_file = File.join("/scratch", "materials_and_methods.md")
+    
+    begin
+      # Write to scratch directory
+      File.write(scratch_file, @mm_content)
+      
+      # Use g-req to copy to gstore
+      commands = @@sushi_server.copy_commands(scratch_file, gstore_dir, "force")
+      @copy_commands = commands
+      
+      commands.each do |cmd|
+        Rails.logger.info("Executing: #{cmd}")
+        unless system(cmd)
+          @copy_error = "Command failed: #{cmd}"
+          break
+        end
+      end
+      
+      @copy_success = @copy_error.nil?
+      
+    rescue => e
+      @copy_error = "Failed: #{e.message}"
+    ensure
+      # Clean up scratch file
+      File.unlink(scratch_file) if File.exist?(scratch_file)
+    end
+
+    # g-req copies asynchronously, so we trust the command success
+    # rather than checking File.exist? immediately
+    @file_exists = @copy_success
+
+    # Optional: Register in B-Fabric (if already registered)
+    @bfabric_updated = false
+    if @file_exists && @data_set.bfabric_id && params[:update_bfabric] == 'true'
+      # B-Fabric registration would go here if needed
+      @bfabric_updated = true
+    end
+
+    # Optional: Git push (if employee and git repo exists)
+    @git_result = nil
+    if @file_exists && session[:employee] && params[:git_push] == 'true'
+      @git_result = @data_set.push_to_gitlab(@gstore_file)
+    end
+
+    # Set flash message
+    if @file_exists
+      flash[:notice] = "Materials & Methods document generated successfully at #{@gstore_file}"
+    else
+      flash[:alert] = "Failed to generate Materials & Methods document"
+    end
+  end
+
   def announce_template_set
     @data_set_id = params[:id]
     @announce_templates = Dir["announce_templates/*.txt"].to_a.sort

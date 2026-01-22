@@ -1,0 +1,103 @@
+<h1>Project <%= session[:project] %></h1>
+<hr />
+
+<h3>Materials & Methods Generation Result</h3>
+
+<div class="mm-result">
+  <% if @file_exists %>
+    <div class="alert alert-success">
+      <strong>Success!</strong> Materials & Methods document has been generated.
+    </div>
+  <% else %>
+    <div class="alert alert-danger">
+      <strong>Error!</strong> Failed to generate Materials & Methods document.
+      <% if @copy_error %>
+        <br />Error: <%= @copy_error %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <h4>Dataset Information</h4>
+  <table class="pure-table pure-table-bordered">
+    <tbody>
+      <tr>
+        <th>Dataset Name</th>
+        <td><%= @data_set.name %></td>
+      </tr>
+      <tr>
+        <th>Dataset ID</th>
+        <td><%= @data_set.id %></td>
+      </tr>
+      <tr>
+        <th>SUSHI Application</th>
+        <td><%= @data_set.sushi_app_name || 'N/A' %></td>
+      </tr>
+      <tr>
+        <th>Dataset Path</th>
+        <td><%= @sample_path %></td>
+      </tr>
+      <% if @file_exists %>
+      <tr>
+        <th>M&M File Location</th>
+        <td><%= @gstore_file %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <% if @git_result %>
+  <h4>GitLab Push Result</h4>
+  <table class="pure-table pure-table-bordered">
+    <tbody>
+      <tr>
+        <th>Status</th>
+        <td><%= @git_result[:success] ? 'Success' : 'Failed' %></td>
+      </tr>
+      <tr>
+        <th>Message</th>
+        <td><%= @git_result[:message] %></td>
+      </tr>
+    </tbody>
+  </table>
+  <% end %>
+
+  <% if @file_exists %>
+  <h4>Generated Content Preview</h4>
+  <div style="background-color: #f5f5f5; padding: 15px; border: 1px solid #ddd; border-radius: 4px; overflow-x: auto;">
+    <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;"><%= @mm_content %></pre>
+  </div>
+
+  <h4>Download / View</h4>
+  <p>
+    <% gstore_url = File.join("/projects", @sample_path, "materials_and_methods.md") %>
+    <%= link_to "View M&M file in gStore", gstore_url, class: "btn btn-info btn-sm raised", target: "_blank" %>
+  </p>
+  <% end %>
+</div>
+
+<hr />
+
+<% if @file_exists && session[:employee] %>
+<h4>Additional Actions</h4>
+<div class="additional-actions">
+  <% if @data_set.bfabric_id && !@bfabric_updated %>
+    <%= link_to "Update B-Fabric Registration", 
+        {:action=>"generate_mm", :id=>@data_set.id, :update_bfabric=>'true'}, 
+        :data=>{:confirm=>"Update B-Fabric registration with M&M?"}, 
+        :method=>:post, 
+        :class=>"btn btn-warning btn-sm raised" %>
+  <% end %>
+  
+  <% project_git_dir = File.join(SushiFabric::GSTORE_DIR, "p#{@data_set.project.number}", ".git") %>
+  <% if File.exist?(project_git_dir) && !@git_result %>
+    <%= link_to "Push to GitLab", 
+        {:action=>"generate_mm", :id=>@data_set.id, :git_push=>'true'}, 
+        :data=>{:confirm=>"Push M&M to GitLab repository?"}, 
+        :method=>:post, 
+        :class=>"btn btn-primary btn-sm raised" %>
+  <% end %>
+</div>
+<hr />
+<% end %>
+
+<%= button_to 'Back to DataSet', "/data_set/#{@data_set.id}", :method=>:get, :class=>"btn btn-info btn-sm raised" %>

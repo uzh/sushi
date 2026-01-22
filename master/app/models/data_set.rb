@@ -486,4 +486,271 @@ class DataSet < ActiveRecord::Base
     # Call instance method
     dataset1.merge_with(dataset2, options: options)
   end
+
+  # Generate Materials & Methods document using LLM
+  # @param use_llm [Boolean] Whether to use LLM for generation (default: true)
+  # @return [String] M&M content in Markdown
+  def generate_materials_and_methods(use_llm: true)
+    require Rails.root.join('lib', 'llm_client')
+    
+    # Collect all analysis data
+    analysis_data = collect_analysis_data
+    
+    if use_llm
+      begin
+        # Use LLM for generating natural language M&M
+        LlmClient.generate_mm(analysis_data)
+      rescue => e
+        Rails.logger.error("LLM M&M generation failed: #{e.message}")
+        # Fallback to template-based generation
+        generate_template_mm(analysis_data)
+      end
+    else
+      generate_template_mm(analysis_data)
+    end
+  end
+
+  # Collect all analysis data from DataSet and gStore
+  # @return [Hash] Analysis data for M&M generation
+  def collect_analysis_data
+    data = {
+      name: self.name,
+      id: self.id,
+      project: self.project ? "p#{self.project.number}" : nil,
+      date: self.created_at&.strftime('%Y-%m-%d'),
+      sushi_app: self.sushi_app_name,
+      sample_count: self.samples.length,
+      bfabric_id: self.bfabric_id,
+      workunit_id: self.workunit_id,
+      order_id: self.order_id
+    }
+    
+    # Filter job parameters (exclude internal ones)
+    if self.job_parameters.present?
+      internal_params = ['cores', 'ram', 'scratch', 'node', 'process_mode', 'mail', 'partition']
+      data[:parameters] = self.job_parameters.reject { |k, v| internal_params.include?(k) || v.to_s.empty? }
+      data[:ref_build] = self.job_parameters['refBuild']
+      data[:ref_feature] = self.job_parameters['refFeatureFile']
+    end
+    
+    # Get gStore path
+    if paths = self.sample_paths and !paths.empty?
+      gstore_path = File.join(SushiFabric::GSTORE_DIR, paths.first)
+      data[:gstore_path] = gstore_path
+      
+      # Read job script if available
+      data[:job_script] = read_job_script(gstore_path)
+      
+      # Read input samples from input_dataset.tsv
+      data[:input_samples] = read_input_dataset(gstore_path)
+      
+      # Read output files from dataset.tsv
+      data[:output_files] = read_output_dataset(gstore_path)
+      
+      # Read parameters.tsv for additional info
+      data[:parameters_file] = read_parameters_file(gstore_path)
+    end
+    
+    data
+  end
+
+  # Read job script content from gStore
+  # @param gstore_path [String] Path to dataset directory in gStore
+  # @return [String, nil] Job script content or nil
+  def read_job_script(gstore_path)
+    scripts_dir = File.join(gstore_path, 'scripts')
+    return nil unless File.directory?(scripts_dir)
+    
+    # Find shell scripts
+    script_files = Dir.glob(File.join(scripts_dir, '*.sh'))
+    return nil if script_files.empty?
+    
+    # Read the first (or main) script
+    # Prefer scripts that are not just wrappers
+    main_script = script_files.find { |f| File.basename(f) !~ /^wrapper/ } || script_files.first
+    
+    begin
+      content = File.read(main_script)
+      # Limit size to avoid overwhelming the LLM
+      content.length > 10000 ? content[0, 10000] + "\n... (truncated)" : content
+    rescue => e
+      Rails.logger.warn("Failed to read job script: #{e.message}")
+      nil
+    end
+  end
+  private :read_job_script
+
+  # Read input sample names from input_dataset.tsv
+  # @param gstore_path [String] Path to dataset directory in gStore
+  # @return [Array<String>] List of sample names
+  def read_input_dataset(gstore_path)
+    input_file = File.join(gstore_path, 'input_dataset.tsv')
+    return [] unless File.exist?(input_file)
+    
+    begin
+      samples = []
+      lines = File.readlines(input_file)
+      return [] if lines.empty?
+      
+      headers = lines.first.chomp.split("\t")
+      name_idx = headers.index('Name') || 0
+      
+      lines[1..-1].each do |line|
+        cols = line.chomp.split("\t")
+        samples << cols[name_idx] if cols[name_idx]
+      end
+      
+      # Limit to first 20 samples
+      samples.length > 20 ? samples[0, 20] + ["... (#{samples.length - 20} more)"] : samples
+    rescue => e
+      Rails.logger.warn("Failed to read input_dataset.tsv: #{e.message}")
+      []
+    end
+  end
+  private :read_input_dataset
+
+  # Read output file information from dataset.tsv
+  # @param gstore_path [String] Path to dataset directory in gStore
+  # @return [Array<String>] List of output file descriptions
+  def read_output_dataset(gstore_path)
+    output_file = File.join(gstore_path, 'dataset.tsv')
+    return [] unless File.exist?(output_file)
+    
+    begin
+      lines = File.readlines(output_file)
+      return [] if lines.empty?
+      
+      headers = lines.first.chomp.split("\t")
+      # Find columns with [File] tag
+      file_columns = headers.select { |h| h.include?('[File]') }
+      
+      file_columns.map { |col| col.gsub(/\s*\[File\]/, '') }
+    rescue => e
+      Rails.logger.warn("Failed to read dataset.tsv: #{e.message}")
+      []
+    end
+  end
+  private :read_output_dataset
+
+  # Read parameters.tsv for additional analysis info
+  # @param gstore_path [String] Path to dataset directory in gStore
+  # @return [Hash, nil] Parameters hash or nil
+  def read_parameters_file(gstore_path)
+    params_file = File.join(gstore_path, 'parameters.tsv')
+    return nil unless File.exist?(params_file)
+    
+    begin
+      params = {}
+      File.readlines(params_file).each do |line|
+        next if line.strip.empty?
+        key, value = line.chomp.split("\t", 2)
+        params[key] = value if key && value
+      end
+      params
+    rescue => e
+      Rails.logger.warn("Failed to read parameters.tsv: #{e.message}")
+      nil
+    end
+  end
+  private :read_parameters_file
+
+  # Generate template-based M&M (fallback when LLM unavailable)
+  # @param data [Hash] Analysis data
+  # @return [String] M&M content in Markdown
+  def generate_template_mm(data)
+    mm_content = []
+    mm_content << "# Materials and Methods"
+    mm_content << ""
+    mm_content << "## Analysis Information"
+    mm_content << ""
+    mm_content << "- **Dataset Name**: #{data[:name]}"
+    mm_content << "- **Dataset ID**: #{data[:id]}"
+    mm_content << "- **Project**: #{data[:project]}" if data[:project]
+    mm_content << "- **Analysis Date**: #{data[:date]}" if data[:date]
+    mm_content << "- **SUSHI Application**: #{data[:sushi_app]}" if data[:sushi_app]
+    mm_content << "- **Number of Samples**: #{data[:sample_count]}"
+    mm_content << ""
+
+    if data[:bfabric_id]
+      mm_content << "## B-Fabric Registration"
+      mm_content << ""
+      mm_content << "- **B-Fabric Dataset ID**: #{data[:bfabric_id]}"
+      mm_content << "- **B-Fabric Workunit ID**: #{data[:workunit_id]}" if data[:workunit_id]
+      mm_content << "- **Order ID**: #{data[:order_id]}" if data[:order_id]
+      mm_content << ""
+    end
+
+    if data[:parameters] && !data[:parameters].empty?
+      mm_content << "## Analysis Parameters"
+      mm_content << ""
+      data[:parameters].each do |key, value|
+        mm_content << "- **#{key}**: #{value}"
+      end
+      mm_content << ""
+    end
+
+    if data[:ref_build] || data[:ref_feature]
+      mm_content << "## Reference Information"
+      mm_content << ""
+      mm_content << "- **Reference Build**: #{data[:ref_build]}" if data[:ref_build]
+      mm_content << "- **Reference Feature File**: #{data[:ref_feature]}" if data[:ref_feature]
+      mm_content << ""
+    end
+
+    mm_content << "## Software and Tools"
+    mm_content << ""
+    mm_content << "- **Analysis Platform**: SUSHI (https://fgcz-sushi.uzh.ch)"
+    mm_content << "- **Execution Backend**: ezRun (R library)"
+    mm_content << ""
+
+    if data[:gstore_path]
+      mm_content << "## Data Location"
+      mm_content << ""
+      mm_content << "- **gStore Path**: #{data[:gstore_path]}"
+      mm_content << ""
+    end
+
+    mm_content << "---"
+    mm_content << ""
+    mm_content << "*This document was automatically generated by SUSHI on #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}*"
+    mm_content << "*Note: LLM generation was unavailable. This is a template-based output.*"
+
+    mm_content.join("\n")
+  end
+  private :generate_template_mm
+
+  # Push M&M file to GitLab repository
+  # @param file_path [String] Path to the M&M file in gstore
+  # @param commit_message [String] Git commit message
+  # @return [Hash] Result with success status and message
+  def push_to_gitlab(file_path, commit_message = nil)
+    project_dir = File.join(SushiFabric::GSTORE_DIR, "p#{self.project.number}")
+    git_dir = File.join(project_dir, '.git')
+
+    unless File.exist?(git_dir)
+      return { success: false, message: "Git repository not found at #{project_dir}" }
+    end
+
+    commit_message ||= "Add M&M for #{self.name} (DataSet ID: #{self.id})"
+
+    begin
+      Dir.chdir(project_dir) do
+        # Get relative path for git add
+        relative_path = file_path.sub("#{project_dir}/", '')
+        
+        # Git operations
+        system("git add #{relative_path}")
+        system("git commit -m '#{commit_message}'")
+        push_result = system("git push origin master 2>&1")
+        
+        if push_result
+          return { success: true, message: "Successfully pushed to GitLab" }
+        else
+          return { success: false, message: "Git push failed" }
+        end
+      end
+    rescue => e
+      return { success: false, message: "Git operation failed: #{e.message}" }
+    end
+  end
 end

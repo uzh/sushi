@@ -1,3 +1,79 @@
+<style>
+/* M&M Generation Loading Overlay */
+#mm-loading-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+#mm-loading-overlay.active {
+  display: flex;
+}
+#mm-loading-content {
+  background: white;
+  padding: 40px 60px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  max-width: 400px;
+}
+#mm-loading-content h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+}
+#mm-loading-content p {
+  color: #666;
+  margin: 10px 0;
+  font-size: 14px;
+}
+.mm-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: mm-spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+@keyframes mm-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.mm-steps {
+  text-align: left;
+  margin-top: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+.mm-step {
+  padding: 5px 0;
+  color: #999;
+}
+.mm-step.active {
+  color: #3498db;
+  font-weight: bold;
+}
+.mm-step.done {
+  color: #27ae60;
+}
+.mm-step::before {
+  content: "○ ";
+}
+.mm-step.active::before {
+  content: "● ";
+}
+.mm-step.done::before {
+  content: "✓ ";
+}
+</style>
+
 <script type="text/javascript">
 $(document).ready(function(){
   var document_width=$("#contents").width();
@@ -205,6 +281,9 @@ $(document).ready(function(){
 - <a href="#" id="merge_datasets_btn">merge with another dataset</a>
 <% end %>
 - <%= link_to 'parameters', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>
+<% if session[:employee] and @data_set.job_parameters.present? %>
+- <%= link_to "generate M&M", {:action=>"generate_mm", :id=>@data_set.id}, :id=>"generate_mm_link", :data=>{:confirm=>"Generate Materials & Methods document?\n\nThis uses AI to generate publication-ready text.\nIt may take 30 seconds to 1 minute."}, :method=>:post %>
+<% end %>
 <% if @data_set.data_set and @data_set.sushi_app_name %>
 -  <%= link_to "resubmit", {:controller=>"run_application", :action=>"set_parameters", data_set_id: @data_set.data_set.id, resubmit_data_set_id: @data_set.id,  app: @data_set.sushi_app_name}, :method=>:post %>
 <% end %>
@@ -434,3 +513,41 @@ $(document).ready(function(){
 <!-- Merge Datasets Dialog -->
 <div id="merge_datasets_dialog" title="Merge Datasets" style="display:none;"></div>
 
+<!-- M&M Generation Loading Overlay -->
+<div id="mm-loading-overlay">
+  <div id="mm-loading-content">
+    <div class="mm-spinner"></div>
+    <h3>📝 Generating Materials & Methods</h3>
+    <p>AI is writing publication-ready text...</p>
+    <p style="font-size: 12px; color: #999;">This typically takes 30-60 seconds</p>
+    <div class="mm-steps">
+      <div class="mm-step active" id="mm-step-1">Collecting analysis data</div>
+      <div class="mm-step" id="mm-step-2">Generating text with AI</div>
+      <div class="mm-step" id="mm-step-3">Saving to gStore</div>
+    </div>
+    <p style="margin-top: 20px; font-size: 11px; color: #aaa;">Please do not close this page</p>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  // M&M Generation loading handler
+  $('#generate_mm_link').on('click', function(e) {
+    // Show loading overlay after confirmation
+    setTimeout(function() {
+      $('#mm-loading-overlay').addClass('active');
+      
+      // Animate steps
+      setTimeout(function() {
+        $('#mm-step-1').removeClass('active').addClass('done');
+        $('#mm-step-2').addClass('active');
+      }, 2000);
+      
+      setTimeout(function() {
+        $('#mm-step-2').removeClass('active').addClass('done');
+        $('#mm-step-3').addClass('active');
+      }, 25000);
+    }, 100);
+  });
+});
+</script>
