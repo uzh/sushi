@@ -121,11 +121,6 @@ class ApplicationController < ActionController::Base
           sushi_app_entry.description = sushi_app_instance.description
           sushi_app_entry.employee = sushi_app_instance.employee
           sushi_app_entry.save
-          # Debug output for nf-core apps
-          if is_dynamic_nfcore
-            puts "DEBUG: Saved #{class_name} with required_columns=#{sushi_app_entry.required_columns.inspect}"
-            $stdout.flush
-          end
         rescue => err
           warn err
           warn "#{class_name} cannot be imported"
@@ -147,24 +142,9 @@ class ApplicationController < ActionController::Base
     if refresh
       refresh_sushi_application
     end
-    
-    # Debug: count nf-core apps in database
-    all_apps = SushiApplication.all
-    nfcore_apps_in_db = all_apps.select { |app| app.class_name =~ /^NfCore/ }
-    puts "DEBUG: Total apps in DB: #{all_apps.size}, NfCore apps: #{nfcore_apps_in_db.size}"
-    puts "DEBUG: Dataset headers: #{data_set_headers.inspect}"
-    $stdout.flush
-    
-    sushi_apps = all_apps.select do |app|
+    sushi_apps = SushiApplication.all.select do |app|
       app.required_columns_satisfied_by?(data_set_headers)
     end
-    
-    # Debug: count filtered nf-core apps
-    filtered_nfcore = sushi_apps.select { |app| app.class_name =~ /^NfCore/ }
-    puts "DEBUG: After filtering - Total: #{sushi_apps.size}, NfCore: #{filtered_nfcore.size}"
-    $stdout.flush
-    
-    sushi_apps
   end
   def employee_apps
     apps = {}

@@ -121,7 +121,8 @@ module NfCoreAppFactory
       'required_columns' => pipeline_info['required_columns'] || ['Name'],
       'input_type' => input_type,
       'custom_params' => pipeline_info['custom_params'] || [],
-      'samplesheet_mapping' => pipeline_info['samplesheet_mapping'] || {}
+      'samplesheet_mapping' => pipeline_info['samplesheet_mapping'] || {},
+      'skip_multiqc' => pipeline_info['skip_multiqc'] || false
     })
     
     # Merge any additional params from pipeline_info
@@ -240,9 +241,13 @@ module NfCoreAppFactory
         
         dataset = {
           'Name' => @params['name'],
-          'Result [File]' => result_dir,
-          'MultiQC [Link]' => File.join(result_dir, 'multiqc', 'multiqc_report.html')
+          'Result [File]' => result_dir
         }
+        
+        # Add MultiQC link only if pipeline generates it (most do, but not fetchngs)
+        unless app_config['skip_multiqc']
+          dataset['MultiQC [Link]'] = File.join(result_dir, 'multiqc', 'multiqc_report.html')
+        end
         
         if @dataset && @dataset.first
           # Exclude input file columns (Read1, Read2 with any suffix like [File])

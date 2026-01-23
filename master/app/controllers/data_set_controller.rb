@@ -163,13 +163,7 @@ class DataSetController < ApplicationController
       end
       @data_set.runnable_apps = @sushi_apps
       @data_set.nfcore_apps = @nfcore_apps
-      saved = @data_set.save
-      
-      # Debug output
-      puts "DEBUG set_runnable_apps: @nfcore_apps count: #{@nfcore_apps.size}"
-      puts "DEBUG set_runnable_apps: @data_set.nfcore_apps count after save: #{@data_set.nfcore_apps.size}"
-      puts "DEBUG set_runnable_apps: save result: #{saved}"
-      $stdout.flush
+      @data_set.save
     end
   end
   def show
@@ -296,12 +290,6 @@ class DataSetController < ApplicationController
           @sushi_apps = @data_set.runnable_apps
           @sushi_apps_category = @sushi_apps.keys.sort
           @nfcore_apps = @data_set.nfcore_apps || []
-          
-          # Debug output for nf-core apps
-          puts "DEBUG show: @sushi_apps keys: #{@sushi_apps.keys.inspect}"
-          puts "DEBUG show: @nfcore_apps count: #{@nfcore_apps.size}"
-          puts "DEBUG show: @nfcore_apps first 5: #{@nfcore_apps.first(5).inspect}"
-          $stdout.flush
         else
           @url_not_found = true
           index

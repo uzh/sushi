@@ -45,6 +45,7 @@ pipelines:
     nf_core_name: fetchngs
     input_type: id_list
     analysis_category: DataFetch
+    skip_multiqc: true  # fetchngs doesn't generate MultiQC report
     custom_params:
       - name: accession_ids
         type: text_area
