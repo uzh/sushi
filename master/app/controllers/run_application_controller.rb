@@ -201,10 +201,23 @@ class RunApplicationController < ApplicationController
           custom_params = auto_config['custom_params'] || []
         end
         
+        # Add refBuild selector if pipeline requires reference genome
+        if yaml_config['use_ref_selector']
+          unless @sushi_app.params.key?('refBuild')
+            @sushi_app.params['refBuild'] = @sushi_app.ref_selector
+            @sushi_app.params['refBuild', 'description'] = "Reference genome (FASTA/GTF will be auto-detected from this selection)"
+          end
+        end
+        
         # Add custom params to @sushi_app.params
         custom_params.each do |param_def|
           param_name = param_def['name']
           next if @sushi_app.params.key?(param_name)
+          
+          # Skip fasta/gtf/genome if using refBuild selector
+          if yaml_config['use_ref_selector'] && ['fasta', 'gtf', 'genome'].include?(param_name)
+            next
+          end
           
           case param_def['type']
           when 'text_area'

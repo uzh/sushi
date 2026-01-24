@@ -25,9 +25,10 @@ pipelines:
   # ============================================================
   rnaseq:
     nf_core_name: rnaseq
-    default_version: "3.22.2"
+    default_version: "3.14.0"  # Nextflow 24.x compatible (3.22.2 requires Nextflow 25.04+)
     analysis_category: Transcriptomics
     input_type: samplesheet
+    use_ref_selector: true  # Use SUSHI's standard reference selector
     samplesheet_mapping:
       sample: Name
       fastq_1: "Read1 [File]"
