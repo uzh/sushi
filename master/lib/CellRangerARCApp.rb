@@ -50,7 +50,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-multiome-
     @params['cmdOptions', "context"] = "CellRangerARC"
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Tools/seqtk", "Dev/R/4.4.0", "Dev/Python", "Tools/samtools"]
+    @params['Rversion'] = ["Dev/R/4.5.0", "Dev/R/4.4.2"]
+    @modules = ["Tools/seqtk", "Dev/Python", "Tools/samtools"]
     @params['CellRangerARCVersion'] = ["Aligner/CellRangerARC/2.1.0", "Aligner/CellRangerARC/2.0.2", "Aligner/CellRangerARC/2.0.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
@@ -76,7 +77,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-multiome-
     dataset
   end
   def commands
-    command = "module load #{@params["CellRangerARCVersion"]}\n"
+    command = "module load #{@params["Rversion"]}\n"
+    command << "module load #{@params["CellRangerARCVersion"]}\n"
     command << run_RApp("EzAppCellRangerARC")
   end
 end
