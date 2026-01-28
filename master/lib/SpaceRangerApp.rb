@@ -82,8 +82,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
             File.join(report_dir, 'binned_outputs/square_008um/filtered_feature_bc_matrix.h5')
         ),
         'SourceImage [Link]'=>@dataset['Image'],
-        'BinnedOutputs2um [Link]'=>File.join(report_dir, 'binned_outputs/square_002um'),
-        'SpaceRanger [Link]'=>File.join(report_dir, 'spatial'),
+        'BinnedOutput [Link]'=>File.join(report_dir, 'binned_outputs/square_002um'),
+        'SpaceRangerDir [Link]'=>report_dir,
         'Count [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.txt")        
       }.merge(extract_columns(@inherit_tags))
    if @params['keepAlignment']
