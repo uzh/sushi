@@ -26,7 +26,7 @@ class EzPyzExampleApp <  SushiFabric::SushiApp
     @params['sizeFactors'] = '1,3,5,10,20,30'
     @params['sizeFactors', "context"] = "EzPyzExampleApp"
     @params['mail'] = ""
-    @modules = []
+    @modules = ['Tools/seqtk', 'Dev/pixi']
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def next_dataset
@@ -39,6 +39,6 @@ class EzPyzExampleApp <  SushiFabric::SushiApp
     }
   end
   def commands
-    run_PyApp("Example",conda_env: 'tmp_ezpyz') #change to App specific env
+    run_PyApp("Example", pixi_enabled: true)  # Name must match [name] in 'ezpyz_[name]' format
   end
 end
