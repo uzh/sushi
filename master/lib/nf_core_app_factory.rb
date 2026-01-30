@@ -233,6 +233,44 @@ module NfCoreAppFactory
           @params[k] = v
         end
         
+        # Process custom_params from config
+        (app_config['custom_params'] || []).each do |param|
+          param_name = param['name']
+          param_type = param['type']
+          default_val = param['default']
+          description = param['description'] || ''
+          options = param['options']
+          
+          case param_type
+          when 'boolean'
+            # Boolean params: checkbox-style
+            @params[param_name] = default_val ? true : false
+            @params[param_name, 'description'] = description
+          when 'select'
+            # Select params: dropdown
+            if options && !options.empty?
+              @params[param_name] = options
+              @params[param_name, 'description'] = description
+            else
+              @params[param_name] = default_val.to_s
+              @params[param_name, 'description'] = description
+            end
+          when 'text_area'
+            # Text area params
+            @params[param_name] = default_val.to_s
+            @params[param_name, 'description'] = description
+          else
+            # Default: text input
+            @params[param_name] = default_val.to_s
+            @params[param_name, 'description'] = description
+          end
+          
+          # Add to required params if specified
+          if param['required']
+            @required_params << param_name unless @required_params.include?(param_name)
+          end
+        end
+        
         @modules = ["Dev/jdk", "Tools/Nextflow"]
       end
       

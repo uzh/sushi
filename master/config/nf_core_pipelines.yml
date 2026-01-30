@@ -34,10 +34,24 @@ pipelines:
       fastq_1: "Read1 [File]"
       fastq_2: "Read2 [File]"
       strandedness: StrandMode
+    custom_params:
+      # Workaround for STAR segfault issue - use Salmon pseudo-aligner
+      - name: pseudo_aligner
+        type: select
+        required: false
+        options: ["", "salmon"]
+        default: "salmon"
+        description: "Use Salmon pseudo-aligner instead of STAR (workaround for STAR crash)"
+      - name: skip_alignment
+        type: select
+        required: false
+        options: ["", "true"]
+        default: "true"
+        description: "Skip STAR alignment (use when pseudo_aligner is set to salmon)"
     params:
       cores: 8
-      ram: 30
-      scratch: 100
+      ram: 64  # STAR genome index generation requires ~40GB+ for mammalian genomes
+      scratch: 200
 
   # ============================================================
   # fetchngs - Fetch data from public databases
