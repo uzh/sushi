@@ -125,6 +125,31 @@ pipelines:
       scratch: 200
 
   # ============================================================
+  # smrnaseq - Small RNA-seq analysis
+  # ============================================================
+  smrnaseq:
+    nf_core_name: smrnaseq
+    default_version: "2.4.0" # version 2.4.1 might require newer nextflow
+    input_type: samplesheet
+    analysis_category: Transcriptomics
+    use_ref_selector: true
+    samplesheet_mapping:
+      sample: Name
+      fastq_1: "Read1 [File]"
+      fastq_2: "Read2 [File]"
+    custom_params:
+      - name: mirtraceSpecies
+        type: select
+        required: true
+        options: ["hsa", "mmu", "rno", "ath", "dme", "cel", "dre", "gga", "bta", "cfa", "eca", "ssc", "oar", "cgr", "ptr", "mcc", "mdo", "mne", "mpo", "mro", "mrs", "mvi", "oan", "ocu", "oha", "oja", "ola", "oni", "opr", "osl", "ota", "oto", "pab", "pan", "pma", "pmo", "ppy", "ptr", "rbi", "rno", "ssc", "tch", "tgu", "tni", "tru", "tup", "vpa", "xla", "xtr", "zma"]
+        default: "hsa"
+        description: "3-letter species code for miRBase (hsa=human, mmu=mouse, rno=rat, ath=arabidopsis, etc.)"
+    params:
+      cores: 16  # bowtie-build requires 12 threads, so set to 16 for safety
+      ram: 80    # bowtie-build INDEX_GENOME requires 72 GB
+      scratch: 100
+
+  # ============================================================
   # taxprofiler - Taxonomic profiling
   # ============================================================
   taxprofiler:

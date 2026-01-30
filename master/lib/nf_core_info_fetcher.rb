@@ -351,11 +351,15 @@ module NfCoreInfoFetcher
     cache_path = File.join(CACHE_DIR, "#{pipeline_name}_#{version.gsub('.', '_')}_nextflow_schema.json")
     
     schema = fetch_with_cache(url, cache_path)
-    return [] unless schema && schema['definitions']
+    return [] unless schema
+    
+    # Handle both old ('definitions') and new ('$defs') schema formats
+    definitions = schema['definitions'] || schema['$defs']
+    return [] unless definitions
     
     required_params = []
     
-    schema['definitions'].each do |section_name, section|
+    definitions.each do |section_name, section|
       next unless section['properties']
       
       # Get required params for this section
@@ -402,12 +406,16 @@ module NfCoreInfoFetcher
     cache_path = File.join(CACHE_DIR, "#{pipeline_name}_#{version.gsub('.', '_')}_nextflow_schema.json")
     
     schema = fetch_with_cache(url, cache_path)
-    return { 'required' => [], 'optional' => [] } unless schema && schema['definitions']
+    return { 'required' => [], 'optional' => [] } unless schema
+    
+    # Handle both old ('definitions') and new ('$defs') schema formats
+    definitions = schema['definitions'] || schema['$defs']
+    return { 'required' => [], 'optional' => [] } unless definitions
     
     required_params = []
     optional_params = []
     
-    schema['definitions'].each do |section_name, section|
+    definitions.each do |section_name, section|
       next unless section['properties']
       
       # Skip institutional/generic options sections (usually hidden)

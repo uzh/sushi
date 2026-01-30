@@ -198,6 +198,21 @@ module NfCoreAppFactory
     # Use fixed path accessible from all nodes (instead of ezRun package)
     r_app_path = '/srv/GT/analysis/masaomi/2026/FGCZ/nf_core_sushi_app_20260109/EzAppNfCoreGeneric.R'
     
+    # Fetch required params from API (nextflow_schema.json)
+    # This is done once during class creation, not every instance initialization
+    pipeline_name = app_config['nf_core_name']
+    pipeline_version = app_config['default_version'] || 'master'
+    
+    begin
+      api_params = NfCoreInfoFetcher.fetch_all_params(pipeline_name, pipeline_version)
+      app_config['api_required_params'] = api_params['required'] || []
+      app_config['api_optional_params'] = api_params['optional'] || []
+    rescue => e
+      warn "NfCoreAppFactory: Failed to fetch API params for #{pipeline_name}: #{e.message}"
+      app_config['api_required_params'] = []
+      app_config['api_optional_params'] = []
+    end
+    
     Class.new(SushiFabric::SushiApp) do
       # Need to include GlobalVariables to use run_RApp
       # But we need to override run method to call parent's run, not GlobalVariables' run
@@ -233,9 +248,11 @@ module NfCoreAppFactory
           @params[k] = v
         end
         
-        # Process custom_params from config
+        # Process custom_params from YAML config (these override API params)
+        custom_param_names = []
         (app_config['custom_params'] || []).each do |param|
           param_name = param['name']
+          custom_param_names << param_name
           param_type = param['type']
           default_val = param['default']
           description = param['description'] || ''
@@ -269,6 +286,42 @@ module NfCoreAppFactory
           if param['required']
             @required_params << param_name unless @required_params.include?(param_name)
           end
+        end
+        
+        # Process API required params (from nextflow_schema.json)
+        # Skip params already defined in custom_params (YAML config takes precedence)
+        # Skip params that SUSHI manages automatically (input, outdir, etc.)
+        auto_managed = %w[input outdir email publish_dir_mode]
+        
+        (app_config['api_required_params'] || []).each do |param_info|
+          param_name = param_info['name']
+          
+          # Skip if already defined by custom_params or auto-managed
+          next if custom_param_names.include?(param_name)
+          next if auto_managed.include?(param_name)
+          next if @params.key?(param_name)
+          
+          # Add the param
+          default_val = param_info['default']
+          description = "[REQUIRED from API] #{param_info['description']}"
+          
+          if param_info['enum'] && param_info['enum'].any?
+            # Enum type -> select dropdown
+            @params[param_name] = param_info['enum']
+            @params[param_name, 'description'] = description
+          elsif param_info['type'] == 'boolean'
+            @params[param_name] = default_val == true
+            @params[param_name, 'description'] = description
+          elsif param_info['type'] == 'integer'
+            @params[param_name] = (default_val || 0).to_i
+            @params[param_name, 'description'] = description
+          else
+            @params[param_name] = default_val.to_s
+            @params[param_name, 'description'] = description
+          end
+          
+          # Add to @required_params
+          @required_params << param_name unless @required_params.include?(param_name)
         end
         
         @modules = ["Dev/jdk", "Tools/Nextflow"]
