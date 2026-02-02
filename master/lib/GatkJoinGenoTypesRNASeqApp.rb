@@ -16,7 +16,7 @@ genotype,merge and annotate gvcf-Files<br/>
     EOS
     @required_columns = ['Name','GVCF','GVCFINDEX','Species','refBuild']
     @required_params = ['name','grouping']
-    @params['cores'] = '8'
+    @params['cores'] = '4'
     @params['cores', "context"] = "slurm"
     @params['ram'] = '50'
     @params['ram', "context"] = "slurm"
