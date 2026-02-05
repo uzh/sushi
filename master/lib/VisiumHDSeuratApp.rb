@@ -48,15 +48,15 @@ Single cell report<br/>
     @params['Niche_resolution'] = '0.5'
     @params['Niche_resolution', 'description'] = 'Resolution for BANKSY spatial niche clustering (higher = more niches)'
     @params['numis'] = '20'
-    @params['numis', 'description'] = 'minimum number of UMIs required per spot, lower the threshold then using 08um bins or smaller'
+    @params['numis', 'description'] = 'Minimum number of UMIs required per spot. Recommended: 20 for 16um bins, 10 for 8um bins or segmented cells.'
     @params['ngenes'] = ''
     @params['ngenes', 'description'] = 'Low quality spots have less than "ngenes" genes. Only when applying fixed thresholds'
     @params['perc_mito'] = ''
     @params['perc_mito', 'description'] = 'Low quality spots have more than "perc_mito" percent of mitochondrial genes. Only when applying fixed thresholds'
     @params['perc_ribo'] = ''
     @params['perc_ribo', 'description'] = 'Low quality spots have more than "perc_ribo" percent of ribosomal genes. Only when applying fixed thresholds'
-    @params['nmad'] = 3
-    @params['nmad', 'description'] = 'Median absolute deviation (MAD) from the median value of each metric across all bins'
+    @params['nmad'] = ''
+    @params['nmad', 'description'] = 'Median absolute deviation (MAD) from the median value of each metric across all bins. Leave empty to disable MAD-based filtering.'
     @params['lambda'] = 0.8
     @params['lambda', 'description'] = 'BANKSY lambda: spatial weighting parameter (0-1). Larger values (0.8) find spatial domains; smaller values (0.2) perform cell typing.'
     @params['specialOptions'] = ''
