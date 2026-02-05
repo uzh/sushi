@@ -28,6 +28,7 @@ Quality control after counting reads<br/>
     @params['name'] = 'DIANN_v23_DDA'
     @params['03_fasta_database_path'] = 'NONE'
     @params['03_fasta_use_custom'] = 'false'
+    @params['order_fasta'] = "/srv/gstore/projects/p34486/o37485-order.fasta"
     @params['03b_additional_fasta_database_path'] = '/misc/fasta/p34486_Proteobench_TripleProteome_with_headers_20251008.fasta'
     @params['05_diann_is_dda'] = 'true'
     @params['06a_diann_mods_variable'] = '--var-mods 1 --var-mod UniMod:35,15.994915,M'
