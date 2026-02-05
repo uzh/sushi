@@ -46,7 +46,7 @@ When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/
 • <b>VDJ-B</b>: B-cell receptor (requires VdjBDataDir column)<br>
 • <b>FeatureBarcoding</b>: CITE-seq/ADT (requires FeatureDataDir + FeatureBarcodeFile)<br>
 • <b>Multiplexing</b>: HTO/CMO demux (HTO requires FeatureDataDir, CMO requires MultiDataDir, OCM needs neither)<br>
-• <b>fixedRNA</b>: 10x Flex probe-based (requires GEX + probesetFile)<br>
+• <b>fixedRNA</b>: 10x Flex (Fixed RNA Profiling) - probe-based (requires GEX + probesetFile)<br>
 <a href='https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-3p-multi'>10x Documentation</a>"
     @params['TenXLibrary', 'multi_selection'] = true
     @params['TenXLibrary', 'selected'] = ['GEX', 'Multiplexing']
