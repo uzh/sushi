@@ -51,38 +51,19 @@ When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/
     @params['TenXLibrary', 'multi_selection'] = true
     @params['TenXLibrary', 'selected'] = ['GEX', 'Multiplexing']
     @params['MultiplexingType'] = {'select'=>'', 'OCM (On-Chip Multiplexing, max 4-plex)'=>'ocm', 'HTO (TotalSeq Hashtag Antibodies)'=>'antibody', 'CMO (10x CellPlex Lipid Barcodes)'=>'cmo'}
-    @params['MultiplexingType', 'description'] = "Select the 3' multiplexing technology used:<br><br>
-<b>OCM (On-Chip Multiplexing / Overhang)</b><br>
-• Max 4 samples per GEM well (OB1-OB4)<br>
-• Barcodes embedded in GEX reads - no separate fastqs needed<br>
-• Sample2Barcode: <code>ocm_barcode_ids</code> column (unquoted, values: OB1-OB4)<br>
-• Leave MultiplexBarcodeSet empty<br><br>
-<b>HTO (TotalSeq Hashtag Antibodies)</b><br>
-• Uses TotalSeq-A/B/C antibodies<br>
-• Requires Antibody Capture fastqs: add <code>FeatureDataDir</code> column<br>
-• Sample2Barcode: <code>hashtag_ids</code> column with TotalSeq IDs (e.g., \"B0251\")<br>
-• Select TotalSeq_AntibodyCapture file in MultiplexBarcodeSet<br><br>
-<b>CMO (10x CellPlex)</b><br>
-• Uses 10x lipid-conjugated barcodes (CMO301-CMO312)<br>
-• Requires Multiplexing Capture fastqs: add <code>MultiDataDir</code> column<br>
-• Sample2Barcode: <code>cmo_ids</code> column with CMO IDs (e.g., \"CMO301\")<br>
-• Select 10x_CMO file in MultiplexBarcodeSet<br><br>
-Generate Sample2Barcode files: <a href='https://fgcz-shiny.uzh.ch/app/sample2barcode'>ShinyApp</a> | <a href='https://gitlab.bfabric.org/Genomics/paul-scripts/-/tree/main/.claude/skills/sample2barcode-generation'>Documentation</a>"
+    @params['MultiplexingType', 'description'] = "Select 3' multiplexing technology:<br>
+<b>OCM</b>: <code>ocm_barcode_ids</code> (OB1-OB4), no extra fastqs, no BarcodeSet<br>
+<b>HTO</b>: <code>hashtag_ids</code> (e.g. B0251), needs FeatureDataDir + TotalSeq_AntibodyCapture<br>
+<b>CMO</b>: <code>cmo_ids</code> (e.g. CMO301), needs MultiDataDir + 10x_CMO<br>
+<a href='https://fgcz-shiny.uzh.ch/app/sample2barcode'>Generate Sample2Barcode</a>"
     @params['MultiplexBarcodeSet'] = {'select'=>''}
     Dir["/srv/GT/databases/10x/CMO_files/*"].sort.select{|design| File.file?(design)}.each do |dir|
       @params['MultiplexBarcodeSet'][File.basename(dir)] = File.basename(dir)
     end
-    @params['MultiplexBarcodeSet', 'description'] = "Select the barcode reference file for your multiplexing technology:<br><br>
-<b>⚠️ IMPORTANT: Match file to multiplexing method!</b><br><br>
-<b>For HTO (Hashtag) demultiplexing - use *_AntibodyCapture.csv files:</b><br>
-• <b>TotalSeqA_AntibodyCapture</b>: Universal hashtags<br>
-• <b>TotalSeqB_AntibodyCapture</b>: Mouse-specific hashtags<br>
-• <b>TotalSeqC_AntibodyCapture</b>: Human-specific hashtags<br><br>
-<b>For CMO (CellPlex) demultiplexing - use non-AntibodyCapture files:</b><br>
-• <b>10x_CMO</b>: CellPlex lipid barcodes (CMO301-CMO312)<br><br>
-<b>For OCM (On-Chip Multiplexing):</b><br>
-• Leave empty - no reference file needed<br><br>
-<i>Contact genomics team to add custom barcode files.</i>"
+    @params['MultiplexBarcodeSet', 'description'] = "Barcode reference file (match to MultiplexingType!):<br>
+<b>HTO</b>: TotalSeqA/B/C_AntibodyCapture (A=universal, B=mouse, C=human)<br>
+<b>CMO</b>: 10x_CMO (CMO301-CMO312)<br>
+<b>OCM</b>: Leave empty"
     @params['probesetFile'] =  {'select'=>''}
     Dir["/srv/GT/databases/10x_Probesets/Chromium/*"].sort.select{|design| File.file?(design)}.each do |dir|
       @params['probesetFile'][File.basename(dir)] = File.basename(dir)
@@ -96,7 +77,7 @@ Generate Sample2Barcode files: <a href='https://fgcz-shiny.uzh.ch/app/sample2bar
 • <b>Flex v2</b>: Plate-Well format (e.g., A-A01, A-B01) for 96/384-plex"
     @params['customProbesFile'] = ''
     @params['customProbesFile', 'file_upload'] = true
-    @params['customProbesFile', 'description'] = 'Custom probeset CSV-file according to 10X specifications (https://tinyurl.com/10xProbeSetCSVFormat). ONLY for probe-based single cell fixed RNA profiling (FRP). Note that all genes listed must have a corresponding entry in secondRef or controlSeqs. Custom probes must have the same length as the probes in the reference file.'
+    @params['customProbesFile', 'description'] = 'Custom probeset CSV for 10x Flex (Fixed RNA). Format: <a href="https://tinyurl.com/10xProbeSetCSVFormat">10x specs</a>. Genes must have entries in secondRef or controlSeqs. Probes must match reference probe length.'
     @params['FeatureBarcodeFile'] = ''
     @params['FeatureBarcodeFile', 'file_upload'] = true
     @params['FeatureBarcodeFile', 'description'] = "Upload feature reference CSV for CITE-seq/ADT experiments.<br>
