@@ -70,7 +70,7 @@ Single cell report<br/>
     @params['cellxgeneUrl'] = ''
     @params['cellxgeneUrl', 'description'] = 'Choose an download URL to an Seurat rds file of a dataset from here: https://cellxgene.cziscience.com/datasets'
     @params['cellxgeneLabel'] = ''
-    @params['cellxgeneLabel', 'description'] = 'Specify the attribute of the dataset that should serve as cell type label'
+    @params['cellxgeneLabel', 'description'] = 'Metadata column for cell type labels. "cell_type" is a good starting choice'
     @params['sctype.enabled'] = true
     @params['sctype.enabled', 'description'] = 'Enable scType automatic cell type annotation (human and mouse supported)'
     @params['sctype.tissue'] = ["auto", "Immune system", "Liver", "Pancreas", "Kidney", "Eye", "Brain", "Lung", "Adrenal", "Heart", "Intestine", "Muscle", "Placenta", "Spleen", "Stomach", "Thymus"]
