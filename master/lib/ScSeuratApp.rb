@@ -83,8 +83,8 @@ Single cell report<br/>
     @params['pcGenes', 'description'] = 'The genes used in supervised clustering'
     @params['resolution'] = [0.6, 0.2, 0.4, 0.6, 0.8, 1]
     @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
-    @params['nreads'] = ''
-    @params['nreads', 'description'] = "Low quality cells have less than 'nreads' reads. Only when applying fixed thresholds"
+    @params['nUMI'] = ''
+    @params['nUMI', 'description'] = "Low quality cells have less than 'nUMI' UMIs. Only when applying fixed thresholds"
     @params['ngenes'] = ''
     @params['ngenes', 'description'] = "Low quality cells have less than 'ngenes' genes. Only when applying fixed thresholds"
     @params['perc_mito'] = ''
@@ -93,8 +93,8 @@ Single cell report<br/>
     @params['perc_riboprot', 'description'] = "Low quality cells have more than 'perc_ribo' percent of ribosomal genes. Only when applying fixed thresholds"
     @params['cellsFraction'] = 0.0
     @params['cellsFraction', 'description'] = 'A gene will be kept if it is expressed in at least this fraction of cells'
-    @params['nUMIs'] = 1
-    @params['nUMIs', 'description'] = 'A gene will be kept if it has at least nUMIs in the fraction of cells specified before'
+    @params['geneMinUMI'] = 1
+    @params['geneMinUMI', 'description'] = 'A gene will be kept if it has at least this many UMIs in the fraction of cells specified before'
     @params['filterByExpression'] = ''
     @params['filterByExpression', 'description'] = 'Keep cells according to specific gene expression. i.e. Set > 1 | Pkn3 > 1'
     @params['estimateAmbient'] = true
