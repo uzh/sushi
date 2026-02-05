@@ -16,7 +16,7 @@ class DIANNApp < SushiFabric::SushiApp
 Quality control after counting reads<br/>
     EOS
     @params['process_mode'] = 'DATASET'
-    @required_columns = ['Name','DDA RAW', 'Resource', 'Grouping Var']
+    @required_columns = ['Name','RAW', 'Resource', 'Grouping Var']
     @required_params = []
     # optional params
     @params['cores'] = ['64']
