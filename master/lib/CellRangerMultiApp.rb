@@ -29,7 +29,7 @@ When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/
     @required_params = ['name', 'refBuild']
     @params['cores'] = ['8', '12', '16']
     @params['cores', "context"] = "slurm"
-    @params['ram'] = ['60', '80', '100', '40']
+    @params['ram'] = ['80', '40', '60', '100']
     @params['ram', "context"] = "slurm"
     @params['ram', 'description'] = "RAM per job in GB. Flex v2 with 96/384-plex multiplexing may require 100GB."
     @params['scratch'] = '500'
@@ -80,9 +80,8 @@ When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/
     @params['customProbesFile', 'description'] = 'Custom probeset CSV for 10x Flex (Fixed RNA). Format: <a href="https://tinyurl.com/10xProbeSetCSVFormat">10x specs</a>. Genes must have entries in secondRef or controlSeqs. Probes must match reference probe length.'
     @params['FeatureBarcodeFile'] = ''
     @params['FeatureBarcodeFile', 'file_upload'] = true
-    @params['FeatureBarcodeFile', 'description'] = "Upload feature reference CSV for CITE-seq/ADT experiments.<br>
-Required columns: <code>id, name, read, pattern, sequence, feature_type</code><br>
-<a href='https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/inputs/cr-feature-ref-csv'>10x Format Guide</a>"
+    @params['FeatureBarcodeFile', 'description'] = "Feature reference CSV for ADT protein quantification (CITE-seq). NOT for HTO demux (use MultiplexBarcodeSet instead).<br>
+Columns: <code>id, name, read, pattern, sequence, feature_type</code> | <a href='https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/inputs/cr-feature-ref-csv'>10x Format</a>"
     @params['includeIntrons'] = true
     @params['includeIntrons', 'description'] = 'set to false to reproduce the default behavior in cell ranger v6 and earlier (NOTE: Ignored for fixedRNA)'
     @params['expectedCells'] = ''
