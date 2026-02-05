@@ -23,14 +23,15 @@ Note: that running this app usually requires manual curation of the input datase
 </tbody>
 </table>
 <br> 
-When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/app/sample2barcode'>ShinyApp</a> can be used to provide the barcoding information with or without feature barcoding.                  
+When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/app/sample2barcode'>ShinyApp</a> to provide the barcoding information with or without feature barcoding. See also the <a href='https://gitlab.bfabric.org/Genomics/paul-scripts/-/tree/main/.claude/skills/sample2barcode-generation'>Claude skill documentation</a> for detailed guidance.
     EOS
     @required_columns = ['Name','RawDataDir','Species']
     @required_params = ['name', 'refBuild']
     @params['cores'] = ['8', '12', '16']
     @params['cores', "context"] = "slurm"
-    @params['ram'] = ['60', '40', '80']
+    @params['ram'] = ['60', '80', '100', '40']
     @params['ram', "context"] = "slurm"
+    @params['ram', 'description'] = "RAM per job in GB. Flex v2 with 96/384-plex multiplexing may require 100GB."
     @params['scratch'] = '500'
     @params['scratch', "context"] = "slurm"
     @params['name'] = 'CellRangerMulti'
