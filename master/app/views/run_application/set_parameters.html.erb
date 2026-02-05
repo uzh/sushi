@@ -60,7 +60,8 @@
   <h3>Parameters</h3>
     <table>
       <% @sushi_app.params.each do |key, value| %>
-        <% selected_value = @params_selected[key] %>
+        <% # Check @params_selected first (for resubmit), then fall back to params[key, 'selected'] (for project defaults) %>
+        <% selected_value = @params_selected[key] || @sushi_app.params[key, 'selected'] %>
         <% if @sushi_app.params[key, 'employee'] and session[:employee] or !@sushi_app.params[key, 'employee'] %>
           <% if desc = @sushi_app.params[key, 'hr-header'] %>
           <tr>
