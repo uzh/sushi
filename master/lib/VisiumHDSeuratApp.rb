@@ -9,7 +9,6 @@ include GlobalVariables
 class VisiumHDSeuratApp < SushiFabric::SushiApp
   def initialize
     super
-    @employee = true
     @name = 'VisiumHDSeuratApp'
     @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'Spatial'
