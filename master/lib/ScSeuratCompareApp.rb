@@ -33,7 +33,7 @@ class ScSeuratCompareApp < SushiFabric::SushiApp
     @params['DE.regress', 'description'] = "Variables to regress when calculating differentially expressed genes. Only used with the LR method."
     @params['DE.regress', "context"] = "ScSeuratCompare"
     @params['CellIdentity'] = 'ident'
-    @params['CellIdentity', 'description'] = "The Seurat metadata column which contains the cell clusters or types (usually or 'ident' 'cellTypes' if the clusters have been labeled)"
+    @params['CellIdentity', 'description'] = "The Seurat metadata column which contains the cell clusters or types (usually 'ident', 'cellType' for labeled single samples, or 'cellTypeIntegrated' for labeled integrated samples)"
     @params['CellIdentity', "context"] = "ScSeuratCompare"
     @params['grouping'] = 'Condition'
     @params['grouping', 'description'] = "The Seurat metadata column which contains the sample grouping information"
