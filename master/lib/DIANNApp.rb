@@ -10,7 +10,8 @@ class DIANNApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'DIANN'
-    @analysis_category = 'QC'
+    @employee = true
+    @analysis_category = 'Proteomics'
     @description =<<-EOS
 Quality control after counting reads<br/>
     EOS
