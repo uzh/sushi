@@ -23,14 +23,15 @@ Note: that running this app usually requires manual curation of the input datase
 </tbody>
 </table>
 <br> 
-When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/app/sample2barcode'>ShinyApp</a> can be used to provide the barcoding information with or without feature barcoding.                  
+When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/app/sample2barcode'>ShinyApp</a> to provide the barcoding information with or without feature barcoding. See also the <a href='https://gitlab.bfabric.org/Genomics/paul-scripts/-/tree/main/.claude/skills/sample2barcode-generation'>Claude skill documentation</a> for detailed guidance.
     EOS
     @required_columns = ['Name','RawDataDir','Species']
     @required_params = ['name', 'refBuild']
     @params['cores'] = ['8', '12', '16']
     @params['cores', "context"] = "slurm"
-    @params['ram'] = ['60', '40', '80']
+    @params['ram'] = ['60', '80', '100', '40']
     @params['ram', "context"] = "slurm"
+    @params['ram', 'description'] = "RAM per job in GB. Flex v2 with 96/384-plex multiplexing may require 100GB."
     @params['scratch'] = '500'
     @params['scratch', "context"] = "slurm"
     @params['name'] = 'CellRangerMulti'
@@ -38,28 +39,69 @@ When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/
     @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
     @params['featureLevel'] = 'gene'
-    @params['probesetFile'] =  {'select'=>''}
-    Dir["/srv/GT/databases/10x_Probesets/Chromium/*"].sort.select{|design| File.file?(design)}.each do |dir|
-      @params['probesetFile'][File.basename(dir)] = File.basename(dir)
-    end
-    @params['probesetFile', 'description'] = 'set it only for probe-based single cell fixed RNA profiling (FRP)'
-    @params['customProbesFile'] = ''
-    @params['customProbesFile', 'file_upload'] = true
-    @params['customProbesFile', 'description'] = 'Custom probeset CSV-file according to 10x sepcifications (https://tinyurl.com/10xProbeSetCSVFormat). ONLY for probe-based single cell fixed RNA profiling (FRP). Note that all genes listed must have a corresponding entry in secondRef or controlSeqs. Custom probes must have the same length as the probes in the reference file.'
-    @params['TenXLibrary'] = ['GEX', 'VDJ-T', 'VDJ-B', 'FeatureBarcoding', 'Multiplexing', 'fixedRNA','Antigen (BEAM)']
-    @params['TenXLibrary', 'description'] = "Which 10X libraries? Note: Not all library types can be processed simultaneously. See the <a href='https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/using/multi#when'>support page</a> for further details. E.g. for fixedRNA, must also specify GEX."
+    @params['TenXLibrary'] = ['GEX', 'VDJ-T', 'VDJ-B', 'FeatureBarcoding', 'Multiplexing', 'fixedRNA']
+    @params['TenXLibrary', 'description'] = "Select 10X library types to process:<br>
+• <b>GEX</b>: Gene Expression (required for most analyses)<br>
+• <b>VDJ-T</b>: T-cell receptor (requires VdjTDataDir column)<br>
+• <b>VDJ-B</b>: B-cell receptor (requires VdjBDataDir column)<br>
+• <b>FeatureBarcoding</b>: CITE-seq/ADT (requires FeatureDataDir + FeatureBarcodeFile)<br>
+• <b>Multiplexing</b>: HTO/CMO demux (HTO requires FeatureDataDir, CMO requires MultiDataDir, OCM needs neither)<br>
+• <b>fixedRNA</b>: 10x Flex (Fixed RNA Profiling) - probe-based (requires GEX + probesetFile)<br>
+<a href='https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-3p-multi'>10x Documentation</a>"
     @params['TenXLibrary', 'multi_selection'] = true
     @params['TenXLibrary', 'selected'] = ['GEX', 'Multiplexing']
-    @params['MultiplexingType'] = {'select'=>'', 'On chip multiplexing (OCM)'=>'ocm', 'Hashing with Antibody Capture'=>'antibody', "3' Cell Multiplexing with CMOs (CellPlex)"=>'cellplex'}
-    @params['MultiplexingType', 'description'] = "(Beta) Which type of 3' multiplexing technology is used? See the <a href='https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/running-pipelines/cr-3p-multi'>support page</a> for further details. Currently, only 'Hashing with Antibody Capture' affects the app's behaviour. Must also select corresponding 'AntibodyCapture' csv file."
-    @params['FeatureBarcodeFile'] = ''
-    @params['FeatureBarcodeFile', 'file_upload'] = true
-    @params['FeatureBarcodeFile', 'description'] = '(e.g. for CITEseq)'
+    @params['MultiplexingType'] = {'select'=>'', 'OCM (On-Chip Multiplexing, max 4-plex)'=>'ocm', 'HTO (TotalSeq Hashtag Antibodies)'=>'antibody', 'CMO (10x CellPlex Lipid Barcodes)'=>'cmo'}
+    @params['MultiplexingType', 'description'] = "Select the 3' multiplexing technology used:<br><br>
+<b>OCM (On-Chip Multiplexing / Overhang)</b><br>
+• Max 4 samples per GEM well (OB1-OB4)<br>
+• Barcodes embedded in GEX reads - no separate fastqs needed<br>
+• Sample2Barcode: <code>ocm_barcode_ids</code> column (unquoted, values: OB1-OB4)<br>
+• Leave MultiplexBarcodeSet empty<br><br>
+<b>HTO (TotalSeq Hashtag Antibodies)</b><br>
+• Uses TotalSeq-A/B/C antibodies<br>
+• Requires Antibody Capture fastqs: add <code>FeatureDataDir</code> column<br>
+• Sample2Barcode: <code>hashtag_ids</code> column with TotalSeq IDs (e.g., \"B0251\")<br>
+• Select TotalSeq_AntibodyCapture file in MultiplexBarcodeSet<br><br>
+<b>CMO (10x CellPlex)</b><br>
+• Uses 10x lipid-conjugated barcodes (CMO301-CMO312)<br>
+• Requires Multiplexing Capture fastqs: add <code>MultiDataDir</code> column<br>
+• Sample2Barcode: <code>cmo_ids</code> column with CMO IDs (e.g., \"CMO301\")<br>
+• Select 10x_CMO file in MultiplexBarcodeSet<br><br>
+Generate Sample2Barcode files: <a href='https://fgcz-shiny.uzh.ch/app/sample2barcode'>ShinyApp</a> | <a href='https://gitlab.bfabric.org/Genomics/paul-scripts/-/tree/main/.claude/skills/sample2barcode-generation'>Documentation</a>"
     @params['MultiplexBarcodeSet'] = {'select'=>''}
     Dir["/srv/GT/databases/10x/CMO_files/*"].sort.select{|design| File.file?(design)}.each do |dir|
       @params['MultiplexBarcodeSet'][File.basename(dir)] = File.basename(dir)
     end
-    @params['MultiplexBarcodeSet', 'description'] = 'Used when CellPlex libraries. New files needs to be installed under /srv/GT/databases/10x/CMO_files'
+    @params['MultiplexBarcodeSet', 'description'] = "Select the barcode reference file for your multiplexing technology:<br><br>
+<b>⚠️ IMPORTANT: Match file to multiplexing method!</b><br><br>
+<b>For HTO (Hashtag) demultiplexing - use *_AntibodyCapture.csv files:</b><br>
+• <b>TotalSeqA_AntibodyCapture</b>: Universal hashtags<br>
+• <b>TotalSeqB_AntibodyCapture</b>: Mouse-specific hashtags<br>
+• <b>TotalSeqC_AntibodyCapture</b>: Human-specific hashtags<br><br>
+<b>For CMO (CellPlex) demultiplexing - use non-AntibodyCapture files:</b><br>
+• <b>10x_CMO</b>: CellPlex lipid barcodes (CMO301-CMO312)<br><br>
+<b>For OCM (On-Chip Multiplexing):</b><br>
+• Leave empty - no reference file needed<br><br>
+<i>Contact genomics team to add custom barcode files.</i>"
+    @params['probesetFile'] =  {'select'=>''}
+    Dir["/srv/GT/databases/10x_Probesets/Chromium/*"].sort.select{|design| File.file?(design)}.each do |dir|
+      @params['probesetFile'][File.basename(dir)] = File.basename(dir)
+    end
+    @params['probesetFile', 'description'] = "Required for 10x Flex (Fixed RNA Profiling). Available probe sets:<br>
+• <b>v2.0.0</b>: Latest for Cell Ranger 10+ (Flex v2 chemistry)<br>
+• <b>v1.1.x</b>: Updated coverage (MFRP/SFRP chemistry)<br>
+• <b>v1.0.1</b>: Legacy probe set<br><br>
+<b>For Flex multiplexing:</b> Sample2Barcode needs <code>probe_barcode_ids</code> column:<br>
+• <b>Flex v1</b>: BC001-BC048 (e.g., BC001, BC002)<br>
+• <b>Flex v2</b>: Plate-Well format (e.g., A-A01, A-B01) for 96/384-plex"
+    @params['customProbesFile'] = ''
+    @params['customProbesFile', 'file_upload'] = true
+    @params['customProbesFile', 'description'] = 'Custom probeset CSV-file according to 10X specifications (https://tinyurl.com/10xProbeSetCSVFormat). ONLY for probe-based single cell fixed RNA profiling (FRP). Note that all genes listed must have a corresponding entry in secondRef or controlSeqs. Custom probes must have the same length as the probes in the reference file.'
+    @params['FeatureBarcodeFile'] = ''
+    @params['FeatureBarcodeFile', 'file_upload'] = true
+    @params['FeatureBarcodeFile', 'description'] = "Upload feature reference CSV for CITE-seq/ADT experiments.<br>
+Required columns: <code>id, name, read, pattern, sequence, feature_type</code><br>
+<a href='https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/inputs/cr-feature-ref-csv'>10x Format Guide</a>"
     @params['includeIntrons'] = true
     @params['includeIntrons', 'description'] = 'set to false to reproduce the default behavior in cell ranger v6 and earlier (NOTE: Ignored for fixedRNA)'
     @params['expectedCells'] = ''
@@ -77,7 +119,7 @@ When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/seqtk", "Dev/R", "Dev/Python", "Tools/samtools"]
-    @params['CellRangerVersion'] = ["Aligner/CellRanger/9.0.0", "Aligner/CellRanger/8.0.1", "Aligner/CellRanger/7.1.0"]
+    @params['CellRangerVersion'] = ["Aligner/CellRanger/10.0.0", "Aligner/CellRanger/9.0.0", "Aligner/CellRanger/8.0.1", "Aligner/CellRanger/7.1.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters

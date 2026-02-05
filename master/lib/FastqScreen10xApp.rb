@@ -25,6 +25,8 @@ EOS
     @params['scratch', "context"] = "slurm"
     @params['paired'] = false
     @params['paired', "context"] = "FastqScreen10x"
+    @params['readFileToUse'] = ['Read2']
+    @params['readFileToUse', "context"] = "FastqScreen10x"
     @params['name'] = 'FastqScreen_Result'
     @params['nReads'] = '100000'
     @params['nReads', "context"] = "FastqScreen10x"

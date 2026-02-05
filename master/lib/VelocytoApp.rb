@@ -55,7 +55,7 @@ This wrapper runs <a href='http://velocyto.org/',>velocyto</a> in Single-library
   end
   def commands
     command = "module load  #{@params["CellRangerVersion"]}\n"
-    command << run_RApp("EzAppVeloCyto")
+    command << run_RApp("EzAppVeloCyto", conda_env: "gi_velocyto")
   end
 end
 
