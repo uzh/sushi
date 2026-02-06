@@ -59,7 +59,7 @@ Quality control after counting reads<br/>
     @params['application_version'] = '2.3'    
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/R"]
+    @modules = ["Dev/R", "Dev/uv"]
     @inherit_columns = []
   end
   def next_dataset
