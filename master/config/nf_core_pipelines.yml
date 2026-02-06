@@ -1,39 +1,35 @@
 # nf-core Pipeline Configuration
 #
-# This file allows manual override of nf-core pipeline settings.
-# API-fetched values are used by default, but settings here take precedence.
+# ============================================================
+# CONVENTION OVER CONFIGURATION
+# ============================================================
 #
-# === Input Types ===
-# Different nf-core pipelines expect different input formats:
-#   - samplesheet: Standard CSV with sample info (default for most pipelines)
-#   - id_list: Text file with accession IDs (e.g., fetchngs)
-#   - fasta_list: Text file with FASTA file paths
-#   - custom: Pipeline-specific format
+# Most settings are now AUTO-DETECTED from nf-core API:
+#   - analysis_category: from nf-core pipeline topics
+#   - use_ref_selector: from nextflow_schema.json (reference_genome_options section)
+#   - samplesheet_mapping: from schema_input.json + NfCoreConventions
+#   - input_type: from schema_input.json structure
+#   - params (cores/ram/scratch): from category-based defaults in NfCoreConventions
 #
-# If input_type is not specified, it will be auto-detected from schema_input.json
+# This file should only contain EXCEPTIONS and OVERRIDES:
+#   - Pipelines with specific version requirements
+#   - Pipelines with custom parameters not in nf-core schema
+#   - Pipelines with special behavior (e.g., skip_multiqc)
+#   - Resource overrides for pipelines with unusual requirements
 #
-# === Samplesheet Mapping ===
-# Maps SUSHI dataset columns to nf-core samplesheet columns.
-# Format: nf_core_column: sushi_column
-#
-# === Custom Parameters ===
-# Define pipeline-specific parameters that aren't in the standard schema.
+# To add a new pipeline:
+#   1. Most pipelines work automatically without any configuration
+#   2. Only add an entry here if you need to override auto-detected settings
 #
 pipelines:
   # ============================================================
   # rnaseq - RNA sequencing analysis
+  # EXCEPTIONS: Version pinned due to Nextflow compatibility, custom workaround params
   # ============================================================
   rnaseq:
-    nf_core_name: rnaseq
-    default_version: "3.14.0"  # Nextflow 24.x compatible (3.22.2 requires Nextflow 25.04+)
-    analysis_category: Transcriptomics
-    input_type: samplesheet
-    use_ref_selector: true  # Use SUSHI's standard reference selector
-    samplesheet_mapping:
-      sample: Name
-      fastq_1: "Read1 [File]"
-      fastq_2: "Read2 [File]"
-      strandedness: StrandMode
+    # Note: default_version is no longer needed here - auto-compatibility check
+    # now selects the latest Nextflow-compatible version automatically.
+    # Keeping this entry only for custom_params (STAR workaround).
     custom_params:
       # Workaround for STAR segfault issue - use Salmon pseudo-aligner
       - name: pseudo_aligner
@@ -48,18 +44,13 @@ pipelines:
         options: ["", "true"]
         default: "true"
         description: "Skip STAR alignment (use when pseudo_aligner is set to salmon)"
-    params:
-      cores: 8
-      ram: 64  # STAR genome index generation requires ~40GB+ for mammalian genomes
-      scratch: 200
 
   # ============================================================
   # fetchngs - Fetch data from public databases
+  # EXCEPTIONS: Non-samplesheet input type, custom params for accession IDs, no MultiQC
   # ============================================================
   fetchngs:
-    nf_core_name: fetchngs
     input_type: id_list
-    analysis_category: DataFetch
     skip_multiqc: true  # fetchngs doesn't generate MultiQC report
     custom_params:
       - name: accession_ids
@@ -68,75 +59,14 @@ pipelines:
         default: ""
         description: "Enter SRA/ENA/GEO/DDBJ accession IDs separated by comma or space (e.g., SRR9984183,ERR1160846,GSM4432381)"
     params:
-      cores: 4
-      ram: 16
-      scratch: 500
-
-  # ============================================================
-  # chipseq - ChIP-seq analysis
-  # ============================================================
-  chipseq:
-    nf_core_name: chipseq
-    input_type: samplesheet
-    analysis_category: Epigenetics
-    samplesheet_mapping:
-      sample: Name
-      fastq_1: "Read1 [File]"
-      fastq_2: "Read2 [File]"
-      antibody: Antibody
-      control: Control
-    params:
-      cores: 8
-      ram: 30
-      scratch: 100
-
-  # ============================================================
-  # atacseq - ATAC-seq analysis
-  # ============================================================
-  atacseq:
-    nf_core_name: atacseq
-    input_type: samplesheet
-    analysis_category: Epigenetics
-    samplesheet_mapping:
-      sample: Name
-      fastq_1: "Read1 [File]"
-      fastq_2: "Read2 [File]"
-    params:
-      cores: 8
-      ram: 30
-      scratch: 100
-
-  # ============================================================
-  # sarek - Variant calling pipeline
-  # ============================================================
-  sarek:
-    nf_core_name: sarek
-    input_type: samplesheet
-    analysis_category: Genomics
-    samplesheet_mapping:
-      patient: Patient
-      sample: Name
-      lane: Lane
-      fastq_1: "Read1 [File]"
-      fastq_2: "Read2 [File]"
-    params:
-      cores: 8
-      ram: 64
-      scratch: 200
+      scratch: 500  # Downloads can be large
 
   # ============================================================
   # smrnaseq - Small RNA-seq analysis
+  # EXCEPTIONS: Version pinned, mirtraceSpecies custom param, higher resource requirements
   # ============================================================
   smrnaseq:
-    nf_core_name: smrnaseq
-    default_version: "2.4.0" # version 2.4.1 might require newer nextflow
-    input_type: samplesheet
-    analysis_category: Transcriptomics
-    use_ref_selector: true
-    samplesheet_mapping:
-      sample: Name
-      fastq_1: "Read1 [File]"
-      fastq_2: "Read2 [File]"
+    default_version: "2.4.0"  # Version 2.4.1 might require newer Nextflow
     custom_params:
       - name: mirtraceSpecies
         type: select
@@ -147,33 +77,13 @@ pipelines:
     params:
       cores: 16  # bowtie-build requires 12 threads, so set to 16 for safety
       ram: 80    # bowtie-build INDEX_GENOME requires 72 GB
-      scratch: 100
-
-  # ============================================================
-  # taxprofiler - Taxonomic profiling
-  # ============================================================
-  taxprofiler:
-    nf_core_name: taxprofiler
-    input_type: samplesheet
-    analysis_category: Metagenomics
-    samplesheet_mapping:
-      sample: Name
-      fastq_1: "Read1 [File]"
-      fastq_2: "Read2 [File]"
-    params:
-      cores: 8
-      ram: 64
-      scratch: 200
 
 # ============================================================
-# Default settings for pipelines not explicitly configured
+# Default settings (usually not needed - auto-detection handles most cases)
 # ============================================================
 defaults:
+  # These are fallbacks when auto-detection fails
   input_type: auto  # Will be detected from schema_input.json
-  samplesheet_mapping:
-    sample: Name
-    fastq_1: "Read1 [File]"
-    fastq_2: "Read2 [File]"
   params:
     cores: 8
     ram: 30

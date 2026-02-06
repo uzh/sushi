@@ -201,8 +201,16 @@ class RunApplicationController < ApplicationController
           custom_params = auto_config['custom_params'] || []
         end
         
+        # Determine if refBuild selector is needed: YAML config > auto-detect
+        use_ref_selector = yaml_config['use_ref_selector']
+        if use_ref_selector.nil?
+          # Auto-detect from nextflow_schema.json
+          use_ref_selector = NfCoreInfoFetcher.needs_ref_selector?(pipeline_name, pipeline_version)
+          Rails.logger.info "NfCore: Auto-detected use_ref_selector=#{use_ref_selector} for #{pipeline_name}"
+        end
+        
         # Add refBuild selector if pipeline requires reference genome
-        if yaml_config['use_ref_selector']
+        if use_ref_selector
           unless @sushi_app.params.key?('refBuild')
             @sushi_app.params['refBuild'] = @sushi_app.ref_selector
             @sushi_app.params['refBuild', 'description'] = "Reference genome (FASTA/GTF will be auto-detected from this selection)"
@@ -215,7 +223,7 @@ class RunApplicationController < ApplicationController
           next if @sushi_app.params.key?(param_name)
           
           # Skip fasta/gtf/genome if using refBuild selector
-          if yaml_config['use_ref_selector'] && ['fasta', 'gtf', 'genome'].include?(param_name)
+          if use_ref_selector && ['fasta', 'gtf', 'genome'].include?(param_name)
             next
           end
           

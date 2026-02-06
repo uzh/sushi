@@ -1,6 +1,7 @@
 require 'yaml'
 require 'fileutils'
 require_relative 'nf_core_info_fetcher'
+require_relative 'nf_core_conventions'
 require_relative 'global_variables'
 
 module NfCoreAppFactory
@@ -17,6 +18,7 @@ module NfCoreAppFactory
     'params' => { 'cores' => 8, 'ram' => 30, 'scratch' => 100 }
   }
   
+  # Legacy category mapping - use NfCoreConventions::CATEGORY_MAPPING instead
   CATEGORY_MAPPING = {
     'rna-seq' => 'Transcriptomics',
     'dna-seq' => 'Genomics',
@@ -98,37 +100,84 @@ module NfCoreAppFactory
   def self.build_config(key, pipeline_info)
     nf_core_name = pipeline_info['nf_core_name'] || key
     
-    # Map category if possible
-    category = pipeline_info['category']
-    if category && CATEGORY_MAPPING[category]
-      category = CATEGORY_MAPPING[category]
+    # ============================================================
+    # Convention over Configuration: Auto-detect with YAML fallback
+    # ============================================================
+    
+    # 1. Category: YAML config > API topic mapping > 'nf-core' default
+    category = pipeline_info['analysis_category']
+    unless category
+      # Try to map from nf-core topic using conventions
+      if pipeline_info['category']
+        category = NfCoreConventions.category_for(pipeline_info['category']) ||
+                   CATEGORY_MAPPING[pipeline_info['category']] ||
+                   pipeline_info['category']
+      end
+      category ||= 'nf-core'
     end
     
-    # Determine input type: manual config > auto-detect > default
+    # 2. Resource defaults: YAML config > category-based defaults > global defaults
+    resource_defaults = NfCoreConventions.resources_for(category)
+    params = resource_defaults.dup
+    # Merge YAML config params (they take precedence)
+    if pipeline_info['params']
+      params.merge!(pipeline_info['params'])
+    end
+    
+    # 3. Input type: YAML config > auto-detect > 'samplesheet' default
     input_type = pipeline_info['input_type']
     if input_type.nil? || input_type == 'auto'
-      # Auto-detect from schema (lazy - will be done when needed)
-      input_type = nil  # Will be detected later
+      # Auto-detect from schema_input.json
+      input_type = NfCoreInfoFetcher.detect_input_type(nf_core_name)
     end
+    
+    # 4. Samplesheet mapping: YAML config > auto-generated > empty
+    samplesheet_mapping = pipeline_info['samplesheet_mapping']
+    if samplesheet_mapping.nil? || samplesheet_mapping.empty?
+      # Auto-generate from schema_input.json using conventions
+      samplesheet_mapping = NfCoreInfoFetcher.auto_samplesheet_mapping(nf_core_name)
+    end
+    
+    # 5. Reference selector: YAML config > auto-detect
+    use_ref_selector = pipeline_info['use_ref_selector']
+    if use_ref_selector.nil?
+      # Auto-detect from nextflow_schema.json
+      version = pipeline_info['default_version'] || pipeline_info['latest_version'] || 'master'
+      use_ref_selector = NfCoreInfoFetcher.needs_ref_selector?(nf_core_name, version)
+    end
+    
+    # 6. Version: YAML config > Nextflow-compatible version > latest from API > 'master'
+    default_version = pipeline_info['default_version']
+    version_note = nil
+    unless default_version
+      # No explicit version pinned in YAML - auto-select compatible version
+      compat = NfCoreInfoFetcher.find_compatible_version(nf_core_name, pipeline_info['releases'])
+      default_version = compat['version']
+      if compat['is_fallback']
+        version_note = "Auto-selected v#{default_version} (latest requires newer Nextflow >= #{compat['required_nf_version'] || '?'}; installed: #{NfCoreInfoFetcher.installed_nextflow_version})"
+      end
+      if compat['incompatible']
+        version_note = "WARNING: No compatible version found for Nextflow #{NfCoreInfoFetcher.installed_nextflow_version}. Using latest: #{default_version}"
+      end
+    end
+    default_version ||= pipeline_info['latest_version'] || 'master'
     
     # Build config with convention defaults
     config = DEFAULTS.merge({
       'name' => "NfCore#{camelize(nf_core_name)}",
       'nf_core_name' => nf_core_name,
       'description' => pipeline_info['description'] || "nf-core/#{nf_core_name} pipeline",
-      'analysis_category' => pipeline_info['analysis_category'] || category || 'nf-core',
-      'default_version' => pipeline_info['default_version'] || pipeline_info['latest_version'] || 'master',
+      'analysis_category' => category,
+      'default_version' => default_version,
       'required_columns' => pipeline_info['required_columns'] || ['Name'],
       'input_type' => input_type,
       'custom_params' => pipeline_info['custom_params'] || [],
-      'samplesheet_mapping' => pipeline_info['samplesheet_mapping'] || {},
-      'skip_multiqc' => pipeline_info['skip_multiqc'] || false
+      'samplesheet_mapping' => samplesheet_mapping,
+      'skip_multiqc' => pipeline_info['skip_multiqc'] || false,
+      'use_ref_selector' => use_ref_selector,
+      'params' => params,
+      'version_note' => version_note
     })
-    
-    # Merge any additional params from pipeline_info
-    if pipeline_info['params']
-      config['params'] = (config['params'] || {}).merge(pipeline_info['params'])
-    end
     
     config
   end
@@ -322,6 +371,34 @@ module NfCoreAppFactory
           
           # Add to @required_params
           @required_params << param_name unless @required_params.include?(param_name)
+        end
+        
+        # Process API optional params (from nextflow_schema.json)
+        # These are shown in the UI so users can configure them, but not marked as required
+        # Skip params already defined above, auto-managed, or hidden
+        (app_config['api_optional_params'] || []).each do |param_info|
+          param_name = param_info['name']
+          
+          next if custom_param_names.include?(param_name)
+          next if auto_managed.include?(param_name)
+          next if @params.key?(param_name)
+          
+          default_val = param_info['default']
+          description = param_info['description']
+          
+          if param_info['enum'] && param_info['enum'].any?
+            @params[param_name] = param_info['enum']
+            @params[param_name, 'description'] = description
+          elsif param_info['type'] == 'boolean'
+            @params[param_name] = (default_val == true)
+            @params[param_name, 'description'] = description
+          elsif param_info['type'] == 'integer'
+            @params[param_name] = default_val.nil? ? 0 : default_val.to_i
+            @params[param_name, 'description'] = description
+          else
+            @params[param_name] = (default_val || '').to_s
+            @params[param_name, 'description'] = description
+          end
         end
         
         @modules = ["Dev/jdk", "Tools/Nextflow"]
