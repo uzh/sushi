@@ -68,7 +68,7 @@ Quality control after counting reads<br/>
     {'Name'=>@params['name'],
      'qc_result [File]'=> File.join(@result_dir, 'qc_result',
      'Protein Abundances [Link]'=> File.join(@result_dir, 'qc_result/proteinAbundances.html'),
-     "Sample Sizes [Link]'=> File.join(@result_dir, 'qc_result/QC_sampleSizeEstimation.html',
+     'Sample Sizes [Link]'=> File.join(@result_dir, 'qc_result/QC_sampleSizeEstimation.html'),
      'Result [File]'=>File.join(@result_dir, "Result.zip"),
      'DIANN Quant [File]'=> File.join(@result_dir, "DIANN_quantB"),
     }.merge(extract_columns(colnames: @inherit_columns))
