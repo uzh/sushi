@@ -66,12 +66,15 @@ Quality control after counting reads<br/>
     report_file = File.join(@result_dir, @params['name'])
     #report_link = File.join(report_file, '00index.html')
     {'Name'=>@params['name'],
+     'qc_result [File]'=> File.join(@result_dir, 'qc_result',
+     'Protein Abundances [Link]'=> File.join(@result_dir, 'qc_result/proteinAbundances.html'),
+     "Sample Sizes [Link]'=> File.join(@result_dir, 'qc_result/QC_sampleSizeEstimation.html',
      'Result [File]'=>File.join(@result_dir, "Result.zip"),
-     'DIANN Result [File]'=> File.join(@result_dir, "DIANN_v23_Result.zip"),
+     'DIANN Quant [File]'=> File.join(@result_dir, "DIANN_quantB"),
     }.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
-    run_RApp("EzAppDIANN")
+    run_RApp("EzAppDIANN", conda_env: "gi_snakemake8.20.5")
   end
 end
 
