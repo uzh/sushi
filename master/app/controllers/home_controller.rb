@@ -1,4 +1,7 @@
 class HomeController < ApplicationController
+  # Rank reset date - change this value to reset rank aggregation period
+  # Past data is preserved in the database; only display/aggregation is affected
+  RANK_RESET_DATE = Time.new(2026, 1, 1)
   def index
     @fgcz = SushiFabric::Application.config.fgcz?
     if project_ = params[:project] and project_[:number] =~ /^o(\d+)/ and order_id = $1 and dataset = DataSet.find_by_order_id(order_id.to_i)
@@ -95,15 +98,18 @@ class HomeController < ApplicationController
     end
   end
   def sushi_rank
-
     start_of_month = Time.current.beginning_of_month
     end_of_month = Time.current.end_of_month
-    @rank = Job.where.not(user: nil).group(:user).count.sort_by{|name, count| -count}
-    @count_month = Job.where.not(user: nil)
+
+    # Base scope: only count jobs since the reset date
+    rank_jobs = Job.where.not(user: nil).where("created_at >= ?", RANK_RESET_DATE)
+
+    @rank = rank_jobs.group(:user).count.sort_by{|name, count| -count}
+    @count_month = rank_jobs
                      .group("DATE_FORMAT(created_at, '%Y-%m')")
                      .count
                      .sort
-    @monthly_mvp = Job.where.not(user: nil)
+    @monthly_mvp = rank_jobs
                      .where(created_at: start_of_month..end_of_month)
                      .group(:user)
                      .count
@@ -112,9 +118,12 @@ class HomeController < ApplicationController
            else
              {}
            end
-    @first_date = @count_month.first.first
+    @first_date = @count_month.empty? ? RANK_RESET_DATE.strftime('%Y-%m') : @count_month.first.first
+    @rank_reset_date = RANK_RESET_DATE
+
     subquery = Job.select("user, MIN(created_at) AS first_job_date")
                  .where.not(user: nil)
+                 .where("created_at >= ?", RANK_RESET_DATE)
                  .group(:user)
     @count_users = Job.from(subquery, :first_jobs)
                      .group("DATE_FORMAT(first_jobs.first_job_date, '%Y-%m')")

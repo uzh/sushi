@@ -3,7 +3,7 @@
   <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
 <% end %>
 <h1>Sushi Rank</h1>
-Counted since <%= @first_date %>
+Counted since <%= @first_date %> (Reset: <%= @rank_reset_date.strftime('%Y-%m-%d') %>)
 <hr />
 <table>
   <tr>
