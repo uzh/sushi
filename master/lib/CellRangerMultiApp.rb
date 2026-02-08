@@ -119,6 +119,44 @@ Columns: <code>id, name, read, pattern, sequence, feature_type</code> | <a href=
     }.merge(extract_columns(@inherit_tags))
     dataset
   end
+  def grandchild_datasets
+    # Only create grandchild datasets when multiplexing is used
+    return [] unless @params['TenXLibrary'].to_s.include?('Multiplexing')
+
+    grandchild_data = []
+
+    # Read expanded_dataset.tsv created by R app
+    expanded_tsv = File.join(SushiFabric::GSTORE_DIR, @result_dir, 'expanded_dataset.tsv')
+
+    # Return empty if TSV doesn't exist (non-multiplexed run or job still processing)
+    return [] unless File.exist?(expanded_tsv)
+
+    # Parse expanded_dataset.tsv (tab-separated, headers in first row)
+    require 'csv'
+    CSV.foreach(expanded_tsv, headers: true, col_sep: "\t") do |row|
+      # Build dataset hash using columns from expanded_dataset.tsv
+      dataset = {
+        'Name' => row['Name'],
+        'Species' => row['Species'],
+        'refBuild' => row['refBuild'],
+        'refFeatureFile' => row['refFeatureFile'],
+        'featureLevel' => row['featureLevel'],
+        'transcriptTypes' => row['transcriptTypes'],
+        'SCDataOrigin' => row['SCDataOrigin'],
+        'ResultDir [File]' => row['ResultDir [File]'],
+        'Report [Link]' => row['Report [Link]'],
+        'CountMatrix [Link]' => row['CountMatrix [Link]'],
+        'UnfilteredCountMatrix [Link]' => row['UnfilteredCountMatrix [Link]']
+      }
+
+      # Inherit Factor and B-Fabric metadata from parent
+      dataset.merge!(extract_columns(@inherit_tags))
+
+      grandchild_data << dataset
+    end
+
+    grandchild_data
+  end
   def commands
     command = "module load  #{@params["CellRangerVersion"]}\n"
     command << run_RApp("EzAppCellRangerMulti")
