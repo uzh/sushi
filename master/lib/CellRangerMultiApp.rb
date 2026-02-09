@@ -123,35 +123,62 @@ Columns: <code>id, name, read, pattern, sequence, feature_type</code> | <a href=
     # Only create grandchild datasets when multiplexing is used
     return [] unless @params['TenXLibrary'].to_s.include?('Multiplexing')
 
-    grandchild_data = []
+    sample_name = @dataset['Name']
 
-    # Read expanded_dataset.tsv created by R app
-    expanded_tsv = File.join(SushiFabric::GSTORE_DIR, @result_dir, 'expanded_dataset.tsv')
+    # Locate Sample2Barcode file in gStore metadata directory
+    # Convention: /srv/gstore/projects/{projectId}/o{orderId}_metaData/{sampleName}_Sample2Barcode.csv
+    order_id = @dataset['Order Id [B-Fabric]']
+    raw_data_dir = @dataset['RawDataDir [File]'] || @dataset['RawDataDir']
+    project_id = raw_data_dir.to_s.split('/').first
 
-    # Return empty if TSV doesn't exist (non-multiplexed run or job still processing)
-    return [] unless File.exist?(expanded_tsv)
+    return [] if project_id.to_s.empty? || order_id.to_s.empty?
 
-    # Parse expanded_dataset.tsv (tab-separated, headers in first row)
+    metadata_dir = File.join(SushiFabric::GSTORE_DIR, project_id, "o#{order_id}_metaData")
+    return [] unless Dir.exist?(metadata_dir)
+
+    # Find matching Sample2Barcode file for this sample
+    sample2barcode_files = Dir.glob(File.join(metadata_dir, "*_Sample2Barcode.csv"))
+    matching_file = sample2barcode_files.find { |f|
+      prefix = File.basename(f).sub(/_Sample2Barcode\.csv$/i, '')
+      sample_name.start_with?(prefix) || prefix == sample_name
+    }
+    return [] unless matching_file
+
+    # Parse Sample2Barcode CSV to get demultiplexed sample names
     require 'csv'
-    CSV.foreach(expanded_tsv, headers: true, col_sep: "\t") do |row|
-      # Build dataset hash using columns from expanded_dataset.tsv
+    sample2barcode = CSV.read(matching_file, headers: true)
+    sub_sample_names = sample2barcode['sample_id'].compact.reject(&:empty?)
+    return [] if sub_sample_names.empty?
+
+    # Detect CellRanger version for output path structure
+    cr_match = @params['CellRangerVersion'].to_s.match(/(\d+)\./)
+    is_v9_or_below = cr_match ? cr_match[1].to_i <= 9 : false
+
+    # Construct grandchild datasets with predicted output paths
+    grandchild_data = []
+    sub_sample_names.each do |sub_sample|
+      per_sample_dir = File.join(@result_dir, sample_name, 'per_sample_outs', sub_sample)
+
       dataset = {
-        'Name' => row['Name'],
-        'Species' => row['Species'],
-        'refBuild' => row['refBuild'],
-        'refFeatureFile' => row['refFeatureFile'],
-        'featureLevel' => row['featureLevel'],
-        'transcriptTypes' => row['transcriptTypes'],
-        'SCDataOrigin' => row['SCDataOrigin'],
-        'ResultDir [File]' => row['ResultDir [File]'],
-        'Report [Link]' => row['Report [Link]'],
-        'CountMatrix [Link]' => row['CountMatrix [Link]'],
-        'UnfilteredCountMatrix [Link]' => row['UnfilteredCountMatrix [Link]']
+        'Name' => sub_sample,
+        'Species' => @dataset['Species'],
+        'refBuild' => @params['refBuild'],
+        'refFeatureFile' => @params['refFeatureFile'],
+        'featureLevel' => @params['featureLevel'],
+        'transcriptTypes' => @params['transcriptTypes'],
+        'SCDataOrigin' => '10X',
+        'Report [Link]' => File.join(per_sample_dir, 'web_summary.html')
       }
 
-      # Inherit Factor and B-Fabric metadata from parent
-      dataset.merge!(extract_columns(@inherit_tags))
+      if is_v9_or_below
+        dataset['CountMatrix [Link]'] = File.join(per_sample_dir, 'count', 'sample_filtered_feature_bc_matrix')
+        dataset['UnfilteredCountMatrix [Link]'] = File.join(per_sample_dir, 'count', 'sample_raw_feature_bc_matrix')
+      else
+        dataset['CountMatrix [Link]'] = File.join(per_sample_dir, 'sample_filtered_feature_bc_matrix')
+        dataset['UnfilteredCountMatrix [Link]'] = File.join(per_sample_dir, 'sample_raw_feature_bc_matrix')
+      end
 
+      dataset.merge!(extract_columns(@inherit_tags))
       grandchild_data << dataset
     end
 
