@@ -127,8 +127,9 @@ Columns: <code>id, name, read, pattern, sequence, feature_type</code> | <a href=
 
     # Locate Sample2Barcode file in gStore metadata directory
     # Convention: /srv/gstore/projects/{projectId}/o{orderId}_metaData/{sampleName}_Sample2Barcode.csv
-    order_id = @dataset['Order Id [B-Fabric]']
-    raw_data_dir = @dataset['RawDataDir [File]'] || @dataset['RawDataDir']
+    # Note: @dataset keys have tags stripped (e.g., 'Order Id' not 'Order Id [B-Fabric]')
+    order_id = @dataset['Order Id']
+    raw_data_dir = @dataset['RawDataDir']
     project_id = raw_data_dir.to_s.split('/').first
 
     return [] if project_id.to_s.empty? || order_id.to_s.empty?
