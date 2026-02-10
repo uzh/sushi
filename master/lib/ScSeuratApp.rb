@@ -31,18 +31,48 @@ Single cell report<br/>
     @params['refFeatureFile', "context"] = "ScSeurat"
     @params['geneCountModel'] = ''
     @params['geneCountModel', 'description'] = '(STARsolo Input Only) The gene count model, i.e. Solo features, to use from the previous step'
+    # --- Quality Control ---
+    @params['nUMI', 'hr-header'] = "Quality Control"
+    @params['nUMI'] = ''
+    @params['nUMI', 'description'] = "Low quality cells have less than 'nUMI' UMIs. Only when applying fixed thresholds"
+    @params['ngenes'] = ''
+    @params['ngenes', 'description'] = "Low quality cells have less than 'ngenes' genes. Only when applying fixed thresholds"
+    @params['perc_mito'] = ''
+    @params['perc_mito', 'description'] = "Low quality cells have more than 'perc_mito' percent of mitochondrial genes. Only when applying fixed thresholds"
+    @params['perc_riboprot'] = '70'
+    @params['perc_riboprot', 'description'] = "Low quality cells have more than 'perc_riboprot' percent of ribosomal genes. Only when applying fixed thresholds"
+    @params['cellsFraction'] = 0.0
+    @params['cellsFraction', 'description'] = 'A gene will be kept if it is expressed in at least this fraction of cells'
+    @params['geneMinUMI'] = 1
+    @params['geneMinUMI', 'description'] = 'A gene will be kept if it has at least this many UMIs in the fraction of cells specified before'
+    @params['filterByExpression'] = ''
+    @params['filterByExpression', 'description'] = 'Keep cells according to specific gene expression. i.e. Set > 1 | Pkn3 > 1'
+    @params['estimateAmbient'] = true
+    @params['estimateAmbient', 'description'] = 'Run SoupX and DecontX to estimate ambient RNA levels'
+    # --- Normalization & Clustering ---
+    @params['SCT.regress.CellCycle', 'hr-header'] = "Normalization & Clustering"
     @params['SCT.regress.CellCycle'] = false
     @params['SCT.regress.CellCycle', 'description'] = 'Choose CellCycle to be regressed out when using the SCTransform method if it is a bias.'
+    @params['npcs'] = 20
+    @params['npcs', 'description'] = 'The maximal top dimensions (pcs) to use for reduction. Do not use more principal components than pcGenes (when used).'
+    @params['pcGenes'] = ''
+    @params['pcGenes', 'description'] = 'The genes used in supervised clustering'
+    @params['resolution'] = [0.6, 0.2, 0.4, 0.6, 0.8, 1]
+    @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
+    # --- Cluster Markers ---
+    @params['DE.method', 'hr-header'] = "Cluster Markers"
     @params['DE.method'] = ['wilcox', 'LR']
     @params['DE.method', 'description'] ='Method to be used when calculating gene cluster markers. Use LR if you want to include cell cycle in the regression model.'
     @params['min.pct'] = 0.1
     @params['min.pct', 'description'] = 'Used in calculating cluster markers: The minimum fraction of cells in either of the two tested populations.'
     @params['min.diff.pct'] = 0.1
     @params['min.diff.pct', 'description'] = 'Used for filtering cluster markers: The minimum difference of cell fraction of the two tested populations.'
-    @params['pvalue_allMarkers'] = 0.01
-    @params['pvalue_allMarkers', 'description'] = 'Used for filtering cluster markers: adjusted pValue threshold for marker detection.'
     @params['logfc.threshold'] = 0.25
     @params['logfc.threshold', 'description'] = 'Used in calculating cluster markers: Limit testing to genes which show, on average, at least X-fold difference (log-scale) between the two groups of cells.'
+    @params['pvalue_allMarkers'] = 0.01
+    @params['pvalue_allMarkers', 'description'] = 'Used for filtering cluster markers: adjusted pValue threshold for marker detection.'
+    # --- Cell Type Annotation ---
+    @params['tissue', 'hr-header'] = "Cell Type Annotation"
     @params['tissue'] = []
     @params['tissue','multi_selection'] = true
     @params['tissue','all_selected'] = true
@@ -53,52 +83,32 @@ Single cell report<br/>
     end
     @params['tissue'] = tissue.keys.sort
     @params['tissue', 'description'] = 'Select the tissues from the CellMarker2 database to identify celltypes using AUCell'
-    @params['enrichrDatabase'] = ['Human_Gene_Atlas', 'Tabula_Sapiens', 'Azimuth_2023', 'PanglaoDB_Augmented_2021', 
+    @params['enrichrDatabase'] = ['Human_Gene_Atlas', 'Tabula_Sapiens', 'Azimuth_2023', 'PanglaoDB_Augmented_2021',
                                   'CellMarker_2024', 'HuBMAP_ASCTplusB_augmented_2022', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Mouse_Gene_Atlas', 'Tabula_Muris', ]
     @params['enrichrDatabase','multi_selection'] = true
     @params['enrichrDatabase','all_selected'] = true
-    @params['Azimuth'] = ["none", "adiposeref (human)", "bonemarrowref (human)", "fetusref (human)", "heartref (human)", "humancortexref (human)", 
-                          "kidneyref (human)", "lungref (human)", "pancreasref (human)", "pbmcref (human)", "tonsilref (human)", "/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0 (human)", 
+    @params['Azimuth'] = ["none", "adiposeref (human)", "bonemarrowref (human)", "fetusref (human)", "heartref (human)", "humancortexref (human)",
+                          "kidneyref (human)", "lungref (human)", "pancreasref (human)", "pbmcref (human)", "tonsilref (human)", "/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0 (human)",
                           "mousecortexref (mouse)"]
     @params['AzimuthPanHuman'] = false
     @params['AzimuthPanHuman', 'description'] = 'Enable Azimuth Pan-Human neural network-based cell type annotation (HUMAN DATASETS ONLY)'
     @params['AzimuthPanHuman.confidence.threshold'] = 0.5
     @params['AzimuthPanHuman.confidence.threshold', 'description'] = 'Confidence threshold for Azimuth Pan-Human annotation (0.0-1.0)'
-    @params['SingleR'] = ['none', 'BlueprintEncodeData (human)', 'DatabaseImmuneCellExpressionData (human)', 'HumanPrimaryCellAtlasData (human)', 
+    @params['SingleR'] = ['none', 'BlueprintEncodeData (human)', 'DatabaseImmuneCellExpressionData (human)', 'HumanPrimaryCellAtlasData (human)',
                           'MonacoImmuneData (human)', 'NovershternHematopoieticData (human)', 'ImmGenData (mouse)', 'MouseRNAseqData (mouse)']
     @params['SingleR', 'description'] = "Use reference datasets from the celldex package to find marker-based celltype annotation with SingleR"
-    @params['cellxgeneUrl'] = ''
-    @params['cellxgeneUrl', 'description'] = 'Choose an download URL to an Seurat rds file of a dataset from here: https://cellxgene.cziscience.com/datasets'
-    @params['cellxgeneLabel'] = ''
-    @params['cellxgeneLabel', 'description'] = 'Metadata column for cell type labels. "cell_type" is a good starting choice'
     @params['sctype.enabled'] = true
     @params['sctype.enabled', 'description'] = 'Enable scType automatic cell type annotation (human and mouse supported)'
     @params['sctype.tissue'] = ["auto", "Immune system", "Liver", "Pancreas", "Kidney", "Eye", "Brain", "Lung", "Adrenal", "Heart", "Intestine", "Muscle", "Placenta", "Spleen", "Stomach", "Thymus"]
     @params['sctype.tissue', 'description'] = 'Tissue type for scType annotation. Select "auto" for automatic detection or specify the tissue type for more accurate results'
     @params['sctype.confidence.threshold'] = 0.25
     @params['sctype.confidence.threshold', 'description'] = 'Confidence threshold for scType annotation'
-    @params['npcs'] = 20
-    @params['npcs', 'description'] = 'The maximal top dimensions (pcs) to use for reduction. Do not use more principal components than pcGenes (when used).'
-    @params['pcGenes'] = ''
-    @params['pcGenes', 'description'] = 'The genes used in supervised clustering'
-    @params['resolution'] = [0.6, 0.2, 0.4, 0.6, 0.8, 1]
-    @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
-    @params['nUMI'] = ''
-    @params['nUMI', 'description'] = "Low quality cells have less than 'nUMI' UMIs. Only when applying fixed thresholds"
-    @params['ngenes'] = ''
-    @params['ngenes', 'description'] = "Low quality cells have less than 'ngenes' genes. Only when applying fixed thresholds"
-    @params['perc_mito'] = ''
-    @params['perc_mito', 'description'] = "Low quality cells have more than 'perc_mito' percent of mitochondrial genes. Only when applying fixed thresholds"
-    @params['perc_riboprot'] = '70'
-    @params['perc_riboprot', 'description'] = "Low quality cells have more than 'perc_ribo' percent of ribosomal genes. Only when applying fixed thresholds"
-    @params['cellsFraction'] = 0.0
-    @params['cellsFraction', 'description'] = 'A gene will be kept if it is expressed in at least this fraction of cells'
-    @params['geneMinUMI'] = 1
-    @params['geneMinUMI', 'description'] = 'A gene will be kept if it has at least this many UMIs in the fraction of cells specified before'
-    @params['filterByExpression'] = ''
-    @params['filterByExpression', 'description'] = 'Keep cells according to specific gene expression. i.e. Set > 1 | Pkn3 > 1'
-    @params['estimateAmbient'] = true
-    @params['estimateAmbient', 'description'] = 'run SoupX and DecontX to estimate ambientRNA levels'
+    @params['cellxgeneUrl'] = ''
+    @params['cellxgeneUrl', 'description'] = 'Choose a download URL to a Seurat rds file of a dataset from here: https://cellxgene.cziscience.com/datasets'
+    @params['cellxgeneLabel'] = ''
+    @params['cellxgeneLabel', 'description'] = 'Metadata column for cell type labels. "cell_type" is a good starting choice'
+    # --- Additional Options ---
+    @params['computePathwayTFActivity', 'hr-header'] = "Additional Options"
     @params['computePathwayTFActivity'] = false
     @params['computePathwayTFActivity', 'description'] = 'Whether to calculate the TF and pathway activities (Note: Only for human and mouse)'
     @params['specialOptions'] = ''

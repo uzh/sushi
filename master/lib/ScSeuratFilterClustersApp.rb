@@ -29,19 +29,31 @@ Single cell report<br/>
     @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
     @params['refFeatureFile', "context"] = "ScSeuratFilterClusters"
+    # --- Cluster Filtering ---
+    @params['ClusterAnnotationFile', 'hr-header'] = "Cluster Filtering"
     @params['ClusterAnnotationFile'] = ''
     @params['ClusterAnnotationFile', 'file_upload'] = true
     @params['ClusterAnnotationFile', 'description'] = "A 3-column mapping of old cluster to new cluster labels in .xlsx format. Use the 'clusterInfos.xlsx' file as a template. The first column indicates the sample name. The second column are the old cluster labels. The third column indicates if the cluster should be kept or not. The first row should be a header indicating the column names. We recommend using the names provided in 'clusterInfos.xlsx', namely 'Sample', 'Cluster', and 'ClusterLabel'. To remove a cluster, label it as REMOVE."
     @params['identityColumn'] = 'seurat_clusters'
     @params['identityColumn', 'description'] = "The name of the identity column to use for calculating the markers and annotate the cells after the subsetting. By default, the column 'seurat_clusters', the variable of the new clusterings, is used. Change this option if you want to e.g. re-use previous labels"
+    # --- Normalization & Clustering ---
+    @params['SCT.regress.CellCycle', 'hr-header'] = "Normalization & Clustering"
     @params['SCT.regress.CellCycle'] = false
     @params['SCT.regress.CellCycle', 'description'] = 'Choose CellCycle to be regressed out when using the SCTransform method if it is a bias.'
+    @params['npcs'] = 15
+    @params['npcs', 'description'] = 'The maximal top dimensions (pcs) to use for reduction. Do not use more principal components than pcGenes (when used).'
+    @params['resolution'] = [0.6, 0.2, 0.4, 0.6, 0.8, 1]
+    @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
+    # --- Cluster Markers ---
+    @params['DE.method', 'hr-header'] = "Cluster Markers"
     @params['DE.method'] = ['wilcox', 'LR']
     @params['DE.method', 'description'] ='Method to be used when calculating gene cluster markers. Use LR if you want to include cell cycle in the regression model.'
     @params['min.pct'] = 0.1
     @params['min.pct', 'description'] = 'Used in calculating cluster markers: The minimum fraction of cells in either of the two tested populations.'
     @params['logfc.threshold'] = 0.25
     @params['logfc.threshold', 'description'] = 'Used in calculating cluster markers: Limit testing to genes which show, on average, at least X-fold difference (log-scale) between the two groups of cells.'
+    # --- Cell Type Annotation ---
+    @params['tissue', 'hr-header'] = "Cell Type Annotation"
     @params['tissue'] = []
     @params['tissue','multi_selection'] = true
     @params['tissue','all_selected'] = true
@@ -51,19 +63,19 @@ Single cell report<br/>
       tissue[e["tissue_class"]] = true
     end
     @params['tissue'] = tissue.keys.sort
-    @params['tissue', 'description'] = 'Select the tissues of origin in the CellMarker2 database.'
-    @params['enrichrDatabase'] = ['Tabula_Muris', 'Tabula_Sapiens', 'Azimuth_Cell_Types_2021', 'PanglaoDB_Augmented_2021', 
-                                  'CellMarker_Augmented_2021', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Human_Gene_Atlas', 'Mouse_Gene_Atlas', ]
+    @params['tissue', 'description'] = 'Select the tissues from the CellMarker2 database to identify celltypes using AUCell'
+    @params['enrichrDatabase'] = ['Human_Gene_Atlas', 'Tabula_Sapiens', 'Azimuth_2023', 'PanglaoDB_Augmented_2021',
+                                  'CellMarker_2024', 'HuBMAP_ASCTplusB_augmented_2022', 'Allen_Brain_Atlas_10x_scRNA_2021', 'Mouse_Gene_Atlas', 'Tabula_Muris', ]
     @params['enrichrDatabase','multi_selection'] = true
     @params['enrichrDatabase','all_selected'] = true
-    @params['Azimuth'] = ["none", "adiposeref", "bonemarrowref", "fetusref", "heartref", "humancortexref", 
-                          "kidneyref", "lungref", "mousecortexref", "pancreasref", "pbmcref", "tonsilref","/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0"]
-    @params['SingleR'] = ['none', 'BlueprintEncodeData', 'DatabaseImmuneCellExpressionData', 'HumanPrimaryCellAtlasData', 
-                          'ImmGenData', 'MonacoImmuneData', 'MouseRNAseqData', 'NovershternHematopoieticData']
-    @params['npcs'] = 15
-    @params['npcs', 'description'] = 'The maximal top dimensions (pcs) to use for reduction. Do not use more principal components than pcGenes (when used).'
-    @params['resolution'] = [0.6, 0.2, 0.4, 0.6, 0.8, 1]
-    @params['resolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
+    @params['Azimuth'] = ["none", "adiposeref (human)", "bonemarrowref (human)", "fetusref (human)", "heartref (human)", "humancortexref (human)",
+                          "kidneyref (human)", "lungref (human)", "pancreasref (human)", "pbmcref (human)", "tonsilref (human)", "/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0 (human)",
+                          "mousecortexref (mouse)"]
+    @params['SingleR'] = ['none', 'BlueprintEncodeData (human)', 'DatabaseImmuneCellExpressionData (human)', 'HumanPrimaryCellAtlasData (human)',
+                          'MonacoImmuneData (human)', 'NovershternHematopoieticData (human)', 'ImmGenData (mouse)', 'MouseRNAseqData (mouse)']
+    @params['SingleR', 'description'] = "Use reference datasets from the celldex package to find marker-based celltype annotation with SingleR"
+    # --- Additional Options ---
+    @params['computePathwayTFActivity', 'hr-header'] = "Additional Options"
     @params['computePathwayTFActivity'] = false
     @params['computePathwayTFActivity', 'description'] = 'Whether to calculate the TF and pathway activities (Note: Only for human and mouse)'
     @params['specialOptions'] = ''

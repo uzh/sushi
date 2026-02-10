@@ -25,6 +25,24 @@ class ScSeuratCompareApp < SushiFabric::SushiApp
     @params['ram', "context"] = "slurm"
     @params['scratch'] = '50'
     @params['scratch', "context"] = "slurm"
+    # --- Comparison Setup ---
+    @params['CellIdentity', 'hr-header'] = "Comparison Setup"
+    @params['CellIdentity'] = 'ident'
+    @params['CellIdentity', 'description'] = "The Seurat metadata column which contains the cell clusters or types (usually 'ident', 'cellType' for labeled single samples, or 'cellTypeIntegrated' for labeled integrated samples)"
+    @params['CellIdentity', "context"] = "ScSeuratCompare"
+    @params['grouping'] = 'Condition'
+    @params['grouping', 'description'] = "The Seurat metadata column which contains the sample grouping information"
+    @params['grouping', "context"] = "ScSeuratCompare"
+    @params['sampleGroup'] = ''
+    @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
+    @params['refGroup'] = ''
+    @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
+    # --- Differential Expression ---
+    @params['pseudoBulkMode', 'hr-header'] = "Differential Expression"
+    @params['pseudoBulkMode'] = false
+    @params['pseudoBulkMode', 'description'] = "Whether to aggregate the counts to the pseudo-bulk level prior to performing the DE experiments. Setting this to true also requires setting 'replicateGrouping'"
+    @params['replicateGrouping'] = ""
+    @params['replicateGrouping', 'description'] = "(pseudo-bulk mode only) The column in the Seurat metadata containing the replicate group information."
     @params['DE.method'] = ['wilcox', 'LR']
     @params['DE.method', 'description'] = "Method to be used when calculating differentially expressed genes between conditions."
     @params['DE.method', "context"] = "ScSeuratCompare"
@@ -32,20 +50,6 @@ class ScSeuratCompareApp < SushiFabric::SushiApp
     @params['DE.regress','multi_selection'] = true
     @params['DE.regress', 'description'] = "Variables to regress when calculating differentially expressed genes. Only used with the LR method."
     @params['DE.regress', "context"] = "ScSeuratCompare"
-    @params['CellIdentity'] = 'ident'
-    @params['CellIdentity', 'description'] = "The Seurat metadata column which contains the cell clusters or types (usually 'ident', 'cellType' for labeled single samples, or 'cellTypeIntegrated' for labeled integrated samples)"
-    @params['CellIdentity', "context"] = "ScSeuratCompare"
-    @params['grouping'] = 'Condition'
-    @params['grouping', 'description'] = "The Seurat metadata column which contains the sample grouping information"
-    @params['grouping', "context"] = "ScSeuratCompare"
-    @params['pseudoBulkMode'] = false
-    @params['pseudoBulkMode', 'description'] = "Whether to aggregate the counts to the pseudo-bulk level prior to performing the DE experiments. Setting this to true also requires setting 'replicateGrouping'"
-    @params['replicateGrouping'] = ""
-    @params['replicateGrouping', 'description'] = "(pseudo-bulk mode only) The column in the Seurat metadata containing the replicate group information."
-    @params['sampleGroup'] = ''
-    @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
-    @params['refGroup'] = ''
-    @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.5.0","Dev/R/4.4.2"]
     @inherit_columns = ["Order Id"]
