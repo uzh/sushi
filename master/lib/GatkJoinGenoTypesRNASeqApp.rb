@@ -30,7 +30,7 @@ genotype,merge and annotate gvcf-Files<br/>
     @params['minReadDepth'] = '20'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/jdk", "Variants/GATK", "Tools/Picard", "Dev/R"]
+    @modules = ["Dev/jdk", "Variants/GATK", "Tools/bcftools", "Tools/Picard", "Dev/R"]
     @inherit_columns = ["Order Id"]
   end
   def next_dataset
