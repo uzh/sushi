@@ -123,64 +123,96 @@ Columns: <code>id, name, read, pattern, sequence, feature_type</code> | <a href=
     # Only create grandchild datasets when multiplexing is used
     return [] unless @params['TenXLibrary'].to_s.include?('Multiplexing')
 
-    sample_name = @dataset['Name']
-
-    # Locate Sample2Barcode file in gStore metadata directory
-    # Convention: /srv/gstore/projects/{projectId}/o{orderId}_metaData/{sampleName}_Sample2Barcode.csv
-    # Note: @dataset keys have tags stripped (e.g., 'Order Id' not 'Order Id [B-Fabric]')
-    order_id = @dataset['Order Id']
-    raw_data_dir = @dataset['RawDataDir']
-    project_id = raw_data_dir.to_s.split('/').first
-
-    return [] if project_id.to_s.empty? || order_id.to_s.empty?
-
-    metadata_dir = File.join(SushiFabric::GSTORE_DIR, project_id, "o#{order_id}_metaData")
-    return [] unless Dir.exist?(metadata_dir)
-
-    # Find matching Sample2Barcode file for this sample
-    sample2barcode_files = Dir.glob(File.join(metadata_dir, "*_Sample2Barcode.csv"))
-    matching_file = sample2barcode_files.find { |f|
-      prefix = File.basename(f).sub(/_Sample2Barcode\.csv$/i, '')
-      sample_name.start_with?(prefix) || prefix == sample_name
-    }
-    return [] unless matching_file
-
-    # Parse Sample2Barcode CSV to get demultiplexed sample names
-    require 'csv'
-    sample2barcode = CSV.read(matching_file, headers: true)
-    sub_sample_names = sample2barcode['sample_id'].compact.reject(&:empty?)
-    return [] if sub_sample_names.empty?
-
     # Detect CellRanger version for output path structure
     cr_match = @params['CellRangerVersion'].to_s.match(/(\d+)\./)
     is_v9_or_below = cr_match ? cr_match[1].to_i <= 9 : false
 
-    # Construct grandchild datasets with predicted output paths
+    # In sample_mode, @dataset points to the LAST input row after the loop,
+    # not necessarily the processed sample. Use @result_dataset (populated
+    # during the loop for selected samples only) to get correct sample names,
+    # then look up input metadata from @dataset_hash.
+    processed_names = if @result_dataset.is_a?(Array) && !@result_dataset.empty?
+                        @result_dataset.map { |r| r['Name'] }.compact
+                      else
+                        [@dataset['Name']].compact
+                      end
+
     grandchild_data = []
-    sub_sample_names.each do |sub_sample|
-      per_sample_dir = File.join(@result_dir, sample_name, 'per_sample_outs', sub_sample)
+    processed_names.each do |sample_name|
+      # Find the original input row in @dataset_hash (with tagged keys)
+      input_row = if @dataset_hash.is_a?(Array)
+                    @dataset_hash.find { |row|
+                      stripped_name = row.find { |k, _| k.gsub(/\[.+\]/,'').strip == 'Name' }
+                      stripped_name && stripped_name[1] == sample_name
+                    }
+                  end
+      # Strip tags to get clean keys
+      sample_data = if input_row
+                      Hash[*input_row.map{|key,value| [key.gsub(/\[.+\]/,'').strip, value]}.flatten]
+                    else
+                      @dataset
+                    end
 
-      dataset = {
-        'Name' => sub_sample,
-        'Species' => @dataset['Species'],
-        'refBuild' => @params['refBuild'],
-        'refFeatureFile' => @params['refFeatureFile'],
-        'featureLevel' => @params['featureLevel'],
-        'transcriptTypes' => @params['transcriptTypes'],
-        'SCDataOrigin' => '10X',
-        'Report [Link]' => File.join(per_sample_dir, 'web_summary.html')
+      # Locate Sample2Barcode file in gStore metadata directory
+      order_id = sample_data['Order Id']
+      raw_data_dir = sample_data['RawDataDir']
+      project_id = raw_data_dir.to_s.split('/').first
+
+      next if project_id.to_s.empty? || order_id.to_s.empty?
+
+      metadata_dir = File.join(SushiFabric::GSTORE_DIR, project_id, "o#{order_id}_metaData")
+      next unless Dir.exist?(metadata_dir)
+
+      # Find matching Sample2Barcode file for this sample
+      sample2barcode_files = Dir.glob(File.join(metadata_dir, "*_Sample2Barcode.csv"))
+      matching_file = sample2barcode_files.find { |f|
+        prefix = File.basename(f).sub(/_Sample2Barcode\.csv$/i, '')
+        sample_name.start_with?(prefix) || prefix == sample_name
       }
+      next unless matching_file
 
-      if is_v9_or_below
-        dataset['CountMatrix [Link]'] = File.join(per_sample_dir, 'count', 'sample_filtered_feature_bc_matrix')
-        dataset['UnfilteredCountMatrix [Link]'] = File.join(per_sample_dir, 'count', 'sample_raw_feature_bc_matrix')
-      else
-        dataset['CountMatrix [Link]'] = File.join(per_sample_dir, 'sample_filtered_feature_bc_matrix')
-        dataset['UnfilteredCountMatrix [Link]'] = File.join(per_sample_dir, 'sample_raw_feature_bc_matrix')
+      # Parse Sample2Barcode CSV to get demultiplexed sample names
+      require 'csv'
+      sample2barcode = CSV.read(matching_file, headers: true)
+      sub_sample_names = sample2barcode['sample_id'].compact.reject(&:empty?)
+      next if sub_sample_names.empty?
+
+      # Construct grandchild datasets with predicted output paths
+      sub_sample_names.each do |sub_sample|
+        per_sample_dir = File.join(@result_dir, sample_name, 'per_sample_outs', sub_sample)
+
+        dataset = {
+          'Name' => sub_sample,
+          'Species' => sample_data['Species'],
+          'refBuild' => @params['refBuild'],
+          'refFeatureFile' => @params['refFeatureFile'],
+          'featureLevel' => @params['featureLevel'],
+          'transcriptTypes' => @params['transcriptTypes'],
+          'SCDataOrigin' => '10X',
+          'Report [Link]' => File.join(per_sample_dir, 'web_summary.html')
+        }
+
+        if is_v9_or_below
+          dataset['CountMatrix [Link]'] = File.join(per_sample_dir, 'count', 'sample_filtered_feature_bc_matrix')
+          dataset['UnfilteredCountMatrix [Link]'] = File.join(per_sample_dir, 'count', 'sample_raw_feature_bc_matrix')
+        else
+          dataset['CountMatrix [Link]'] = File.join(per_sample_dir, 'sample_filtered_feature_bc_matrix')
+          dataset['UnfilteredCountMatrix [Link]'] = File.join(per_sample_dir, 'sample_raw_feature_bc_matrix')
+        end
+
+        # Extract inherited columns directly from input row (not from stale @dataset)
+        if input_row
+          @inherit_tags.each do |tag|
+            input_row.each do |key, value|
+              dataset[key] = value if key.include?("[#{tag}]")
+            end
+          end
+        else
+          dataset.merge!(extract_columns(@inherit_tags))
+        end
+
+        grandchild_data << dataset
       end
-
-      dataset.merge!(extract_columns(@inherit_tags))
-      grandchild_data << dataset
     end
 
     grandchild_data
