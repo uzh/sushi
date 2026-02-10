@@ -59,6 +59,88 @@ Single cell report<br/>
     @params['nmad', 'description'] = 'Median absolute deviation (MAD) from the median value of each metric across all bins. Leave empty to disable MAD-based filtering.'
     @params['lambda'] = 0.8
     @params['lambda', 'description'] = 'BANKSY lambda: spatial weighting parameter (0-1). Larger values (0.8) find spatial domains; smaller values (0.2) perform cell typing.'
+    @params['rctdReference'] = ['None',
+      # Mouse references
+      'allen/allen_cortex_rctd.rds (mouse brain)',
+      'azimuth/pan_mouse_pansci_rctd.rds (mouse pan-tissue)',
+      'tabula_muris_senis/Bladder_rctd.rds (mouse)',
+      'tabula_muris_senis/Bone_marrow_rctd.rds (mouse)',
+      'tabula_muris_senis/Heart_rctd.rds (mouse)',
+      'tabula_muris_senis/Kidney_rctd.rds (mouse)',
+      'tabula_muris_senis/Large_intestine_rctd.rds (mouse)',
+      'tabula_muris_senis/Limb_muscle_rctd.rds (mouse)',
+      'tabula_muris_senis/Liver_rctd.rds (mouse)',
+      'tabula_muris_senis/Lung_rctd.rds (mouse)',
+      'tabula_muris_senis/Mammary_gland_rctd.rds (mouse)',
+      'tabula_muris_senis/Pancreas_rctd.rds (mouse)',
+      'tabula_muris_senis/Skin_rctd.rds (mouse)',
+      'tabula_muris_senis/Spleen_rctd.rds (mouse)',
+      'tabula_muris_senis/Thymus_rctd.rds (mouse)',
+      'tabula_muris_senis/Tongue_rctd.rds (mouse)',
+      'tabula_muris_senis/Trachea_rctd.rds (mouse)',
+      # Human references - archmap
+      'archmap/Glioblastoma_rctd.rds (human brain tumor)',
+      'archmap/HLCA_rctd.rds (human lung)',
+      'archmap/NSCLC_rctd.rds (human lung cancer)',
+      # Human references - celltypist
+      'celltypist/Blood_rctd.rds (human)',
+      'celltypist/Bone_marrow_rctd.rds (human)',
+      'celltypist/Heart_rctd.rds (human)',
+      'celltypist/Hippocampus_rctd.rds (human brain)',
+      'celltypist/Intestine_rctd.rds (human)',
+      'celltypist/Kidney_rctd.rds (human)',
+      'celltypist/Liver_rctd.rds (human)',
+      'celltypist/Lung_rctd.rds (human)',
+      'celltypist/Lymph_node_rctd.rds (human)',
+      'celltypist/Pancreas_rctd.rds (human)',
+      'celltypist/Skeletal_muscle_rctd.rds (human)',
+      'celltypist/Spleen_rctd.rds (human)',
+      # Human references - disco (complete)
+      'disco/adipose_rctd.rds (human)',
+      'disco/adrenal_gland_rctd.rds (human)',
+      'disco/bladder_rctd.rds (human)',
+      'disco/blood_rctd.rds (human)',
+      'disco/bone_marrow_rctd.rds (human)',
+      'disco/brain_rctd.rds (human)',
+      'disco/breast_rctd.rds (human)',
+      'disco/eye_rctd.rds (human)',
+      'disco/fallopian_tube_rctd.rds (human)',
+      'disco/gingiva_rctd.rds (human)',
+      'disco/heart_rctd.rds (human)',
+      'disco/intestine_rctd.rds (human)',
+      'disco/kidney_rctd.rds (human)',
+      'disco/liver_cell_rctd.rds (human)',
+      'disco/lung_rctd.rds (human)',
+      'disco/ovary_rctd.rds (human)',
+      'disco/pancreas_cell_rctd.rds (human)',
+      'disco/placenta_rctd.rds (human)',
+      'disco/skeletal_muscle_rctd.rds (human)',
+      'disco/skin_rctd.rds (human)',
+      'disco/stomach_rctd.rds (human)',
+      'disco/testis_rctd.rds (human)',
+      'disco/thymus_rctd.rds (human)',
+      'disco/tonsil_rctd.rds (human)',
+      # Human disease-specific references - disco
+      'disco/AD_frontal_cortex_parenchyma_rctd.rds (human Alzheimer)',
+      'disco/COVID-19_blood_rctd.rds (human COVID-19)',
+      'disco/Crohns_disease_ileum_rctd.rds (human Crohn)',
+      'disco/PDAC_pancreas_rctd.rds (human pancreatic cancer)',
+      'disco/type_1_diabetes_pancreas_rctd.rds (human T1D)',
+      'disco/type_2_diabetes_pancreas_rctd.rds (human T2D)',
+      # Uveal Melanoma project references (human + melanoma cells) - pre-built RCTD format
+      'p36005_UM_references/brain/brain_rctd.rds (human brain + melanoma)',
+      'p36005_UM_references/breast/breast_rctd.rds (human breast + melanoma)',
+      'p36005_UM_references/duodenum/duodenum_rctd.rds (human duodenum + melanoma)',
+      'p36005_UM_references/eye/eye_rctd.rds (human eye + melanoma)',
+      'p36005_UM_references/liver/liver_rctd.rds (human liver + melanoma)',
+      'p36005_UM_references/skin/skin_rctd.rds (human skin + melanoma)',
+      'p36005_UM_references/thyroid/thyroid_rctd.rds (human thyroid + melanoma)'
+    ]
+    @params['rctdReference', 'description'] = 'RCTD Reference atlas. Format: folder/file.rds (species tissue). WARNING: RCTD requires 200GB+ RAM.'
+    @params['rctdFile'] = ''
+    @params['rctdFile', 'description'] = 'Manual override: Full path to custom RCTD reference .rds file (leave empty to use dropdown selection)'
+    @params['rctdUMImin'] = '20'
+    @params['rctdUMImin', 'description'] = 'Minimum UMI count for RCTD annotation. Cells below this threshold will not be classified.'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.5.0"]
