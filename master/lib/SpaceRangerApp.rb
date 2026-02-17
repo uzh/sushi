@@ -76,11 +76,6 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
         'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
         'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix'),
         'Read Count'=>@dataset['Read Count'],
-        'Anndata [Link]' => (
-          @params['SpaceRangerVersion'] == "Aligner/SpaceRanger/4.0.1" ?
-            File.join(report_dir, 'segmented_outputs/filtered_feature_cell_matrix.h5') :
-            File.join(report_dir, 'binned_outputs/square_008um/filtered_feature_bc_matrix.h5')
-        ),
         'SourceImage [Link]'=>@dataset['Image'],
         'BinnedOutput [Link]'=>File.join(report_dir, 'binned_outputs/square_002um'),
         'SpaceRangerDir [Link]'=>report_dir,
@@ -88,6 +83,9 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
       }.merge(extract_columns(@inherit_tags))
    if @params['keepAlignment']
        dataset['AlignmentFile [Link]'] = File.join(report_dir, 'possorted_genome_bam.cram')
+    end
+   if @params['runSegmentation']
+     dataset['Anndata [Link]'] = File.join(report_dir, 'segmented_outputs/filtered_feature_cell_matrix.h5')
     end    
     dataset
   end
