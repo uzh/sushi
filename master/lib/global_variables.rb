@@ -277,7 +277,7 @@ module GlobalVariables
     command = ''
     if conda_env
       command << ". '/usr/local/ngseq/miniforge3/etc/profile.d/conda.sh'\n"
-      command << "conda activate #{conda_env}\n"
+      command << "set +e; conda activate #{conda_env}; set -e\n"
     end
     command << "R --vanilla --slave<<  EOT\n"
     command << "EZ_GLOBAL_VARIABLES <<- '#{EZ_GLOBAL_VARIABLES}'\n"
@@ -344,7 +344,7 @@ module GlobalVariables
       command << "pixi run --manifest-path #{SushiFabric::Application.config.ezpyz_dir}/ezpyz_#{app_name} python3 << EOT\n"
     else
       command << ". '/usr/local/ngseq/miniforge3/etc/profile.d/conda.sh'\n"
-      command << "conda activate #{conda_env}\n"
+      command << "set +e; conda activate #{conda_env}; set -e\n"
       command << "python3 << EOT\n"
     end
             
