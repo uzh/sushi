@@ -26,27 +26,25 @@ EzAppNfCoreGeneric <- setRefClass(
       message("Sample sheet contents:")
       print(read.csv(sampleSheetPath))
       
-      # Get resource limits from param (set by SUSHI)
-      maxCpus <- ifelse(is.null(param[["cores"]]), 4, as.integer(param[["cores"]]))
-      maxMemory <- ifelse(is.null(param[["ram"]]), 8, as.integer(param[["ram"]]))
-      
-      # Create custom config to override resource limits
-      # executor memory should be >= process memory to avoid "exceeds available" errors
-      executorMemory <- max(maxMemory, 64)  # At least 64 GB for nf-core pipelines
+      # Get resource limits from param (set by SUSHI, auto-detected from pipeline schema)
+      maxCpus <- ifelse(is.null(param[["cores"]]), 16, as.integer(param[["cores"]]))
+      maxMemory <- ifelse(is.null(param[["ram"]]), 128, as.integer(param[["ram"]]))
       
       customConfig <- "custom_resources.config"
       configContent <- paste0(
-        "// Override executor to allow sufficient resources\n",
+        "// Executor: total available resources for this job\n",
         "executor {\n",
         "  name = 'local'\n",
-        "  cpus = ", max(maxCpus, 8), "\n",
-        "  memory = '", executorMemory, ".GB'\n",
-        "}\n",
-        "\n",
-        "// Override all process resource requirements\n",
-        "process {\n",
         "  cpus = ", maxCpus, "\n",
         "  memory = '", maxMemory, ".GB'\n",
+        "}\n",
+        "\n",
+        "// Cap all process labels to fit within executor limits\n",
+        "process {\n",
+        "  resourceLimits = [\n",
+        "    cpus: ", maxCpus, ",\n",
+        "    memory: '", maxMemory, ".GB'\n",
+        "  ]\n",
         "}\n"
       )
       writeLines(configContent, customConfig)
@@ -81,6 +79,44 @@ EzAppNfCoreGeneric <- setRefClass(
         "-profile singularity",
         "-c", customConfig
       )
+      
+      # Resolve reference genome from refBuild parameter
+      refBuild <- param[["refBuild"]]
+      if (!is.null(refBuild) && refBuild != "" && refBuild != "select") {
+        genomesRoots <- strsplit(GENOMES_ROOT, ":")[[1]]
+        refParts <- strsplit(refBuild, "/")[[1]]
+        genomeBase <- paste(refParts[1:min(3, length(refParts))], collapse = "/")
+        
+        refRoot <- NULL
+        for (root in genomesRoots) {
+          if (dir.exists(file.path(root, genomeBase))) {
+            refRoot <- root
+            break
+          }
+        }
+        
+        if (!is.null(refRoot)) {
+          fastaPath <- file.path(refRoot, genomeBase, "Sequence", "WholeGenomeFasta", "genome.fa")
+          if (file.exists(fastaPath)) {
+            cmd <- paste(cmd, "--fasta", fastaPath)
+            message("Using FASTA: ", fastaPath)
+          }
+          
+          gtfPath <- NULL
+          if (length(refParts) > 3) {
+            gtfPath <- file.path(refRoot, refBuild, "Genes", "genes.gtf")
+          }
+          if (is.null(gtfPath) || !file.exists(gtfPath)) {
+            gtfPath <- file.path(refRoot, genomeBase, "Annotation", "Genes", "genes.gtf")
+          }
+          if (file.exists(gtfPath)) {
+            cmd <- paste(cmd, "--gtf", gtfPath)
+            message("Using GTF: ", gtfPath)
+          }
+        } else {
+          message("WARNING: Reference genome not found for refBuild: ", refBuild)
+        }
+      }
       
       message("Running command: ", cmd)
       

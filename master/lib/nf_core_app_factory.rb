@@ -262,6 +262,26 @@ module NfCoreAppFactory
       app_config['api_optional_params'] = []
     end
     
+    # Fetch max resource requirements from pipeline schema
+    # and ensure SUSHI params meet the pipeline's minimum needs
+    begin
+      max_res = NfCoreInfoFetcher.fetch_max_resources(pipeline_name, pipeline_version)
+      if max_res['max_cpus']
+        current_cores = (app_config['params']['cores'] || 8).to_i
+        if current_cores < max_res['max_cpus']
+          app_config['params']['cores'] = max_res['max_cpus']
+        end
+      end
+      if max_res['max_memory_gb']
+        current_ram = (app_config['params']['ram'] || 30).to_i
+        if current_ram < max_res['max_memory_gb']
+          app_config['params']['ram'] = max_res['max_memory_gb']
+        end
+      end
+    rescue => e
+      warn "NfCoreAppFactory: Failed to fetch max resources for #{pipeline_name}: #{e.message}"
+    end
+    
     Class.new(SushiFabric::SushiApp) do
       # Need to include GlobalVariables to use run_RApp
       # But we need to override run method to call parent's run, not GlobalVariables' run

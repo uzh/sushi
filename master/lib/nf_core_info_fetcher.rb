@@ -466,6 +466,44 @@ module NfCoreInfoFetcher
     { 'required' => [], 'optional' => [] }
   end
   
+  # Fetch max resource requirements from nextflow_schema.json
+  # Reads max_cpus, max_memory, max_time from "max_job_request_options" section
+  # These represent the upper bound of resources any process in the pipeline can request
+  # @param pipeline_name [String] nf-core pipeline name
+  # @param version [String] pipeline version
+  # @return [Hash] { 'max_cpus' => 16, 'max_memory_gb' => 128 }
+  def self.fetch_max_resources(pipeline_name, version = 'master')
+    schema = fetch_nextflow_schema(pipeline_name, version)
+    return {} unless schema
+
+    definitions = schema['definitions'] || schema['$defs']
+    return {} unless definitions
+
+    max_resources = {}
+    definitions.each do |section_name, section|
+      next unless section['properties']
+      next unless section_name =~ /max_job_request|resource/i
+
+      props = section['properties']
+      if props['max_cpus'] && props['max_cpus']['default']
+        max_resources['max_cpus'] = props['max_cpus']['default'].to_i
+      end
+      if props['max_memory'] && props['max_memory']['default']
+        mem_str = props['max_memory']['default'].to_s
+        if mem_str =~ /([\d]+)\s*\.?\s*GB/i
+          max_resources['max_memory_gb'] = $1.to_i
+        end
+      end
+    end
+
+    puts "NfCoreInfoFetcher: Max resources for #{pipeline_name} v#{version}: #{max_resources.inspect}"
+    $stdout.flush
+    max_resources
+  rescue => e
+    warn "NfCoreInfoFetcher: Failed to fetch max resources for #{pipeline_name}: #{e.message}"
+    {}
+  end
+
   def self.fetch_with_cache(url, cache_path)
     FileUtils.mkdir_p(File.dirname(cache_path))
     
