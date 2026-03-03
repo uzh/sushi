@@ -263,16 +263,17 @@ module NfCoreAppFactory
     end
     
     # Fetch max resource requirements from pipeline schema
-    # and ensure SUSHI params meet the pipeline's minimum needs
+    # and ensure SUSHI params meet the pipeline's minimum needs.
+    # Skip if already an Array (dropdown with curated options from YAML).
     begin
       max_res = NfCoreInfoFetcher.fetch_max_resources(pipeline_name, pipeline_version)
-      if max_res['max_cpus']
+      if max_res['max_cpus'] && !app_config['params']['cores'].is_a?(Array)
         current_cores = (app_config['params']['cores'] || 8).to_i
         if current_cores < max_res['max_cpus']
           app_config['params']['cores'] = max_res['max_cpus']
         end
       end
-      if max_res['max_memory_gb']
+      if max_res['max_memory_gb'] && !app_config['params']['ram'].is_a?(Array)
         current_ram = (app_config['params']['ram'] || 30).to_i
         if current_ram < max_res['max_memory_gb']
           app_config['params']['ram'] = max_res['max_memory_gb']

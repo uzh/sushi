@@ -29,7 +29,12 @@ pipelines:
   rnaseq:
     # Note: default_version is no longer needed here - auto-compatibility check
     # now selects the latest Nextflow-compatible version automatically.
-    # Keeping this entry only for custom_params (STAR workaround + strandedness).
+    params:
+      # Dropdown: min 16 CPUs required (process_high), options up to 64
+      cores: [16, 32, 64]
+      # Dropdown: min 128 GB required (STAR index + process_high_memory), options up to 256
+      ram: [128, 256]
+      scratch: 500
     custom_params:
       - name: strandedness
         type: select
