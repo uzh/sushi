@@ -29,8 +29,14 @@ pipelines:
   rnaseq:
     # Note: default_version is no longer needed here - auto-compatibility check
     # now selects the latest Nextflow-compatible version automatically.
-    # Keeping this entry only for custom_params (STAR workaround).
+    # Keeping this entry only for custom_params (STAR workaround + strandedness).
     custom_params:
+      - name: strandedness
+        type: select
+        required: true
+        options: ["auto", "forward", "reverse", "unstranded"]
+        default: "auto"
+        description: "Strandedness of RNA-seq library (auto = auto-detect with Salmon)"
       # Workaround for STAR segfault issue - use Salmon pseudo-aligner
       - name: pseudo_aligner
         type: select

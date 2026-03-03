@@ -353,7 +353,12 @@ module NfCoreAppFactory
           # Add the param
           default_val = param_info['default']
           description = "[REQUIRED from API] #{param_info['description']}"
-          
+
+          # Clear defaults containing Nextflow internal variables (e.g. ${projectDir})
+          if default_val.is_a?(String) && default_val =~ /\$\{/
+            default_val = ''
+          end
+
           if param_info['enum'] && param_info['enum'].any?
             # Enum type -> select dropdown
             @params[param_name] = param_info['enum']
@@ -373,18 +378,29 @@ module NfCoreAppFactory
           @required_params << param_name unless @required_params.include?(param_name)
         end
         
+        # Nextflow module version selector
+        # Available versions from FGCZ lmod: 25.10, 25.04, 24.10, 24.04, 23.10, 23.04
+        @params['nextflowModuleVersion'] = ['25.10', '25.04', '24.10', '24.04', '23.10', '23.04']
+        @params['nextflowModuleVersion', 'description'] = 'Nextflow version to load via module (default: 25.10)'
+
         # Process API optional params (from nextflow_schema.json)
         # These are shown in the UI so users can configure them, but not marked as required
         # Skip params already defined above, auto-managed, or hidden
         (app_config['api_optional_params'] || []).each do |param_info|
           param_name = param_info['name']
-          
+
           next if custom_param_names.include?(param_name)
           next if auto_managed.include?(param_name)
           next if @params.key?(param_name)
-          
+
           default_val = param_info['default']
           description = param_info['description']
+
+          # Clear defaults containing Nextflow internal variables (e.g. ${projectDir}, ${params.xxx})
+          # These are only meaningful inside Nextflow and cause bash "unbound variable" errors
+          if default_val.is_a?(String) && default_val =~ /\$\{/
+            default_val = ''
+          end
           
           if param_info['enum'] && param_info['enum'].any?
             @params[param_name] = param_info['enum']
@@ -481,7 +497,11 @@ module NfCoreAppFactory
           
           # Default params
           #{(config['params'] || {}).map { |k, v| "@params['#{k}'] = #{v.inspect}" }.join("\n    ")}
-          
+
+          # Nextflow module version selector
+          @params['nextflowModuleVersion'] = ['25.10', '25.04', '24.10', '24.04', '23.10', '23.04']
+          @params['nextflowModuleVersion', 'description'] = 'Nextflow version to load via module (default: 25.10)'
+
           @modules = ["Dev/jdk", "Tools/Nextflow"]
         end
         

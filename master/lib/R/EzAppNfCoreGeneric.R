@@ -53,6 +53,23 @@ EzAppNfCoreGeneric <- setRefClass(
       message("Custom config written: ", customConfig)
       message(configContent)
       
+      # Load Nextflow module via lmod (FGCZ environment)
+      # Source the lmod R init script to get the module() function
+      source("/usr/share/lmod/lmod/init/R")
+
+      # Get module version from param (default to 25.10)
+      nfModuleVersion <- param[["nextflowModuleVersion"]]
+      if (is.null(nfModuleVersion) || nfModuleVersion == "") {
+        nfModuleVersion <- "25.10"
+      }
+
+      # Load the nextflow module
+      # Note: lmod's module() uses match.call() which captures variable names literally,
+      # so we must use do.call() to pass evaluated values
+      moduleName <- paste0("nextflow/", nfModuleVersion)
+      message("Loading module: ", moduleName)
+      do.call(module, list("load", moduleName))
+
       # Construct nextflow command
       # Output to local directory, will be copied to gstore by footer
       cmd <- paste(
@@ -106,6 +123,13 @@ EzAppNfCoreGeneric <- setRefClass(
         if (!all(is.na(read2Values)) && !all(read2Values == "")) {
           samples$fastq_2 <- sapply(read2Values, resolve_path)
         }
+      }
+      
+      # Inject strandedness from parameter if set (nf-core/rnaseq requires this column)
+      strandedness <- param[["strandedness"]]
+      if (!is.null(strandedness) && strandedness != "") {
+        samples$strandedness <- rep(strandedness, nrow(samples))
+        message("Added strandedness column: ", strandedness)
       }
       
       write.csv(samples, file=filePath, row.names=FALSE, quote=FALSE)

@@ -107,9 +107,16 @@ module NfCoreInfoFetcher
     return {} unless pipelines && pipelines['remote_workflows']
     
     result = {}
+    skipped_archived = 0
     pipelines['remote_workflows'].each do |pipeline|
       name = pipeline['name']
-      
+
+      # Skip archived/deprecated pipelines (no schema files on GitHub, causes 404 errors)
+      if pipeline['archived']
+        skipped_archived += 1
+        next
+      end
+
       # Map topic to category
       category = nil
       if pipeline['topics']
@@ -132,14 +139,16 @@ module NfCoreInfoFetcher
       }
     end
     
+    puts "NfCoreInfoFetcher: Skipped #{skipped_archived} archived pipelines" if skipped_archived > 0
+    $stdout.flush
     result
   end
 
   def self.fetch_all_pipelines
     pipelines = fetch_pipelines_json
     return [] unless pipelines && pipelines['remote_workflows']
-    
-    pipelines['remote_workflows'].map { |p| p['name'] }
+
+    pipelines['remote_workflows'].reject { |p| p['archived'] }.map { |p| p['name'] }
   end
   
   def self.fetch_pipelines_json
@@ -518,25 +527,36 @@ module NfCoreInfoFetcher
   @@installed_nextflow_version = nil
   
   # Detect the installed Nextflow version
-  # @return [String, nil] version string (e.g., "24.10.3") or nil if not found
+  # Uses lmod to check the default module version (FGCZ environment)
+  # Falls back to running 'nextflow -v' if lmod is not available
+  # @return [String, nil] version string (e.g., "25.10.4") or nil if not found
   def self.installed_nextflow_version
     return @@installed_nextflow_version if @@installed_nextflow_version
-    
+
     begin
+      # Try lmod: get the default nextflow module version via NXF_VER
+      output = `bash -c 'source /usr/share/lmod/lmod/init/profile 2>/dev/null && module load nextflow 2>/dev/null && echo $NXF_VER' 2>/dev/null`.strip
+      if output =~ /^([\d]+\.[\d]+\.[\d]+)/
+        @@installed_nextflow_version = $1
+        puts "NfCoreInfoFetcher: Detected Nextflow version from module: #{@@installed_nextflow_version}"
+        $stdout.flush
+        return @@installed_nextflow_version
+      end
+
+      # Fallback: try direct nextflow command
       output = `nextflow -v 2>/dev/null`.strip
-      # Parse "nextflow version 24.10.3.5933" -> "24.10.3"
       if output =~ /version\s+([\d]+\.[\d]+\.[\d]+)/
         @@installed_nextflow_version = $1
         puts "NfCoreInfoFetcher: Detected installed Nextflow version: #{@@installed_nextflow_version}"
         $stdout.flush
       else
-        puts "NfCoreInfoFetcher: Could not parse Nextflow version from: #{output}"
+        puts "NfCoreInfoFetcher: Could not detect Nextflow version (module or direct)"
         $stdout.flush
       end
     rescue => e
       warn "NfCoreInfoFetcher: Failed to detect Nextflow version: #{e.message}"
     end
-    
+
     @@installed_nextflow_version
   end
   
