@@ -115,6 +115,25 @@ def run_and_monitor(command)
   t_err.join
   [status.success?, stderr_buf, status.exitstatus]
 end
+
+# Check results and send a single daily notification if there were any errors
+def notify_if_errors(success, stderr_buf, exitstatus)
+  messages = []
+  if !success
+    messages << "Dataset registration task failed: exit=#{exitstatus}"
+  end
+  if !stderr_buf.empty?
+    messages << stderr_buf.strip
+  end
+
+  if messages.empty?
+    puts "Dataset registration task completed successfully"
+  else
+    summary = messages.join("\n\n")
+    puts summary
+    send_notification(summary)
+  end
+end
 Dir.chdir(rails_root) do
   if daemon_mode
     loop do
@@ -128,13 +147,7 @@ Dir.chdir(rails_root) do
         # Execute the command and capture output
         puts "Executing dataset registration task at #{Time.now}"
         success, stderr_buf, exitstatus = run_and_monitor(command)
-        if !success
-          msg = "Dataset registration task failed: exit=#{exitstatus}"
-          puts msg
-          send_notification(msg)
-        else
-          puts "Dataset registration task completed successfully"
-        end
+        notify_if_errors(success, stderr_buf, exitstatus)
       rescue ArgumentError => e
         # Fallback when Time.new argument error occurs
         puts "Warning: Time calculation error occurred: #{e.message}"
@@ -144,16 +157,10 @@ Dir.chdir(rails_root) do
         next_midnight = Time.at(now.to_i + 86400).beginning_of_day
         wait_time = next_midnight - now
         sleep(wait_time)
-        
+
         puts "Executing dataset registration task at #{Time.now}"
         success, stderr_buf, exitstatus = run_and_monitor(command)
-        if !success
-          msg = "Dataset registration task failed: exit=#{exitstatus}"
-          puts msg
-          send_notification(msg)
-        else
-          puts "Dataset registration task completed successfully"
-        end
+        notify_if_errors(success, stderr_buf, exitstatus)
       rescue => e
         error_message = "Error in daemon mode: #{e.message}"
         puts error_message
@@ -166,13 +173,7 @@ Dir.chdir(rails_root) do
     # Execute the command and capture output
     puts "Executing dataset registration task at #{Time.now}"
     success, stderr_buf, exitstatus = run_and_monitor(command)
-    if !success
-      msg = "Dataset registration task failed: exit=#{exitstatus}"
-      puts msg
-      send_notification(msg)
-    else
-      puts "Dataset registration task completed successfully"
-    end
+    notify_if_errors(success, stderr_buf, exitstatus)
   end
 end
 

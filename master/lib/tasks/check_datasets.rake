@@ -388,6 +388,7 @@ namespace :ds do
 
     # for run
     if run
+      registration_errors = []
       puts ["dataset.id", "project.number", "dataset.name", "sushi_app_name", "completed_samples/num_samples", "user", "date", "bfabric_id", "order_ids"].join("\t")
       sorted_datasets.each do |dataset|
           date = dataset.created_at
@@ -397,9 +398,19 @@ namespace :ds do
                    "sushi_lover"
                  end
           puts [dataset.id, dataset.project.number, dataset.name, dataset.sushi_app_name.to_s, "#{dataset.completed_samples.to_i}/#{dataset.num_samples.to_i}", user, date.strftime("%Y-%m-%d"), dataset.bfabric_id.to_s, dataset.order_ids.join(",")].join("\t")
-          dataset.register_bfabric(register_child_dataset_too: true)
+          result = dataset.register_bfabric(register_child_dataset_too: true)
+          if result == false
+            registration_errors << "DataSet(id=#{dataset.id}, name=#{dataset.name})"
+          end
           sleep 1
           puts
+      end
+
+      # Output error summary to stderr for notification pickup
+      unless registration_errors.empty?
+        summary = "#{registration_errors.length} dataset(s) failed to register into BFabric:\n" +
+                  registration_errors.map { |e| "  - #{e}" }.join("\n")
+        STDERR.puts summary
       end
     end
 
