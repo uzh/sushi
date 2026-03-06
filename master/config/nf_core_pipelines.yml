@@ -99,3 +99,9 @@ defaults:
     cores: 8
     ram: 30
     scratch: 100
+
+  # External R app source file for EzAppNfCoreGeneric
+  # Used during testing before the class is integrated into ezRun.
+  # When EzAppNfCoreGeneric is part of ezRun, remove or comment out this line
+  # and library(ezRun) will provide the class automatically.
+  r_app_source: '/srv/GT/analysis/masaomi/2026/FGCZ/nf_core_sushi_app_20260109/EzAppNfCoreGeneric.R'

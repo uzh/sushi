@@ -86,7 +86,7 @@ EzAppNfCoreGeneric <- setRefClass(
         genomesRoots <- strsplit(GENOMES_ROOT, ":")[[1]]
         refParts <- strsplit(refBuild, "/")[[1]]
         genomeBase <- paste(refParts[1:min(3, length(refParts))], collapse = "/")
-        
+
         refRoot <- NULL
         for (root in genomesRoots) {
           if (dir.exists(file.path(root, genomeBase))) {
@@ -94,14 +94,14 @@ EzAppNfCoreGeneric <- setRefClass(
             break
           }
         }
-        
+
         if (!is.null(refRoot)) {
           fastaPath <- file.path(refRoot, genomeBase, "Sequence", "WholeGenomeFasta", "genome.fa")
           if (file.exists(fastaPath)) {
             cmd <- paste(cmd, "--fasta", fastaPath)
             message("Using FASTA: ", fastaPath)
           }
-          
+
           gtfPath <- NULL
           if (length(refParts) > 3) {
             gtfPath <- file.path(refRoot, refBuild, "Genes", "genes.gtf")
@@ -117,9 +117,29 @@ EzAppNfCoreGeneric <- setRefClass(
           message("WARNING: Reference genome not found for refBuild: ", refBuild)
         }
       }
-      
+
+      # Pass through pipeline-specific parameters to nextflow
+      # These are SUSHI-internal params that should NOT be passed to nextflow
+      sushiParams <- c(
+        "cores", "ram", "scratch", "partition", "process_mode", "samples",
+        "nfcorePipeline", "pipelineVersion", "inputType", "samplesheetMapping",
+        "strandedness", "nextflowModuleVersion", "sushi_app",
+        "refBuild", "dataRoot", "resultDir", "isLastJob"
+      )
+      # fasta and gtf are already resolved from refBuild above
+      handledParams <- c("fasta", "gtf")
+      skipParams <- c(sushiParams, handledParams)
+
+      for (key in names(param)) {
+        if (key %in% skipParams) next
+        value <- param[[key]]
+        if (is.null(value) || is.na(value) || value == "") next
+        if (is.logical(value)) value <- tolower(as.character(value))
+        cmd <- paste(cmd, paste0("--", key), value)
+      }
+
       message("Running command: ", cmd)
-      
+
       ezSystem(cmd)
     },
     writeNfCoreSampleSheet = function(input, filePath, param) {
