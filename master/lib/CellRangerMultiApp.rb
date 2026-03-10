@@ -189,6 +189,7 @@ Columns: <code>id, name, read, pattern, sequence, feature_type</code> | <a href=
           'featureLevel' => @params['featureLevel'],
           'transcriptTypes' => @params['transcriptTypes'],
           'SCDataOrigin' => '10X',
+          'ResultDir [File,Link]' => per_sample_dir,
           'Report [Link]' => File.join(per_sample_dir, 'web_summary.html')
         }
 
