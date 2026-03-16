@@ -140,6 +140,7 @@ EOS
         'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
         'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
         'IGV [Link,File]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
+        'StrandFile [Link]'=>File.join(@result_dir, "#{@dataset['Name']}_strand.txt"),
         'Species'=>@dataset['Species'],
         'refBuild'=>@params['refBuild'],
         'paired'=>@params['paired'],
