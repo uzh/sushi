@@ -346,6 +346,8 @@ module NfCoreAppFactory
             if options && !options.empty?
               @params[param_name] = options
               @params[param_name, 'description'] = description
+              # Set the selected value to the default (or first option if no default)
+              @params[param_name, 'selected'] = default_val || options.first
             else
               @params[param_name] = default_val.to_s
               @params[param_name, 'description'] = description

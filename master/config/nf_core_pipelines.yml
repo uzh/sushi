@@ -46,15 +46,22 @@ pipelines:
       - name: pseudo_aligner
         type: select
         required: false
-        options: ["", "salmon"]
+        # options: ["", "salmon"]
+        options: ["salmon", ""] # default is the first value
         default: "salmon"
         description: "Use Salmon pseudo-aligner instead of STAR (workaround for STAR crash)"
       - name: skip_alignment
         type: select
         required: false
-        options: ["", "true"]
+        # options: ["", "true"]
+        options: ["true", ""] # default is the first value
         default: "true"
         description: "Skip STAR alignment (use when pseudo_aligner is set to salmon)"
+      # Workaround for Kraken DB
+      - name: contaminant_screening
+        type: select
+        options: ["", "kraken2", "sylph"] # default is the first value
+        default: ""     
 
   # ============================================================
   # fetchngs - Fetch data from public databases
