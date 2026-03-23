@@ -104,10 +104,19 @@ EOS
     @params['length_required', "context"] = "OpenGene/fastp"
     @params['cmdOptionsFastp'] = ''
     @params['cmdOptionsFastp', "context"] = "OpenGene/fastp"
-    @params['barcodePattern', 'hr-header'] = 'UMI tools'
-    @params['barcodePattern'] = '' 
-    @params['barcodePattern','description'] = 'optional for libraries which are including UMIs e.g. NNNNNNNN for TaKaRa SMARTer pico RNA kit v3' 
-    @params['barcodePattern', "context"] = "umi_tools"
+    @params['barcodePattern1', 'hr-header'] = 'UMI tools'
+    @params['barcodePattern1'] = ''
+    @params['barcodePattern1', 'description'] = 'UMI barcode pattern for Read1 (e.g. NNNNNNNN)'
+    @params['barcodePattern1', 'context'] = 'umi_tools'
+    @params['barcodePattern2'] = ''
+    @params['barcodePattern2', 'description'] = 'UMI barcode pattern for Read2 (e.g. NNNNNNNN for TaKaRa SMARTer pico RNA kit v3)'
+    @params['barcodePattern2', 'context'] = 'umi_tools'
+    @params['linkerSize1'] = '6'
+    @params['linkerSize1', 'description'] = 'Bases to trim from Read1 after UMI extraction'
+    @params['linkerSize1', 'context'] = 'umi_tools'
+    @params['linkerSize2'] = '6'
+    @params['linkerSize2', 'description'] = 'Bases to trim from Read2 after UMI extraction'
+    @params['linkerSize2', 'context'] = 'umi_tools'
     ## additional commands
     @params['markDuplicates', 'hr-header'] = 'Additional parameters'
     @params['markDuplicates'] = false
