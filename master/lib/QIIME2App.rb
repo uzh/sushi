@@ -84,7 +84,7 @@ EOS
      nds.merge(extract_columns(colnames: @inherit_columns))
   end
   def commands
-     run_RApp("EzAppQIIME2", conda_env: "gi_qiime2-amplicon-2024.5")
+     run_RApp("EzAppQIIME2", conda_env: "gi_qiime2-amplicon-2026.4")
   end
 end
 
