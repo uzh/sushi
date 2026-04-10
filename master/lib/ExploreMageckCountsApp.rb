@@ -57,7 +57,7 @@ Quality control after counting sgRNAs  with Mageck<br/>
      #'refBuild'=>@params['refBuild'],
      'libName'=>(dataset = @dataset.first and dataset['libName']),
      'Static Report [Link]'=>report_link,
-     'Live Report [Link]'=>"#{SHINY_EXPLORE_COUNTS}?data=#{report_file}/counts-#{@random_string}-EzResult.RData",
+     'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/exploreDE?data=#{report_file}/counts-#{@random_string}-EzResult.RData",
      'Report [File]'=>report_file,
     }.merge(extract_columns(colnames: @inherit_columns))
   end
