@@ -35,6 +35,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     Dir["/srv/GT/databases/10x_Probesets/Visium/*"].sort.select{|design| File.file?(design)}.each do |dir|
       @params['probesetFile'][File.basename(dir)] = File.basename(dir)
     end
+    @params['probesetFile', 'description'] = 'Required for probe-based assays (FFPE, CytAssist, VisiumHD). Not needed for standard Visium frozen tissue (3\' polyA capture). Probe set compatibility: v2.x = VisiumHD, CytAssist (FFPE/FF), CytAssist Gene+Protein; v1.x = original Visium FFPE (SD), Mouse CytAssist (FFPE/FF/Fixed Frozen). Recommend v2.1.0 for latest reference genomes (GRCh38-2024-A / GRCm39-2024-A).'
     @params['customProbesFile'] = ''
     @params['customProbesFile', 'file_upload'] = true
     @params['customProbesFile', 'description'] = 'Custom probeset CSV-file according to 10x specifications (https://tinyurl.com/VisiumProbeSetsDef).Note that all genes listed must have a corresponding entry in secondRef or controlSeqs. Custom probes must have the same length as the probes in the reference file.'
@@ -49,11 +50,11 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     @params['secondRef'] = ''
     @params['secondRef', 'description'] = 'full path to fasta file with e.g. viralGenes'
     @params['keepAlignment'] = true
-    @params['keepAlignment', 'description'] = 'Keep bam/cram file produced by SpaceRanger? Usually it is not neccessary for downstream analyses'
+    @params['keepAlignment', 'description'] = 'Keep bam/cram file produced by SpaceRanger? Usually not necessary for downstream analyses.'
     @params['runSegmentation'] = false
-    @params['runSegmentation', 'description'] = '10x built in segmentation for H&E images, currently very experimental and only available for >=v4'
+    @params['runSegmentation', 'description'] = '10x built-in nuclear segmentation for H&E images. Applies to VisiumHD runs only (H-slides). Currently experimental, requires SpaceRanger >= v4.'
     @params['cmdOptions'] = ''
-    @params['cmdOptions', 'description'] = 'specify the commandline options for SpaceRanger; do not specify any option that is already covered by the dedicated input fields'
+    @params['cmdOptions', 'description'] = 'Specify commandline options for SpaceRanger; do not specify options already covered by dedicated input fields. Use --unknown-slide for VisiumHD slides not in the 10x database.'
     @params['cmdOptions', "context"] = "SpaceRanger"
     @params['specialOptions'] = ''
     @params['mail'] = ""
@@ -67,26 +68,28 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     report_dir = File.join(@result_dir,"#{@dataset['Name']}")
     dataset = {
         'Name'=>@dataset['Name'],
+        'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
         'Species'=>@dataset['Species'],
         'refBuild'=>@params['refBuild'],
         'refFeatureFile'=>@params['refFeatureFile'],
         'featureLevel'=>@params['featureLevel'],
         'transcriptTypes'=>@params['transcriptTypes'],
         'ResultDir [File]'=>report_dir,
-        'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
         'CountMatrix [Link]'=>File.join(report_dir, 'filtered_feature_bc_matrix'),
         'Read Count'=>@dataset['Read Count'],
         'SourceImage [Link]'=>@dataset['Image'],
-        'BinnedOutput [Link]'=>File.join(report_dir, 'binned_outputs/square_002um'),
         'SpaceRangerDir [Link]'=>report_dir,
-        'Count [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.txt")        
+        'Count [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.txt")
       }.merge(extract_columns(@inherit_tags))
-   if @params['keepAlignment']
-       dataset['AlignmentFile [Link]'] = File.join(report_dir, 'possorted_genome_bam.cram')
+    if @dataset['Slide'] && @dataset['Slide'].start_with?('H')
+      dataset['BinnedOutput [Link]'] = File.join(report_dir, 'binned_outputs/square_002um')
     end
-   if @params['runSegmentation']
-     dataset['Anndata [Link]'] = File.join(report_dir, 'segmented_outputs/filtered_feature_cell_matrix.h5')
-    end    
+    if @params['keepAlignment']
+      dataset['AlignmentFile [Link]'] = File.join(report_dir, 'possorted_genome_bam.cram')
+    end
+    if @params['runSegmentation']
+      dataset['Anndata [Link]'] = File.join(report_dir, 'segmented_outputs/filtered_feature_cell_matrix.h5')
+    end
     dataset
   end
   def commands
