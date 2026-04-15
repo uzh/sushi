@@ -106,6 +106,14 @@ Columns: <code>id, name, read, pattern, sequence, feature_type</code> | <a href=
   end
   def next_dataset
     report_dir = File.join(@result_dir,"#{@dataset['Name']}")
+    cr_match = @params['CellRangerVersion'].to_s.match(/(\d+)\./)
+    is_v9_or_below = cr_match ? cr_match[1].to_i <= 9 : false
+    if is_v9_or_below
+      per_sample_name = @dataset['Name'][0,45] + '-cellRanger'
+      report_file = File.join(report_dir, 'per_sample_outs', per_sample_name, 'web_summary.html')
+    else
+      report_file = File.join(report_dir, 'qc_report.html')
+    end
     dataset = {
       'Name'=>@dataset['Name'],
       'Species'=>@dataset['Species'],
@@ -114,6 +122,7 @@ Columns: <code>id, name, read, pattern, sequence, feature_type</code> | <a href=
       'featureLevel'=>@params['featureLevel'],
       'transcriptTypes'=>@params['transcriptTypes'],
       'SCDataOrigin'=>'10X',
+      'Report [Link]'=>report_file,
       'ResultDir [File,Link]'=>report_dir,
       'Read Count'=>@dataset['Read Count']
     }.merge(extract_columns(@inherit_tags))
