@@ -40,7 +40,7 @@
           </td>
         </tr>
       <% end %>
-      <% if nfcore_apps_list && !nfcore_apps_list.empty? %>
+      <% if session['employee'] && nfcore_apps_list && !nfcore_apps_list.empty? %>
         <tr>
           <td>nf-core</td>
           <td style="padding: 2px;">
