@@ -1,0 +1,603 @@
+require 'yaml'
+require 'fileutils'
+require_relative 'nf_core_info_fetcher'
+require_relative 'nf_core_conventions'
+require_relative 'global_variables'
+
+module NfCoreAppFactory
+  PIPELINE_CONFIG_PATH = File.expand_path('../../config/nf_core_pipelines.yml', __FILE__)
+  LIB_DIR = File.expand_path('..', __FILE__)
+
+  # Minimal required_columns - only 'Name' is required for maximum compatibility
+  # nf-core pipelines have varied input requirements, and users should ensure
+  # their dataset has appropriate columns for the selected pipeline.
+  # Specific requirements can be overridden in nf_core_pipelines.yml
+  DEFAULTS = {
+    'analysis_category' => 'Misc',
+    'required_columns' => ['Name'],
+    'params' => { 'cores' => 8, 'ram' => 30, 'scratch' => 100 }
+  }
+
+  # Legacy category mapping - use NfCoreConventions::CATEGORY_MAPPING instead
+  CATEGORY_MAPPING = {
+    'rna-seq' => 'Transcriptomics',
+    'dna-seq' => 'Genomics',
+    'chip-seq' => 'Epigenetics',
+    'metagenomics' => 'Metagenomics',
+    'quality-control' => 'QC',
+    'sc-rna-seq' => 'SingleCell',
+    'single-cell' => 'SingleCell'
+  }
+
+  def self.load_pipelines
+    # Get all pipelines with basic info from single API call (efficient)
+    all_pipelines = NfCoreInfoFetcher.fetch_all_pipelines_with_info || {}
+    puts "NfCoreAppFactory: API returned #{all_pipelines.size} pipelines"
+    $stdout.flush
+
+    # Load manual config and defaults
+    manual_config = {}
+    defaults_config = {}
+    if File.exist?(PIPELINE_CONFIG_PATH)
+      yaml_content = YAML.load_file(PIPELINE_CONFIG_PATH) || {}
+      manual_config = yaml_content['pipelines'] || {}
+      defaults_config = yaml_content['defaults'] || {}
+      puts "NfCoreAppFactory: Manual config has #{manual_config.size} pipelines"
+      $stdout.flush
+    end
+
+    # Deep merge manual config to override API values
+    manual_config.each do |key, config|
+      if all_pipelines[key]
+        all_pipelines[key] = deep_merge(all_pipelines[key], config)
+      else
+        all_pipelines[key] = config.merge({'nf_core_name' => key})
+      end
+    end
+
+    # Apply defaults to all pipelines that don't have explicit config
+    all_pipelines.each do |key, pipeline_info|
+      # Apply default params if not set
+      unless pipeline_info['params']
+        pipeline_info['params'] = defaults_config['params'] || DEFAULTS['params']
+      end
+
+      # Apply default samplesheet_mapping if not set and input_type is samplesheet
+      unless pipeline_info['samplesheet_mapping']
+        pipeline_info['samplesheet_mapping'] = defaults_config['samplesheet_mapping']
+      end
+    end
+
+    puts "NfCoreAppFactory: Total pipelines to register: #{all_pipelines.size}"
+    $stdout.flush
+    all_pipelines
+  end
+
+  # Load defaults from config file
+  def self.load_defaults
+    if File.exist?(PIPELINE_CONFIG_PATH)
+      yaml_content = YAML.load_file(PIPELINE_CONFIG_PATH) || {}
+      yaml_content['defaults'] || {}
+    else
+      {}
+    end
+  end
+
+  # Get external R app source path from YAML config (nil if not set or empty)
+  # When EzAppNfCoreGeneric is integrated into ezRun, remove r_app_source from YAML
+  # and library(ezRun) will provide the class automatically.
+  def self.r_app_source
+    path = load_defaults['r_app_source']
+    (path.nil? || path.empty?) ? nil : path
+  end
+
+  def self.camelize(str)
+    str.split(/[-_]/).map(&:capitalize).join
+  end
+
+  def self.deep_merge(target, source)
+    target.merge(source) do |key, oldval, newval|
+      if oldval.is_a?(Hash) && newval.is_a?(Hash)
+        deep_merge(oldval, newval)
+      else
+        newval
+      end
+    end
+  end
+
+  def self.build_config(key, pipeline_info)
+    nf_core_name = pipeline_info['nf_core_name'] || key
+
+    # ============================================================
+    # Convention over Configuration: Auto-detect with YAML fallback
+    # ============================================================
+
+    # 1. Category: YAML config > API topic mapping > 'nf-core' default
+    category = pipeline_info['analysis_category']
+    unless category
+      # Try to map from nf-core topic using conventions
+      if pipeline_info['category']
+        category = NfCoreConventions.category_for(pipeline_info['category']) ||
+                   CATEGORY_MAPPING[pipeline_info['category']] ||
+                   pipeline_info['category']
+      end
+      category ||= 'nf-core'
+    end
+
+    # 2. Resource defaults: YAML config > category-based defaults > global defaults
+    resource_defaults = NfCoreConventions.resources_for(category)
+    params = resource_defaults.dup
+    # Merge YAML config params (they take precedence)
+    if pipeline_info['params']
+      params.merge!(pipeline_info['params'])
+    end
+
+    # 3. Input type: YAML config > auto-detect > 'samplesheet' default
+    input_type = pipeline_info['input_type']
+    if input_type.nil? || input_type == 'auto'
+      # Auto-detect from schema_input.json
+      input_type = NfCoreInfoFetcher.detect_input_type(nf_core_name)
+    end
+
+    # 4. Samplesheet mapping: YAML config > auto-generated > empty
+    samplesheet_mapping = pipeline_info['samplesheet_mapping']
+    if samplesheet_mapping.nil? || samplesheet_mapping.empty?
+      # Auto-generate from schema_input.json using conventions
+      samplesheet_mapping = NfCoreInfoFetcher.auto_samplesheet_mapping(nf_core_name)
+    end
+
+    # 5. Reference selector: YAML config > auto-detect
+    use_ref_selector = pipeline_info['use_ref_selector']
+    if use_ref_selector.nil?
+      # Auto-detect from nextflow_schema.json
+      version = pipeline_info['default_version'] || pipeline_info['latest_version'] || 'master'
+      use_ref_selector = NfCoreInfoFetcher.needs_ref_selector?(nf_core_name, version)
+    end
+
+    # 6. Version: YAML config > Nextflow-compatible version > latest from API > 'master'
+    default_version = pipeline_info['default_version']
+    version_note = nil
+    unless default_version
+      # No explicit version pinned in YAML - auto-select compatible version
+      compat = NfCoreInfoFetcher.find_compatible_version(nf_core_name, pipeline_info['releases'])
+      default_version = compat['version']
+      if compat['is_fallback']
+        version_note = "Auto-selected v#{default_version} (latest requires newer Nextflow >= #{compat['required_nf_version'] || '?'}; installed: #{NfCoreInfoFetcher.installed_nextflow_version})"
+      end
+      if compat['incompatible']
+        version_note = "WARNING: No compatible version found for Nextflow #{NfCoreInfoFetcher.installed_nextflow_version}. Using latest: #{default_version}"
+      end
+    end
+    default_version ||= pipeline_info['latest_version'] || 'master'
+
+    # Build config with convention defaults
+    config = DEFAULTS.merge({
+      'name' => "NfCore#{camelize(nf_core_name)}",
+      'nf_core_name' => nf_core_name,
+      'description' => pipeline_info['description'] || "nf-core/#{nf_core_name} pipeline",
+      'analysis_category' => category,
+      'default_version' => default_version,
+      'required_columns' => pipeline_info['required_columns'] || ['Name'],
+      'input_type' => input_type,
+      'custom_params' => pipeline_info['custom_params'] || [],
+      'samplesheet_mapping' => samplesheet_mapping,
+      'skip_multiqc' => pipeline_info['skip_multiqc'] || false,
+      'use_ref_selector' => use_ref_selector,
+      'params' => params,
+      'version_note' => version_note
+    })
+
+    config
+  end
+
+  def self.generate_app_files
+    load_pipelines.each do |key, pipeline_info|
+      config = build_config(key, pipeline_info)
+
+      class_name = "#{config['name']}App"
+      file_path = File.join(LIB_DIR, "#{class_name}.rb")
+
+      content = generate_class_code(class_name, config)
+      File.write(file_path, content)
+      puts "Generated #{file_path}"
+    end
+  end
+
+  @@registered_classes = []
+
+  def self.register_dynamic_apps
+    puts "NfCoreAppFactory: register_dynamic_apps called"
+    $stdout.flush
+    pipelines = load_pipelines
+    puts "NfCoreAppFactory: Found #{pipelines.size} pipelines from API"
+    $stdout.flush
+
+    newly_registered = 0
+    pipelines.each do |key, pipeline_info|
+      config = build_config(key, pipeline_info)
+      class_name = "#{config['name']}App"
+
+      # Always track the class name for nf-core apps
+      unless @@registered_classes.include?(class_name)
+        @@registered_classes << class_name
+      end
+
+      # Skip creating if class is already defined (static .rb file or previous registration)
+      if Object.const_defined?(class_name)
+        next
+      end
+
+      begin
+        # Define class dynamically
+        klass = create_dynamic_class(config)
+
+        # Register as global constant
+        Object.const_set(class_name, klass)
+        newly_registered += 1
+      rescue => e
+        warn "NfCoreAppFactory: Failed to register #{class_name}: #{e.message}"
+        # Remove from registered list if failed
+        @@registered_classes.delete(class_name)
+      end
+    end
+
+    puts "NfCoreAppFactory: Total nf-core apps tracked: #{@@registered_classes.size}, newly created: #{newly_registered}"
+    $stdout.flush
+  end
+
+  def self.registered_class_names
+    @@registered_classes
+  end
+
+  def self.create_dynamic_class(config)
+    # Capture config in local variable for closure
+    app_config = config.dup
+    # External R source path from YAML config (nil when integrated into ezRun)
+    r_app_source = self.r_app_source
+
+    # Fetch required params from API (nextflow_schema.json)
+    # This is done once during class creation, not every instance initialization
+    pipeline_name = app_config['nf_core_name']
+    pipeline_version = app_config['default_version'] || 'master'
+
+    begin
+      api_params = NfCoreInfoFetcher.fetch_all_params(pipeline_name, pipeline_version)
+      app_config['api_required_params'] = api_params['required'] || []
+      app_config['api_optional_params'] = api_params['optional'] || []
+    rescue => e
+      warn "NfCoreAppFactory: Failed to fetch API params for #{pipeline_name}: #{e.message}"
+      app_config['api_required_params'] = []
+      app_config['api_optional_params'] = []
+    end
+
+    # Fetch max resource requirements from pipeline schema
+    # and ensure SUSHI params meet the pipeline's minimum needs.
+    # Skip if already an Array (dropdown with curated options from YAML).
+    begin
+      max_res = NfCoreInfoFetcher.fetch_max_resources(pipeline_name, pipeline_version)
+      if max_res['max_cpus'] && !app_config['params']['cores'].is_a?(Array)
+        current_cores = (app_config['params']['cores'] || 8).to_i
+        if current_cores < max_res['max_cpus']
+          app_config['params']['cores'] = max_res['max_cpus']
+        end
+      end
+      if max_res['max_memory_gb'] && !app_config['params']['ram'].is_a?(Array)
+        current_ram = (app_config['params']['ram'] || 30).to_i
+        if current_ram < max_res['max_memory_gb']
+          app_config['params']['ram'] = max_res['max_memory_gb']
+        end
+      end
+    rescue => e
+      warn "NfCoreAppFactory: Failed to fetch max resources for #{pipeline_name}: #{e.message}"
+    end
+
+    Class.new(SushiFabric::SushiApp) do
+      # Need to include GlobalVariables to use run_RApp
+      # But we need to override run method to call parent's run, not GlobalVariables' run
+      include GlobalVariables
+
+      # Override run to call SushiFabric::SushiApp's run method directly
+      # (skipping GlobalVariables' run which requires an argument)
+      define_method(:run) do
+        SushiFabric::SushiApp.instance_method(:run).bind(self).call
+      end
+
+      define_method(:initialize) do
+        super()
+        @name = app_config['name']
+        @analysis_category = app_config['analysis_category']
+        @description = app_config['description']
+        @required_columns = app_config['required_columns']
+        @required_params = app_config['required_params'] || []
+        @params['process_mode'] = 'DATASET'
+        @params['nfcorePipeline'] = app_config['nf_core_name']
+        @params['pipelineVersion'] = app_config['default_version']
+
+        # Store input configuration for R script
+        @params['inputType'] = app_config['input_type'] || 'samplesheet'
+
+        # Store samplesheet mapping as JSON string for R
+        if app_config['samplesheet_mapping'] && !app_config['samplesheet_mapping'].empty?
+          @params['samplesheetMapping'] = app_config['samplesheet_mapping'].to_json
+        end
+
+        # Default params
+        (app_config['params'] || {}).each do |k, v|
+          @params[k] = v
+        end
+
+        # Process custom_params from YAML config (these override API params)
+        custom_param_names = []
+        (app_config['custom_params'] || []).each do |param|
+          param_name = param['name']
+          custom_param_names << param_name
+          param_type = param['type']
+          default_val = param['default']
+          description = param['description'] || ''
+          options = param['options']
+
+          case param_type
+          when 'boolean'
+            # Boolean params: checkbox-style
+            @params[param_name] = default_val ? true : false
+            @params[param_name, 'description'] = description
+          when 'select'
+            # Select params: dropdown
+            if options && !options.empty?
+              @params[param_name] = options
+              @params[param_name, 'description'] = description
+              # Set the selected value to the default (or first option if no default)
+              @params[param_name, 'selected'] = default_val || options.first
+            else
+              @params[param_name] = default_val.to_s
+              @params[param_name, 'description'] = description
+            end
+          when 'text_area'
+            # Text area params
+            @params[param_name] = default_val.to_s
+            @params[param_name, 'description'] = description
+          else
+            # Default: text input
+            @params[param_name] = default_val.to_s
+            @params[param_name, 'description'] = description
+          end
+
+          # Add to required params if specified
+          if param['required']
+            @required_params << param_name unless @required_params.include?(param_name)
+          end
+        end
+
+        # Process API required params (from nextflow_schema.json)
+        # Skip params already defined in custom_params (YAML config takes precedence)
+        # Skip params that SUSHI manages automatically (input, outdir, etc.)
+        auto_managed = %w[input outdir email publish_dir_mode]
+
+        (app_config['api_required_params'] || []).each do |param_info|
+          param_name = param_info['name']
+
+          # Skip if already defined by custom_params or auto-managed
+          next if custom_param_names.include?(param_name)
+          next if auto_managed.include?(param_name)
+          next if @params.key?(param_name)
+
+          # Add the param
+          default_val = param_info['default']
+          description = "[REQUIRED from API] #{param_info['description']}"
+
+          # Clear defaults containing Nextflow internal variables (e.g. ${projectDir})
+          if default_val.is_a?(String) && default_val =~ /\$\{/
+            default_val = ''
+          end
+
+          if param_info['enum'] && param_info['enum'].any?
+            # Enum type -> select dropdown
+            @params[param_name] = param_info['enum']
+            @params[param_name, 'description'] = description
+          elsif param_info['type'] == 'boolean'
+            @params[param_name] = default_val == true
+            @params[param_name, 'description'] = description
+          elsif param_info['type'] == 'integer'
+            @params[param_name] = (default_val || 0).to_i
+            @params[param_name, 'description'] = description
+          else
+            @params[param_name] = default_val.to_s
+            @params[param_name, 'description'] = description
+          end
+
+          # Add to @required_params
+          @required_params << param_name unless @required_params.include?(param_name)
+        end
+
+        # Nextflow module version selector
+        # Available versions from FGCZ lmod: 25.10, 25.04, 24.10, 24.04, 23.10, 23.04
+        @params['nextflowModuleVersion'] = ['25.10', '25.04', '24.10', '24.04', '23.10', '23.04']
+        @params['nextflowModuleVersion', 'description'] = 'Nextflow version to load via module (default: 25.10)'
+
+        # Process API optional params (from nextflow_schema.json)
+        # These are shown in the UI so users can configure them, but not marked as required
+        # Skip params already defined above, auto-managed, or hidden
+        (app_config['api_optional_params'] || []).each do |param_info|
+          param_name = param_info['name']
+
+          next if custom_param_names.include?(param_name)
+          next if auto_managed.include?(param_name)
+          next if @params.key?(param_name)
+
+          default_val = param_info['default']
+          description = param_info['description']
+
+          # Clear defaults containing Nextflow internal variables (e.g. ${projectDir}, ${params.xxx})
+          # These are only meaningful inside Nextflow and cause bash "unbound variable" errors
+          if default_val.is_a?(String) && default_val =~ /\$\{/
+            default_val = ''
+          end
+
+          if param_info['enum'] && param_info['enum'].any?
+            @params[param_name] = param_info['enum']
+            @params[param_name, 'description'] = description
+          elsif param_info['type'] == 'boolean'
+            @params[param_name] = (default_val == true)
+            @params[param_name, 'description'] = description
+          elsif param_info['type'] == 'integer'
+            @params[param_name] = default_val.nil? ? 0 : default_val.to_i
+            @params[param_name, 'description'] = description
+          else
+            @params[param_name] = (default_val || '').to_s
+            @params[param_name, 'description'] = description
+          end
+        end
+
+        @modules = ["Dev/jdk", "Tools/Nextflow"]
+      end
+
+      define_method(:next_dataset) do
+        result_dir = File.join(@result_dir, "#{@params['name']}_result")
+
+        dataset = {
+          'Name' => @params['name'],
+          'Result [File]' => result_dir
+        }
+
+        # Add MultiQC link only if pipeline generates it (most do, but not fetchngs)
+        unless app_config['skip_multiqc']
+          dataset['MultiQC [Link]'] = File.join(result_dir, 'multiqc', 'multiqc_report.html')
+        end
+
+        if @dataset && @dataset.first
+          # Exclude input file columns (Read1, Read2 with any suffix like [File])
+          # These should not be copied to output as they are input files
+          inherit_cols = @dataset.first.keys.reject do |col|
+            col == 'Name' || col =~ /^Read[12]/ || col == 'Species'
+          end
+          inherit_cols.each do |col|
+            dataset[col] = @dataset.first[col]
+          end
+        end
+
+        dataset
+      end
+
+      define_method(:grandchild_datasets) do
+        []
+      end
+
+      define_method(:commands) do
+        cmd = run_RApp('EzAppNfCoreGeneric')
+
+        # Add Apptainer cache settings
+        cache_settings = <<~SHELL
+          export NXF_SINGULARITY_CACHEDIR=/misc/fgcz01/nextflow_apptainer_cache/
+          export SINGULARITY_CACHEDIR=/misc/fgcz01/nextflow_apptainer_cache/
+        SHELL
+
+        cmd = cache_settings + cmd
+
+        # Source external R file if configured (not needed when class is in ezRun)
+        if r_app_source
+          cmd.sub!("}\nparam = list()", "}\nsource('#{r_app_source}')\nparam = list()")
+        end
+        cmd
+      end
+    end
+  end
+
+  def self.generate_class_code(class_name, config)
+    # Read R app source path from YAML config
+    r_app_path = r_app_source
+
+    # Build source() injection for generated code
+    # When r_app_source is nil (class in ezRun), no source() is needed
+    if r_app_path
+      source_line = "cmd.sub!(\"}\\\nparam = list()\", \"}\\\nsource('#{r_app_path}')\\\nparam = list()\")"
+    else
+      source_line = "# EzAppNfCoreGeneric is provided by library(ezRun)"
+    end
+
+    <<~RUBY
+      #!/usr/bin/env ruby
+      # encoding: utf-8
+
+      require 'sushi_fabric'
+      require_relative 'global_variables'
+      include GlobalVariables
+
+      class #{class_name} < SushiFabric::SushiApp
+        def initialize
+          super
+          @name = '#{config['name']}'
+          @analysis_category = '#{config['analysis_category']}'
+          @description =<<-EOS
+      #{config['description']}
+      EOS
+          @required_columns = #{config['required_columns'].inspect}
+          @required_params = #{config['required_params'] ? config['required_params'].inspect : '[]'}
+          @params['process_mode'] = 'DATASET'
+          @params['nfcorePipeline'] = '#{config['nf_core_name']}'
+          @params['pipelineVersion'] = '#{config['default_version']}'
+
+          # Default params
+          #{(config['params'] || {}).map { |k, v| "@params['#{k}'] = #{v.inspect}" }.join("\n    ")}
+
+          # Nextflow module version selector
+          @params['nextflowModuleVersion'] = ['25.10', '25.04', '24.10', '24.04', '23.10', '23.04']
+          @params['nextflowModuleVersion', 'description'] = 'Nextflow version to load via module (default: 25.10)'
+
+          @modules = ["Dev/jdk", "Tools/Nextflow"]
+        end
+
+        def next_dataset
+          result_dir = File.join(@result_dir, "\#{@params['name']}_result")
+
+          dataset = {
+            'Name' => @params['name'],
+            'Result [File]' => result_dir,
+            'MultiQC [Link]' => File.join(result_dir, 'multiqc', 'multiqc_report.html')
+          }
+
+          if @dataset && @dataset.first
+            # Exclude input file columns (Read1, Read2 with any suffix like [File])
+            # These should not be copied to output as they are input files
+            inherit_cols = @dataset.first.keys.reject do |col|
+              col == 'Name' || col =~ /^Read[12]/ || col == 'Species'
+            end
+            inherit_cols.each do |col|
+              dataset[col] = @dataset.first[col]
+            end
+          end
+
+          dataset
+        end
+
+        def grandchild_datasets
+          []
+        end
+
+        def commands
+          cmd = run_RApp('EzAppNfCoreGeneric')
+
+          # Add Apptainer cache settings
+          cache_settings = <<~SHELL
+            export NXF_SINGULARITY_CACHEDIR=/misc/fgcz01/nextflow_apptainer_cache/
+            export SINGULARITY_CACHEDIR=/misc/fgcz01/nextflow_apptainer_cache/
+          SHELL
+
+          cmd = cache_settings + cmd
+
+          # Source external R file if needed (not needed when class is in ezRun)
+          #{source_line}
+          cmd
+        end
+      end
+
+      if __FILE__ == $0
+        usecase = #{class_name}.new
+        usecase.project = "p1001"
+        usecase.user = "sushi_lover"
+
+        # Test run
+        # usecase.test_run
+      end
+    RUBY
+  end
+end

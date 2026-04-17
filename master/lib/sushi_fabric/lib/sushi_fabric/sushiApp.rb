@@ -198,6 +198,7 @@ class SushiApp
   attr_accessor :data_set
   attr_accessor :project
   attr_accessor :user
+  attr_accessor :name
   attr_accessor :next_dataset_name
   attr_accessor :dataset_name
   attr_accessor :next_dataset_comment
@@ -374,6 +375,8 @@ class SushiApp
   def load_project_defaults
     # Load project-specific default parameters from project_default_parametersets.tsv
     # Parameters are scoped by app name (e.g., FastqcApp::cores)
+    # IMPORTANT: For Array/Hash type params (rendered as SELECT), we preserve the
+    # original type and only set the 'selected' attribute to maintain UI components
     return unless @project and @gstore_dir
     
     project_defaults_file = File.join(@gstore_dir, @project, 'project_default_parametersets.tsv')
@@ -395,18 +398,28 @@ class SushiApp
           
           # Only apply parameters for the current app
           if param_app_name == app_name
-            # Only set if the parameter exists in @params and hasn't been set yet
+            # Only set if the parameter exists in @params
             if @params.keys.include?(param_name)
-              # Parse value based on data type
-              @params[param_name] = if @params.data_type(param_name) == String or value.nil?
-                                      value
-                                    else
-                                      begin
-                                        eval(value)
-                                      rescue
-                                        value
-                                      end
-                                    end
+              current_value = @params[param_name]
+              
+              # For Array/Hash types (SELECT dropdowns), preserve the component type
+              # and only set the 'selected' attribute instead of overwriting the value
+              if current_value.is_a?(Array) || current_value.is_a?(Hash)
+                # Set the selected value without changing the component type
+                @params[param_name, 'selected'] = value
+              elsif current_value.is_a?(TrueClass) || current_value.is_a?(FalseClass)
+                # Boolean: convert string to boolean
+                @params[param_name] = (value == 'true' || value == true)
+              elsif @params.data_type(param_name) == String || value.nil?
+                @params[param_name] = value
+              else
+                # Try to eval for other types (Integer, etc.)
+                begin
+                  @params[param_name] = eval(value)
+                rescue
+                  @params[param_name] = value
+                end
+              end
             end
           end
         end

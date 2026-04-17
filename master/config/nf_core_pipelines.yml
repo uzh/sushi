@@ -1,0 +1,114 @@
+# nf-core Pipeline Configuration
+#
+# ============================================================
+# CONVENTION OVER CONFIGURATION
+# ============================================================
+#
+# Most settings are now AUTO-DETECTED from nf-core API:
+#   - analysis_category: from nf-core pipeline topics
+#   - use_ref_selector: from nextflow_schema.json (reference_genome_options section)
+#   - samplesheet_mapping: from schema_input.json + NfCoreConventions
+#   - input_type: from schema_input.json structure
+#   - params (cores/ram/scratch): from category-based defaults in NfCoreConventions
+#
+# This file should only contain EXCEPTIONS and OVERRIDES:
+#   - Pipelines with specific version requirements
+#   - Pipelines with custom parameters not in nf-core schema
+#   - Pipelines with special behavior (e.g., skip_multiqc)
+#   - Resource overrides for pipelines with unusual requirements
+#
+# To add a new pipeline:
+#   1. Most pipelines work automatically without any configuration
+#   2. Only add an entry here if you need to override auto-detected settings
+#
+pipelines:
+  # ============================================================
+  # rnaseq - RNA sequencing analysis
+  # EXCEPTIONS: Version pinned due to Nextflow compatibility, custom workaround params
+  # ============================================================
+  rnaseq:
+    # Note: default_version is no longer needed here - auto-compatibility check
+    # now selects the latest Nextflow-compatible version automatically.
+    params:
+      # Dropdown: min 16 CPUs required (process_high), options up to 64
+      cores: [16, 32, 64]
+      # Dropdown: min 128 GB required (STAR index + process_high_memory), options up to 256
+      ram: [128, 256]
+      scratch: 500
+    custom_params:
+      - name: strandedness
+        type: select
+        required: true
+        options: ["auto", "forward", "reverse", "unstranded"]
+        default: "auto"
+        description: "Strandedness of RNA-seq library (auto = auto-detect with Salmon)"
+      # Workaround for STAR segfault issue - use Salmon pseudo-aligner
+      - name: pseudo_aligner
+        type: select
+        required: false
+        # options: ["", "salmon"]
+        options: ["salmon", ""] # default is the first value
+        default: "salmon"
+        description: "Use Salmon pseudo-aligner instead of STAR (workaround for STAR crash)"
+      - name: skip_alignment
+        type: select
+        required: false
+        # options: ["", "true"]
+        options: ["true", ""] # default is the first value
+        default: "true"
+        description: "Skip STAR alignment (use when pseudo_aligner is set to salmon)"
+      # Workaround for Kraken DB
+      - name: contaminant_screening
+        type: select
+        options: ["", "kraken2", "sylph"] # default is the first value
+        default: ""     
+
+  # ============================================================
+  # fetchngs - Fetch data from public databases
+  # EXCEPTIONS: Non-samplesheet input type, custom params for accession IDs, no MultiQC
+  # ============================================================
+  fetchngs:
+    input_type: id_list
+    skip_multiqc: true  # fetchngs doesn't generate MultiQC report
+    custom_params:
+      - name: accession_ids
+        type: text_area
+        required: true
+        default: ""
+        description: "Enter SRA/ENA/GEO/DDBJ accession IDs separated by comma or space (e.g., SRR9984183,ERR1160846,GSM4432381)"
+    params:
+      scratch: 500  # Downloads can be large
+
+  # ============================================================
+  # smrnaseq - Small RNA-seq analysis
+  # EXCEPTIONS: Version pinned, mirtraceSpecies custom param, higher resource requirements
+  # ============================================================
+  smrnaseq:
+    default_version: "2.4.0"  # Version 2.4.1 might require newer Nextflow
+    custom_params:
+      - name: mirtraceSpecies
+        type: select
+        required: true
+        options: ["hsa", "mmu", "rno", "ath", "dme", "cel", "dre", "gga", "bta", "cfa", "eca", "ssc", "oar", "cgr", "ptr", "mcc", "mdo", "mne", "mpo", "mro", "mrs", "mvi", "oan", "ocu", "oha", "oja", "ola", "oni", "opr", "osl", "ota", "oto", "pab", "pan", "pma", "pmo", "ppy", "ptr", "rbi", "rno", "ssc", "tch", "tgu", "tni", "tru", "tup", "vpa", "xla", "xtr", "zma"]
+        default: "hsa"
+        description: "3-letter species code for miRBase (hsa=human, mmu=mouse, rno=rat, ath=arabidopsis, etc.)"
+    params:
+      cores: 16  # bowtie-build requires 12 threads, so set to 16 for safety
+      ram: 80    # bowtie-build INDEX_GENOME requires 72 GB
+
+# ============================================================
+# Default settings (usually not needed - auto-detection handles most cases)
+# ============================================================
+defaults:
+  # These are fallbacks when auto-detection fails
+  input_type: auto  # Will be detected from schema_input.json
+  params:
+    cores: 8
+    ram: 30
+    scratch: 100
+
+  # External R app source file for EzAppNfCoreGeneric
+  # Used during testing before the class is integrated into ezRun.
+  # When EzAppNfCoreGeneric is part of ezRun, remove or comment out this line
+  # and library(ezRun) will provide the class automatically.
+  r_app_source: '/srv/GT/analysis/masaomi/2026/FGCZ/nf_core_sushi_app_20260109/EzAppNfCoreGeneric.R'

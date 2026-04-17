@@ -151,11 +151,18 @@ class DataSetController < ApplicationController
       sushi_apps = runnable_application(@data_set.headers, refresh)
       @sushi_apps_category = sushi_apps.map{|app| app.analysis_category}.uniq.sort
       @sushi_apps = {}
+      @nfcore_apps = []
       sushi_apps.sort_by{|app| app.class_name.to_s}.each do |app|
-        @sushi_apps[app.analysis_category] ||= []
-        @sushi_apps[app.analysis_category] << app.class_name.to_s
+        # Separate nf-core apps from regular apps
+        if app.class_name.to_s =~ /^NfCore/
+          @nfcore_apps << app.class_name.to_s
+        else
+          @sushi_apps[app.analysis_category] ||= []
+          @sushi_apps[app.analysis_category] << app.class_name.to_s
+        end
       end
       @data_set.runnable_apps = @sushi_apps
+      @data_set.nfcore_apps = @nfcore_apps
       @data_set.save
     end
   end
@@ -282,6 +289,7 @@ class DataSetController < ApplicationController
           @employee_apps = employee_apps
           @sushi_apps = @data_set.runnable_apps
           @sushi_apps_category = @sushi_apps.keys.sort
+          @nfcore_apps = @data_set.nfcore_apps || []
         else
           @url_not_found = true
           index

@@ -40,14 +40,24 @@ class ApplicationController < ActionController::Base
     view_context.user_projects
   end
   def all_sushi_applications
-    non_sushi_apps = ['SushiWrap.rb', 'optparse_ex.rb', 'global_variables.rb']
+    non_sushi_apps = ['SushiWrap.rb', 'optparse_ex.rb', 'global_variables.rb', 'nf_core_app_factory.rb', 'nf_core_info_fetcher.rb']
     lib_dir = File.expand_path('../../../lib', __FILE__)
     sushi_apps = Dir[File.join(lib_dir, '*.rb')].select{|script| !non_sushi_apps.include?(File.basename(script))}.to_a.map{|script| File.basename(script)}
     sushi_apps.concat Dir[File.join(lib_dir, '*.sh')].map{|script| File.basename(script)}
+    
+    # Add dynamically registered nf-core apps
+    if defined?(NfCoreAppFactory)
+      nf_core_apps = NfCoreAppFactory.registered_class_names.map { |name| "#{name}.rb" }
+      sushi_apps.concat(nf_core_apps)
+      sushi_apps.uniq!
+    end
+
     sushi_apps.each do |script|
       if script =~ /\.rb/
         class_name = script.gsub(/\.rb/,'')
-        require class_name
+        unless Object.const_defined?(class_name)
+          require class_name
+        end
       elsif script =~ /\.sh/
         sushi_wrap = SushiWrap.new(File.join(lib_dir, script))
         sushi_wrap.define_class
@@ -56,6 +66,17 @@ class ApplicationController < ActionController::Base
     sushi_apps
   end
   def refresh_sushi_application
+    # Re-register dynamic nf-core apps (they may not exist in this process)
+    if defined?(NfCoreAppFactory)
+      NfCoreAppFactory.register_dynamic_apps
+    end
+    
+    # Get dynamically registered nf-core app names for special handling
+    nfcore_class_names = if defined?(NfCoreAppFactory)
+                           NfCoreAppFactory.registered_class_names
+                         else
+                           []
+                         end
 
     # new check
     sushi_apps = all_sushi_applications
@@ -67,10 +88,26 @@ class ApplicationController < ActionController::Base
     end
     sushi_apps.select{|app| app =~ /\.rb$/}.each do |app|
       class_name = app.gsub(/\.rb/,'')
-      updated_at = File.stat(File.join(lib_dir, app)).mtime
-      unless sushi_app = SushiApplication.find_by_class_name(class_name) and updated_at < sushi_app.updated_at
-        if sushi_app 
-          load File.join(lib_dir, app)
+      
+      # For dynamically registered nf-core apps, skip file check
+      is_dynamic_nfcore = nfcore_class_names.include?(class_name)
+      file_path = File.join(lib_dir, app)
+      
+      if is_dynamic_nfcore
+        # Dynamic nf-core app - always update if not in DB
+        updated_at = Time.now
+        sushi_app = SushiApplication.find_by_class_name(class_name)
+      elsif File.exist?(file_path)
+        updated_at = File.stat(file_path).mtime
+        sushi_app = SushiApplication.find_by_class_name(class_name)
+      else
+        # Skip if file doesn't exist and not a dynamic nf-core app
+        next
+      end
+      
+      unless sushi_app and !is_dynamic_nfcore and updated_at < sushi_app.updated_at
+        if sushi_app and !is_dynamic_nfcore and File.exist?(file_path)
+          load file_path
         end
         begin
           sushi_app_instance = eval(class_name).new

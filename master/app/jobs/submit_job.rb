@@ -1,9 +1,47 @@
 class SubmitJob < ApplicationJob
   queue_as :default
 
+  # Safely evaluate parameter values - only allow numeric/boolean/array literals
+  def safe_eval(value)
+    return value if value.nil?
+    str = value.to_s.strip
+    
+    # Boolean
+    return true if str == 'true'
+    return false if str == 'false'
+    
+    # Integer
+    return str.to_i if str =~ /\A-?\d+\z/
+    
+    # Float
+    return str.to_f if str =~ /\A-?\d+\.\d+\z/
+    
+    # Array literal (simple cases only)
+    if str =~ /\A\[.*\]\z/
+      begin
+        return JSON.parse(str)
+      rescue
+        return value
+      end
+    end
+    
+    # Default: return as string
+    value
+  end
+
   def perform(params)
     class_name = params[:class_name]
-    require class_name
+    # For dynamically defined nf-core apps, ensure they are registered in this process
+    unless Object.const_defined?(class_name)
+      begin
+        require 'nf_core_app_factory'
+        NfCoreAppFactory.register_dynamic_apps
+      rescue LoadError
+        # nf_core_app_factory not available, continue with normal require
+      end
+    end
+    # Still try require if class is not defined (for static .rb files)
+    require class_name unless Object.const_defined?(class_name)
     sushi_app = eval(class_name).new
     sushi_app.logger = logger
     sushi_app.sushi_server = eval(SushiFabric::Application.config.sushi_server_class).new
@@ -15,7 +53,7 @@ class SubmitJob < ApplicationJob
       sushi_app.params[key] = if sushi_app.params.data_type(key) == String
                                        value
                                      else
-                                       eval(value)
+                                       safe_eval(value)
                                      end
     end
     sushi_app.project = params[:project]
