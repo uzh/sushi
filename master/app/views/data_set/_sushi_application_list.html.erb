@@ -51,7 +51,7 @@
                 <option value="<%= app %>"><%= app %></option>
               <% end %>
             </select>
-            <input type="hidden" id="nfcore-app-hidden" name="app" value="">
+            <input type="hidden" id="nfcore-app-hidden" name="" value="">
             <button type="submit" id="nfcore-submit" class="btn btn-info btn-sm raised" style="padding: 2px; margin-left: 5px;">Next</button>
           </td>
         </tr>
@@ -90,7 +90,7 @@ $(document).ready(function(){
     nfcoreHidden.val('');
   });
   
-  // Submit button click handler - validate before submit
+  // Submit button click handler - validate and set name before submit
   $('#nfcore-submit').on('click', function(e){
     var selectedApp = nfcoreSelect.val();
     if (!selectedApp || selectedApp === '') {
@@ -98,6 +98,7 @@ $(document).ready(function(){
       alert('Please select an nf-core pipeline first.');
       return false;
     }
+    nfcoreHidden.attr('name', 'app');
     nfcoreHidden.val(selectedApp);
     return true;
   });
