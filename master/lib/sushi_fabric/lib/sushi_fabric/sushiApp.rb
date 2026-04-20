@@ -684,6 +684,7 @@ rm -rf #{@scratch_dir} || exit 1
     sbatch_options << "--mem=#{@params['ram']}G" unless @params['ram'].to_s.empty?
     sbatch_options << "-n #{@params['cores']}" unless @params['cores'].to_s.empty?
     sbatch_options << "--gres=scratch:#{@params['scratch']}" unless @params['scratch'].to_s.empty?
+    sbatch_options << "--gres=gpu:#{@params['gpu']}" unless @params['gpu'].to_s.empty? || @params['gpu'].to_i == 0
     sbatch_options << "-p #{@params['partition']}" unless @params['partition'].to_s.empty?
     sbatch_options << "--nice=#{@params['nice']}" unless @params['nice'].to_s.empty?
 
