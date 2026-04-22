@@ -19,23 +19,23 @@ CellBender is a software package for eliminating technical artifacts from high-t
     @required_params = ['name']
     # optional params
     @params['cores'] = '8'
-    @params['cores', 'description'] = 'CPU threads. Only used when gpu=0 (passed to cellbender as --cpu-threads). With gpu=1, CellBender does inference on the GPU and this is mostly unused.'
+    @params['cores', 'description'] = 'CPU threads. Not used for the CellBender inference itself (that runs on the GPU) but controls the SLURM cpu allocation that surrounds it.'
     @params['cores', "context"] = "slurm"
     @params['ram'] = '30'
-    @params['ram', 'description'] = 'Host RAM in GB (not GPU VRAM). 30 GB is fine for single-modality scRNA-seq. For multiome / ARC inputs (GEX + ATAC peaks, 100k+ features) bump to 60-100 GB — otherwise the cgroup OOM-kills the job.'
+    @params['ram', 'description'] = 'Host RAM in GB (not GPU VRAM). 30 GB is fine for single-modality scRNA-seq. For multiome / ARC inputs (Peaks are dropped automatically before inference, so VRAM is fine) 30 GB host RAM remains sufficient.'
     @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
     @params['scratch', 'description'] = 'Local /scratch in GB for CellBender checkpoints (ckpt.tar.gz, written every 2 epochs) and the output h5. 100 GB is plenty.'
     @params['scratch', "context"] = "slurm"
-    @params['gpu'] = '0'
-    @params['gpu', 'description'] = 'Set to 1 to run cellbender with --cuda on a GPU (much faster, ~10-40 min vs hours on CPU). Requires partition=GPU. If you set gpu=1, do NOT change partition.'
+    @params['partition'] = 'GPU_L40S'
+    @params['partition', 'description'] = 'Pinned to GPU_L40S (fgcz-r-023 only). The conda env gi_cellbender_0.3.2 uses a PyTorch build that does NOT support the Blackwell GPU on fgcz-c-056 (sm_120), so the Blackwell partition would silently fall back to CPU and hang on large matrices. Do not change.'
+    @params['partition', "context"] = "slurm"
+    @params['gpu'] = '1'
+    @params['gpu', 'description'] = 'Always 1 for this app. CellBender runs cellbender remove-background --cuda on the allocated L40S. Do not change.'
     @params['gpu', "context"] = "CellBender"
-    @params['gpu_feature'] = 'L40S'
-    @params['gpu_feature', 'description'] = 'Restrict to GPUs matching this SLURM feature tag (sbatch -C). Keep L40S: the conda env gi_cellbender_0.3.2 uses an old PyTorch that does NOT support the Blackwell GPU on fgcz-c-056 (sm_120). Leaving c-056 open would cause silent fallback to CPU and a numel overflow on large matrices. Leave empty only if you know the env is compatible with every GPU in the partition.'
-    @params['gpu_feature', "context"] = "slurm"
     @params['name'] = 'CellBender'
     @params['cmdOptions'] = ''
-    @params['cmdOptions', 'description'] = 'Extra cellbender remove-background flags. Common tweaks: --expected-cells N (override cell prior), --total-droplets-included N (extend the empty-droplet tail), --fpr 0.01 (target FDR), --epochs 150. Leave empty to use defaults. Do NOT re-pass --input, --output, --cuda or --cpu-threads; they are set by the app.'
+    @params['cmdOptions', 'description'] = 'Extra cellbender remove-background flags. Common tweaks: --expected-cells N (override cell prior), --total-droplets-included N (extend the empty-droplet tail), --fpr 0.01 (target FDR), --epochs 150. Leave empty to use defaults. Do NOT re-pass --input, --output or --cuda; they are set by the app.'
     @params['cmdOptions', "context"] = "CellBender"
     @params['refBuild'] = ref_selector
     @params['refBuild', 'description'] = 'Reference genome assembly (informational only — CellBender itself does not align reads; the selection is stored as metadata in the output h5 and inherited by downstream apps).'
