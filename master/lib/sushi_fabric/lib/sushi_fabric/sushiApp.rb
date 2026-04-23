@@ -207,7 +207,7 @@ class SushiApp
   attr_accessor :current_user
   attr_accessor :logger
   attr_accessor :off_bfabric_registration
-  attr_accessor :mango_run_name
+  attr_accessor :run_alias
   attr_accessor :input_dataset_bfabric_application_number
   attr_accessor :next_dataset_bfabric_application_number
   attr_accessor :grandchild
