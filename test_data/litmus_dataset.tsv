@@ -1,0 +1,2 @@
+Name	Intensity [File]	Groups [File]	Species	Condition [Factor]
+LipidomicsDemo	/srv/sushi/masa_test_sushi_20260416/test_data/lipidomics_demo.csv	/srv/sushi/masa_test_sushi_20260416/test_data/groups_demo.csv	Homo_sapiens	Mixed

@@ -1,0 +1,10 @@
+normalization_method	PQN
+transform	log2
+scaling	pareto
+groups_file
+litmus_path	/srv/sushi/LITMUS_mcp_server
+cores	2
+ram	8
+scratch	10
+name	LitmusNormalize_Result
+mail
