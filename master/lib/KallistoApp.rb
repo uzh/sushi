@@ -23,10 +23,10 @@ EOS
     @params['scratch'] = '100'
     @params['scratch', "context"] = "slurm"
     @params['gpu'] = '0'
-    @params['gpu', 'description'] = 'Set to 1 to run gpukallisto (CUDA) instead of CPU kallisto — ~17-20x faster on 80M paired-end reads. Requires a GPU partition (partition=GPU, GPU_L40S, or GPU_Blackwell). Bootstrap output (abundance.h5) is NOT produced on GPU; bootstrap-samples will be silently forced to 0. Use gpu=0 for sleuth/DGE-ready results. TPM concordance vs CPU is ~0.995.'
+    @params['gpu', 'description'] = 'Set to 1 to run gpukallisto (CUDA) instead of CPU kallisto — ~17-20x faster on 80M paired-end reads. Requires a GPU partition (partition=GPU, GPU_L40S, or GPU_RTX6000). Bootstrap output (abundance.h5) is NOT produced on GPU; bootstrap-samples will be silently forced to 0. Use gpu=0 for sleuth/DGE-ready results. TPM concordance vs CPU is ~0.995.'
     @params['gpu', "context"] = "Kallisto"
     @params['gpu_feature'] = ''
-    @params['gpu_feature', 'description'] = 'Optional SLURM feature tag (sbatch -C). Leave empty to accept any GPU (L40S or Blackwell). Set to "L40S" or "Blackwell" to pin.'
+    @params['gpu_feature', 'description'] = 'Optional SLURM feature tag (sbatch -C). Leave empty to accept any GPU (L40S or Blackwell). Set to "L40S" or "RTX6000" to pin.'
     @params['gpu_feature', "context"] = "slurm"
     @params['refBuild'] = ref_selector
     @params['refBuild', "context"] = "referfence genome assembly"
@@ -119,7 +119,7 @@ EOS
       @required_params << 'fragment-length' << 'sd'
     end
     if @params['gpu'].to_i > 0 && !@params['partition'].to_s.start_with?('GPU')
-      raise "gpu=1 requires a GPU partition (partition=GPU, GPU_L40S, or GPU_Blackwell). Current partition=#{@params['partition']}."
+      raise "gpu=1 requires a GPU partition (partition=GPU, GPU_L40S, or GPU_RTX6000). Current partition=#{@params['partition']}."
     end
   end
   def set_default_parameters
