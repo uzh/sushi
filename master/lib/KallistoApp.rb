@@ -22,6 +22,12 @@ EOS
     @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
     @params['scratch', "context"] = "slurm"
+    @params['gpu'] = '0'
+    @params['gpu', 'description'] = 'Set to 1 to run gpukallisto (CUDA) instead of CPU kallisto — ~17-20x faster on 80M paired-end reads. Requires a GPU partition (partition=GPU, GPU_L40S, or GPU_Blackwell). Bootstrap output (abundance.h5) is NOT produced on GPU; bootstrap-samples will be silently forced to 0. Use gpu=0 for sleuth/DGE-ready results. TPM concordance vs CPU is ~0.995.'
+    @params['gpu', "context"] = "Kallisto"
+    @params['gpu_feature'] = ''
+    @params['gpu_feature', 'description'] = 'Optional SLURM feature tag (sbatch -C). Leave empty to accept any GPU (L40S or Blackwell). Set to "L40S" or "Blackwell" to pin.'
+    @params['gpu_feature', "context"] = "slurm"
     @params['refBuild'] = ref_selector
     @params['refBuild', "context"] = "referfence genome assembly"
     @params['paired'] = false
@@ -123,10 +129,14 @@ EOS
     ds = {
       'Name'=>@dataset['Name'],
       'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
-      'bootstrappedCount [File]'=>File.join(@result_dir, "#{@dataset['Name']}.h5"),
       'runInfo [File]'=>File.join(@result_dir, "#{@dataset['Name']}.json"),
       'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
     }
+    # gpukallisto's GPU quant path never writes abundance.h5, so drop the
+    # bootstrappedCount output when gpu=1. Use gpu=0 for sleuth-ready results.
+    if @params['gpu'].to_i == 0
+      ds['bootstrappedCount [File]'] = File.join(@result_dir, "#{@dataset['Name']}.h5")
+    end
     ds.merge(
       'Species'=>@dataset['Species'],
       'refBuild'=>@params['refBuild'],
