@@ -119,7 +119,10 @@ EOS
       @required_params << 'fragment-length' << 'sd'
     end
     if @params['gpu'].to_i > 0 && !@params['partition'].to_s.start_with?('GPU')
-      raise "gpu=1 requires a GPU partition (partition=GPU, GPU_L40S, or GPU_RTX6000). Current partition=#{@params['partition']}."
+      # gpu=1 needs a GPU partition; auto-correct rather than fail silently in
+      # the async SubmitJob. User keeps clicking Submit otherwise.
+      $stderr.puts "INFO(KallistoApp): gpu=1 requires a GPU partition — overriding partition=#{@params['partition']} → GPU"
+      @params['partition'] = 'GPU'
     end
   end
   def set_default_parameters
