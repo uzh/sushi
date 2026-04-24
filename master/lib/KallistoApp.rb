@@ -118,6 +118,9 @@ EOS
     else
       @required_params << 'fragment-length' << 'sd'
     end
+    if @params['gpu'].to_i > 0 && !@params['partition'].to_s.start_with?('GPU')
+      raise "gpu=1 requires a GPU partition (partition=GPU, GPU_L40S, or GPU_Blackwell). Current partition=#{@params['partition']}."
+    end
   end
   def set_default_parameters
     @params['paired'] = dataset_has_column?('Read2')
