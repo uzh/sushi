@@ -208,6 +208,7 @@ class SushiApp
   attr_accessor :logger
   attr_accessor :off_bfabric_registration
   attr_accessor :mango_run_name
+  attr_accessor :run_alias
   attr_accessor :input_dataset_bfabric_application_number
   attr_accessor :next_dataset_bfabric_application_number
   attr_accessor :grandchild
@@ -265,6 +266,10 @@ class SushiApp
       unless NO_ROR
         @current_user ||= nil
         if @dataset_sushi_id = DataSet.save_dataset_to_database(data_set_arr: data_set_arr.to_a.flatten, headers: headers, rows: rows, user: @current_user)
+          if @run_alias and dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
+            dataset.run_name_order_id = @run_alias
+            dataset.save
+          end
           unless @off_bfabric_registration
             if dataset = DataSet.find_by_id(@dataset_sushi_id.to_i)
               dataset.register_bfabric(bfabric_application_number: @input_dataset_bfabric_application_number, update_completed_samples: true)

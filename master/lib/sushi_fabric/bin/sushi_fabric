@@ -25,6 +25,7 @@ Usage:
   o.on(:next_dataset_name, '-n next_dataset_name', '--next_dataset_name', 'Next DataSet Name (default: Analysis_Category+ID+Date )')
   o.on(:off_bfab, '-f', '--off_bfab', 'Do NOT register the dataset in BFabric (default: false, namely register in BFabric)')
   o.on(:mango_run_name, '-g mango_run_name', '--mango_run_name', 'ManGO RunName_oBFabricID')
+  o.on(:run_alias, '--run_alias', 'RunName_oBFabricID (URL-friendly dataset alias, persisted to DataSet.run_name_order_id)')
   o.on(:input_dataset_application, '-a bfabric_application_number', '--input_dataset_application', 'BFabric Application Number for input DataSet')
   o.on(:next_dataset_application, '-A bfabric_application_number', '--next_dataset_application', 'BFabric Application Number for next DataSet')
   o.on_tail("-v", "--version", "Show version") do
@@ -127,6 +128,9 @@ if opt.next_dataset_name
 end
 if opt.mango_run_name
   usecase.mango_run_name = opt.mango_run_name
+end
+if opt.run_alias
+  usecase.run_alias = opt.run_alias
 end
 if opt.input_dataset_application
   usecase.input_dataset_bfabric_application_number = opt.input_dataset_application
