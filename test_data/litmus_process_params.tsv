@@ -1,0 +1,17 @@
+01_engine	xcms
+02_polarity_filter	pos
+03_sample_types_include	sample,qc
+11_mz_tolerance_ppm	5
+12_rt_peakwidth_sec	5,40
+13_snthresh	3
+14_noise_level	1000
+15_min_frac	0.5
+21_lipid_annotation	none
+91_demo_mode	auto
+99_litmus_path	/srv/GT/analysis/masaomi/2026/FGCZ/litmus_sushiapp_process_20260424
+name	LitmusProcess_Result
+cores	16
+ram	32
+scratch	100
+process_mode	DATASET
+mail

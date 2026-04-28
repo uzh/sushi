@@ -1,0 +1,5 @@
+Name	Raw [File]	Resource [B-Fabric]	Container [B-Fabric]	Sample Id [B-Fabric]	Sample Name [Characteristic]	Grouping [Factor]	Sample Type [Factor]	Polarity [Factor]	Injection Order [Characteristic]
+20251205_65_C40277_S1049908_iPeri2_pos	p35611/Metabolomics/EXPLORIS_4/ajagels_20251205_p31459_o40277_pos_neg/20251205_65_C40277_S1049908_iPeri2_pos.raw	3035667	40277	40277/8	iPeri2	iPeri	sample	pos	65
+20251205_61_C40277_S1049905_iAstro2_pos	p35611/Metabolomics/EXPLORIS_4/ajagels_20251205_p31459_o40277_pos_neg/20251205_61_C40277_S1049905_iAstro2_pos.raw	3035679	40277	40277/5	iAstro2	iAstro	sample	pos	61
+20251205_7_C40277_pooledQC_pos	p35611/Metabolomics/EXPLORIS_4/ajagels_20251205_p31459_o40277_pos_neg/20251205_7_C40277_pooledQC_pos.raw	3035702	40277		pooledQC	qc	qc	pos	7
+20251205_9_C40277_blank_pos	p35611/Metabolomics/EXPLORIS_4/ajagels_20251205_p31459_o40277_pos_neg/20251205_9_C40277_blank_pos.raw	3035723	40277		blank	blank	blank	pos	9

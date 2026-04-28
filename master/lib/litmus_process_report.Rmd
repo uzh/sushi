@@ -1,0 +1,190 @@
+---
+title: "LITMUS Processing — SUSHI Report"
+output:
+  html_document:
+    self_contained: true
+    toc: true
+    toc_depth: 2
+    theme: flatly
+    df_print: paged
+params:
+  params_json: ""
+  feature_table: ""
+  feature_meta: ""
+  sample_meta: ""
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
+                      fig.align = "center", dpi = 100)
+suppressPackageStartupMessages({
+  library(jsonlite)
+  library(knitr)
+})
+
+`%||%` <- function(a, b) if (!is.null(a) && length(a) > 0 && nzchar(as.character(a[1]))) a else b
+
+params_info   <- tryCatch(fromJSON(params$params_json), error = function(e) list())
+feature_table <- tryCatch(read.csv(params$feature_table, check.names = FALSE,
+                                    stringsAsFactors = FALSE),
+                           error = function(e) NULL)
+feature_meta  <- tryCatch(read.csv(params$feature_meta, stringsAsFactors = FALSE),
+                           error = function(e) NULL)
+sample_meta   <- tryCatch(read.csv(params$sample_meta,  stringsAsFactors = FALSE),
+                           error = function(e) NULL)
+
+# Separate the leading Sample column from the intensity matrix.
+if (!is.null(feature_table) && ncol(feature_table) >= 2) {
+  sample_col   <- feature_table[[1]]
+  intensity_df <- feature_table[, -1, drop = FALSE]
+  intensity_m  <- as.matrix(intensity_df)
+  storage.mode(intensity_m) <- "numeric"
+  rownames(intensity_m) <- sample_col
+} else {
+  intensity_m <- NULL
+}
+```
+
+## Run summary
+
+```{r summary}
+if (length(params_info) > 0) {
+  s <- data.frame(
+    Field = c("Tool version", "Timestamp (UTC)", "Engine", "Demo mode",
+              "Polarity filter", "Sample types",
+              "# samples", "# features", "Groups", "Annotation",
+              "LITMUS path"),
+    Value = c(
+      params_info$version              %||% "",
+      params_info$timestamp            %||% "",
+      params_info$engine               %||% "",
+      as.character(params_info$demo_mode %||% ""),
+      params_info$filters$polarity     %||% "",
+      paste(params_info$filters$sample_types %||% "", collapse = ", "),
+      params_info$n_samples            %||% "",
+      params_info$n_features           %||% "",
+      paste(params_info$groups         %||% "", collapse = ", "),
+      params_info$annotation           %||% "",
+      params_info$litmus_path          %||% ""
+    ),
+    stringsAsFactors = FALSE
+  )
+  kable(s, align = "ll")
+} else {
+  cat("(parameters.json unavailable)")
+}
+```
+
+## Engine parameters
+
+```{r engine-params}
+if (!is.null(params_info$engine_params)) {
+  ep <- params_info$engine_params
+  df <- data.frame(
+    Parameter = names(ep),
+    Value     = vapply(ep, function(x) paste(x, collapse = ", "), character(1)),
+    stringsAsFactors = FALSE,
+    row.names = NULL
+  )
+  kable(df, align = "ll")
+}
+```
+
+## Sample metadata
+
+```{r sample-meta}
+if (!is.null(sample_meta)) {
+  kable(sample_meta, align = "l", caption = "Sample metadata (from dataset.tsv)")
+}
+```
+
+## Per-group sample count
+
+```{r group-counts}
+if (!is.null(sample_meta)) {
+  tab <- as.data.frame(table(
+    Group      = sample_meta$group,
+    SampleType = sample_meta$sample_type,
+    Polarity   = sample_meta$polarity
+  ))
+  tab <- tab[tab$Freq > 0, ]
+  kable(tab, row.names = FALSE, caption = "Sample distribution (Grouping × Sample Type × Polarity)")
+}
+```
+
+## Feature table preview
+
+```{r feature-preview}
+if (!is.null(intensity_m)) {
+  n_show_feat <- min(10, ncol(intensity_m))
+  n_show_samp <- min(10, nrow(intensity_m))
+  preview <- intensity_m[seq_len(n_show_samp), seq_len(n_show_feat), drop = FALSE]
+  cat("Matrix dimensions: **", nrow(intensity_m), " samples × ",
+      ncol(intensity_m), " features**\n\n", sep = "")
+  kable(round(preview, 2),
+        caption = sprintf("First %d samples × %d features", n_show_samp, n_show_feat))
+}
+```
+
+## Feature metadata (first 20)
+
+```{r feature-meta}
+if (!is.null(feature_meta)) {
+  kable(head(feature_meta, 20), caption = "First 20 features")
+}
+```
+
+## Intensity distribution
+
+```{r dist-plot, fig.width=8, fig.height=4}
+if (!is.null(intensity_m) && nrow(intensity_m) > 0 && ncol(intensity_m) > 0) {
+  log_vals <- log10(as.vector(intensity_m[intensity_m > 0]))
+  par(mar = c(4, 4, 2, 1))
+  hist(log_vals, breaks = 40,
+       main = "log10(intensity) across all samples × features",
+       xlab = "log10(intensity)", col = "#74a9cf", border = "white")
+}
+```
+
+## PCA on log-scaled matrix
+
+```{r pca, fig.width=7, fig.height=5}
+if (!is.null(intensity_m) && nrow(intensity_m) >= 3 && ncol(intensity_m) >= 3) {
+  # log10 + small offset, then PCA on samples (rows)
+  m <- log10(intensity_m + 1)
+  keep_feat <- apply(m, 2, sd, na.rm = TRUE) > 1e-10
+  if (sum(keep_feat) >= 2) {
+    m <- m[, keep_feat, drop = FALSE]
+    pca <- prcomp(m, center = TRUE, scale. = FALSE)
+    ve  <- (pca$sdev ^ 2) / sum(pca$sdev ^ 2) * 100
+    grp <- if (!is.null(sample_meta)) sample_meta$group[match(rownames(m),
+                                                              sample_meta$sample_id)]
+           else rep("all", nrow(m))
+    grp[is.na(grp)] <- "unknown"
+    cols <- rainbow(length(unique(grp)))[as.integer(factor(grp))]
+    par(mar = c(4, 4, 2, 8), xpd = TRUE)
+    plot(pca$x[, 1], pca$x[, 2],
+         col = cols, pch = 19, cex = 1.5,
+         xlab = sprintf("PC1 (%.1f%%)", ve[1]),
+         ylab = sprintf("PC2 (%.1f%%)", ve[2]),
+         main = "PCA — log10 intensities, mean-centered")
+    legend("topright", inset = c(-0.25, 0),
+           legend = unique(grp), col = rainbow(length(unique(grp))),
+           pch = 19, bty = "n", cex = 0.8)
+  } else {
+    cat("Not enough variable features for PCA.\n")
+  }
+}
+```
+
+## Next step
+
+Feed `feature_table.csv` + `sample_meta.csv` into `LitmusNormalizeApp` (or a
+future LitmusStatsApp) to continue the LITMUS 13-step pipeline. The
+`sample_meta.csv` already carries the `group` column as metadata, so the
+downstream app will NOT need to parse filenames.
+
+---
+*Generated by `litmus_process.R` via `LitmusProcessApp.rb` (branch
+`litmus-sushi-app`, PoC 2026-04-24). Backend: LITMUS
+`scripts/R/processing_engine.R`.*
