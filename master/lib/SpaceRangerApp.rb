@@ -58,7 +58,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     @params['cmdOptions', "context"] = "SpaceRanger"
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['SpaceRangerVersion'] = ["Aligner/SpaceRanger/4.0.1","Aligner/SpaceRanger/3.1.3","Aligner/SpaceRanger/3.1.2","Aligner/SpaceRanger/3.0.1"]
+    @params['SpaceRangerVersion'] = ["Aligner/SpaceRanger/4.1.0","Aligner/SpaceRanger/4.0.1","Aligner/SpaceRanger/3.1.3","Aligner/SpaceRanger/3.1.2","Aligner/SpaceRanger/3.0.1"]
     @modules = ["Dev/R", "Aligner/CellRanger", "Tools/samtools"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
@@ -68,7 +68,6 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     report_dir = File.join(@result_dir,"#{@dataset['Name']}")
     dataset = {
         'Name'=>@dataset['Name'],
-        'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
         'Species'=>@dataset['Species'],
         'refBuild'=>@params['refBuild'],
         'refFeatureFile'=>@params['refFeatureFile'],
@@ -90,6 +89,9 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     if @params['runSegmentation']
       dataset['Anndata [Link]'] = File.join(report_dir, 'segmented_outputs/filtered_feature_cell_matrix.h5')
     end
+    # SUSHI renders columns in REVERSE hash-insertion order (after Name & Factor sort).
+    # Insert Report last so it appears as the leftmost link column in the UI.
+    dataset['Report [Link]'] = File.join(report_dir, 'web_summary.html')
     dataset
   end
   def commands
