@@ -131,6 +131,11 @@ Supports CellRanger Multi (RNA + ADT + VDJ-T/B), CellRanger ARC
     @params['runWNN'] = true
     @params['runWNN', 'description'] = "Run Seurat::FindMultiModalNeighbors when 2+ dimensional modalities are present (RNA + ADT, RNA + ATAC, or RNA + ADT + ATAC)."
 
+    # Resolution passed to Seurat::FindClusters on the WNN graph (algorithm 3,
+    # Leiden). Higher = more, finer clusters; lower = fewer, coarser.
+    @params['wnnResolution'] = 0.5
+    @params['wnnResolution', 'description'] = "Resolution for FindClusters on the weighted SNN graph. Stored on the object as wsnn_res.<resolution>."
+
     # ---------------------------------------------------------------------
     # Misc
     # ---------------------------------------------------------------------
@@ -160,6 +165,10 @@ Supports CellRanger Multi (RNA + ADT + VDJ-T/B), CellRanger ARC
      # ScMultiOmics [Link] is the path that exploreSC reads to render the
      # RNA UMAP (DefaultAssay = RNA in the saved object).
      'ScMultiOmics [Link]'=>File.join(report_file, "scMultiData.qs2"),
+     # SC Seurat [Link] -> scData.qs2 (symlink to scMultiData.qs2 created in
+     # ezMethodScMultiOmics). Lets ScSeuratCombine + ScSeuratCombinedLabelClusters
+     # consume the multi-omics output as if it were a standard ScSeurat result.
+     'SC Seurat [Link]'=>File.join(report_file, "scData.qs2"),
     }.merge(extract_columns(@inherit_tags))
   end
 
