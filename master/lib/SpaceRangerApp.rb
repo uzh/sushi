@@ -68,7 +68,6 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     report_dir = File.join(@result_dir,"#{@dataset['Name']}")
     dataset = {
         'Name'=>@dataset['Name'],
-        'Report [Link]'=>File.join(report_dir, 'web_summary.html'),
         'Species'=>@dataset['Species'],
         'refBuild'=>@params['refBuild'],
         'refFeatureFile'=>@params['refFeatureFile'],
@@ -79,7 +78,8 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
         'Read Count'=>@dataset['Read Count'],
         'SourceImage [Link]'=>@dataset['Image'],
         'SpaceRangerDir [Link]'=>report_dir,
-        'Count [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.txt")
+        'Count [Link]'=>File.join(report_dir, "#{@dataset['Name']}-counts.txt"),
+        'Report [Link]'=>File.join(report_dir, 'web_summary.html')
       }.merge(extract_columns(@inherit_tags))
     if @dataset['Slide'] && @dataset['Slide'].start_with?('H')
       dataset['BinnedOutput [Link]'] = File.join(report_dir, 'binned_outputs/square_002um')
