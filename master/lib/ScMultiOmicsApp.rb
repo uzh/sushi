@@ -94,6 +94,10 @@ Supports CellRanger Multi (RNA + ADT + VDJ-T/B), CellRanger ARC
     # skipped silently and the rest of the ATAC tab still renders.
     @params['refBuild'] = ref_selector
     @params['refBuild', "context"] = "reference genome assembly"
+    # Carried through so downstream ScSeuratCombine (which gates on
+    # refFeatureFile in @required_columns) can consume our output unchanged.
+    @params['refFeatureFile'] = 'genes.gtf'
+    @params['refFeatureFile', "context"] = "ScMultiOmics"
 
     # ---------------------------------------------------------------------
     # ADT options
@@ -119,6 +123,31 @@ Supports CellRanger Multi (RNA + ADT + VDJ-T/B), CellRanger ARC
     # one assay so 'both' falls back to TCR.
     @params['vdjChain'] = ['auto', 'TCR', 'BCR', 'both']
     @params['vdjChain', 'description'] = "Which VDJ chains to load. 'auto' uses sibling vdj_t / vdj_b (CellRanger Multi) or VDJTPath / VDJBPath columns when set."
+
+    # How TCR clones are merged inside scRepertoire::combineExpression.
+    # 'strict' = V/J genes + CDR3 nucleotide (most stringent, recommended for
+    #            within-donor clonal expansion).
+    # 'aa'     = CDR3 amino acid sequence (merges synonymous mutations;
+    #            useful for cross-donor convergence studies).
+    @params['cloneCallTCR'] = ['strict', 'aa']
+    @params['cloneCallTCR', 'description'] = "TCR clonotype definition: 'strict' (V/J + CDR3 nt, exact match) or 'aa' (CDR3 amino acid, merges synonymous mutations)."
+
+    # Optional: collapse near-identical CDR3 sequences via
+    # scRepertoire::clonalCluster (Hamming-style edit-distance clustering).
+    # Off by default — most projects want exact-match clonality. Turn on for
+    # cross-donor convergence studies or noise correction on long runs.
+    @params['tcrSimilarityMerge'] = false
+    @params['tcrSimilarityMerge', 'description'] = "Advanced: collapse near-identical TCR CDR3 sequences via scRepertoire::clonalCluster before counting clones. Off by default."
+
+    @params['tcrSimilarityThreshold'] = 0.85
+    @params['tcrSimilarityThreshold', 'description'] = "Normalized similarity (0-1) for TCR clonalCluster. Only effective when tcrSimilarityMerge = true. 0.85 ≈ 15% Hamming distance; tighten to 0.95 for noise-only correction."
+
+    # BCR similarity merging is required for somatic-hypermutation lineages and
+    # is on by default in scRepertoire (combineBCR threshold = 0.85). Surfaced
+    # so users can tighten it on clean datasets or loosen it on heavily mutated
+    # repertoires.
+    @params['bcrSimilarityThreshold'] = 0.85
+    @params['bcrSimilarityThreshold', 'description'] = "Similarity threshold for BCR clone merging (handles SHM). Tighten (0.90-0.95) for clean data; loosen (0.75) for highly mutated lineages."
 
     # ---------------------------------------------------------------------
     # WNN options
@@ -160,6 +189,7 @@ Supports CellRanger Multi (RNA + ADT + VDJ-T/B), CellRanger ARC
     {'Name'=>@dataset['Name'],
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
+     'refFeatureFile'=>@params['refFeatureFile'],
      'Static Report [Link]'=>report_link,
      'Report [File]'=>report_file,
      # ScMultiOmics [Link] is the path that exploreSC reads to render the
@@ -173,8 +203,11 @@ Supports CellRanger Multi (RNA + ADT + VDJ-T/B), CellRanger ARC
   end
 
   def set_default_parameters
-    # Inherit refBuild from the input dataset row by default.
+    # Inherit refBuild + refFeatureFile from the input dataset row by default.
     @params['refBuild'] = @dataset[0]['refBuild']
+    if dataset_has_column?('refFeatureFile')
+      @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
+    end
   end
 
   def commands
