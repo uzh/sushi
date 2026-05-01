@@ -39,12 +39,14 @@ class ScMultiOmicsApp < SushiFabric::SushiApp
 
     @description =<<-EOS
 Downstream multi-omics extension on top of an annotated ScSeurat scData.qs2.<br/>
-Auto-discovers ADT, VDJ, and ATAC siblings of the original CountMatrix and
-produces a multi-assay Seurat object plus an HTML report. RNA assay stays
-default so existing exploreSC apps render the RNA UMAP unchanged.<br/>
+Input is the ScSeurat output dataset (downstream of CellRangerMulti / ARC /
+Count). Auto-discovers ADT, VDJ, and ATAC siblings of the original CountMatrix
+(propagated from ScSeurat) and produces a multi-assay Seurat object plus an
+HTML report. RNA assay stays default so existing exploreSC apps render the
+RNA UMAP unchanged.<br/>
 Supports CellRanger Multi (RNA + ADT + VDJ-T/B), CellRanger ARC
 (RNA + ATAC), standalone VDJ via VDJTPath/VDJBPath columns, and BD Rhapsody
-(SCDataOrigin = "BDRhapsody").
+(SCDataOrigin = "BDRhapsody", bypasses ScSeurat).
     EOS
 
     # Required dataset.tsv columns:
@@ -52,19 +54,23 @@ Supports CellRanger Multi (RNA + ADT + VDJ-T/B), CellRanger ARC
     #   Species    - human-readable species (informational)
     #   refBuild   - genome reference path (used to resolve EnsDb annotation
     #                for Signac GeneActivity on ATAC; auto-detected human/mouse)
-    #   CountMatrix - filtered matrix directory or H5 parent. Phase 1 expects
-    #                the CellRanger filtered output (mtx dir or count/sample_*).
+    #   SC Seurat  - link to scData.qs2 produced by the upstream ScSeurat job.
+    #                ScSeurat already filters dead cells / mito-high / ribo-high
+    #                and runs SoupX/DecontX ambient-RNA correction, so we layer
+    #                ADT/VDJ/ATAC on QC'd cells rather than the raw CellRanger
+    #                filtered matrix. CountMatrix + ResultDir are propagated
+    #                from ScSeurat's next_dataset for sibling-modality lookup.
     #
     # Optional columns (auto-honored when present):
-    #   Report / SC Cluster Report / SC Seurat
-    #     - link to a previous ScSeurat job; we reuse its scData.qs2.
     #   VDJTPath / VDJBPath
     #     - directory containing filtered_contig_annotations.csv;
     #       overrides auto-discovery when set.
     #   BDRhapsodyPath
     #     - directory containing the BD Rhapsody *_Seurat.rds; together with
     #       SCDataOrigin = "BDRhapsody" routes the runtime through the BD loader.
-    @required_columns = ['Name', 'Species', 'refBuild', 'CountMatrix']
+    #     - BD Rhapsody bypasses ScSeurat (BD does its own cell filtering) so
+    #       'SC Seurat' is not required when SCDataOrigin = BDRhapsody.
+    @required_columns = ['Name', 'Species', 'refBuild', 'SC Seurat']
     @required_params = ['name']
 
     # ---------------------------------------------------------------------

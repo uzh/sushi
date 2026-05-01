@@ -128,10 +128,17 @@ Single cell report<br/>
   def next_dataset
     report_file = File.join(@result_dir, "#{@dataset['Name']}_SCReport")
     report_link = File.join(report_file, '00index.html')
+    # Forward CountMatrix + ResultDir so downstream apps (ScMultiOmics) can
+    # locate sibling modalities (vdj_t/, atac_fragments.tsv.gz, Antibody
+    # Capture in the H5) — these live next to the original CellRanger output,
+    # not next to scData.qs2. Both columns are required inputs to ScSeurat
+    # (see @required_columns line 18), so the values are guaranteed present.
     {'Name'=>@dataset['Name'],
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile'],
+     'CountMatrix [Link]'=>@dataset['CountMatrix [Link]'],
+     'ResultDir [File]'=>@dataset['ResultDir [File]'],
      'Static Report [Link]'=>report_link,
      'SC Cluster Report [File]'=>report_file,
      'SC Seurat [Link]'=>File.join(report_file, "scData.qs2"),

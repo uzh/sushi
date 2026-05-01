@@ -12,11 +12,23 @@ Rscript -e 'devtools::install("~/git/ezRun-scmultiomics", upgrade = FALSE)'
 For a permanent install, merge the `scmultiomics` branch of `~/git/ezRun` to `master`
 once Phase 1-4 changes are reviewed.
 
+## What this deploy ships
+
+1. **`ScSeuratApp.rb`** propagates `CountMatrix [Link]` and `ResultDir [File]`
+   in `next_dataset` so downstream `ScMultiOmics` can locate sibling modalities.
+2. **`ScMultiOmicsApp.rb`** swaps `@required_columns`: drops `CountMatrix`, adds
+   `SC Seurat`. Standard input is now the ScSeurat output dataset.
+3. **`app-ScMultiOmics.R`** simplifies `findScDataPath()` to a one-liner gated
+   on the `SC Seurat` column. Error messages updated.
+
+Both Ruby files must land on every SUSHI instance (production, course, demo).
+
 ## Test instance (fgcz-h-083)
 
 ```bash
 ssh fgcz-h-083
-cp ~/git/sushi/master/lib/ScMultiOmicsApp.rb \
+cp ~/git/sushi/master/lib/ScSeuratApp.rb \
+   ~/git/sushi/master/lib/ScMultiOmicsApp.rb \
    /srv/sushi/<your_test_instance>/master/lib/
 touch /srv/sushi/<your_test_instance>/master/tmp/restart.txt
 ```
@@ -26,9 +38,11 @@ Open the test SUSHI URL → verify "ScMultiOmics" appears under SingleCell.
 ## Production (fgcz-h-082)
 
 ```bash
-scp ~/git/sushi/master/lib/ScMultiOmicsApp.rb fgcz-h-082:/tmp/
+scp ~/git/sushi/master/lib/ScSeuratApp.rb \
+    ~/git/sushi/master/lib/ScMultiOmicsApp.rb \
+    fgcz-h-082:/tmp/
 ssh trxcopy@fgcz-h-082 \
-  'cp /tmp/ScMultiOmicsApp.rb /srv/sushi/production/master/lib/ && \
+  'cp /tmp/ScSeuratApp.rb /tmp/ScMultiOmicsApp.rb /srv/sushi/production/master/lib/ && \
    touch /srv/sushi/production/master/tmp/restart.txt'
 ```
 
@@ -37,31 +51,52 @@ ssh trxcopy@fgcz-h-082 \
 Per CLAUDE.md: course + demo SUSHI both live on fgcz-h-081 — apply to both:
 
 ```bash
-scp ~/git/sushi/master/lib/ScMultiOmicsApp.rb fgcz-h-081:/tmp/
+scp ~/git/sushi/master/lib/ScSeuratApp.rb \
+    ~/git/sushi/master/lib/ScMultiOmicsApp.rb \
+    fgcz-h-081:/tmp/
 ssh trxcopy@fgcz-h-081 \
   'for inst in course_sushi demo_sushi; do
-     cp /tmp/ScMultiOmicsApp.rb /srv/sushi/$inst/master/lib/
+     cp /tmp/ScSeuratApp.rb /tmp/ScMultiOmicsApp.rb /srv/sushi/$inst/master/lib/
      touch /srv/sushi/$inst/master/tmp/restart.txt
    done'
 ```
 
 ## Submission flow
 
-1. **CellRanger Multi or ARC input**: select the original CellRangerMulti / CellRangerARCCount
-   dataset; required columns are `Name`, `Species`, `refBuild`, `CountMatrix`.
-   Optional: `Report` / `SC Cluster Report` linking to a previous ScSeurat output
-   (so we can reuse the annotated `scData.qs2`). Without that link, ezMethodScMultiOmics
-   will refuse to run unless `SCDataOrigin = BDRhapsody`.
-2. **BD Rhapsody input**: SCDataOrigin column must equal `BDRhapsody`. The app reads
-   the pre-built `*_Seurat.rds` from `BDRhapsodyPath` (or the parent of `CountMatrix`).
+1. **10x input (CellRanger Multi / ARC / Count)**: select the **ScSeurat output
+   dataset** (downstream of CellRangerMulti / ARC / Count). Required columns:
+   `Name`, `Species`, `refBuild`, `SC Seurat`. ScSeurat propagates
+   `CountMatrix [Link]` and `ResultDir [File]` in its `next_dataset`, so sibling
+   modality discovery (ADT in H5, vdj_t/, atac_fragments.tsv.gz) works without
+   manual TSV editing. The R runtime loads QC'd cells from `scData.qs2` —
+   dead/mito-high/ribo-high cells are already filtered and ambient RNA
+   (SoupX/DecontX) is corrected.
+2. **BD Rhapsody input**: bypasses ScSeurat. `SCDataOrigin` must equal
+   `BDRhapsody` and `BDRhapsodyPath` (or `CountMatrix`) must point at the
+   directory containing the pre-built `*_Seurat.rds`. BD does its own cell
+   filtering upstream so re-QCing in ScSeurat would be cosmetic. Note: the
+   SUSHI `@required_columns` gate enforces `SC Seurat`, so BD datasets need
+   either a hand-built `dataset.tsv` or a future `BDRhapsodyToScSeurat`
+   wrapper app to surface them in the SUSHI selector.
 3. **Standalone VDJ**: add `VDJTPath` and/or `VDJBPath` columns pointing at the
    directory containing `filtered_contig_annotations.csv`; auto-discovery is overridden.
 
 ## Post-deployment smoke checklist
 
-- [ ] CellRanger Multi: re-run on p31662 P8_AT_PBMCs - expect Overview + ADT + VDJ + WNN tabs.
-- [ ] CellRanger ARC: re-run on p39132 IC104_Plate_6217_1_ARC - expect Overview + ATAC + WNN.
-- [ ] BD Rhapsody: re-run on p39179 394581_1-CD34run1 - expect Overview + ADT.
+Every 10x dataset needs a ScSeurat job upstream. Order matters: ScSeurat first
+(emits `SC Seurat`, `CountMatrix [Link]`, `ResultDir [File]` in next_dataset),
+then ScMultiOmics consumes that row.
+
+- [ ] CellRanger Multi: pick p31662 o41361 → run ScSeurat → run ScMultiOmics on the
+      ScSeurat output; expect Overview + ADT + VDJ + WNN tabs. (Existing ScSeurat
+      output `o41361_ScSeurat_2026-04-28--16-11-43` predates this patch and lacks
+      `CountMatrix` / `ResultDir` in dataset.tsv → either re-run ScSeurat or
+      hand-patch the existing dataset.tsv.)
+- [ ] CellRanger ARC: pick p40259 o40270 → run ScSeurat → run ScMultiOmics; expect
+      Overview + ATAC + WNN.
+- [ ] BD Rhapsody: SUSHI gate now requires `SC Seurat`. Smoke via hand-built
+      dataset.tsv (`SCDataOrigin = BDRhapsody`, `BDRhapsodyPath = ...`,
+      `SC Seurat = <stub>`) until a `BDRhapsodyToScSeurat` wrapper exists.
 - [ ] exploreSC: load `scMultiData.qs2` for each - RNA UMAP must render unchanged.
 - [ ] ScSeuratCombine: pick two ScMultiOmics output rows in SUSHI - the `SC Seurat` column
       must resolve to `<report>/scData.qs2` (a symlink to `scMultiData.qs2`); the combine
