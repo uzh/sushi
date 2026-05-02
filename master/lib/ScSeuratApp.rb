@@ -133,12 +133,16 @@ Single cell report<br/>
     # Capture in the H5) — these live next to the original CellRanger output,
     # not next to scData.qs2. Both columns are required inputs to ScSeurat
     # (see @required_columns line 18), so the values are guaranteed present.
+    # Use [Link] (not [File]) for both: we are propagating REFERENCES to the
+    # upstream CellRanger output, not producing new files. [File] would make
+    # SUSHI's job_footer attempt `g-req copy <upstream_dir> <upstream_gstore>`,
+    # which fails with "Destination path already exists".
     {'Name'=>@dataset['Name'],
      'Species'=>@dataset['Species'],
      'refBuild'=>@params['refBuild'],
      'refFeatureFile'=>@params['refFeatureFile'],
      'CountMatrix [Link]'=>@dataset['CountMatrix'],
-     'ResultDir [File]'=>@dataset['ResultDir'],
+     'ResultDir [Link]'=>@dataset['ResultDir'],
      'Static Report [Link]'=>report_link,
      'SC Cluster Report [File]'=>report_file,
      'SC Seurat [Link]'=>File.join(report_file, "scData.qs2"),
