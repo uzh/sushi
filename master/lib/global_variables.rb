@@ -292,7 +292,22 @@ module GlobalVariables
     command << "param = list()\n"
     param = @params
     param.keys.each do |key|
-      command << "param[['#{key}']] = '#{param[key]}'\n"
+      val = param[key]
+      # Match the web UI's array-to-scalar conversion (see
+      # run_application_controller.rb:399-426): single-select arrays default
+      # to the first element, multi-select arrays are joined with commas.
+      # The web UI runs that conversion on form submission so @params is
+      # already scalar by here, but the Ruby API path skips it — without
+      # this branch, Ruby Array literals leak through as '[a, b, c]' strings
+      # to R, breaking parameter parsing in any downstream apps.
+      if val.is_a?(Array)
+        val = if @params[key, "multi_selection"]
+                val.map { |v| v.to_s.chomp }.join(",")
+              else
+                val.first
+              end
+      end
+      command << "param[['#{key}']] = '#{val}'\n"
     end
     command << "param[['dataRoot']] = '#{@gstore_dir}'\n"
     command << "param[['resultDir']] = '#{@result_dir}'\n"
@@ -353,7 +368,17 @@ module GlobalVariables
     command << "param = {}\n"
     param = @params
     param.keys.each do |key|
-      command << "param['#{key}'] = '#{param[key]}'\n"
+      val = param[key]
+      # Mirror the run_RApp Array-to-scalar conversion (see comment there)
+      # so Python apps submitted via the Ruby API receive scalar params.
+      if val.is_a?(Array)
+        val = if @params[key, "multi_selection"]
+                val.map { |v| v.to_s.chomp }.join(",")
+              else
+                val.first
+              end
+      end
+      command << "param['#{key}'] = '#{val}'\n"
     end
     command << "param['dataRoot'] = '#{@gstore_dir}'\n"
     command << "param['resultDir'] = '#{@result_dir}'\n"
