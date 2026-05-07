@@ -38,3 +38,5 @@ btools/
 nf-sushi/
 log/
 .bak
+btools/
+mouse_contamination_QC/
