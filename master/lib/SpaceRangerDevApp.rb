@@ -14,7 +14,7 @@ class SpaceRangerDevApp <  SushiFabric::SushiApp
     @description =<<-EOS
 This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expression/software/pipelines/latest/using/count',>space ranger count</a> in Single-library analysis mode.
     EOS
-    @required_columns = ['Name','RawDataDir','Species','Slide','Area']
+    @required_columns = [['Name','RawDataDir','Species','Slide','Area'], ['Name','Read1','Read2','Species','Slide','Area']]
     @required_params = ['name', 'refBuild']
     @params['cores'] = '8'
     @params['cores', "context"] = "slurm"
@@ -59,7 +59,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/spatial-gene-expressi
     @params['cmdOptions', "context"] = "SpaceRangerDev"
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['SpaceRangerVersion'] = ["Aligner/SpaceRanger/4.0.1","Aligner/SpaceRanger/3.1.3","Aligner/SpaceRanger/3.1.2","Aligner/SpaceRanger/3.0.1"]
+    @params['SpaceRangerVersion'] = ["Aligner/SpaceRanger/4.1.0","Aligner/SpaceRanger/4.0.1","Aligner/SpaceRanger/3.1.3","Aligner/SpaceRanger/3.1.2","Aligner/SpaceRanger/3.0.1"]
     @modules = ["Dev/R", "Aligner/CellRanger", "Tools/samtools"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end

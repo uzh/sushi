@@ -13,19 +13,21 @@ class CellRangerMultiApp <  SushiFabric::SushiApp
     @description =<<-EOS
 This wrapper runs <a href='https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/using/multi',>cellranger multi</a> in Single-library analysis mode.<br><br>
 
-Note: that running this app usually requires manual curation of the input dataset. Column names for the corresponding 10X library are as follows.<br>
-<table style="width: 35%;">
+Note: that running this app usually requires manual curation of the input dataset. Each library can be provided either as a .tar archive (legacy) or directly as Read1/Read2 FASTQ paths.<br>
+<table style="width: 55%;">
 <tbody>
-<tr><td>VDJ-T</td><td>VdjTDataDir [File]</td></tr>
-<tr><td>VDJ-B</td><td>VdjBDataDir [File]</td></tr>
-<tr><td>Feature Barcoding</td><td>FeatureDataDir [File]</td></tr>
-<tr><td>Multiplexing</td><td>MultiDataDir [File]</td></tr>
+<tr><th>Library</th><th>Tar column</th><th>FASTQ columns</th></tr>
+<tr><td>GEX</td><td>RawDataDir [File]</td><td>Read1 [File], Read2 [File]</td></tr>
+<tr><td>VDJ-T</td><td>VdjTDataDir [File]</td><td>VdjT Read1 [File], VdjT Read2 [File]</td></tr>
+<tr><td>VDJ-B</td><td>VdjBDataDir [File]</td><td>VdjB Read1 [File], VdjB Read2 [File]</td></tr>
+<tr><td>Feature Barcoding</td><td>FeatureDataDir [File]</td><td>Feature Read1 [File], Feature Read2 [File]</td></tr>
+<tr><td>Multiplexing</td><td>MultiDataDir [File]</td><td>Multi Read1 [File], Multi Read2 [File]</td></tr>
 </tbody>
 </table>
-<br> 
+<br>
 When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/app/sample2barcode'>ShinyApp</a> to provide the barcoding information with or without feature barcoding. See also the <a href='https://gitlab.bfabric.org/Genomics/paul-scripts/-/tree/main/.claude/skills/sample2barcode-generation'>Claude skill documentation</a> for detailed guidance.
     EOS
-    @required_columns = ['Name','RawDataDir','Species']
+    @required_columns = [['Name','RawDataDir','Species'], ['Name','Read1','Read2','Species']]
     @required_params = ['name', 'refBuild']
     @params['cores'] = ['8', '12', '16']
     @params['cores', "context"] = "slurm"
@@ -162,10 +164,12 @@ Columns: <code>id, name, read, pattern, sequence, feature_type</code> | <a href=
                       @dataset
                     end
 
-      # Locate Sample2Barcode file in gStore metadata directory
+      # Locate Sample2Barcode file in gStore metadata directory.
+      # project_id is the leading path segment of RawDataDir (legacy tar input)
+      # or of Read1 (fastq input). Both live under pXXXXX/.
       order_id = sample_data['Order Id']
-      raw_data_dir = sample_data['RawDataDir']
-      project_id = raw_data_dir.to_s.split('/').first
+      input_path = sample_data['RawDataDir'] || sample_data['Read1']
+      project_id = input_path.to_s.split(',').first.to_s.split('/').first
 
       next if project_id.to_s.empty? || order_id.to_s.empty?
 
