@@ -51,7 +51,7 @@ EOS
     # --- SUSHI input contract ---------------------------------------------
     # Required columns (SUSHI strips the [File] / [Factor] type suffix when
     # matching) — these are the ezRun-style canonical column names.
-    @required_columns = ['Name', 'Raw', 'Polarity', 'Sample Type']
+    @required_columns = ['Name', 'Thermo Scientific RAW', 'Polarity', 'Sample Type']
     @required_params  = ['engine', 'polarity_filter', 'sample_types']
 
     # --- SLURM resources --------------------------------------------------
