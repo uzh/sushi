@@ -28,9 +28,7 @@ class ApplicationController < ActionController::Base
 
   after_action :flash_to_headers
   
-  if SushiFabric::Application.config.fgcz?
-    before_action :authenticate_user!
-  end
+  before_action :authenticate_user!
   @@sushi_server = eval(SushiFabric::Application.config.sushi_server_class).new
 
   def employee?

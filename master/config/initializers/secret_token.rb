@@ -4,4 +4,8 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-SushiFabric::Application.config.secret_token = 'd9365a96e0b689027eda492e1dc6d1a563e4fd655ceac234bf13405a8014741bc4e2c68c230ba84e3c1cb13b6cbda60140f0ec5054d955c1fbca15b5852ea1b5'
+secret_token = ENV['SUSHI_SECRET_TOKEN']
+if secret_token.nil? || secret_token.length < 30
+  raise 'SUSHI_SECRET_TOKEN env var must be set to a random string of at least 30 characters. Generate with: ruby -rsecurerandom -e "puts SecureRandom.hex(64)"'
+end
+SushiFabric::Application.config.secret_token = secret_token
