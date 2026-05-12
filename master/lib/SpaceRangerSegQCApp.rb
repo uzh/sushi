@@ -27,7 +27,7 @@ This wrapper runs <a href='https://www.10xgenomics.com/support/software/space-ra
     @params['cmdOptions', "context"] = "SpaceRangerSegQC"
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['SpaceRangerVersion'] = ["Aligner/SpaceRanger/4.0.1"]
+    @params['SpaceRangerVersion'] = ["Aligner/SpaceRanger/4.1.0","Aligner/SpaceRanger/4.0.1"]
     @modules = ["Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
