@@ -94,6 +94,9 @@ if opt.dataset_tsv and !opt.class_name
   if opt.input_dataset_application
     usecase.input_dataset_bfabric_application_number = opt.input_dataset_application
   end
+  if opt.dataset_id
+    usecase.dataset_sushi_id = opt.dataset_id
+  end
   dataset_id = usecase.test_run
   puts dataset_id
   exit 0
