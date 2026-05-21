@@ -106,7 +106,9 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
       'p36005_UM_references/eye/eye_rctd.rds (human eye + melanoma)',
       'p36005_UM_references/liver/liver_rctd.rds (human liver + melanoma)',
       'p36005_UM_references/skin/skin_rctd.rds (human skin + melanoma)',
-      'p36005_UM_references/thyroid/thyroid_rctd.rds (human thyroid + melanoma)'
+      'p36005_UM_references/thyroid/thyroid_rctd.rds (human thyroid + melanoma)',
+      # CTCL project references (human skin + CTCL malignant T cells TCM1/TCM2) - pre-built RCTD format
+      'p28409_CTCL_references/skin_Ganier_TCM/skin_rctd.rds (human skin CTCL, incl. malignant TCM1/TCM2)'
     ]
     @params['rctdReference', 'description'] = 'RCTD Reference atlas. Format: folder/file.rds (species tissue). WARNING: RCTD requires 200GB+ RAM.'
     @params['rctdFile'] = ''
