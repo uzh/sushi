@@ -67,6 +67,16 @@ CellBender is a software package for eliminating technical artifacts from high-t
       @params['refFeatureFile'] = @dataset[0]['refFeatureFile']
     end
   end
+  def preprocess
+    # CellBender requires the L40S GPU partition: the conda env
+    # gi_cellbender_0.3.2 uses a PyTorch build that does not support the
+    # Blackwell GPU on fgcz-c-056 (sm_120). The SUSHI form shows the
+    # partition field as readonly to non-employee users (bound to
+    # session[:partition], typically "user" with no GPUs), so they cannot
+    # pick GPU_L40S themselves; force it here.
+    @params['partition'] = 'GPU_L40S'
+    @params['gpu'] = '1'
+  end
   def commands
     run_RApp("EzAppCellBender",conda_env: "gi_cellbender_0.3.2")
   end
