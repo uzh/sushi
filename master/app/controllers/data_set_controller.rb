@@ -1,7 +1,5 @@
 class DataSetController < ApplicationController
 
-  skip_before_action :authenticate_user!, only: [:update_completed_samples]
-
   include SushiFabric
   def top(n_dataset=1000, tree=nil)
     view_context.project_init

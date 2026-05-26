@@ -1,0 +1,30 @@
+# Copy this to config/database.yml and adjust per environment.
+# Production credentials are read from environment variables — never hardcode.
+#
+# Required env var for production:
+#   SUSHI_DB_PASSWORD     (no default; app will fail to boot if unset)
+# Optional:
+#   SUSHI_DB_USERNAME     (default: sushilover)
+#   SUSHI_DB_NAME         (default: sushi)
+
+development:
+  adapter: sqlite3
+  database: db/development.sqlite3
+  pool: 5
+  timeout: 5000
+
+test:
+  adapter: sqlite3
+  database: db/test.sqlite3
+  pool: 5
+  timeout: 5000
+
+production:
+  adapter: mysql2
+  pool: 10
+  username: <%= ENV.fetch('SUSHI_DB_USERNAME', 'sushilover') %>
+  password: <%= ENV.fetch('SUSHI_DB_PASSWORD') %>
+  database: <%= ENV.fetch('SUSHI_DB_NAME', 'sushi') %>
+  encoding: utf8
+  socket: /var/run/mysqld/mysqld.sock
+  reconnect: true

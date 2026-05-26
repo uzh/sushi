@@ -2,6 +2,8 @@ require 'json'
 require 'csv'
 
 class ApiController < ApplicationController
+  before_action :authenticate_user!
+
   def save_dataset project_id, dataset_name, headers, rows
     project = Project.find_by_number project_id
     if not project

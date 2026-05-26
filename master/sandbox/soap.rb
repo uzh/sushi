@@ -8,8 +8,8 @@ puts client.wsdl.soap_actions
 response = client.request :read do
     soap.body = {
         :parameters => {
-            :login => "bemployee",
-            :password => "test",
+            :login => ENV.fetch("BFABRIC_DEMO_LOGIN", "bemployee"),
+            :password => ENV.fetch("BFABRIC_DEMO_PASSWORD"),
             :query => {
                 :id => 3506
             }
