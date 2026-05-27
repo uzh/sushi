@@ -5,6 +5,7 @@
 require 'csv'
 require 'fileutils'
 require 'yaml'
+require 'erb'
 require 'drb/drb'
 gem 'rails'
 #require 'rails/all'
@@ -92,7 +93,7 @@ end
 
     NO_ROR = false
     
-    database_config = YAML.load(File.read(database_yml))
+    database_config = YAML.load(ERB.new(File.read(database_yml)).result)
     db = database_config["production"]
     ActiveRecord::Base.establish_connection(
                 :adapter => db["adapter"],
