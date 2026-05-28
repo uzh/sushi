@@ -21,10 +21,13 @@ Container runtime is apptainer (rootless), so the job runs as trxcopy on a
 genomics compute node.
     EOS
     @params['process_mode'] = 'DATASET'
-    # Dataset must carry one of: 'RAW' (Hubert's old DIANN ezRun convention)
-    # or 'Thermo RAW' (B-Fabric standard column for Thermo raw files).
-    # ezMethodDIANN picks whichever is present, so we only require 'Name' here.
-    @required_columns = ['Name']
+    # 'Thermo RAW' is the B-Fabric standard column for Thermo raw mass spec
+    # files; requiring it scopes this app to proteomics datasets only (without
+    # this, the app would appear applicable to every dataset that has 'Name').
+    # ezMethodDIANN ALSO accepts the legacy 'RAW' column as a fallback when
+    # invoked from CLI / unusual datasets, but the SUSHI UI gates on the
+    # standard column.
+    @required_columns = ['Name', 'Thermo RAW']
     @required_params = ['name', 'paramsTemplate']
 
     # Compute resources
