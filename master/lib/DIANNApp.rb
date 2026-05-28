@@ -21,10 +21,10 @@ Container runtime is apptainer (rootless), so the job runs as trxcopy on a
 genomics compute node.
     EOS
     @params['process_mode'] = 'DATASET'
-    # Dataset must carry one of: 'RAW' (Hubert's earlier ezRun convention)
-    # or 'Thermo RAW' (B-Fabric standard column). ezMethodDIANN picks
-    # whichever is present, so we only require 'Name' here.
-    @required_columns = ['Name', 'RAW']
+    # Dataset must carry one of: 'RAW' (Hubert's old DIANN ezRun convention)
+    # or 'Thermo RAW' (B-Fabric standard column for Thermo raw files).
+    # ezMethodDIANN picks whichever is present, so we only require 'Name' here.
+    @required_columns = ['Name']
     @required_params = ['name', 'paramsTemplate']
 
     # Compute resources
