@@ -27,8 +27,8 @@ EOS
     @params['paired'] = false
     @params['paired', "context"] = "Kraken"
     
-    @params['krakenDBOpt'] = ['Standard', 'Viral', 'PlusPF', 'core_nt','k2_standard']
-    @params['krakenDBOpt', 'description'] = 'kraken database options (https://benlangmead.github.io/aws-indexes/k2). Default is Standard'
+    @params['krakenDBOpt'] = kraken_db_choices
+    @params['krakenDBOpt', 'description'] = 'kraken database options (auto-detected from /srv/GT/databases/kraken2/; see https://benlangmead.github.io/aws-indexes/k2)'
     @params['krakenDBOpt', "context"] = "Kraken"
     @params['krakenConfidenceOpt'] = '0.0'
     @params['krakenConfidenceOpt', 'description'] = 'Confidence score threshold, between 0 and 1'
@@ -36,6 +36,12 @@ EOS
     @params['krakenPhredOpt'] = '0'
     @params['krakenPhredOpt', 'description'] = 'Phred score threshold'
     @params['krakenPhredOpt', "context"] = "Kraken"
+    @params['minimum_hit_groups'] = ['2', '3', '4']
+    @params['minimum_hit_groups', 'description'] = 'minimum number of hit groups (overlapping k-mers sharing the same minimizer) needed to make a call (kraken2 default: 2)'
+    @params['minimum_hit_groups', "context"] = "Kraken"
+    @params['report_minimizer_data'] = ['no', 'yes']
+    @params['report_minimizer_data', 'description'] = 'add per-clade distinct-minimizer columns to the report (enables advanced filtering in exploreMetaTax)'
+    @params['report_minimizer_data', "context"] = "Kraken"
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for kraken; do not specify any option that is already covered by the dedicated input fields'
     @params['cmdOptions', "context"] = "Kraken"
@@ -91,11 +97,6 @@ EOS
     @params['length_required', "context"] = "OpenGene/fastp"
     @params['cmdOptionsFastp'] = ''
     @params['cmdOptionsFastp', "context"] = "OpenGene/fastp"
-    ## additional commands
-    @params['markDuplicates'] = true
-    @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
-    @params['markDuplicates', "context"] = "Picard"
-    
     @params['mail'] = ""
     @modules = ["QC/fastp", "Dev/R", "Tools/kraken", "Tools/Krona"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
@@ -112,10 +113,31 @@ EOS
      'KrakenReport [File]'=>File.join(@result_dir, "#{@dataset['Name']}.report.txt"),
      'KronaOutDir [File]'=>File.join(@result_dir, "#{@dataset['Name']}.html.files"),
      'KronaOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
+     'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/exploreMetaTax?data=#{@result_dir}",
     }.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppKraken")
+  end
+
+  # Scan /srv/GT/databases/kraken2/ for valid Kraken2 DB folders. A folder is
+  # considered a valid DB if it contains 'hash.k2d' (the canonical Kraken2
+  # index file). Result is sorted alphabetically with 'Standard' promoted to
+  # first position so it stays the default in the SUSHI dropdown when present.
+  # Returns [] if the root doesn't exist or contains no valid DBs — the
+  # dropdown will be empty and no run can be submitted, which is the correct
+  # surface for a misconfigured deployment.
+  def kraken_db_choices
+    root = '/srv/GT/databases/kraken2'
+    return [] unless Dir.exist?(root)
+
+    dbs = Dir.entries(root)
+             .reject { |e| e.start_with?('.') }
+             .select { |e| File.exist?(File.join(root, e, 'hash.k2d')) }
+             .sort
+
+    preferred = 'Standard'
+    dbs.include?(preferred) ? [preferred] + (dbs - [preferred]) : dbs
   end
 end
 
