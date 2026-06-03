@@ -389,7 +389,7 @@ module GlobalVariables
       command << "output['#{key}'] = '#{output[key]}'\n"
     end
     if @params['process_mode'] == 'DATASET'
-      command <<  "input = ['#{@input_dataset_tsv_path}']\n"
+      command <<  "input = '#{@input_dataset_tsv_path}'\n"
     else # sample mode
       command << "input = {}\n" # Initialize as a hash for sample mode
       input = @dataset
