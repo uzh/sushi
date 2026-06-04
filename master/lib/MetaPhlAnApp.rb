@@ -5,58 +5,40 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class KrakenApp < SushiFabric::SushiApp
+class MetaPhlAnApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'Kraken'
+    @name = 'MetaPhlAn'
     @analysis_category = 'Metagenomics'
     @description =<<-EOS
-Kraken taxonomic sequence classification system
-<a href='https://ccb.jhu.edu/software/kraken2/index.shtml'>https://ccb.jhu.edu/software/kraken2/index.shtml</a>
+MetaPhlAn taxonomic profiling of microbial communities from metagenomic reads
+<a href='https://github.com/biobakery/MetaPhlAn'>https://github.com/biobakery/MetaPhlAn</a>
 EOS
 
     @required_columns = ['Name','Read1']
-    @required_params = ['paired', 'krakenDBOpt']
+    @required_params = ['paired', 'metaphlanIndex']
     # optional params
     @params['cores'] = '8'
     @params['cores', "context"] = "slurm"
-    @params['ram'] = '100'
+    @params['ram'] = '64'
     @params['ram', "context"] = "slurm"
-    @params['scratch'] = '500'
+    @params['scratch'] = '200'
     @params['scratch', "context"] = "slurm"
     @params['paired'] = false
-    @params['paired', "context"] = "Kraken"
-    
-    @params['krakenDBOpt'] = kraken_db_choices
-    @params['krakenDBOpt', 'description'] = 'kraken database options with size on disk (please request at least a slightly larger amount of RAM in parameters above). Auto-detected from /srv/GT/databases/kraken2/ (see also https://benlangmead.github.io/aws-indexes/k2). With multiDB checked, Ctrl/Cmd-click to select multiple — k2 v2.17+ will classify against all in one pass (--db DB1,DB2,...). WARNING: multi-DB mode is NCBI ONLY — every selected DB must share the NCBI taxonomy tree (custom DBs like GTDB, SILVA, UHGG cannot be mixed); --report-minimizer-data is auto-disabled in multi-DB mode (kraken2 refuses it).'
-    @params['krakenDBOpt', "context"] = "Kraken"
-    @params['krakenDBOpt', 'multi_selection'] = true
-    @params['multiDB'] = false
-    @params['multiDB', 'description'] = 'enable multi-database classification (k2 v2.17, --db DB1,DB2,...). MULTI-DB IS NCBI ONLY — all selected DBs must share the NCBI taxonomy. If unchecked, only the first selected DB is used.'
-    @params['multiDB', "context"] = "Kraken"
-    @params['krakenConfidenceOpt'] = '0.0'
-    @params['krakenConfidenceOpt', 'description'] = 'Confidence score threshold, between 0 and 1'
-    @params['krakenConfidenceOpt', "context"] = "Kraken"
-    @params['krakenPhredOpt'] = '0'
-    @params['krakenPhredOpt', 'description'] = 'Phred score threshold'
-    @params['krakenPhredOpt', "context"] = "Kraken"
-    @params['minimum_hit_groups'] = ['2', '3', '4']
-    @params['minimum_hit_groups', 'description'] = 'minimum number of hit groups (overlapping k-mers sharing the same minimizer) needed to make a call (kraken2 default: 2)'
-    @params['minimum_hit_groups', "context"] = "Kraken"
-    @params['report_minimizer_data'] = ['no', 'yes']
-    @params['report_minimizer_data', 'description'] = 'add per-clade distinct-minimizer columns to the report (enables advanced filtering in exploreMetaTax)'
-    @params['report_minimizer_data', "context"] = "Kraken"
+    @params['paired', "context"] = "MetaPhlAn"
+
+    @params['metaphlanIndex'] = metaphlan_index_choices
+    @params['metaphlanIndex', 'description'] = 'MetaPhlAn bowtie2 index basename (auto-detected from /srv/GT/databases/metaphlan_databases/, total on-disk size shown). The latest CHOCOPhlAnSGB DB pointed to by mpa_latest is promoted first when present. See <a href="http://segatalab.cibio.unitn.it/data/Database_links.html">MetaPhlAn DB index</a>.'
+    @params['metaphlanIndex', "context"] = "MetaPhlAn"
+
     @params['cmdOptions'] = ''
-    @params['cmdOptions', 'description'] = 'specify other commandline options for kraken; do not specify any option that is already covered by the dedicated input fields'
-    @params['cmdOptions', "context"] = "Kraken"
-    
-        # trimming options
-    # general
+    @params['cmdOptions', 'description'] = 'extra commandline options for metaphlan; do NOT specify --input_type, --db_dir, --index, --nproc, --mapout, -o, --tmp_dir (already set by the app).'
+    @params['cmdOptions', "context"] = "MetaPhlAn"
+
+    # trimming options (same as Kraken — fastp upstream)
     @params['trimAdapter', 'hr'] = true
     @params['trimAdapter'] = true
     @params['trimAdapter', "context"] = "OpenGene/fastp"
-    # Fastp
-    ## trimming
     @params['trim_front1'] = '0'
     @params['trim_front1','description'] = 'trimming how many bases in front for read1 (and read2), default is 0.'
     @params['trim_front1', "context"] = "OpenGene/fastp"
@@ -102,50 +84,62 @@ EOS
     @params['cmdOptionsFastp'] = ''
     @params['cmdOptionsFastp', "context"] = "OpenGene/fastp"
     @params['mail'] = ""
-    @modules = ["QC/fastp", "Dev/R", "Tools/kraken/2.17.1", "Tools/Krona"]
+    @modules = ["QC/fastp", "Dev/R", "Tools/MetaPhlAn/4.2.4"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
+
   def preprocess
     if @params['paired']
       @required_columns << 'Read2'
     end
   end
+
   def next_dataset
-    # Note: per-read .txt.gz and <name>_unclassified.fasta.gz are written to
-    # the result dir but intentionally not surfaced here — only the aggregate
-    # report and Krona are advertised downstream.
+    # Output filename ends with _metaphlan.txt so exploreMetaTax auto-detects
+    # it as a MetaPhlAn profile (see exploreMetaTax/app.R FORMAT_PATTERNS).
     {'Name'=>@dataset['Name'],
-     'KronaReport [Link]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
-     'KrakenReport [File]'=>File.join(@result_dir, "#{@dataset['Name']}.report.txt"),
-     'KronaOutDir [File]'=>File.join(@result_dir, "#{@dataset['Name']}.html.files"),
-     'KronaOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
+     'MetaPhlAnProfile [File]'=>File.join(@result_dir, "#{@dataset['Name']}_metaphlan.txt"),
+     'BowtieMapout [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bowtie2.bz2"),
      'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/exploreMetaTax?data=#{@result_dir}",
     }.merge(extract_columns(@inherit_tags))
   end
+
   def commands
-    run_RApp("EzAppKraken")
+    run_RApp("EzAppMetaPhlAn")
   end
 
-  # Scan /srv/GT/databases/kraken2/ for valid Kraken2 DB folders. A folder is
-  # a valid DB if it contains 'hash.k2d'. Returns an Array of [label, value]
-  # pairs so the SUSHI multi-select widget (which only renders for Arrays,
-  # not Hashes) shows on-disk size while submitting just the folder name.
-  # Standard is promoted first when present; the rest are alphabetical.
-  # Returns [] if the root doesn't exist or contains no valid DBs.
-  def kraken_db_choices
-    root = '/srv/GT/databases/kraken2'
+  # Scan /srv/GT/databases/metaphlan_databases/ for bowtie2 index basenames.
+  # Files lie flat in the folder; a basename is valid if <basename>.1.bt2(l)
+  # AND <basename>.pkl both exist. Returns an Array of [label, value] pairs
+  # (Array, not Hash — SUSHI's set_parameters.html.erb only renders the
+  # multi-select widget for Arrays). The basename pointed to by mpa_latest
+  # is promoted first when present; the rest are alphabetical. Returns []
+  # if the root doesn't exist or contains no valid indexes.
+  def metaphlan_index_choices
+    root = '/srv/GT/databases/metaphlan_databases'
     return [] unless Dir.exist?(root)
 
-    dbs = Dir.entries(root)
-             .reject { |e| e.start_with?('.') }
-             .select { |e| File.exist?(File.join(root, e, 'hash.k2d')) }
-             .sort
+    files = Dir.entries(root).reject { |e| e.start_with?('.') || File.directory?(File.join(root, e)) }
+    basenames = files.flat_map { |f|
+      m = f.match(/\A(.+?)\.(?:rev\.)?[1-4]\.bt2l?\z/)
+      m ? [m[1]] : []
+    }.uniq
 
-    preferred = 'Standard'
-    dbs = [preferred] + (dbs - [preferred]) if dbs.include?(preferred)
+    valid = basenames.select { |b|
+      pkl = File.join(root, "#{b}.pkl")
+      idx1 = ["#{b}.1.bt2l", "#{b}.1.bt2"].any? { |f| File.exist?(File.join(root, f)) }
+      File.exist?(pkl) && idx1
+    }.sort
 
-    dbs.map do |name|
-      bytes = `du -sb #{File.join(root, name)} 2>/dev/null`.to_i
+    latest_file = File.join(root, 'mpa_latest')
+    if File.exist?(latest_file)
+      preferred = File.read(latest_file).strip
+      valid = [preferred] + (valid - [preferred]) if valid.include?(preferred)
+    end
+
+    valid.map do |name|
+      bytes = Dir.glob(File.join(root, "#{name}.*"))
+                 .map { |p| File.file?(p) ? File.size(p) : 0 }.sum
       gb = (bytes.to_f / (1024**3))
       label = bytes > 0 ? "#{name} (#{format('%.1f', gb)} GB)" : name
       [label, name]

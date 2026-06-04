@@ -27,7 +27,7 @@ EOS
     @params['scratch', "context"] = "slurm"
 
     @params['brackenDBOpt'] = bracken_db_choices
-    @params['brackenDBOpt', 'description'] = 'Bracken DB + read length (one entry per databaseNmers.kmer_distrib file found under /srv/GT/databases/kraken2/). Format: <DBname>/<N>mers. The DB must match the one used to build the input Kraken report.'
+    @params['brackenDBOpt', 'description'] = 'Bracken DB + read length (one entry per databaseNmers.kmer_distrib file found under /srv/GT/databases/kraken2/). Format: <DBname>/<N>mers. The DB must match the one used to build the input Kraken report. The read length <N> should match the sequencing dataset read length (check FastQC/MultiQC).'
     @params['brackenDBOpt', "context"] = "Bracken"
     @params['brackenLevel'] = ['S', 'S1', 'G', 'F', 'O', 'C', 'P', 'D']
     @params['brackenLevel', 'description'] = 'Taxonomic level for abundance re-estimation (Bracken -l): D=Domain, P=Phylum, C=Class, O=Order, F=Family, G=Genus, S=Species, S1=strain.'
