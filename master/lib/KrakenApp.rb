@@ -46,6 +46,9 @@ EOS
     @params['report_minimizer_data'] = ['no', 'yes']
     @params['report_minimizer_data', 'description'] = 'add per-clade distinct-minimizer columns to the report (enables advanced filtering in exploreMetaTax)'
     @params['report_minimizer_data', "context"] = "Kraken"
+    @params['save_unclassified'] = ['no', 'yes']
+    @params['save_unclassified', 'description'] = 'save reads that did not classify to fastq.gz. Paired-end → &lt;sample&gt;_unclassified_{1,2}.fastq.gz (kraken2 splits on the required # placeholder); single-end → &lt;sample&gt;_unclassified.fastq.gz. Skipped by default to save disk.'
+    @params['save_unclassified', "context"] = "Kraken"
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for kraken; do not specify any option that is already covered by the dedicated input fields'
     @params['cmdOptions', "context"] = "Kraken"
