@@ -25,6 +25,8 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     @params['minCounts', 'description'] = 'Minimum counts per cell for QC filtering'
     @params['minFeatures'] = '5'
     @params['minFeatures', 'description'] = 'Minimum features per cell for QC filtering'
+    @params['qcNmads'] = '3'
+    @params['qcNmads', 'description'] = 'Number of MADs for QC outlier flagging (cell area, nucleus:cell ratio, etc.). Outliers are flagged and reported, not removed.'
     @params['clusterResolution'] = '0.5'
     @params['clusterResolution', 'description'] = 'Resolution for Seurat clustering (higher = more clusters)'
     @params['lambda'] = '0.8'
@@ -114,8 +116,16 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     @params['rctdReference', 'description'] = 'RCTD Reference atlas. Format: folder/file.rds (species tissue). WARNING: RCTD requires 200GB+ RAM.'
     @params['rctdFile'] = ''
     @params['rctdFile', 'description'] = 'Manual override: Full path to custom RCTD reference .rds file (leave empty to use dropdown selection)'
-    @params['rctdUMImin'] = '20'
-    @params['rctdUMImin', 'description'] = 'Minimum UMI count for RCTD annotation. Cells below this threshold will not be classified.'
+    @params['rctdUMImin'] = '10'
+    @params['rctdUMImin', 'description'] = 'Minimum UMI count for RCTD annotation. Cells below this threshold will not be classified. Set to match minCounts (10) so low-RNA cells (T cells, neutrophils) that spillover hits hardest are retained.'
+    @params['rctdClassFile'] = ''
+    @params['rctdClassFile', 'description'] = 'Optional TSV (columns: cell_type, class) mapping reference cell types to coarse lineages. Sets RCTD class_df: maximises cell retention (same-class doublets become confident singlets) and unlocks splitMode=shift. Leave empty to disable.'
+    @params['doSPLIT'] = false
+    @params['doSPLIT', 'description'] = 'Run SPLIT spillover correction after RCTD (Bilous et al. 2026). Purifies transcript spillover/diffusion across cell boundaries; produces a before/after annotation panel. Requires an RCTD reference.'
+    @params['splitMode'] = ['neighborhood', 'full', 'shift']
+    @params['splitMode', 'description'] = 'SPLIT cell-selection. neighborhood (default, conservative): purify only if the secondary type is in the spatial neighbourhood. full: purify every contaminated cell (most aggressive). shift (experimental): transcriptomic-neighbourhood label correction, REQUIRES rctdClassFile.'
+    @params['splitNeighborThreshold'] = '0.05'
+    @params['splitNeighborThreshold', 'description'] = 'SPLIT neighborhood mode: minimum secondary-type weight in the spatial neighbourhood to trigger purification (balance_score_based threshold).'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]
