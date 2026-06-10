@@ -126,6 +126,10 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     @params['splitMode', 'description'] = 'SPLIT cell-selection. neighborhood (default, conservative): purify only if the secondary type is in the spatial neighbourhood. full: purify every contaminated cell (most aggressive). shift (experimental): transcriptomic-neighbourhood label correction, REQUIRES rctdClassFile.'
     @params['splitNeighborThreshold'] = '0.05'
     @params['splitNeighborThreshold', 'description'] = 'SPLIT neighborhood mode: minimum secondary-type weight in the spatial neighbourhood to trigger purification (balance_score_based threshold).'
+    @params['coocRadius'] = '30'
+    @params['coocRadius', 'description'] = 'Cell-type co-occurrence: spatial neighbour radius in microns for the neighbourhood-enrichment graph.'
+    @params['coocNperm'] = '1000'
+    @params['coocNperm', 'description'] = 'Cell-type co-occurrence: number of label permutations for the enrichment null (log2 enrichment + permutation p-value).'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Dev/R"]
