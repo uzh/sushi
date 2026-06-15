@@ -122,7 +122,7 @@ genomics compute node.
   def commands
     # Python entry point: from ezpyz_diann.app import EzAppDiann
     # (run_PyApp resolves Ruby app name 'DIANN' to module ezpyz_diann + class EzAppDiann)
-    run_PyApp('DIANN', conda_env: 'gi_snakemake8.20.5')
+    run_PyApp('DIANN', pixi_enabled: true)  # Name must match [name] in 'ezpyz_[name]' format
   end
 end
 
