@@ -37,11 +37,17 @@ genomics compute node.
     @params['name']    = 'DIANN_v23'
     @params['mail']    = ''
 
-    # ---- Template chooser ----
-    # paramsTemplate sets the BASE for the params block; per-key fields below
-    # override it, and customParamsYml replaces everything.
-    @params['paramsTemplate']  = ['default-DIA', 'default-DDA']
-    @params['customParamsYml'] = ''       # path; full override when set
+    # The GUI defaults below ARE the known-good DIA preset (provenance: FGCZ
+    # workunit WU340602 / p40993, a DIA-NN 2.3.2 DIA run on Orbitrap Exploris
+    # data). run-diann maps every readable key directly onto its internal params
+    # (SUSHI_TO_DRUNNER) — there is no B-Fabric-keyed template indirection, so the
+    # values here are the single source. For DDA, set is_dda + the mass-acc /
+    # charge fields accordingly.
+
+    # ---- DIA-NN version ----
+    # Selects the DIA-NN container image: run-diann maps this value to
+    # diann_images[<version>]. First entry is the GUI default.
+    @params['diann_version'] = ['2.5.1', '2.5.0', '2.3.2']
 
     # ---- FASTA databases ----
     # order_fasta: checkbox for now — when checked, use the order-specific FASTA.
