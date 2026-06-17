@@ -38,80 +38,91 @@ genomics compute node.
     @params['mail']    = ''
 
     # ---- Template chooser ----
-    # paramsTemplate sets the BASE for the params block. Per-key fields
-    # below override it; customParamsYml replaces everything.
+    # paramsTemplate sets the BASE for the params block; per-key fields below
+    # override it, and customParamsYml replaces everything.
     @params['paramsTemplate']  = ['default-DIA', 'default-DDA']
     @params['customParamsYml'] = ''       # path; full override when set
-    @params['order_fasta']     = ''       # text path; staged as input/order.fasta
+
+    # ---- FASTA databases ----
+    # order_fasta: checkbox for now — when checked, use the order-specific FASTA.
+    @params['order_fasta'] = false
+    # fasta_databases: multi-select populated by globbing the FASTA library on
+    # the SUSHI host (read at form-render time, so FASTA_DB_DIR must be mounted
+    # there). Options are full paths; selected entries come back comma-joined and
+    # the app passes one --fasta per entry to run-diann.
+    fasta_db_dir = '/srv/GT/databases/proteomics/fasta'  # TODO: set to the real FASTA library on the SUSHI host
+    @params['fasta_databases'] = Dir.glob(File.join(fasta_db_dir, '*.{fasta,fa}')).sort
+    @params['fasta_databases', 'multi_selection'] = true
 
     # ---- Workflow ----
-    @params['02_workflow_mode']                    = ['two_step', 'one_step']
-    @params['03_fasta_database_path']              = 'NONE'           # text path
-    @params['03_fasta_use_custom']                 = ['false', 'true']
-    @params['03b_additional_fasta_database_path']  = 'NONE'           # text path
+    @params['workflow_mode'] = ['two_step', 'one_step']
 
     # ---- DIA / DDA mode ----
-    @params['05_diann_is_dda']                     = ['false', 'true']
-    @params['05b_diann_scan_window']               = ['AUTO', '7', '11', '15']
+    @params['is_dda']                         = ['false', 'true']
+    @params['scan_window']                    = ['AUTO', '7', '11', '15']
 
     # ---- Modifications ----
-    @params['06a_diann_mods_variable']             = '--var-mods 1 --var-mod UniMod:35,15.994915,M'
-    @params['06b_diann_mods_no_peptidoforms']      = ['false', 'true']
-    @params['06c_diann_mods_unimod4']              = ['true', 'false']
-    @params['06d_diann_mods_met_excision']         = ['true', 'false']
+    @params['mods_variable']                  = '--var-mods 1 --var-mod UniMod:35,15.994915,M'
+    @params['mods_no_peptidoforms']           = ['false', 'true']
+    @params['mods_unimod4']                   = ['true', 'false']
+    @params['mods_met_excision']              = ['true', 'false']
 
     # ---- Peptide constraints ----
-    @params['07_diann_peptide_min_length']           = '6'
-    @params['07_diann_peptide_max_length']           = '30'
-    @params['07_diann_peptide_precursor_charge_min'] = '1'
-    @params['07_diann_peptide_precursor_charge_max'] = '3'
-    @params['07_diann_peptide_precursor_mz_min']     = '350'
-    @params['07_diann_peptide_precursor_mz_max']     = '1500'
-    @params['07_diann_peptide_fragment_mz_min']      = '200'
-    @params['07_diann_peptide_fragment_mz_max']      = '1800'
+    @params['peptide_min_length']             = '6'
+    @params['peptide_max_length']             = '30'
+    @params['peptide_precursor_charge_min']   = '1'
+    @params['peptide_precursor_charge_max']   = '3'
+    @params['peptide_precursor_mz_min']       = '350'
+    @params['peptide_precursor_mz_max']       = '1500'
+    @params['peptide_fragment_mz_min']        = '200'
+    @params['peptide_fragment_mz_max']        = '1800'
 
     # ---- Digestion ----
-    @params['08_diann_digestion_cut']              = ['K*,R*', 'K*', 'R*']
-    @params['08_diann_digestion_missed_cleavages'] = ['1', '0', '2', '3']
+    @params['digestion_cut']                  = ['K*,R*', 'K*', 'R*']
+    @params['digestion_missed_cleavages']     = ['1', '0', '2', '3']
 
     # ---- Mass accuracy ----
-    @params['09_diann_mass_acc_ms1']               = ['AUTO', '5', '10', '15', '20']
-    @params['09_diann_mass_acc_ms2']               = ['AUTO', '5', '10', '15', '20']
+    @params['mass_acc_ms1']                   = ['AUTO', '5', '10', '15', '20']
+    @params['mass_acc_ms2']                   = ['AUTO', '5', '10', '15', '20']
 
     # ---- Scoring + protein inference ----
-    @params['10_diann_scoring_qvalue']             = ['0.01', '0.001', '0.05']
-    @params['11a_diann_protein_pg_level']          = ['protein_names_1', 'genes_0', 'isoforms_2']
-    @params['11b_diann_protein_relaxed_prot_inf']  = ['false', 'true']
+    @params['scoring_qvalue']                 = ['0.01', '0.001', '0.05']
+    @params['protein_pg_level']               = ['protein_names_1', 'genes_0', 'isoforms_2']
+    @params['protein_relaxed_prot_inf']       = ['false', 'true']
 
     # ---- Quantification ----
-    @params['12a_diann_quantification_reanalyse']  = ['true', 'false']
-    @params['12b_diann_quantification_no_norm']    = ['false', 'true']
+    @params['quantification_reanalyse']       = ['true', 'false']
+    @params['quantification_no_norm']         = ['false', 'true']
 
     # ---- Freestyle escape hatch ----
-    @params['13_diann_freestyle']                  = 'None'  # raw DIA-NN flags appended verbatim
+    @params['freestyle']                      = 'None'  # raw DIA-NN flags appended verbatim
 
     # ---- Conversion + verbosity ----
-    @params['97_raw_converter']  = ['thermoraw', 'msconvert', 'msconvert-demultiplex']
-    @params['99_other_verbose']  = ['1', '0', '2', '3']
+    @params['raw_converter']                  = ['thermoraw', 'msconvert', 'msconvert-demultiplex']
+    @params['verbose']                        = ['1', '0', '2', '3']
 
     @modules = ['Dev/R']  # snakemake env activated via @conda_env below
     @inherit_columns = []
   end
 
   def next_dataset
+    # [File] basenames MUST match the dirs run-diann produces in the job cwd —
+    # SUSHI's g-req copies `File.basename(value)` from cwd to <gstore>/<dirname>.
+    # run-diann writes `qc_result/` and `out-DIANN_quantC/` directly, so no
+    # rename step is needed in the app.
     {
       'Name'                      => @params['name'],
       'Protein Abundances [Link]' => File.join(@result_dir, 'qc_result/proteinAbundances.html'),
       'Sample Sizes [Link]'       => File.join(@result_dir, 'qc_result/QC_sampleSizeEstimation.html'),
       'qc_result [File]'          => File.join(@result_dir, 'qc_result'),
-      'DIANN Quant [File]'        => File.join(@result_dir, 'DIANN_quantC')
+      'DIANN Quant [File]'        => File.join(@result_dir, 'out-DIANN_quantC')
     }.merge(extract_columns(colnames: @inherit_columns))
   end
 
   def commands
     # Python entry point: from ezpyz_diann.app import EzAppDiann
     # (run_PyApp resolves Ruby app name 'DIANN' to module ezpyz_diann + class EzAppDiann)
-    run_PyApp('DIANN', conda_env: 'gi_snakemake8.20.5')
+    run_PyApp('DIANN', pixi_enabled: true)  # Name must match [name] in 'ezpyz_[name]' format
   end
 end
 
