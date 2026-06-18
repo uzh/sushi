@@ -328,6 +328,9 @@ module NfCoreAppFactory
 
         # Process custom_params from YAML config (these override API params)
         custom_param_names = []
+        # Collect schema defaults (param => default value SUSHI stores) so the R app
+        # can skip params still at their default when building the Nextflow command.
+        schema_defaults = {}
         (app_config['custom_params'] || []).each do |param|
           param_name = param['name']
           custom_param_names << param_name
@@ -398,12 +401,17 @@ module NfCoreAppFactory
             @params[param_name] = default_val == true
             @params[param_name, 'description'] = description
           elsif param_info['type'] == 'integer'
-            @params[param_name] = (default_val || 0).to_i
+            # No schema default -> leave unset ('') so it is not passed to Nextflow.
+            # Forcing 0 can violate the schema minimum (e.g. umi_length minimum:1).
+            @params[param_name] = default_val.nil? ? '' : default_val.to_i
             @params[param_name, 'description'] = description
           else
             @params[param_name] = default_val.to_s
             @params[param_name, 'description'] = description
           end
+          # Record the value SUSHI submits when the param is left untouched
+          # (enum/select dropdown -> first option) so the R app can skip it.
+          schema_defaults[param_name] = @params[param_name].is_a?(Array) ? @params[param_name].first : @params[param_name]
 
           # Add to @required_params
           @required_params << param_name unless @required_params.include?(param_name)
@@ -440,13 +448,20 @@ module NfCoreAppFactory
             @params[param_name] = (default_val == true)
             @params[param_name, 'description'] = description
           elsif param_info['type'] == 'integer'
-            @params[param_name] = default_val.nil? ? 0 : default_val.to_i
+            # Unset when schema has no default (see required-params note above).
+            @params[param_name] = default_val.nil? ? '' : default_val.to_i
             @params[param_name, 'description'] = description
           else
             @params[param_name] = (default_val || '').to_s
             @params[param_name, 'description'] = description
           end
+          # Record the value SUSHI submits when the param is left untouched
+          # (enum/select dropdown -> first option) so the R app can skip it.
+          schema_defaults[param_name] = @params[param_name].is_a?(Array) ? @params[param_name].first : @params[param_name]
         end
+
+        # Expose schema defaults to the R app (skip params still at default)
+        @params['schemaDefaults'] = schema_defaults.to_json unless schema_defaults.empty?
 
         @modules = ["Dev/jdk", "Tools/Nextflow"]
       end

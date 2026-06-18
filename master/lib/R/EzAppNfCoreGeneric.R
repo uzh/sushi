@@ -125,16 +125,29 @@ EzAppNfCoreGeneric <- setRefClass(
         "nfcorePipeline", "pipelineVersion", "inputType", "samplesheetMapping",
         "strandedness", "nextflowModuleVersion", "sushi_app",
         "refBuild", "dataRoot", "resultDir", "isLastJob",
-        "name", "mail", "cmdOptions"
+        "name", "mail", "cmdOptions", "schemaDefaults"
       )
       # fasta and gtf are already resolved from refBuild above
       handledParams <- c("fasta", "gtf")
       skipParams <- c(sushiParams, handledParams)
 
+      # Pipeline schema defaults ({param: default}) so we can skip params still at
+      # their default: re-passing them is redundant and can break schema validation
+      # (e.g. a string default like cf_ploidy="2" is re-cast to integer on the CLI).
+      schemaDefaults <- tryCatch({
+        sd <- param[["schemaDefaults"]]
+        if (!is.null(sd) && length(sd) == 1 && !is.na(sd) && nzchar(sd)) {
+          jsonlite::fromJSON(sd, simplifyVector = TRUE)
+        } else list()
+      }, error = function(e) list())
+
       for (key in names(param)) {
         if (key %in% skipParams) next
         value <- param[[key]]
         if (is.null(value) || is.na(value) || value == "") next
+        # Skip params still at the pipeline schema default (case-insensitive).
+        if (!is.null(schemaDefaults[[key]]) &&
+            tolower(as.character(schemaDefaults[[key]])) == tolower(as.character(value))) next
         if (is.logical(value)) value <- tolower(as.character(value))
         cmd <- paste(cmd, paste0("--", key), shQuote(value))
       }
