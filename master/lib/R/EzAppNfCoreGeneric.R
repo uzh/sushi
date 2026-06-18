@@ -124,7 +124,8 @@ EzAppNfCoreGeneric <- setRefClass(
         "cores", "ram", "scratch", "partition", "process_mode", "samples",
         "nfcorePipeline", "pipelineVersion", "inputType", "samplesheetMapping",
         "strandedness", "nextflowModuleVersion", "sushi_app",
-        "refBuild", "dataRoot", "resultDir", "isLastJob"
+        "refBuild", "dataRoot", "resultDir", "isLastJob",
+        "name", "mail", "cmdOptions"
       )
       # fasta and gtf are already resolved from refBuild above
       handledParams <- c("fasta", "gtf")
@@ -135,7 +136,7 @@ EzAppNfCoreGeneric <- setRefClass(
         value <- param[[key]]
         if (is.null(value) || is.na(value) || value == "") next
         if (is.logical(value)) value <- tolower(as.character(value))
-        cmd <- paste(cmd, paste0("--", key), value)
+        cmd <- paste(cmd, paste0("--", key), shQuote(value))
       }
 
       message("Running command: ", cmd)
@@ -151,44 +152,116 @@ EzAppNfCoreGeneric <- setRefClass(
         # Sample mode: input is list
         ds <- as.data.frame(input, stringsAsFactors=FALSE)
       }
-      
+
       dataRoot <- param[["dataRoot"]]
-      
+
       # Helper to resolve file paths
       resolve_path <- function(path) {
         if (is.na(path) || path == "") return(NA)
         if (startsWith(path, "/")) return(path)
         return(file.path(dataRoot, path))
       }
-      
-      # Map SUSHI columns to nf-core samplesheet columns
-      # nf-core/demo expects: sample, fastq_1, fastq_2
-      
-      # Find Read1 column (may have suffix like [File])
-      read1Col <- grep("^Read1", names(ds), value = TRUE)[1]
-      read2Col <- grep("^Read2", names(ds), value = TRUE)[1]
-      
-      samples <- data.frame(
-        sample = ds$Name,
-        fastq_1 = sapply(ds[[read1Col]], resolve_path),
-        stringsAsFactors = FALSE
-      )
-      
-      if (!is.null(read2Col) && !is.na(read2Col)) {
-        read2Values <- ds[[read2Col]]
-        if (!all(is.na(read2Values)) && !all(read2Values == "")) {
-          samples$fastq_2 <- sapply(read2Values, resolve_path)
-        }
+
+      # Resolve a mapped SUSHI source column name to an actual dataset column:
+      # exact match first, then a "^prefix" fallback (e.g. "Read1" -> "Read1 [File]").
+      matchSourceCol <- function(src) {
+        if (src %in% names(ds)) return(src)
+        pat <- paste0("^", gsub("([][(){}.^$*+?|\\\\])", "\\\\\\1", src))
+        hit <- grep(pat, names(ds), value = TRUE)
+        if (length(hit) >= 1) return(hit[1])
+        return(NA_character_)
       }
-      
-      # Inject strandedness from parameter if set (nf-core/rnaseq requires this column)
+      # A source column carries a file path (needs resolve_path) iff its name has [File].
+      isFileCol <- function(colName) grepl("\\[File\\]", colName)
+
+      # samplesheetMapping arrives as a JSON string {nf_core_col: SUSHI_col}.
+      # Parse it; on nil/empty/malformed JSON fall back to the built-in mapping.
+      mapping <- NULL
+      mj <- param[["samplesheetMapping"]]
+      if (!is.null(mj) && length(mj) == 1 && !is.na(mj) && nzchar(mj)) {
+        mapping <- tryCatch(
+          jsonlite::fromJSON(mj, simplifyVector = TRUE),
+          error = function(e) {
+            message("WARNING: could not parse samplesheetMapping as JSON (",
+                    conditionMessage(e), "); using built-in default mapping.")
+            NULL
+          }
+        )
+      }
+
       strandedness <- param[["strandedness"]]
-      if (!is.null(strandedness) && strandedness != "") {
-        samples$strandedness <- rep(strandedness, nrow(samples))
+
+      if (is.null(mapping) || length(mapping) == 0) {
+        # Built-in default mapping (nf-core/demo, rnaseq): sample, fastq_1, fastq_2
+        message("samplesheetMapping not usable; using built-in sample/fastq_1/fastq_2 mapping.")
+        read1Col <- grep("^Read1", names(ds), value = TRUE)[1]
+        read2Col <- grep("^Read2", names(ds), value = TRUE)[1]
+
+        samples <- data.frame(
+          sample = ds$Name,
+          fastq_1 = sapply(ds[[read1Col]], resolve_path),
+          stringsAsFactors = FALSE
+        )
+
+        if (!is.null(read2Col) && !is.na(read2Col)) {
+          read2Values <- ds[[read2Col]]
+          if (!all(is.na(read2Values)) && !all(read2Values == "")) {
+            samples$fastq_2 <- sapply(read2Values, resolve_path)
+          }
+        }
+
+        # Inject strandedness from parameter if set (nf-core/rnaseq requires this column)
+        if (!is.null(strandedness) && strandedness != "") {
+          samples$strandedness <- rep(strandedness, nrow(samples))
+          message("Added strandedness column: ", strandedness)
+        }
+
+        write.csv(samples, file=filePath, row.names=FALSE, quote=FALSE)
+        return(invisible(filePath))
+      }
+
+      # Mapping-driven path: build each nf-core column (in mapping key order) from
+      # its mapped SUSHI source column. File columns are path-resolved; plain
+      # columns (patient/sex/status/...) are copied verbatim.
+      samples <- data.frame(row.names = seq_len(nrow(ds)))
+      for (nfCol in names(mapping)) {
+        src <- mapping[[nfCol]]
+        actual <- matchSourceCol(src)
+
+        if (is.na(actual)) {
+          # strandedness is a form param, not always a dataset column: fall back to it.
+          if (nfCol == "strandedness" && !is.null(strandedness) && nzchar(strandedness)) {
+            samples[[nfCol]] <- rep(strandedness, nrow(ds))
+            message("Populated 'strandedness' from form param: ", strandedness)
+            next
+          }
+          # Optional nf-core columns (e.g. sarek sex/status/lane) are often absent
+          # from the dataset: skip with a loud message rather than failing the job.
+          message("Skipping nf-core column '", nfCol, "' (source '", src,
+                  "' not in dataset).")
+          next
+        }
+
+        vals <- ds[[actual]]
+        if (isFileCol(actual)) vals <- sapply(vals, resolve_path)
+        if (all(is.na(vals) | vals == "")) {
+          message("Skipping empty column '", nfCol, "' (source '", actual, "' all empty).")
+          next
+        }
+        samples[[nfCol]] <- vals
+      }
+
+      # Inject strandedness from the form param only if the mapping neither produced
+      # nor referenced it (avoid double-adding).
+      if (!("strandedness" %in% names(samples)) &&
+          !("strandedness" %in% names(mapping)) &&
+          !is.null(strandedness) && nzchar(strandedness)) {
+        samples$strandedness <- rep(strandedness, nrow(ds))
         message("Added strandedness column: ", strandedness)
       }
-      
+
       write.csv(samples, file=filePath, row.names=FALSE, quote=FALSE)
+      invisible(filePath)
     }
   )
 )
