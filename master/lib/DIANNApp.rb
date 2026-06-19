@@ -26,10 +26,10 @@ genomics compute node.
     # legacy 'RAW' column as a fallback for CLI submissions or non-B-Fabric
     # datasets, but the SUSHI UI gates on the standard column.
     @required_columns = ['Name', 'Thermo RAW']
-    @required_params = ['name', 'paramsTemplate']
+    @required_params = ['name', 'diann_version']
 
     # ---- Compute + identity ----
-    @params['cores']   = '64'   ; @params['cores',   'context']  = 'slurm'
+    @params['cores']   = '8'   ; @params['cores',   'context']  = 'slurm'
     @params['ram']     = '32'   ; @params['ram',     'context']  = 'slurm'
     @params['scratch'] = '20'   ; @params['scratch', 'context']  = 'slurm'
     @params['node']    = ['fgcz-c-050']
