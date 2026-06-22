@@ -66,6 +66,8 @@ genomics compute node.
     # ---- DIA / DDA mode ----
     @params['is_dda']                         = ['false', 'true']
     @params['scan_window']                    = ['AUTO', '7', '11', '15']
+    # "Unrelated runs" = --individual-mass-acc --individual-windows (per-run calibration)
+    @params['unrelated_runs']                 = ['false', 'true']
 
     # ---- Modifications ----
     @params['mods_variable']                  = '--var-mods 1 --var-mod UniMod:35,15.994915,M'
@@ -99,6 +101,9 @@ genomics compute node.
     # ---- Quantification ----
     @params['quantification_reanalyse']       = ['true', 'false']
     @params['quantification_no_norm']         = ['false', 'true']
+    # Export fragment-level per-run quantities (--export-quant); off by default
+    # as it substantially enlarges the report.
+    @params['quantification_export_quant']    = ['false', 'true']
 
     # ---- Freestyle escape hatch ----
     @params['freestyle']                      = 'None'  # raw DIA-NN flags appended verbatim
