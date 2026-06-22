@@ -97,7 +97,6 @@ genomics compute node.
     # ---- Scoring + protein inference ----
     @params['scoring_qvalue']                 = ['0.01', '0.001', '0.05']
     @params['protein_pg_level']               = ['protein_names_1', 'genes_0', 'isoforms_2']
-    @params['protein_relaxed_prot_inf']       = ['false', 'true']
 
     # ---- Quantification ----
     @params['quantification_reanalyse']       = ['true', 'false']
