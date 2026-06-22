@@ -90,8 +90,9 @@ genomics compute node.
     @params['digestion_missed_cleavages']     = ['1', '0', '2', '3']
 
     # ---- Mass accuracy ----
-    @params['mass_acc_ms1']                   = ['AUTO', '5', '10', '15', '20']
-    @params['mass_acc_ms2']                   = ['AUTO', '5', '10', '15', '20']
+    # See TODO_mass_accuracy: AUTO default; 4/7 added for high-res Orbitrap/Astral.
+    @params['mass_acc_ms1']                   = ['AUTO', '4', '5', '7', '10', '15', '20']
+    @params['mass_acc_ms2']                   = ['AUTO', '4', '5', '7', '10', '15', '20']
 
     # ---- Scoring + protein inference ----
     @params['scoring_qvalue']                 = ['0.01', '0.001', '0.05']
