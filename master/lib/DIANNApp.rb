@@ -112,7 +112,7 @@ genomics compute node.
     @params['raw_converter']                  = ['thermoraw', 'msconvert', 'msconvert-demultiplex']
     @params['verbose']                        = ['1', '0', '2', '3']
 
-    @modules = ['Dev/R']  # snakemake env activated via @conda_env below
+    @modules = ['Dev/R', 'Dev/pixi']  # snakemake env activated via @conda_env below; pixi runs the DIANN app
     @inherit_columns = []
   end
 
@@ -133,7 +133,7 @@ genomics compute node.
   def commands
     # Python entry point: from ezpyz_diann.app import EzAppDiann
     # (run_PyApp resolves Ruby app name 'DIANN' to module ezpyz_diann + class EzAppDiann)
-    run_PyApp('DIANN', conda_env: 'gi_snakemake8.20.5')
+    run_PyApp('DIANN', pixi_enabled: true)  # Name must match [name] in 'ezpyz_[name]' format
   end
 end
 
