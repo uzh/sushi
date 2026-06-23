@@ -356,7 +356,7 @@ module GlobalVariables
   def run_PyApp(app_name = self.class.to_s.downcase, conda_env: nil, pixi_enabled: false)
     command = ''
     if pixi_enabled
-      command << "pixi run --manifest-path #{SushiFabric::Application.config.ezpyz_dir}/ezpyz_#{app_name} python3 << EOT\n"
+      command << "pixi run --as-is --manifest-path #{SushiFabric::Application.config.ezpyz_dir}/ezpyz_#{app_name} python3 << EOT\n"
     else
       command << ". '/usr/local/ngseq/miniforge3/etc/profile.d/conda.sh'\n"
       command << "set +e; conda activate #{conda_env}; set -e\n"

@@ -90,5 +90,24 @@ describe SushiApp do
       sushi_app.instance_variable_set(:@dataset, dataset)
     end
     it {is_expected.to be_nil}
-  end 
+  end
+  describe "#set_user_parameters back-fill of omitted params" do
+    # A false-default boolean omitted from the parameterset (declared like CellRangerApp's
+    # runVeloCyto) must keep its `false` default. The back-fill guard used to be a falsy
+    # test, so `false` was treated as "unset" and overwritten with default_value (nil,
+    # since falsy defaults are not recorded) -> empty in parameters.tsv -> NA in R ->
+    # `if(param$runVeloCyto)` crash. (Only `false` is affected; '' and 0 are truthy in Ruby.)
+    subject(:app) {SushiApp.new}
+    before do
+      app.params["runVeloCyto"] = false       # false-default boolean
+      app.params["cores"]       = ["1", "2"]
+      app.instance_variable_set(:@parameterset_tsv_file, true)
+      # parameterset specifies only cores, omitting runVeloCyto:
+      allow(CSV).to receive(:readlines).and_return([["cores", "2"]])
+      app.set_user_parameters
+    end
+    it "keeps a false-default boolean as false (not nil)" do
+      expect(app.params["runVeloCyto"]).to eq false
+    end
+  end
 end
