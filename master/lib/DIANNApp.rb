@@ -109,7 +109,7 @@ genomics compute node.
     @params['freestyle']                      = 'None'  # raw DIA-NN flags appended verbatim
 
     # ---- Conversion + verbosity ----
-    @params['raw_converter']                  = ['thermoraw', 'msconvert', 'msconvert-demultiplex']
+    @params['raw_converter']                  = ['native','thermoraw', 'msconvert', 'msconvert-demultiplex']
     @params['verbose']                        = ['1', '0', '2', '3']
 
     @modules = ['Dev/R', 'Dev/pixi']  # snakemake env activated via @conda_env below; pixi runs the DIANN app
