@@ -26,7 +26,7 @@ genomics compute node.
     # legacy 'RAW' column as a fallback for CLI submissions or non-B-Fabric
     # datasets, but the SUSHI UI gates on the standard column.
     @required_columns = ['Name', 'Thermo RAW']
-    @required_params = ['name', 'paramsTemplate']
+    @required_params = ['name', 'diann_version']
 
     # ---- Compute + identity ----
     @params['cores']   = '8'   ; @params['cores',   'context']  = 'slurm'
@@ -37,11 +37,17 @@ genomics compute node.
     @params['name']    = 'DIANN_v23'
     @params['mail']    = ''
 
-    # ---- Template chooser ----
-    # paramsTemplate sets the BASE for the params block; per-key fields below
-    # override it, and customParamsYml replaces everything.
-    @params['paramsTemplate']  = ['default-DIA', 'default-DDA']
-    @params['customParamsYml'] = ''       # path; full override when set
+    # The GUI defaults below ARE the known-good DIA preset (provenance: FGCZ
+    # workunit WU340602 / p40993, a DIA-NN 2.3.2 DIA run on Orbitrap Exploris
+    # data). run-diann maps every readable key directly onto its internal params
+    # (SUSHI_TO_DRUNNER) — there is no B-Fabric-keyed template indirection, so the
+    # values here are the single source. For DDA, set is_dda + the mass-acc /
+    # charge fields accordingly.
+
+    # ---- DIA-NN version ----
+    # Selects the DIA-NN container image: run-diann maps this value to
+    # diann_images[<version>]. First entry is the GUI default.
+    @params['diann_version'] = ['2.5.1', '2.5.0', '2.3.2']
 
     # ---- FASTA databases ----
     # order_fasta: checkbox for now — when checked, use the order-specific FASTA.
@@ -60,6 +66,8 @@ genomics compute node.
     # ---- DIA / DDA mode ----
     @params['is_dda']                         = ['false', 'true']
     @params['scan_window']                    = ['AUTO', '7', '11', '15']
+    # "Unrelated runs" = --individual-mass-acc --individual-windows (per-run calibration)
+    @params['unrelated_runs']                 = ['false', 'true']
 
     # ---- Modifications ----
     @params['mods_variable']                  = '--var-mods 1 --var-mod UniMod:35,15.994915,M'
@@ -82,26 +90,29 @@ genomics compute node.
     @params['digestion_missed_cleavages']     = ['1', '0', '2', '3']
 
     # ---- Mass accuracy ----
-    @params['mass_acc_ms1']                   = ['AUTO', '5', '10', '15', '20']
-    @params['mass_acc_ms2']                   = ['AUTO', '5', '10', '15', '20']
+    # See TODO_mass_accuracy: AUTO default; 4/7 added for high-res Orbitrap/Astral.
+    @params['mass_acc_ms1']                   = ['AUTO', '4', '5', '7', '10', '15', '20']
+    @params['mass_acc_ms2']                   = ['AUTO', '4', '5', '7', '10', '15', '20']
 
     # ---- Scoring + protein inference ----
     @params['scoring_qvalue']                 = ['0.01', '0.001', '0.05']
     @params['protein_pg_level']               = ['protein_names_1', 'genes_0', 'isoforms_2']
-    @params['protein_relaxed_prot_inf']       = ['false', 'true']
 
     # ---- Quantification ----
     @params['quantification_reanalyse']       = ['true', 'false']
     @params['quantification_no_norm']         = ['false', 'true']
+    # Export fragment-level per-run quantities (--export-quant); off by default
+    # as it substantially enlarges the report.
+    @params['quantification_export_quant']    = ['false', 'true']
 
     # ---- Freestyle escape hatch ----
     @params['freestyle']                      = 'None'  # raw DIA-NN flags appended verbatim
 
     # ---- Conversion + verbosity ----
-    @params['raw_converter']                  = ['thermoraw', 'msconvert', 'msconvert-demultiplex']
+    @params['raw_converter']                  = ['native','thermoraw', 'msconvert', 'msconvert-demultiplex']
     @params['verbose']                        = ['1', '0', '2', '3']
 
-    @modules = ['Dev/R']  # snakemake env activated via @conda_env below
+    @modules = ['Dev/R', 'Dev/pixi']  # snakemake env activated via @conda_env below; pixi runs the DIANN app
     @inherit_columns = []
   end
 
