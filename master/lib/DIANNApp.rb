@@ -29,7 +29,7 @@ genomics compute node.
     @required_params = ['name', 'diann_version']
 
     # ---- Compute + identity ----
-    @params['cores']   = '8'   ; @params['cores',   'context']  = 'slurm'
+    @params['cores']   = ['8','2']   ; @params['cores',   'context']  = 'slurm'
     @params['ram']     = '32'   ; @params['ram',     'context']  = 'slurm'
     @params['scratch'] = '20'   ; @params['scratch', 'context']  = 'slurm'
     @params['node']    = ['fgcz-c-050']
