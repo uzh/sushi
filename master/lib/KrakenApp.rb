@@ -28,8 +28,12 @@ EOS
     @params['paired', "context"] = "Kraken"
     
     @params['krakenDBOpt'] = kraken_db_choices
-    @params['krakenDBOpt', 'description'] = 'kraken database options (auto-detected from /srv/GT/databases/kraken2/; see https://benlangmead.github.io/aws-indexes/k2)'
+    @params['krakenDBOpt', 'description'] = 'kraken database options with size on disk (please request at least a slightly larger amount of RAM in parameters above). Auto-detected from /srv/GT/databases/kraken2/ (see also https://benlangmead.github.io/aws-indexes/k2). With multiDB checked, Ctrl/Cmd-click to select multiple — k2 v2.17+ will classify against all in one pass (--db DB1,DB2,...). WARNING: multi-DB mode is NCBI ONLY — every selected DB must share the NCBI taxonomy tree (custom DBs like GTDB, SILVA, UHGG cannot be mixed); --report-minimizer-data is auto-disabled in multi-DB mode (kraken2 refuses it).'
     @params['krakenDBOpt', "context"] = "Kraken"
+    @params['krakenDBOpt', 'multi_selection'] = true
+    @params['multiDB'] = false
+    @params['multiDB', 'description'] = 'enable multi-database classification (k2 v2.17, --db DB1,DB2,...). MULTI-DB IS NCBI ONLY — all selected DBs must share the NCBI taxonomy. If unchecked, only the first selected DB is used.'
+    @params['multiDB', "context"] = "Kraken"
     @params['krakenConfidenceOpt'] = '0.0'
     @params['krakenConfidenceOpt', 'description'] = 'Confidence score threshold, between 0 and 1'
     @params['krakenConfidenceOpt', "context"] = "Kraken"
@@ -42,6 +46,9 @@ EOS
     @params['report_minimizer_data'] = ['no', 'yes']
     @params['report_minimizer_data', 'description'] = 'add per-clade distinct-minimizer columns to the report (enables advanced filtering in exploreMetaTax)'
     @params['report_minimizer_data', "context"] = "Kraken"
+    @params['save_unclassified'] = ['no', 'yes']
+    @params['save_unclassified', 'description'] = 'save reads that did not classify to fastq.gz. Paired-end → &lt;sample&gt;_unclassified_{1,2}.fastq.gz (kraken2 splits on the required # placeholder); single-end → &lt;sample&gt;_unclassified.fastq.gz. Skipped by default to save disk.'
+    @params['save_unclassified', "context"] = "Kraken"
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for kraken; do not specify any option that is already covered by the dedicated input fields'
     @params['cmdOptions', "context"] = "Kraken"
@@ -98,7 +105,7 @@ EOS
     @params['cmdOptionsFastp'] = ''
     @params['cmdOptionsFastp', "context"] = "OpenGene/fastp"
     @params['mail'] = ""
-    @modules = ["QC/fastp", "Dev/R", "Tools/kraken", "Tools/Krona"]
+    @modules = ["QC/fastp", "Dev/R", "Tools/kraken/2.17.1", "Tools/Krona"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
@@ -107,9 +114,11 @@ EOS
     end
   end
   def next_dataset
+    # Note: per-read .txt.gz and <name>_unclassified.fasta.gz are written to
+    # the result dir but intentionally not surfaced here — only the aggregate
+    # report and Krona are advertised downstream.
     {'Name'=>@dataset['Name'],
      'KronaReport [Link]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
-     'KrakenOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}.txt"),
      'KrakenReport [File]'=>File.join(@result_dir, "#{@dataset['Name']}.report.txt"),
      'KronaOutDir [File]'=>File.join(@result_dir, "#{@dataset['Name']}.html.files"),
      'KronaOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
@@ -121,12 +130,11 @@ EOS
   end
 
   # Scan /srv/GT/databases/kraken2/ for valid Kraken2 DB folders. A folder is
-  # considered a valid DB if it contains 'hash.k2d' (the canonical Kraken2
-  # index file). Result is sorted alphabetically with 'Standard' promoted to
-  # first position so it stays the default in the SUSHI dropdown when present.
-  # Returns [] if the root doesn't exist or contains no valid DBs — the
-  # dropdown will be empty and no run can be submitted, which is the correct
-  # surface for a misconfigured deployment.
+  # a valid DB if it contains 'hash.k2d'. Returns an Array of [label, value]
+  # pairs so the SUSHI multi-select widget (which only renders for Arrays,
+  # not Hashes) shows on-disk size while submitting just the folder name.
+  # Standard is promoted first when present; the rest are alphabetical.
+  # Returns [] if the root doesn't exist or contains no valid DBs.
   def kraken_db_choices
     root = '/srv/GT/databases/kraken2'
     return [] unless Dir.exist?(root)
@@ -137,7 +145,14 @@ EOS
              .sort
 
     preferred = 'Standard'
-    dbs.include?(preferred) ? [preferred] + (dbs - [preferred]) : dbs
+    dbs = [preferred] + (dbs - [preferred]) if dbs.include?(preferred)
+
+    dbs.map do |name|
+      bytes = `du -sb #{File.join(root, name)} 2>/dev/null`.to_i
+      gb = (bytes.to_f / (1024**3))
+      label = bytes > 0 ? "#{name} (#{format('%.1f', gb)} GB)" : name
+      [label, name]
+    end
   end
 end
 

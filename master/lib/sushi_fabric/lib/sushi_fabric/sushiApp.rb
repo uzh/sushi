@@ -371,7 +371,7 @@ class SushiApp
                           end
       end
       (@params.keys - headers).each do |key|
-        unless @params[key]
+        if @params[key].nil?
           @params[key] = @params.default_value(key)
         end
       end
