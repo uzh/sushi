@@ -14,8 +14,9 @@ class DIANNApp <  SushiFabric::SushiApp
     @description =<<-EOS
 DIA / DDA proteomics quantification with DIA-NN 2.3 + prolfqua QC.<br/>
 Pipeline: <a href="https://github.com/wolski/diann-runner">diann-runner</a>
-3-step snakemake (lib search -> quant refinement -> final quant) with
-ThermoRawFileParser conversion and prolfquapp QC. Outputs a Result_WU&lt;id&gt;.zip
+two-step snakemake by default (lib search -> quant refinement), with optional
+Step C final quantification, ThermoRawFileParser conversion, and prolfquapp QC.
+Outputs a Result_WU&lt;id&gt;.zip
 plus interactive proteinAbundances.html / QC_sampleSizeEstimation.html.<br/>
 Container runtime is apptainer (rootless), so the job runs as trxcopy on a
 genomics compute node.
@@ -62,6 +63,7 @@ genomics compute node.
 
     # ---- Workflow ----
     @params['workflow_mode'] = ['two_step', 'one_step']
+    @params['enable_step_c'] = ['false', 'true']
 
     # ---- DIA / DDA mode ----
     @params['is_dda']                         = ['false', 'true']
@@ -113,20 +115,21 @@ genomics compute node.
     @params['verbose']                        = ['1', '0', '2', '3']
 
     @modules = ['Dev/R', 'Dev/pixi']  # snakemake env activated via @conda_env below; pixi runs the DIANN app
-    @inherit_columns = []
+    @inherit_columns = ['Order Id', 'Thermo RAW']
   end
 
   def next_dataset
     # [File] basenames MUST match the dirs run-diann produces in the job cwd —
     # SUSHI's g-req copies `File.basename(value)` from cwd to <gstore>/<dirname>.
-    # run-diann writes `qc_result/` and `out-DIANN_quantC/` directly, so no
+    # run-diann writes `qc_result/` and `out-DIANN_quantB/quantC` directly, so no
     # rename step is needed in the app.
+    quant_dir = @params['enable_step_c'].to_s == 'true' ? 'out-DIANN_quantC' : 'out-DIANN_quantB'
     {
       'Name'                      => @params['name'],
       'Protein Abundances [Link]' => File.join(@result_dir, 'qc_result/proteinAbundances.html'),
       'Sample Sizes [Link]'       => File.join(@result_dir, 'qc_result/QC_sampleSizeEstimation.html'),
       'qc_result [File]'          => File.join(@result_dir, 'qc_result'),
-      'DIANN Quant [File]'        => File.join(@result_dir, 'out-DIANN_quantC')
+      'DIANN Quant [File]'        => File.join(@result_dir, quant_dir)
     }.merge(extract_columns(colnames: @inherit_columns))
   end
 
