@@ -143,7 +143,7 @@ Single cell report<br/>
     @params['rctdUMImin', 'description'] = 'Minimum UMI count for RCTD annotation. Cells below this threshold will not be classified.'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @params['Rversion'] = ["Dev/R/4.5.0"]
+    @params['Rversion'] = ["Dev/R/4.6.0", "Dev/R/4.5.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def preprocess
