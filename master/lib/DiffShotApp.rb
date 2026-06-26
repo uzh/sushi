@@ -87,15 +87,19 @@ EOS
   end
 
   def preprocess
-    @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"
-    @params['comparison'] = @comparison
-    @params['name']       = @comparison
+    @random_string = (1..12).map{[*('a'..'z')].sample}.join
   end
 
   def next_dataset
-    report_file = File.join(@result_dir, @params['comparison'])
+    # Build the comparison string here (not in preprocess) so it survives the
+    # registration-time dry call where @params['sampleGroup'] / refGroup are nil.
+    # String interpolation makes the result safe ("--over--" when both are nil).
+    @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"
+    @params['comparison'] = @comparison
+    @params['name']       = @comparison
+    report_file = File.join(@result_dir, "#{@params['comparison']}")
     report_link = File.join(report_file, '00index.html')
-    {'Name'                  => @params['comparison'],
+    {'Name'                  => @comparison,
      'Static Report [Link]'  => report_link,
      'Report [File]'         => report_file,
     }.merge(extract_columns(colnames: @inherit_columns))
