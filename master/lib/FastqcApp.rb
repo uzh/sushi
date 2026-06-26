@@ -37,7 +37,7 @@ EOS
     @params['cmdOptions', "context"] = "Fastqc"
     @params['mail'] = ""
     @params['ai_provider'] = ''
-    @params['ai_provider', 'hr-header'] = "<b>AI parameters</b> (optional &mdash; fill all 4 text boxes below to trigger MultiQC's --ai-summary-full mode)"
+    @params['ai_provider', 'hr-header'] = "AI parameters (optional — fill all 4 text boxes below to trigger MultiQC's --ai-summary-full mode)"
     @params['ai_provider', 'description'] = "AI mode (1/4): provider name. Example: 'custom' for self-hosted LLMs, 'openai', or 'anthropic'. ALL FOUR AI fields must be filled to trigger MultiQC's --ai-summary-full mode."
     @params['ai_provider', "context"] = "Fastqc AI"
     @params['ai_model'] = ''
