@@ -36,6 +36,7 @@ EOS
     @params['cmdOptions'] = ""
     @params['cmdOptions', "context"] = "Fastqc"
     @params['mail'] = ""
+    @params['mail', "context"] = "Notifications"
     @params['ai_provider'] = ''
     @params['ai_provider', 'description'] = "AI mode (1/4): provider name. Example: 'custom' for FGCZ-hosted LLMs, 'openai', or 'anthropic'. ALL FOUR AI fields must be filled to trigger MultiQC's --ai-summary-full mode."
     @params['ai_provider', "context"] = "Fastqc AI"
