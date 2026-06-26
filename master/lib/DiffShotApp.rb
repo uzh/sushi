@@ -122,8 +122,16 @@ EOS
   def commands
     # R itself ships with the qiime2 conda env, so we activate that env BEFORE
     # invoking R. kraken-biom / biom-format / h5py are picked up the same way.
-    command  = "source /misc/ngseq12/miniforge3/etc/profile.d/conda.sh\n"
+    #
+    # The SUSHI wrapper runs the script under `set -eux`. `conda activate`
+    # sources deactivate-hooks from any previously-active env that call
+    # `unalias` on aliases that do not exist in a non-interactive bash;
+    # those return non-zero and kill the job before R ever runs. Drop the
+    # errexit just around activation, then re-enable it for the R block.
+    command  = "set +e\n"
+    command << "source /misc/ngseq12/miniforge3/etc/profile.d/conda.sh\n"
     command << "conda activate gi_qiime2-amplicon-2026.4\n"
+    command << "set -e\n"
     command << run_RApp("EzAppDiffShot")
   end
 end
