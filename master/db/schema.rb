@@ -10,8 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_09_26_000000) do
-  create_table "data_sets", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+ActiveRecord::Schema[7.0].define(version: 2026_06_25_150100) do
+  create_table "api_tokens", force: :cascade do |t|
+    t.string "token_hash", null: false
+    t.string "name"
+    t.text "scope"
+    t.datetime "expires_at"
+    t.datetime "revoked_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token_hash"], name: "index_api_tokens_on_token_hash", unique: true
+  end
+
+  create_table "data_sets", force: :cascade do |t|
     t.integer "project_id"
     t.integer "parent_id"
     t.string "name"
@@ -32,12 +43,15 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_26_000000) do
     t.text "order_ids"
     t.text "job_parameters"
     t.integer "order_id"
+    t.text "nfcore_apps"
+    t.string "registration_key"
     t.index ["order_id"], name: "index_data_sets_on_order_id"
     t.index ["parent_id"], name: "index_data_sets_on_parent_id"
     t.index ["project_id"], name: "index_data_sets_on_project_id"
+    t.index ["registration_key"], name: "index_data_sets_on_registration_key", unique: true
   end
 
-  create_table "jobs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "jobs", force: :cascade do |t|
     t.integer "submit_job_id"
     t.integer "input_dataset_id"
     t.integer "next_dataset_id"
@@ -57,7 +71,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_26_000000) do
     t.index ["status"], name: "index_jobs_on_status"
   end
 
-  create_table "notification_settings", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "notification_settings", force: :cascade do |t|
     t.integer "user_id", null: false
     t.boolean "notification_enabled"
     t.datetime "last_notification_date"
@@ -68,7 +82,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_26_000000) do
     t.index ["user_id"], name: "index_notification_settings_on_user_id"
   end
 
-  create_table "notifications", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "notifications", force: :cascade do |t|
     t.integer "user_id", null: false
     t.text "message"
     t.string "notification_type"
@@ -78,15 +92,15 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_26_000000) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
-  create_table "projects", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "projects", force: :cascade do |t|
     t.integer "number"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.text "data_set_tree", size: :medium
+    t.text "data_set_tree", limit: 16777215
     t.index ["number"], name: "index_projects_on_number"
   end
 
-  create_table "samples", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "samples", force: :cascade do |t|
     t.text "key_value"
     t.integer "data_set_id"
     t.datetime "created_at", precision: nil, null: false
@@ -94,7 +108,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_26_000000) do
     t.index ["data_set_id"], name: "index_samples_on_data_set_id"
   end
 
-  create_table "sushi_applications", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "sushi_applications", force: :cascade do |t|
     t.string "class_name"
     t.string "analysis_category"
     t.text "required_columns"
@@ -105,7 +119,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_26_000000) do
     t.boolean "employee"
   end
 
-  create_table "users", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.integer "sign_in_count", default: 0
     t.datetime "current_sign_in_at", precision: nil
     t.datetime "last_sign_in_at", precision: nil
