@@ -70,10 +70,13 @@ module V1
 
     # --- filters ---------------------------------------------------------
 
-    # INV-2T: confidential transport. Soft-enforced only in production so dev
-    # e2e over http still works; rejects cleartext when behind a proxy.
+    # INV-2T: confidential transport. Opt-in: enforced only when
+    # SUSHI_API_ENFORCE_TLS=1 (set this where a TLS-terminating proxy fronts the
+    # API). Off by default because the intended deployment reaches this surface
+    # over an internal cleartext port (e.g. registrar -> http://fgcz-h-082:4071),
+    # which a blanket production-https rule would wrongly reject.
     def enforce_tls
-      return unless Rails.env.production?
+      return unless ENV["SUSHI_API_ENFORCE_TLS"] == "1"
       return if request.ssl? || request.headers["X-Forwarded-Proto"].to_s.downcase == "https"
       render json: { error: "TLS required" }, status: :forbidden
     end
