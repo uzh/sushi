@@ -5,18 +5,18 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class DiffShotApp < SushiFabric::SushiApp
+class DiffShotANCOMBCApp < SushiFabric::SushiApp
   def initialize
     super
-    @name = 'DiffShot'
+    @name = 'DiffShotANCOMBC'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Metagenomics'
     @description =<<-EOS
-Differential abundance analysis on Bracken/Kraken2 shotgun metagenomics profiles.
-Runs ALDEx2 (GLM), ANCOM-BC2, DESeq2, edgeR, MaAsLin3 and (optionally) LEfSe on
-the same filtered BIOM table — every method except LEfSe can be covariate-adjusted.
-Output is a single self-contained HTML report with volcano plots, overlap Venn,
-and an interactive "Organisms of interest" search.
+Differential abundance analysis on Bracken/Kraken2 shotgun metagenomics
+profiles using **ANCOM-BC2** (bias-corrected log-ratios with structural-zero
+handling). Covariates extend the fixed-effects formula. Output is a single
+self-contained HTML report with LFC barplots, volcano plots and result tables
+at Species and Genus rank.
 EOS
 
     @required_columns = ['Name', 'BrackenReport']
@@ -30,21 +30,22 @@ EOS
     @params['scratch'] = ['50', '20', '100']
     @params['scratch', "context"] = "slurm"
 
-    # ---- grouping (auto-populated from [Factor] columns by SUSHI) ----------
+    # ---- DA method (hardcoded, single-option dropdown) ---------------------
+    @params['daMethod'] = ['ANCOMBC']
+    @params['daMethod', 'description'] = 'DA method run by this app. Hardcoded; use the DiffShotALDEx / DiffShotMaAsLin3 / DiffShotLEfSe apps for the other methods.'
+
+    # ---- grouping ----------------------------------------------------------
     @params['grouping'] = ''
     @params['grouping', 'description'] = 'Metadata [Factor] column to test on (the categorical variable of interest). Dropdown auto-populated from the input dataset.'
     @params['sampleGroup'] = ''
-    @params['sampleGroup', 'description'] = 'Value of `grouping` treated as the contrast group. Must differ from refGroup. Dropdown auto-populated from values in the chosen grouping column.'
+    @params['sampleGroup', 'description'] = 'Value of `grouping` treated as the contrast group. Must differ from refGroup.'
     @params['refGroup'] = ''
-    @params['refGroup', 'description'] = 'Value of `grouping` used as the reference level. Coefficient signs in every method read sampleGroup-vs-refGroup. Dropdown auto-populated from values in the chosen grouping column.'
+    @params['refGroup', 'description'] = 'Value of `grouping` used as the reference level. Coefficient signs read sampleGroup-vs-refGroup.'
 
-    # ---- covariates (multi-select dropdown of remaining Factor cols) -------
-    # Options are auto-populated from the input dataset in
-    # set_default_parameters. The grouping column is filtered out at runtime
-    # in R if the user accidentally selects it as a covariate too.
+    # ---- covariates --------------------------------------------------------
     @params['daCovariates'] = ''
     @params['daCovariates', 'multi_selection'] = true
-    @params['daCovariates', 'description'] = 'Multi-select dropdown auto-populated with every [Factor] column in the input dataset. Pick any subset to include as covariates in ALDEx2 (GLM), ANCOM-BC2, DESeq2, edgeR and MaAsLin3. LEfSe ignores covariates by design. If you tick the same column you chose as grouping, it is silently dropped from the covariate list. Leave empty for the unadjusted model.'
+    @params['daCovariates', 'description'] = 'Multi-select dropdown auto-populated with every [Factor] column in the input dataset. Pick any subset to extend ANCOM-BC2 fix_formula. Leave empty for the unadjusted model.'
 
     # ---- filters -----------------------------------------------------------
     @params['prevalenceMin'] = 0.10
@@ -52,19 +53,13 @@ EOS
     @params['relabundMin'] = 0.10
     @params['relabundMin', 'description'] = 'Relative-abundance floor: keep taxa whose pooled read count is >= this percentage of the total. 0.10 = 0.10%.'
     @params['libCut'] = 1000
-    @params['libCut', 'description'] = 'ANCOM-BC2 minimum library size (lib_cut). Samples below this are excluded by ANCOM-BC2 only; other methods do not apply a sample-level floor here.'
+    @params['libCut', 'description'] = 'ANCOM-BC2 minimum library size (lib_cut). Samples below this are excluded by ANCOM-BC2.'
 
     # ---- thresholds shown on volcanos --------------------------------------
     @params['pValueThresh'] = 0.05
-    @params['pValueThresh', 'description'] = 'p-value cut-off drawn as a horizontal line on volcano plots and used in the overlap counts.'
+    @params['pValueThresh', 'description'] = 'p-value cut-off drawn as a horizontal line on volcano plots.'
     @params['log2RatioThresh'] = 1
     @params['log2RatioThresh', 'description'] = 'log2 fold-change cut-off drawn as vertical lines on volcano plots.'
-
-    # ---- method-specific ---------------------------------------------------
-    @params['maaslinMaxSig'] = 0.1
-    @params['maaslinMaxSig', 'description'] = 'MaAsLin3 max_significance: q-value threshold above which associations are dropped from headline plots.'
-    @params['runLefse'] = ['true', 'false']
-    @params['runLefse', 'description'] = 'Whether to run LEfSe. Note: LEfSe does NOT accept covariates; when daCovariates is set the report still shows LEfSe but with a banner stating that its results are unadjusted.'
 
     # ---- sample exclusion --------------------------------------------------
     @params['samplesToDrop'] = ''
@@ -80,7 +75,6 @@ EOS
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'Free-form extra options; reserved, currently unused.'
     @params['mail'] = ''
-    # No Lmod 'Rversion' param: R itself comes from the activated conda env.
     @modules = []
     @inherit_tags = ['Factor', 'B-Fabric', 'Characteristic']
     @inherit_columns = ['Order Id']
@@ -91,9 +85,6 @@ EOS
   end
 
   def next_dataset
-    # Build the comparison string here (not in preprocess) so it survives the
-    # registration-time dry call where @params['sampleGroup'] / refGroup are nil.
-    # String interpolation makes the result safe ("--over--" when both are nil).
     @comparison = "#{@params['sampleGroup']}--over--#{@params['refGroup']}"
     @params['comparison'] = @comparison
     @params['name']       = @comparison
@@ -106,8 +97,6 @@ EOS
   end
 
   def set_default_parameters
-    # Build the daCovariates multi-select options from every [Factor] column
-    # in the input dataset header. Without this the multi-select renders empty.
     factor_cols = []
     if @dataset && @dataset[0]
       @dataset[0].each_key do |k|
@@ -120,14 +109,6 @@ EOS
   end
 
   def commands
-    # R itself ships with the qiime2 conda env, so we activate that env BEFORE
-    # invoking R. kraken-biom / biom-format / h5py are picked up the same way.
-    #
-    # The SUSHI wrapper runs the script under `set -eux`. `conda activate`
-    # sources deactivate-hooks from any previously-active env that call
-    # `unalias` on aliases that do not exist in a non-interactive bash;
-    # those return non-zero and kill the job before R ever runs. Drop the
-    # errexit just around activation, then re-enable it for the R block.
     command  = "set +e\n"
     command << "source /misc/ngseq12/miniforge3/etc/profile.d/conda.sh\n"
     command << "conda activate gi_qiime2-amplicon-2026.4\n"
