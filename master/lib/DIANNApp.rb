@@ -116,6 +116,12 @@ genomics compute node.
 
     @modules = ['Dev/R', 'Dev/pixi']  # snakemake env activated via @conda_env below; pixi runs the DIANN app
     @inherit_columns = ['Order Id', 'Thermo RAW']
+    # Carry the sample [Factor] columns forward. DIA-NN produces a single
+    # aggregated quant result (one child row), which cannot hold per-sample
+    # group assignments. The DEA app needs them, so we ALSO emit one grandchild
+    # row per sample (see grandchild_datasets) carrying that sample's [Factor]
+    # columns plus the shared quant pointer.
+    @inherit_tags = ['Factor']
   end
 
   def next_dataset
@@ -124,6 +130,8 @@ genomics compute node.
     # run-diann writes `qc_result/` and `out-DIANN_quantB/quantC` directly, so no
     # rename step is needed in the app.
     quant_dir = @params['enable_step_c'].to_s == 'true' ? 'out-DIANN_quantC' : 'out-DIANN_quantB'
+    # extract_columns is `if tags ... elsif colnames`, so the two kinds of
+    # inheritance must be merged in separate calls.
     {
       'Name'                      => @params['name'],
       'Protein Abundances [Link]' => File.join(@result_dir, 'qc_result/proteinAbundances.html'),
@@ -131,6 +139,34 @@ genomics compute node.
       'qc_result [File]'          => File.join(@result_dir, 'qc_result'),
       'DIANN Quant [File]'        => File.join(@result_dir, quant_dir)
     }.merge(extract_columns(colnames: @inherit_columns))
+     .merge(extract_columns(tags: @inherit_tags))
+  end
+
+  # Per-sample grandchild datasets so a downstream DEA app has per-sample group
+  # assignments (the aggregated child row cannot). One row per input raw file,
+  # carrying the sample Name (== the DIA-NN `Run` stem, the prolfqua join key),
+  # the shared quant directory pointer, and that sample's [Factor] columns.
+  # Registered by the SushiApp base class as a single multi-row dataset whose
+  # parent is the DIANN child (so it is a grandchild of the raw dataset).
+  def grandchild_datasets
+    quant_dir = @params['enable_step_c'].to_s == 'true' ? 'out-DIANN_quantC' : 'out-DIANN_quantB'
+    quant_path = File.join(@result_dir, quant_dir)
+    rows = @dataset.is_a?(Array) ? @dataset : [@dataset].compact
+    # Name the grandchild dataset after the DIANN result, not the first sample.
+    @params['grandchildName'] = "#{@params['name']}_perSample"
+    rows.map do |row|
+      stripped = Hash[*row.map { |k, v| [k.to_s.gsub(/\[.+\]/, '').strip, v] }.flatten]
+      grandchild = {
+        'Name'               => stripped['Name'],
+        'DIANN Quant [File]' => quant_path
+      }
+      # per-sample [Factor] columns (keep the tagged key), plus lineage columns
+      @inherit_tags.each do |tag|
+        row.each { |k, v| grandchild[k] = v if k.to_s.include?("[#{tag}]") }
+      end
+      row.each { |k, v| grandchild[k] = v if @inherit_columns.include?(k.to_s.gsub(/\[.+\]/, '').strip) }
+      grandchild
+    end
   end
 
   def commands
