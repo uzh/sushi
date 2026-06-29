@@ -45,74 +45,73 @@ genomics compute node.
     # values here are the single source. For DDA, set is_dda + the mass-acc /
     # charge fields accordingly.
 
-    # ---- DIA-NN version ----
-    # Selects the DIA-NN container image: run-diann maps this value to
-    # diann_images[<version>]. First entry is the GUI default.
-    @params['diann_version'] = ['2.5.1', '2.5.0', '2.3.2']
+    # ---- Pipeline / run setup ----
+    # diann_version selects the DIA-NN container image: run-diann maps this value
+    # to diann_images[<version>]. First entry is the GUI default.
+    @params['pipeline_diann_version']         = ['2.5.1', '2.5.0', '2.3.2']
+    @params['pipeline_workflow_mode']         = ['two_step', 'single_step']
+    @params['pipeline_is_dda']                = ['false', 'true']
+    @params['pipeline_raw_converter']         = ['native', 'thermoraw', 'msconvert', 'msconvert-demultiplex']
+    @params['enable_step_c']                  = ['false', 'true']
 
-    # ---- FASTA databases ----
-    # order_fasta: checkbox for now — when checked, use the order-specific FASTA.
-    @params['order_fasta'] = false
-    # fasta_databases: multi-select populated by globbing the FASTA library on
+    # ---- Input: FASTA databases ----
+    # input_fasta_use_custom: checkbox for now — when checked, use the order-specific FASTA.
+    @params['input_fasta_use_custom'] = false
+    # input_fasta_databases: multi-select populated by globbing the FASTA library on
     # the SUSHI host (read at form-render time, so FASTA_DB_DIR must be mounted
     # there). Options are full paths; selected entries come back comma-joined and
     # the app passes one --fasta per entry to run-diann.
     fasta_db_dir = '/srv/GT/databases/proteomics/fasta'  # TODO: set to the real FASTA library on the SUSHI host
-    @params['fasta_databases'] = Dir.glob(File.join(fasta_db_dir, '*.{fasta,fa}')).sort
-    @params['fasta_databases', 'multi_selection'] = true
+    @params['input_fasta_databases'] = Dir.glob(File.join(fasta_db_dir, '*.{fasta,fa}')).sort
+    @params['input_fasta_databases', 'multi_selection'] = true
 
-    # ---- Workflow ----
-    @params['workflow_mode'] = ['two_step', 'one_step']
-    @params['enable_step_c'] = ['false', 'true']
+    # ---- Library generation: digestion ----
+    @params['lib_digestion_cut']              = ['K*,R*', 'K*', 'R*']
+    @params['lib_digestion_missed_cleavages'] = ['1', '0', '2', '3']
 
-    # ---- DIA / DDA mode ----
-    @params['is_dda']                         = ['false', 'true']
-    @params['scan_window']                    = ['AUTO', '7', '11', '15']
-    # "Unrelated runs" = --individual-mass-acc --individual-windows (per-run calibration)
-    @params['unrelated_runs']                 = ['false', 'true']
+    # ---- Library generation: peptide / precursor / fragment ranges ----
+    @params['lib_peptide_min_length']         = '6'
+    @params['lib_peptide_max_length']         = '30'
+    @params['lib_precursor_charge_min']       = '1'
+    @params['lib_precursor_charge_max']       = '3'
+    @params['lib_precursor_mz_min']           = '350'
+    @params['lib_precursor_mz_max']           = '1500'
+    @params['lib_fragment_mz_min']            = '200'
+    @params['lib_fragment_mz_max']            = '1800'
 
-    # ---- Modifications ----
-    @params['mods_variable']                  = '--var-mods 1 --var-mod UniMod:35,15.994915,M'
-    @params['mods_no_peptidoforms']           = ['false', 'true']
-    @params['mods_unimod4']                   = ['true', 'false']
-    @params['mods_met_excision']              = ['true', 'false']
+    # ---- Library generation: modifications ----
+    @params['lib_mods_variable']              = '--var-mods 1 --var-mod UniMod:35,15.994915,M'
+    @params['lib_mods_no_peptidoforms']       = ['false', 'true']
+    @params['lib_mods_unimod4']               = ['true', 'false']
+    @params['lib_mods_met_excision']          = ['true', 'false']
 
-    # ---- Peptide constraints ----
-    @params['peptide_min_length']             = '6'
-    @params['peptide_max_length']             = '30'
-    @params['peptide_precursor_charge_min']   = '1'
-    @params['peptide_precursor_charge_max']   = '3'
-    @params['peptide_precursor_mz_min']       = '350'
-    @params['peptide_precursor_mz_max']       = '1500'
-    @params['peptide_fragment_mz_min']        = '200'
-    @params['peptide_fragment_mz_max']        = '1800'
-
-    # ---- Digestion ----
-    @params['digestion_cut']                  = ['K*,R*', 'K*', 'R*']
-    @params['digestion_missed_cleavages']     = ['1', '0', '2', '3']
-
-    # ---- Mass accuracy ----
+    # ---- Search & scoring: mass accuracy ----
     # See TODO_mass_accuracy: AUTO default; 4/7 added for high-res Orbitrap/Astral.
-    @params['mass_acc_ms1']                   = ['AUTO', '4', '5', '7', '10', '15', '20']
-    @params['mass_acc_ms2']                   = ['AUTO', '4', '5', '7', '10', '15', '20']
+    @params['search_mass_acc_ms1']            = ['AUTO', '4', '5', '7', '10', '15', '20']
+    @params['search_mass_acc_ms2']            = ['AUTO', '4', '5', '7', '10', '15', '20']
+    # "Unrelated runs" = --individual-mass-acc --individual-windows (per-run calibration)
+    @params['search_mass_acc_unrelated_runs'] = ['false', 'true']
 
-    # ---- Scoring + protein inference ----
-    @params['scoring_qvalue']                 = ['0.01', '0.001', '0.05']
-    @params['protein_pg_level']               = ['2_genes', '1_protein_names', '0_isoform_IDs']
+    # ---- Search & scoring: FDR + protein inference ----
+    @params['search_scoring_qvalue']          = ['0.01', '0.001', '0.05']
+    @params['search_protein_pg_level']        = ['2_genes', '1_protein_names', '0_isoform_IDs']
+    @params['search_protein_ids_to_names']    = ['false', 'true']
 
     # ---- Quantification ----
-    @params['quantification_reanalyse']       = ['true', 'false']
-    @params['quantification_no_norm']         = ['false', 'true']
-    # Export fragment-level per-run quantities (--export-quant); off by default
-    # as it substantially enlarges the report.
-    @params['quantification_export_quant']    = ['false', 'true']
+    @params['quant_scan_window']              = ['AUTO', '7', '11', '15']
+    @params['quant_reanalyse']                = ['true', 'false']
+    @params['quant_no_norm']                  = ['false', 'true']
 
-    # ---- Freestyle escape hatch ----
-    @params['freestyle']                      = 'None'  # raw DIA-NN flags appended verbatim
+    # ---- Output ----
+    # output_fragment_quant: export fragment-level per-run quantities (--export-quant);
+    # off by default as it substantially enlarges the report.
+    @params['output_fragment_quant']          = ['false', 'true']
+    @params['output_include_libs']            = ['false', 'true']
+    @params['output_pmultiqc']                = ['true', 'false']
 
-    # ---- Conversion + verbosity ----
-    @params['raw_converter']                  = ['native','thermoraw', 'msconvert', 'msconvert-demultiplex']
-    @params['verbose']                        = ['1', '0', '2', '3']
+    # ---- Advanced ----
+    @params['advanced_freestyle']             = 'None'  # raw DIA-NN flags appended verbatim
+    @params['advanced_verbose']               = ['1', '0', '2', '3']
 
     @modules = ['Dev/R', 'Dev/pixi']  # snakemake env activated via @conda_env below; pixi runs the DIANN app
     @inherit_columns = ['Order Id', 'Thermo RAW']
