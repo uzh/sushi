@@ -12,14 +12,20 @@ class DiffShotLEfSeApp < SushiFabric::SushiApp
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'Metagenomics'
     @description =<<-EOS
-Differential abundance analysis on Bracken/Kraken2 shotgun metagenomics
-profiles using **LEfSe** (non-parametric Kruskal-Wallis + LDA on relative
-abundance). LEfSe does NOT accept covariates by construction, so this app
-deliberately omits the daCovariates field. For covariate-adjusted contrasts
-on the same dataset use DiffShotALDEx, DiffShotANCOMBC, or DiffShotMaAsLin3.
+Differential abundance analysis on shotgun metagenomics taxonomic profiles
+using **LEfSe** (non-parametric Kruskal-Wallis + LDA on relative abundance).
+Accepts either Bracken/Kraken2 (`BrackenReport`) or MetaPhlAn
+(`MetaPhlAnProfile`) input. LEfSe internally normalises to CPM, so MetaPhlAn
+profiles are accepted with or without "Estimation of read counts mapped to
+clade" — the relative-abundance column is sufficient. LEfSe does NOT accept
+covariates by construction, so this app deliberately omits the daCovariates
+field. For covariate-adjusted contrasts on the same dataset use DiffShotALDEx,
+DiffShotANCOMBC, or DiffShotMaAsLin3.
 EOS
 
-    @required_columns = ['Name', 'BrackenReport']
+    # XOR-of-AND: pick datasets carrying EITHER BrackenReport OR MetaPhlAnProfile
+    # (SushiApplication#required_columns_satisfied_by? handles arrays-of-arrays).
+    @required_columns = [['Name', 'BrackenReport'], ['Name', 'MetaPhlAnProfile']]
     @required_params  = ['grouping', 'sampleGroup', 'refGroup']
 
     # ---- slurm --------------------------------------------------------------
@@ -58,11 +64,11 @@ EOS
     @params['samplesToDrop'] = ''
     @params['samplesToDrop', 'description'] = 'Comma-separated list of SampleID values to drop entirely before any analysis (e.g. failed libraries).'
 
-    # ---- kraken-biom -------------------------------------------------------
+    # ---- kraken-biom (Bracken input only) ----------------------------------
     @params['brackenMinRank'] = ['S', 'S1', 'G', 'F', 'O', 'C', 'P', 'D']
-    @params['brackenMinRank', 'description'] = 'kraken-biom --min: lowest taxonomic rank collapsed to it. Should match the rank Bracken was run at (commonly S for species).'
+    @params['brackenMinRank', 'description'] = 'kraken-biom --min: lowest taxonomic rank collapsed to it. Should match the rank Bracken was run at (commonly S for species). Ignored for MetaPhlAn input.'
     @params['brackenMaxRank'] = ['D', 'P', 'C', 'O', 'F', 'G', 'S']
-    @params['brackenMaxRank', 'description'] = 'kraken-biom --max: highest taxonomic rank captured (D = Domain captures all reads).'
+    @params['brackenMaxRank', 'description'] = 'kraken-biom --max: highest taxonomic rank captured (D = Domain captures all reads). Ignored for MetaPhlAn input.'
 
     # ---- misc --------------------------------------------------------------
     @params['cmdOptions'] = ''

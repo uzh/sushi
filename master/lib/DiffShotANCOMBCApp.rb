@@ -14,9 +14,13 @@ class DiffShotANCOMBCApp < SushiFabric::SushiApp
     @description =<<-EOS
 Differential abundance analysis on Bracken/Kraken2 shotgun metagenomics
 profiles using **ANCOM-BC2** (bias-corrected log-ratios with structural-zero
-handling). Covariates extend the fixed-effects formula. Output is a single
-self-contained HTML report with LFC barplots, volcano plots and result tables
-at Species and Genus rank.
+handling). Covariates extend the fixed-effects formula. ANCOM-BC2 requires
+**integer read counts** (it estimates a per-sample sampling fraction from
+library sizes), which is why this app only accepts Bracken input — for
+MetaPhlAn-based DA use DiffShotMaAsLin3 or DiffShotLEfSe (both work on the
+native MetaPhlAn relative-abundance output).
+Output is a single self-contained HTML report with LFC barplots, volcano plots
+and result tables at Species and Genus rank.
 EOS
 
     @required_columns = ['Name', 'BrackenReport']

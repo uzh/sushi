@@ -31,6 +31,10 @@ EOS
     @params['metaphlanIndex', 'description'] = 'MetaPhlAn bowtie2 index basename (auto-detected from /srv/GT/databases/metaphlan_databases/, total on-disk size shown). The latest CHOCOPhlAnSGB DB pointed to by mpa_latest is promoted first when present. See <a href="http://segatalab.cibio.unitn.it/data/Database_links.html">MetaPhlAn DB index</a>.'
     @params['metaphlanIndex', "context"] = "MetaPhlAn"
 
+    @params['estimateReadCounts'] = true
+    @params['estimateReadCounts', 'description'] = 'Estimation of read counts mapped to clade. When true, MetaPhlAn is run with <code>-t rel_ab_w_read_stats</code> so the profile includes the <code>estimated_number_of_reads_from_the_clade</code> column. Required by the count-based DiffShot apps (DiffShotALDEx, DiffShotANCOMBC); not used by the relative-abundance ones (DiffShotMaAsLin3, DiffShotLEfSe), but harmless. Default true to keep both downstream DA paths open.'
+    @params['estimateReadCounts', "context"] = "MetaPhlAn"
+
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'extra commandline options for metaphlan; do NOT specify --input_type, --db_dir, --index, --nproc, --mapout, -o, --tmp_dir (already set by the app).'
     @params['cmdOptions', "context"] = "MetaPhlAn"
