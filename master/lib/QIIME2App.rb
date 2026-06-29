@@ -104,7 +104,11 @@ EOS
     @params['name'] = 'QIIME2'
     @params['mail'] = ""
     @inherit_columns = ["Order Id"]
-    @modules = ['Dev/R']
+    # NOTE: no Lmod Dev/R loaded — the QIIME2 conda env (see commands) ships its
+    # own R 4.5.2; pulling in system Dev/R prepended its bin to PATH and caused
+    # data.table.so (built against conda R 4.5.2) to be loaded by system R 4.6
+    # -> SETLENGTH undefined symbol. ezRun and all R deps must be installed
+    # into the conda env's R library.
   end
 
   def preprocess
