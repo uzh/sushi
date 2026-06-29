@@ -12,9 +12,10 @@ class QIIME2App < SushiFabric::SushiApp
     @analysis_category = 'Metagenomics'
     @description =<<-EOS
     Data processing with QIIME2 (amplicon-2026.4) for short-read Illumina 16S data.
-    Includes DADA2 denoising, taxonomic classification (SILVA 138.2 / Greengenes2),
-    alpha/beta diversity, optional fastp pre-trimming, optional PICRUSt2 functional
-    prediction, and an ANCOM-BC-driven differential abundance Rmd report.
+    Includes DADA2 denoising, taxonomic classification against any reference
+    database dropped under /srv/GT/databases/QIIME2/, alpha/beta diversity,
+    optional fastp pre-trimming, optional PICRUSt2 functional prediction, and
+    an ANCOM-BC-driven differential abundance Rmd report.
     <a href='https://qiime2.org/'>QIIME2 main website with tutorials and manuals.</a>
 
     Breaking change vs. the previous version: the symmetric `trim_left` and
@@ -67,12 +68,12 @@ EOS
     @params['min_samples'] = '1'
     @params['min_samples', 'description'] = 'Minimum number of samples a feature must appear in to be retained for differential abundance. Roughly 10% of samples is recommended.'
 
-    # ---- reference database (dropdown drives DB_SEQS / DB_TAX in R) ---------
-    # NOTE: the dropdown value (silva|greengenes) is dispatched in the batch
-    # template via `case "$DB" in silva|greengenes` to resolve DB_SEQS/DB_TAX
-    # to the QIIME2_DB_{SILVA,GREENGENES}_{SEQS,TAX} ezRun globals.
-    @params['database'] = ["silva", "greengenes"]
-    @params['database', 'description'] = 'Choose marker gene reference database. Drives DB_SEQS / DB_TAX resolution in the batch (SILVA 138.2 or Greengenes2 2024.09).'
+    # ---- reference database (auto-detected from /srv/GT/databases/QIIME2/) --
+    # The dropdown is populated from on-disk <name>-seqs.qza / <name>-tax.qza
+    # pairs. To register a new DB: drop both .qza files under
+    # /srv/GT/databases/QIIME2/ — no code change needed.
+    @params['database'] = qiime2_db_choices
+    @params['database', 'description'] = 'Reference database (auto-detected). To add one, drop matching <name>-seqs.qza and <name>-tax.qza under /srv/GT/databases/QIIME2/.'
 
     # ---- primer / amplicon region -------------------------------------------
     # Primer region selector. forward_primer / reverse_primer arrays are kept
@@ -91,7 +92,7 @@ EOS
     @params['classifier_max_len'] = '550'
     @params['classifier_max_len', 'description'] = 'qiime feature-classifier extract-reads --p-max-length. Upper bound on amplicon length kept for classifier training.'
     @params['classifier_path'] = ''
-    @params['classifier_path', 'description'] = "Optional absolute path to a pre-built classifier .qza under CLASSIFIER_ROOT (/srv/GT/databases/QIIME2/classifiers). If set to a real path, skip extract-reads + fit-classifier-naive-bayes and use this artifact for classify-sklearn. Leave empty (or 'NONE') to train on the fly."
+    @params['classifier_path', 'description'] = "Optional absolute path to a pre-built classifier .qza (e.g. under /srv/GT/databases/QIIME2/classifiers/). If set, skip extract-reads + fit-classifier-naive-bayes and use this artifact for classify-sklearn. Leave empty (or 'NONE') to train on the fly."
 
     # ---- optional pipeline steps (gate Rmd panels) --------------------------
     @params['run_fastp'] = true
@@ -149,6 +150,20 @@ EOS
 
   def commands
      run_RApp("EzAppQIIME2", conda_env: "gi_qiime2-amplicon-2026.4")
+  end
+
+  # Scan /srv/GT/databases/QIIME2/ for <name>-seqs.qza files that have a
+  # matching <name>-tax.qza alongside them. Returns the bare <name> labels
+  # sorted alphabetically. Returns [] if the root doesn't exist or no valid
+  # pair is present.
+  def qiime2_db_choices
+    root = '/srv/GT/databases/QIIME2'
+    return [] unless Dir.exist?(root)
+    Dir.entries(root)
+       .select { |e| e.end_with?('-seqs.qza') }
+       .map    { |e| e.sub(/-seqs\.qza\z/, '') }
+       .select { |name| File.exist?(File.join(root, "#{name}-tax.qza")) }
+       .sort
   end
 end
 
