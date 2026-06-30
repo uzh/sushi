@@ -14,18 +14,37 @@ class DiffShotMaAsLin3App < SushiFabric::SushiApp
     @description =<<-EOS
 Differential abundance analysis on shotgun metagenomics taxonomic profiles
 using **MaAsLin 3** (GLMs testing both abundance and prevalence associations).
-Accepts either Bracken/Kraken2 (`BrackenReport`) or MetaPhlAn
-(`MetaPhlAnProfile`) input. MaAsLin3 normalises internally (TSS), so MetaPhlAn
-profiles are accepted with or without "Estimation of read counts mapped to
-clade" — the relative-abundance column is sufficient. ReadDepth is always
-added as a covariate. Output is a single self-contained HTML report with
-coefficient plots, volcano plots and result tables at Species and Genus rank,
-plus the native MaAsLin3 summary plots.
+Accepts three input shapes:
+<ul>
+<li><b>Taxonomic</b> — Bracken/Kraken2 (<code>BrackenReport</code>) or MetaPhlAn
+(<code>MetaPhlAnProfile</code>). Builds a BIOM via kraken-biom or biomformat and
+runs MaAsLin3 at Species and Genus rank.</li>
+<li><b>Functional</b> — HUMAnNApp outputs (<code>PathAbundance</code>,
+<code>ReactionsCPM</code>, <code>KEGGKO_CPM</code>, <code>GeneFamiliesCPM</code>).
+Joins per-sample feature tables and runs MaAsLin3 once per available table
+(one tab per metric in the report).</li>
+</ul>
+MaAsLin3 normalises internally (TSS), so MetaPhlAn profiles are accepted with or
+without "Estimation of read counts mapped to clade" — the relative-abundance column
+is sufficient; HUMAnN's CPM-normalised tables are passed with normalization=NONE.
+ReadDepth is always added as a covariate. Output is a single self-contained HTML
+report with coefficient plots, volcano plots and result tables, plus the native
+MaAsLin3 summary plots.
 EOS
 
-    # XOR-of-AND: pick datasets carrying EITHER BrackenReport OR MetaPhlAnProfile
-    # (SushiApplication#required_columns_satisfied_by? handles arrays-of-arrays).
-    @required_columns = [['Name', 'BrackenReport'], ['Name', 'MetaPhlAnProfile']]
+    # XOR-of-AND: pick datasets carrying ONE of:
+    #   - BrackenReport (taxonomic path)
+    #   - MetaPhlAnProfile (taxonomic path)
+    #   - PathAbundance / ReactionsCPM / KEGGKO_CPM / GeneFamiliesCPM (functional path)
+    # SushiApplication#required_columns_satisfied_by? handles arrays-of-arrays.
+    @required_columns = [
+      ['Name', 'BrackenReport'],
+      ['Name', 'MetaPhlAnProfile'],
+      ['Name', 'PathAbundance'],
+      ['Name', 'ReactionsCPM'],
+      ['Name', 'KEGGKO_CPM'],
+      ['Name', 'GeneFamiliesCPM']
+    ]
     @required_params  = ['grouping', 'sampleGroup', 'refGroup']
 
     # ---- slurm --------------------------------------------------------------

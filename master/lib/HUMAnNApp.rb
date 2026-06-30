@@ -1,0 +1,142 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+require 'sushi_fabric'
+require_relative 'global_variables'
+include GlobalVariables
+
+class HUMAnNApp < SushiFabric::SushiApp
+  def initialize
+    super
+    @name = 'HUMAnN'
+    @params['process_mode'] = 'SAMPLE'
+    @analysis_category = 'Metagenomics'
+    @description =<<-EOS
+HUMAnN 4 alpha functional profiling of shotgun metagenomes. Accepts either a
+MetaPhlAn taxonomic profile (any DB) or a Bracken/Kraken report as upstream
+input. HUMAnN mode is auto-detected from the upstream profile vintage:
+<ul>
+<li><b>Full HUMAnN</b> (tier-1 ChocoPhlAn + tier-2 UniRef90-EC; SGB-stratified output)
+when the upstream MetaPhlAn profile carries header
+<code>#mpa_vOct22_CHOCOPhlAnSGB_202403</code>.</li>
+<li><b>Translated-only HUMAnN</b> (tier-2 only, community-level output) for any other
+MetaPhlAn vintage, or for Bracken/Kraken input (the report is converted to MetaPhlAn-format
+internally).</li>
+</ul>
+Outputs CPM-normalized gene families, MetaCyc reactions, MetaCyc pathways, an optional
+KEGG KO regroup, plus a self-contained per-sample HTML report.
+See <a href='https://github.com/biobakery/humann'>HUMAnN</a> and
+<a href='https://forum.biobakery.org/t/metaphlan-4-humann-4-compatibility/8523'>HUMAnN 4 compatibility notes</a>.
+EOS
+
+    # XOR-of-AND: accept any of MetaPhlAnProfile, BrackenReport, KrakenReport.
+    # Read2 is added by preprocess when paired=true.
+    @required_columns = [
+      ['Name', 'Read1', 'MetaPhlAnProfile'],
+      ['Name', 'Read1', 'BrackenReport'],
+      ['Name', 'Read1', 'KrakenReport']
+    ]
+    @required_params = ['paired']
+
+    # ---- slurm --------------------------------------------------------------
+    @params['cores']   = '32'
+    @params['cores',   "context"] = "slurm"
+    @params['ram']     = '96'
+    @params['ram',     "context"] = "slurm"
+    @params['scratch'] = '500'
+    @params['scratch', "context"] = "slurm"
+
+    # ---- HUMAnN core --------------------------------------------------------
+    @params['paired'] = false
+    @params['paired', "context"] = "HUMAnN"
+
+    @params['forceTranslatedOnly'] = false
+    @params['forceTranslatedOnly', 'description'] = 'Force translated-only mode even when a MetaPhlAn-vOct22 profile is present. Useful for benchmarking or for matching a cohort processed in mixed modes. Default FALSE.'
+    @params['forceTranslatedOnly', "context"] = "HUMAnN"
+
+    @params['humannDbRoot'] = '/srv/GT/databases/humann4_vOct22'
+    @params['humannDbRoot', 'description'] = 'Directory containing chocophlan/, uniref/, utility_mapping/ subdirs for HUMAnN 4 alpha. Pre-prepared out-of-band (no automatic download by this app).'
+    @params['humannDbRoot', "context"] = "HUMAnN"
+
+    @params['keepStratifiedOutput'] = true
+    @params['keepStratifiedOutput', 'description'] = 'Keep SGB-stratified rows in full-mode outputs (per-species functional contributions). Ignored in translated-only mode. Default TRUE.'
+    @params['keepStratifiedOutput', "context"] = "HUMAnN"
+
+    @params['regroupKEGGKO'] = true
+    @params['regroupKEGGKO', 'description'] = 'Run UniRef90 -> KEGG KO regroup as an extra output table. HUMAnN 4 alpha utility_mapping only covers EC-annotated KOs, so coverage is partial. Default TRUE.'
+    @params['regroupKEGGKO', "context"] = "HUMAnN"
+
+    # ---- fastp trimming (copied from MetaPhlAnApp — same upstream cleanup) -
+    @params['trimAdapter', 'hr'] = true
+    @params['trimAdapter'] = true
+    @params['trimAdapter', "context"] = "OpenGene/fastp"
+    @params['trim_front1'] = '0'
+    @params['trim_front1', "context"] = "OpenGene/fastp"
+    @params['trim_tail1'] = '0'
+    @params['trim_tail1', "context"] = "OpenGene/fastp"
+    @params['cut_front'] = false
+    @params['cut_front', "context"] = "OpenGene/fastp"
+    @params['cut_front_window_size'] = '4'
+    @params['cut_front_window_size', "context"] = "OpenGene/fastp"
+    @params['cut_front_mean_quality'] = '20'
+    @params['cut_front_mean_quality', "context"] = "OpenGene/fastp"
+    @params['cut_tail'] = false
+    @params['cut_tail', "context"] = "OpenGene/fastp"
+    @params['cut_tail_window_size'] = '4'
+    @params['cut_tail_window_size', "context"] = "OpenGene/fastp"
+    @params['cut_tail_mean_quality'] = '20'
+    @params['cut_tail_mean_quality', "context"] = "OpenGene/fastp"
+    @params['cut_right'] = false
+    @params['cut_right', "context"] = "OpenGene/fastp"
+    @params['cut_right_window_size'] = '4'
+    @params['cut_right_window_size', "context"] = "OpenGene/fastp"
+    @params['cut_right_mean_quality'] = '20'
+    @params['cut_right_mean_quality', "context"] = "OpenGene/fastp"
+    @params['average_qual'] = '0'
+    @params['average_qual', "context"] = "OpenGene/fastp"
+    @params['max_len1'] = '0'
+    @params['max_len1', "context"] = "OpenGene/fastp"
+    @params['max_len2'] = '0'
+    @params['max_len2', "context"] = "OpenGene/fastp"
+    @params['poly_x_min_len'] = '10'
+    @params['poly_x_min_len', "context"] = "OpenGene/fastp"
+    @params['length_required'] = '18'
+    @params['length_required', "context"] = "OpenGene/fastp"
+    @params['cmdOptionsFastp'] = ''
+    @params['cmdOptionsFastp', "context"] = "OpenGene/fastp"
+
+    @params['mail'] = ""
+    @modules = []   # conda-based; see commands block
+    @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
+  end
+
+  def preprocess
+    if @params['paired']
+      @required_columns.each { |row| row << 'Read2' unless row.include?('Read2') }
+    end
+  end
+
+  def next_dataset
+    name = @dataset['Name']
+    {
+      'Name'                    => name,
+      'GeneFamiliesCPM [File]'  => File.join(@result_dir, "#{name}_genefamilies_cpm.tsv"),
+      'KEGGKO_CPM [File]'       => File.join(@result_dir, "#{name}_genefamilies_ko_cpm.tsv"),
+      'ReactionsCPM [File]'     => File.join(@result_dir, "#{name}_reactions_cpm.tsv"),
+      'PathAbundance [File]'    => File.join(@result_dir, "#{name}_pathabundance.tsv"),
+      'Static Report [Link]'    => File.join(@result_dir, '00index.html'),
+      'Report [File]'           => @result_dir,
+    }.merge(extract_columns(@inherit_tags))
+  end
+
+  def commands
+    command  = "set +e\n"
+    command << "source /misc/ngseq12/miniforge3/etc/profile.d/conda.sh\n"
+    command << "conda activate gi_qiime2-amplicon-2026.4\n"
+    command << "set -e\n"
+    command << run_RApp("EzAppHUMAnN")
+  end
+end
+
+if __FILE__ == $0
+end
