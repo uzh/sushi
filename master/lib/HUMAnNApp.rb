@@ -55,7 +55,7 @@ EOS
     @params['forceTranslatedOnly', "context"] = "HUMAnN"
 
     @params['humannDbRoot'] = humann_db_choices
-    @params['humannDbRoot', 'description'] = 'Directory containing chocophlan/, uniref/, utility_mapping/ subdirs for HUMAnN 4. Dropdown auto-populated from /srv/GT/databases/humann/ (only subdirs carrying all three required subdirs are listed; size shown after the name).'
+    @params['humannDbRoot', 'description'] = 'Directory containing chocophlan/, uniref/, utility_mapping/ subdirs for HUMAnN 4. Dropdown auto-populated from /srv/GT/databases/humann/ (only subdirs carrying all three required subdirs are listed; size shown after the name). CHOCOPhlAn vOct22 is currently the only database compatible with HUMAnN v4. The pangenomes in chocophlan/ subdirectory are used only when the input is a MetaPhlAn profile generated against CHOCOPhlAn vOct22; for any other upstream (newer MetaPhlAn database, Kraken/Bracken), HUMAnN runs in translated-only mode (using only uniref/ + utility_mapping/ subdirectories).'
     @params['humannDbRoot', "context"] = "HUMAnN"
 
     @params['keepStratifiedOutput'] = true
@@ -118,13 +118,22 @@ EOS
 
   def next_dataset
     name = @dataset['Name']
+    # The R worker writes "<name>.mode.txt" containing "full" or
+    # "translated" so we can publish it as a dataset column without
+    # re-parsing the HUMAnN log. Fall back to empty if the file is
+    # absent (e.g. an older worker that didn't write it).
+    mode_file = File.join(@result_dir, "#{name}.mode.txt")
+    mode_val  = File.exist?(mode_file) ? File.read(mode_file).strip : ''
+
     {
       'Name'                    => name,
       'GeneFamiliesCPM [File]'  => File.join(@result_dir, "#{name}_genefamilies_cpm.tsv"),
       'KEGGKO_CPM [File]'       => File.join(@result_dir, "#{name}_genefamilies_ko_cpm.tsv"),
       'ReactionsCPM [File]'     => File.join(@result_dir, "#{name}_reactions_cpm.tsv"),
       'PathAbundance [File]'    => File.join(@result_dir, "#{name}_pathabundance.tsv"),
+      'Mode [Characteristic]'   => mode_val,
       'Static Report [Link]'    => File.join(@result_dir, '00index.html'),
+      'Live Report [Link]'      => "http://fgcz-shiny.uzh.ch/exploreMetaTax?data=#{@result_dir}",
       'Report [File]'           => @result_dir,
     }.merge(extract_columns(@inherit_tags))
   end
