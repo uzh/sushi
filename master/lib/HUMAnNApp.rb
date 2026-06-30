@@ -51,11 +51,11 @@ EOS
     @params['paired', "context"] = "HUMAnN"
 
     @params['forceTranslatedOnly'] = false
-    @params['forceTranslatedOnly', 'description'] = 'Force translated-only mode even when a MetaPhlAn-vOct22 profile is present. Useful for benchmarking or for matching a cohort processed in mixed modes. Default FALSE.'
+    @params['forceTranslatedOnly', 'description'] = 'Force translated-only mode. Default FALSE.'
     @params['forceTranslatedOnly', "context"] = "HUMAnN"
 
-    @params['humannDbRoot'] = '/srv/GT/databases/humann4_vOct22'
-    @params['humannDbRoot', 'description'] = 'Directory containing chocophlan/, uniref/, utility_mapping/ subdirs for HUMAnN 4 alpha. Pre-prepared out-of-band (no automatic download by this app).'
+    @params['humannDbRoot'] = humann_db_choices
+    @params['humannDbRoot', 'description'] = 'Directory containing chocophlan/, uniref/, utility_mapping/ subdirs for HUMAnN 4. Dropdown auto-populated from /srv/GT/databases/humann/ (only subdirs carrying all three required subdirs are listed; size shown after the name).'
     @params['humannDbRoot', "context"] = "HUMAnN"
 
     @params['keepStratifiedOutput'] = true
@@ -135,6 +135,33 @@ EOS
     command << "conda activate gi_qiime2-amplicon-2026.4\n"
     command << "set -e\n"
     command << run_RApp("EzAppHUMAnN")
+  end
+
+  # Scan /srv/GT/databases/humann/ for subdirectories that look like a
+  # valid HUMAnN reference root (must contain chocophlan/, uniref/ and
+  # utility_mapping/ subdirs). Returns Array of [label, value] pairs;
+  # value is the full path; label includes the basename + on-disk size.
+  # Returns [] when nothing valid is found (the multi-select widget will
+  # then be empty and SUSHI will refuse to submit).
+  def humann_db_choices
+    root = '/srv/GT/databases/humann'
+    return [] unless Dir.exist?(root)
+    required_subs = %w[chocophlan uniref utility_mapping]
+
+    candidates = Dir.entries(root)
+                    .reject { |e| e.start_with?('.') }
+                    .map    { |e| File.join(root, e) }
+                    .select { |p| File.directory?(p) }
+                    .select { |p| required_subs.all? { |s| Dir.exist?(File.join(p, s)) } }
+                    .sort
+
+    candidates.map do |path|
+      name  = File.basename(path)
+      bytes = `du -sb "#{path}" 2>/dev/null`.to_i
+      gb    = bytes.to_f / (1024**3)
+      label = bytes > 0 ? "#{name} (#{format('%.1f', gb)} GB)" : name
+      [label, path]
+    end
   end
 end
 
