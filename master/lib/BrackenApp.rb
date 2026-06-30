@@ -45,12 +45,18 @@ EOS
 
   def next_dataset
     name = @dataset['Name']
-    {'Name'=>name,
+    out = {'Name'=>name,
      'BrackenAbundance [File]'=>File.join(@result_dir, "#{name}.bracken"),
      'BrackenReport [File]'=>File.join(@result_dir, "#{name}.bracken.report.txt"),
      'KrakenReport [File]'=>@dataset['KrakenReport'],
      'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/exploreMetaTax?data=#{@result_dir}",
-    }.merge(extract_columns(@inherit_tags))
+    }
+    # Carry the raw FASTQ paths forward if KrakenApp upstream passed them
+    # through, so downstream apps that need the reads (HUMAnN, etc.) can
+    # match this dataset.
+    out['Read1 [File]'] = @dataset['Read1'] if @dataset['Read1']
+    out['Read2 [File]'] = @dataset['Read2'] if @dataset['Read2']
+    out.merge(extract_columns(@inherit_tags))
   end
 
   def commands

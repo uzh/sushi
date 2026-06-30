@@ -117,13 +117,18 @@ EOS
     # Note: per-read .txt.gz and <name>_unclassified.fasta.gz are written to
     # the result dir but intentionally not surfaced here — only the aggregate
     # report and Krona are advertised downstream.
-    {'Name'=>@dataset['Name'],
+    out = {'Name'=>@dataset['Name'],
      'KronaReport [Link]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
      'KrakenReport [File]'=>File.join(@result_dir, "#{@dataset['Name']}.report.txt"),
      'KronaOutDir [File]'=>File.join(@result_dir, "#{@dataset['Name']}.html.files"),
      'KronaOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
      'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/exploreMetaTax?data=#{@result_dir}",
-    }.merge(extract_columns(@inherit_tags))
+    }
+    # Carry raw FASTQ paths forward so downstream apps that need the reads
+    # (Bracken -> HUMAnN, etc.) can match this dataset without a manual merge.
+    out['Read1 [File]'] = @dataset['Read1'] if @dataset['Read1']
+    out['Read2 [File]'] = @dataset['Read2'] if @dataset['Read2']
+    out.merge(extract_columns(@inherit_tags))
   end
   def commands
     run_RApp("EzAppKraken")

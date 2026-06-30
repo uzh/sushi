@@ -101,11 +101,17 @@ EOS
   def next_dataset
     # Output filename ends with _metaphlan.txt so exploreMetaTax auto-detects
     # it as a MetaPhlAn profile (see exploreMetaTax/app.R FORMAT_PATTERNS).
-    {'Name'=>@dataset['Name'],
+    out = {'Name'=>@dataset['Name'],
      'MetaPhlAnProfile [File]'=>File.join(@result_dir, "#{@dataset['Name']}_metaphlan.txt"),
      'BowtieMapout [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bowtie2.bz2"),
      'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/exploreMetaTax?data=#{@result_dir}",
-    }.merge(extract_columns(@inherit_tags))
+    }
+    # Carry the raw FASTQ paths forward so downstream apps that need to
+    # re-read the reads (HUMAnN, etc.) can match this dataset without users
+    # having to merge it with the upstream FASTQ dataset by hand.
+    out['Read1 [File]'] = @dataset['Read1'] if @dataset['Read1']
+    out['Read2 [File]'] = @dataset['Read2'] if @dataset['Read2']
+    out.merge(extract_columns(@inherit_tags))
   end
 
   def commands
