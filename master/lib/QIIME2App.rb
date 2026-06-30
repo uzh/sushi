@@ -25,7 +25,7 @@ class QIIME2App < SushiFabric::SushiApp
 EOS
     @params['process_mode'] = 'DATASET'
     @required_columns = ['Name', 'Read1']
-    @required_params = ['paired','trim_left_f','truncate_len_f','sampling_depth','max_rarefaction_depth','min_freq','min_samples','group']
+    @required_params = ['paired','trim_left_f','truncate_len_f','sampling_depth','max_rarefaction_depth','min_freq','min_samples','grouping']
 
     # ---- slurm --------------------------------------------------------------
     @params['cores'] = '16'
@@ -39,10 +39,8 @@ EOS
     @params['paired'] = false
     @params['paired', 'description'] = 'whether the reads are paired end; if false then only Read1 is considered even if Read2 is available.'
     @params['paired', "context"] = "QIIME2"
-    @params['group'] = true
-    @params['group', 'description'] = 'There needs to be a group assignment column. Ensure the column name is in the format "NAME [Factor]"'
     @params['grouping'] = ''
-    @params['grouping', 'description'] = 'Type in the name of the group assignment column. If the name is in the format "NAME [Factor]" type in the NAME (no [Factor] suffix).'
+    @params['grouping', 'description'] = 'Name of the group-assignment column in the dataset. The column must be in the format "NAME [Factor]"; type only the NAME here (no [Factor] suffix). Required for PERMANOVA, ANCOM-BC and other group-aware analyses.'
 
     # ---- DADA2 trimming (split: forward / reverse) --------------------------
     # Breaking change: legacy `trim_left` / `truncate_len` replaced by the
