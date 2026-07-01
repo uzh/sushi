@@ -118,12 +118,14 @@ EOS
 
   def next_dataset
     name = @dataset['Name']
-    # The R worker writes "<name>.mode.txt" containing "full" or
-    # "translated" so we can publish it as a dataset column without
-    # re-parsing the HUMAnN log. Fall back to empty if the file is
-    # absent (e.g. an older worker that didn't write it).
-    mode_file = File.join(@result_dir, "#{name}.mode.txt")
-    mode_val  = File.exist?(mode_file) ? File.read(mode_file).strip : ''
+    # The R worker writes "<name>.mode.txt" (containing "full" or
+    # "translated") into the scratch CWD alongside the TSVs, so we can
+    # publish the detected mode as a dataset column without re-parsing
+    # the HUMAnN log. At next_dataset() time we're on the compute node
+    # with CWD = scratch, so read by basename. Fall back to empty if
+    # the file is absent (e.g. an older worker that didn't write it).
+    mode_basename = "#{name}.mode.txt"
+    mode_val = File.exist?(mode_basename) ? File.read(mode_basename).strip : ''
 
     {
       'Name'                    => name,
@@ -132,9 +134,12 @@ EOS
       'ReactionsCPM [File]'     => File.join(@result_dir, "#{name}_reactions_cpm.tsv"),
       'PathAbundance [File]'    => File.join(@result_dir, "#{name}_pathabundance.tsv"),
       'Mode [Characteristic]'   => mode_val,
+      # [File] triggers a g-req copy of 00index.html to gstore; [Link]
+      # surfaces it as a clickable URL in the SUSHI web UI. Both are
+      # needed — the [Link] alone would leave the HTML uncopied.
+      'Static Report [File]'    => File.join(@result_dir, '00index.html'),
       'Static Report [Link]'    => File.join(@result_dir, '00index.html'),
       'Live Report [Link]'      => "http://fgcz-shiny.uzh.ch/exploreMetaTax?data=#{@result_dir}",
-      'Report [File]'           => @result_dir,
     }.merge(extract_columns(@inherit_tags))
   end
 
