@@ -29,13 +29,13 @@ See <a href='https://github.com/biobakery/humann'>HUMAnN</a> and
 <a href='https://forum.biobakery.org/t/metaphlan-4-humann-4-compatibility/8523'>HUMAnN 4 compatibility notes</a>.
 EOS
 
-    # XOR-of-AND: accept any of MetaPhlAnProfile, BrackenReport, KrakenReport.
+    # Only require Name + Read1 here — a BrackenApp output naturally
+    # carries BOTH BrackenReport AND (inherited) KrakenReport, which
+    # breaks the XOR-of-AND check in sushi_fabric.rb:326. The R worker
+    # in app-humann.R picks the profile source by priority
+    # (MetaPhlAn > Bracken > Kraken) and hard-errors if none is present.
     # Read2 is added by preprocess when paired=true.
-    @required_columns = [
-      ['Name', 'Read1', 'MetaPhlAnProfile'],
-      ['Name', 'Read1', 'BrackenReport'],
-      ['Name', 'Read1', 'KrakenReport']
-    ]
+    @required_columns = ['Name', 'Read1']
     @required_params = ['paired']
 
     # ---- slurm --------------------------------------------------------------
@@ -112,7 +112,7 @@ EOS
 
   def preprocess
     if @params['paired']
-      @required_columns.each { |row| row << 'Read2' unless row.include?('Read2') }
+      @required_columns << 'Read2' unless @required_columns.include?('Read2')
     end
   end
 
