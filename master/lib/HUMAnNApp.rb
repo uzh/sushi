@@ -118,27 +118,26 @@ EOS
 
   def next_dataset
     name = @dataset['Name']
-    # The R worker writes "<name>.mode.txt" (containing "full" or
-    # "translated") into the scratch CWD alongside the TSVs, so we can
-    # publish the detected mode as a dataset column without re-parsing
-    # the HUMAnN log. At next_dataset() time we're on the compute node
-    # with CWD = scratch, so read by basename. Fall back to empty if
-    # the file is absent (e.g. an older worker that didn't write it).
-    mode_basename = "#{name}.mode.txt"
-    mode_val = File.exist?(mode_basename) ? File.read(mode_basename).strip : ''
-
+    # Per-sample HTML report + mode.txt basenames (see app-humann.R).
+    # SAMPLE-mode SUSHI jobs all copy into the same gstore folder, so
+    # every filename here MUST be per-sample or later jobs collide on
+    # g-req ("destination path already exists"). Mode is surfaced as a
+    # [File] (not [Characteristic]) because next_dataset runs on the
+    # SUSHI head node, not the compute node, so Ruby cannot reliably
+    # read a scratch-only text file.
     {
       'Name'                    => name,
       'GeneFamiliesCPM [File]'  => File.join(@result_dir, "#{name}_genefamilies_cpm.tsv"),
       'KEGGKO_CPM [File]'       => File.join(@result_dir, "#{name}_genefamilies_ko_cpm.tsv"),
       'ReactionsCPM [File]'     => File.join(@result_dir, "#{name}_reactions_cpm.tsv"),
       'PathAbundance [File]'    => File.join(@result_dir, "#{name}_pathabundance.tsv"),
-      'Mode [Characteristic]'   => mode_val,
-      # [File] triggers a g-req copy of 00index.html to gstore; [Link]
-      # surfaces it as a clickable URL in the SUSHI web UI. Both are
-      # needed — the [Link] alone would leave the HTML uncopied.
-      'Static Report [File]'    => File.join(@result_dir, '00index.html'),
-      'Static Report [Link]'    => File.join(@result_dir, '00index.html'),
+      'Mode [File]'             => File.join(@result_dir, "#{name}.mode.txt"),
+      # Only [File] triggers the g-req copy (sushi_fabric.rb:326).
+      # We deliberately DON'T also add a "Static Report [Link]" pointing
+      # to the same file: that would render two "Static Report" columns
+      # in the SUSHI UI with identical values. The [File] cell is
+      # clickable in fgcz-web and opens the HTML.
+      'Static Report [File]'    => File.join(@result_dir, "#{name}_report.html"),
       'Live Report [Link]'      => "http://fgcz-shiny.uzh.ch/exploreMetaTax?data=#{@result_dir}",
     }.merge(extract_columns(@inherit_tags))
   end
