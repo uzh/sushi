@@ -132,12 +132,11 @@ EOS
       'ReactionsCPM [File]'     => File.join(@result_dir, "#{name}_reactions_cpm.tsv"),
       'PathAbundance [File]'    => File.join(@result_dir, "#{name}_pathabundance.tsv"),
       'Mode [File]'             => File.join(@result_dir, "#{name}.mode.txt"),
-      # Only [File] triggers the g-req copy (sushi_fabric.rb:326).
-      # We deliberately DON'T also add a "Static Report [Link]" pointing
-      # to the same file: that would render two "Static Report" columns
-      # in the SUSHI UI with identical values. The [File] cell is
-      # clickable in fgcz-web and opens the HTML.
+      # [File] triggers the g-req copy (sushi_fabric.rb:326); [Link]
+      # gives the SUSHI UI a proper clickable URL for in-browser view.
+      # Both point to the same per-sample HTML.
       'Static Report [File]'    => File.join(@result_dir, "#{name}_report.html"),
+      'Static Report [Link]'    => File.join(@result_dir, "#{name}_report.html"),
       'Live Report [Link]'      => "http://fgcz-shiny.uzh.ch/exploreMetaTax?data=#{@result_dir}",
     }.merge(extract_columns(@inherit_tags))
   end
