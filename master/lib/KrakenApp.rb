@@ -125,9 +125,16 @@ EOS
      'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/exploreMetaTax?data=#{@result_dir}",
     }
     # Carry raw FASTQ paths forward so downstream apps that need the reads
-    # (Bracken -> HUMAnN, etc.) can match this dataset without a manual merge.
-    out['Read1 [File]'] = @dataset['Read1'] if @dataset['Read1']
-    out['Read2 [File]'] = @dataset['Read2'] if @dataset['Read2']
+    # (Bracken -> HUMAnN, etc.) can match this dataset without a manual
+    # merge. Use [Link] not [File]: these are pass-through pointers to the
+    # upstream FASTQ folder, NOT produced by this Kraken run. [File] would
+    # tell sushiApp.rb:613 to g-req copy the FASTQs back into their own
+    # source folder — self-referential copy fails with "destination path
+    # already exists" and (via set -e) kills the job. sushi_fabric.rb:338
+    # normalises the tag away for required-columns matching, so
+    # `Read1 [Link]` still satisfies downstream apps declaring `Read1`.
+    out['Read1 [Link]'] = @dataset['Read1'] if @dataset['Read1']
+    out['Read2 [Link]'] = @dataset['Read2'] if @dataset['Read2']
     out.merge(extract_columns(@inherit_tags))
   end
   def commands

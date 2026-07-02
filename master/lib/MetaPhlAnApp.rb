@@ -109,8 +109,16 @@ EOS
     # Carry the raw FASTQ paths forward so downstream apps that need to
     # re-read the reads (HUMAnN, etc.) can match this dataset without users
     # having to merge it with the upstream FASTQ dataset by hand.
-    out['Read1 [File]'] = @dataset['Read1'] if @dataset['Read1']
-    out['Read2 [File]'] = @dataset['Read2'] if @dataset['Read2']
+    # Use [Link] not [File]: these are pass-through pointers to the
+    # upstream FASTQ folder, NOT produced by this MetaPhlAn run. [File]
+    # would tell sushiApp.rb:613 to g-req copy the FASTQs back into their
+    # own source folder — self-referential copy fails with "destination
+    # path already exists" and (via set -e) kills the job.
+    # sushi_fabric.rb:338 normalises the tag away for required-columns
+    # matching, so `Read1 [Link]` still satisfies downstream apps
+    # declaring `@required_columns = ['Name','Read1']`.
+    out['Read1 [Link]'] = @dataset['Read1'] if @dataset['Read1']
+    out['Read2 [Link]'] = @dataset['Read2'] if @dataset['Read2']
     out.merge(extract_columns(@inherit_tags))
   end
 
