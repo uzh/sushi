@@ -32,18 +32,21 @@ report with coefficient plots, volcano plots and result tables, plus the native
 MaAsLin3 summary plots.
 EOS
 
-    # XOR-of-AND: pick datasets carrying ONE of:
+    # XOR-of-AND: pick datasets carrying exactly ONE of:
     #   - BrackenReport (taxonomic path)
     #   - MetaPhlAnProfile (taxonomic path)
-    #   - PathAbundance / ReactionsCPM / KEGGKO_CPM / GeneFamiliesCPM (functional path)
-    # SushiApplication#required_columns_satisfied_by? handles arrays-of-arrays.
+    #   - PathAbundance (functional path — anchor column for HUMAnN)
+    # HUMAnNApp writes all four of PathAbundance / ReactionsCPM / KEGGKO_CPM
+    # / GeneFamiliesCPM together, so listing them as separate XOR options
+    # would satisfy 4-of-N and fail sushi_fabric.rb:326's
+    # `satisfied_options == 1` check — the app would then be hidden for
+    # any real HUMAnN dataset. PathAbundance alone anchors the functional
+    # path because no other upstream app produces it, and the R worker
+    # (app-diffShot.R) discovers the other three functional tables itself.
     @required_columns = [
       ['Name', 'BrackenReport'],
       ['Name', 'MetaPhlAnProfile'],
-      ['Name', 'PathAbundance'],
-      ['Name', 'ReactionsCPM'],
-      ['Name', 'KEGGKO_CPM'],
-      ['Name', 'GeneFamiliesCPM']
+      ['Name', 'PathAbundance']
     ]
     @required_params  = ['grouping', 'sampleGroup', 'refGroup']
 

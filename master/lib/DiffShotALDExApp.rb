@@ -15,9 +15,10 @@ class DiffShotALDExApp < SushiFabric::SushiApp
 Differential abundance analysis on Bracken/Kraken2 shotgun metagenomics
 profiles using **ALDEx2** (CLR + Monte-Carlo Dirichlet). With covariates the
 GLM path (`aldex.glm`) is used; without covariates the classic t-test path.
-ALDEx2 requires **integer read counts**, which is why this app only accepts
+ALDEx2 requires <b>integer read counts</b>, which is why this app only accepts
 Bracken input — for MetaPhlAn-based DA use DiffShotMaAsLin3 or DiffShotLEfSe
-(both work on the native MetaPhlAn relative-abundance output).
+(both work on the native MetaPhlAn relative-abundance output). Functional
+(HUMAnN) input is not supported — use DiffShotMaAsLin3 for that.
 Output is a single self-contained HTML report with volcano plots and result
 tables at Species and Genus rank.
 EOS
