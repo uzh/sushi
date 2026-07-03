@@ -44,15 +44,22 @@ class ApiToken < ActiveRecord::Base
     case principal
     when "user"
       raise ArgumentError, "login is required for a user token" if login.to_s.strip.empty?
-      if ttl_days.to_s.strip.empty?
-        raise ArgumentError, "a user token requires TTL_DAYS (mandatory bounded TTL)"
-      end
-      if ttl_days.to_i <= 0 || ttl_days.to_i > MAX_USER_TOKEN_TTL_DAYS
+      ttl_raw = ttl_days.to_s.strip
+      raise ArgumentError, "a user token requires TTL_DAYS (mandatory bounded TTL)" if ttl_raw.empty?
+      # Strict integer: reject "90abc"/"90.9" rather than silently truncating.
+      raise ArgumentError, "TTL_DAYS must be a positive integer" unless ttl_raw.match?(/\A\d+\z/)
+      ttl_days = ttl_raw.to_i
+      if ttl_days <= 0 || ttl_days > MAX_USER_TOKEN_TTL_DAYS
         raise ArgumentError, "TTL_DAYS must be between 1 and #{MAX_USER_TOKEN_TTL_DAYS} for a user token"
       end
       scope = []
     when "static"
-      # existing behavior; scope validation is the caller's responsibility
+      # A static token authorizes only its explicit scope; an empty scope would
+      # authorize nothing, so require it (the `scope:` default exists for the
+      # user branch, which ignores scope).
+      if Array(scope).map { |x| x.to_s.strip }.reject(&:empty?).empty?
+        raise ArgumentError, "scope is required for a static token"
+      end
     else
       raise ArgumentError, "unknown principal #{principal.inspect} (expected static|user)"
     end
@@ -112,15 +119,23 @@ class ApiToken < ActiveRecord::Base
   #   - static: the stored scope array.
   #   - user:   the login's current FGCZ project membership, resolved live
   #             (W=0). An inactive/unknown login yields the empty set (→ 403).
-  # Raises ResolverUnavailable on a transport failure (→ 503).
+  #
+  # Raises ResolverUnavailable when the resolver *call* fails (→ 503). NOTE:
+  # FGCZ.get_user_projects2 swallows most LDAP failures into an empty array, so a
+  # silent backend outage degrades to []→403 rather than 503; either way the
+  # request is denied (fail-closed), only the HTTP granularity is lost. The
+  # rescue is scoped to the resolver call alone so parsing bugs are NOT masked as
+  # infrastructure errors.
   def allowed_projects
     return Array(scope).map(&:to_i) unless user?
 
-    raw = FGCZ.get_user_projects2(login)
-    Array(raw).map { |p| p.to_s.sub(/\Ap/i, "").to_i }
-  rescue ResolverUnavailable
-    raise
-  rescue => e
-    raise ResolverUnavailable, e.message
+    raw =
+      begin
+        FGCZ.get_user_projects2(login)
+      rescue => e
+        raise ResolverUnavailable, "#{e.class}: #{e.message}"
+      end
+
+    Array(raw).map { |p| p.to_s.sub(/\Ap/i, "").to_i }.select(&:positive?)
   end
 end

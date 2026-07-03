@@ -134,5 +134,15 @@ describe "Api::V1::Datasets", type: :request do
                               ttl_days: ApiToken::MAX_USER_TOKEN_TTL_DAYS + 1) }
         .to raise_error(ArgumentError)
     end
+
+    it "rejects a user token with a non-integer TTL" do
+      expect { ApiToken.issue(name: "x", principal: "user", login: "hubert", ttl_days: "90abc") }
+        .to raise_error(ArgumentError)
+    end
+
+    it "rejects a static token with an empty scope" do
+      expect { ApiToken.issue(name: "x", scope: [], ttl_days: 1) }
+        .to raise_error(ArgumentError)
+    end
   end
 end
