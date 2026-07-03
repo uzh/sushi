@@ -45,7 +45,7 @@ module V1
     def register
       return unless authorize_project!(body_param(:project_number))
 
-      result = DatasetRegistrationService.register(**manifest_args)
+      result = DatasetRegistrationService.register(**manifest_args, owner_login: acting_login)
       render json: result[:body], status: result[:http]
     end
 
@@ -122,6 +122,12 @@ module V1
     def bearer_token
       header = request.headers["Authorization"].to_s
       header[/\ABearer\s+(.+)\z/i, 1]
+    end
+
+    # The acting person's login for a user-principal token (used to own created
+    # datasets so the UI "Who" shows the person). Static tokens have no person.
+    def acting_login
+      @api_token.user? ? @api_token.login : nil
     end
 
     # --- authz helpers ---------------------------------------------------

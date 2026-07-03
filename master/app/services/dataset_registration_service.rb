@@ -93,7 +93,11 @@ class DatasetRegistrationService
   #   { http: 200, body: { data_set_id:, idempotent_replay: } }
   #   { http: 422, body: { error:, checks:, errors: } }
   #   { http: 409, body: { error: } }
-  def self.register(dataset_tsv:, project_number:, name:, parent_id: nil, order_id: nil)
+  # owner_login (optional): the acting user's LDAP login (set by the controller
+  # for a user-principal token). When present, the new data_set is owned by that
+  # User (created on first use), so the UI "Who" shows the person rather than the
+  # nil-user fallback. Static tokens pass nil (no person) and keep the fallback.
+  def self.register(dataset_tsv:, project_number:, name:, parent_id: nil, order_id: nil, owner_login: nil)
     v = validate(dataset_tsv: dataset_tsv, project_number: project_number, name: name,
                  parent_id: parent_id, order_id: order_id)
     return { http: 422, body: { error: "invalid", checks: v[:checks], errors: v[:errors] } } unless v[:ok]
@@ -113,6 +117,7 @@ class DatasetRegistrationService
 
         data_set = DataSet.new(name: name, project: project, registration_key: key)
         data_set.parent_id = parent_id if parent_id.present?
+        data_set.user = User.find_or_create_by(login: owner_login) if owner_login.present?
 
         rows.each do |row|
           sample_hash = {}
