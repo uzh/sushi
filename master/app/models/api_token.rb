@@ -2,13 +2,27 @@ require 'digest'
 require 'securerandom'
 
 # Per-caller bearer token for the machine-callable registration API
-# (app/controllers/api/v1/datasets_controller.rb).
+# (app/controllers/v1/datasets_controller.rb).
 #
 # Secrecy at rest: only a salted SHA-256 hash of the raw token is stored; the
-# raw token is shown exactly once at issue time and never persisted. Each token
-# carries an explicit project scope and an optional expiry, and is revocable.
+# raw token is shown exactly once at issue time and never persisted.
+#
+# A token has exactly one principal (design v0.7):
+#   - `static`: authorized against the stored project-number array (`scope`),
+#     frozen at issue. Existing/legacy behavior; unchanged (P-INV-8).
+#   - `user`: bound to a non-blank LDAP `login` and a mandatory bounded TTL;
+#     authorized live, per request, against the login's current FGCZ project
+#     membership (no cache, W=0). `scope` is unused.
 class ApiToken < ActiveRecord::Base
   serialize :scope, Array
+
+  # Mandatory upper bound on a `user` token's lifetime (design v0.7 P-INV-10).
+  MAX_USER_TOKEN_TTL_DAYS = 90
+
+  # Raised when the live project-membership resolver cannot answer (transport
+  # failure). The controller maps this to 503, distinct from an authorization
+  # denial (403). Fail-closed: the request never proceeds.
+  class ResolverUnavailable < StandardError; end
 
   # Salt the hash with the app's secret_key_base so a leaked api_tokens table
   # is not directly reversible without the server secret.
@@ -20,14 +34,36 @@ class ApiToken < ActiveRecord::Base
     Digest::SHA256.hexdigest(salt + raw.to_s)
   end
 
-  # Issue a new token. Returns [raw_token, record]. Persist nothing else; the
-  # raw value cannot be recovered afterwards.
-  def self.issue(name:, scope:, ttl_days: nil)
+  # Issue a new token. Returns [raw_token, record]. The raw value cannot be
+  # recovered afterwards.
+  #
+  # principal: "static" (default) requires a non-empty scope; "user" requires a
+  # non-blank login and a TTL within MAX_USER_TOKEN_TTL_DAYS (scope is ignored).
+  def self.issue(name:, scope: [], ttl_days: nil, principal: "static", login: nil)
+    principal = principal.to_s
+    case principal
+    when "user"
+      raise ArgumentError, "login is required for a user token" if login.to_s.strip.empty?
+      if ttl_days.to_s.strip.empty?
+        raise ArgumentError, "a user token requires TTL_DAYS (mandatory bounded TTL)"
+      end
+      if ttl_days.to_i <= 0 || ttl_days.to_i > MAX_USER_TOKEN_TTL_DAYS
+        raise ArgumentError, "TTL_DAYS must be between 1 and #{MAX_USER_TOKEN_TTL_DAYS} for a user token"
+      end
+      scope = []
+    when "static"
+      # existing behavior; scope validation is the caller's responsibility
+    else
+      raise ArgumentError, "unknown principal #{principal.inspect} (expected static|user)"
+    end
+
     raw = SecureRandom.urlsafe_base64(32)
     record = create!(
       name:       name,
       token_hash: digest(raw),
       scope:      Array(scope).map(&:to_i),
+      principal:  principal,
+      login:      (principal == "user" ? login.to_s.strip : nil),
       expires_at: ttl_days ? Time.now + ttl_days.to_i.days : nil
     )
     [raw, record]
@@ -42,8 +78,20 @@ class ApiToken < ActiveRecord::Base
     token
   end
 
+  def user?
+    principal.to_s == "user"
+  end
+
+  def static?
+    !user?
+  end
+
   def active?
-    !revoked? && !expired?
+    return false if revoked? || expired?
+    # A user token's TTL is mandatory; a null expiry must never authenticate
+    # (defense in depth — issuance already enforces this). Design v0.7 step 2.
+    return false if user? && expires_at.nil?
+    true
   end
 
   def revoked?
@@ -54,7 +102,25 @@ class ApiToken < ActiveRecord::Base
     expires_at.present? && expires_at <= Time.now
   end
 
+  # Static-principal membership test (unchanged). Not used for `user` tokens;
+  # user membership is tested against the live-resolved set (see allowed_projects).
   def in_scope?(project_number)
     Array(scope).map(&:to_i).include?(project_number.to_i)
+  end
+
+  # The set of project numbers this token may currently act on.
+  #   - static: the stored scope array.
+  #   - user:   the login's current FGCZ project membership, resolved live
+  #             (W=0). An inactive/unknown login yields the empty set (→ 403).
+  # Raises ResolverUnavailable on a transport failure (→ 503).
+  def allowed_projects
+    return Array(scope).map(&:to_i) unless user?
+
+    raw = FGCZ.get_user_projects2(login)
+    Array(raw).map { |p| p.to_s.sub(/\Ap/i, "").to_i }
+  rescue ResolverUnavailable
+    raise
+  rescue => e
+    raise ResolverUnavailable, e.message
   end
 end

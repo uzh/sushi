@@ -84,4 +84,55 @@ describe "Api::V1::Datasets", type: :request do
       expect(response).to have_http_status(:ok)
     end
   end
+
+  # Per-user (LDAP-bound) principal (design v0.7). Membership is resolved live
+  # via FGCZ.get_user_projects2(login); stubbed here.
+  describe "user principal" do
+    let!(:user_pair) { ApiToken.issue(name: "spec-user", principal: "user", login: "hubert", ttl_days: 1) }
+    let(:user_headers) do
+      { "Authorization" => "Bearer #{user_pair.first}", "CONTENT_TYPE" => "application/json" }
+    end
+
+    it "authorizes a project the login currently has (live resolve)" do
+      allow(FGCZ).to receive(:get_user_projects2).with("hubert").and_return(["p#{project_number}"])
+      post "/v1/datasets/register", params: body, headers: user_headers
+      expect(response).to have_http_status(:ok)
+    end
+
+    it "denies a project outside the login's current membership with 403" do
+      allow(FGCZ).to receive(:get_user_projects2).with("hubert").and_return(["p1"])
+      post "/v1/datasets/register", params: body, headers: user_headers
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it "fails closed with 503 when the resolver is unavailable" do
+      allow(FGCZ).to receive(:get_user_projects2).and_raise(StandardError, "ldap down")
+      post "/v1/datasets/register", params: body, headers: user_headers
+      expect(response).to have_http_status(:service_unavailable)
+    end
+
+    it "denies deregister (destructive) with 403 before any resolution" do
+      # No FGCZ stub: the endpoint whitelist must reject before resolution.
+      delete "/v1/datasets/123", headers: user_headers
+      expect(response).to have_http_status(:forbidden)
+    end
+  end
+
+  describe "ApiToken.issue validation" do
+    it "rejects a user token with no login" do
+      expect { ApiToken.issue(name: "x", principal: "user", ttl_days: 1) }
+        .to raise_error(ArgumentError)
+    end
+
+    it "rejects a user token with no TTL" do
+      expect { ApiToken.issue(name: "x", principal: "user", login: "hubert") }
+        .to raise_error(ArgumentError)
+    end
+
+    it "rejects a user token whose TTL exceeds the maximum" do
+      expect { ApiToken.issue(name: "x", principal: "user", login: "hubert",
+                              ttl_days: ApiToken::MAX_USER_TOKEN_TTL_DAYS + 1) }
+        .to raise_error(ArgumentError)
+    end
+  end
 end
