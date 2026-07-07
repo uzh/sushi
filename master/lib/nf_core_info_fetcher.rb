@@ -32,9 +32,27 @@ module NfCoreInfoFetcher
     }
   }
   
-  # Cache directory relative to this file: ../../tmp/nfcore_cache
-  CACHE_DIR = File.expand_path('../../tmp/nfcore_cache', __FILE__)
-  CACHE_TTL = 86400  # 24 hours
+  # Cache directory. Shared across SUSHI instances on the same node so that
+  # every instance/user reuses one warm cache instead of re-tracing nf-core.
+  # Resolution order:
+  #   1. ENV['SUSHI_NFCORE_CACHE_DIR'] (explicit override)
+  #   2. /scratch/sushi_nfcore_cache   (node-shared default, setgid SG_Employees)
+  #   3. ../../tmp/nfcore_cache        (per-instance fallback; Docker/local where
+  #                                     /scratch is absent or not writable)
+  CACHE_DIR = begin
+    fallback  = File.expand_path('../../tmp/nfcore_cache', __FILE__)
+    candidate = ENV['SUSHI_NFCORE_CACHE_DIR'] || '/scratch/sushi_nfcore_cache'
+    usable = begin
+      FileUtils.mkdir_p(candidate)
+      File.writable?(candidate)
+    rescue
+      false
+    end
+    usable ? candidate : fallback
+  end
+  # 1 week. Overridable via ENV (seconds). Was 86400 (24h): extended so the
+  # expensive full trace happens at most once per week per node.
+  CACHE_TTL = (ENV['SUSHI_NFCORE_CACHE_TTL'] || 604800).to_i
 
   # Legacy column mapping - use NfCoreConventions::COLUMN_MAPPING instead
   COLUMN_MAPPING = {
@@ -151,9 +169,20 @@ module NfCoreInfoFetcher
     pipelines['remote_workflows'].reject { |p| p['archived'] }.map { |p| p['name'] }
   end
   
+  # Process-wide memo of the parsed pipelines.json (2.8 MB). Without this it is
+  # re-read and re-parsed once per pipeline (~150x) on every boot (~2.8s wasted).
+  @@pipelines_json_cache = nil
+
+  # Reset the in-process pipelines.json memo (for tests / explicit refresh).
+  def self.reset_pipelines_json_cache!
+    @@pipelines_json_cache = nil
+  end
+
   def self.fetch_pipelines_json
+    return @@pipelines_json_cache unless @@pipelines_json_cache.nil?
     cache_path = File.join(CACHE_DIR, 'pipelines.json')
-    fetch_with_cache(NFCORE_PIPELINES_URL, cache_path)
+    # Do not memoize nil (missing cache + network failure): allow later retry.
+    @@pipelines_json_cache = fetch_with_cache(NFCORE_PIPELINES_URL, cache_path)
   end
   
   def self.fetch_description(pipeline_name)
@@ -504,9 +533,24 @@ module NfCoreInfoFetcher
     {}
   end
 
+  # Atomically write data to path: write a temp file in the same directory, then
+  # rename over the target. With a node-shared cache dir this prevents another
+  # SUSHI instance from reading a half-written file. Files are chmod 0664 so any
+  # SG_Employees member's instance can later replace them.
+  def self.atomic_write(path, data)
+    FileUtils.mkdir_p(File.dirname(path))
+    tmp = "#{path}.tmp.#{Process.pid}"
+    File.write(tmp, data, encoding: 'UTF-8')
+    File.chmod(0664, tmp) rescue nil
+    File.rename(tmp, path)  # atomic on the same filesystem
+  rescue => e
+    File.delete(tmp) if tmp && File.exist?(tmp)
+    raise e
+  end
+
   def self.fetch_with_cache(url, cache_path)
     FileUtils.mkdir_p(File.dirname(cache_path))
-    
+
     if File.exist?(cache_path) && File.size(cache_path) > 0 && (Time.now - File.mtime(cache_path)) < CACHE_TTL
       puts "NfCoreInfoFetcher: Using cache for #{url}"
       $stdout.flush
@@ -519,7 +563,7 @@ module NfCoreInfoFetcher
       data = URI.open(url, read_timeout: 30, open_timeout: 10).read
       # Force UTF-8 encoding for proper handling
       data = data.force_encoding('UTF-8')
-      File.write(cache_path, data, encoding: 'UTF-8')
+      atomic_write(cache_path, data)
       puts "NfCoreInfoFetcher: Successfully fetched and cached #{url}"
       $stdout.flush
       JSON.parse(data)
@@ -617,7 +661,7 @@ module NfCoreInfoFetcher
       begin
         config_text = URI.open(url, read_timeout: 15, open_timeout: 10).read
         config_text = config_text.force_encoding('UTF-8')
-        File.write(cache_path, config_text, encoding: 'UTF-8')
+        atomic_write(cache_path, config_text)
       rescue => e
         # Try stale cache
         if File.exist?(cache_path) && File.size(cache_path) > 0
