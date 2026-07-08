@@ -66,7 +66,10 @@ genomics compute node.
     @params['input_fasta_databases', 'multi_selection'] = true
 
     # ---- Library generation: digestion ----
-    @params['lib_digestion_cut']              = ['K*,R*', 'K*', 'R*']
+    # 'no digestion' -> empty --cut: a pre-digested / peptide-list FASTA (e.g. the
+    # entrapment FASTA) is taken verbatim. Enum aligned with the B-Fabric
+    # executable (source of truth): K*,R* / K*,R*,!*P / no digestion.
+    @params['lib_digestion_cut']              = ['K*,R*', 'K*,R*,!*P', 'no digestion']
     @params['lib_digestion_missed_cleavages'] = ['1', '0', '2', '3']
 
     # ---- Library generation: peptide / precursor / fragment ranges ----
