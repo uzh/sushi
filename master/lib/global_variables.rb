@@ -274,6 +274,7 @@ module GlobalVariables
     end
   end
   def run_RApp(app_name = self.class.to_s[0].downcase+self.class.to_s[1,20], lib_path: nil, conda_env: nil)
+    @ezrun_class_name = app_name
     command = ''
     if conda_env
       command << ". '/usr/local/ngseq/miniforge3/etc/profile.d/conda.sh'\n"
