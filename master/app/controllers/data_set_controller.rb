@@ -1,6 +1,15 @@
 class DataSetController < ApplicationController
 
   include SushiFabric
+
+  # Guard against importing pathologically large dataset tables. On import the
+  # whole dataset.tsv is slurped into memory by CSV.readlines (see #import), so a
+  # table with hundreds of thousands of rows can exhaust RAM and take down the
+  # host. (2026-07-17: a 1,168,291-row "Stool16s" import OOM'd fgcz-h-082, a
+  # 15GB/no-swap node.) Reject anything with >= MAX_IMPORT_SAMPLES data rows
+  # before the file is read.
+  MAX_IMPORT_SAMPLES = 500
+
   def top(n_dataset=1000, tree=nil)
     view_context.project_init
     @project = Project.find_by_number(session[:project].to_i)
@@ -629,6 +638,23 @@ class DataSetController < ApplicationController
     end
   end
 
+  # Count data rows (excluding the header and blank lines) without loading the
+  # file into memory, so the size guard itself cannot trigger the OOM it exists
+  # to prevent. Line-based: a quoted field with an embedded newline (rare in
+  # sample sheets) would over-count, which only makes the guard more conservative.
+  def import_data_row_count(path)
+    n = 0
+    header_seen = false
+    File.foreach(path) do |line|
+      unless header_seen
+        header_seen = true
+        next
+      end
+      n += 1 unless line.strip.empty?
+    end
+    n
+  end
+
   def import
     params[:project] = session[:project]
 
@@ -640,7 +666,13 @@ class DataSetController < ApplicationController
       end
       @data_set_ids = @project.data_sets.map{|data_set| data_set.id}.push('').reverse
 
-      if file = params[:file] and tsv = file[:name]
+      if file = params[:file] and tsv = file[:name] and (n_samples = import_data_row_count(tsv.path)) >= MAX_IMPORT_SAMPLES
+        @warning = "Import aborted: this dataset has #{n_samples} samples, " \
+                   "which is at or above the limit of #{MAX_IMPORT_SAMPLES}. " \
+                   "Datasets this large are almost always a mistake (e.g. a " \
+                   "feature/ASV table imported as a sample sheet). Please check " \
+                   "the file, or split it into smaller datasets."
+      elsif file = params[:file] and tsv = file[:name]
         # check meta-dataset
         make_meta_dataset = (meta_dataset = params[:meta_dataset] and plate_samples = meta_dataset[:plate_samples].to_i and plate_samples > 0)
         if make_meta_dataset
