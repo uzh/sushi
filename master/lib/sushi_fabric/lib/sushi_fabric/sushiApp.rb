@@ -694,6 +694,7 @@ rm -rf #{@scratch_dir} || exit 1
     sbatch_options << "-C #{@params['gpu_feature']}" unless @params['gpu_feature'].to_s.empty?
     sbatch_options << "-p #{@params['partition']}" unless @params['partition'].to_s.empty?
     sbatch_options << "--nice=#{@params['nice']}" unless @params['nice'].to_s.empty?
+    sbatch_options << "--exclusive" if @params['exclusive'].to_s == 'true'
 
     script_content = File.read(script_path)
 
