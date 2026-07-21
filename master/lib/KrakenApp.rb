@@ -190,18 +190,25 @@ EOS
   # hash and expects one clean output row back — classic behaviour, unchanged.
   #
   # In DATASET mode (exclusive on) one job covers the whole dataset, and the
-  # framework calls next_dataset only to (a) discover which headers are [File]
-  # (set_output_files) and (b) know which files to g-req copy scratch->gstore
-  # (job_footer). A single row hash can name only ONE sample's files, which would
-  # drop samples 2..N from the copy. So we return a *copy manifest*: every selected
-  # sample's [File] outputs under unique synthetic keys. These keys never reach
-  # dataset.tsv — the actual table is built row-per-sample in dataset_mode below.
+  # framework calls next_dataset in three places, none of which is the output
+  # table (that is built row-per-sample in dataset_mode below):
+  #   (a) set_output_files  -> to learn which headers are [File];
+  #   (b) job_footer        -> to know which files to g-req copy scratch->gstore;
+  #   (c) run_RApp          -> serialised into the R `output`, which EzApp$run
+  #                            turns into an EzDataset (so it needs a 'Name').
+  # A single row hash can name only ONE sample's files, which would drop samples
+  # 2..N from the copy (b). So we return a *copy manifest*: every selected sample's
+  # [File] outputs under unique synthetic keys, plus a 'Name' so (c) can build a
+  # valid EzDataset. The worker never reads `output`, so Name's value is cosmetic;
+  # these synthetic keys never reach dataset.tsv.
   def next_dataset
     if @params['process_mode'] == 'SAMPLE'
       return output_row_for(@dataset['Name'], @dataset['Read1'], @dataset['Read2'])
     end
+    rows = dataset_rows
     manifest = {}
-    dataset_rows.each do |row|
+    manifest['Name'] = rows.first['Name'] unless rows.empty?
+    rows.each do |row|
       name = row['Name']
       row.each do |header, value|
         next unless header.to_s =~ /\[File\]/
