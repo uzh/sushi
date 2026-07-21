@@ -14,26 +14,31 @@ class KrakenApp < SushiFabric::SushiApp
 Kraken taxonomic sequence classification system
 <a href='https://ccb.jhu.edu/software/kraken2/index.shtml'>https://ccb.jhu.edu/software/kraken2/index.shtml</a>
 <br/><br/>
-Runs in <b>dataset mode</b>: the whole dataset is processed in a single job on one
-node reserved with SLURM <code>--exclusive</code>, and all samples are classified
-sequentially reusing one Kraken2 <code>--use-daemon</code> classifier so the (large)
-database is loaded into memory only once instead of once per sample. The output
-table is unchanged (one row per sample).
+By default each sample is classified in its own job (SAMPLE mode). Enable
+<b>exclusive</b> to instead process the whole dataset in a single job on one node
+reserved with SLURM <code>--exclusive</code>, classifying all samples sequentially
+through one Kraken2 <code>--use-daemon</code> classifier so the (large) database is
+loaded into memory only once for the run instead of once per sample. The output
+table is the same either way (one row per sample).
 EOS
 
     @required_columns = ['Name','Read1']
     @required_params = ['paired', 'krakenDBOpt']
     # optional params
-    # Dataset mode + an exclusively reserved node are REQUIRED here: all samples
-    # share a single k2 classify daemon (started with --use-daemon on the first
-    # sample, stopped with `k2 clean --stop-daemon` after the last). The daemon
-    # addresses its control channel through fixed files in /tmp, which is shared
-    # between jobs on a node, so a second Kraken job co-located on the same node
-    # would collide with it — hence --exclusive. Do not switch to SAMPLE mode or
-    # disable exclusive unless you also remove the daemon in the ezRun worker.
-    @params['process_mode'] = 'DATASET'
-    @params['exclusive'] = true
-    @params['exclusive', 'description'] = 'reserve the whole node for this dataset (SLURM --exclusive). Required so no other job collides with the shared Kraken2 daemon; keep enabled.'
+    # 'exclusive' is the opt-in switch for the fast, database-loaded-once path.
+    # OFF (default): classic SAMPLE mode — one job per sample, no node reservation.
+    # ON: the whole dataset runs as a single job on a node reserved with SLURM
+    # --exclusive, and the ezRun worker classifies all samples sequentially through
+    # one shared k2 classify daemon (started with --use-daemon on the first sample,
+    # stopped with `k2 clean --stop-daemon` after the last) so the DB loads once.
+    # --exclusive is REQUIRED for that path: the daemon addresses its control channel
+    # through fixed files in /tmp, which is shared between jobs on a node, so a
+    # co-located second Kraken job would collide with it. process_mode is derived
+    # from this flag in preprocess, and the worker only starts the daemon when it is
+    # on — so the two can never be set inconsistently.
+    @params['process_mode'] = 'SAMPLE'
+    @params['exclusive'] = false
+    @params['exclusive', 'description'] = 'load the Kraken2 database only once for the whole dataset: reserve a full node (SLURM --exclusive) and classify all samples sequentially through one shared k2 --use-daemon classifier. Off = one job per sample (classic behaviour). Recommended for large databases and/or many samples.'
     @params['exclusive', 'context'] = 'slurm'
     @params['cores'] = '8'
     @params['cores', "context"] = "slurm"
@@ -126,6 +131,13 @@ EOS
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
+    # 'exclusive' drives the whole fast path: it both reserves the node (via the
+    # framework's submit()) and, here, switches the run to a single dataset job so
+    # the samples can share one k2 daemon (see initialize). Deriving process_mode
+    # from it keeps the two in lock-step — they can never be set inconsistently.
+    # Runs before set_output_files/main and after the GUI has applied user params
+    # (submit_job.rb sets @params before run), so the derived value is in effect.
+    @params['process_mode'] = (@params['exclusive'].to_s == 'true') ? 'DATASET' : 'SAMPLE'
     if @params['paired']
       @required_columns << 'Read2'
     end
@@ -174,14 +186,20 @@ EOS
            .map { |row| output_row_for(row['Name'], row['Read1'], row['Read2']) }
   end
 
-  # DATASET mode runs one job for the whole dataset, so the framework calls
-  # next_dataset only to (a) discover which headers are [File] (set_output_files)
-  # and (b) know which files to g-req copy scratch->gstore (job_footer). A single
-  # row hash can name only ONE sample's files, which would drop samples 2..N from
-  # the copy. So we return a *copy manifest*: every selected sample's [File]
-  # outputs under unique synthetic keys. These keys never reach dataset.tsv — the
-  # actual table is built row-per-sample in dataset_mode below.
+  # In SAMPLE mode (default) the framework sets @dataset to one tag-stripped row
+  # hash and expects one clean output row back — classic behaviour, unchanged.
+  #
+  # In DATASET mode (exclusive on) one job covers the whole dataset, and the
+  # framework calls next_dataset only to (a) discover which headers are [File]
+  # (set_output_files) and (b) know which files to g-req copy scratch->gstore
+  # (job_footer). A single row hash can name only ONE sample's files, which would
+  # drop samples 2..N from the copy. So we return a *copy manifest*: every selected
+  # sample's [File] outputs under unique synthetic keys. These keys never reach
+  # dataset.tsv — the actual table is built row-per-sample in dataset_mode below.
   def next_dataset
+    if @params['process_mode'] == 'SAMPLE'
+      return output_row_for(@dataset['Name'], @dataset['Read1'], @dataset['Read2'])
+    end
     manifest = {}
     dataset_rows.each do |row|
       name = row['Name']
