@@ -147,10 +147,13 @@ EOS
   # the result dir but intentionally not surfaced here — only the aggregate
   # report and Krona are advertised downstream.
   def output_row_for(name, read1 = nil, read2 = nil)
+    # Krona is now rendered with ktImportText (see ezRun app-kraken.R), which
+    # writes a single self-contained <name>.html — there is no <name>.html.files
+    # dir anymore, so KronaOutDir is intentionally not emitted (copying a missing
+    # dir would fail the g-req step).
     out = {'Name'=>name,
      'KronaReport [Link]'=>File.join(@result_dir, "#{name}.html"),
      'KrakenReport [File]'=>File.join(@result_dir, "#{name}.report.txt"),
-     'KronaOutDir [File]'=>File.join(@result_dir, "#{name}.html.files"),
      'KronaOut [File]'=>File.join(@result_dir, "#{name}.html"),
      'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/exploreMetaTax?data=#{@result_dir}",
     }
