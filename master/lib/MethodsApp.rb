@@ -37,8 +37,6 @@ class MethodsApp < SushiFabric::SushiApp
     command << "export LANG=en_US.UTF-8\n"
     command << "export LC_ALL=en_US.UTF-8\n"
     command << "R --vanilla --slave<<  EOT\n"
-    command << "# DEV ONLY: remove .libPaths override before production\n"
-    command << ".libPaths(c('/home/rdomi/R/libs', .libPaths()))\n"
     command << "if (!library(ezRun, logical.return = TRUE)){\n"
     command << "  message('retry loading ezRun')\n"
     command << "  Sys.sleep(120)\n"
