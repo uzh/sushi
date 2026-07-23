@@ -40,3 +40,6 @@ log/
 .bak
 btools/
 mouse_contamination_QC/
+
+# runtime artifacts written by master/lib/tasks/check_datasets.rake
+master/*dataset_list.log
