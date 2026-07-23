@@ -1044,24 +1044,22 @@ rm -rf #{@scratch_dir} || exit 1
     end
     copy_uploaded_files
 
-    # Generate MM script before the scratch→gstore copy wave so it's included automatically.
+    # Generate Methods script before the scratch→gstore copy wave so it's included automatically.
     # Guard: only for R apps (run_RApp sets @ezrun_class_name), real runs with a saved dataset.
-    mm_script_path = nil
+    methods_script_path = nil
     if @ezrun_class_name && @next_dataset_id && !mock && !@job_scripts.empty?
-      mm_gstore_job_script_paths = @job_scripts.map { |js| File.join(@gstore_script_dir, File.basename(js)) }
-      mm_app = MmApp.new(
-        ezrun_class_name:        @ezrun_class_name,
-        next_dataset_id:         @next_dataset_id,
-        gstore_result_dir:       @gstore_result_dir,
-        scratch_result_dir:      @scratch_result_dir,
-        job_script_dir:          @job_script_dir,
-        gstore_script_dir:       @gstore_script_dir,
-        gstore_job_script_paths: mm_gstore_job_script_paths,
-        sushi_server:            @sushi_server,
-        logger:                  @logger,
-        user:                    @user
+      methods_app = MethodsApp.new(
+        ezrun_class_name:  @ezrun_class_name,
+        next_dataset_id:   @next_dataset_id,
+        gstore_result_dir: @gstore_result_dir,
+        scratch_result_dir: @scratch_result_dir,
+        job_script_dir:    @job_script_dir,
+        gstore_script_dir: @gstore_script_dir,
+        sushi_server:      @sushi_server,
+        logger:            @logger,
+        user:              @user
       )
-      mm_script_path = mm_app.generate_script
+      methods_script_path = methods_app.generate_script
     end
 
     copy_inputdataset_parameter_jobscripts
@@ -1103,14 +1101,14 @@ rm -rf #{@scratch_dir} || exit 1
       end
     end
 
-    if mm_script_path && !mock
-      mm_job = Job.new
-      mm_job.script_path      = File.join(@gstore_script_dir, File.basename(mm_script_path))
-      mm_job.next_dataset_id  = @next_dataset_id
-      mm_job.status           = "WAITING_FOR_MM"
-      mm_job.user             = (@user || "sushi_lover")
-      mm_job.input_dataset_id = dataset.id if dataset
-      mm_job.save
+    if methods_script_path && !mock
+      methods_job = Job.new
+      methods_job.script_path      = File.join(@gstore_script_dir, File.basename(methods_script_path))
+      methods_job.next_dataset_id  = @next_dataset_id
+      methods_job.status           = "WAITING_FOR_METHODS"
+      methods_job.user             = (@user || "sushi_lover")
+      methods_job.input_dataset_id = dataset.id if dataset
+      methods_job.save
     end
 
     copy_nextdataset
@@ -1457,4 +1455,4 @@ TestSushi = ProdSushi
 
 end # SushiFabric
 
-require_relative '../../../MmApp'
+require_relative '../../../MethodsApp'
