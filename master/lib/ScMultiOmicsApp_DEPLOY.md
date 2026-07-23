@@ -25,41 +25,55 @@ Both Ruby files must land on every SUSHI instance (production, course, demo).
 
 ## Test instance (fgcz-h-083)
 
+The test instance is a git working tree too, so prefer a pull over `cp`:
+
 ```bash
 ssh fgcz-h-083
-cp ~/git/sushi/master/lib/ScSeuratApp.rb \
-   ~/git/sushi/master/lib/ScMultiOmicsApp.rb \
-   /srv/sushi/<your_test_instance>/master/lib/
-touch /srv/sushi/<your_test_instance>/master/tmp/restart.txt
+cd /srv/sushi/<your_test_instance>/master
+git pull --ff-only origin <branch>
+touch tmp/restart.txt
 ```
+
+If you do `cp` the two `.rb` files in for a throwaway iteration, run
+`git checkout -- lib/` from that same `master/` dir before the next pull, or the pull
+will be blocked.
 
 Open the test SUSHI URL → verify "ScMultiOmics" appears under SingleCell.
 
-## Production (fgcz-h-082)
+## Deploy (all instances)
+
+`/srv/sushi/<instance>/` is a git working tree and `master/lib/*.rb` is tracked in it.
+Never `scp`/`cp` over those files: it desyncs the tree from origin and the next
+`git pull --ff-only` dies with `error: Your local changes would be overwritten by merge`.
+Commit and push in the dev clone, then pull on each instance (production on fgcz-h-082,
+course + demo both on fgcz-h-081).
 
 ```bash
-scp ~/git/sushi/master/lib/ScSeuratApp.rb \
-    ~/git/sushi/master/lib/ScMultiOmicsApp.rb \
-    fgcz-h-082:/tmp/
+# 1. In the dev clone
+cd ~/git/sushi
+git add master/lib/ScSeuratApp.rb master/lib/ScMultiOmicsApp.rb
+git commit -m "feat(ScMultiOmics): ..."
+git push origin master
+
+# 2. Production (fgcz-h-082)
 ssh trxcopy@fgcz-h-082 \
-  'cp /tmp/ScSeuratApp.rb /tmp/ScMultiOmicsApp.rb /srv/sushi/production/master/lib/ && \
-   touch /srv/sushi/production/master/tmp/restart.txt'
-```
+  'cd /srv/sushi/production/master && git pull --ff-only origin master && touch tmp/restart.txt'
 
-## Course + Demo (fgcz-h-081)
-
-Per CLAUDE.md: course + demo SUSHI both live on fgcz-h-081 — apply to both:
-
-```bash
-scp ~/git/sushi/master/lib/ScSeuratApp.rb \
-    ~/git/sushi/master/lib/ScMultiOmicsApp.rb \
-    fgcz-h-081:/tmp/
+# 3. Course + Demo (fgcz-h-081, both instances on the same VM)
 ssh trxcopy@fgcz-h-081 \
   'for inst in course_sushi demo_sushi; do
-     cp /tmp/ScSeuratApp.rb /tmp/ScMultiOmicsApp.rb /srv/sushi/$inst/master/lib/
-     touch /srv/sushi/$inst/master/tmp/restart.txt
+     cd /srv/sushi/$inst/master && git pull --ff-only origin master && touch tmp/restart.txt
    done'
 ```
+
+If a pull is blocked, the cause is usually the per-instance env files that are meant to
+diverge (`config/environments/production.rb`, `lib/global_variables.rb`). Silence them once
+per instance with `git update-index --skip-worktree <file>`; do not fix a block by editing,
+`scp`-ing, or `checkout`-ing tracked app code on the server. A tree that has already
+drifted needs the recovery dance in the `fgcz-sushi-app-dev` skill: `git fetch origin`,
+compare each modified file against both HEAD and `origin/master`,
+`git checkout HEAD -- <file>` when it is identical to `origin/master` and
+`git stash push -- <file>` when it is a genuine env change, then pull and pop.
 
 ## Submission flow
 
