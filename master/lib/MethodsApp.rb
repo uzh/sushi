@@ -1,10 +1,10 @@
 # Methods auto-generation job.
 #
-# Generates an independent Slurm job that calls EzRun's generate_methods() to produce
+# Generates an independent Slurm job that calls EzRun's write_methods() to produce
 # a Methods document after a completed analysis run.
 #
 # ⚠ NOT exposed in the SUSHI UI — explicitly excluded from all_sushi_applications
-#   in application_controller.rb. When EzRun's generate_methods() is integrated across
+#   in application_controller.rb. When EzRun's write_methods() is integrated across
 #   all app classes, remove 'MethodsApp.rb' from the non_sushi_apps list there to
 #   promote this to a user-submittable app.
 
@@ -42,7 +42,7 @@ class MethodsApp < SushiFabric::SushiApp
     command << "  Sys.sleep(120)\n"
     command << "  library(ezRun)\n"
     command << "}\n"
-    command << "#{@ezrun_class_name}\\$new()\\$generate_methods(\n"
+    command << "#{@ezrun_class_name}\\$new()\\$write_methods(\n"
     command << "  gstore_script_dir = '#{@gstore_script_dir}',\n"
     command << "  output_dir        = '${SCRATCH_DIR}'\n"
     command << ")\n"
@@ -52,7 +52,7 @@ class MethodsApp < SushiFabric::SushiApp
 
   def job_footer
     @out.print "#### METHODS JOB DONE - COPY OUTPUTS TO GSTORE AND CLEAN UP\n"
-    md_file = "methods.txt"
+    md_file = "methods.md"
     @out.print copy_commands(md_file, @gstore_result_dir, 'now').join("\n"), "\n"
     @out.print <<-EOF
 cd #{SushiFabric::SCRATCH_DIR}
