@@ -6,6 +6,18 @@
            $.get("/run_application/factor_select?grouping=" + group_name + "&data_set_id=" + data_set_id);
        })
 
+       // KrakenApp: sync RAM textbox to (sum of selected DB sizes in GB) + 20.
+       // DB sizes are parsed from option labels emitted by KrakenApp#kraken_db_choices
+       // (e.g. "Standard (54.3 GB)"). Resets to 100 when nothing is selected.
+       $('#parameters_krakenDBOpt').change(function(){
+           var totalGb = 0;
+           $('#parameters_krakenDBOpt option:selected').each(function(){
+               var m = $(this).text().match(/\(([\d.]+)\s*GB\)/);
+               if (m) { totalGb += parseFloat(m[1]); }
+           });
+           $('#parameters_ram').val(totalGb > 0 ? Math.ceil(totalGb + 20) : 100);
+       });
+
       $("#go_next").on('click', function(){
         <% if @reference_required_and_unavailable %>
           alert("Genome reference applications are currently unavailable. Please try again later.");

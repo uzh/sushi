@@ -36,7 +36,14 @@ EOS
     @params['cmdOptions'] = ""
     @params['cmdOptions', "context"] = "Fastqc"
     @params['mail'] = ""
-    @modules = ["QC/FastQC", "Dev/R", "Tools/Picard", "Tools/samtools", "Dev/Python",  "QC/fastp"]
+    @params['generate_ai_summary'] = false
+    @params['generate_ai_summary', 'hr-header'] = "AI summaries within MultiQC report"
+    @params['generate_ai_summary', 'description'] = "When true, MultiQC runs with --ai-summary-full and bakes a global AI summary at the top of multiqc_report.html."
+    @params['generate_ai_summary', "context"] = "Fastqc AI"
+    @params['per_section_ai_summaries'] = false
+    @params['per_section_ai_summaries', 'description'] = "When true, SUSHI generates one AI summary per FastQC section (plots, tables, heatmaps) and injects them inline into multiqc_report.html."
+    @params['per_section_ai_summaries', "context"] = "Fastqc AI"
+    @modules = ["QC/FastQC", "Dev/R", "Tools/Picard", "Tools/samtools", "Dev/Python",  "QC/fastp", "QC/MultiQC"]
     @inherit_columns = ["Order Id"]
   end
  def set_default_parameters

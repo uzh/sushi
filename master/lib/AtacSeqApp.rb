@@ -5,10 +5,10 @@ require 'sushi_fabric'
 require_relative 'global_variables'
 include GlobalVariables
 
-class NfCoreAtacSeqApp <  SushiFabric::SushiApp
+class AtacSeqApp <  SushiFabric::SushiApp
   def initialize
     super
-    @name = 'NfCoreAtacSeq'
+    @name = 'AtacSeq'
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'GeneRegulation'
     @description =<<-EOS
@@ -25,11 +25,11 @@ EOS
     @params['scratch'] = '200'
     @params['scratch', "context"] = "slurm"
     @params['paired'] = true
-    @params['paired', "context"] = "NfCoreAtacSeq"
+    @params['paired', "context"] = "AtacSeq"
     @params['refBuild'] = ref_selector
     @params['refBuild', "context"] = "referfence genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
-    @params['refFeatureFile', "context"] = "NfCoreAtacSeq"
+    @params['refFeatureFile', "context"] = "AtacSeq"
     @params['peakStyle'] = ['broad', 'narrow']
     @params['varStabilizationMethod'] = ['vst', 'rlogTransf']
     @params['grouping'] = ''
@@ -38,11 +38,11 @@ EOS
     @params['runTwoGroupAnalysis', 'description'] = 'perform all two group analysis based on the grouping information'
     @params['keepBams'] = false
     @params['keepBams', 'description'] = 'delete BAM and BAI files from the result folder'
-    @params['name'] = 'NfCoreAtacSeq'
+    @params['name'] = 'AtacSeq'
     @params['pipelineVersion'] = '2.1.2'
     @params['pipelineVersion', 'description'] = 'specify pipeline version of nf-core pipeline'
     @params['cmdOptions'] = ""
-    @params['cmdOptions', "context"] = "NfCoreAtacSeq"
+    @params['cmdOptions', "context"] = "AtacSeq"
     @params['mail'] = ""
     @modules = ["Dev/jdk"]
   end

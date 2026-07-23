@@ -21,7 +21,7 @@ EOS
     # optional params
     @params['cores'] = ['8', '12', '16']
     @params['cores', "context"] = "slurm"
-    @params['ram'] = '30'
+    @params['ram'] = '60'
     @params['ram', "context"] = "slurm"
     @params['scratch'] = '200'
     @params['scratch', "context"] = "slurm"
@@ -35,7 +35,7 @@ EOS
     @params['deduplicate', 'description'] = 'Removal of PCR duplicates. Not recommended for RRBS-Seq (Enzymatic digestion)'
     @params['deduplicate', "context"] = "Bismark"
     @params['cmdOptions'] = '--bowtie2'
-    @params['cmdOptions', 'description'] = 'specify the commandline options for bismark; do not specify any option that is already covered by the dedicated input fields'
+    @params['cmdOptions', 'description'] = 'specify the commandline options for bismark; do not specify any option that is already covered by the dedicated input fields.'
     @params['cmdOptions', "context"] = "Bismark"
     # trimming options
     # general
@@ -93,6 +93,9 @@ EOS
     @params['EM_QC'] = false
     @params['EM_QC','description'] = 'Generate Boxplot for known methylated and unmethylated sites of Lambda/pUC19 control'
     @params['EM_QC', "context"] = "Bismark"
+    @params['nReads'] = '0'
+    @params['nReads','description'] = '0 takes all reads, useful if samples have >500M reads to set to 5000000000'
+    @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Aligner/Bowtie2", "Aligner/Bismark", "QC/fastp", "Dev/R", "Dev/Perl"]
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]

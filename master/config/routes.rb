@@ -97,6 +97,15 @@ SushiFabric::Application.routes.draw do
     end
   end
 
+  # Machine-callable, bearer-only registration API (v1 contract subset).
+  # Paths are /v1/... per the frozen v0.2 contract.
+  namespace :v1 do
+    post   "datasets/validate"       => "datasets#validate"
+    post   "datasets/register"       => "datasets#register"
+    put    "datasets/:id/bfabric-id" => "datasets#set_bfabric_id"
+    delete "datasets/:id"            => "datasets#destroy"
+  end
+
   get "/api/:method" => "api#index"
   post "/api/:method" => "api#index"
   

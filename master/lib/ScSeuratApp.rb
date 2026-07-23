@@ -88,7 +88,7 @@ Single cell report<br/>
     @params['enrichrDatabase','multi_selection'] = true
     @params['enrichrDatabase','all_selected'] = true
     @params['Azimuth'] = ["none", "adiposeref (human)", "bonemarrowref (human)", "fetusref (human)", "heartref (human)", "humancortexref (human)",
-                          "kidneyref (human)", "lungref (human)", "pancreasref (human)", "pbmcref (human)", "tonsilref (human)", "/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0 (human)",
+                          "kidneyref (human)", "lungref (human)", "pancreasref (human)", "pbmcref (human)", "tonsilref (human)", "/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0 (human)", "/srv/GT/databases/Azimuth/murineLiver_v1 (mouse)",
                           "mousecortexref (mouse)"]
     @params['AzimuthPanHuman'] = false
     @params['AzimuthPanHuman', 'description'] = 'Enable Azimuth Pan-Human neural network-based cell type annotation (HUMAN DATASETS ONLY)'

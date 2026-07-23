@@ -13,11 +13,33 @@ class KrakenApp < SushiFabric::SushiApp
     @description =<<-EOS
 Kraken taxonomic sequence classification system
 <a href='https://ccb.jhu.edu/software/kraken2/index.shtml'>https://ccb.jhu.edu/software/kraken2/index.shtml</a>
+<br/><br/>
+By default each sample is classified in its own job (SAMPLE mode). Enable
+<b>exclusive</b> to instead process the whole dataset in a single job on one node
+reserved with SLURM <code>--exclusive</code>, classifying all samples sequentially
+through one Kraken2 <code>--use-daemon</code> classifier so the (large) database is
+loaded into memory only once for the run instead of once per sample. The output
+table is the same either way (one row per sample).
 EOS
 
     @required_columns = ['Name','Read1']
     @required_params = ['paired', 'krakenDBOpt']
     # optional params
+    # 'exclusive' is the opt-in switch for the fast, database-loaded-once path.
+    # OFF (default): classic SAMPLE mode — one job per sample, no node reservation.
+    # ON: the whole dataset runs as a single job on a node reserved with SLURM
+    # --exclusive, and the ezRun worker classifies all samples sequentially through
+    # one shared k2 classify daemon (started with --use-daemon on the first sample,
+    # stopped with `k2 clean --stop-daemon` after the last) so the DB loads once.
+    # --exclusive is REQUIRED for that path: the daemon addresses its control channel
+    # through fixed files in /tmp, which is shared between jobs on a node, so a
+    # co-located second Kraken job would collide with it. process_mode is derived
+    # from this flag in preprocess, and the worker only starts the daemon when it is
+    # on — so the two can never be set inconsistently.
+    @params['process_mode'] = 'SAMPLE'
+    @params['exclusive'] = false
+    @params['exclusive', 'description'] = 'load the Kraken2 database only once for the whole dataset: reserve a full node (SLURM --exclusive) and classify all samples sequentially through one shared k2 --use-daemon classifier. Off = one job per sample (classic behaviour). Recommended for large databases and/or many samples.'
+    @params['exclusive', 'context'] = 'slurm'
     @params['cores'] = '8'
     @params['cores', "context"] = "slurm"
     @params['ram'] = '100'
@@ -109,22 +131,106 @@ EOS
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
   end
   def preprocess
+    # 'exclusive' drives the whole fast path: it both reserves the node (via the
+    # framework's submit()) and, here, switches the run to a single dataset job so
+    # the samples can share one k2 daemon (see initialize). Deriving process_mode
+    # from it keeps the two in lock-step — they can never be set inconsistently.
+    # Runs before set_output_files/main and after the GUI has applied user params
+    # (submit_job.rb sets @params before run), so the derived value is in effect.
+    @params['process_mode'] = (@params['exclusive'].to_s == 'true') ? 'DATASET' : 'SAMPLE'
     if @params['paired']
       @required_columns << 'Read2'
     end
   end
-  def next_dataset
-    # Note: per-read .txt.gz and <name>_unclassified.fasta.gz are written to
-    # the result dir but intentionally not surfaced here — only the aggregate
-    # report and Krona are advertised downstream.
-    {'Name'=>@dataset['Name'],
-     'KronaReport [Link]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
-     'KrakenReport [File]'=>File.join(@result_dir, "#{@dataset['Name']}.report.txt"),
-     'KronaOutDir [File]'=>File.join(@result_dir, "#{@dataset['Name']}.html.files"),
-     'KronaOut [File]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
+  # Build the output-table row for a single sample.
+  # Note: per-read .txt.gz and <name>_unclassified.fasta.gz are written to
+  # the result dir but intentionally not surfaced here — only the aggregate
+  # report and Krona are advertised downstream.
+  def output_row_for(name, read1 = nil, read2 = nil)
+    # Krona is now rendered with ktImportText (see ezRun app-kraken.R), which
+    # writes a single self-contained <name>.html — there is no <name>.html.files
+    # dir anymore, so KronaOutDir is intentionally not emitted (copying a missing
+    # dir would fail the g-req step).
+    out = {'Name'=>name,
+     'KronaReport [Link]'=>File.join(@result_dir, "#{name}.html"),
+     'KrakenReport [File]'=>File.join(@result_dir, "#{name}.report.txt"),
+     'KronaOut [File]'=>File.join(@result_dir, "#{name}.html"),
      'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/exploreMetaTax?data=#{@result_dir}",
-    }.merge(extract_columns(@inherit_tags))
+    }
+    # Carry raw FASTQ paths forward so downstream apps that need the reads
+    # (Bracken -> HUMAnN, etc.) can match this dataset without a manual
+    # merge. Use [Link] not [File]: these are pass-through pointers to the
+    # upstream FASTQ folder, NOT produced by this Kraken run. [File] would
+    # tell sushiApp.rb:613 to g-req copy the FASTQs back into their own
+    # source folder — self-referential copy fails with "destination path
+    # already exists" and (via set -e) kills the job. sushi_fabric.rb:338
+    # normalises the tag away for required-columns matching, so
+    # `Read1 [Link]` still satisfies downstream apps declaring `Read1`.
+    out['Read1 [Link]'] = read1 if read1
+    out['Read2 [Link]'] = read2 if read2
+    out.merge(extract_columns(@inherit_tags, sample_name: name))
   end
+
+  # True if this sample should be processed (honours the optional `samples`
+  # re-run filter, same rule the framework's sample_mode/dataset_mode use).
+  def selected_sample?(name)
+    return true if @params['samples'].to_s.empty?
+    @params['samples'].split(',').include?(name)
+  end
+
+  # One output-table row per selected sample. In DATASET mode @dataset is an
+  # Array of input row hashes (set by set_input_dataset / dataset_mode). We
+  # re-apply selected_sample? here so this returns the SAME set regardless of
+  # whether @dataset has already been filtered (see next_dataset caveat below).
+  def dataset_rows
+    samples = @dataset.is_a?(Array) ? @dataset : [@dataset]
+    samples.map { |raw| Hash[*raw.map { |k, v| [k.to_s.gsub(/\[.+\]/, '').strip, v] }.flatten] }
+           .select { |row| selected_sample?(row['Name']) }
+           .map { |row| output_row_for(row['Name'], row['Read1'], row['Read2']) }
+  end
+
+  # In SAMPLE mode (default) the framework sets @dataset to one tag-stripped row
+  # hash and expects one clean output row back — classic behaviour, unchanged.
+  #
+  # In DATASET mode (exclusive on) one job covers the whole dataset, and the
+  # framework calls next_dataset in three places, none of which is the output
+  # table (that is built row-per-sample in dataset_mode below):
+  #   (a) set_output_files  -> to learn which headers are [File];
+  #   (b) job_footer        -> to know which files to g-req copy scratch->gstore;
+  #   (c) run_RApp          -> serialised into the R `output`, which EzApp$run
+  #                            turns into an EzDataset (so it needs a 'Name').
+  # A single row hash can name only ONE sample's files, which would drop samples
+  # 2..N from the copy (b). So we return a *copy manifest*: every selected sample's
+  # [File] outputs under unique synthetic keys, plus a 'Name' so (c) can build a
+  # valid EzDataset. The worker never reads `output`, so Name's value is cosmetic;
+  # these synthetic keys never reach dataset.tsv.
+  def next_dataset
+    if @params['process_mode'] == 'SAMPLE'
+      return output_row_for(@dataset['Name'], @dataset['Read1'], @dataset['Read2'])
+    end
+    rows = dataset_rows
+    manifest = {}
+    manifest['Name'] = rows.first['Name'] unless rows.empty?
+    rows.each do |row|
+      name = row['Name']
+      row.each do |header, value|
+        next unless header.to_s =~ /\[File\]/
+        base = header.to_s.sub(/\s*\[.+\]\s*/, '').strip
+        manifest["#{name} #{base} [File]"] = value
+      end
+    end
+    manifest
+  end
+
+  # Keep the historical output table (one clean row per sample) even though the
+  # framework's dataset_mode collapses next_dataset to a single row. Let the
+  # framework build @dataset + the single job script + the file-copy manifest,
+  # then replace @result_dataset with the per-sample rows.
+  def dataset_mode
+    super
+    @result_dataset = dataset_rows
+  end
+
   def commands
     run_RApp("EzAppKraken")
   end

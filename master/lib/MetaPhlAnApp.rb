@@ -31,6 +31,10 @@ EOS
     @params['metaphlanIndex', 'description'] = 'MetaPhlAn bowtie2 index basename (auto-detected from /srv/GT/databases/metaphlan_databases/, total on-disk size shown). The latest CHOCOPhlAnSGB DB pointed to by mpa_latest is promoted first when present. See <a href="http://segatalab.cibio.unitn.it/data/Database_links.html">MetaPhlAn DB index</a>.'
     @params['metaphlanIndex', "context"] = "MetaPhlAn"
 
+    @params['estimateReadCounts'] = true
+    @params['estimateReadCounts', 'description'] = 'Estimation of read counts mapped to clade. When true, MetaPhlAn is run with <code>-t rel_ab_w_read_stats</code> so the profile includes the <code>estimated_number_of_reads_from_the_clade</code> column. Required by the count-based DiffShot apps (DiffShotALDEx, DiffShotANCOMBC); not used by the relative-abundance ones (DiffShotMaAsLin3, DiffShotLEfSe), but harmless. Default true to keep both downstream DA paths open.'
+    @params['estimateReadCounts', "context"] = "MetaPhlAn"
+
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'extra commandline options for metaphlan; do NOT specify --input_type, --db_dir, --index, --nproc, --mapout, -o, --tmp_dir (already set by the app).'
     @params['cmdOptions', "context"] = "MetaPhlAn"
@@ -97,11 +101,25 @@ EOS
   def next_dataset
     # Output filename ends with _metaphlan.txt so exploreMetaTax auto-detects
     # it as a MetaPhlAn profile (see exploreMetaTax/app.R FORMAT_PATTERNS).
-    {'Name'=>@dataset['Name'],
+    out = {'Name'=>@dataset['Name'],
      'MetaPhlAnProfile [File]'=>File.join(@result_dir, "#{@dataset['Name']}_metaphlan.txt"),
      'BowtieMapout [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bowtie2.bz2"),
      'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/exploreMetaTax?data=#{@result_dir}",
-    }.merge(extract_columns(@inherit_tags))
+    }
+    # Carry the raw FASTQ paths forward so downstream apps that need to
+    # re-read the reads (HUMAnN, etc.) can match this dataset without users
+    # having to merge it with the upstream FASTQ dataset by hand.
+    # Use [Link] not [File]: these are pass-through pointers to the
+    # upstream FASTQ folder, NOT produced by this MetaPhlAn run. [File]
+    # would tell sushiApp.rb:613 to g-req copy the FASTQs back into their
+    # own source folder — self-referential copy fails with "destination
+    # path already exists" and (via set -e) kills the job.
+    # sushi_fabric.rb:338 normalises the tag away for required-columns
+    # matching, so `Read1 [Link]` still satisfies downstream apps
+    # declaring `@required_columns = ['Name','Read1']`.
+    out['Read1 [Link]'] = @dataset['Read1'] if @dataset['Read1']
+    out['Read2 [Link]'] = @dataset['Read2'] if @dataset['Read2']
+    out.merge(extract_columns(@inherit_tags))
   end
 
   def commands

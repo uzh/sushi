@@ -45,12 +45,23 @@ EOS
 
   def next_dataset
     name = @dataset['Name']
-    {'Name'=>name,
+    # KrakenReport and Read1/Read2 are pass-through pointers to upstream
+    # data — NOT produced by this Bracken run. Expose as [Link] (no copy)
+    # so downstream apps like HUMAnN can still see them, but SUSHI's
+    # job_footer (sushiApp.rb:611-630) doesn't try to g-req copy them
+    # back into their own source folders (which would fail with
+    # "destination path already exists" and kill the whole job because
+    # the wrapper runs under set -e). Only files actually produced in
+    # scratch by this run go under [File].
+    out = {'Name'=>name,
      'BrackenAbundance [File]'=>File.join(@result_dir, "#{name}.bracken"),
      'BrackenReport [File]'=>File.join(@result_dir, "#{name}.bracken.report.txt"),
-     'KrakenReport [File]'=>@dataset['KrakenReport'],
+     'KrakenReport [Link]'=>@dataset['KrakenReport'],
      'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/exploreMetaTax?data=#{@result_dir}",
-    }.merge(extract_columns(@inherit_tags))
+    }
+    out['Read1 [Link]'] = @dataset['Read1'] if @dataset['Read1']
+    out['Read2 [Link]'] = @dataset['Read2'] if @dataset['Read2']
+    out.merge(extract_columns(@inherit_tags))
   end
 
   def commands
