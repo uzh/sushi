@@ -52,7 +52,7 @@ class MethodsApp < SushiFabric::SushiApp
 
   def job_footer
     @out.print "#### METHODS JOB DONE - COPY OUTPUTS TO GSTORE AND CLEAN UP\n"
-    md_file = "methods.txt"
+    md_file = "methods.md"
     @out.print copy_commands(md_file, @gstore_result_dir, 'now').join("\n"), "\n"
     @out.print <<-EOF
 cd #{SushiFabric::SCRATCH_DIR}
