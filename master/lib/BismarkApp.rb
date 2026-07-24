@@ -94,7 +94,7 @@ EOS
     @params['EM_QC','description'] = 'Generate Boxplot for known methylated and unmethylated sites of Lambda/pUC19 control'
     @params['EM_QC', "context"] = "Bismark"
     @params['nReads'] = '0'
-    @params['nReads','description'] = '0 takes all reads, useful if samples have >500M reads to set to 5000000000'
+    @params['nReads','description'] = '0 takes all reads, useful if samples have >500M reads to set to 500000000'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/samtools", "Aligner/Bowtie2", "Aligner/Bismark", "QC/fastp", "Dev/R", "Dev/Perl"]
