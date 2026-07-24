@@ -101,7 +101,7 @@ Columns: <code>id, name, read, pattern, sequence, feature_type</code> | <a href=
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @modules = ["Tools/seqtk", "Dev/R", "Dev/Python", "Tools/samtools"]
-    @params['CellRangerVersion'] = ["Aligner/CellRanger/10.0.0", "Aligner/CellRanger/9.0.0", "Aligner/CellRanger/8.0.1", "Aligner/CellRanger/7.1.0"]
+    @params['CellRangerVersion'] = ["Aligner/CellRanger/10.1.0", "Aligner/CellRanger/10.0.0", "Aligner/CellRanger/9.0.0", "Aligner/CellRanger/8.0.1", "Aligner/CellRanger/7.1.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def set_default_parameters
