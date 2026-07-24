@@ -1,24 +1,44 @@
 class JobMonitoringController < ApplicationController
+  JOB_LIST_COLUMNS =
+    'jobs.id, jobs.status, jobs.script_path, jobs.start_time, jobs.end_time, ' \
+    'jobs.user, jobs.next_dataset_id, projects.number AS project_number, ' \
+    'data_sets.name AS next_dataset_name'.freeze
+
   def fetch_jobs(params, project_number)
     option = params[:option]
 
-    base_scope =
-      Job.joins(data_set: :project)
-         .select('jobs.id, jobs.status, jobs.script_path, jobs.start_time, jobs.end_time, jobs.user, jobs.next_dataset_id, projects.number AS project_number, data_sets.name AS next_dataset_name')
-         .order(id: :desc)
+    all_projects =
+      if option && option[:all_job_list]        # all projects (button)
+        true
+      elsif option && option[:project_job_list] # project specific (button)
+        false
+      else                                       # fall back to session
+        !!session[:all_job_list]
+      end
 
-    if option && option[:all_job_list] # all projects
+    if all_projects
       configure_job_list(all_job_list: true, page_unit: 1000)
-      base_scope.limit(1000)
-    elsif option && option[:project_job_list] # project specific
+      # The all-projects list used to time out (504). With a plain join the
+      # optimizer drove from `projects` (a tiny table), so ORDER BY jobs.id could
+      # not use the primary key and the entire jobs->data_sets->projects join was
+      # materialized and filesorted before LIMIT. STRAIGHT_JOIN forces `jobs` as
+      # the driving table, so LIMIT 1000 is served by a backward primary-key scan
+      # that stops early. The result set is identical to the old query (the newest
+      # 1000 jobs that resolve to a data_set + project).
+      Job.select(JOB_LIST_COLUMNS)
+         .joins('STRAIGHT_JOIN data_sets ON data_sets.id = jobs.next_dataset_id')
+         .joins('STRAIGHT_JOIN projects ON projects.id = data_sets.project_id')
+         .order('jobs.id DESC')
+         .limit(1000)
+    else
+      # Project-specific list filters on projects.number first (a small subset),
+      # so the optimizer's own join order is fine here; keep the plain join.
       configure_job_list(all_job_list: false)
-      base_scope.where(projects: { number: project_number }).limit(100)
-    elsif session[:all_job_list] # all projects from session
-      configure_job_list(all_job_list: true, page_unit: 1000)
-      base_scope.limit(1000)
-    else # project specific
-      configure_job_list(all_job_list: false)
-      base_scope.where(projects: { number: project_number }).limit(100)
+      Job.select(JOB_LIST_COLUMNS)
+         .joins(data_set: :project)
+         .where(projects: { number: project_number })
+         .order('jobs.id DESC')
+         .limit(100)
     end
   end
   def configure_job_list(all_job_list:, page_unit: nil)
