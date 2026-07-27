@@ -109,6 +109,10 @@ Single cell report<br/>
     @params['CyteTypeR.apiKey', 'description'] = 'Nygen Analytics CyteType API key (or set CYTETYPE_API_KEY env var)'
     @params['CyteTypeR.studyContext'] = ''
     @params['CyteTypeR.studyContext', 'description'] = 'Optional biological context for better annotation (e.g., "Human PBMC from healthy donors"). Auto-generated if empty.'
+    @params['mLLMCelltype'] = true
+    @params['mLLMCelltype', 'description'] = 'Enable mLLMCelltype cluster annotation on the FGCZ-internal vLLM. Only the top marker gene NAMES per cluster are sent and the server is on-site, so no expression data leaves FGCZ and no API key is needed.'
+    @params['mLLMCelltype.tissue'] = ''
+    @params['mLLMCelltype.tissue', 'description'] = 'Tissue or sorted population, e.g. "PBMC", "sorted B cells", "lung", "CD8+ TILs". Strongly recommended: with no context the labels get much worse (on a sorted B-cell dataset, 4/14 clusters correct without it vs 13/14 with it).'
     @params['cellxgeneUrl'] = ''
     @params['cellxgeneUrl', 'description'] = 'Choose a download URL to a Seurat rds file of a dataset from here: https://cellxgene.cziscience.com/datasets'
     @params['cellxgeneLabel'] = ''
