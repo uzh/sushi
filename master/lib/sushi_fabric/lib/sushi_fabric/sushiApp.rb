@@ -221,6 +221,7 @@ class SushiApp
     @gstore_dir = GSTORE_DIR
     @project = nil
     @name = nil
+    @citation = []
     @params = {}
     @params['cores'] = nil
     @params['ram'] = nil
@@ -1049,16 +1050,34 @@ rm -rf #{@scratch_dir} || exit 1
     # Guard: only for R apps (run_RApp sets @ezrun_class_name), real runs with a saved dataset.
     methods_script_path = nil
     if @ezrun_class_name && @next_dataset_id && !mock && !@job_scripts.empty?
+      # Chain onto the input dataset's own methods.md, if it has one. No parent, or a parent
+      # predating this feature, or a parent whose methods job failed: just start fresh.
+      parent_methods_path = nil
+      if dataset
+        begin
+          parent_relative_dir = dataset.paths.first
+          if parent_relative_dir
+            candidate = File.join(GSTORE_DIR, parent_relative_dir, 'methods.md')
+            parent_methods_path = candidate if File.exist?(candidate)
+          end
+        rescue => e
+          @logger.error("parent methods path resolution failed: #{e.message}") if @logger
+        end
+      end
+
       methods_app = MethodsApp.new(
-        ezrun_class_name:  @ezrun_class_name,
-        next_dataset_id:   @next_dataset_id,
-        gstore_result_dir: @gstore_result_dir,
-        scratch_result_dir: @scratch_result_dir,
-        job_script_dir:    @job_script_dir,
-        gstore_script_dir: @gstore_script_dir,
-        sushi_server:      @sushi_server,
-        logger:            @logger,
-        user:              @user
+        ezrun_class_name:    @ezrun_class_name,
+        analysis_name:       @name,
+        citation:            @citation,
+        next_dataset_id:     @next_dataset_id,
+        gstore_result_dir:   @gstore_result_dir,
+        scratch_result_dir:  @scratch_result_dir,
+        job_script_dir:      @job_script_dir,
+        gstore_script_dir:   @gstore_script_dir,
+        sushi_server:        @sushi_server,
+        logger:              @logger,
+        user:                @user,
+        parent_methods_path: parent_methods_path
       )
       methods_script_path = methods_app.generate_script
     end

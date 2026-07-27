@@ -10,6 +10,13 @@ class CountQCApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'CountQC'
+    # Split across the two tools this app actually calls, to show the multi-citation case --
+    # ezRun for the overall counting/normalisation pipeline, GOstats for the optional GO
+    # enrichment step (runGO param). Approximate, not verified to the letter.
+    @citation = [
+      'Rehrauer, H. et al. ezRun: An R meta-package for the analysis of Next Generation Sequencing Data. https://github.com/uzh/ezRun',
+      'Falcon, S. & Gentleman, R. Using GOstats to test gene lists for GO term association. Bioinformatics 23(2), 257-258 (2007). https://doi.org/10.1093/bioinformatics/btl567'
+    ]
     @analysis_category = 'QC'
     @description =<<-EOS
 Quality control after counting reads<br/>
