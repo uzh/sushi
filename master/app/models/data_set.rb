@@ -283,6 +283,22 @@ class DataSet < ActiveRecord::Base
     paths.map{|path| path.split('/')[0,2].join('/')}
   end
 
+  def methods_md_path
+    return nil unless (paths = sample_paths) && !paths.empty?
+    File.join(SushiFabric::GSTORE_DIR, paths.first, "methods.md")
+  end
+
+  def methods_md_content
+    path = methods_md_path
+    return nil unless path && File.exist?(path)
+    File.read(path)
+  end
+
+  def methods_md_url
+    return nil unless (paths = sample_paths) && !paths.empty?
+    File.join("https://fgcz-gstore.uzh.ch/projects/", paths.first, "methods.md")
+  end
+
   def self.save_dataset_to_database(data_set_arr:, headers:, rows:, user: nil, child: nil, sushi_app_name: nil)
     data_set_hash = Hash[*data_set_arr]
     

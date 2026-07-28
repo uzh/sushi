@@ -205,6 +205,7 @@ $(document).ready(function(){
 - <a href="#" id="merge_datasets_btn">merge with another dataset</a>
 <% end %>
 - <%= link_to 'parameters', "/data_set/job_parameter.#{@data_set.id}", :method=>:get %>
+- <a href="#" id="toggle_methods_link">methods</a>
 <% if @data_set.data_set and @data_set.sushi_app_name %>
 -  <%= link_to "resubmit", {:controller=>"run_application", :action=>"set_parameters", data_set_id: @data_set.data_set.id, resubmit_data_set_id: @data_set.id,  app: @data_set.sushi_app_name}, :method=>:post %>
 <% end %>
@@ -325,6 +326,23 @@ $(document).ready(function(){
 </div>
 
 <br class="jstree_container_clear" />
+
+<div id="methods_preview_box" style="display:none; position: relative; background-color: #f5f5f5; padding: 15px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; overflow-x: auto; max-height: 400px; overflow-y: scroll;">
+  <% if (methods_content = @data_set.methods_md_content) %>
+    <%= link_to "Download methods.md", @data_set.methods_md_url, target: "_blank", style: "position: absolute; top: 10px; right: 15px;", class: "btn btn-info btn-sm raised" %>
+    <%= render_methods_md(methods_content) %>
+  <% else %>
+    Methods not found
+  <% end %>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#toggle_methods_link").on("click", function(e){
+    e.preventDefault();
+    $("#methods_preview_box").toggle();
+  });
+});
+</script>
 <br />
 <h3 style="display: inline">
   <span id="data_set_title"><%= @data_set.name %></span> Content <button class="btn-link" id="hide">Hide</button><span id="hide_indicator" class="arrow-up"></span>
