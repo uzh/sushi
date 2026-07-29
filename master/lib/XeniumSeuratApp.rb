@@ -130,10 +130,45 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     @params['coocRadius', 'description'] = 'Cell-type co-occurrence: spatial neighbour radius in microns for the neighbourhood-enrichment graph.'
     @params['coocNperm'] = '1000'
     @params['coocNperm', 'description'] = 'Cell-type co-occurrence: number of label permutations for the enrichment null (log2 enrichment + permutation p-value).'
+    @params['rctdUMIminSigma'] = '300'
+    @params['rctdUMIminSigma', 'description'] = 'Minimum UMI for the cells used to fit RCTD sigma (overdispersion), which drives every singlet/doublet/reject call. spacexr default 300, but Xenium medians run 100-300 so sigma gets fit on the count-rich tail. Lower it if log.txt warns that too few cells clear it.'
+    @params['banksyDims'] = '30'
+    @params['banksyDims', 'description'] = 'BANKSY: number of pca.banksy PCs used for niche clustering (30 = all the PCs computed).'
+    @params['banksyKgeom'] = '30'
+    @params['banksyKgeom', 'description'] = 'BANKSY: spatial neighbourhood size k_geom (the paper endorses 15-30).'
+    @params['coocFdr'] = true
+    @params['coocFdr', 'description'] = 'Cell-type co-occurrence: BH-correct the permutation p-values across cell-type pairs before starring the heatmap.'
     @params['specialOptions'] = ''
     @params['mail'] = ""
-    @modules = ["Dev/R"]
+    # Pin the R version, as every sibling spatial app does. An unversioned
+    # "Dev/R" follows the Lmod default: it moved to 4.6.0 (Seurat 5.5.1), where
+    # an upstream FindClusters change silently overwrote seurat_clusters, and
+    # Dev/R/4.5.0 has no SPLIT package at all.
+    @params['Rversion'] = ["Dev/R/4.6.0", "Dev/R/4.5.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
+  end
+  def preprocess
+    # Validate at SUBMIT time. Everything below used to fail (or silently
+    # degrade) only inside the job, after SLURM had already granted 200 GB and
+    # the pipeline had run for hours.
+    if @params['rctdFile'].to_s != '' && !File.exist?(@params['rctdFile'].to_s)
+      raise "rctdFile not found: #{@params['rctdFile']}"
+    end
+    if @params['rctdClassFile'].to_s != '' && !File.exist?(@params['rctdClassFile'].to_s)
+      raise "rctdClassFile not found: #{@params['rctdClassFile']}"
+    end
+    if @params['doSPLIT']
+      if @params['rctdFile'].to_s == '' &&
+         (@params['rctdReference'].to_s == '' || @params['rctdReference'].to_s == 'None')
+        raise "doSPLIT requires an RCTD reference: set rctdReference or rctdFile."
+      end
+      # splitMode 'shift' needs the class hierarchy. Without rctdClassFile,
+      # RCTD emits no first_type_class/second_type_class and SPLIT's label-swap
+      # dies inside dplyr - a failure the app's tryCatch used to swallow.
+      if @params['splitMode'].to_s == 'shift' && @params['rctdClassFile'].to_s == ''
+        raise "splitMode='shift' requires rctdClassFile (TSV: cell_type, class). Use splitMode='neighborhood' or supply the file."
+      end
+    end
   end
   def next_dataset
     # In SAMPLE mode, @dataset is a Hash (not Array) containing the current sample
@@ -141,12 +176,16 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     sample_name = @dataset['Name'] || 'placeholder'
     report_dir = File.join(@result_dir, sample_name)
     {'Name'=>sample_name,
+     'Species'=>@dataset['Species'],
      'XeniumSeurat [File]'=>report_dir,
-     'XeniumSeurat Report [Link]'=>File.join(report_dir, '00index.html'),
-     'Species'=>@dataset['Species']
-    }
+     'Static Report [Link]'=>File.join(report_dir, '00index.html'),
+     # Expose the object itself so downstream apps and exploreSC links do not
+     # have to guess the path (ScSeurat emits the equivalent 'SC Seurat [Link]').
+     'SC Seurat [Link]'=>File.join(report_dir, 'scData.qs2')
+    }.merge(extract_columns(@inherit_tags))
   end
   def commands
-    run_RApp("EzAppXeniumSeurat")
+    command = "module load #{@params["Rversion"]}\n"
+    command << run_RApp("EzAppXeniumSeurat")
   end
 end
