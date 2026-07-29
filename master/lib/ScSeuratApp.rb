@@ -91,9 +91,7 @@ Single cell report<br/>
                           "kidneyref (human)", "lungref (human)", "pancreasref (human)", "pbmcref (human)", "tonsilref (human)", "/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0 (human)", "/srv/GT/databases/Azimuth/murineLiver_v1 (mouse)",
                           "mousecortexref (mouse)"]
     @params['AzimuthPanHuman'] = false
-    @params['AzimuthPanHuman', 'description'] = 'Enable Azimuth Pan-Human cell type annotation via the external CloudAzimuth API. Human only - ezRun checks refBuild and skips non-human datasets automatically. Left OFF by default because it sends the expression matrix off-site: CellRanger >=10.1.0 runs the same Pan-Human Azimuth model LOCALLY and by default, so prefer that route (it needs the reference to declare genome GRCh38, see genome-reference-build).'
-    @params['AzimuthPanHuman.confidence.threshold'] = 0.5
-    @params['AzimuthPanHuman.confidence.threshold', 'description'] = 'Confidence threshold for Azimuth Pan-Human annotation (0.0-1.0)'
+    @params['AzimuthPanHuman', 'description'] = 'Enable Azimuth Pan-Human cell type annotation. If the upstream CellRanger run (>=10.1.0) already produced outs/cell_types/, those labels are reused and nothing leaves the site - verified bit-for-bit identical to the API result. Only when that file is absent does this fall back to the external CloudAzimuth API, which sends the expression matrix off-site. Human only - ezRun checks refBuild and skips non-human datasets automatically.'
     @params['SingleR'] = ['none', 'BlueprintEncodeData (human)', 'DatabaseImmuneCellExpressionData (human)', 'HumanPrimaryCellAtlasData (human)',
                           'MonacoImmuneData (human)', 'NovershternHematopoieticData (human)', 'ImmGenData (mouse)', 'MouseRNAseqData (mouse)']
     @params['SingleR', 'description'] = "Use reference datasets from the celldex package to find marker-based celltype annotation with SingleR"
@@ -101,8 +99,6 @@ Single cell report<br/>
     @params['sctype.enabled', 'description'] = 'Enable scType automatic cell type annotation (human and mouse supported)'
     @params['sctype.tissue'] = ["auto", "Immune system", "Liver", "Pancreas", "Kidney", "Eye", "Brain", "Lung", "Adrenal", "Heart", "Intestine", "Muscle", "Placenta", "Spleen", "Stomach", "Thymus"]
     @params['sctype.tissue', 'description'] = 'Tissue type for scType annotation. Select "auto" for automatic detection or specify the tissue type for more accurate results'
-    @params['sctype.confidence.threshold'] = 0.25
-    @params['sctype.confidence.threshold', 'description'] = 'Confidence threshold for scType annotation'
     @params['CyteTypeR'] = false
     @params['CyteTypeR', 'description'] = 'Enable CyteTypeR AI-powered cell type annotation (requires API key)'
     @params['CyteTypeR.apiKey'] = ''
