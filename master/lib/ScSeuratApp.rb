@@ -91,7 +91,7 @@ Single cell report<br/>
                           "kidneyref (human)", "lungref (human)", "pancreasref (human)", "pbmcref (human)", "tonsilref (human)", "/srv/GT/databases/Azimuth/humanLiver_Azimuth_v1.0 (human)", "/srv/GT/databases/Azimuth/murineLiver_v1 (mouse)",
                           "mousecortexref (mouse)"]
     @params['AzimuthPanHuman'] = false
-    @params['AzimuthPanHuman', 'description'] = 'Enable Azimuth Pan-Human neural network-based cell type annotation (HUMAN DATASETS ONLY)'
+    @params['AzimuthPanHuman', 'description'] = 'Enable Azimuth Pan-Human cell type annotation via the external CloudAzimuth API. Human only - ezRun checks refBuild and skips non-human datasets automatically. Left OFF by default because it sends the expression matrix off-site: CellRanger >=10.1.0 runs the same Pan-Human Azimuth model LOCALLY and by default, so prefer that route (it needs the reference to declare genome GRCh38, see genome-reference-build).'
     @params['AzimuthPanHuman.confidence.threshold'] = 0.5
     @params['AzimuthPanHuman.confidence.threshold', 'description'] = 'Confidence threshold for Azimuth Pan-Human annotation (0.0-1.0)'
     @params['SingleR'] = ['none', 'BlueprintEncodeData (human)', 'DatabaseImmuneCellExpressionData (human)', 'HumanPrimaryCellAtlasData (human)',
