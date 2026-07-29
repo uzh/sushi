@@ -101,7 +101,7 @@ class BWAApp < SushiFabric::SushiApp
     @params['paired'] = dataset_has_column?('Read2')
   end
   def next_dataset
-    {'Name'=>@dataset['Name'],
+    dataset = {'Name'=>@dataset['Name'],
      'BAM [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam"),
      'BAI [File]'=>File.join(@result_dir, "#{@dataset['Name']}.bam.bai"),
      'IGV [File,Link]'=>File.join(@result_dir, "#{@dataset['Name']}-igv.html"),
@@ -113,6 +113,10 @@ class BWAApp < SushiFabric::SushiApp
      'Read Count'=>@dataset['Read Count'],
      'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log")
     }.merge(extract_columns(@inherit_tags))
+    if @params['markDuplicates']
+      dataset['DupMetrics [File,Link]'] = File.join(@result_dir, "#{@dataset['Name']}_metrics.txt")
+    end
+    dataset
   end
   def commands
     run_RApp("EzAppBWA")
