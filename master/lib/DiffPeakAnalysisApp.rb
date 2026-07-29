@@ -12,7 +12,12 @@ class DiffPeakAnalysisApp <  SushiFabric::SushiApp
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'GeneRegulation'
     @description =<<-EOS
-    Finding differential peaks for ATAC Seq or ChIP Seq data <br/>
+    Finding differential peaks for ATAC-Seq or ChIP-Seq data with DESeq2.<br/>
+    Comparisons without biological replicates are supported (dispersion is
+    estimated with a blind design and reported as conservative). The Quarto
+    report includes volcano/MA/PCA/heatmap plots, peak feature and TSS-distance
+    distributions, one-click Enrichr submission of candidate genes, a
+    downloadable result table, and session info.<br/>
 EOS
     @required_columns = ['Name','Count', 'BigWig']
     @required_params = ['grouping', 'sampleGroup', 'refGroup', 'refBuild']
