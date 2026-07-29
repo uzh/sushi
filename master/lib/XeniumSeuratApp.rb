@@ -144,7 +144,10 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     # "Dev/R" follows the Lmod default: it moved to 4.6.0 (Seurat 5.5.1), where
     # an upstream FindClusters change silently overwrote seurat_clusters, and
     # Dev/R/4.5.0 has no SPLIT package at all.
-    @params['Rversion'] = ["Dev/R/4.6.0", "Dev/R/4.5.0"]
+    # 4.6.0 only, deliberately. Dev/R/4.5.0 has no SPLIT package and carries a
+    # stale XeniumSeurat.Rmd, so offering it would let a user pick a silently
+    # degraded run. Add it back only once ezRun is deployed into that lib too.
+    @params['Rversion'] = ["Dev/R/4.6.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   def preprocess
