@@ -132,8 +132,8 @@ Includes QC, Normalization, Clustering, and RCTD Annotation.
     @params['coocNperm', 'description'] = 'Cell-type co-occurrence: number of label permutations for the enrichment null (log2 enrichment + permutation p-value).'
     @params['rctdUMIminSigma'] = '300'
     @params['rctdUMIminSigma', 'description'] = 'Minimum UMI for the cells used to fit RCTD sigma (overdispersion), which drives every singlet/doublet/reject call. spacexr default 300, but Xenium medians run 100-300 so sigma gets fit on the count-rich tail. Lower it if log.txt warns that too few cells clear it.'
-    @params['banksyDims'] = '30'
-    @params['banksyDims', 'description'] = 'BANKSY: number of pca.banksy PCs used for niche clustering (30 = all the PCs computed).'
+    @params['banksyDims'] = '12'
+    @params['banksyDims', 'description'] = 'BANKSY: number of pca.banksy PCs used for niche clustering. Default 12 preserves historical behaviour; 30 (all PCs computed) uses the full embedding but shifts niche boundaries - change deliberately and note it when comparing against earlier runs.'
     @params['banksyKgeom'] = '30'
     @params['banksyKgeom', 'description'] = 'BANKSY: spatial neighbourhood size k_geom (the paper endorses 15-30).'
     @params['coocFdr'] = true
