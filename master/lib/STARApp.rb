@@ -46,9 +46,6 @@ EOS
     @params['secondRef', "context"] = "STAR chimeric samples"
     @params['cmdOptions'] = '--sjdbOverhang 150 --outFilterType BySJout --outFilterMatchNmin 30 --outFilterMismatchNmax 10 --outFilterMismatchNoverLmax 0.05 --outMultimapperOrder Random --alignSJDBoverhangMin 1 --alignSJoverhangMin 8 --alignIntronMax 100000 --alignMatesGapMax 100000  --outFilterMultimapNmax 50 --chimSegmentMin 15 --chimJunctionOverhangMin 15 --chimScoreMin 15 --chimScoreSeparation 10 --outSAMstrandField intronMotif --alignEndsProtrude 10 ConcordantPair --outSAMmultNmax 4'
     @params['cmdOptions', "context"] = "STAR"
-    @params['getJunctions'] = false
-    @params['getJunctions', "context"] = "STAR"
-    #@params['getChimericJunctions'] = false
     @params['twopassMode'] = false
     @params['twopassMode', 'description'] = 'Per-sample 2-pass mapping or 1-pass mapping in STAR. 2-pass mapping allows to detect more splices reads mapping to novel junctions.'
     @params['twopassMode', "context"] = "STAR"
@@ -148,12 +145,12 @@ EOS
         'strandMode'=>@params['strandMode'],
         'Read Count'=>@dataset['Read Count'],
         'PreprocessingLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_preprocessing.log"),
-        'STARLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_STAR.log")
+        'STARLog [File]'=>File.join(@result_dir, "#{@dataset['Name']}_STAR.log"),
+        # always reported so that the downstream QC does not have to recompute them
+        'Junctions [File]'=>File.join(@result_dir, "#{@dataset['Name']}_SJ.out.tab"),
+        'Chimerics [File]'=>File.join(@result_dir, "#{@dataset['Name']}.chimeric"),
+        'DupRate [File]'=>File.join(@result_dir, "#{@dataset['Name']}_dupRate.txt")
     }.merge(extract_columns(tags: @inherit_tags))
-     if @params['getJunctions']
-       dataset['Junctions [File]'] = File.join(@result_dir, "#{@dataset['Name']}_SJ.out.tab")
-       dataset['Chimerics [File]'] = File.join(@result_dir, "#{@dataset['Name']}.chimeric")
-     end
      dataset
   end
   def commands
