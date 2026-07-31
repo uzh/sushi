@@ -108,7 +108,7 @@ EOS
     ## additional commands
     @params['markDuplicates', 'hr-header'] = 'Additional parameters'
     @params['markDuplicates'] = false
-    @params['markDuplicates', 'description'] = 'should duplicates be marked with picard. It is recommended for ChIP-seq and ATAC-seq data.'
+    @params['markDuplicates', 'description'] = 'should the duplicates be flagged in the delivered BAM with picard. Recommended for ChIP-seq and ATAC-seq data. Not needed for the DupRate output, which is always computed. Costs no extra run time.'
     @params['markDuplicates', "context"] = "Picard"
     @params['specialOptions'] = ''
 
