@@ -36,6 +36,9 @@ EOS
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
     @params['refGroup'] = ''
     @params['refGroup', 'description'] = 'refGroup should be different from sampleGroup'
+    @params['grouping2'] = ''
+    @params['grouping2', 'description'] = 'optional second factor for paired/blocked testing (e.g. batch or donor). Type the dataset column name; the column must be tagged "NAME [Factor]". Leave empty for a single-factor analysis.'
+    @params['grouping2', 'context'] = "DiffPeakAnalysis"
     @params['annotationMethod'] = ['homer', 'chippeakanno', 'chipseeker']
     @params['annotationMethod', 'description'] = 'peaks can be annotated with three different tools'
     @params['cmdOptions'] = ''
