@@ -92,6 +92,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
   end
   def commands
     '. "/usr/local/ngseq/miniforge3/etc/profile.d/conda.sh"' +
+      "\nunset OPENLDAP_ALIASES_SET LDAPCONF CONDA_SHLVL CONDA_PREFIX CONDA_DEFAULT_ENV CONDA_PREFIX_1" +
     "\nconda activate gi_macs3\n" +
     run_RApp("EzAppMacs3")
   end
