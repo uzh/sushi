@@ -59,6 +59,9 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
   def set_default_parameters
   end
   def next_dataset
+    # Experiment-level row: report + result dir. The per-biological-sample count
+    # matrices are emitted as grandchild datasets (one row per --sample), so
+    # downstream ScSeurat / CellBender can run per sample.
     report_dir = File.join(@result_dir, @params['name'])
     {
       'Name' => @params['name'],
@@ -69,9 +72,41 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
       'transcriptTypes' => @params['transcriptTypes'],
       'SCDataOrigin' => 'ParseBio',
       'ResultDir [File]' => report_dir,
-      'Report [Link]' => File.join(report_dir, '00index.html'),
-      'CountMatrix [Link]' => report_dir
+      'Report [Link]' => File.join(report_dir, '00index.html')
     }.merge(extract_columns(@inherit_tags))
+  end
+  def grandchild_datasets
+    # One row per biological sample, pointing at the 10x-format matrices the R
+    # method writes (filtered_feature_bc_matrix / raw_feature_bc_matrix). Sample
+    # names are derived from the sampleWells specs (';'-separated '<name> <wells>').
+    # When a sampleLoadingTable is used or sampleWells is empty, the sample names
+    # are not known here, so no grandchildren are emitted (the experiment row and
+    # the on-disk 10x matrices are still produced).
+    return [] if @params['sampleLoadingTable'].to_s.strip != ''
+    return [] if @params['sampleWells'].to_s.strip == ''
+
+    sample_names = @params['sampleWells'].to_s.split(';').map { |spec|
+      spec.strip.split(/\s+/).first
+    }.compact.reject(&:empty?).uniq
+
+    report_dir = File.join(@result_dir, @params['name'])
+    species = (dataset = @dataset.first and dataset['Species'])
+    sample_names.map do |sample_name|
+      sample_dir = File.join(report_dir, sample_name)
+      {
+        'Name' => sample_name,
+        'Species' => species,
+        'refBuild' => @params['refBuild'],
+        'refFeatureFile' => @params['refFeatureFile'],
+        'featureLevel' => @params['featureLevel'],
+        'transcriptTypes' => @params['transcriptTypes'],
+        'SCDataOrigin' => 'ParseBio',
+        'ResultDir [File]' => sample_dir,
+        'Report [Link]' => File.join(report_dir, '00index.html'),
+        'CountMatrix [Link]' => File.join(sample_dir, 'filtered_feature_bc_matrix'),
+        'UnfilteredCountMatrix [Link]' => File.join(sample_dir, 'raw_feature_bc_matrix')
+      }.merge(extract_columns(@inherit_tags))
+    end
   end
   def commands
     run_RApp("EzAppSplitPipe", conda_env: "gi_parse_v1.8.2")
