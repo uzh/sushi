@@ -72,7 +72,7 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
       'transcriptTypes' => @params['transcriptTypes'],
       'SCDataOrigin' => 'ParseBio',
       'ResultDir [File]' => report_dir,
-      'Report [Link]' => File.join(report_dir, 'all-well_analysis_summary.html')
+      'Report [Link]' => File.join(report_dir, '00index.html')
     }.merge(extract_columns(@inherit_tags))
   end
   def grandchild_datasets
