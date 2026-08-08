@@ -19,7 +19,7 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
     @required_columns = ['Name', 'Read1', 'Read2', 'Species']
     @required_params = ['name', 'refBuild', 'kit', 'chemistry']
     @params['process_mode'] = 'DATASET'
-    @params['cores'] = ['16', '8', '32']
+    @params['cores'] = ['8', '16', '32']
     @params['cores', "context"] = "slurm"
     @params['ram'] = ['60', '40', '120']
     @params['ram', "context"] = "slurm"
@@ -72,7 +72,7 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
       'transcriptTypes' => @params['transcriptTypes'],
       'SCDataOrigin' => 'ParseBio',
       'ResultDir [File]' => report_dir,
-      'Report [Link]' => File.join(report_dir, '00index.html')
+      'Report [Link]' => File.join(report_dir, 'all-well_analysis_summary.html')
     }.merge(extract_columns(@inherit_tags))
   end
   def grandchild_datasets
