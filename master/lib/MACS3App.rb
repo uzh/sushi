@@ -76,6 +76,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
     peakfile_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.xlsx")
     bedfile_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.bed")
     peakseq_link = File.join(@result_dir, "#{@dataset['Name']}_peaks.fa")
+    igv_link = File.join(@result_dir, "#{@dataset['Name']}_igv.html")
 
     {'Name'=>@dataset['Name'],
      'Species'=>@dataset['Species'],
@@ -86,6 +87,7 @@ Capturing the influence of genome complexity to evaluate the significance of enr
      'BED [File]'=>bedfile_link,
      'PeakSequences [File]'=>peakseq_link,
      'BigWigFile [File]'=>bw_link,
+     'IGV [Link,File]'=>igv_link,
      'BAM [File]'=>bam_link,
      'BAI [File]'=>bai_link
     }.merge(extract_columns(@inherit_tags))
