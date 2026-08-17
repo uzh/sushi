@@ -77,6 +77,9 @@ EOS
     @params['save_unclassified'] = ['no', 'yes']
     @params['save_unclassified', 'description'] = 'save reads that did not classify to fastq.gz. Paired-end → &lt;sample&gt;_unclassified_{1,2}.fastq.gz (kraken2 splits on the required # placeholder); single-end → &lt;sample&gt;_unclassified.fastq.gz. Skipped by default to save disk.'
     @params['save_unclassified', "context"] = "Kraken"
+    @params['save_read_assignments'] = ['no', 'yes']
+    @params['save_read_assignments', 'description'] = 'save the per-read assignments (kraken2 --output, one line per read or pair) to &lt;sample&gt;.txt.gz, so the reads of selected taxids can be extracted later without re-classifying. Off by default because the file is large: roughly 250 MB (GTDB) to 750 MB (core_nt) gzipped per 100M-read sample. When off, the assignments are deleted with the job scratch and only the aggregate report survives.'
+    @params['save_read_assignments', "context"] = "Kraken"
     @params['cmdOptions'] = ''
     @params['cmdOptions', 'description'] = 'specify other commandline options for kraken; do not specify any option that is already covered by the dedicated input fields'
     @params['cmdOptions', "context"] = "Kraken"
@@ -149,9 +152,9 @@ EOS
     end
   end
   # Build the output-table row for a single sample.
-  # Note: per-read .txt.gz and <name>_unclassified.fasta.gz are written to
-  # the result dir but intentionally not surfaced here — only the aggregate
-  # report and Krona are advertised downstream.
+  # Only [File] columns leave the job scratch (sushiApp.rb:612-644), so the
+  # per-read .txt.gz and the unclassified FASTQs are advertised here only when
+  # their save_* param is on — otherwise they are deleted with the job.
   def output_row_for(name, read1 = nil, read2 = nil)
     # Krona is now rendered with ktImportText (see ezRun app-kraken.R), which
     # writes a single self-contained <name>.html — there is no <name>.html.files
@@ -163,6 +166,17 @@ EOS
      'KronaOut [File]'=>File.join(@result_dir, "#{name}.html"),
      'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/exploreMetaTax?data=#{@result_dir}",
     }
+    if @params['save_read_assignments'] == 'yes'
+      out['KrakenAssignments [File]'] = File.join(@result_dir, "#{name}.txt.gz")
+    end
+    if @params['save_unclassified'] == 'yes'
+      if @params['paired']
+        out['UnclassifiedRead1 [File]'] = File.join(@result_dir, "#{name}_unclassified_1.fastq.gz")
+        out['UnclassifiedRead2 [File]'] = File.join(@result_dir, "#{name}_unclassified_2.fastq.gz")
+      else
+        out['UnclassifiedRead1 [File]'] = File.join(@result_dir, "#{name}_unclassified.fastq.gz")
+      end
+    end
     # Carry raw FASTQ paths forward so downstream apps that need the reads
     # (Bracken -> HUMAnN, etc.) can match this dataset without a manual
     # merge. Use [Link] not [File]: these are pass-through pointers to the
