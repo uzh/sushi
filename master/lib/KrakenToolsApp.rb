@@ -175,18 +175,28 @@ EOS
     @inherit_tags = ['Factor', 'B-Fabric', 'Characteristic']
   end
 
+  # @params['tool'] still holds the raw Array of choices until set_user_parameters
+  # collapses it to the selected scalar (sushiApp.rb:375). refresh_sushi_application
+  # instantiates the app and calls next_dataset before that ever happens, so resolve
+  # the Array to its default here.
   def tool
-    @params['tool'].to_s
+    value = @params['tool']
+    value = value.first if value.is_a?(Array)
+    value.to_s
   end
 
+  # Must not raise: refresh_sushi_application wraps registration in a rescue that
+  # only warns, so an exception here makes the app vanish from the GUI for every
+  # dataset. preprocess does the strict check, where the user sees the message.
   def spec
-    TOOL_SPEC[tool] or raise "KrakenToolsApp: unknown tool #{tool.inspect}"
+    TOOL_SPEC[tool] || TOOL_SPEC.values.first
   end
 
   # Derives process_mode and required_columns from the chosen tool, then validates
   # that tool's own parameters. Runs before check_required_columns (sushiApp.rb:1199
   # vs :1281), so a wrong tool/dataset pairing is rejected at submission time.
   def preprocess
+    raise "KrakenToolsApp: unknown tool #{tool.inspect}" unless TOOL_SPEC.key?(tool)
     @params['process_mode'] = spec['mode']
     @required_columns = ['Name'] + spec['columns']
     @required_columns << 'Read2' if tool == 'extract_kraken_reads' and @params['paired']
