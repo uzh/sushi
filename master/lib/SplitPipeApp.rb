@@ -43,7 +43,7 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
     @params['chemistry'] = ['v3', 'v2', 'v1', 'v4']
     @params['chemistry', 'description'] = 'Parse chemistry version.'
     @params['sampleWells'] = 'all-well A1-A12'
-    @params['sampleWells', 'description'] = "Sample-to-well mapping passed as --sample. One or more '<name> <wells>' specs separated by ';', e.g. 'all-well A1-A12' or 'sampleA A1-A6; sampleB A7-A12'. The well range must match the kit (WT_mini=12/A1-A12, WT=48/A1-D12, WT_mega=96/A1-H12). Ignored when a sampleLoadingTable is given."
+    @params['sampleWells', 'description'] = "Sample-to-well mapping passed as --sample. One or more '<name> <wells>' specs separated by '+', e.g. 'all-well A1-A12' or 'sampleA A1-A6+sampleB A7-A12'. Use '+', NOT ';': ezRun's ezParam rejects a ';' anywhere in an option string and the job dies at startup. The well range must match the kit (WT_mini=12/A1-A12, WT=48/A1-D12, WT_mega=96/A1-H12). Ignored when a sampleLoadingTable is given."
     @params['sampleLoadingTable'] = ''
     @params['sampleLoadingTable', 'description'] = 'Optional full path to a Parse SampleLoadingTable (.xlsx) or a plain "<name> <wells>" per-line file. When set, it overrides sampleWells (--samp_sltab / --samp_list).'
     @params['sublibDir'] = ''
@@ -87,7 +87,12 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
     return [] if @params['sampleLoadingTable'].to_s.strip != ''
     return [] if @params['sampleWells'].to_s.strip == ''
 
-    sample_names = @params['sampleWells'].to_s.split(';').map { |spec|
+    # Split on '+' or ';'. Only '+' survives the trip: ezRun's ezParam rejects any
+    # option string containing [;\{}$%#!] as a shell-injection guard, so a
+    # ';'-separated sampleWells aborts the R job at startup. Every other candidate
+    # separator is part of split-pipe's well syntax (',' joins selections, ':'
+    # blocks, '-' ranges, '_' barcode rounds, '.' plate prefix).
+    sample_names = @params['sampleWells'].to_s.split(/[;+]/).map { |spec|
       spec.strip.split(/\s+/).first
     }.compact.reject(&:empty?).uniq
 
