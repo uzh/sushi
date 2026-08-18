@@ -66,7 +66,7 @@ EOS
     @params['paired', 'description'] = 'extract_kraken_reads only: input is paired-end, so extract from Read1+Read2 and write two files.'
     @params['paired', 'context'] = 'extract_kraken_reads'
     @params['extract_taxids'] = ''
-    @params['extract_taxids', 'description'] = 'REQUIRED for extract_kraken_reads. One or more NCBI taxids, comma- or space-separated (e.g. "9606 1280"). All of them are extracted in a single pass into one output file per sample.'
+    @params['extract_taxids', 'description'] = 'REQUIRED for extract_kraken_reads. One or more taxids, comma- or space-separated (e.g. "9606 1280"). All of them are extracted in a single pass into one output file per sample. IMPORTANT: use the taxids OF THE DATABASE THAT WAS CLASSIFIED AGAINST, read from the taxid column of that run\'s .report.txt. Only NCBI-derived DBs (Standard, core_nt) use real NCBI taxids; custom DBs number their own tree, so in GTDB Bacteria is 3 and in HROM it is 15, not 2. A wrong-namespace taxid matches nothing (or the wrong clade) without any error.'
     @params['extract_taxids', 'context'] = 'extract_kraken_reads'
     @params['extract_includeChildren'] = ['yes', 'no']
     @params['extract_includeChildren', 'description'] = 'add --include-children: take the whole clade below each taxid. Almost always what you want &mdash; with "no", only reads assigned to that exact node are taken, which for an internal node is a small minority of its clade.'
@@ -116,7 +116,7 @@ EOS
 
     @params['filterB_include'] = ''
     @params['filterB_include', 'hr-header'] = 'filter_bracken.out'
-    @params['filterB_include', 'description'] = '--include: taxids to KEEP (comma- or space-separated). At least one of filterB_include / filterB_exclude must be set. Both may be used together, but no taxid may appear in both lists.'
+    @params['filterB_include', 'description'] = '--include: taxids to KEEP (comma- or space-separated), in the namespace of the database the Bracken run used &mdash; see the note on extract_taxids. At least one of filterB_include / filterB_exclude must be set. Both may be used together, but no taxid may appear in both lists.'
     @params['filterB_include', 'context'] = 'filter_bracken.out'
     @params['filterB_exclude'] = ''
     @params['filterB_exclude', 'description'] = '--exclude: taxids to DROP (comma- or space-separated), with the abundances of the rest renormalised.'

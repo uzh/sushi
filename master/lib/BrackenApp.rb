@@ -61,6 +61,7 @@ EOS
     }
     out['Read1 [Link]'] = @dataset['Read1'] if @dataset['Read1']
     out['Read2 [Link]'] = @dataset['Read2'] if @dataset['Read2']
+    out['KrakenAssignments [Link]'] = @dataset['KrakenAssignments'] if @dataset['KrakenAssignments']
     out.merge(extract_columns(@inherit_tags))
   end
 
