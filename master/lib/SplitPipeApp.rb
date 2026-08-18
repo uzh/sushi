@@ -46,6 +46,8 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
     @params['sampleWells', 'description'] = "Sample-to-well mapping passed as --sample. One or more '<name> <wells>' specs separated by ';', e.g. 'all-well A1-A12' or 'sampleA A1-A6; sampleB A7-A12'. The well range must match the kit (WT_mini=12/A1-A12, WT=48/A1-D12, WT_mega=96/A1-H12). Ignored when a sampleLoadingTable is given."
     @params['sampleLoadingTable'] = ''
     @params['sampleLoadingTable', 'description'] = 'Optional full path to a Parse SampleLoadingTable (.xlsx) or a plain "<name> <wells>" per-line file. When set, it overrides sampleWells (--samp_sltab / --samp_list).'
+    @params['sublibDir'] = ''
+    @params['sublibDir', 'description'] = 'Optional full path to a directory that ALREADY holds one finished "split-pipe --mode all" output per selected row, in a subdirectory named exactly after that row. When set, the app skips --mode all and only runs --mode comb over them. Use this for orders too large for the serial loop: the sublibraries can then be run as independent SLURM jobs, and this job needs scratch only for the combined result.'
     @params['saveAnndata'] = false
     @params['saveAnndata', 'description'] = 'Also write an AnnData (.h5ad) output (--save_anndata).'
     @params['cmdOptions'] = ''
