@@ -49,7 +49,15 @@ with a message naming the missing column.
 </ul>
 EOS
 
-    @required_columns = ['Name']
+    # Listing gate only: this is what refresh_sushi_application stores in the DB and
+    # what decides which datasets offer the app. KrakenReport is present on every
+    # Kraken dataset and forwarded by BrackenApp, so this covers both families while
+    # keeping the app off unrelated datasets (FastQC, RNA-seq). preprocess replaces
+    # it with the strict per-tool list, which is what actually validates a submission.
+    # Do NOT use the framework's nested-array XOR form here: it requires EXACTLY one
+    # option set to match (sushi_application.rb:15), and Kraken/Bracken datasets are
+    # supersets of each other, so they would match several and be excluded.
+    @required_columns = ['Name', 'KrakenReport']
     @required_params = ['tool']
     @params['process_mode'] = 'SAMPLE'
     @params['tool'] = TOOL_SPEC.keys
@@ -268,12 +276,14 @@ EOS
       end
     when 'kreport2mpa'
       out['MpaProfile [File]'] = File.join(@result_dir, "#{name}.mpa.txt")
+      out['KrakenReport [Link]'] = @dataset['KrakenReport'] if @dataset.is_a?(Hash) and @dataset['KrakenReport']
     when 'combine_kreports'
       out['CombinedKReport [File]'] = File.join(@result_dir, "#{name}.kreports_combined.txt")
     when 'combine_mpa'
       out['CombinedMpa [File]'] = File.join(@result_dir, "#{name}.mpa_combined.txt")
     when 'filter_bracken.out'
       out['BrackenAbundance [File]'] = File.join(@result_dir, "#{name}.filtered.bracken")
+      out['KrakenReport [Link]'] = @dataset['KrakenReport'] if @dataset.is_a?(Hash) and @dataset['KrakenReport']
     when 'alpha_diversity'
       out['AlphaDiversity [File]'] = File.join(@result_dir, "#{name}.alpha_#{@params['alpha_metric']}.txt")
     when 'beta_diversity'
