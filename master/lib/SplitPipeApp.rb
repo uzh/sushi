@@ -65,6 +65,13 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
     # matrices are emitted as grandchild datasets (one row per --sample), so
     # downstream ScSeurat / CellBender can run per sample.
     report_dir = File.join(@result_dir, @params['name'])
+    # split-pipe's OWN combined report is the dataset's report - that is what a
+    # user expects to open, and 00index.html is reachable from ResultDir anyway.
+    # The name is not fixed: split-pipe emits 'all-well' only when no samples are
+    # specified (--yes_allwell) and 'all-sample' as soon as any --sample is given.
+    # Hardcoding 'all-well' (as this app did until 2026-08-08) is a dead link on
+    # every run that actually names its samples.
+    combined = @params['sampleWells'].to_s.strip.empty? ? 'all-well' : 'all-sample'
     {
       'Name' => @params['name'],
       'Species' => (dataset = @dataset.first and dataset['Species']),
@@ -74,7 +81,7 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
       'transcriptTypes' => @params['transcriptTypes'],
       'SCDataOrigin' => 'ParseBio',
       'ResultDir [File]' => report_dir,
-      'Report [Link]' => File.join(report_dir, '00index.html')
+      'Report [Link]' => File.join(report_dir, "#{combined}_analysis_summary.html")
     }.merge(extract_columns(@inherit_tags))
   end
   def grandchild_datasets
@@ -109,6 +116,11 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
         'transcriptTypes' => @params['transcriptTypes'],
         'SCDataOrigin' => 'ParseBio',
         'ResultDir [File]' => sample_dir,
+        # deliberately NOT <sample>_analysis_summary.html: split-pipe generates a
+        # per-sample report downstream of clustering, so a weak well can have a
+        # count matrix and no report (2 of 96 on p42446/o42483), and this link is
+        # built at submit time when that is unknowable. 00index.html has a tab per
+        # sample that links to the Parse report when there is one.
         'Report [Link]' => File.join(report_dir, '00index.html'),
         'CountMatrix [Link]' => File.join(sample_dir, 'filtered_feature_bc_matrix'),
         'UnfilteredCountMatrix [Link]' => File.join(sample_dir, 'raw_feature_bc_matrix')
