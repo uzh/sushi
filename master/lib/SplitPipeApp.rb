@@ -72,16 +72,19 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
     # Hardcoding 'all-well' (as this app did until 2026-08-08) is a dead link on
     # every run that actually names its samples.
     combined = @params['sampleWells'].to_s.strip.empty? ? 'all-well' : 'all-sample'
+    # Report second, right after Name: the dataset table is wide and a user
+    # looking for "where do I click" should not have to scroll past eight
+    # reference/annotation columns to find it.
     {
       'Name' => @params['name'],
+      'Report [Link]' => File.join(report_dir, "#{combined}_analysis_summary.html"),
       'Species' => (dataset = @dataset.first and dataset['Species']),
       'refBuild' => @params['refBuild'],
       'refFeatureFile' => @params['refFeatureFile'],
       'featureLevel' => @params['featureLevel'],
       'transcriptTypes' => @params['transcriptTypes'],
       'SCDataOrigin' => 'ParseBio',
-      'ResultDir [File]' => report_dir,
-      'Report [Link]' => File.join(report_dir, "#{combined}_analysis_summary.html")
+      'ResultDir [File]' => report_dir
     }.merge(extract_columns(@inherit_tags))
   end
   def grandchild_datasets
@@ -107,15 +110,10 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
     species = (dataset = @dataset.first and dataset['Species'])
     sample_names.map do |sample_name|
       sample_dir = File.join(report_dir, sample_name)
+      # Same reasoning as next_dataset, plus CountMatrix: on a per-sample row those
+      # two are the whole point of the row.
       {
         'Name' => sample_name,
-        'Species' => species,
-        'refBuild' => @params['refBuild'],
-        'refFeatureFile' => @params['refFeatureFile'],
-        'featureLevel' => @params['featureLevel'],
-        'transcriptTypes' => @params['transcriptTypes'],
-        'SCDataOrigin' => 'ParseBio',
-        'ResultDir [File]' => sample_dir,
         # deliberately NOT <sample>_analysis_summary.html: split-pipe generates a
         # per-sample report downstream of clustering, so a weak well can have a
         # count matrix and no report (2 of 96 on p42446/o42483), and this link is
@@ -123,7 +121,14 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
         # sample that links to the Parse report when there is one.
         'Report [Link]' => File.join(report_dir, '00index.html'),
         'CountMatrix [Link]' => File.join(sample_dir, 'filtered_feature_bc_matrix'),
-        'UnfilteredCountMatrix [Link]' => File.join(sample_dir, 'raw_feature_bc_matrix')
+        'UnfilteredCountMatrix [Link]' => File.join(sample_dir, 'raw_feature_bc_matrix'),
+        'Species' => species,
+        'refBuild' => @params['refBuild'],
+        'refFeatureFile' => @params['refFeatureFile'],
+        'featureLevel' => @params['featureLevel'],
+        'transcriptTypes' => @params['transcriptTypes'],
+        'SCDataOrigin' => 'ParseBio',
+        'ResultDir [File]' => sample_dir
       }.merge(extract_columns(@inherit_tags))
     end
   end
