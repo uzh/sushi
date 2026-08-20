@@ -123,7 +123,10 @@ Columns: <code>id, name, read, pattern, sequence, feature_type</code> | <a href=
     cr_match = @params['CellRangerVersion'].to_s.match(/(\d+)\./)
     is_v9_or_below = cr_match ? cr_match[1].to_i <= 9 : false
     if is_v9_or_below
-      per_sample_name = @dataset['Name'][0,45] + '-cellRanger'
+      # set_output_files sets @dataset = {} in SAMPLE mode and calls next_dataset only to
+      # harvest output column names, so @dataset['Name'] is nil there by design. Interpolate
+      # so that path cannot raise; real per-sample calls are unaffected.
+      per_sample_name = "#{@dataset['Name']}"[0,45] + '-cellRanger'
       report_file = File.join(report_dir, 'per_sample_outs', per_sample_name, 'web_summary.html')
     else
       report_file = File.join(report_dir, 'qc_report.html')
