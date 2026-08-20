@@ -52,7 +52,7 @@ This wrapper runs <a href='https://support.10xgenomics.com/single-cell-multiome-
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.5.0", "Dev/R/4.4.2"]
     @modules = ["Tools/seqtk", "Dev/Python", "Tools/samtools"]
-    @params['CellRangerARCVersion'] = ["Aligner/CellRangerARC/2.1.0", "Aligner/CellRangerARC/2.0.2", "Aligner/CellRangerARC/2.0.0"]
+    @params['CellRangerARCVersion'] = ["Aligner/CellRangerARC/2.2.0", "Aligner/CellRangerARC/2.1.0", "Aligner/CellRangerARC/2.0.2", "Aligner/CellRangerARC/2.0.0"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
   
