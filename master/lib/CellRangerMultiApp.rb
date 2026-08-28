@@ -98,6 +98,10 @@ When specifying multiplexing, use our simple <a href='https://fgcz-shiny.uzh.ch/
 Columns: <code>id, name, read, pattern, sequence, feature_type</code> | <a href='https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/inputs/cr-feature-ref-csv'>10x Format</a>"
     @params['includeIntrons'] = true
     @params['includeIntrons', 'description'] = 'set to false to reproduce the default behavior in cell ranger v6 and earlier (NOTE: Ignored for fixedRNA)'
+    @params['chemistry'] = ''
+    @params['chemistry', 'description'] = "Pin the 10x chemistry instead of letting CellRanger auto-detect it. Leave empty for auto.<br>
+Use when a plain GEX-only library (no paired VDJ/Feature library to disambiguate) is misdetected, e.g. as ARC-v1 instead of SC5P-R2-v3.<br>
+See CellRanger's chemistry_defs.json for valid values (e.g. SC5P-R2-v3, SC3Pv3, ARC-v1)."
     @params['expectedCells'] = ''
     @params['expectedCells', 'description'] = 'Expected number of recovered cells. Leave this free to let cellranger estimate the cell number.'
     @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
