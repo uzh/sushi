@@ -122,6 +122,8 @@
           <% else %>
             <% if @factors and key=='grouping' %>
               <%= select :parameters, :grouping, options_for_select(@factor_colums.keys.map{|factor| [factor.split.first, factor.split.first]}, params[:grouping]),  :prompt => "please select" %>
+            <% elsif @grouping2_options and !@grouping2_options.empty? and key=='grouping2' %>
+              <%= select :parameters, :grouping2, options_for_select(@grouping2_options, value),  :prompt => "None" %>
             <% elsif @factors and key=='sampleGroup' %>
               <%= render :partial => '/run_application/select_sample_group' %>
             <% elsif @factors and key=='refGroup' %>

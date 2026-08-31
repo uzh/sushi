@@ -1,24 +1,39 @@
 class RunApplicationController < ApplicationController
 	def init_factor(factor_key=nil)
 		@factor_colums = {}
+		@grouping2_headers = []
     data_set_id = params[:data_set_id]||params[:data_set][:id]
     @data_set = DataSet.find(data_set_id.to_i)
     if @data_set
 			@data_set.samples.each do |sample|
 				sample.to_hash.each do |header, value|
-					if header.tag?('Factor') 
+					if header.tag?('Factor')
 						key = header.split(/\[/).first.strip
 						#@factor_colums[header] ||= []
 						#@factor_colums[header] << value
 
 						@factor_colums[key] ||= []
 						@factor_colums[key].concat(value.to_s.split(",").map{|v| v.strip})
+						@grouping2_headers << header.strip
+					elsif header.tag?('Numeric')
+						@grouping2_headers << header.strip
 					end
 				end
 			end
 			@factor_colums.keys.each do |header|
 				@factor_colums[header].uniq!
 			end
+			@grouping2_headers.uniq!
+    end
+    # Candidate columns for the secondary co-variate grouping2 (Factor + Numeric).
+    # Emit the bare name when unique; keep the full tagged header when the same
+    # base name occurs as both a Factor and a Numeric column, so the two stay
+    # distinct and ezRun's getColumn can resolve the exact column the user picked.
+    bare = @grouping2_headers.map{|h| h.split(/\[/).first.strip}
+    duped = bare.select{|n| bare.count(n) > 1}.uniq
+    @grouping2_options = @grouping2_headers.map do |h|
+      b = h.split(/\[/).first.strip
+      duped.include?(b) ? [h, h] : [b, b]
     end
     unless @factor_colums.empty?
       factor_key = @factor_colums.keys.first unless factor_key
