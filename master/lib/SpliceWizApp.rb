@@ -73,6 +73,7 @@ class SpliceWizApp < SushiFabric::SushiApp
      'Species'=>(dataset = @dataset.first and dataset['Species']),
      'refBuild'=>@params['refBuild'],
      'Static Report [Link]'=>report_link,
+     'Live Report [Link]'=>"http://fgcz-shiny.uzh.ch/exploreSpliceWiz?data=#{report_file}",
      'Report [File]'=>report_file,
     }.merge(extract_columns(@inherit_tags))
   end
