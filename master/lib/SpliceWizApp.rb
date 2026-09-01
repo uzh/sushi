@@ -31,6 +31,10 @@ class SpliceWizApp < SushiFabric::SushiApp
     @params['refBuild'] = ref_selector
     @params['refBuild', "context"] = "reference genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
+    @params['transcriptTypes'] = ['protein_coding', 'rRNA', 'tRNA', 'Mt_rRNA', 'Mt_tRNA', 'long_noncoding', 'short_noncoding', 'pseudogene']
+    @params['transcriptTypes', 'multi_selection'] = true
+    @params['transcriptTypes', 'selected'] = 'protein_coding'
+    @params['transcriptTypes', 'description'] = 'restrict the reference to these transcript biotypes before event discovery (fewer non-coding events, cleaner coverage)'
     @params['grouping'] = ''
     @params['sampleGroup'] = ''
     @params['sampleGroup', 'description'] = 'sampleGroup should be different from refGroup'
@@ -42,8 +46,8 @@ class SpliceWizApp < SushiFabric::SushiApp
     @params['strandMode', 'description'] = "library strandedness; 'both' collates strand-agnostically, otherwise SpliceWiz auto-detects the direction"
     @params['IRmode'] = ['all', 'annotated', 'annotated_binary']
     @params['IRmode', 'description'] = 'intron-retention handling for the ASE test'
-    @params['batch'] = ''
-    @params['batch', 'description'] = 'optional Factor column to include as a batch covariate (~ batch + condition); leave empty for none'
+    @params['grouping2'] = ''
+    @params['grouping2', 'description'] =  'optional secondary co-variate (a Factor or Numeric dataset column) to add to the model; select None for a single-factor design'
     @params['FDR'] = '0.05'
     @params['FDR', 'description'] = 'adjusted-p cutoff for calling a significant event'
     @params['deltaPSI'] = '0.1'
