@@ -9,10 +9,6 @@ class KallistoApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'Kallisto'
-    @citation = [
-      'Bray, N.L., Pimentel, H., Melsted, P. & Pachter, L. Near-optimal probabilistic RNA-seq quantification. Nat Biotechnol 34, 525-527 (2016). https://doi.org/10.1038/nbt.3519',
-      'Chen, S., Zhou, Y., Chen, Y. & Gu, J. fastp: an ultra-fast all-in-one FASTQ preprocessor. Bioinformatics 34(17), i884-i890 (2018). https://doi.org/10.1093/bioinformatics/bty560'
-    ]
     @analysis_category = 'Count'
     @description =<<-EOS
     <a href="https://pachterlab.github.io/kallisto/about">kallisto</a> is a program for quantifying abundances of transcripts from RNA-Seq data. It is based on the novel idea of pseudoalignment for rapidly determining the compatibility of reads with targets, without the need for alignment.

@@ -221,7 +221,6 @@ class SushiApp
     @gstore_dir = GSTORE_DIR
     @project = nil
     @name = nil
-    @citation = []
     @params = {}
     @params['cores'] = nil
     @params['ram'] = nil
@@ -1052,23 +1051,30 @@ rm -rf #{@scratch_dir} || exit 1
     if @ezrun_class_name && @next_dataset_id && !mock && !@job_scripts.empty?
       # Chain onto the input dataset's own methods.md, if it has one. No parent, or a parent
       # predating this feature, or a parent whose methods job failed: just start fresh.
+      # Existence isn't checked here -- the parent's methods job may still be running.
+      # job_footer checks for the file itself once this job actually runs; the job
+      # manager's WAITING_FOR_METHODS dependency on the parent's methods job (if any)
+      # is what makes that check reliable rather than a guess.
       parent_methods_path = nil
       if dataset
         begin
           parent_relative_dir = dataset.paths.first
-          if parent_relative_dir
-            candidate = File.join(GSTORE_DIR, parent_relative_dir, 'methods.md')
-            parent_methods_path = candidate if File.exist?(candidate)
-          end
+          parent_methods_path = File.join(GSTORE_DIR, parent_relative_dir, 'methods.md') if parent_relative_dir
         rescue => e
           @logger.error("parent methods path resolution failed: #{e.message}") if @logger
         end
       end
 
+      # SAMPLE-mode datasets can have dozens of samples sharing gstore_script_dir --
+      # ezRun reading every one of them blew the model's context window on a real
+      # 34-sample STAR batch. Only one example script/log pair is sent; the true
+      # count travels alongside so the text still says "N samples" correctly.
+      sample_count   = @job_scripts.length
+      example_script = File.basename(@job_scripts.first)
+
       methods_app = MethodsApp.new(
         ezrun_class_name:    @ezrun_class_name,
         analysis_name:       @name,
-        citation:            @citation,
         next_dataset_id:     @next_dataset_id,
         gstore_result_dir:   @gstore_result_dir,
         scratch_result_dir:  @scratch_result_dir,
@@ -1077,7 +1083,9 @@ rm -rf #{@scratch_dir} || exit 1
         sushi_server:        @sushi_server,
         logger:              @logger,
         user:                @user,
-        parent_methods_path: parent_methods_path
+        parent_methods_path: parent_methods_path,
+        sample_count:        sample_count,
+        example_script:      example_script
       )
       methods_script_path = methods_app.generate_script
     end

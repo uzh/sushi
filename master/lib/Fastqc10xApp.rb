@@ -9,13 +9,6 @@ class Fastqc10xApp <  SushiFabric::SushiApp
   def initialize
     super
     @name = 'Fastqc10x'
-    # FastQC/MultiQC/ShortRead unconditional. Unlike the non-10x FastqcApp, fastp
-    # is never called anywhere in this app (not just differently gated).
-    @citation = [
-      'Andrews, S. FastQC: A Quality Control Tool for High Throughput Sequence Data. (2010). http://www.bioinformatics.babraham.ac.uk/projects/fastqc/',
-      'Ewels, P., Magnusson, M., Lundin, S. & Käller, M. MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics 32(19), 3047-3048 (2016). https://doi.org/10.1093/bioinformatics/btw354',
-      'Morgan, M., Anders, S., Lawrence, M., Aboyoun, P., Pagès, H. & Gentleman, R. ShortRead: a bioconductor package for input, quality assessment and exploration of high-throughput sequence data. Bioinformatics 25(19), 2607-2608 (2009). https://doi.org/10.1093/bioinformatics/btp450'
-    ]
     @params['process_mode'] = 'DATASET'
     @analysis_category = 'QC'
     @description =<<-EOS

@@ -9,11 +9,6 @@ class MageckCountApp < SushiFabric::SushiApp
   def initialize
     super
     @name = 'MageckCount'
-    # mageck count unconditional -- one of two flag variants (with/without
-    # control-sgRNA file) is always run, selected internally, not by a user param.
-    @citation = [
-      'Li, W. et al. MAGeCK enables robust identification of essential genes from genome-scale CRISPR/Cas9 knockout screens. Genome Biology 15, 554 (2014). https://doi.org/10.1186/s13059-014-0554-4'
-    ]
     @params['process_mode'] = 'SAMPLE'
     @analysis_category = 'GenomeEditing'
     @description =<<-EOS
