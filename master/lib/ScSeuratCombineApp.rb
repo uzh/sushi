@@ -54,8 +54,6 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['integrationMethod', 'description'] = 'Harmony is the best general-purpose technique; use CCA for legacy reasons, use RPCA if the number of matching cells/cell types across your samples is small'
     @params['additionalFactors'] = ''
     @params['additionalFactors', 'description'] = "A comma-separated list of additional column names from the input dataset to use to label cells from a give sample. Useful for adding additional variables beyond 'Condition' and 'Batch' to the object. This information is also used by Harmony if Harmony is selected as the integration method. Use only the column name without '[Factor]'. Example: Patient,Tissue"
-    @params['excludeGenePattern'] = ''
-    @params['excludeGenePattern', 'description'] = "Regex of gene symbols to drop from the RNA assay of every sample before SCTransform, so they cannot be selected as variable features or drive the integration. Leave empty for normal runs. For a TCR/BCR-independent view of a lymphocyte dataset use: ^TR[ABGD][VDJC][0-9P]|^TR[ABGD]C[0-9]?$|^IG[HKL][VDJC]|^IGH[AEGMD][0-9]?$"
     # --- Normalization & Clustering ---
     @params['SCT.regress.CellCycle', 'hr-header'] = "Normalization & Clustering"
     @params['SCT.regress.CellCycle'] = false
