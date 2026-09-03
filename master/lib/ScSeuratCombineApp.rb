@@ -39,7 +39,9 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['additionalFactors'] = ''
     @params['additionalFactors', 'description'] = "A comma-separated list of additional column names from the input dataset to use to label cells from a give sample. Useful for adding additional variables beyond 'Condition' and 'Batch' to the object. This information is also used by Harmony if Harmony is selected as the integration method. Use only the column name without '[Factor]'. Example: Patient,Tissue"
     # --- Normalization & Clustering ---
-    @params['SCT.regress.CellCycle', 'hr-header'] = "Normalization & Clustering"
+    @params['normalizationMethod', 'hr-header'] = "Normalization & Clustering"
+    @params['normalizationMethod'] = ['SCTransform', 'LogNormalize']
+    @params['normalizationMethod', 'description'] = "SCTransform models per-gene variance and clusters on its residuals; LogNormalize is the classic log1p of counts-per-10k followed by vst feature selection and scaling. SCTransform is the historical default here; LogNormalize is faster, cheaper in memory, and is what most published Seurat workflows use."
     @params['SCT.regress.CellCycle'] = false
     @params['SCT.regress.CellCycle', 'description'] = 'Choose CellCycle to be regressed out when using the SCTransform method if it is a bias.'
     @params['npcs'] = '30'
