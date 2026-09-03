@@ -34,6 +34,8 @@ class ScSeuratCombineApp < SushiFabric::SushiApp
     @params['integrationMethod', 'hr-header'] = "Integration"
     @params['integrationMethod'] = ['Harmony', 'CCA', 'RPCA', 'none']
     @params['integrationMethod', 'description'] = 'Harmony is the best general-purpose technique; use CCA for legacy reasons, use RPCA if the number of matching cells/cell types across your samples is small'
+    @params['harmonyGroupBy'] = ['Condition', 'Batch']
+    @params['harmonyGroupBy', 'description'] = "Metadata column Harmony corrects for (only used when integrationMethod is Harmony). 'Condition' is the historical default and removes differences between condition groups; 'Batch' is one level per input sample and removes sample-level technical effects while keeping condition differences. Any additionalFactors are corrected for in addition."
     @params['additionalFactors'] = ''
     @params['additionalFactors', 'description'] = "A comma-separated list of additional column names from the input dataset to use to label cells from a give sample. Useful for adding additional variables beyond 'Condition' and 'Batch' to the object. This information is also used by Harmony if Harmony is selected as the integration method. Use only the column name without '[Factor]'. Example: Patient,Tissue"
     # --- Normalization & Clustering ---
