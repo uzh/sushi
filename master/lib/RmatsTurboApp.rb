@@ -52,6 +52,8 @@ class RmatsTurboApp < SushiFabric::SushiApp
     @params['novelSS', 'description'] = 'detect novel (unannotated) splice sites (--novelSS)'
     @params['cstat'] = '0.0001'
     @params['cstat', 'description'] = 'rMATS --cstat: cutoff splicing difference for the null hypothesis test (0 <= c < 1)'
+    @params['minCoverage'] = '10'
+    @params['minCoverage', 'description'] = 'coverage filter: minimum average junction reads (inclusion+skipping, IJC+SJC) required in BOTH groups; rMATS is anti-conservative on low-coverage junctions, so events below this are greyed in the volcano and excluded from the FDR (multiple-testing) correction'
     @params['FDR'] = '0.05'
     @params['FDR', 'description'] = 'adjusted-p cutoff for calling a significant event (report-side)'
     @params['deltaPSI'] = '0.1'
