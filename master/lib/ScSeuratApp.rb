@@ -110,7 +110,7 @@ Single cell report<br/>
     @params['mLLMCelltype.tissue'] = ''
     @params['mLLMCelltype.tissue', 'description'] = 'Tissue or sorted population, e.g. "PBMC", "sorted B cells", "lung", "CD8+ TILs". Strongly recommended: with no context the labels get much worse (on a sorted B-cell dataset, 4/14 clusters correct without it vs 13/14 with it).'
     @params['cellxgeneUrl'] = ''
-    @params['cellxgeneUrl', 'description'] = 'Choose a download URL to a Seurat rds file of a dataset from here: https://cellxgene.cziscience.com/datasets'
+    @params['cellxgeneUrl', 'description'] = 'Download URL of a CELLxGENE dataset (.h5ad or .rds, from the Download button on https://cellxgene.cziscience.com/datasets), e.g. a Tabula Sapiens 2.0 tissue from https://cellxgene.cziscience.com/collections/e5f58829-1a66-40b5-a624-9046778e74f5. Labels are transferred from that dataset (10 largest donors, <=3000 cells per label per donor); the curated reference is cached in /srv/GT/databases/scRefData/CellxGene.'
     @params['cellxgeneLabel'] = ''
     @params['cellxgeneLabel', 'description'] = 'Metadata column for cell type labels. "cell_type" is a good starting choice'
     # --- Additional Options ---
