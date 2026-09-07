@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-Version = '20240711-164725'
+Version = '20260907-094142'
 
 require 'sushi_fabric'
 require_relative 'global_variables'
@@ -102,9 +102,12 @@ EOS
     @params['cmdOptionsFastp'] = ''
     @params['cmdOptionsFastp', "context"] = "OpenGene/fastp"
     @params['barcodePattern', 'hr-header'] = 'UMI tools'
-    @params['barcodePattern'] = '' 
-    @params['barcodePattern','description'] = 'optional for libraries which are including UMIs e.g. NNNNNNNN for TaKaRa SMARTer pico RNA kit v3' 
+    @params['barcodePattern'] = ''
+    @params['barcodePattern','description'] = 'R2 UMI pattern for umi_tools extract; leave empty for libraries without UMIs (no deduplication). Use N for UMI bases and X for skip/dark bases to discard. Examples: NNNNNNNNXXXXXX (TaKaRa SMARTer pico RNA kit v3: 8 UMI + 6 skip); NNNNNXX (Twist RNA 5M2S+T, R2 half: 5 UMI + 2 skip); NNNXX or NNNX (Agilent XT HS2, R2 half: 3 MBC + 1-2 dark).'
     @params['barcodePattern', "context"] = "umi_tools"
+    @params['barcodePattern2'] = ''
+    @params['barcodePattern2','description'] = 'R1 UMI pattern for dual-inline UMI libraries (umi_tools --bc-pattern2); set together with barcodePattern, same N/X syntax. Leave empty for single-UMI R2-only libraries such as TaKaRa. Examples: NNNNNXX (Twist RNA 5M2S+T, R1 half); NNNXX or NNNX (Agilent XT HS2, R1 half).'
+    @params['barcodePattern2', "context"] = "umi_tools"
     ## additional commands
     @params['markDuplicates', 'hr-header'] = 'Additional parameters'
     @params['markDuplicates'] = false
