@@ -68,7 +68,7 @@ EOS
     @params['cmdOptionsFastp'] = ''
     ## additional commands
     @params['mail'] = ""
-    @modules = ["QC/fastp"]
+    @modules = ["QC/fastp", "Dev/R"]
     @inherit_tags = ["Factor", "B-Fabric"]
   end
  def set_default_parameters
