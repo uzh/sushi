@@ -33,12 +33,18 @@ EOS
       @params['dictPath'][File.basename(dir)] = File.basename(dir)
     end
     @params['dictPath', "context"] = "CountSpacer"
+    @params['spacerLength'] = 0
+    @params['spacerLength', 'description'] = 'spacer length to extract, anchored on the flanking pattern; 0 = derive from the library (recommended)'
+    @params['guessPatterns'] = true
+    @params['guessPatterns', 'description'] = 'infer the left/right flanking patterns from read base composition when they are not supplied'
+    # manual pattern definition  
     @params['leftPattern'] = ''
     @params['leftPattern', 'description'] = 'short patterns < 8bp could could cause misleading results'
     @params['leftPattern', "context"] = "CountSpacer"
     @params['rightPattern'] = ''
     @params['rightPattern', 'description'] = 'short patterns < 8bp could could cause misleading results'
     @params['rightPattern', "context"] = "CountSpacer"
+    #other parameters
     @params['maxMismatch'] = 1
     @params['maxMismatch', 'description'] = 'number of allowed mismatches for pattern search'
     @params['maxMismatch', "context"] = "CountSpacer"
