@@ -33,6 +33,8 @@ EOS
     @params['libName'] = ''
     @params['libName'] = {'select'=>''}
     @params["libName"] = Dir["/srv/GT/databases/GEML/sgRNA_Libs/*"].sort.to_a{|dir| File.basename(dir)}
+    @params['cmdOptions'] = ''
+    @params['cmdOptions', 'description'] = "additional 'mageck count' options, e.g. --sgrna-len 20 --count-n"
 
     ## additional commands
     @params['mail'] = ""
@@ -51,7 +53,9 @@ EOS
     report_file = File.join(@result_dir,"#{@dataset['Name']}")
     {'Name'=>@dataset['Name'],
      'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.count.txt"),
+     'CountSummary [File]'=>File.join(@result_dir, "#{@dataset['Name']}.countsummary.txt"),
      'Log [File]'=>File.join(@result_dir, "#{@dataset['Name']}.log"),
+     'Report [Link]'=>File.join(@result_dir, '00index.html'),
      'Read Count'=>@dataset['Read Count'],
      'libName'=>@params['libName'],
      'Species'=>@dataset['Species']
