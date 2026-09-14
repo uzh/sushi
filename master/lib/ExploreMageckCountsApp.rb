@@ -27,8 +27,8 @@ Quality control after counting sgRNAs  with Mageck<br/>
     @params['name'] = 'ExploreMageckCounts'
     @params['normMethod'] = ['deseq2', 'tmm', 'cpm', 'logMean']
     @params['normMethod', "description"] = "count normalisation: deseq2 (size factors, as MAGeCK), edgeR tmm/cpm, or logMean"
-    @params['refGroup'] = ''
-    @params['refGroup', "description"] = "reference/plasmid/T0 condition used as baseline for essential-gene depletion + ROC; leave empty to skip that analysis"
+    @params['referenceCondition'] = ''
+    @params['referenceCondition', "description"] = "reference/plasmid/T0 condition used as baseline for essential-gene depletion + ROC; leave empty to skip that analysis"
     @params['backgroundExpression'] = 5
     @params['backgroundExpression', "description"] = "pseudo-count added before the log2 transform"
     @params['topGeneSize'] = 100
