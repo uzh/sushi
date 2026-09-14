@@ -55,7 +55,7 @@ EOS
      'Count [File]'=>File.join(@result_dir, "#{@dataset['Name']}.count.txt"),
      'CountSummary [File]'=>File.join(@result_dir, "#{@dataset['Name']}.countsummary.txt"),
      'Log [File]'=>File.join(@result_dir, "#{@dataset['Name']}.log"),
-     'Report [Link]'=>File.join(@result_dir, '00index.html'),
+     'Report [File,Link]'=>File.join(@result_dir, "#{@dataset['Name']}.html"),
      'Read Count'=>@dataset['Read Count'],
      'libName'=>@params['libName'],
      'Species'=>@dataset['Species']
