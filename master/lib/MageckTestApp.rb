@@ -57,8 +57,12 @@ class MageckTestApp < SushiFabric::SushiApp
     @params['positiveControlGenes', 'description'] = 'optional comma-separated known positive-control genes to highlight'
     @params['day0Label'] = ''
     @params['day0Label', 'description'] = 'baseline/day0 condition (plasmid/T0) enabling the MAGeCK MLE cross-condition nine-square (SquareView); leave empty for RRA test only'
+    @params['useCRISPRcleanR'] = false
+    @params['useCRISPRcleanR', 'description'] = 'optional CRISPRcleanR copy-number-bias correction of counts before RRA/MLE (human; best for fitness/dropout screens; coordinates derived on the fly from the library)'
+    @params['refBuild'] = ''
+    @params['refBuild', 'description'] = 'genome for the CRISPRcleanR coordinate-alignment fallback; only needed for libraries without a CRISPRcleanR built-in annotation'
     @params['mail'] = ""
-    @modules = ["Dev/R"]
+    @modules = ["Dev/R", "Aligner/Bowtie2"]
     @inherit_columns = ["Order Id"]
   end
   def preprocess
