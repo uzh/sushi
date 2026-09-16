@@ -21,7 +21,7 @@ EOS
     # optional params
     @params['cores'] = '8'
     @params['cores', "context"] = "slurm"
-    @params['ram'] = '40'
+    @params['ram'] = '30'
     @params['ram', "context"] = "slurm"
     @params['scratch'] = '100'
     @params['scratch', "context"] = "slurm"
