@@ -128,7 +128,16 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
         'featureLevel' => @params['featureLevel'],
         'transcriptTypes' => @params['transcriptTypes'],
         'SCDataOrigin' => 'ParseBio',
-        'ResultDir [File]' => sample_dir
+        # [Link], NOT [File]: sample_dir lives INSIDE report_dir, which next_dataset
+        # already ships as 'ResultDir [File]'. The job footer emits one g-req per
+        # [File] column, so tagging this [File] copies the sample directory a second
+        # time into the parent directory that already contains it, and g-req refuses
+        # with "Destination path already exists!". That is a non-zero exit, so the
+        # job ends FAILED with its output complete and already on gStore - which is
+        # exactly what happened to o42369 on 2026-08-08 and again on 2026-09-20.
+        # The sibling CountMatrix / UnfilteredCountMatrix / Report columns are all
+        # [Link] for this same reason; this one was the odd one out.
+        'ResultDir [Link]' => sample_dir
       }.merge(extract_columns(@inherit_tags))
     end
   end
