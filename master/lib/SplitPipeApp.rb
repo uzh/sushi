@@ -60,6 +60,42 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
   end
   def set_default_parameters
   end
+  # Sample names as split-pipe will see them, parsed from the sampleWells specs
+  # ('<name> <wells>', joined by '+' or ';').
+  #
+  # Split on '+' or ';'. Only '+' survives the trip: ezRun's ezParam rejects any
+  # option string containing [;\{}$%#!] as a shell-injection guard, so a
+  # ';'-separated sampleWells aborts the R job at startup. Every other candidate
+  # separator is part of split-pipe's well syntax (',' joins selections, ':'
+  # blocks, '-' ranges, '_' barcode rounds, '.' plate prefix).
+  def sample_names_from_wells
+    @params['sampleWells'].to_s.split(/[;+]/).map { |spec|
+      spec.strip.split(/\s+/).first
+    }.compact.reject(&:empty?).uniq
+  end
+
+  # Basename of split-pipe's combined report, which is named after the SAMPLE SET
+  # and not after whether --sample was passed:
+  #
+  #   no samples   -> 'all-well'   (--yes_allwell)
+  #   one sample   -> that sample's own name; there is NO all-sample meta sample
+  #   two or more  -> 'all-sample'
+  #
+  # Deriving it from `sampleWells.empty?` alone (as this app did until 2026-09-21)
+  # is right for 0 and for 2+, and wrong for exactly 1: a single-sample run such as
+  # 'all-well A1-A12' produces all-well_analysis_summary.html while the dataset
+  # linked all-sample_analysis_summary.html, so every such run shipped a dead
+  # Report link. Measured across four runs of o42369/o41604 (1 sample, all-well)
+  # and one of o42483 (96 samples, all-sample).
+  def combined_report_basename
+    names = sample_names_from_wells
+    case names.size
+    when 0 then 'all-well'
+    when 1 then names.first
+    else 'all-sample'
+    end
+  end
+
   def next_dataset
     # Experiment-level row: report + result dir. The per-biological-sample count
     # matrices are emitted as grandchild datasets (one row per --sample), so
@@ -71,7 +107,7 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
     # specified (--yes_allwell) and 'all-sample' as soon as any --sample is given.
     # Hardcoding 'all-well' (as this app did until 2026-08-08) is a dead link on
     # every run that actually names its samples.
-    combined = @params['sampleWells'].to_s.strip.empty? ? 'all-well' : 'all-sample'
+    combined = combined_report_basename
     # Report second, right after Name: the dataset table is wide and a user
     # looking for "where do I click" should not have to scroll past eight
     # reference/annotation columns to find it.
@@ -97,14 +133,7 @@ Read1 must be the mRNA/cDNA read (--fq1) and Read2 the barcode read (--fq2).
     return [] if @params['sampleLoadingTable'].to_s.strip != ''
     return [] if @params['sampleWells'].to_s.strip == ''
 
-    # Split on '+' or ';'. Only '+' survives the trip: ezRun's ezParam rejects any
-    # option string containing [;\{}$%#!] as a shell-injection guard, so a
-    # ';'-separated sampleWells aborts the R job at startup. Every other candidate
-    # separator is part of split-pipe's well syntax (',' joins selections, ':'
-    # blocks, '-' ranges, '_' barcode rounds, '.' plate prefix).
-    sample_names = @params['sampleWells'].to_s.split(/[;+]/).map { |spec|
-      spec.strip.split(/\s+/).first
-    }.compact.reject(&:empty?).uniq
+    sample_names = sample_names_from_wells
 
     report_dir = File.join(@result_dir, @params['name'])
     species = (dataset = @dataset.first and dataset['Species'])
