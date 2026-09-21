@@ -55,7 +55,7 @@ Single cell report<br/>
     @params['DE.method', 'description'] ='Method to be used when calculating gene cluster markers. Use LR if you want to include cell cycle in the regression model.'
     @params['tissue'] = []
     @params['tissue','multi_selection'] = true
-    @params['tissue','all_selected'] = true
+    @params['tissue','all_selected'] = false
     @params['tissue', 'multi_selection_size'] = 10
     tissue = {}
     CSV.foreach("/srv/GT/databases/scGeneSets/all_cell_markers.txt", headers: true, col_sep: "\t") do |e|
