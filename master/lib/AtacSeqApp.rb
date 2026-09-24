@@ -17,7 +17,7 @@ class AtacSeqApp <  SushiFabric::SushiApp
 EOS
     @required_columns = ['Name','Read1', 'Species']
     @inherit_tags = ["Factor", "B-Fabric", "Characteristic"]
-    @required_params = ['refBuild', 'peakStyle', 'grouping']
+    @required_params = ['refBuild', 'peakStyle']
     @params['cores'] = '8'
     @params['cores', "context"] = "slurm"
     @params['ram'] = '100'
@@ -27,20 +27,22 @@ EOS
     @params['paired'] = true
     @params['paired', "context"] = "AtacSeq"
     @params['refBuild'] = ref_selector
-    @params['refBuild', "context"] = "referfence genome assembly"
+    @params['refBuild', "context"] = "reference genome assembly"
     @params['refFeatureFile'] = 'genes.gtf'
     @params['refFeatureFile', "context"] = "AtacSeq"
     @params['peakStyle'] = ['broad', 'narrow']
     @params['varStabilizationMethod'] = ['vst', 'rlogTransf']
-    @params['grouping'] = ''
-    @params['grouping', 'description'] = 'grouping information needs to be filled in the input dataset'
-    @params['runTwoGroupAnalysis'] = false
-    @params['runTwoGroupAnalysis', 'description'] = 'perform all two group analysis based on the grouping information'
+    @params['grouping'] = 'Condition'
+    @params['grouping', 'description'] = 'dataset column with the sample groups (replicates are merged by nf-core); samples without a group are processed as their own group'
     @params['keepBams'] = false
-    @params['keepBams', 'description'] = 'delete BAM and BAI files from the result folder'
+    @params['keepBams', 'description'] = 'keep the BAM and BAI files in the result folder'
     @params['name'] = 'AtacSeq'
     @params['pipelineVersion'] = '2.1.2'
     @params['pipelineVersion', 'description'] = 'specify pipeline version of nf-core pipeline'
+    @params['qcMode'] = false
+    @params['qcMode', 'description'] = 'QC run: use only the first qcReadsPerSample reads (pairs) of each sample'
+    @params['qcReadsPerSample'] = ['10000000', '5000000', '20000000', '50000000']
+    @params['qcReadsPerSample', 'description'] = 'number of reads (pairs) per sample in QC mode; samples with fewer reads are used completely'
     @params['cmdOptions'] = ""
     @params['cmdOptions', "context"] = "AtacSeq"
     @params['mail'] = ""
@@ -67,10 +69,6 @@ EOS
      'Ataqv [Link]'=> ataqv_link,
      'IGV [Link]'=>igv_link
      }
-    if @params['runTwoGroupAnalysis']
-      diffReport_link = File.join(@result_dir, "#{@params['name']}_results", "diffpeak_analysis", "DifferentialPeaks.html")
-      dataset['DifferentialPeaks [Link]'] = diffReport_link
-    end
     dataset
   end
   def grandchild_datasets
