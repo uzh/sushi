@@ -18,12 +18,20 @@ Single cell report<br/>
     @required_columns = ['Name', 'Species', 'refBuild', 'SpaceRangerDir', 'BinnedOutput']
     @required_params = ['name']
     # optional params
-    @params['cores'] = '4'
+    @params['cores'] = '8'
     @params['cores', "context"] = "slurm"
     @params['ram'] = '100'
     @params['ram', "context"] = "slurm"
     @params['scratch'] = '50'
     @params['scratch', "context"] = "slurm"
+    # rctd-py runs RCTD on the GPU (14-48 h with R spacexr -> minutes). Pinned to
+    # GPU_L40S: the Blackwell node's GPUs are held by vLLM outside SLURM.
+    @params['partition'] = 'GPU_L40S'
+    @params['partition', "context"] = "slurm"
+    @params['partition', 'description'] = 'GPU_L40S runs RCTD on the GPU. Pick employee to run on CPU only (rctd-py then uses the CPU, still far faster than spacexr). A run without an RCTD reference also queues for the GPU node.'
+    @params['gpu'] = '1'
+    @params['gpu', "context"] = "slurm"
+    @params['gpu', 'description'] = 'Set to 0 automatically when the partition has no GPU.'
     @params['name'] = 'VisiumHDSeurat'
     @params['refBuild'] = ref_selector
     @params['refBuild', "context"] = "referfence genome assembly"
@@ -43,10 +51,8 @@ Single cell report<br/>
     @params['pcGenes', 'description'] = 'The genes used in supvervised clustering'
     @params['clusterResolution'] = [2, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2.5, 3]
     @params['clusterResolution', 'description'] = 'Clustering resolution. A higher number will lead to more clusters.'
-    @params['lambda'] = '0.8'
-    @params['lambda', 'description'] = 'BANKSY spatial weighting (0-1). Higher values give more weight to spatial neighbors.'
-    @params['Niche_resolution'] = '0.5'
-    @params['Niche_resolution', 'description'] = 'Resolution for BANKSY spatial niche clustering (higher = more niches)'
+    @params['nicheResolution'] = '0.5'
+    @params['nicheResolution', 'description'] = 'Resolution for BANKSY spatial niche clustering (higher = more niches)'
     @params['numis'] = '20'
     @params['numis', 'description'] = 'Minimum number of UMIs required per spot. Recommended: 20 for 16um bins, 10 for 8um bins or segmented cells.'
     @params['ngenes'] = ''
@@ -141,6 +147,8 @@ Single cell report<br/>
     @params['rctdFile', 'description'] = 'Manual override: Full path to custom RCTD reference .rds file (leave empty to use dropdown selection)'
     @params['rctdUMImin'] = '20'
     @params['rctdUMImin', 'description'] = 'Minimum UMI count for RCTD annotation. Cells below this threshold will not be classified.'
+    @params['rctdEngine'] = ['rctd-py', 'spacexr']
+    @params['rctdEngine', 'description'] = 'rctd-py: Python RCTD (GPU if the job has one, else CPU), minutes instead of hours. spacexr: the original R implementation.'
     @params['specialOptions'] = ''
     @params['mail'] = ""
     @params['Rversion'] = ["Dev/R/4.6.0", "Dev/R/4.5.0"]
@@ -148,6 +156,9 @@ Single cell report<br/>
   end
   def preprocess
     @random_string = (1..12).map{[*('a'..'z')].sample}.join
+    # Non-employees are forced onto partition "user", which has no GPU, and a
+    # --gres=gpu request there is rejected by sbatch.
+    @params['gpu'] = '0' unless @params['partition'].to_s.start_with?('GPU')
   end
   def next_dataset
     report_file = File.join(@result_dir, "#{@dataset['Name']}_SCReport")
