@@ -283,9 +283,25 @@ class DataSet < ActiveRecord::Base
     paths.map{|path| path.split('/')[0,2].join('/')}
   end
 
+  # A dataset carries its inputs' File/Link columns forward (ScSeurat's CountMatrix [Link]
+  # points into the CellBender dir), so sample_paths.first can be an ancestor's dir.
+  # Own dir = "<name>_<timestamp>" (sushiApp#set_dir_paths), else the newest timestamped one.
+  RESULT_DIR_TIMESTAMP = /_\d{4}-\d\d-\d\d--\d\d-\d\d-\d\d\z/
+  def self.pick_own_result_dir(name, dirs)
+    return nil if dirs.nil? || dirs.empty?
+    own = /\A#{Regexp.escape(name.to_s)}#{RESULT_DIR_TIMESTAMP.source}/
+    dirs.find{|dir| File.basename(dir) =~ own } ||
+      dirs.select{|dir| dir =~ RESULT_DIR_TIMESTAMP }.max_by{|dir| dir[RESULT_DIR_TIMESTAMP] } ||
+      dirs.first
+  end
+
+  def own_result_dir
+    DataSet.pick_own_result_dir(name, sample_paths)
+  end
+
   def methods_md_path
-    return nil unless (paths = sample_paths) && !paths.empty?
-    File.join(SushiFabric::GSTORE_DIR, paths.first, "methods.md")
+    return nil unless (dir = own_result_dir)
+    File.join(SushiFabric::GSTORE_DIR, dir, "methods.md")
   end
 
   def methods_md_content
@@ -295,8 +311,8 @@ class DataSet < ActiveRecord::Base
   end
 
   def methods_md_url
-    return nil unless (paths = sample_paths) && !paths.empty?
-    File.join("https://fgcz-gstore.uzh.ch/projects/", paths.first, "methods.md")
+    return nil unless (dir = own_result_dir)
+    File.join("https://fgcz-gstore.uzh.ch/projects/", dir, "methods.md")
   end
 
   def self.save_dataset_to_database(data_set_arr:, headers:, rows:, user: nil, child: nil, sushi_app_name: nil)
