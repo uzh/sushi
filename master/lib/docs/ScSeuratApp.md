@@ -113,6 +113,9 @@ result files in the report folder show that they ran: `cells.AUC.qs2` (AUCell),
 **Worth describing**
 
 - **Seurat and its version, in R and its version.**
+- **The annotation,** by source and release, from `refBuild`, which follows
+  `<organism>/<source>/<genome build>/Annotation/Release<_><release>-<date>`. The
+  `-<date>` is when FGCZ set the reference up; it is not part of the release.
 - **Cell QC:** the thresholds that were set, and outlier detection by median absolute
   deviation for those left empty; empty-droplet removal with DropletUtils
   `emptyDrops`, when it ran; doublet removal with scDblFinder.

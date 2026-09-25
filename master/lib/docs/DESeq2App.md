@@ -112,7 +112,10 @@ listing at the end of the log.
   - the adjusted p-value cut-offs for terms (`fdrThreshORA`, `fdrThreshGSEA`)
   - Enrichr, where it was queried
 - **RUV correction, when it was used.**
-- **The annotation and feature types** (`transcriptTypes`), when restricted.
+- **The annotation,** by source and release, from `refBuild`, which follows
+  `<organism>/<source>/<genome build>/Annotation/Release<_><release>-<date>`. The
+  `-<date>` is when FGCZ set the reference up; it is not part of the release.
+- **The feature types kept** (`transcriptTypes`), when restricted.
 
 **Not worth describing**
 

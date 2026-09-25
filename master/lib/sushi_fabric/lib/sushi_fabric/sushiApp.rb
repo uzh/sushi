@@ -1074,6 +1074,7 @@ rm -rf #{@scratch_dir} || exit 1
 
       methods_app = MethodsApp.new(
         ezrun_class_name:    @ezrun_class_name,
+        sushi_app_name:      self.class.name,
         analysis_name:       @name,
         next_dataset_id:     @next_dataset_id,
         gstore_result_dir:   @gstore_result_dir,

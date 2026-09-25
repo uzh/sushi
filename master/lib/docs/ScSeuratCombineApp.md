@@ -91,6 +91,9 @@ were set.
 
 - **Seurat and its version, in R and its version,** and that the samples processed
   with ScSeurat were combined.
+- **The annotation,** by source and release, from `refBuild`, which follows
+  `<organism>/<source>/<genome build>/Annotation/Release<_><release>-<date>`. The
+  `-<date>` is when FGCZ set the reference up; it is not part of the release.
 - **Normalisation** (`SCTransform` or `LogNormalize`), with cell cycle regression
   when set.
 - **Integration:** the method, with the Harmony version and its grouping variable

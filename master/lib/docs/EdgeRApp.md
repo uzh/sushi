@@ -106,7 +106,10 @@ appear in the R session listing at the end of the log.
   on GO BP, MF and CC, with the candidate-gene cut-offs, the GSEA ranking, and the
   adjusted p-value cut-offs for terms.
 - **RUV correction, when it was used.**
-- **The annotation and feature types** (`transcriptTypes`), when restricted.
+- **The annotation,** by source and release, from `refBuild`, which follows
+  `<organism>/<source>/<genome build>/Annotation/Release<_><release>-<date>`. The
+  `-<date>` is when FGCZ set the reference up; it is not part of the release.
+- **The feature types kept** (`transcriptTypes`), when restricted.
 
 **Not worth describing**
 

@@ -9,12 +9,16 @@
 #   promote this to a user-submittable app.
 
 class MethodsApp < SushiFabric::SushiApp
+  # Per-app documentation lives next to the app classes, one file per SUSHI app.
+  APP_DOCS_DIR = File.join(__dir__, 'docs')
+
   def initialize(ezrun_class_name:, analysis_name:, next_dataset_id:, gstore_result_dir:,
                  scratch_result_dir:, job_script_dir:, gstore_script_dir:,
                  sushi_server:, logger: nil, user: nil, parent_methods_path: nil,
-                 sample_count: nil, example_script: nil)
+                 sample_count: nil, example_script: nil, sushi_app_name: nil)
     super()
     @ezrun_class_name        = ezrun_class_name
+    @sushi_app_name          = sushi_app_name
     @analysis_name           = analysis_name
     @next_dataset_id         = next_dataset_id
     @gstore_result_dir       = gstore_result_dir
@@ -53,6 +57,7 @@ class MethodsApp < SushiFabric::SushiApp
             "  analysis_name     = '#{@analysis_name}'"]
     args << "  example_script    = '#{@example_script}'" if @example_script
     args << "  sample_count      = #{@sample_count}" if @sample_count
+    args << "  app_doc           = '#{@app_doc_path}'" if @app_doc_path
     command << args.join(",\n") << "\n"
     command << ")\n"
     command << "EOT\n"
@@ -84,8 +89,26 @@ rm -rf #{@scratch_dir} || exit 1
   end
 
   def generate_script
+    stage_app_doc
     @job_script = File.join(@job_script_dir, "methods_dataset_#{@next_dataset_id}.sh")
     make_job_script
     @job_script
+  end
+
+  private
+
+  # Copies the app's documentation next to the job scripts. It then travels to gstore
+  # with them in the regular copy wave, so the methods job reads it from the run's own
+  # scripts/ folder, and every run keeps the doc version its Methods text was written
+  # from. An app without a doc gets no app_doc argument: the job runs as before.
+  def stage_app_doc
+    return unless @sushi_app_name
+    doc = File.join(APP_DOCS_DIR, "#{@sushi_app_name}.md")
+    return unless File.exist?(doc)
+    FileUtils.cp(doc, @job_script_dir)
+    @app_doc_path = File.join(@gstore_script_dir, File.basename(doc))
+  rescue => e
+    @logger.error("app doc staging failed: #{e.message}") if @logger
+    @app_doc_path = nil
   end
 end
