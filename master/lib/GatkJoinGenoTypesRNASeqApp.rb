@@ -47,12 +47,12 @@ Joint genotyping of RNA-seq gVCF files (GATK GenotypeGVCFs), followed by<br/>
   def next_dataset
     report_dir = File.join(@result_dir, @params['name'])
     dataset = {'Name'=>@params['name'],
-     'VCF [File]'=>File.join(report_dir, "#{@params['name']}.vcf.gz"),
-     'TBI [File]'=>File.join(report_dir, "#{@params['name']}.vcf.gz.tbi")
+     'VCF [Link]'=>File.join(report_dir, "#{@params['name']}.vcf.gz"),
+     'TBI [Link]'=>File.join(report_dir, "#{@params['name']}.vcf.gz.tbi")
     }
     if @params['hardFilter'].to_s == 'true'
-      dataset['PASS VCF [File]'] = File.join(report_dir, "#{@params['name']}.PASS.vcf.gz")
-      dataset['PASS TBI [File]'] = File.join(report_dir, "#{@params['name']}.PASS.vcf.gz.tbi")
+      dataset['PASS VCF [Link]'] = File.join(report_dir, "#{@params['name']}.PASS.vcf.gz")
+      dataset['PASS TBI [Link]'] = File.join(report_dir, "#{@params['name']}.PASS.vcf.gz.tbi")
     end
     dataset.merge({
      'Report [File]'=>report_dir,
