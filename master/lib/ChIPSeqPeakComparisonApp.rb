@@ -20,7 +20,7 @@ BigWig tracks; the peak, BAM and BigWig columns are auto-detected and each repor
 section degrades gracefully when its inputs are absent. Read-only with respect to
 the input dataset.<br/>
 EOS
-    @required_columns = ['Name']
+    @required_columns = ['Name', 'CalledPeaks', 'BAM', 'BAI', 'refBuild']
     @required_params  = ['refBuild']
     @params['cores'] = '8'
     @params['cores', 'context'] = 'slurm'
