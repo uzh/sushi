@@ -110,7 +110,7 @@ class NfCoreDenovotranscriptApp < SushiFabric::SushiApp
     # Apptainer cache settings
     cache_settings = <<~SHELL
       export NXF_SINGULARITY_CACHEDIR=/misc/fgcz01/nextflow_apptainer_cache/
-      export SINGULARITY_CACHEDIR=/misc/fgcz01/nextflow_apptainer_cache/
+      export APPTAINER_CACHEDIR=$SCRATCH_DIR/apptainer_cache
     SHELL
 
     cmd = cache_settings + cmd

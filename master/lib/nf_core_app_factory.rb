@@ -394,8 +394,9 @@ module NfCoreAppFactory
           end
 
           if param_info['enum'] && param_info['enum'].any?
-            # Enum type -> select dropdown
-            @params[param_name] = param_info['enum']
+            # Enum type -> select dropdown, preselecting the schema default ('' when there is none)
+            @params[param_name] = default_val.to_s.empty? ? [''] + param_info['enum'] : param_info['enum']
+            @params[param_name, 'selected'] = default_val unless default_val.to_s.empty?
             @params[param_name, 'description'] = description
           elsif param_info['type'] == 'boolean'
             @params[param_name] = default_val == true
@@ -410,8 +411,9 @@ module NfCoreAppFactory
             @params[param_name, 'description'] = description
           end
           # Record the value SUSHI submits when the param is left untouched
-          # (enum/select dropdown -> first option) so the R app can skip it.
-          schema_defaults[param_name] = @params[param_name].is_a?(Array) ? @params[param_name].first : @params[param_name]
+          # (enum/select dropdown -> schema default) so the R app can skip it.
+          untouched_val = @params[param_name].is_a?(Array) ? default_val : @params[param_name]
+          schema_defaults[param_name] = untouched_val unless untouched_val.to_s.empty?
 
           # Add to @required_params
           @required_params << param_name unless @required_params.include?(param_name)
@@ -442,7 +444,8 @@ module NfCoreAppFactory
           end
 
           if param_info['enum'] && param_info['enum'].any?
-            @params[param_name] = param_info['enum']
+            @params[param_name] = default_val.to_s.empty? ? [''] + param_info['enum'] : param_info['enum']
+            @params[param_name, 'selected'] = default_val unless default_val.to_s.empty?
             @params[param_name, 'description'] = description
           elsif param_info['type'] == 'boolean'
             @params[param_name] = (default_val == true)
@@ -456,8 +459,9 @@ module NfCoreAppFactory
             @params[param_name, 'description'] = description
           end
           # Record the value SUSHI submits when the param is left untouched
-          # (enum/select dropdown -> first option) so the R app can skip it.
-          schema_defaults[param_name] = @params[param_name].is_a?(Array) ? @params[param_name].first : @params[param_name]
+          # (enum/select dropdown -> schema default) so the R app can skip it.
+          untouched_val = @params[param_name].is_a?(Array) ? default_val : @params[param_name]
+          schema_defaults[param_name] = untouched_val unless untouched_val.to_s.empty?
         end
 
         # Expose schema defaults to the R app (skip params still at default)
@@ -503,7 +507,7 @@ module NfCoreAppFactory
         # Add Apptainer cache settings
         cache_settings = <<~SHELL
           export NXF_SINGULARITY_CACHEDIR=/misc/fgcz01/nextflow_apptainer_cache/
-          export SINGULARITY_CACHEDIR=/misc/fgcz01/nextflow_apptainer_cache/
+          export APPTAINER_CACHEDIR=$SCRATCH_DIR/apptainer_cache
         SHELL
 
         cmd = cache_settings + cmd
@@ -594,7 +598,7 @@ module NfCoreAppFactory
           # Add Apptainer cache settings
           cache_settings = <<~SHELL
             export NXF_SINGULARITY_CACHEDIR=/misc/fgcz01/nextflow_apptainer_cache/
-            export SINGULARITY_CACHEDIR=/misc/fgcz01/nextflow_apptainer_cache/
+            export APPTAINER_CACHEDIR=$SCRATCH_DIR/apptainer_cache
           SHELL
 
           cmd = cache_settings + cmd
