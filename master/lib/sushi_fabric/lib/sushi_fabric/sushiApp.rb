@@ -1046,7 +1046,8 @@ rm -rf #{@scratch_dir} || exit 1
     copy_uploaded_files
 
     # Generate Methods script before the scratch→gstore copy wave so it's included automatically.
-    # Guard: only for R apps (run_RApp sets @ezrun_class_name), real runs with a saved dataset.
+    # Guard: run_RApp sets @ezrun_class_name to the app's class, run_PyApp to 'EzApp'
+    # (base writer); real runs with a saved dataset only.
     methods_script_path = nil
     if @ezrun_class_name && @next_dataset_id && !mock && !@job_scripts.empty?
       # Chain onto the input dataset's own methods.md, if it has one. No parent, or a parent
