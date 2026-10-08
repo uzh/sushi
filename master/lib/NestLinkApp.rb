@@ -13,7 +13,7 @@ class NestLinkApp <  SushiFabric::SushiApp
     @description =<<-EOS
 NestLink - an R data package to guide through Engineered Peptide Barcodes for In-Depth Analyzes of Binding Protein Ensembles - https://bioconductor.org/packages/release/data/experiment/html/NestLink.html
     EOS
-    @required_columns = ['Name','Read1', 'FlashLog']
+    @required_columns = ['Name','Read1', 'Log']
     @required_params = ['NB_Linker1', 'NB_Linker2', 'ProteaseSite','FC_Linker','knownNBPath']
     @params['cores'] = '1'
     @params['cores', "context"] = "slurm"
