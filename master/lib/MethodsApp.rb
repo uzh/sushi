@@ -47,7 +47,10 @@ class MethodsApp < SushiFabric::SushiApp
     command << "  Sys.sleep(120)\n"
     command << "  library(ezRun)\n"
     command << "}\n"
-    command << "#{@ezrun_class_name}\\$new()\\$write_methods(\n"
+    # A class that is not in ezRun (EzAppNfCoreGeneric lives in a file the app job
+    # sources) falls back to the base EzApp writer: no facts, run record + logs.
+    command << "cls <- if (exists(\"#{@ezrun_class_name}\")) get(\"#{@ezrun_class_name}\") else EzApp\n"
+    command << "cls\\$new()\\$write_methods(\n"
     args = ["  gstore_script_dir = '#{@gstore_script_dir}'",
             "  output_dir        = '${SCRATCH_DIR}'",
             "  analysis_name     = '#{@analysis_name}'"]

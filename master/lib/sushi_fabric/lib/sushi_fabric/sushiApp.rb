@@ -1046,7 +1046,8 @@ rm -rf #{@scratch_dir} || exit 1
     copy_uploaded_files
 
     # Generate Methods script before the scratch→gstore copy wave so it's included automatically.
-    # Guard: only for R apps (run_RApp sets @ezrun_class_name), real runs with a saved dataset.
+    # Guard: run_RApp sets @ezrun_class_name to the app's class, run_PyApp to 'EzApp'
+    # (base writer); real runs with a saved dataset only.
     methods_script_path = nil
     if @ezrun_class_name && @next_dataset_id && !mock && !@job_scripts.empty?
       # Chain onto the input dataset's own methods.md, if it has one. No parent, or a parent
@@ -1055,10 +1056,12 @@ rm -rf #{@scratch_dir} || exit 1
       # job_footer checks for the file itself once this job actually runs; the job
       # manager's WAITING_FOR_METHODS dependency on the parent's methods job (if any)
       # is what makes that check reliable rather than a guess.
+      # own_result_dir, not paths.first: the input's first File/Link column can be a
+      # [Link] into ITS parent's dir (ScSeurat -> CellBender), which skipped a section.
       parent_methods_path = nil
       if dataset
         begin
-          parent_relative_dir = dataset.paths.first
+          parent_relative_dir = dataset.own_result_dir
           parent_methods_path = File.join(GSTORE_DIR, parent_relative_dir, 'methods.md') if parent_relative_dir
         rescue => e
           @logger.error("parent methods path resolution failed: #{e.message}") if @logger

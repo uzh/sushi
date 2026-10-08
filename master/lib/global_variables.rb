@@ -355,6 +355,9 @@ module GlobalVariables
   end
 
   def run_PyApp(app_name = self.class.to_s.downcase, conda_env: nil, pixi_enabled: false)
+    # Python apps get their Methods text from ezRun's base EzApp writer (it reads the
+    # job scripts/logs, parameters.tsv and input_dataset.tsv; no Python env needed).
+    @ezrun_class_name = 'EzApp'
     command = ''
     if pixi_enabled
       command << "pixi run --as-is --manifest-path #{SushiFabric::Application.config.ezpyz_dir}/ezpyz_#{app_name} python3 << EOT\n"
