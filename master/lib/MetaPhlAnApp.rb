@@ -123,7 +123,30 @@ EOS
   end
 
   def commands
-    run_RApp("EzAppMetaPhlAn")
+    command = run_RApp("EzAppMetaPhlAn")
+    command << db_inventory_copy_command if db_inventory_job?
+    command
+  end
+
+  # The index's inventory (metaphlan_inventory/make_inventory.py) goes to the
+  # result dir once per run, for exploreMetaTax. g-req refuses an existing
+  # destination, so only the first selected sample's job copies it.
+  def db_inventory_job?
+    return true unless @params['process_mode'] == 'SAMPLE'
+    selected = @params['samples'].to_s.split(',')
+    first = @dataset_hash.map { |row| row['Name'] }.find { |name| selected.empty? || selected.include?(name) }
+    @dataset['Name'] == first
+  end
+
+  def db_inventory_copy_command
+    src = File.join('/srv/GT/databases/metaphlan_databases', "#{@params['metaphlanIndex']}.inventory.tsv.gz")
+    <<~EOS
+      if [ -e #{src} ]; then
+        #{copy_commands(src, File.join(@gstore_dir, @result_dir), nil, @queue).join("\n")}
+      else
+        echo "WARNING: #{src} not found; database contents not exported"
+      fi
+    EOS
   end
 
   # Scan /srv/GT/databases/metaphlan_databases/ for bowtie2 index basenames.

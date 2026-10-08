@@ -246,7 +246,40 @@ EOS
   end
 
   def commands
-    run_RApp("EzAppKraken")
+    command = run_RApp("EzAppKraken")
+    command << db_inspect_copy_commands if db_inspect_job?
+    command
+  end
+
+  # Each DB's kraken2-inspect dump goes to the result dir once per run, for
+  # exploreMetaTax. g-req refuses an existing destination, so in SAMPLE mode
+  # only the first selected sample's job copies it.
+  def db_inspect_job?
+    return true unless @params['process_mode'] == 'SAMPLE'
+    first = @dataset_hash.map { |row| row['Name'] }.find { |name| selected_sample?(name) }
+    @dataset['Name'] == first
+  end
+
+  def selected_kraken_dbs
+    dbs = Array(@params['krakenDBOpt']).flat_map { |v| v.is_a?(Array) ? [v.last] : v.to_s.split(',') }
+                                       .map(&:strip).reject(&:empty?)
+    @params['multiDB'].to_s == 'true' ? dbs : dbs.first(1)
+  end
+
+  def db_inspect_copy_commands
+    dest = File.join(@gstore_dir, @result_dir)
+    selected_kraken_dbs.map { |db|
+      src = File.join('/srv/GT/databases/kraken2', db, 'inspect.txt.gz')
+      out = "#{db}.inspect.txt.gz"
+      <<~EOS
+        if [ -e #{src} ]; then
+          cp #{src} #{out}
+          #{copy_commands(out, dest, nil, @queue).join("\n")}
+        else
+          echo "WARNING: #{src} not found; database contents not exported"
+        fi
+      EOS
+    }.join
   end
 
   # Scan /srv/GT/databases/kraken2/ for valid Kraken2 DB folders. A folder is
